@@ -3407,15 +3407,6 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Nodes list is empty");
 
-    /* GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, nodes.last()));
-    GTMouseDriver::click();
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Swap Siblings", PopupChecker::IsDisabled));
-    GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Reroot tree", PopupChecker::IsEnabled));
-    GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(500);
-
-    */
     GTUtilsPhyTree::clickNode(os, nodes[25]);
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Swap Siblings", PopupChecker::IsDisabled));
@@ -3429,39 +3420,6 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Reroot tree", PopupChecker::IsEnabled));
     GTMouseDriver::click(Qt::RightButton);
-
-/*
-//    Reroot action.
-
-    //    1. Open file "data/samples/Newick/COI.nwk".
-    //    Expected state: a philogenetic tree appears.
-    GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //    2. Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-    GTUtilsPhyTree::clickNode(os, nodes[0]);
-    CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
-
-    //    3. Do the context menu command "Reroot tree".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Reroot tree"));
-    GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //    Expected state: the tree is rerooted. The selected node parent node becomes a new tree root.
-    nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-
-    CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
-
-
-    */
-
-
 
 }
 
