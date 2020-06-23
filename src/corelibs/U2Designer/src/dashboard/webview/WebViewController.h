@@ -41,7 +41,6 @@ public:
     void setPageUrl(const QString &pageUrl);
 
     void runJavaScript(const QString &script);
-    void runJavaScript(const QString &script, WebViewCallback callback);
 
 signals:
     void si_pageIsAboutToBeInitialized();

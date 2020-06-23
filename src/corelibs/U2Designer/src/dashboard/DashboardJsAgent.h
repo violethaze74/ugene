@@ -36,7 +36,6 @@ class DashboardJsAgent : public JavaScriptAgent {
     Q_OBJECT
 
     Q_PROPERTY(QString workersParamsInfo READ getWorkersParamsInfo CONSTANT)
-    Q_PROPERTY(bool showHint READ getShowHint CONSTANT)
 
 public:
     DashboardJsAgent(Dashboard *parent);
@@ -69,7 +68,6 @@ signals:
     void si_createOutputWidget();
 
 private:
-    Q_INVOKABLE bool getShowHint();
     void fillWorkerParamsInfo();
 
     QString workersParamsInfo;

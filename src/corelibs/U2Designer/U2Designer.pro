@@ -33,7 +33,6 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/dashboard/RemoveDashboardsTask.h \
            src/dashboard/ScanDashboardsDirTask.h \
            src/dashboard/webview/JavaScriptAgent.h \
-           src/dashboard/webview/SimpleWebViewBasedWidgetController.h \
            src/dashboard/webview/U2WebView.h \
            src/dashboard/webview/WebViewController.h \
            src/dashboard/webview/WebViewControllerPrivate.h \
@@ -116,7 +115,6 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/dashboard/RemoveDashboardsTask.cpp \
            src/dashboard/ScanDashboardsDirTask.cpp \
            src/dashboard/webview/JavaScriptAgent.cpp \
-           src/dashboard/webview/SimpleWebViewBasedWidgetController.cpp \
            src/dashboard/webview/WebViewController.cpp \
            src/dashboard/webview/WebViewControllerPrivate.cpp \
            src/support/OutputDirectoryWidget.cpp \
