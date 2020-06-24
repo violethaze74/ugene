@@ -111,14 +111,13 @@ void ShutdownTask::prepare() {
     activeTopTasks.removeOne(this);
     if (!activeTopTasks.isEmpty()) {
         QStringList sl;
-        foreach (Task *t, activeTopTasks) {
-            sl.append(t->getTaskName());
+        for (Task *task : activeTopTasks) {
+            sl.append(task->getTaskName());
         }
 
-        QMessageBox::StandardButton ret = QMessageBox::question(mw->getQMainWindow(),
-                                                                tr("Shutdown confirmation"),
-                                                                tr("There are active tasks. Stop them now?") + QString("\n\n - %1").arg(sl.join("\n - ")),
-                                                                QMessageBox::Ok | QMessageBox::Cancel);
+        bool isDisableCancelOnShutdownConfirmation = qgetenv("UGENE_GUI_TEST") == "1";
+        QMessageBox::StandardButton ret = isDisableCancelOnShutdownConfirmation ? QMessageBox::Ok :
+                                                                                  QMessageBox::question(mw->getQMainWindow(), tr("Shutdown confirmation"), tr("There are active tasks. Stop them now?") + QString("\n\n - %1").arg(sl.join("\n - ")), QMessageBox::Ok | QMessageBox::Cancel);
         if (ret != QMessageBox::Ok) {
             cancel();
             return;
