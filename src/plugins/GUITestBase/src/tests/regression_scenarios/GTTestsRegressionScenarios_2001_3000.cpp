@@ -3868,7 +3868,6 @@ GUI_TEST_CLASS_DEFINITION(test_2578) {
     GTWidget::click(os, GTWidget::findWidget(os, "sequenceLineEdit"));
     GTKeyboardDriver::keySequence("Montana_montana");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(exportButton->isEnabled(), "exportButton is disabled unexpectedly");
 
     //    5. Select 'General' tab, then select 'Highlighting' tab again.
