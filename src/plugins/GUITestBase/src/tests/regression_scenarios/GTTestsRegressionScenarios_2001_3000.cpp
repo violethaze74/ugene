@@ -3569,23 +3569,29 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
     GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_2544.fa");
     GTFileDialog::openFile(os, sandBoxDir + "test_2544.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    2. Use context menu { Edit sequence -> Remove subsequence... }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "action_edit_remove_sub_sequences"));
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "10..20"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     //    Expected state: "Remove subsequence" dialog has appeared
-
     //    3. Set string "10..20" to the "Region to remove" field, press the "Remove" button
-
     //    Expected state: the dialog has disappeared, subsequence has been removed
 
     //    4. Change permissions to the file to read-only
     GTFile::setReadOnly(os, sandBoxDir + "test_2544.fa");
     //    5. Use context menu on the document item in project view { Save selected documents }
 
-    class innerMessageBoxFiller : public MessageBoxDialogFiller {
+    //    Expected state: message box has appeared
+    //    6. Press "Save" button
+    //    Expected state: "Save as" dialog has appeared
+    //    7. Choose the same file, press "Save"
+    //    Expected state: message box has appeared
+    //    8. Press "Save"
+
+    class InnerMessageBoxFiller : public MessageBoxDialogFiller {
     public:
-        innerMessageBoxFiller(HI::GUITestOpStatus &os)
+        InnerMessageBoxFiller(HI::GUITestOpStatus &os)
             : MessageBoxDialogFiller(os, QMessageBox::Yes) {
         }
         void run() {
@@ -3593,36 +3599,23 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
             MessageBoxDialogFiller::run();
         }
     };
-    class customSaver : public GTFileDialogUtils {
+    class CustomSaver : public GTFileDialogUtils {
     public:
-        customSaver(HI::GUITestOpStatus &os)
+        CustomSaver(HI::GUITestOpStatus &os)
             : GTFileDialogUtils(os, sandBoxDir, "test_2544.fa", GTFileDialogUtils::Save) {
         }
         void commonScenario() {
-            fileDialog = QApplication::activeModalWidget();
-            GTUtilsDialog::waitForDialog(os, new innerMessageBoxFiller(os));
+            fileDialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::waitForDialog(os, new InnerMessageBoxFiller(os));
             setName();
             clickButton(button);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_prpject__save_document"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "", "permissionBox"));
-    GTUtilsDialog::waitForDialog(os, new customSaver(os));
+    GTUtilsDialog::waitForDialog(os, new CustomSaver(os));
     GTUtilsProjectTreeView::click(os, "test_2544.fa", Qt::RightButton);
-    //    Expected state: message box has appeared
-
-    //    6. Press "Save" button
-
-    //    Expected state: "Save as" dialog has appeared
-
-    //    7. Choose the same file, press "Save"
-
-    //    Expected state: message box has appeared
-
-    //    8. Press "Yes"
-
-    //    Expected state: message box same as after 5th step has appeared
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2545) {
