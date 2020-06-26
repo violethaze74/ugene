@@ -1661,58 +1661,54 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     //    0. Copy t-coffee tool to the place where UGENE has enough permissions to change file permissions;
     //    Set the copied t-coffee tool in preferences.
 
-    GTGlobals::sleep();
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK_SET_ERR(etRegistry, "External tool registry is NULL");
+
     ExternalTool *tCoffee = etRegistry->getById("USUPP_T_COFFEE");
     CHECK_SET_ERR(tCoffee, "T-coffee tool is NULL");
-    QFileInfo toolPath(tCoffee->getPath());
-    CHECK_SET_ERR(toolPath.exists(), "T-coffee tool is not set");
 
-    QDir toolDir = toolPath.dir();
-    QString newToolPath = sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee";
+    const QFileInfo origToolPath(tCoffee->getPath());
+    CHECK_SET_ERR(origToolPath.exists(), "T-coffee tool is not set");
+
+    QDir origToolDir = origToolPath.dir();
 #ifdef Q_OS_LINUX
-    toolDir.cdUp();
-    newToolPath = sandBoxDir + "GUITest_regression_scenarios_test_2268/bin/t_coffee";
-#elif defined(Q_OS_WIN)
-    newToolPath = sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee.bat";
+    origToolDir.cdUp(); // exit from 'bin' folder
 #endif
-    QString s = toolDir.absolutePath();
-    GTFile::copyDir(os, toolDir.absolutePath(), sandBoxDir + "GUITest_regression_scenarios_test_2268/");
+
+    GTFile::copyDir(os, origToolDir.absolutePath(), sandBoxDir + "GUITest_regression_scenarios_test_2268/");
+#ifdef Q_OS_LINUX
+    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/bin/t_coffee");
+#elif defined(Q_OS_WIN)
+    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee.bat");
+#else
+    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee");
+#endif
 
     // Hack, it is better to set the tool path via the preferences dialog
-    toolPath.setFile(newToolPath);
-    CHECK_SET_ERR(toolPath.exists(), "The copied T-coffee tool does not exist");
-    tCoffee->setPath(QFileInfo(newToolPath).absoluteFilePath());
+    CHECK_SET_ERR(newToolPath.exists(), "The copied T-coffee tool does not exist");
+    tCoffee->setPath(newToolPath.absoluteFilePath());
 
-    toolDir = toolPath.dir();
+    QDir newToolDir = origToolPath.dir();
 #ifdef Q_OS_LINUX
-    toolDir.cdUp();
+    newToolDir.cdUp(); // exit from 'bin' folder
 #endif
 
-    //    1. Forbid write access to the t-coffee folder (chmod 555 %t-coffee-dir%).
-    // Permissions will be returned to the original state, if UGENE won't crash.
-    GTFile::setReadOnly(os, toolDir.path());
+    // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
+    GTFile::setReadOnly(os, newToolDir.path(), true);
 
-    //    2. Open "sample/CLUSTALW/COI.aln".
+    // 2. Open "sample/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Right click on the MSA -> Align -> Align with T-Coffee.
-    //    4. Click the "Align" button.
+    // 3. Right click on the MSA -> Align -> Align with T-Coffee.
+    // 4. Click the "Align" button.
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new TCoffeeDailogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with T-Coffee"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     //    Expected: the t-coffee task started and finished well.
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    CHECK_SET_ERR(scheduler, "Task scheduler is NULL");
-    GTGlobals::sleep(5000);
-    while (!scheduler->getTopLevelTasks().isEmpty()) {
-        GTGlobals::sleep();
-    }
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, lt);
 }
 
