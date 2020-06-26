@@ -155,7 +155,7 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
     QVector<QVector<char>> frequencies = getFrequences(ma, column, seqIdx);
 
     char bestCharacter = INVALID_CONS_CHAR;
-    const int thresholdCount = qRound(static_cast<double>((frequencies.size() - 1) * getThreshold()) / 100);
+    const int thresholdCount = ceil(((frequencies.size() - 1) * getThreshold()) / 100.0);
 
     for (int frequency = frequencies.size() - 1; frequency > 0; frequency--) {
         CHECK_CONTINUE(0 < frequencies[frequency].size());
