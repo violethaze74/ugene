@@ -26,6 +26,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "BuiltInConsensusAlgorithms.h"
+#include <math.h>
 
 namespace U2 {
 
