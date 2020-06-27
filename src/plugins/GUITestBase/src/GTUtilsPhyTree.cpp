@@ -197,7 +197,8 @@ void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node
     GT_CHECK(node != nullptr, "Node to click is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    bool isCircular = getTreeViewerUi(os)->isCircularMode();
+    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(isCircular ? 0 : 2, 0));
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
@@ -207,7 +208,8 @@ void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem
     GT_CHECK(node != nullptr, "Node to doubleClickNode is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    bool isCircular = getTreeViewerUi(os)->isCircularMode();
+    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(isCircular ? 0 : 2, 0));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
 }

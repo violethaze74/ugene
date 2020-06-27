@@ -249,6 +249,10 @@ public:
 
     bool isOnlyLeafSelected() const;
 
+    bool isCircularMode() const {
+        return getTreeLayout() == CIRCULAR_LAYOUT;
+    }
+
 protected:
     virtual void wheelEvent(QWheelEvent *e);
     virtual void resizeEvent(QResizeEvent *e);
