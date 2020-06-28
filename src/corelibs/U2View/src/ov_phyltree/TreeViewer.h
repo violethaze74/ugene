@@ -308,7 +308,7 @@ private slots:
 
 private:
     enum LabelType {
-        LabelType_SequnceName = 1,
+        LabelType_SequenceName = 1,
         LabelType_Distance = 2
     };
     typedef QFlags<LabelType> LabelTypes;

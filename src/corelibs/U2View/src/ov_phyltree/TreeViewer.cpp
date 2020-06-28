@@ -775,7 +775,7 @@ void TreeViewerUI::updateTreeSettings(bool setDefautZoom) {
     scene()->update();
 
     showLabels(LabelType_Distance);
-    showLabels(LabelType_SequnceName);
+    showLabels(LabelType_SequenceName);
     bool alignLabels = getOptionValue(ALIGN_LABELS).toBool();
     if (alignLabels) {
         updateLabelsAlignment();
@@ -1292,7 +1292,7 @@ void TreeViewerUI::sl_layoutRecomputed() {
             lt |= LabelType_Distance;
         }
         if (!showNames) {
-            lt |= LabelType_SequnceName;
+            lt |= LabelType_SequenceName;
         }
         showLabels(lt);
     }
@@ -1310,7 +1310,7 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
     maxNameWidth = 0.0;
     while (!stack.isEmpty()) {
         GraphicsBranchItem *node = stack.pop();
-        if (labelTypes.testFlag(LabelType_SequnceName)) {
+        if (labelTypes.testFlag(LabelType_SequenceName)) {
             if (node->getNameText() != NULL) {
                 node->setVisible(getOptionValue(SHOW_LABELS).toBool());
                 maxNameWidth = qMax(maxNameWidth, node->getNameText()->sceneBoundingRect().width());
@@ -1339,7 +1339,7 @@ void TreeViewerUI::changeNamesDisplay() {
     QAction *contAction = curTreeViewer->getContAction();
     contAction->setEnabled(showNames);
 
-    showLabels(LabelType_SequnceName);
+    showLabels(LabelType_SequenceName);
     QRectF rect = sceneRect();
     rect.setWidth(rect.width() + (showNames ? 1 : -1) * maxNameWidth);
     scene()->setSceneRect(rect);

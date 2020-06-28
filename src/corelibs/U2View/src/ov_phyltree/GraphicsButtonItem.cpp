@@ -21,7 +21,6 @@
 
 #include "GraphicsButtonItem.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
 #include <QMenu>
@@ -66,18 +65,19 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
 }
 
 void GraphicsButtonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    QTransform worldTransform = painter->worldTransform();
-    //worldTransform = worldTransform.scale(1.0 / worldTransform.m11(), 1.0 / worldTransform.m22());
-    scaleFactor = 1.0 / worldTransform.m11();
-    worldTransform.setMatrix(1.0, 0, 0, 0, 1.0, 0, worldTransform.m31(), worldTransform.m32(), worldTransform.m33());
-    painter->setWorldTransform(worldTransform);
+//    QTransform worldTransform = painter->worldTransform();
+//    scaleFactor = 1.0 / worldTransform.m11();
+//    worldTransform.setMatrix(1.0, 0, 0, 0, 1.0, 0, worldTransform.m31(), worldTransform.m32(), worldTransform.m33());
+//    painter->setWorldTransform(worldTransform);
     QGraphicsEllipseItem::paint(painter, option, widget);
 }
 
 QRectF GraphicsButtonItem::boundingRect() const {
-    QRectF resultRect = QGraphicsEllipseItem::boundingRect();
-    qreal delta = (resultRect.width() / scaleFactor - resultRect.width()) / 2;
-    return resultRect.adjusted(delta, delta, delta, delta);
+//    QRectF resultRect = QGraphicsEllipseItem::boundingRect();
+//    qreal width = resultRect.width();
+//    qreal delta = (width / scaleFactor - width) / 2;
+//    return resultRect.adjusted(delta, delta, delta, delta);
+    return QGraphicsEllipseItem::boundingRect();
 }
 
 const QGraphicsSimpleTextItem *GraphicsButtonItem::getLabel() const {

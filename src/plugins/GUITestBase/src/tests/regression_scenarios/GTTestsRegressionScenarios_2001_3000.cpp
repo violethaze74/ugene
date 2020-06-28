@@ -3397,6 +3397,7 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_TREES_WIDGET"));
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
     GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Select the last node, then call a context menu for it. It contains two menu items: "swap siblings" and "reroot".
     //The first one should be always disabled (for the tree leafs), the second one should be always enabled.
