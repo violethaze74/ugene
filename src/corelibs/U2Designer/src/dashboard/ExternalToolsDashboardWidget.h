@@ -19,49 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WELCOME_PAGE_WIDGET_H_
-#define _U2_WELCOME_PAGE_WIDGET_H_
+#ifndef _U2_EXTERNAL_TOOLS_DASHBOARD_WIDGET_H_
+#define _U2_EXTERNAL_TOOLS_DASHBOARD_WIDGET_H_
 
-#include <QLabel>
-#include <QScrollArea>
-#include <QVBoxLayout>
+#include <QDomElement>
 #include <QWidget>
+
+#include <U2Lang/WorkflowMonitor.h>
 
 namespace U2 {
 
-class WelcomePageWidget : public QScrollArea {
+class U2DESIGNER_EXPORT ExternalToolsDashboardWidget : public QWidget {
     Q_OBJECT
 public:
-    WelcomePageWidget(QWidget *parent);
+    ExternalToolsDashboardWidget(const QDomElement &initialStateDom);
+};
 
-    void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
+class BadgeLabel : public QWidget {
+    Q_OBJECT
+public:
+    BadgeLabel(const QString &text, const QString &style, bool isCopyButtonVisible = false);
+};
 
-    bool eventFilter(QObject *watched, QEvent *event);
+class ExternalToolsTreeNode : public QWidget {
+    Q_OBJECT
+public:
+    ExternalToolsTreeNode(int level, QWidget *contentWidget, bool isLast = true);
 
-protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-
-private slots:
-    void sl_openFiles();
-    void sl_createSequence();
-    void sl_createWorkflow();
-    void sl_openQuickStart();
-
-    void sl_openRecentFile();
+    void paintEvent(QPaintEvent *event);
 
 private:
-    void runAction(const QString &actionId);
-
-    QWidget *createHeaderWidget();
-    QWidget *createMiddleWidget();
-    QWidget *createFooterWidget();
-
-    QVBoxLayout *recentFilesLayout;
-    QVBoxLayout *recentProjectsLayout;
+    int level;
+    bool isLast;
 };
 
 }    // namespace U2
-
-#endif    // _U2_WELCOME_PAGE_WIDGET_H_
+#endif

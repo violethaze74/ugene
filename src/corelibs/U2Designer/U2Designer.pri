@@ -3,7 +3,7 @@
 MODULE_ID=U2Designer
 include( ../../ugene_lib_common.pri )
 
-QT += svg
+QT += svg xml
 
 useWebKit() {
     QT += webkitwidgets

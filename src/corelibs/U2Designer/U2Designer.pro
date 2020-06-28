@@ -30,8 +30,12 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/dashboard/DashboardInfoRegistry.h \
            src/dashboard/DashboardJsAgent.h \
            src/dashboard/DashboardPageController.h \
+           src/dashboard/ExternalToolsDashboardWidget.h \
+           src/dashboard/FlowLayout.h \
            src/dashboard/RemoveDashboardsTask.h \
            src/dashboard/ScanDashboardsDirTask.h \
+           src/dashboard/DashboardTabPage.h \
+           src/dashboard/DashboardWidget.h \
            src/dashboard/webview/JavaScriptAgent.h \
            src/dashboard/webview/U2WebView.h \
            src/dashboard/webview/WebViewController.h \
@@ -112,8 +116,12 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/dashboard/DashboardInfoRegistry.cpp \
            src/dashboard/DashboardJsAgent.cpp \
            src/dashboard/DashboardPageController.cpp \
+           src/dashboard/ExternalToolsDashboardWidget.cpp \
+           src/dashboard/FlowLayout.cpp \
            src/dashboard/RemoveDashboardsTask.cpp \
            src/dashboard/ScanDashboardsDirTask.cpp \
+           src/dashboard/DashboardTabPage.cpp \
+           src/dashboard/DashboardWidget.cpp \
            src/dashboard/webview/JavaScriptAgent.cpp \
            src/dashboard/webview/WebViewController.cpp \
            src/dashboard/webview/WebViewControllerPrivate.cpp \

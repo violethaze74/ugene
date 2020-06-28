@@ -37,6 +37,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/HoverQLabel.h>
 #include <U2Gui/WelcomePageAction.h>
 
 #include "main_window/MainWindowImpl.h"
@@ -337,32 +338,6 @@ void WelcomePageWidget::runAction(const QString &actionId) {
     } else if (actionId == BaseWelcomePageActions::QUICK_START) {
         QDesktopServices::openUrl(QUrl("https://ugene.net/wiki/display/QSG/Quick+Start+Guide"));
     }
-}
-
-HoverQLabel::HoverQLabel(const QString &html, const QString &_normalStyle, const QString &_hoveredStyle, const QString &objectName)
-    : QLabel(html), normalStyle(_normalStyle), hoveredStyle(_hoveredStyle) {
-    setCursor(Qt::PointingHandCursor);
-    setObjectName(objectName);
-    if (!objectName.isEmpty()) {
-        normalStyle = "#" + objectName + " {" + normalStyle + "}";
-        hoveredStyle = "#" + objectName + " {" + hoveredStyle + "}";
-    }
-    setStyleSheet(normalStyle);
-}
-
-void HoverQLabel::enterEvent(QEvent *event) {
-    Q_UNUSED(event);
-    setStyleSheet(hoveredStyle);
-}
-
-void HoverQLabel::leaveEvent(QEvent *event) {
-    Q_UNUSED(event);
-    setStyleSheet(normalStyle);
-}
-
-void HoverQLabel::mousePressEvent(QMouseEvent *event) {
-    Q_UNUSED(event);
-    emit clicked();
 }
 
 }    // namespace U2
