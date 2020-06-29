@@ -3569,12 +3569,13 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
     //    1. Open "data/samples/FASTA/human_T1.fa"
     GTFile::copy(os, dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_2544.fa");
     GTFileDialog::openFile(os, sandBoxDir + "test_2544.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //    2. Use context menu { Edit sequence -> Remove subsequence... }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "action_edit_remove_sub_sequences"));
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "10..20"));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+
     //    Expected state: "Remove subsequence" dialog has appeared
     //    3. Set string "10..20" to the "Region to remove" field, press the "Remove" button
     //    Expected state: the dialog has disappeared, subsequence has been removed
