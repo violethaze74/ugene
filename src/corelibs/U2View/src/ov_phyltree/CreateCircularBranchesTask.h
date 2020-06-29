@@ -32,6 +32,11 @@ class GraphicsCircularBranchItem;
 
 class CreateCircularBranchesTask : public CreateBranchesTask {
     Q_OBJECT
+
+    TreeLayout getLayoutType() const override {
+        return CIRCULAR_LAYOUT;
+    }
+
 private:
     qreal coef;
     GraphicsRectangularBranchItem *root1;
@@ -44,7 +49,7 @@ private:
 
 public:
     CreateCircularBranchesTask(GraphicsRectangularBranchItem *r, bool degeneratedCase = false);
-    void run();
+    void run() override;
 };
 
 }    // namespace U2

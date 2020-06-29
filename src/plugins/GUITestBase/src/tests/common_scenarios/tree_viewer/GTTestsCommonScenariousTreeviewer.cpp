@@ -758,7 +758,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
-    QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, nodeList.last());
+    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, nodeList.last());
 
     //    2. Do context menu {Collapse} for any node
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Collapse"));
@@ -807,7 +807,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getNodes(os);
 
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
-    QPoint globalCoord = GTUtilsPhyTree::getGlobalCoord(os, nodeList.last());
+    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, nodeList.last());
 
     //    2. Do context menu {Collapse} for any node
     GTMouseDriver::moveTo(globalCoord);

@@ -774,7 +774,7 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
     CHECK(curLayoutIsRectangular, );
     QList<GraphicsBranchItem *> items = getListNodesOfTree();
     QRectF rect;
-    zooming(1.0, 1.0 / getVerticalZoom());
+    setZoom(1.0, 1.0 / getVerticalZoom());
     foreach (GraphicsBranchItem *item, items) {
         QGraphicsSimpleTextItem *nameText = item->getNameText();
         if (NULL == nameText) {
@@ -799,7 +799,7 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
 
     qreal zoom = qreal(height) / sceneRect.height();
     centerOn(rect.center());
-    zooming(1.0, zoom);
+    setZoom(1.0, zoom);
 }
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch) {

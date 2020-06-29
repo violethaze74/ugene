@@ -1683,7 +1683,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
 
     QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
-    QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     int initNamesNumber = initNames.count();
     int initDistansesNumber = initDistanses.count();
 
@@ -1710,7 +1710,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: distanses are not shown
-    QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == 0, QString("unexpected number of distanses: %1").arg(names.count()));
 
     //    6. Check "show distanses" checkbox.
@@ -1718,7 +1718,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: distanses are shown
-    distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == initDistansesNumber, QString("unexpected number of distanses: %1").arg(names.count()));
 
     //    7. Check "align labels" checkbox.

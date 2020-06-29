@@ -36,13 +36,13 @@
 
 namespace U2 {
 
-const qreal GraphicsButtonItem::radiusMin = 5.0;
-const qreal GraphicsButtonItem::radiusMax = 5.0;
+const qreal GraphicsButtonItem::radius = 5.0;
 const QBrush GraphicsButtonItem::highlightingBrush = QBrush(QColor("#ea9700"));
 const QBrush GraphicsButtonItem::ordinaryBrush = QBrush(Qt::gray);
 
 GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
-    : QGraphicsEllipseItem(QRectF(-radiusMin, -radiusMin, 2 * radiusMin, 2 * radiusMin)), isSelected(false), nodeLabel(NULL), scaleFactor(1.0), nodeValue(nodeValue) {
+    : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
+      isSelected(false), nodeLabel(nullptr), nodeValue(nodeValue) {
     setPen(QColor(0, 0, 0));
     setBrush(ordinaryBrush);
     setAcceptHoverEvents(true);
@@ -50,7 +50,6 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
-    setData(NODE_TREE_ITEM_KIND_KEY, true);
 
     if (nodeValue >= 0) {
         nodeLabel = new QGraphicsSimpleTextItem(QString::number(nodeValue), this);
@@ -62,22 +61,6 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
         nodeLabel->setFlag(QGraphicsItem::ItemIgnoresTransformations, false);
         nodeLabel->setZValue(1);
     }
-}
-
-void GraphicsButtonItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-//    QTransform worldTransform = painter->worldTransform();
-//    scaleFactor = 1.0 / worldTransform.m11();
-//    worldTransform.setMatrix(1.0, 0, 0, 0, 1.0, 0, worldTransform.m31(), worldTransform.m32(), worldTransform.m33());
-//    painter->setWorldTransform(worldTransform);
-    QGraphicsEllipseItem::paint(painter, option, widget);
-}
-
-QRectF GraphicsButtonItem::boundingRect() const {
-//    QRectF resultRect = QGraphicsEllipseItem::boundingRect();
-//    qreal width = resultRect.width();
-//    qreal delta = (width / scaleFactor - width) / 2;
-//    return resultRect.adjusted(delta, delta, delta, delta);
-    return QGraphicsEllipseItem::boundingRect();
 }
 
 const QGraphicsSimpleTextItem *GraphicsButtonItem::getLabel() const {
@@ -125,21 +108,11 @@ void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
 
 void GraphicsButtonItem::setSelected(bool selected) {
     isSelected = selected;
-    if (selected) {
-        setHighlighting(true);
-    } else {
-        setHighlighting(false);
-    }
+    setHighlighting(isSelected);
 }
 
-void GraphicsButtonItem::setHighlighting(bool enabled) {
-    if (enabled) {
-        setRect(QRectF(-radiusMax, -radiusMax, 2 * radiusMax, 2 * radiusMax));
-        setBrush(highlightingBrush);
-    } else {
-        setRect(QRectF(-radiusMin, -radiusMin, 2 * radiusMin, 2 * radiusMin));
-        setBrush(ordinaryBrush);
-    }
+void GraphicsButtonItem::setHighlighting(bool isOn) {
+    setBrush(isOn ? highlightingBrush : ordinaryBrush);
     update();
 }
 
@@ -176,50 +149,44 @@ void GraphicsButtonItem::swapSiblings() {
     rectBranchItem->swapSiblings();
 }
 
-bool GraphicsButtonItem::isSelectedTop() {
+bool GraphicsButtonItem::isPathToRootSelected() const {
     if (!isSelected) {
         return false;
     }
     GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(parentItem());
-    if (!branchItem) {
+    if (branchItem == nullptr) {
         return true;
     }
     GraphicsBranchItem *parentBranchItem = dynamic_cast<GraphicsBranchItem *>(branchItem->parentItem());
-    if (!parentBranchItem) {
-        return true;
-    }
-    bool parentBranchSelected = parentBranchItem->isSelected();
-    return !parentBranchSelected;
+    return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
 bool GraphicsButtonItem::isCollapsed() {
-    GraphicsBranchItem *p = dynamic_cast<GraphicsBranchItem *>(parentItem());
-    Q_ASSERT(p);
-    if (p) {
-        return p->isCollapsed();
-    }
-    return false;
+    GraphicsBranchItem *parent = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    Q_ASSERT(parent);
+    CHECK(parent, false)
+    return parent->isCollapsed();
 }
 
 void GraphicsButtonItem::rerootTree(PhyTreeObject *treeObject) {
-    uiLog.trace("Rerooting of the PhyTree");
-    SAFE_POINT(NULL != treeObject, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
+    uiLog.trace("Re-rooting of the PhyTree");
+    SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
 
     GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(parentItem());
-    CHECK(NULL != branchItem, );
+    CHECK(branchItem != nullptr, );
 
     GraphicsRectangularBranchItem *rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem);
-    if (NULL == rectBranchItem) {
+    if (rectBranchItem == nullptr) {
         CHECK(branchItem->getCorrespondingItem(), );
 
         rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem->getCorrespondingItem());
-        CHECK(NULL != rectBranchItem, );
+        CHECK(rectBranchItem != nullptr, );
     }
 
     const PhyBranch *nodeBranch = rectBranchItem->getPhyBranch();
-    CHECK(NULL != nodeBranch, );
+    CHECK(nodeBranch != nullptr, );
     PhyNode *newRoot = nodeBranch->node2;
-    CHECK(NULL != newRoot, );
+    CHECK(newRoot != nullptr, );
 
     treeObject->rerootPhyTree(newRoot);
 }
@@ -232,10 +199,6 @@ void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
     nodeLabel->setBrush(labelsColor);
     bool showNodeLabels = settings[SHOW_NODE_LABELS].toBool();
     nodeLabel->setVisible(showNodeLabels);
-}
-
-bool GraphicsButtonItem::getIsSelected() const {
-    return isSelected;
 }
 
 }    // namespace U2

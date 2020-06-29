@@ -1920,7 +1920,7 @@ GUI_TEST_CLASS_DEFINITION(test_2298) {
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     treeView->ensureVisible(node);
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, node));
+    GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCenterCoord(os, node));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
@@ -3299,7 +3299,7 @@ GUI_TEST_CLASS_DEFINITION(test_2482) {
     QList<GraphicsButtonItem *> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(items.size() >= 4, "Incorrect tree size");
 
-    QPoint nodeCoords = GTUtilsPhyTree::getGlobalCoord(os, items.at(3));
+    QPoint nodeCoords = GTUtilsPhyTree::getGlobalCenterCoord(os, items.at(3));
     GTMouseDriver::moveTo(nodeCoords);
 
     GTMouseDriver::click();
@@ -3327,7 +3327,7 @@ GUI_TEST_CLASS_DEFINITION(test_2487) {
     QList<GraphicsButtonItem *> items = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(items.size() != 0, "Tree is empty");
 
-    QPoint rootCoords = GTUtilsPhyTree::getGlobalCoord(os, items.first());
+    QPoint rootCoords = GTUtilsPhyTree::getGlobalCenterCoord(os, items.first());
     GTMouseDriver::moveTo(rootCoords);
     GTMouseDriver::click();
 
@@ -3452,7 +3452,7 @@ GUI_TEST_CLASS_DEFINITION(test_2538) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Call context menu on node just near root. Click "Collapse"
-    GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, GTUtilsPhyTree::getNodes(os).at(1)));
+    GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCenterCoord(os, GTUtilsPhyTree::getNodes(os).at(1)));
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
 

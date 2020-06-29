@@ -32,14 +32,20 @@ class GraphicsUnrootedBranchItem;
 
 class CreateUnrootedBranchesTask : public CreateBranchesTask {
     Q_OBJECT
+public:
+    CreateUnrootedBranchesTask(GraphicsRectangularBranchItem *r);
+
+    TreeLayout getLayoutType() const override {
+        return UNROOTED_LAYOUT;
+    }
+
+    void run() override;
+
+private:
+    GraphicsUnrootedBranchItem *getBranch(GraphicsRectangularBranchItem *r, GraphicsUnrootedBranchItem *parent);
 
     qreal coef;
     GraphicsRectangularBranchItem *root1;
-    GraphicsUnrootedBranchItem *getBranch(GraphicsRectangularBranchItem *r, GraphicsUnrootedBranchItem *parent);
-
-public:
-    CreateUnrootedBranchesTask(GraphicsRectangularBranchItem *r);
-    void run();
 };
 
 }    // namespace U2
