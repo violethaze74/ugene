@@ -233,7 +233,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1003, "too long test");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1189, "UGENE-3830");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1189_1, "UGENE-3830");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1249, "TODO: add the 3, 4 steps");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1263, "UGENE-4101");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1499, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1548, "UGENE-4791");
@@ -558,6 +557,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1241);
     REGISTER_TEST(GUITest_regression_scenarios::test_1245);
     REGISTER_TEST(GUITest_regression_scenarios::test_1246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1249);
     REGISTER_TEST(GUITest_regression_scenarios::test_1252);
     REGISTER_TEST(GUITest_regression_scenarios::test_1252_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1252_real);
