@@ -45,16 +45,13 @@ PluginViewerController::PluginViewerController() {
     showServices = false;    //'true' mode is not functional anymore after service<->plugin model refactoring
     mdiWindow = NULL;
     connectStaticActions();
-
-    if (AppContext::getSettings()->getValue(PLUGIN_VIEW_SETTINGS + "isVisible", false).toBool()) {
-        createWindow();
-    }
 }
 
 PluginViewerController::~PluginViewerController() {
     AppContext::getPluginSupport()->disconnect(this);
 
-    AppContext::getSettings()->setValue(PLUGIN_VIEW_SETTINGS + "isVisible", mdiWindow != NULL);
+    // 'true' mode is not functional anymore after some old service<->plugin model refactoring
+    // so we don't save state for pluginview settings, see UGENE-6369
 
     if (mdiWindow) {
         AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(mdiWindow);
