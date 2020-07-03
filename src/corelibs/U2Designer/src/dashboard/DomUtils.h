@@ -19,27 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DASHBOARD_TAB_PAGE_H_
-#define _U2_DASHBOARD_TAB_PAGE_H_
+#ifndef _U2_DOM_UTILS_H_
+#define _U2_DOM_UTILS_H_
 
-#include <QLayout>
-#include <QScrollArea>
-
-#include <U2Core/global.h>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QList>
 
 namespace U2 {
 
-class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
-    Q_OBJECT
-
+class DomUtils {
 public:
-    DashboardTabPage(const QString &tabObjectName);
+    static QDomDocument fromString(const QString &string, QString &parseError);
 
-    void addDashboardWidget(const QString &title, QWidget *contentWidget);
+    static QDomElement findElementById(const QDomElement &element, const QString &id);
 
-private:
-    QLayout *widgetsLayout;
+    static bool hasClass(const QDomElement &element, const QString &className);
+
+    static void findChildElementsByClass(const QDomElement &element, const QString &className, QList<QDomElement> &result);
+
+    static QDomElement findChildElementByClass(const QDomElement &element, const QString &className);
+
+    static QString toString(const QDomElement &element);
 };
 
 }    // namespace U2
-#endif
+#endif    // _U2_DOM_UTILS_H_

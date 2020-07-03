@@ -29,6 +29,8 @@
 
 namespace U2 {
 
+class HoverQLabel;
+
 class U2DESIGNER_EXPORT ExternalToolsDashboardWidget : public QWidget {
     Q_OBJECT
 public:
@@ -38,19 +40,35 @@ public:
 class BadgeLabel : public QWidget {
     Q_OBJECT
 public:
-    BadgeLabel(const QString &text, const QString &style, bool isCopyButtonVisible = false);
+    BadgeLabel(int kind, const QString &text);
+    const int kind;
+
+    HoverQLabel *hoverLabel;
+    HoverQLabel *copyButton;
 };
 
 class ExternalToolsTreeNode : public QWidget {
     Q_OBJECT
 public:
-    ExternalToolsTreeNode(int level, QWidget *contentWidget, bool isLast = true);
+    ExternalToolsTreeNode(int kind, const QString &content, ExternalToolsTreeNode *parent);
 
     void paintEvent(QPaintEvent *event);
 
+    const int kind;
+
+    const ExternalToolsTreeNode *parent;
+
+    QList<ExternalToolsTreeNode *> children;
+
+    QString content;
+
+public slots:
+    void sl_toggle();
+    void sl_copyRunCommand();
+
 private:
-    int level;
-    bool isLast;
+    void updateExpandCollapseState(bool isParentExpanded, bool isApplyToAllLevelOfChildren = false);
+
 };
 
 }    // namespace U2

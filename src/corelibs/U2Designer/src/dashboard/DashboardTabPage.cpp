@@ -33,10 +33,12 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
                   " padding: 10px;"
                   "}");
 
+    QWidget *mainWidget = new QWidget();
+
     auto layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
-    setLayout(layout);
+    mainWidget->setLayout(layout);
 
     auto styleRootWidget = new QWidget();
     styleRootWidget->setObjectName("tabPageStyleRoot");
@@ -51,6 +53,9 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
     widgetsLayout = new FlowLayout(10, 10, 10);
     styleRootWidgetLayout->addLayout(widgetsLayout);
     styleRootWidgetLayout->addStretch(1);
+
+    setWidget(mainWidget);
+    setWidgetResizable(true);    // make the widget to fill whole available space
 }
 
 void DashboardTabPage::addDashboardWidget(const QString &title, QWidget *contentWidget) {

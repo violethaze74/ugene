@@ -35,17 +35,17 @@ HoverQLabel::HoverQLabel(const QString &html, const QString &_normalStyle, const
 }
 
 void HoverQLabel::enterEvent(QEvent *event) {
-    Q_UNUSED(event);
     setStyleSheet(hoveredStyle);
+    QLabel::enterEvent(event);
 }
 
 void HoverQLabel::leaveEvent(QEvent *event) {
-    Q_UNUSED(event);
     setStyleSheet(normalStyle);
+    QLabel::leaveEvent(event);
 }
 
 void HoverQLabel::mousePressEvent(QMouseEvent *event) {
-    Q_UNUSED(event);
+    QLabel::mousePressEvent(event);
     emit clicked();
 }
 
