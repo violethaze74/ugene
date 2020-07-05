@@ -1680,45 +1680,34 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped_edited.aln");
     GTFileDialog::openFile(os, sandBoxDir, "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // CHANGES: insert gaps in the beginning
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
 
-    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
-    //    from 'AAG' to 'CTT' and save file.
-    //CHANGES: backup old file, copy changed file
-    //GTFile::backup(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata' from 'AAG' to 'CTT' and save file.
+    //  Expected state: Dialog suggesting to reload modified document has appeared. Press 'Yes'.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
-    GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    //    Expected state: Dialog suggesting to reload modified document has appeared.
-    // 3. Press 'Yes'.
-    GTGlobals::sleep(1000);
+    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
-    //    Expected state: document was reloaded, view activated.
-    //    'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMdi::activeWindow(os);
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
+    // Wait for the document to reload (1 second granularity).
+    GTGlobals::sleep(2000);
+
+    // Expected state: document was reloaded, view activated.
+    // 'Phaneroptera_falcata' starts with CTT.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // copy to clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
+    GTKeyboardUtils::copy(os);
 
     QString clipboardText = GTClipboard::text(os);
-
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -1731,7 +1720,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //    from 'AAG' to 'CTT' and save file.
     //CHANGES: backup old file, copy changed file
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTGlobals::sleep(1000); // ugene doesn't detect changes whithin one second interval
+    GTGlobals::sleep(1000);    // ugene doesn't detect changes whithin one second interval
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
