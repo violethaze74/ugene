@@ -341,19 +341,28 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
         } else {
             toolIsFound = true;
             validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
-            subTasks << validateTask;
+            if (validateTask->isValidTool()) { // in-place path-only validation. Used in GUI tests.
+                isValid = true;
+                toolPath = validateTask->getToolPath();
+                version = validateTask->getToolVersion();
+                delete validateTask;
+                validateTask = nullptr;
+                return subTasks;
+            } else {
+                subTasks << validateTask;
+            }
         }
     }
 
     if (validateTask == subTask) {
         if (validateTask->isValidTool()) {
-            isValid = validateTask->isValidTool();
+            isValid = true;
             toolPath = validateTask->getToolPath();
             version = validateTask->getToolVersion();
         } else {
             errorMsg = validateTask->getError();
             toolPath = validateTask->getToolPath();
-            SAFE_POINT(!toolPaths.isEmpty(), "Tool path's list is unexpectedly empty", subTasks);
+            SAFE_POINT(!toolPaths.isEmpty(), "Tool path's list is empty", subTasks);
             toolPaths.removeFirst();
 
             if (!toolPaths.isEmpty()) {
