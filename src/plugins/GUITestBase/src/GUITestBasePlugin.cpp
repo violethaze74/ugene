@@ -188,7 +188,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
     REGISTER_TEST_IGNORED(GUITest_Assembly_browser::test_0015, "UTI-306");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, "UGENE-6253. Tests should be run on CUDA server");
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, "UGENE-6253. Tests should be run on CUDA server");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, "runs > 8 mins and fails");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, "UGENE-6253. Tests should be run on CUDA server");

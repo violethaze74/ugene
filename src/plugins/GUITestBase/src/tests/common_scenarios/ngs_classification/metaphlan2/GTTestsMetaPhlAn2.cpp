@@ -111,32 +111,31 @@ QString getMetaphlan2WithoutScriptPath() {
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
-            //"python" is installed.
+            // "python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
 
-            //"Bio" python module is installed.
+            // "Bio" python module is installed.
             checkExternalToolValid(os, ET_BIO, true);
 
-            //"numpy" python module is installed.
+            // "numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
 
-            //"bowtie-align" executable is specified in UGENE.
+            // "bowtie-align" executable is specified in UGENE.
             checkExternalToolValid(os, ET_BOWTIE_2_ALIGNER, true);
 
-            //"bowtie-build" executable is not specified in UGENE.
+            // "bowtie-build" executable is not specified in UGENE.
             AppSettingsDialogFiller::setExternalToolPath(os, ET_BOWTIE_2_BUILD, sandBoxDir);
             checkExternalToolValid(os, ET_BOWTIE_2_BUILD, false);
 
-            //"utils/read_fastq.py" is present in the metaphlan tool folder.
+            // "utils/read_fastq.py" is present in the metaphlan tool folder.
             checkUtilScript(os, true);
 
-            //"MetaPhlAn2" external tool is specified in UGENE.
-            //Expected state: "MetaPhlAn2" tool is present and valid.
+            // "MetaPhlAn2" external tool is specified in UGENE.
+            // Expected state: "MetaPhlAn2" tool is present and valid.
             checkExternalToolValid(os, ET_METAPHLAN, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

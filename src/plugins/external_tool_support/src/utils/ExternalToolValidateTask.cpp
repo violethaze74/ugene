@@ -57,11 +57,12 @@ ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &toolId
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
-    CHECK_EXT(QFileInfo(toolPath).exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
+    QFileInfo toolPathInfo(toolPath);
+    CHECK_EXT(toolPathInfo.exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
 
     bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
     if (isPathOnlyValidation) {
-        isValid = true;
+        isValid = toolPathInfo.isFile();
         coreLog.info("Using path only validation for: " + toolName + ", path: " + toolPath);
         setFlag(U2::TaskFlag_NoRun, true);
     }
