@@ -212,14 +212,19 @@ PasteTextTask::PasteTextTask(const QClipboard *clipboard, QSet<QString> &exclude
     saveFile(clipboardUrl, clipboardText);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(clipboardUrl));
-    CHECK(iof != NULL, );
+    CHECK(iof != nullptr, );
 
-    QVariantMap hints;
-    // We create a new file for the pasted content and can add it to the "Recent Files".
-    // hints[ProjectLoaderHint_DoNotAddToRecentDocuments] = true;
-    hints[DocumentReadingMode_SequenceAsSeparateHint] = true;
-    LoadDocumentTask *loadDocumentTask = new LoadDocumentTask(df->getFormatId(), GUrl(clipboardUrl), iof, hints);
-    addSubTask(loadDocumentTask);
+    if (addToProject) {
+        auto openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(clipboardUrl);
+        if (openWithProjectTask) {
+            addSubTask(openWithProjectTask);
+        }
+    } else {
+        QVariantMap hints;
+        hints[DocumentReadingMode_SequenceAsSeparateHint] = true;
+        LoadDocumentTask *loadDocumentTask = new LoadDocumentTask(df->getFormatId(), GUrl(clipboardUrl), iof, hints);
+        addSubTask(loadDocumentTask);
+    }
 }
 
 }    // namespace U2

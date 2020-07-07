@@ -188,30 +188,21 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
     REGISTER_TEST_IGNORED(GUITest_Assembly_browser::test_0015, "UTI-306");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0040, "UGENE-5042");
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0040);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0047, "UGENE-5042");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0049, "UGENE-5042");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0050, "UGENE-5042");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0051, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0052, "UGENE-5042");
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0052);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0053, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0054, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0055, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0056, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0057, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0058, "UGENE-5042");
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0054);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0055);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0056);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0057);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0058);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_sequence_view::test_0077, "UGENE-5579");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::cm_test_0002, "UGENE-4892");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::export_test_0005, "UGENE-5616");
@@ -2089,7 +2080,15 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/metaphlan2
     /////////////////////////////////////////////////////////////////////////
-
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008);
+    REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor
