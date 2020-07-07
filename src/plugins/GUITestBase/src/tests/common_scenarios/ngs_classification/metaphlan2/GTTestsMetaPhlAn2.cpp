@@ -434,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     QString error("Classify Sequences with MetaPhlAn2: External tool \"MetaPhlAn2\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
     CHECK_SET_ERR(errors.contains(error), "The expected error is absent");
-    const int expectedErrorCount = 2;
+    const int expectedErrorCount = 3;
     CHECK_SET_ERR(expectedErrorCount == errors.size(), QString("There are too many errors: expected %1, got %2").arg(expectedErrorCount).arg(errors.size()));
 }
 
@@ -524,15 +524,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                       QString("Unexpected \"Input data\" row count, expected: 2, current: %1")
                           .arg(row));
     }
-
-    {    //7. Check "Database"
+    // This check has been excluded. We don't have the data/ngs_classification/metaphlan2/mpa_v20_m200 anymore
+    /*{    //7. Check "Database"
         //Expected: database path ends with 'data/ngs_classification/metaphlan2/mpa_v20_m200'
         QString databasePath = QDir::toNativeSeparators(GTUtilsWorkflowDesigner::getParameter(os, DATABASE));
         QString expectedEnd = QDir::toNativeSeparators("data/ngs_classification/metaphlan2/mpa_v20_m200");
         CHECK_SET_ERR(databasePath.endsWith(expectedEnd),
                       QString("Unexpected database path end: %1")
                           .arg(databasePath.right(expectedEnd.size())));
-    }
+    }*/
 
     {    //8. Check "Number of Threads"
         //Expected: expected optimal for the current OS threads num
