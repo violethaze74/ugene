@@ -44,11 +44,10 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os) {
     QList<GraphicsButtonItem *> result;
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     GT_CHECK_RESULT(treeView, "treeView not found", result);
-    QList<QGraphicsItem *> list = treeView->scene()->items();
-    for (QGraphicsItem *item : list) {
-        bool isNodeItem = item->data(NODE_TREE_ITEM_KIND_KEY).toBool();
-        if (isNodeItem) {
-            result.append((GraphicsButtonItem *)item);
+    for (QGraphicsItem *item : treeView->scene()->items()) {
+        auto nodeItem = dynamic_cast<GraphicsButtonItem *>(item);
+        if (nodeItem != nullptr) {
+            result.append(nodeItem);
         }
     }
     return result;
@@ -60,7 +59,7 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus
     QList<GraphicsButtonItem *> nodes = getNodes(os);
     QList<GraphicsButtonItem *> selectedNodes;
     for (auto node : nodes) {
-        if (node->getIsSelected()) {
+        if (node->isNodeSelected()) {
             selectedNodes << node;
         }
     }
@@ -73,7 +72,7 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStat
     QList<GraphicsButtonItem *> nodes = getNodes(os);
     QList<GraphicsButtonItem *> unselectedNodes;
     for (auto node : nodes) {
-        if (node->getIsSelected()) {
+        if (node->isNodeSelected()) {
             unselectedNodes << node;
         }
     }
@@ -84,7 +83,7 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStat
 #define GT_METHOD_NAME "getLabels"
 QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
     QList<QGraphicsSimpleTextItem *> result;
-    if (treeView == NULL) {
+    if (treeView == nullptr) {
         treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     }
     GT_CHECK_RESULT(treeView, "treeView not found", result);
@@ -138,15 +137,18 @@ QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getDistances(HI::GUITestOpStatu
 }
 #undef GT_METHOD_NAME
 
-QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisiableDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
+#define GT_METHOD_NAME "getVisibleDistances"
+QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisibleDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
     QList<QGraphicsSimpleTextItem *> result;
-    foreach (QGraphicsSimpleTextItem *item, getDistances(os, treeView)) {
+    for (QGraphicsSimpleTextItem *item : getDistances(os, treeView)) {
         if (item->isVisible()) {
             result << item;
         }
     }
     return result;
 }
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getDistancesValues"
 QList<double> GTUtilsPhyTree::getDistancesValues(HI::GUITestOpStatus &os) {
     QList<double> result;
@@ -178,8 +180,8 @@ QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getGlobalCoord"
-QPoint GTUtilsPhyTree::getGlobalCoord(HI::GUITestOpStatus &os, QGraphicsItem *item) {
+#define GT_METHOD_NAME "getGlobalCenterCoord"
+QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus &os, QGraphicsItem *item) {
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     GT_CHECK_RESULT(treeView, "treeView not found", QPoint());
 
@@ -197,7 +199,7 @@ void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node
     GT_CHECK(node != nullptr, "Node to click is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    GTMouseDriver::moveTo(getGlobalCenterCoord(os, node));
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
@@ -207,7 +209,7 @@ void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem
     GT_CHECK(node != nullptr, "Node to doubleClickNode is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCoord(os, node) - QPoint(2, 0));
+    GTMouseDriver::moveTo(getGlobalCenterCoord(os, node));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
 }

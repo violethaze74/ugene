@@ -114,7 +114,6 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     }
 
     GTUtilsMdi::closeAllWindows(os);
-
     AppContext::getTaskScheduler()->cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }

@@ -19,39 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
-#define _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
-
-#include "CreateBranchesTask.h"
+#include "HoverQLabel.h"
 
 namespace U2 {
 
-class PhyNode;
-class GraphicsRectangularBranchItem;
-
-class CreateRectangularBranchesTask : public CreateBranchesTask {
-    Q_OBJECT
-public:
-    CreateRectangularBranchesTask(const PhyNode *n);
-    void run() override;
-
-    TreeLayout getLayoutType() const override {
-        return RECTANGULAR_LAYOUT;
+HoverQLabel::HoverQLabel(const QString &html, const QString &_normalStyle, const QString &_hoveredStyle, const QString &objectName)
+    : QLabel(html), normalStyle(_normalStyle), hoveredStyle(_hoveredStyle) {
+    setCursor(Qt::PointingHandCursor);
+    setObjectName(objectName);
+    if (!objectName.isEmpty()) {
+        normalStyle = "#" + objectName + " {" + normalStyle + "}";
+        hoveredStyle = "#" + objectName + " {" + hoveredStyle + "}";
     }
+    setStyleSheet(normalStyle);
+}
 
-    qreal getScale() const {
-        return scale;
-    }
+void HoverQLabel::enterEvent(QEvent *event) {
+    setStyleSheet(hoveredStyle);
+    QLabel::enterEvent(event);
+}
 
-private:
-    int size;
-    int current;
-    qreal scale;
-    const PhyNode *node;
-    qreal minDistance, maxDistance;
-    GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
-};
+void HoverQLabel::leaveEvent(QEvent *event) {
+    setStyleSheet(normalStyle);
+    QLabel::leaveEvent(event);
+}
+
+void HoverQLabel::mousePressEvent(QMouseEvent *event) {
+    QLabel::mousePressEvent(event);
+    emit clicked();
+}
 
 }    // namespace U2
-
-#endif

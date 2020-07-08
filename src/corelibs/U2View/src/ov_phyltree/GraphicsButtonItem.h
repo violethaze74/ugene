@@ -24,12 +24,12 @@
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
+#include <QGraphicsRectItem>
 
 #include <U2Core/global.h>
 
 #include "TreeSettings.h"
 
-#define NODE_TREE_ITEM_KIND_KEY 1
 namespace U2 {
 
 class PhyTreeObject;
@@ -45,8 +45,10 @@ protected:
 public:
     GraphicsButtonItem(double nodeValue = 0);
 
-    bool isSelectedTop();
-    bool getIsSelected() const;
+    bool isPathToRootSelected() const;
+    bool isNodeSelected() const {
+        return isSelected;
+    }
     void collapse();
     void swapSiblings();
     bool isCollapsed();
@@ -57,26 +59,21 @@ public:
 
     void updateSettings(const OptionsMap &settings);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-
     const QGraphicsSimpleTextItem *getLabel() const;
 
-    virtual QRectF boundingRect() const;
-
-    qreal getNodeValue() {
+    qreal getNodeValue() const {
         return nodeValue;
     }
 
 private:
-    void setHighlighting(bool enabled);
+    void setHighlighting(bool isOn);
 
-    static const qreal radiusMin;
-    static const qreal radiusMax;
     static const QBrush highlightingBrush;
     static const QBrush ordinaryBrush;
+    static const qreal radius;
+
     bool isSelected;
     QGraphicsSimpleTextItem *nodeLabel;
-    qreal scaleFactor;
     qreal nodeValue;
 };
 

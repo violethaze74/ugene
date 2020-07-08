@@ -19,39 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
-#define _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
+#ifndef _U2_DOM_UTILS_H_
+#define _U2_DOM_UTILS_H_
 
-#include "CreateBranchesTask.h"
+#include <QDomDocument>
+#include <QDomElement>
+#include <QList>
 
 namespace U2 {
 
-class PhyNode;
-class GraphicsRectangularBranchItem;
-
-class CreateRectangularBranchesTask : public CreateBranchesTask {
-    Q_OBJECT
+class DomUtils {
 public:
-    CreateRectangularBranchesTask(const PhyNode *n);
-    void run() override;
+    static QDomDocument fromString(const QString &string, QString &parseError);
 
-    TreeLayout getLayoutType() const override {
-        return RECTANGULAR_LAYOUT;
-    }
+    static QDomElement findElementById(const QDomElement &element, const QString &id);
 
-    qreal getScale() const {
-        return scale;
-    }
+    static bool hasClass(const QDomElement &element, const QString &className);
 
-private:
-    int size;
-    int current;
-    qreal scale;
-    const PhyNode *node;
-    qreal minDistance, maxDistance;
-    GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
+    static void findChildElementsByClass(const QDomElement &element, const QString &className, QList<QDomElement> &result);
+
+    static QDomElement findChildElementByClass(const QDomElement &element, const QString &className);
+
+    static QString toString(const QDomElement &element);
 };
 
 }    // namespace U2
-
-#endif
+#endif    // _U2_DOM_UTILS_H_

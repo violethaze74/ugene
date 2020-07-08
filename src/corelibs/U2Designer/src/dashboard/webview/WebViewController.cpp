@@ -74,10 +74,6 @@ void WebViewController::runJavaScript(const QString &script) {
     controllerPrivate->runJavaScript(script);
 }
 
-void WebViewController::runJavaScript(const QString &script, WebViewCallback callback) {
-    controllerPrivate->runJavaScript(script, callback);
-}
-
 void WebViewController::sl_pageLoaded(bool ok) {
     SAFE_POINT(!pageLoaded, "Page was loaded twice", );
     disconnect(parent(), NULL, this, SLOT(sl_pageLoaded(bool)));

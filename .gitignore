@@ -36,6 +36,7 @@ Makefile.Debug
 *.obj
 *moc_predefs.h*ugene.VC.db
 ugene.VC.VC.opendb
+ugene.VC.db
 
 # Generated ugene shell launcher
 /ugene

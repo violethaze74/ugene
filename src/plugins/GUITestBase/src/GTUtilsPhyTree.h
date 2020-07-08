@@ -38,10 +38,10 @@ public:
     static QList<QGraphicsSimpleTextItem *> getLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
     static QList<QGraphicsSimpleTextItem *> getVisibleLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
     static QList<QGraphicsSimpleTextItem *> getDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
-    static QList<QGraphicsSimpleTextItem *> getVisiableDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
+    static QList<QGraphicsSimpleTextItem *> getVisibleDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView = NULL);
     static QStringList getLabelsText(HI::GUITestOpStatus &os);
     static QList<double> getDistancesValues(HI::GUITestOpStatus &os);
-    static QPoint getGlobalCoord(HI::GUITestOpStatus &os, QGraphicsItem *item);
+    static QPoint getGlobalCenterCoord(HI::GUITestOpStatus &os, QGraphicsItem *item);
 
     static void clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node);
     static void doubleClickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node);

@@ -2811,13 +2811,28 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
     // 1. Open human_T1.fa.
     // 2. Use menu {Analyze->Find restriction sites}.
     // 3. Press "Enzymes file.."
-    // 4. Select file "data\enzymes\rebase_v003_all.bairoch".
-    // Expected state: total number of enzymes is 4565(Enzymes with unknown sequence field are removed from list)
+    // 4. Select file "data\enzymes\2013_08_01.bairoch.gz".
+    // Expected state: total number of enzymes is 4862(Enzymes with unknown sequence field are removed from list)
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
-    //    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    class Scenario_test_1249 : public CustomScenario {
+    public:
+        virtual void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            QLabel *totalNumberOfEnzymesLabel = GTWidget::findExactWidget<QLabel *>(os, "statusLabel");
+            QString labelText = totalNumberOfEnzymesLabel->text();
+            QString s = QString("4862");
+            CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
+                                                                        << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new Scenario_test_1249()));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1252) {

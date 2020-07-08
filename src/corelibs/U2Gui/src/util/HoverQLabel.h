@@ -18,44 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+#ifndef _U2_HELP_BUTTON_H_
+#define _U2_HELP_BUTTON_H_
 
-#ifndef _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_
-#define _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_
+#include <QLabel>
 
-#include "U2WebView.h"
+#include <U2Core/global.h>
 
 namespace U2 {
-
-class JavaScriptAgent;
-class WebViewController;
-
-class U2DESIGNER_EXPORT SimpleWebViewBasedWidgetController : public QObject {
+class U2GUI_EXPORT HoverQLabel : public QLabel {
     Q_OBJECT
 public:
-    SimpleWebViewBasedWidgetController(U2WebView *webView, JavaScriptAgent *agent = Q_NULLPTR);
-
-    void loadPage(const QString &pageUrl);
-    void savePage(const QString &pageUrl);
-    bool isPageReady() const;
-
-    void runJavaScript(const QString &script);
-    void runJavaScript(const QString &script, WebViewCallback callback);
+    HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
 
 signals:
-    void si_pageReady();
-
-protected slots:
-    virtual void sl_pageIsAboutToBeInitialized();
-    virtual void sl_pageInitialized();
+    void clicked();
 
 protected:
-    JavaScriptAgent *agent;
-    WebViewController *webViewController;
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
-private:
-    bool pageReady;
+public:
+    QString normalStyle;
+    QString hoveredStyle;
 };
 
 }    // namespace U2
-
-#endif    // _U2_SIMPLE_WEB_VIEW_BASED_WIDGET_CONTROLLER_H_
+#endif

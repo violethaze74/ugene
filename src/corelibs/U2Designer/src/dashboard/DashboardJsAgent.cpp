@@ -116,10 +116,6 @@ QString DashboardJsAgent::getWorkersParamsInfo() {
     return workersParamsInfo;
 }
 
-bool DashboardJsAgent::getShowHint() {
-    return WorkflowSettings::isShowLoadButtonHint();
-}
-
 //Worker parameters initialization
 void DashboardJsAgent::fillWorkerParamsInfo() {
     CHECK(monitor, );

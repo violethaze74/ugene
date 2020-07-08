@@ -57,11 +57,12 @@ ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &toolId
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
-    CHECK_EXT(QFileInfo(toolPath).exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
+    QFileInfo toolPathInfo(toolPath);
+    CHECK_EXT(toolPathInfo.exists(), setError(tr("External tool is not found: %1").arg(toolPath)), );
 
     bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
     if (isPathOnlyValidation) {
-        isValid = true;
+        isValid = toolPathInfo.isFile();
         coreLog.info("Using path only validation for: " + toolName + ", path: " + toolPath);
         setFlag(U2::TaskFlag_NoRun, true);
     }
@@ -341,19 +342,28 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
         } else {
             toolIsFound = true;
             validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
-            subTasks << validateTask;
+            if (validateTask->isValidTool()) { // in-place path-only validation. Used in GUI tests.
+                isValid = true;
+                toolPath = validateTask->getToolPath();
+                version = validateTask->getToolVersion();
+                delete validateTask;
+                validateTask = nullptr;
+                return subTasks;
+            } else {
+                subTasks << validateTask;
+            }
         }
     }
 
     if (validateTask == subTask) {
         if (validateTask->isValidTool()) {
-            isValid = validateTask->isValidTool();
+            isValid = true;
             toolPath = validateTask->getToolPath();
             version = validateTask->getToolVersion();
         } else {
             errorMsg = validateTask->getError();
             toolPath = validateTask->getToolPath();
-            SAFE_POINT(!toolPaths.isEmpty(), "Tool path's list is unexpectedly empty", subTasks);
+            SAFE_POINT(!toolPaths.isEmpty(), "Tool path's list is empty", subTasks);
             toolPaths.removeFirst();
 
             if (!toolPaths.isEmpty()) {

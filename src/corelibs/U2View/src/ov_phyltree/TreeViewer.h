@@ -137,20 +137,25 @@ public:
     qreal getScale() const {
         return scale;
     }
-    void setScale(qreal scale) {
-        this->scale = scale;
+
+    void setScale(qreal newScale) {
+        scale = newScale;
     }
 
     qreal getHorizontalZoom() const;
+
     void setHorizontalZoom(qreal z);
 
     qreal getVerticalZoom() const;
+
     void setVerticalZoom(qreal z);
 
     QTransform getTransform() const;
+
     void setTransform(const QTransform &m);
 
     QVariantMap getSettingsState() const;
+
     void setSettingsState(const QVariantMap &m);
 
     TreeViewerUI *getTreeViewerUI() {
@@ -160,6 +165,7 @@ public:
 protected:
     virtual QWidget *createWidget();
     virtual void onObjectRenamed(GObject *obj, const QString &oldName);
+
 private slots:
     void sl_onPhyTreeChanged();
 
@@ -243,7 +249,14 @@ public:
     void setSettingsState(const QVariantMap &m);
 
     TreeLayout getTreeLayout() const;
-    bool layoutIsRectangular() const;
+
+    bool isRectangularLayoutMode() const {
+        return getTreeLayout() == RECTANGULAR_LAYOUT;
+    }
+
+    bool isCircularLayoutMode() const {
+        return getTreeLayout() == CIRCULAR_LAYOUT;
+    }
 
     void onPhyTreeChanged();
 
@@ -262,8 +275,8 @@ protected:
     GraphicsRectangularBranchItem *getRectRoot() {
         return rectRoot;
     }
-    void zooming(qreal newZoom);
-    void zooming(qreal horizontalZoom, qreal verticalZoom);
+    void setZoom(qreal newzoom);
+    void setZoom(qreal horizontalZoom, qreal verticalZoom);
     void defaultZoom();
     void updateRect();
 
@@ -304,7 +317,7 @@ private slots:
 
 private:
     enum LabelType {
-        LabelType_SequnceName = 1,
+        LabelType_SequenceName = 1,
         LabelType_Distance = 2
     };
     typedef QFlags<LabelType> LabelTypes;

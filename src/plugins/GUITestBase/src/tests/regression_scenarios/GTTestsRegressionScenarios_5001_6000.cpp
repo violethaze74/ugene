@@ -601,21 +601,23 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5137) {
-    //    1. Open document test/_common_data/clustal/big.aln
+    // 1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Add big sequence
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
-    GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, align);
+    // 2. Add a big sequence.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa"));
+    QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
+    CHECK_SET_ERR(alignButton != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
+    GTWidget::click(os, alignButton);
+
+    // 3. Delete the original alignment and wait for the error in the log.
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
-    GTGlobals::sleep();
     GTUtilsProjectTreeView::click(os, "COI");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(6000);
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5138_1) {

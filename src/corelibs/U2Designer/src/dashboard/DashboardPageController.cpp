@@ -33,12 +33,17 @@
 namespace U2 {
 
 DashboardPageController::DashboardPageController(Dashboard *_dashboard, U2WebView *webView)
-    : SimpleWebViewBasedWidgetController(webView, new DashboardJsAgent(_dashboard)),
+    : QObject(webView),
       progress(0),
       state(Dashboard::STATE_RUNNING),
       dashboard(_dashboard),
       monitor(_dashboard->getMonitor()) {
-    if (NULL != monitor) {
+    agent = new DashboardJsAgent(_dashboard);
+    webViewController = new WebViewController(webView, agent);
+    connect(webViewController, SIGNAL(si_pageIsAboutToBeInitialized()), SLOT(sl_pageIsAboutToBeInitialized()));
+    connect(webViewController, SIGNAL(si_pageReady()), SLOT(sl_pageInitialized()));
+
+    if (monitor != nullptr) {
         connect(monitor, SIGNAL(si_progressChanged(int)), SLOT(sl_progressChanged(int)));
         connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_taskStateChanged(Monitor::TaskState)));
         connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)), Qt::UniqueConnection);
@@ -47,10 +52,22 @@ DashboardPageController::DashboardPageController(Dashboard *_dashboard, U2WebVie
         connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo &)), SLOT(sl_newOutputFile(const Monitor::FileInfo &)));
         connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
 
-        foreach (const WorkflowNotification &notification, monitor->getNotifications()) {
+        for (const WorkflowNotification &notification : monitor->getNotifications()) {
             sl_newNotification(notification, 0);    // TODO: fix count of notifications
         }
     }
+}
+
+void DashboardPageController::loadPage(const QString &pageUrl) {
+    webViewController->loadPage(pageUrl);
+}
+
+void DashboardPageController::savePage(const QString &pageUrl) {
+    webViewController->savePage(pageUrl);
+}
+
+void DashboardPageController::runJavaScript(const QString &script) {
+    webViewController->runJavaScript(script);
 }
 
 DashboardJsAgent *DashboardPageController::getAgent() {
@@ -58,20 +75,20 @@ DashboardJsAgent *DashboardPageController::getAgent() {
 }
 
 void DashboardPageController::sl_pageIsAboutToBeInitialized() {
-    if (NULL != monitor) {
+    if (monitor != nullptr) {
         runJavaScript("setNeedCreateWidgets(true);");
     }
-    SimpleWebViewBasedWidgetController::sl_pageIsAboutToBeInitialized();
 }
 
 void DashboardPageController::sl_pageInitialized() {
+    pageReady = true;
     initData();
-    SimpleWebViewBasedWidgetController::sl_pageInitialized();
+    emit si_pageReady();
 }
 
 void DashboardPageController::sl_progressChanged(int newProgress) {
     progress = newProgress;
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_progressChanged(progress);
     }
 }
@@ -99,14 +116,14 @@ QString state2String(Monitor::TaskState state) {
 
 void DashboardPageController::sl_taskStateChanged(Monitor::TaskState newState) {
     state = state2String(newState);
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_taskStateChanged(state);
     }
 }
 
 void DashboardPageController::sl_newNotification(const WorkflowNotification &notification, int count) {
     const QString serializedNotification = serializeNotification(notification, count);
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_newProblem(serializedNotification);
     } else {
         problems << serializedNotification;
@@ -115,7 +132,7 @@ void DashboardPageController::sl_newNotification(const WorkflowNotification &not
 
 void DashboardPageController::sl_workerInfoChanged(const QString &actorId, const Monitor::WorkerInfo &info) {
     const QString serializedInfo = serializeWorkerInfo(actorId, info);
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_workerStatsInfoChanged(serializedInfo);
     } else {
         workerInfos << serializedInfo;
@@ -125,7 +142,7 @@ void DashboardPageController::sl_workerInfoChanged(const QString &actorId, const
 void DashboardPageController::sl_workerStatsUpdate() {
     SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
     const QString serializedStatistics = serializeWorkerStatistics(monitor->getWorkersInfo());
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_workerStatsUpdate(serializedStatistics);
     } else {
         workersStatisticsInfos << serializedStatistics;
@@ -134,7 +151,7 @@ void DashboardPageController::sl_workerStatsUpdate() {
 
 void DashboardPageController::sl_onLogChanged(const Monitor::LogEntry &entry) {
     const QString serializedLogEntry = serializeLogEntry(entry);
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_onLogChanged(serializedLogEntry);
     } else {
         logEntries << serializedLogEntry;
@@ -143,7 +160,7 @@ void DashboardPageController::sl_onLogChanged(const Monitor::LogEntry &entry) {
 
 void DashboardPageController::sl_newOutputFile(const Monitor::FileInfo &info) {
     const QString serializedFileInfo = serializeFileInfo(info);
-    if (isPageReady()) {
+    if (pageReady) {
         emit getAgent()->si_newOutputFile(serializedFileInfo);
     } else {
         fileInfos << serializedFileInfo;
@@ -154,23 +171,23 @@ void DashboardPageController::initData() {
     emit getAgent()->si_progressChanged(progress);
     emit getAgent()->si_taskStateChanged(state);
 
-    foreach (const QString &problem, problems) {
+    for (const QString &problem : problems) {
         emit getAgent()->si_newProblem(problem);
     }
 
-    foreach (const QString &workerInfo, workerInfos) {
+    for (const QString &workerInfo : workerInfos) {
         emit getAgent()->si_workerStatsInfoChanged(workerInfo);
     }
 
-    foreach (const QString &workersStatisticsInfo, workersStatisticsInfos) {
+    for (const QString &workersStatisticsInfo : workersStatisticsInfos) {
         emit getAgent()->si_workerStatsUpdate(workersStatisticsInfo);
     }
 
-    foreach (const QString &fileInfo, fileInfos) {
+    for (const QString &fileInfo : fileInfos) {
         emit getAgent()->si_newOutputFile(fileInfo);
     }
 
-    foreach (const QString &entry, logEntries) {
+    for (const QString &entry : logEntries) {
         emit getAgent()->si_onLogChanged(entry);
     }
 }

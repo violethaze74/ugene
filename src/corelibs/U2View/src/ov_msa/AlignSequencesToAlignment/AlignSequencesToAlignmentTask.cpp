@@ -227,7 +227,7 @@ const SequenceObjectsExtractor &LoadSequencesTask::getExtractor() const {
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
 AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const SequenceObjectsExtractor &extractor, bool _forceUseUgeneNativeAligner)
-    : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL),
+    : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObjPointer(obj), stateLock(NULL), docStateLock(NULL),
       sequencesMaxLength(extractor.getMaxSequencesLength()), extr(extractor) {
     if (_forceUseUgeneNativeAligner) {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
@@ -238,20 +238,22 @@ AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAli
     settings.maxSequenceLength = extractor.getMaxSequencesLength();
     settings.alphabet = extractor.getAlphabet()->getId();
     usedDocuments = extractor.getUsedDocuments();
-    initialMsaAlphabet = obj->getAlphabet();
+    if (obj != nullptr) {
+        initialMsaAlphabet = obj->getAlphabet();
+    }
 }
 
 void AlignSequencesToAlignmentTask::prepare() {
-    if (maObj.isNull()) {
+    if (maObjPointer.isNull()) {
         stateInfo.setError(tr("Object is empty."));
         return;
     }
 
-    if (maObj->isStateLocked()) {
+    if (maObjPointer->isStateLocked()) {
         stateInfo.setError(tr("Object is locked for modifications."));
         return;
     }
-    Document *document = maObj->getDocument();
+    Document *document = maObjPointer->getDocument();
     if (document != nullptr) {
         docStateLock = new StateLock("Lock MSA for align sequences to alignment", StateLockFlag_LiveLock);
         document->lockState(docStateLock);
@@ -261,7 +263,7 @@ void AlignSequencesToAlignmentTask::prepare() {
     }
 
     stateLock = new StateLock("Align sequences to alignment", StateLockFlag_LiveLock);
-    maObj->lockState(stateLock);
+    maObjPointer->lockState(stateLock);
 
     AlignmentAlgorithmsRegistry *alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
@@ -274,25 +276,25 @@ void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
     AlignmentAlgorithmsRegistry *alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
     if (settings.algorithmName.isEmpty()) {
-        if (alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT) && maObj->getMultipleAlignment()->getNumRows() != 0) {
+        if (alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT) && maObjPointer->getMultipleAlignment()->getNumRows() != 0) {
             settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
         } else {
             settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
         }
     }
-    settings.addAsFragments = sequencesMaxLength < 100 && maObj->getLength() / sequencesMaxLength > 3;
-    settings.msaRef = maObj->getEntityRef();
+    settings.addAsFragments = sequencesMaxLength < 100 && maObjPointer->getLength() / sequencesMaxLength > 3;
+    settings.msaRef = maObjPointer->getEntityRef();
     settings.inNewWindow = false;
 }
 
 Task::ReportResult AlignSequencesToAlignmentTask::report() {
     if (stateLock != NULL) {
-        maObj->unlockState(stateLock);
+        maObjPointer->unlockState(stateLock);
         delete stateLock;
     }
 
     if (docStateLock != NULL) {
-        Document *document = maObj->getDocument();
+        Document *document = maObjPointer->getDocument();
         document->unlockState(docStateLock);
 
         foreach (Document *curDoc, usedDocuments) {
@@ -305,7 +307,7 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
     mi.alphabetChanged = extr.getAlphabet()->getId() != initialMsaAlphabet->getId();
     mi.rowListChanged = true;
     if (!hasError() && !isCanceled()) {
-        maObj->updateCachedMultipleAlignment(mi);
+        maObjPointer->updateCachedMultipleAlignment(mi);
     }
 
     return ReportResult_Finished;
@@ -315,25 +317,30 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
 LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, bool _forceUseUgeneNativeAligner)
-    : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings), urls(urls), maObj(obj), loadSequencesTask(nullptr), forceUseUgeneNativeAligner(_forceUseUgeneNativeAligner) {
+    : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings), urls(urls), maObjPointer(obj), loadSequencesTask(nullptr), forceUseUgeneNativeAligner(_forceUseUgeneNativeAligner) {
 }
 
 void LoadSequencesAndAlignToAlignmentTask::prepare() {
-    SAFE_POINT_EXT(maObj != nullptr, setError("MultipleSequenceAlignmentObject is null"), );
+    SAFE_POINT_EXT(!maObjPointer.isNull(), setError(tr("Alignment object is null")), );
 
-    loadSequencesTask = new LoadSequencesTask(maObj->getAlphabet(), urls);
+    loadSequencesTask = new LoadSequencesTask(maObjPointer->getAlphabet(), urls);
     loadSequencesTask->setSubtaskProgressWeight(5);
     addSubTask(loadSequencesTask);
 }
 
 QList<Task *> LoadSequencesAndAlignToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
     propagateSubtaskError();
-    if (subTask == loadSequencesTask && !loadSequencesTask->hasError() && !loadSequencesTask->isCanceled()) {
-        AlignSequencesToAlignmentTask *alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObj, loadSequencesTask->getExtractor(), forceUseUgeneNativeAligner);
-        alignSequencesToAlignmentTask->setSubtaskProgressWeight(95);
-        subTasks << alignSequencesToAlignmentTask;
+    if (subTask != loadSequencesTask || loadSequencesTask->hasError() || loadSequencesTask->isCanceled()) {
+        return QList<Task *>();
     }
+    if (maObjPointer.isNull()) {
+        setError(tr("Alignment object was removed"));
+        return QList<Task *>();
+    }
+    QList<Task *> subTasks;
+    auto *alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObjPointer, loadSequencesTask->getExtractor(), forceUseUgeneNativeAligner);
+    alignSequencesToAlignmentTask->setSubtaskProgressWeight(95);
+    subTasks << alignSequencesToAlignmentTask;
     return subTasks;
 }
 
@@ -342,10 +349,10 @@ bool LoadSequencesAndAlignToAlignmentTask::propagateSubtaskError() {
         return true;
     }
     Task *badChild = getSubtaskWithErrors();
-    if (nullptr != badChild) {
+    if (badChild != nullptr) {
         stateInfo.setError(tr("Data from the \"%1\" file can't be alignment to the \"%2\" alignment - %3")
                                .arg(QFileInfo(urls.first()).fileName())
-                               .arg(maObj->getGObjectName())
+                               .arg(maObjPointer.isNull() ? "null" : maObjPointer->getGObjectName())
                                .arg(badChild->getError().toLower()));
     }
     return stateInfo.hasError();

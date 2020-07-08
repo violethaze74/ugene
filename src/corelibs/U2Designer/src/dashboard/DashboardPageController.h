@@ -24,24 +24,39 @@
 
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "./webview/SimpleWebViewBasedWidgetController.h"
+#include "webview/U2WebView.h"
 
 namespace U2 {
 
 class Dashboard;
 class DashboardJsAgent;
+class JavaScriptAgent;
 class WebViewController;
 
-class DashboardPageController : public SimpleWebViewBasedWidgetController {
+class DashboardPageController : public QObject {
     Q_OBJECT
 public:
     DashboardPageController(Dashboard *dashboard, U2WebView *webView);
 
     DashboardJsAgent *getAgent();
 
+    void loadPage(const QString &pageUrl);
+
+    void savePage(const QString &pageUrl);
+
+    void runJavaScript(const QString &script);
+
+    bool isPageReady() const {
+        return pageReady;
+    }
+
+signals:
+    void si_pageReady();
+
 private slots:
     void sl_pageIsAboutToBeInitialized();
     void sl_pageInitialized();
+
     void sl_progressChanged(int progress);
     void sl_taskStateChanged(Monitor::TaskState state);
     void sl_newNotification(const WorkflowNotification &notification, int count);
@@ -58,6 +73,10 @@ private:
     QString serializeWorkerStatistics(const QMap<QString, Monitor::WorkerInfo> &workersStatistics) const;
     QString serializeLogEntry(const Monitor::LogEntry &entry) const;
     QString serializeFileInfo(const Monitor::FileInfo &info) const;
+
+    JavaScriptAgent *agent;
+    WebViewController *webViewController;
+    bool pageReady;
 
     int progress;
     QString state;

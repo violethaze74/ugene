@@ -274,11 +274,7 @@ GraphicsBranchItem::GraphicsBranchItem(qreal d, bool withButton, double nodeValu
 }
 
 qreal GraphicsBranchItem::getNodeLabel() const {
-    if (buttonItem != NULL) {
-        return buttonItem->getNodeValue();
-    } else {
-        return -1;
-    }
+    return buttonItem != nullptr ? buttonItem->getNodeValue() : -1;
 }
 
 void GraphicsBranchItem::setLabelPositions() {

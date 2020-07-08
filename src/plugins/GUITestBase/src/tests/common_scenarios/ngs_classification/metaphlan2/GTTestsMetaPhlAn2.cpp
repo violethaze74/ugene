@@ -111,32 +111,31 @@ QString getMetaphlan2WithoutScriptPath() {
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
-            //"python" is installed.
+            // "python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
 
-            //"Bio" python module is installed.
+            // "Bio" python module is installed.
             checkExternalToolValid(os, ET_BIO, true);
 
-            //"numpy" python module is installed.
+            // "numpy" python module is installed.
             checkExternalToolValid(os, ET_NUMPY, true);
 
-            //"bowtie-align" executable is specified in UGENE.
+            // "bowtie-align" executable is specified in UGENE.
             checkExternalToolValid(os, ET_BOWTIE_2_ALIGNER, true);
 
-            //"bowtie-build" executable is not specified in UGENE.
+            // "bowtie-build" executable is not specified in UGENE.
             AppSettingsDialogFiller::setExternalToolPath(os, ET_BOWTIE_2_BUILD, sandBoxDir);
             checkExternalToolValid(os, ET_BOWTIE_2_BUILD, false);
 
-            //"utils/read_fastq.py" is present in the metaphlan tool folder.
+            // "utils/read_fastq.py" is present in the metaphlan tool folder.
             checkUtilScript(os, true);
 
-            //"MetaPhlAn2" external tool is specified in UGENE.
-            //Expected state: "MetaPhlAn2" tool is present and valid.
+            // "MetaPhlAn2" external tool is specified in UGENE.
+            // Expected state: "MetaPhlAn2" tool is present and valid.
             checkExternalToolValid(os, ET_METAPHLAN, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -435,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     QString error("Classify Sequences with MetaPhlAn2: External tool \"MetaPhlAn2\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
     CHECK_SET_ERR(errors.contains(error), "The expected error is absent");
-    const int expectedErrorCount = 2;
+    const int expectedErrorCount = 3;
     CHECK_SET_ERR(expectedErrorCount == errors.size(), QString("There are too many errors: expected %1, got %2").arg(expectedErrorCount).arg(errors.size()));
 }
 
@@ -525,15 +524,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                       QString("Unexpected \"Input data\" row count, expected: 2, current: %1")
                           .arg(row));
     }
-
-    {    //7. Check "Database"
+    // This check has been excluded. We don't have the data/ngs_classification/metaphlan2/mpa_v20_m200 anymore
+    /*{    //7. Check "Database"
         //Expected: database path ends with 'data/ngs_classification/metaphlan2/mpa_v20_m200'
         QString databasePath = QDir::toNativeSeparators(GTUtilsWorkflowDesigner::getParameter(os, DATABASE));
         QString expectedEnd = QDir::toNativeSeparators("data/ngs_classification/metaphlan2/mpa_v20_m200");
         CHECK_SET_ERR(databasePath.endsWith(expectedEnd),
                       QString("Unexpected database path end: %1")
                           .arg(databasePath.right(expectedEnd.size())));
-    }
+    }*/
 
     {    //8. Check "Number of Threads"
         //Expected: expected optimal for the current OS threads num

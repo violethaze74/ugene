@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <PluginDescriptor.h>
-
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
@@ -39,31 +37,22 @@ namespace U2 {
 
 /* TRANSLATOR U2::PluginViewerController */
 
-#define PLUGIN_VIEW_SETTINGS QString("pluginview/")
-
 PluginViewerController::PluginViewerController() {
     showServices = false;    //'true' mode is not functional anymore after service<->plugin model refactoring
     mdiWindow = NULL;
     connectStaticActions();
-
-    if (AppContext::getSettings()->getValue(PLUGIN_VIEW_SETTINGS + "isVisible", false).toBool()) {
-        createWindow();
-    }
 }
 
 PluginViewerController::~PluginViewerController() {
     AppContext::getPluginSupport()->disconnect(this);
-
-    AppContext::getSettings()->setValue(PLUGIN_VIEW_SETTINGS + "isVisible", mdiWindow != NULL);
-
     if (mdiWindow) {
         AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(mdiWindow);
-        assert(mdiWindow == NULL);    // must be NULLED on close event
+        assert(mdiWindow == nullptr);    // must set to nullptr on close event
     }
 }
 
 void PluginViewerController::createWindow() {
-    assert(mdiWindow == NULL);
+    assert(mdiWindow == nullptr);
 
     mdiWindow = new MWMDIWindow(tr("Plugin Viewer"));
     ui.setupUi(mdiWindow);
@@ -134,13 +123,13 @@ void PluginViewerController::disconnectVisualActions() {
     AppContext::getPluginSupport()->disconnect(this);
     AppContext::getServiceRegistry()->disconnect(this);
 
-    //ui.treeWidget and all button/menues are disconnected automatically -> widget is deleted
+    //ui.treeWidget and all button/menus are disconnected automatically -> widget is deleted
 }
 
 void PluginViewerController::updateActions() {
     PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
 
-    bool isService = item != NULL && item->isServiceItem();
+    bool isService = item != nullptr && item->isServiceItem();
     Service *s = isService ? (static_cast<PlugViewServiceItem *>(item))->service : NULL;
     bool isServiceEnabled = isService && s->isEnabled();
 

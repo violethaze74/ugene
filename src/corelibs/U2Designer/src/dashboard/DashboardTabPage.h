@@ -19,39 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
-#define _U2_CREATE_RECTANGULAR_BRANCHES_TASK_H_
+#ifndef _U2_DASHBOARD_TAB_PAGE_H_
+#define _U2_DASHBOARD_TAB_PAGE_H_
 
-#include "CreateBranchesTask.h"
+#include <QLayout>
+#include <QScrollArea>
+
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class PhyNode;
-class GraphicsRectangularBranchItem;
-
-class CreateRectangularBranchesTask : public CreateBranchesTask {
+class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
     Q_OBJECT
+
 public:
-    CreateRectangularBranchesTask(const PhyNode *n);
-    void run() override;
+    DashboardTabPage(const QString &tabObjectName);
 
-    TreeLayout getLayoutType() const override {
-        return RECTANGULAR_LAYOUT;
-    }
-
-    qreal getScale() const {
-        return scale;
-    }
+    void addDashboardWidget(const QString &title, QWidget *contentWidget);
 
 private:
-    int size;
-    int current;
-    qreal scale;
-    const PhyNode *node;
-    qreal minDistance, maxDistance;
-    GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
+    QLayout *widgetsLayout;
 };
 
 }    // namespace U2
-
 #endif

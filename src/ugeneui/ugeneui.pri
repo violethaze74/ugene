@@ -63,7 +63,7 @@ UI_DIR=_tmp/ui
 RCC_DIR=_tmp/rcc
 
 win32 {
-    LIBS += -lMinCore -lAdvapi32 -luser32     # to import CharToOemA with nmake build
+    LIBS += -luser32      # to import CharToOemA with nmake build
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc

@@ -24,22 +24,27 @@
 
 #include <U2Core/Task.h>
 
+#include "TreeSettings.h"
+
 namespace U2 {
 
 class GraphicsBranchItem;
 
 class CreateBranchesTask : public Task {
     Q_OBJECT
-protected:
-    GraphicsBranchItem *root;
-
 public:
     CreateBranchesTask()
-        : Task(QObject::tr("Generating tree view"), TaskFlag_None), root(NULL) {
+        : Task(QObject::tr("Rendering tree view"), TaskFlag_None), root(nullptr) {
     }
-    GraphicsBranchItem *getResult() {
+
+    virtual TreeLayout getLayoutType() const = 0;
+
+    GraphicsBranchItem *getResult() const {
         return root;
     }
+
+protected:
+    GraphicsBranchItem *root;
 };
 
 }    // namespace U2
