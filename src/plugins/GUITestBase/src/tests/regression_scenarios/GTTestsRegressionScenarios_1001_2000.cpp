@@ -6738,9 +6738,9 @@ GUI_TEST_CLASS_DEFINITION(test_1662) {
     //    Expected state: Tophat tool ran 2 times
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
     GTGlobals::sleep();
-    GTUtilsDashboard::findElement(os, "TopHat run 1", "SPAN");
-    GTUtilsDashboard::findElement(os, "TopHat run 2", "SPAN");
-    GTWebView::checkElement(os, GTUtilsDashboard::getDashboardWebView(os), "TopHat run 3", "SPAN", false);
+    GTUtilsDashboard::getExternalToolNodeByText(os, "TopHat run 1");
+    GTUtilsDashboard::getExternalToolNodeByText(os, "TopHat run 2");
+    GTUtilsDashboard::checkNoExternalToolNodeByText(os, nullptr, "TopHat run 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1664) {
@@ -7790,7 +7790,7 @@ GUI_TEST_CLASS_DEFINITION(test_1738) {
     GTWidget::click(os, GTAction::button(os, "Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
+    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
     GTGlobals::sleep(500);
 }
 
@@ -7922,7 +7922,7 @@ GUI_TEST_CLASS_DEFINITION(test_1764) {
     //    4) Run workflow, click on dashboard "readed_fasta.fa"
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    HIWebElement button = GTUtilsDashboard::findElement(os, "readed_fasta.fa", "BUTTON");
+    HIWebElement button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
     GTUtilsDashboard::click(os, button);
     GTGlobals::sleep();
     //GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
@@ -7932,7 +7932,7 @@ GUI_TEST_CLASS_DEFINITION(test_1764) {
     GTWidget::click(os, GTWidget::findButtonByText(os, "To Workflow Designer"));
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    button = GTUtilsDashboard::findElement(os, "readed_fasta.fa", "BUTTON");
+    button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
     GTUtilsDashboard::click(os, button);
     GTGlobals::sleep();
     //    Expected state: opened fasta files have different file path in tooltips
@@ -8183,7 +8183,7 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement button = GTUtilsDashboard::findElement(os, "COI.aln.meg", "BUTTON");
+    HIWebElement button = GTUtilsDashboard::findWebElement(os, "COI.aln.meg", "BUTTON");
     GTUtilsDashboard::click(os, button);
     GTGlobals::sleep(1000);
     GTUtilsProjectTreeView::findIndex(os, "COI.aln.meg");

@@ -2711,10 +2711,10 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(1000);
-    HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
+    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
     QString s = initEl.toPlainText();
     GTGlobals::sleep(5000);
-    HIWebElement finalEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
+    HIWebElement finalEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
     QString s1 = finalEl.toPlainText();
     CHECK_SET_ERR(s != s1, "timer not changed");
     GTUtilsTask::cancelTask(os, "Execute workflow");

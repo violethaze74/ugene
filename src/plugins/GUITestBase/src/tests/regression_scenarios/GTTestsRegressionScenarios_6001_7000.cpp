@@ -1029,7 +1029,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     // There is no message "Task is in progress.." after finished task where 2 notifications are present
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
-    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
+    HI::HIWebElement el = GTUtilsDashboard::findWebElement(os, "The workflow task has been finished");
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
 }
 
