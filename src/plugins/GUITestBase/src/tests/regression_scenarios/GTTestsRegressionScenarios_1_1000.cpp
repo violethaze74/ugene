@@ -2690,9 +2690,8 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    WorkflowProcessItem *samtools = GTUtilsWorkflowDesigner::addElement(os, "SAMtools", true);
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::getWorker(os, "File List");
-    GTUtilsWorkflowDesigner::connect(os, fileList, samtools);
+    WorkflowProcessItem *samtools = GTUtilsWorkflowDesigner::getWorker(os, "SAMtools", true);
+
     GTUtilsWorkflowDesigner::click(os, samtools);
     QTableWidget *table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
