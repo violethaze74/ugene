@@ -1476,7 +1476,7 @@ GUI_TEST_CLASS_DEFINITION(test_2192) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    5. Open External Tools tab & copy sam tools path
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
-    QWidget *samToolsRunNode = GTUtilsDashboard::getCopyButton(os, "SAMtools run");
+    QWidget *samToolsRunNode = GTUtilsDashboard::getCopyButton(os, "actor_call_variants_run_1_tool_SAMtools_run_1");
     GTWidget::click(os, samToolsRunNode);
 
     QString text = GTClipboard::text(os);
