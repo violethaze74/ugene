@@ -68,9 +68,8 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolNodeByTextWithParent"
-ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, QWidget *parent, const QString &textPattern, bool isExactMatch) {
-    QWidget *widget = parent == nullptr ? getExternalToolsWidget(os) : parent;
-    QList<ExternalToolsTreeNode *> nodes = widget->findChildren<ExternalToolsTreeNode *>();
+ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
     for (auto node : nodes) {
         if (node->content == textPattern) {
             return node;
@@ -83,9 +82,8 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoExternalToolNodeByText"
-void GTUtilsDashboard::checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, QWidget *parent, const QString &textPattern, bool isExactMatch) {
-    QWidget *widget = parent == nullptr ? getExternalToolsWidget(os) : parent;
-    QList<ExternalToolsTreeNode *> nodes = widget->findChildren<ExternalToolsTreeNode *>();
+void GTUtilsDashboard::checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
     bool isFound = false;
     for (auto node : nodes) {
         if (node->content == textPattern) {
@@ -356,7 +354,7 @@ bool GTUtilsDashboard::isNodeCollapsed(GUITestOpStatus &os, const QString &nodeI
 void GTUtilsDashboard::collapseNode(GUITestOpStatus &os, const QString &nodeId) {
     GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
     GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already collapsed.").arg(nodeId));
-    GTWidget::click(os, getExternalToolNode(os, nodeId)->badgeLabel->titleLabel);
+    clickNodeTitle(os, getExternalToolNode(os, nodeId));
     GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not collapsed.").arg(nodeId));
 }
 #undef GT_METHOD_NAME
@@ -365,8 +363,16 @@ void GTUtilsDashboard::collapseNode(GUITestOpStatus &os, const QString &nodeId) 
 void GTUtilsDashboard::expandNode(GUITestOpStatus &os, const QString &nodeId) {
     GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
     GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already expanded.").arg(nodeId));
-    GTWidget::click(os, getExternalToolNode(os, nodeId)->badgeLabel->titleLabel);
+    clickNodeTitle(os, getExternalToolNode(os, nodeId));
     GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not expanded.").arg(nodeId));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickNodeTitle"
+void GTUtilsDashboard::clickNodeTitle(GUITestOpStatus &os, ExternalToolsTreeNode *node) {
+    GT_CHECK(node != nullptr, "Node is null!");
+    GT_CHECK(node->badgeLabel->titleLabel != nullptr, "Node title label is null!");
+    GTWidget::click(os, node->badgeLabel->titleLabel);
 }
 #undef GT_METHOD_NAME
 

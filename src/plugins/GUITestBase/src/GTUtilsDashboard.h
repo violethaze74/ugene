@@ -93,16 +93,22 @@ public:
     static bool isNodeCollapsed(HI::GUITestOpStatus &os, const QString &nodeId);
     static void collapseNode(HI::GUITestOpStatus &os, const QString &nodeId);
     static void expandNode(HI::GUITestOpStatus &os, const QString &nodeId);
-
+    static void clickNodeTitle(HI::GUITestOpStatus &os, ExternalToolsTreeNode *node);
 
     static const QString TREE_ROOT_ID;
 
     static QWidget *getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
     static ExternalToolsDashboardWidget *getExternalToolsWidget(HI::GUITestOpStatus &os);
     static ExternalToolsTreeNode *getExternalToolNode(HI::GUITestOpStatus &os, const QString &nodeId);
+
+    /** Returns external tool matched by text on any level. */
     static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, const QString &textPattern, bool isExactMatch = true);
-    static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, QWidget *parent, const QString &textPattern, bool isExactMatch = true);
-    static void checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, QWidget *parent, const QString &textPattern, bool isExactMatch = true);
+
+    /** Returns external tool matched by text with the given parent only. If parent is nullptr - any level is searched. */
+    static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
+
+    /** Checks that there are no external tool matched by text with the given parent only. If parent is nullptr - any level is checked. */
+    static void checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
 private:
     static const QMap<QString, Tabs> tabMap;

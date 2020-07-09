@@ -2813,7 +2813,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
 
     //    4. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
     QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
@@ -2897,7 +2896,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
     //    4. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
     QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
@@ -3098,7 +3096,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 
     //    4. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
@@ -3293,7 +3290,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
 
     //    4. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
@@ -3452,7 +3448,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
 
     //    13. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.

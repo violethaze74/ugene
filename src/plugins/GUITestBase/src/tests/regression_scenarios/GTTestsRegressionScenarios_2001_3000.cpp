@@ -3795,7 +3795,7 @@ GUI_TEST_CLASS_DEFINITION(test_2569) {
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
     //    5. Expand "SAMtools run"
     auto runNode = GTUtilsDashboard::getExternalToolNodeByText(os, "SAMtools run");
-    GTWidget::click(os, runNode);
+    GTUtilsDashboard::clickNodeTitle(os, runNode);
     //    6. Check that "Command" node exists.
     GTUtilsDashboard::getExternalToolNodeByText(os, runNode, "Command");
 }
