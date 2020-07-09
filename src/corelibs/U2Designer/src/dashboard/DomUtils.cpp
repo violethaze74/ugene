@@ -26,6 +26,7 @@
 namespace U2 {
 
 QDomDocument DomUtils::fromString(const QString &string, QString &parseError) {
+    parseError.clear();
     QDomDocument doc;
     int line = 0, col = 0;
     doc.setContent(string, &parseError, &line, &col);

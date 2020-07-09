@@ -50,7 +50,7 @@ namespace U2 {
 #define NODE_CLASS_IMPORTANT QString("badge-important")
 #define NODE_CLASS_BADGE QString("badge")
 
-#define TREE_ROOT_ID QString("treeRoot")
+const QString ExternalToolsDashboardWidget::TREE_ID("treeRoot");
 
 static QString fixOldStyleOpenFileJs(const QString &html) {
     return QString(html).replace("onclick=\"openLog('", "href=\"file://").replace("/logs')", "/logs").replace("_log.txt')", "_log.txt");
@@ -64,7 +64,7 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     layout->setSpacing(0);
     setLayout(layout);
 
-    QList<QDomElement> actorElementList = DomUtils::findChildElementsByClass(DomUtils::findElementById(dom, TREE_ROOT_ID), NODE_CLASS_ACTOR, 2);
+    QList<QDomElement> actorElementList = DomUtils::findChildElementsByClass(DomUtils::findElementById(dom, TREE_ID), NODE_CLASS_ACTOR, 2);
     for (auto actorSpan : actorElementList) {
         auto actorNode = new ExternalToolsTreeNode(NODE_KIND_ACTOR, actorSpan.attribute("id"), actorSpan.text(), nullptr);
         layout->addWidget(actorNode);
@@ -118,6 +118,10 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     }
 }
 
+bool ExternalToolsDashboardWidget::isValidDom(const QDomElement &dom) {
+    return !DomUtils::findElementById(dom, TREE_ID).isNull();
+}
+
 void ExternalToolsDashboardWidget::addLimitationWarningIfNeeded(ExternalToolsTreeNode *parentNode, const QDomElement &listHeadElement) {
     QDomElement span = listHeadElement.lastChildElement("li").firstChildElement("span");
     if (!DomUtils::hasClass(span, "limitation-message")) {
@@ -156,7 +160,7 @@ void ExternalToolsDashboardWidget::addLimitationWarning(ExternalToolsTreeNode *p
 
 QString ExternalToolsDashboardWidget::toHtml() const {
     CHECK(!topLevelNodes.isEmpty(), "");
-    QString html = "<ul id=\"" + TREE_ROOT_ID + "\">";
+    QString html = "<ul id=\"" + TREE_ID + "\">";
     for (auto node : topLevelNodes) {
         html += node->toHtml();
     }

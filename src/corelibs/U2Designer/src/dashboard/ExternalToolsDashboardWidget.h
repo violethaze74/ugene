@@ -47,7 +47,14 @@ public:
     const QList<ExternalToolsTreeNode *> getTopLevelNodes() const {
         return topLevelNodes;
     }
-    const QString& getLimitationWarningHtml() const {return limitationWarningHtml;}
+    const QString &getLimitationWarningHtml() const {
+        return limitationWarningHtml;
+    }
+
+    /** Object name and DOM element it for external tools tree. */
+    static const QString TREE_ID;
+
+    static bool isValidDom(const QDomElement& dom);
 
 private:
     void addLimitationWarning(ExternalToolsTreeNode *parentNode = nullptr, const QString &limitationMessage = "");

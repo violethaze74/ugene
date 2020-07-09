@@ -34,7 +34,7 @@
 namespace U2 {
 using namespace HI;
 
-const QString GTUtilsDashboard::TREE_ROOT_ID = "treeRoot";
+const QString GTUtilsDashboard::TREE_ROOT_ID = ExternalToolsDashboardWidget::TREE_ID;
 
 #define GT_CLASS_NAME "GTUtilsDashboard"
 

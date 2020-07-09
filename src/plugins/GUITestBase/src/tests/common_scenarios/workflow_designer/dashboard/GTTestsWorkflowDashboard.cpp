@@ -25,9 +25,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>

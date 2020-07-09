@@ -476,6 +476,16 @@ static void makeValidDomFromHtml(QString &htmlData) {
     htmlData.replace("<wbr>", "<wbr/>");
 }
 
+static void removeProblemsWidgetDom(QString &htmlData) {
+    QString startToken = "<tbody scroll=\"yes\" id=\"problemsWidget123\">";
+    QString endToken = "</tbody>";
+    int startIndex = htmlData.indexOf(startToken);
+    int endIndex = startIndex > 0 ? htmlData.indexOf(endToken, startIndex + startToken.length()) : -1;
+    if (startIndex > 0 && endIndex > 0) {
+        htmlData.remove(startIndex, endIndex + endToken.length() - startIndex);
+    }
+}
+
 QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htmlUrl) {
     QMap<QString, QDomElement> map;
 
@@ -489,12 +499,18 @@ QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htm
     QString error;
     QDomDocument doc = DomUtils::fromString(html, error);
     if (!error.isEmpty()) {
-        coreLog.error(tr("Error parsing dashboard file: '%1', file: %2").arg(error).arg(htmlUrl));
-        return map;
+        // There is an known issue with old UGENE version with illegal ProblemsWidget DOM: inner-ids were not escaped. Remove this widget and try to parse again.
+        removeProblemsWidgetDom(html);
+        doc = DomUtils::fromString(html, error);
+        if (!error.isEmpty()) {
+            coreLog.error(tr("Error parsing dashboard file: '%1', file: %2").arg(error).arg(htmlUrl));
+            return map;
+        }
     }
+
     QDomElement rootElement = doc.documentElement();
     QDomElement externalToolsEl = DomUtils::findElementById(rootElement, "externalToolsWidget");
-    map[EXTERNAL_TOOLS_WIDGET_STATE_KEY] = externalToolsEl;
+    map[EXTERNAL_TOOLS_WIDGET_STATE_KEY] = ExternalToolsDashboardWidget::isValidDom(externalToolsEl) ? externalToolsEl : QDomElement();
     return map;
 }
 
