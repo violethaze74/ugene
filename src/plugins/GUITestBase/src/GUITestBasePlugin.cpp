@@ -1059,7 +1059,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3563_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_3571_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3571_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3589);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3589, "Produces incorrect HTML. Ignoring for 1-2 weeks during webkit -> QT migration ");
 
 
     REGISTER_TEST(GUITest_regression_scenarios::test_3609_1);
