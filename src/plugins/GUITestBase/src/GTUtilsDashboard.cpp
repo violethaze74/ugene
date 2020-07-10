@@ -67,6 +67,21 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getExternalToolNodesByText"
+QList<ExternalToolsTreeNode *> GTUtilsDashboard::getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
+    QList<ExternalToolsTreeNode *> result;
+    for (auto node : nodes) {
+        if (node->content == textPattern) {
+            result << node;
+        } else if (!isExactMatch && node->content.contains(textPattern)) {
+            result << node;
+        }
+    }
+    return result;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getExternalToolNodeByTextWithParent"
 ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
     QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
@@ -78,23 +93,6 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
         }
     }
     GT_CHECK_RESULT(false, "External tool node by text not found: " + textPattern, nullptr);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkNoExternalToolNodeByText"
-void GTUtilsDashboard::checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
-    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
-    bool isFound = false;
-    for (auto node : nodes) {
-        if (node->content == textPattern) {
-            isFound = true;
-            break;
-        } else if (!isExactMatch && node->content.contains(textPattern)) {
-            isFound = true;
-            break;
-        }
-    }
-    GT_CHECK(!isFound, "Unexpected external tool node with text was found: " + textPattern);
 }
 #undef GT_METHOD_NAME
 

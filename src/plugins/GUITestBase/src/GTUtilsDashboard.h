@@ -107,8 +107,8 @@ public:
     /** Returns external tool matched by text with the given parent only. If parent is nullptr - any level is searched. */
     static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
-    /** Checks that there are no external tool matched by text with the given parent only. If parent is nullptr - any level is checked. */
-    static void checkNoExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
+    /** Returns list of external tool nodes matched by text with the given parent only. If parent is nullptr - any level is searched. */
+    static QList<ExternalToolsTreeNode *> getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
 private:
     static const QMap<QString, Tabs> tabMap;
