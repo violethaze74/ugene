@@ -20,6 +20,7 @@
  */
 
 #include "GTTestsProject.h"
+#include <GTUtilsAssemblyBrowser.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -158,7 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep(); // todo: make checkExistingToolTip wait until tooltip or fail.
+    GTGlobals::sleep();    // todo: make checkExistingToolTip wait until tooltip or fail.
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/pdb/1CF7.pdb");
 }
 
@@ -1020,10 +1021,10 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     GTClipboard::setText(os, fileContent);
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "project_test_0058/project_test_0058.ugenedb", "", "", true));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "BAM/SAM file import"));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //Expected: there are no dialog of file format choosing.
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0059) {
