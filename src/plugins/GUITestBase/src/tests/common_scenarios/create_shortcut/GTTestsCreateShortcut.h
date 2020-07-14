@@ -19,37 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
-#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#ifndef GTTESTSCREATESHORTCUT_H
+#define GTTESTSCREATESHORTCUT_H
 
-#include <QMessageBox>
-
-#include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Task.h>
-#include <U2Core/Version.h>
-
-class QPushButton;
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-class CreateDesktopShortcutTask : public Task {
-    Q_OBJECT
+namespace GUITest_common_scenarios_create_shortcut {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_create_shortcut"
 
-public:
-    enum Answer { Create,
-                  DoNothing };
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
-    CreateDesktopShortcutTask(bool startUp = false);
-    void run();
-    bool createDesktopShortcut();
-    ReportResult report();
-    static Answer getAnswer();
-
-private:
-    bool runOnStartup;
-    bool startError;
-};
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_create_shortcut
 
 }    // namespace U2
 
-#endif
+#endif    // GTTESTSCREATESHORTCUT_H

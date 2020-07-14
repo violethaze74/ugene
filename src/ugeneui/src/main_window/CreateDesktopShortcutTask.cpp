@@ -32,6 +32,7 @@
 #include <QFile>
 #elif defined(Q_OS_MAC)
 #include <QCoreApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QTemporaryFile>
@@ -54,7 +55,7 @@
 namespace U2 {
 
 CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
-    : Task(tr("Create desktop shortcut"), TaskFlag_RunInMainThread) {
+    : Task(tr("Create desktop shortcut"), TaskFlag_None) {
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;
@@ -144,7 +145,14 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         }
         QFileInfo script(file);
         QString ugeneui_path = QCoreApplication::applicationFilePath();
-        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) < 0) {
+        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) != 0) {
+            return false;
+        }
+
+        QFileInfo fileInfo(ugeneui_path);
+        QString filename(fileInfo.fileName());
+        QFile link(QDir::homePath() + "/Desktop/" + filename);
+        if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
             return false;
         }
     }
@@ -153,20 +161,21 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
 }
 void CreateDesktopShortcutTask::run() {
     if (!runOnStartup) {
-        if (getAnswer() == Create) {
-            createDesktopShortcut();
-        }
+        createDesktopShortcut();
     }
 }
 
-CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() const {
-    QMessageBox::StandardButton answer = QMessageBox::question(AppContext::getMainWindow()->getQMainWindow(),
-        tr("Desktop shortcut"),
-        tr("Create desktop shortcut?"));
-
-    if (answer == QMessageBox::Yes) {
-        return CreateDesktopShortcutTask::Create;
+Task::ReportResult CreateDesktopShortcutTask::report() {
+    if (!(hasError() || startError)) {
+        CreateDesktopShortcutTask::getAnswer();
     }
+    return ReportResult_Finished;
+}
+
+CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() {
+    QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(),
+        tr("Desktop shortcut"),
+        tr("A new shortcut to the UGENE application was created on the desktop."));
     return CreateDesktopShortcutTask::DoNothing;
 }
 
