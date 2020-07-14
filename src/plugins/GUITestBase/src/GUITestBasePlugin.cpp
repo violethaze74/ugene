@@ -191,11 +191,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0047, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0049, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0050, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0051, "UGENE-5042");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0053, "UGENE-5042");
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0047);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0049);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0050);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0051);
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0053);
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_sequence_view::test_0077, "UGENE-5579");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::cm_test_0002, "UGENE-4892");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_database::export_test_0005, "UGENE-5616");

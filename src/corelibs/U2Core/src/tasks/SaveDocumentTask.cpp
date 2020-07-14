@@ -43,10 +43,10 @@
 namespace U2 {
 
 bool isNoWritePermission(GUrl &url) {
-    if (!QFile::exists(url.getURLString())) {
-        return (!TmpDirChecker::checkWritePermissions(url.dirPath()));
+    if (QFile::exists(url.getURLString())) {
+        return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
     }
-    return (!QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser));
+    return !TmpDirChecker::checkWritePermissions(url.dirPath());
 }
 
 SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const GUrl &_url, SaveDocFlags _flags)

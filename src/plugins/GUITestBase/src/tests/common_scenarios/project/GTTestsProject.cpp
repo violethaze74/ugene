@@ -754,11 +754,8 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "CBS");
-
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.sto"), false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0046) {
@@ -795,8 +792,6 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.fa"), true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0048) {
@@ -809,11 +804,10 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         GTUtilsProjectTreeView::click(os, "COI.aln");
         GTClipboard::setText(os, QString(">human_T%1\r\nACGT\r\nACG").arg(QString::number(i)));
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-        GTGlobals::sleep();
+        GTGlobals::sleep(500);
         uiLog.trace(QString("item number %1 inserted").arg(i));
     }
 
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "");
@@ -838,12 +832,13 @@ GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTUtilsProject::closeProject(os);
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Close project");
+    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0050) {
@@ -857,20 +852,15 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTGlobals::sleep(500);
-
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QFile savedFile(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/clipboard.fa");
-    CHECK_SET_ERR(savedFile.exists(), "Saved file didn't exists");
-    GTGlobals::sleep();
+    CHECK_SET_ERR(savedFile.exists(), "Saved file is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0051) {
@@ -884,10 +874,9 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::findIndex(os, "Multiple alignment");
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.fa"), true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0052) {
@@ -901,17 +890,15 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::findIndex(os, "Sequence");
     GTUtilsProjectTreeView::findIndex(os, "Contigs");
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.fa"), false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTFile::removeDir(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath());
-    //check adding document with 2 sequences in separate mode, with file which cannot be written by UGENE
+    //check adding document with 2 sequences in separate mode.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -921,8 +908,8 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
-    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "clipboard.fa"), true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
