@@ -23,9 +23,9 @@
 
 
 #if defined(Q_OS_WIN)
-#include <windows.h>
-#include <shlguid.h>
-#include <shlobj.h>
+#include <Windows.h>
+#include <ShlGuid.h>
+#include <ShlObj.h>
 #elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
 #include <QDir>
