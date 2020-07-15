@@ -26,12 +26,11 @@ LIBS += -lU2Core$$D -lU2Designer$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -
 LIBS += $$add_sqlite_lib()
 
 macx: LIBS += -framework Foundation /System/Library/Frameworks/Security.framework/Security
-if (!useWebKit()) {
-    DEFINES += HI_EXCLUDED
-    LIBS -= -lQSpec$$D
-}
 if (exclude_list_enabled()) {
     DEFINES += HI_EXCLUDED
+}
+
+contains(DEFINES, HI_EXCLUDED) {
     LIBS -= -lQSpec$$D
 }
 
@@ -63,7 +62,7 @@ UI_DIR=_tmp/ui
 RCC_DIR=_tmp/rcc
 
 win32 {
-    LIBS += -luser32      # to import CharToOemA with nmake build
+    LIBS += -luser32    # to import CharToOemA with nmake build
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc
