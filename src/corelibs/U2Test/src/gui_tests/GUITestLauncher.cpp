@@ -199,14 +199,15 @@ bool GUITestLauncher::initGUITestBase() {
         }
         char buf[1024];
         while (suite.readLine(buf, sizeof(buf)) != -1) {
-            QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
+            QString testName = QString(buf).remove('\n').remove('\r').remove('\t').remove(' ');
             if (testName.startsWith("#") || testName.isEmpty()) {
                 continue;    // comment line or empty line.
             }
             bool added = false;
             foreach (HI::GUITest *test, allTestList) {
                 QString fullTestName = test->getFullName();
-                QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
+                QString fullTestNameInTeamcityFormat = fullTestName;
+                fullTestNameInTeamcityFormat.replace(':', '_');
                 if (testName == fullTestName || testName == fullTestNameInTeamcityFormat) {
                     tests << test;
                     added = true;
