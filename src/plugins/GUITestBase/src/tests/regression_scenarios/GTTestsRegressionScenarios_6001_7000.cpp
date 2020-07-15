@@ -5626,6 +5626,37 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6715) {
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+    
+    class Scenario : public CustomScenario {
+    public:
+        Scenario() {};
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
+            CHECK_SET_ERR(tree, "tree widget not found");
+
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));            
+            
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok", "You don't have permissions to write in selected folder."));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir + "read_only_dir").absoluteFilePath(), "", GTFileDialogUtils::Choose, GTGlobals::UseMouse));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    
+    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}. 
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    // 2. Choose read only folder by pressing "..." button
+    // Expected state: warning message about read only folder has appeared
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6718) {
     //1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

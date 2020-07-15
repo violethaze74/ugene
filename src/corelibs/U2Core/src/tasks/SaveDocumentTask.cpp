@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -43,10 +44,10 @@
 namespace U2 {
 
 bool isNoWritePermission(GUrl &url) {
-    if (QFile::exists(url.getURLString())) {
-        return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
+    if (!QFile::exists(url.getURLString())) {
+        return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
     }
-    return !TmpDirChecker::checkWritePermissions(url.dirPath());
+    return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
 }
 
 SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const GUrl &_url, SaveDocFlags _flags)
