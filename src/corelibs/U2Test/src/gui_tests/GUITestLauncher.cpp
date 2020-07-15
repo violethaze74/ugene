@@ -148,7 +148,7 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 517 << 564 << 484 << 521 << -1;
+        testsPerSuite << 517 << 565 << 485 << 518 << -1;
     }
     QList<HI::GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
@@ -199,14 +199,15 @@ bool GUITestLauncher::initGUITestBase() {
         }
         char buf[1024];
         while (suite.readLine(buf, sizeof(buf)) != -1) {
-            QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
+            QString testName = QString(buf).remove('\n').remove('\r').remove('\t').remove(' ');
             if (testName.startsWith("#") || testName.isEmpty()) {
                 continue;    // comment line or empty line.
             }
             bool added = false;
             foreach (HI::GUITest *test, allTestList) {
                 QString fullTestName = test->getFullName();
-                QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
+                QString fullTestNameInTeamcityFormat = fullTestName;
+                fullTestNameInTeamcityFormat.replace(':', '_');
                 if (testName == fullTestName || testName == fullTestNameInTeamcityFormat) {
                     tests << test;
                     added = true;

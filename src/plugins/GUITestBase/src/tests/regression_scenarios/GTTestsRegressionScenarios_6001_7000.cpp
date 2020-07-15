@@ -1029,7 +1029,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
     // There is no message "Task is in progress.." after finished task where 2 notifications are present
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(100);
-    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
+    HI::HIWebElement el = GTUtilsDashboard::findWebElement(os, "The workflow task has been finished");
     CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
 }
 
@@ -1662,12 +1662,12 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6243) {
-    //1. Select "File" -> "Access remove database...".
-    //2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
+    // 1. Select "File" -> "Access remove database...".
+    // 2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
     //Do it twice, for two different ids
-    QList<QString> ensemblyIds = QList<QString>() << "ENSG00000205571"
+    QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    foreach (const QString &id, ensemblyIds) {
+    for (auto id: ensembleIds) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
@@ -1679,14 +1679,13 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
                                                     << "Access remote database...",
                                   GTGlobals::UseMouse);
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        GTGlobals::sleep();
     }
 
     //Expected state: the sequences are downloaded. The files names contain the sequence ID.
-    QString first = QString("%1.fa").arg(ensemblyIds.first());
-    QString second = QString("%1.fa").arg(ensemblyIds.last());
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
+    QString first = QString("%1.fa").arg(ensembleIds.first());
+    QString second = QString("%1.fa").arg(ensembleIds.last());
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The first sequence '%1' is absent in the project tree view").arg(first));
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The second sequence '%1' is absent in the project tree view").arg(second));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6247) {
@@ -5625,6 +5624,37 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6715) {
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+    
+    class Scenario : public CustomScenario {
+    public:
+        Scenario() {};
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
+            CHECK_SET_ERR(tree, "tree widget not found");
+
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));            
+            
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok", "You don't have permissions to write in selected folder."));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir + "read_only_dir").absoluteFilePath(), "", GTFileDialogUtils::Choose, GTGlobals::UseMouse));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    
+    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}. 
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    // 2. Choose read only folder by pressing "..." button
+    // Expected state: warning message about read only folder has appeared
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6718) {

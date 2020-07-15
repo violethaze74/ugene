@@ -22,8 +22,8 @@
 #include "WebViewControllerPrivate.h"
 
 #include <QDesktopServices>
-#include <QFile>
 
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -34,17 +34,9 @@ WebViewControllerPrivate::WebViewControllerPrivate(U2WebView *_webView)
 
 void WebViewControllerPrivate::saveContent(const QString &url, const QString &data) {
     CHECK(!data.isEmpty(), );
-    QFile file(url);
-    const bool opened = file.open(QIODevice::WriteOnly);
-    if (!opened) {
+    if (!IOAdapterUtils::writeTextFile(url, data)) {
         ioLog.error(tr("Can not open a file for writing: ") + url);
-        return;
     }
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    stream << data;
-    stream.flush();
-    file.close();
 }
 
 void WebViewControllerPrivate::sl_linkClicked(const QUrl &url) {

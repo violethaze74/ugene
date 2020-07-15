@@ -19,31 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef TMPDIRCHECKER_H
-#define TMPDIRCHECKER_H
+#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
 
-#include <QDir>
+#include <QMessageBox>
 
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
+#include <U2Core/Version.h>
+
+class QPushButton;
 
 namespace U2 {
 
-class U2CORE_EXPORT TmpDirChecker : public Task {
+class CreateDesktopShortcutTask : public Task {
     Q_OBJECT
+
 public:
-    TmpDirChecker();
+    enum Answer { Create,
+                  DoNothing };
+
+    CreateDesktopShortcutTask(bool startUp = false);
     void run();
+    bool createDesktopShortcut();
     ReportResult report();
-    bool checkPath(QString &path);
-
-    static QString getNewFilePath(const QString &dirPath, const QString &baseName);
-
-signals:
-    void si_checkFailed(QString path);
+    static Answer getAnswer();
 
 private:
-    QString commonTempDirPath;
+    bool runOnStartup;
+    bool startError;
 };
 
 }    // namespace U2
-#endif    // TMPDIRCHECKER_H
+
+#endif

@@ -19,31 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef TMPDIRCHECKER_H
-#define TMPDIRCHECKER_H
+#ifndef GTTESTSCREATESHORTCUT_H
+#define GTTESTSCREATESHORTCUT_H
 
-#include <QDir>
-
-#include <U2Core/Task.h>
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-class U2CORE_EXPORT TmpDirChecker : public Task {
-    Q_OBJECT
-public:
-    TmpDirChecker();
-    void run();
-    ReportResult report();
-    bool checkPath(QString &path);
+namespace GUITest_common_scenarios_create_shortcut {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_create_shortcut"
 
-    static QString getNewFilePath(const QString &dirPath, const QString &baseName);
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
-signals:
-    void si_checkFailed(QString path);
-
-private:
-    QString commonTempDirPath;
-};
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_create_shortcut
 
 }    // namespace U2
-#endif    // TMPDIRCHECKER_H
+
+#endif    // GTTESTSCREATESHORTCUT_H
