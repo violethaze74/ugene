@@ -360,20 +360,26 @@ static bool isLastChild(const ExternalToolsTreeNode *node) {
 
 void ExternalToolsTreeNode::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
-    if (kind == NODE_KIND_ACTOR || width() == 0 || height() == 0) {
+    if (width() == 0 || height() == 0) {
         return;
     }
 
     QPainter painter(this);
     painter.setPen(QPen(QBrush(QColor("#999999")), 1));
 
-    for (const ExternalToolsTreeNode *node = this; node != nullptr && node->kind != NODE_KIND_ACTOR; node = node->parent) {
+    for (const ExternalToolsTreeNode *node = this; node != nullptr; node = node->parent) {
         int level = getLevelByNodeKind(node->kind);
         int x = (level - 1) * TREE_NODE_X_OFFSET + BRANCH_X_PADDING;
         if (node == this) {
-            painter.drawLine(x, 0, x, isLastChild(node) ? height() / 2 : height());
             int horizontalLineY = height() / 2;
-            painter.drawLine(x, horizontalLineY, x + TREE_NODE_X_OFFSET - 5, horizontalLineY);
+            if (node->kind != NODE_KIND_ACTOR) {
+                painter.drawLine(x, 0, x, isLastChild(node) ? horizontalLineY : height());    // vertical line from from the parent to the Y-center.
+                painter.drawLine(x, horizontalLineY, x + TREE_NODE_X_OFFSET - 5, horizontalLineY);    // horizontal line to the node.
+            }
+            if (!children.isEmpty() && isExpanded()) {    // part of the link to the first child.
+                int childX = level * TREE_NODE_X_OFFSET + BRANCH_X_PADDING;
+                painter.drawLine(childX, horizontalLineY, childX, height());
+            }
         } else if (!isLastChild(node)) {
             painter.drawLine(x, 0, x, height());
         }
@@ -462,6 +468,7 @@ BadgeLabel::BadgeLabel(int kind, const QString &text, bool isImportant)
         copyButton = new HoverQLabel("", "QLabel {" + copyButtonStyle + "}", "QLabel {" + copyButtonStyle + "; color: black; background: #777;}");
         copyButton->setPixmap(QPixmap(":U2Designer/images/copy.png"));
         copyButton->setObjectName("copyButton");
+        copyButton->setToolTip(tr("Copy command line"));
         layout->addWidget(copyButton);
     }
     if (kind != NODE_KIND_LOG_CONTENT) {
