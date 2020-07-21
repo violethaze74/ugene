@@ -3399,49 +3399,40 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_3545) {
     //    1. Open "_common_data\scenarios\msa\big.aln"
-    GTFile::copy(os, testDir + "_common_data/scenarios/msa/big.aln", sandBoxDir + "big.aln");
-    GTFileDialog::openFile(os, sandBoxDir, "big.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::copy(os, testDir + "_common_data/scenarios/msa/big_3.aln", sandBoxDir + "big_3.aln");
+    GTFileDialog::openFile(os, sandBoxDir, "big_3.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Use context menu
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta", "NC_008253.fna"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_LOAD_SEQ"
                                                                         << "Sequence from file"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-    GTGlobals::sleep();
+
     //    {Add->Sequence from file}
 
     //    Expected state: "Open file with sequence" dialog appeared
     //    3. Select sequence "_common_data\fasta\NC_008253.fna" and press "Open"
     //    4. Close MSAEditor
     GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    5. Save document "big.aln"
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTKeyboardDriver::keyClick('s', Qt::ControlModifier);
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //close project
     if (AppContext::getProject() != NULL) {
-        GTGlobals::sleep();
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-        GTGlobals::sleep(100);
-
-        //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-        //GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AppCloseMessageBoxDialogFiller(os));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTGlobals::sleep(500);
 #ifdef Q_OS_MAC
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
 #else
         GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-        GTGlobals::sleep(100);
 #endif
-        GTGlobals::sleep(500);
     }
-    GTGlobals::sleep(20000);
-    //    Current state: UGENE crashes
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3552) {

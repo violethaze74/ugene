@@ -181,7 +181,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_Assembly_browser::test_0015);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1, "runs > 8 mins in teamcity");
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1946);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3545);
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
@@ -210,10 +212,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1548, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1688, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1701, "The test stopped passing after http://ugene-teamcity.unipro.ru:8111/ugene-teamcity/viewLog.html?buildId=195968&tab=buildChangesDiv&buildTypeId=UgeneNightlyBuilds_GuiTests_WindowsSuites_GuiTestsSeparateWindows1032bitSuite2 change.");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1946, "Not finished. Requires large data.");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2894, "proper data needed");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3545, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3732, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4022, "big data");
