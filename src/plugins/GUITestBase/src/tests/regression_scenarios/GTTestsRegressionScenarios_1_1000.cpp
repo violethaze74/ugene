@@ -968,7 +968,7 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
     QModelIndex projectTreeItem = GTUtilsProjectTreeView::findIndex(os, "Annotations");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem ,GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
@@ -1699,86 +1699,73 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     QString somenameEtcFile = sandBoxDir + "807.etc";
     QFile::copy(testDir + "_common_data/scenarios/workflow designer/somename.etc", somenameEtcFile);
 
-    //1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "somename");
 
-    //2. Import the CMDLine element: _common_data/scenarios/workflow designer/somename.etc.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, somenameEtcFile));
     GTWidget::click(os, GTAction::button(os, "AddElementWithCommandLineTool"));
-    GTUtilsDialog::waitAllFinished(os);
 
-    //Expected state: the last page of the "Create Element with External Tool" dialog appeared.
-    class Scenario1 : public CustomScenario {
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.tool = "bedtools";
+    settings.command = "testtest $in";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "somename"));
+    GTMouseDriver::click();
+    GTMouseDriver::click(Qt::RightButton);
+
+    class ResetAndApplyScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QLineEdit *templateEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "templateLineEdit"));
-            GTLineEdit::setText(os, templateEdit, "testtest $in");
+            QWidget *nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Reset));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
 
-            //5. Type anything in the {Execution string} and {Parameterized description} fields. Press {OK} button. If message box with question about unused parameters apeeares, click {Continue} button.
+            // Same wizard is shown now. The first page is opened.
+
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os,  QMessageBox::Apply));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ResetAndApplyScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "somename"));
+    GTMouseDriver::click();
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
+
+    class ApplyScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Apply"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
         }
     };
 
-    //Expected: the element appears on the scene.
-    //3. Select this element on the scene and call its context menu.
-    //Expected state: {Edit configuration...} menu item is presented.
-    //4. Click this menu item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario1()));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    class Scenario2 : public CustomScenario {
-        bool reset;
-
-    public:
-        Scenario2(bool reset)
-            : reset(reset) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton0"));
-
-            QWidget *addButton = GTWidget::findWidget(os, "addAttributeButton");
-            GTWidget::click(os, addButton);
-
-            QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "attributesTableView"));
-            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, table->model()->rowCount() - 1));
-            GTMouseDriver::click();
-
-            GTKeyboardDriver::keySequence("attr");
-            GTKeyboardDriver::keyClick(Qt::Key_Enter);
-
-            GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton1"));
-            QLineEdit *templateEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "templateLineEdit"));
-            GTLineEdit::setText(os, templateEdit, "testtest $in $attr");
-
-            //Expected state: message box with notification about structure changes appears. Thre buttons presented: {Reset}, {No}, {Yes}.
-            //7. Click {Reset} button.
-            //Expected state: "Create Element with External Tool" dialog not closed. Changes from point 7 are reset.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, reset ? QMessageBox::Reset : QMessageBox::Yes));
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
-            if (reset) {
-                GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
-            }
-            GTUtilsDialog::waitAllFinished(os);
-        }
-    };
-    //Expected state: element wasn't dissapear from the scene.
-    //6. Select {Edit configuration...} menu item again. Change something in previous pages of the dialog. Then return to the last page and click {Finish} button. If message box about unused parameters appeares, click {Continue} button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario2(true)));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    //8. Repeat actions from point 7.
-    //Expected state: the same as in point 7.
-    //9. Click {Yes} button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario2(false)));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    //Expected state: element dissapeared from the scene.
+    //Expected state: element disappeared from the scene.
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getWorkers(os).isEmpty(), "The worker is not deleted");
 }
 

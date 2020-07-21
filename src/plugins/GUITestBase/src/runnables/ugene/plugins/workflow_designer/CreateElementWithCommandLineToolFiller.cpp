@@ -225,7 +225,6 @@ bool CreateElementWithCommandLineToolFiller::processThirdPage(QWidget *dialog, Q
 
     fillTheTable(tvAttributes, pbAdd, settings.parameters);
 
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -277,7 +276,6 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
         GTTextEdit::setText(os, tePrompter, settings.prompter);
     }
 
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -286,7 +284,6 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
 bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget *dialog, QString &errorMessage) {
     MessageBoxDialogFiller *msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
