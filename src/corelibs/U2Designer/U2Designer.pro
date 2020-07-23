@@ -32,6 +32,7 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/dashboard/DashboardPageController.h \
            src/dashboard/ExternalToolsDashboardWidget.h \
            src/dashboard/FlowLayout.h \
+           src/dashboard/ParametersDashboardWidget.h \
            src/dashboard/RemoveDashboardsTask.h \
            src/dashboard/ScanDashboardsDirTask.h \
            src/dashboard/DashboardTabPage.h \
@@ -120,6 +121,7 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/dashboard/ExternalToolsDashboardWidget.cpp \
            src/dashboard/FlowLayout.cpp \
            src/dashboard/RemoveDashboardsTask.cpp \
+           src/dashboard/ParametersDashboardWidget.cpp \
            src/dashboard/ScanDashboardsDirTask.cpp \
            src/dashboard/DashboardTabPage.cpp \
            src/dashboard/DashboardWidget.cpp \

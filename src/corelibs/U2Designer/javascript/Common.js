@@ -206,7 +206,7 @@ function loadScript(url, callback) {
 }
 
 function createWidgets() {
-    parametersWidget = new ParametersWidget("parametersWidget");
+    parametersWidget = null; // new ParametersWidget("parametersWidget");
     outputWidget = new OutputFilesWidget("outputWidget");
     statusWidget = new StatusWidget("statusWidget");
     statisticsWidget = new StatisticsWidget("statisticsWidget");

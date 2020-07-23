@@ -57,6 +57,7 @@
 #include "DashboardTabPage.h"
 #include "DomUtils.h"
 #include "ExternalToolsDashboardWidget.h"
+#include "ParametersDashboardWidget.h"
 
 namespace U2 {
 
@@ -77,6 +78,7 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 #define INPUT_TAB_INDEX 1
 #define EXTERNAL_TOOLS_TAB_INDEX 2
 
+#define PARAMETERS_WIDGET_STATE_KEY "parameters_widget"
 #define EXTERNAL_TOOLS_WIDGET_STATE_KEY "external_tools_widget"
 
 /************************************************************************/
@@ -167,6 +169,7 @@ void Dashboard::initLayout() {
     overviewTabButton->setStyleSheet(tabButtonStyleSheet);
     overviewTabButton->setCursor(Qt::PointingHandCursor);
     overviewTabButton->setCheckable(true);
+    overviewTabButton->setChecked(true);
     tabButtonsLayout->addWidget(overviewTabButton);
 
     inputTabButton = new QToolButton(tabButtonsRow);
@@ -210,10 +213,20 @@ void Dashboard::initLayout() {
     stackedWidget = new QStackedWidget();
     mainLayout->addWidget(stackedWidget, INT_MAX);
 
+    // Overview tab.
     webView = new U2WebView();
     stackedWidget->addWidget(webView);
 
-    externalToolsTabPage = new DashboardTabPage("external_tools_tab_page");
+    // Input tab.
+    inputTabPage = new DashboardTabPage("input_tag_page", true);
+    stackedWidget->addWidget(inputTabPage);
+
+    QDomElement parametersWidgetState = initialWidgetStates.value(PARAMETERS_WIDGET_STATE_KEY);
+    parametersWidget = new ParametersDashboardWidget(dir, parametersWidgetState, monitor);
+    inputTabPage->addDashboardWidget(tr("Parameters"), parametersWidget);
+
+    // External tools tab.
+    externalToolsTabPage = new DashboardTabPage("external_tools_tab_page", true);
     stackedWidget->addWidget(externalToolsTabPage);
 
     QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
@@ -238,12 +251,11 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
         dashboardPageController->getAgent()->si_switchTab("overview_tab");
         break;
     case INPUT_TAB_INDEX:
-        stackedWidget->setCurrentIndex(0);
-        dashboardPageController->getAgent()->si_switchTab("input_tab");
+        stackedWidget->setCurrentIndex(1);
         break;
     case EXTERNAL_TOOLS_TAB_INDEX:
         initExternalToolsTabWidget();
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(2);
         break;
     }
 }
@@ -341,6 +353,7 @@ void Dashboard::sl_pageReady() {
         }
     });
 #endif
+    sl_onTabButtonToggled(OVERVIEW_TAB_INDEX, true);
 }
 
 void Dashboard::sl_onLogChanged(Monitor::LogEntry logEntry) {
@@ -361,6 +374,8 @@ void Dashboard::sl_serialize() {
 
 #if UGENE_WEB_KIT
     QString html = webView->page()->mainFrame()->toHtml();
+    html.replace("<div class=\"widget-content\" id=\"parametersWidget\"></div>",
+                 "<div class=\"widget-content\" id=\"parametersWidget\">" + parametersWidget->toHtml() + "</div>");
     if (externalToolsWidget != nullptr) {
         html.replace("<div class=\"widget-content\" id=\"externalToolsWidget\"></div>",
                      "<div class=\"widget-content\" id=\"externalToolsWidget\">" + externalToolsWidget->toHtml() + "</div>");
@@ -508,9 +523,14 @@ QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htm
         }
     }
 
-    QDomElement rootElement = doc.documentElement();
-    QDomElement externalToolsEl = DomUtils::findElementById(rootElement, "externalToolsWidget");
+    QDomElement rootEl = doc.documentElement();
+
+    QDomElement parametersWidgetEl = DomUtils::findElementById(rootEl, "parametersWidget");
+    map[PARAMETERS_WIDGET_STATE_KEY] = ParametersDashboardWidget::isValidDom(parametersWidgetEl) ? parametersWidgetEl : QDomElement();
+
+    QDomElement externalToolsEl = DomUtils::findElementById(rootEl, "externalToolsWidget");
     map[EXTERNAL_TOOLS_WIDGET_STATE_KEY] = ExternalToolsDashboardWidget::isValidDom(externalToolsEl) ? externalToolsEl : QDomElement();
+
     return map;
 }
 

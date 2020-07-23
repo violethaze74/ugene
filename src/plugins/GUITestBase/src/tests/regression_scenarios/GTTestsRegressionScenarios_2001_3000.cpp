@@ -21,7 +21,6 @@
 
 #include <GTGlobals.h>
 #include <api/GTUtils.h>
-#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -30,10 +29,8 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
@@ -42,6 +39,7 @@
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -52,11 +50,9 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHeaderView>
-#include <QListWidget>
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
-#include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QWizard>
@@ -66,29 +62,22 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Designer/Dashboard.h>
-
-#include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AnnotationsTreeView.h>
-#include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
 #include "GTTestsRegressionScenarios_2001_3000.h"
-#include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
-#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -109,10 +98,8 @@
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
@@ -121,11 +108,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
@@ -134,41 +117,20 @@
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
-#include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
-#include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportBlastResultDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
-#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
-#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h"
-#include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
@@ -176,20 +138,14 @@
 #include "runnables/ugene/plugins/workflow_designer/DefaultWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
-#include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
-#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentProviderSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -1153,7 +1109,7 @@ GUI_TEST_CLASS_DEFINITION(test_2138) {
 #endif
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/2138/1.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/21_2638/1.fa");
 
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
@@ -4201,25 +4157,19 @@ GUI_TEST_CLASS_DEFINITION(test_2638) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "Single-sample"
                                                                                                                   << "Single-end"));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
-    //    Launch pipeline
+    // Launch the pipeline.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    4. Open "input" tab on dashboard
-    QString initTitle = GTUtilsMdi::activeWindowTitle(os);
+
+    // 4. Open "input" tab on the dashboard
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
-    GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findWebElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findWebElement(os, "index", "BUTTON"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
-    QString finalTitle = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(initTitle == finalTitle, "New window was opened unexpectidly: " + finalTitle);
+    QWidget *indexButton = GTWidget::findButtonByText(os, "index", GTUtilsDashboard::getDashboard(os));
+    QString actionCode = indexButton->property("action-code").toString();
+    CHECK_SET_ERR(actionCode.startsWith("file-"), "Unexpected action type, expected file, got: " + actionCode);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2640) {

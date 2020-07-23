@@ -33,7 +33,7 @@ class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
     Q_OBJECT
 
 public:
-    DashboardTabPage(const QString &tabObjectName);
+    DashboardTabPage(const QString &tabObjectName, bool useFlowLayout = false);
 
     void addDashboardWidget(const QString &title, QWidget *contentWidget);
 

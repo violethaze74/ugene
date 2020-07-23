@@ -30,6 +30,7 @@ class U2GUI_EXPORT HoverQLabel : public QLabel {
     Q_OBJECT
 public:
     HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
+    void updateStyles(const QString &newNormalStyle, const QString &newHoveredStyle);
 
 signals:
     void clicked();
@@ -42,6 +43,7 @@ protected:
 public:
     QString normalStyle;
     QString hoveredStyle;
+    bool isHovered;
 };
 
 }    // namespace U2

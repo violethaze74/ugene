@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
+DashboardTabPage::DashboardTabPage(const QString &tabObjectName, bool useFlowLayout) {
     setObjectName(tabObjectName);
     setStyleSheet("QWidget#tabPageStyleRoot {"
                   " background: url(':U2Designer/images/background.png') repeat scroll 0 0 transparent; "
@@ -50,7 +50,14 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
     styleRootWidget->setLayout(styleRootWidgetLayout);
 
     styleRootWidgetLayout->addStretch(1);
-    widgetsLayout = new FlowLayout(10, 10, 10);
+    int widgetSpacing = 15;
+    if (useFlowLayout) {
+        widgetsLayout = new FlowLayout(widgetSpacing, widgetSpacing, widgetSpacing);
+    } else {
+        auto vBoxLayout = new QVBoxLayout();
+        vBoxLayout->setContentsMargins(widgetSpacing, widgetSpacing, widgetSpacing, widgetSpacing);
+        widgetsLayout = vBoxLayout;
+    }
     styleRootWidgetLayout->addLayout(widgetsLayout);
     styleRootWidgetLayout->addStretch(1);
 

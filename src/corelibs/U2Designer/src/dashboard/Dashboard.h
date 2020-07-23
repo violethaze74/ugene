@@ -38,6 +38,7 @@ using namespace Workflow;
 class DashboardJsAgent;
 class DashboardPageController;
 class ExternalToolsDashboardWidget;
+class ParametersDashboardWidget;
 
 class U2DESIGNER_EXPORT Dashboard : public QWidget {
     Q_OBJECT
@@ -133,6 +134,10 @@ private:
 
     QStackedWidget *stackedWidget;
     U2WebView *webView;
+
+    DashboardTabPage *inputTabPage;
+    ParametersDashboardWidget *parametersWidget;
+
     DashboardTabPage *externalToolsTabPage;
     ExternalToolsDashboardWidget *externalToolsWidget;
     QMap<QString, QDomElement> initialWidgetStates;
