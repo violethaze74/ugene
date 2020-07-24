@@ -121,7 +121,7 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
             break;
         }
     }
-    GT_CHECK_RESULT(resultButtonList.count() <= 1, QString("There are %1 buttons with text").arg(resultButtonList.count()), nullptr);
+    GT_CHECK_RESULT(resultButtonList.count() <= 1, QString("There are %1 buttons with text '%2'").arg(resultButtonList.count()).arg(text), nullptr);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(resultButtonList.count() != 0, QString("Button with the text <%1> is not found").arg(text), nullptr);
     }
