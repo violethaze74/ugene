@@ -891,62 +891,57 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
         SvgLimitsChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
+
         virtual void run() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             // set SVG format
             QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-            CHECK_SET_ERR(formatsBox != NULL, "formatBox is NULL");
+            CHECK_SET_ERR(formatsBox != nullptr, "formatBox is NULL");
             GTComboBox::setIndexWithText(os, formatsBox, "SVG");
 
             // export is not available
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
-            QPushButton *okbutton = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(okbutton != NULL, "ok button is NULL");
-            CHECK_SET_ERR(!okbutton->isEnabled(), "Export button is expectedly enabled");
+            QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            CHECK_SET_ERR(buttonBox != nullptr, "buttonBox is NULL");
+
+            QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(okButton != NULL, "ok button is NULL");
+            CHECK_SET_ERR(!okButton->isEnabled(), "Export button is expectedly enabled");
 
             // select Details -- export is disabled
             QRadioButton *radioButton = dialog->findChild<QRadioButton *>("detailsButton");
             GTRadioButton::click(os, radioButton);
-            CHECK_SET_ERR(!okbutton->isEnabled(), "Export button is unexpectedly enabled");
+            CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
 
             QLineEdit *end = dialog->findChild<QLineEdit *>("end_edit_line");
             GTLineEdit::setText(os, end, "2300");
-            CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
+            CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
 
             // set Zoom view export
             radioButton = dialog->findChild<QRadioButton *>("zoomButton");
             GTRadioButton::click(os, radioButton);
-            CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
+            CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
             GTLineEdit::setText(os, end, "199000");
-            CHECK_SET_ERR(!okbutton->isEnabled(), "Export button is unexpectedly enabled");
+            CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
 
             // select a fewer region -- export is enabled
             GTLineEdit::setText(os, end, "10000");
-            CHECK_SET_ERR(okbutton->isEnabled(), "Export button is unexpectedly disabled");
+            CHECK_SET_ERR(okButton->isEnabled(), "Export button is unexpectedly disabled");
 
             QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-            GTLineEdit::setText(os, fileEdit, sandBoxDir + "/seq_view_test_0030.svg");
+            GTLineEdit::setText(os, fileEdit, sandBoxDir + "seq_view_test_0030.svg");
 
-            GTWidget::click(os, okbutton);
+            GTWidget::click(os, okButton);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new SvgLimitsChecker(os));
+    GTUtilsDialog::waitForDialog(os, new SvgLimitsChecker(os), 180000);
     GTWidget::click(os, GTAction::button(os, "export_image"));
+    GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    qint64 fileSize = GTFile::getSize(os, sandBoxDir + "/seq_view_test_0030.svg");
+    qint64 fileSize = GTFile::getSize(os, sandBoxDir + "seq_view_test_0030.svg");
     CHECK_SET_ERR(fileSize > 15 * 1024 * 1024, QString("SVG file is too small: %1").arg(fileSize));
-    //remove document
-    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTThread::waitForMainThread();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
