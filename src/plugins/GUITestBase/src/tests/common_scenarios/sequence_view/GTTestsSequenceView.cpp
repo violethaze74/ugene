@@ -937,7 +937,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     GTUtilsDialog::waitForDialog(os, new SvgLimitsChecker(os), 180000);
     GTWidget::click(os, GTAction::button(os, "export_image"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::waitAllFinished(os, 180000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     qint64 fileSize = GTFile::getSize(os, sandBoxDir + "seq_view_test_0030.svg");

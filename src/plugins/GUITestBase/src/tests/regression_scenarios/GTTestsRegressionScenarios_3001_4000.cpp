@@ -3398,41 +3398,28 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3545) {
-    //    1. Open "_common_data\scenarios\msa\big.aln"
+    //    Open "_common_data\scenarios\msa\big.aln"
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/big_3.aln", sandBoxDir + "big_3.aln");
     GTFileDialog::openFile(os, sandBoxDir, "big_3.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Use context menu
+    //    Use context menu
+    //    {Add->Sequence from file}
+    //    Expected state: "Open file with sequence" dialog appeared
+    //    Select sequence "_common_data\fasta\NC_008253.fna" and press "Open"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta", "NC_008253.fna"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_LOAD_SEQ"
                                                                         << "Sequence from file"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
-    //    {Add->Sequence from file}
-
-    //    Expected state: "Open file with sequence" dialog appeared
-    //    3. Select sequence "_common_data\fasta\NC_008253.fna" and press "Open"
-    //    4. Close MSAEditor
+    // Close MSAEditor
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    5. Save document "big.aln"
-    GTKeyboardDriver::keyClick('s', Qt::ControlModifier);
+    // Save document "big.aln": expected state: UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT));
+    GTUtilsProjectTreeView::click(os, "big_3.aln", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //close project
-    if (AppContext::getProject() != NULL) {
-        GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-        GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
-#ifdef Q_OS_MAC
-        GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                    << "Close project");
-#else
-        GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-#endif
-    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3552) {
