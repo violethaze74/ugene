@@ -1097,22 +1097,11 @@ GUI_TEST_CLASS_DEFINITION(test_2138) {
     //1. Open _common_data/scenarios/_regression/2138/1.fa
     //2. Press "Join sequences into alignment..." radio button
     //3. Press "OK" button
-#ifdef Q_OS_MAC
-    //hack for mac
-    MainWindow *mw = AppContext::getMainWindow();
-    CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
-    QMainWindow *mainWindow = mw->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != NULL, "QMainWindow is NULL");
-    QWidget *w = qobject_cast<QWidget *>(mainWindow);
-    GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
-    GTGlobals::sleep(500);
-#endif
-
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/21_2638/1.fa");
+    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/2138/1.fa");
 
-    GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
     CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
 }

@@ -3437,7 +3437,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_task_view"));
-    //    GTGlobals::sleep(300);
+    //    GTGlobals::sleep(300);os
     //    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_task_view"));
     //Expected state: render view task started, progress is correct
 }
