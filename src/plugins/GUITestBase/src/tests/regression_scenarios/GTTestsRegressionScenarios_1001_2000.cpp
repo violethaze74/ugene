@@ -7862,7 +7862,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
             QLineEdit *line = dialog->findChild<QLineEdit *>();
             //    6. Change name and press "Ok" button
             GTLineEdit::setText(os, line, "new_name");
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Ok"));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Ok", dialog));
         }
     };
     //    Expected state: Showed popup menu with action "Rename"
@@ -7872,7 +7872,6 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
     //    Expected state: Workflow dasboard tab renamed.
     QString newName = GTTabWidget::getTabName(os, tabView, tabView->currentIndex());
     CHECK_SET_ERR(newName == "new_name", "unexpected tab name: " + newName);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1764) {

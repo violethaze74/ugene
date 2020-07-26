@@ -5204,8 +5204,9 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     //6. Press toolbutton "Global automatic annotation updating"
     //7. Select all types of annotating
 
-    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
-    if (toolbarExtButton != NULL && toolbarExtButton->isVisible()) {
+    QWidget *toolbar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
+    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, GTGlobals::FindOptions(false));
+    if (toolbarExtButton != nullptr && toolbarExtButton->isVisible()) {
         GTWidget::click(os, toolbarExtButton);
     }
 
