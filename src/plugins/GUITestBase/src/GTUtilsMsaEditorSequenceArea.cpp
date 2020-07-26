@@ -654,46 +654,6 @@ bool GTUtilsMSAEditorSequenceArea::hasPixelWithColor(GUITestOpStatus &os, const 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getFontColor"
-QString GTUtilsMSAEditorSequenceArea::getFontColor(GUITestOpStatus &os, QPoint p) {
-    QString backgroundColor = getColor(os, p);
-
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os)));
-    GT_CHECK_RESULT(msaEditArea != NULL, "MsaEditorSequenceArea not found", "");
-
-    QPair<U2Region, U2Region> regions = convertCoordinatesToRegions(os, p);
-    U2Region regX = regions.first;
-    U2Region regY = regions.second;
-    //QString resultFontColor;
-    int xEndPos = regX.endPos();
-    QMap<QString, int> usableColors;
-    for (int i = regX.startPos; i < xEndPos; i++) {
-        int yEndPos = regY.endPos();
-        for (int j = regY.startPos; j < yEndPos; j++) {
-            QPoint global(i, j);
-            QPoint local = msaEditArea->mapFromGlobal(global);
-            QColor c = GTWidget::getColor(os, msaEditArea, local);
-            QString name = c.name();
-            CHECK_CONTINUE(backgroundColor != name);
-
-            QString fontColor = name;
-            if (usableColors.keys().contains(fontColor)) {
-                usableColors[fontColor] = usableColors[fontColor] + 1;
-            } else {
-                usableColors.insert(fontColor, 1);
-            }
-        }
-    }
-    CHECK(!usableColors.isEmpty(), QString());
-
-    QList<int> values = usableColors.values();
-    int max = *std::max_element(values.begin(), values.end());
-    QString resultFontColor = usableColors.key(max);
-
-    return resultFontColor;
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "checkColor"
 bool GTUtilsMSAEditorSequenceArea::checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor) {
     QColor c = getColor(os, p);
