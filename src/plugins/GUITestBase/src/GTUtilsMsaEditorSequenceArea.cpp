@@ -46,7 +46,6 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-#include "primitives/GTToolbar.h"
 #include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
 
 namespace U2 {
@@ -619,6 +618,39 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p) {
     QColor c = GTWidget::getColor(os, msaEditArea, local);
     QString name = c.name();
     return name;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkMsaCellColors"
+void GTUtilsMSAEditorSequenceArea::checkMsaCellColors(GUITestOpStatus &os, const QPoint &pos, const QString &fgColor, const QString bgColor) {
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, fgColor), "Wrong FG color: " + fgColor);
+
+    QString actualBgColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    CHECK_SET_ERR(actualBgColor == bgColor, QString("wrong BG color! Expected: %1, got: %2").arg(bgColor).arg(actualBgColor));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "hasPixelWithColor"
+bool GTUtilsMSAEditorSequenceArea::hasPixelWithColor(GUITestOpStatus &os, const QPoint &p, const QColor &color) {
+    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os)));
+    GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", "");
+    QImage img = GTWidget::getImage(os, msaEditArea);
+    QPair<U2Region, U2Region> regions = convertCoordinatesToRegions(os, p);
+    U2Region regX = regions.first;
+    U2Region regY = regions.second;
+    int xEndPos = regX.endPos();
+    for (int i = regX.startPos; i < xEndPos; i++) {
+        int yEndPos = regY.endPos();
+        for (int j = regY.startPos; j < yEndPos; j++) {
+            QPoint global(i, j);
+            QPoint local = msaEditArea->mapFromGlobal(global);
+            QColor pixelColor = img.pixel(local);
+            if (pixelColor == color) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 #undef GT_METHOD_NAME
 

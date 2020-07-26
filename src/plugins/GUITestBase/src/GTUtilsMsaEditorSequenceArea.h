@@ -91,6 +91,8 @@ public:
     static QString getColor(GUITestOpStatus &os, QPoint p);
     //To increase the accuracy of this function I advice you to maximize the font size before calling
     static QString getFontColor(GUITestOpStatus &os, QPoint p);
+    static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint& p, const QColor& color);
+    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint& pos, const QString& fgColor, const QString bgColor);
     static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 

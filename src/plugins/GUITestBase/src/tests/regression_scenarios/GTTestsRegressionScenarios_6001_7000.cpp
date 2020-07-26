@@ -1667,7 +1667,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     //Do it twice, for two different ids
     QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    for (auto id: ensembleIds) {
+    for (auto id : ensembleIds) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
@@ -3399,7 +3399,6 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6548_1) {
-    //NOTE: here is problems with detecting #ff00ff color so double condition is used fontColor == "#ff00ff" || fontColor == "#ff66ff"
     //1. Open _common_data/scenarios/_regression/6548/6548_extended_DNA.aln.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6548/6548_extended_DNA.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3411,192 +3410,37 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
 
     //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
-    QPoint pos;
-    QString fontColor;
-    QString backgroundColor;
-    //first column check
-    {
-        //Check most-frequent symbol
-        pos = QPoint(0, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
+    // First column check
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 0), "#0000ff", "#00ffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 3), "#000000", "#ffffff");    // Gap symbol
 
-        //Check gap symbol
-        pos = QPoint(0, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    // Second column check
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 5), "#ff00ff", "#ffffff");    // Second frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 9), "#000000", "#ffffff");    // Third frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 12), "#000000", "#c0c0c0");    // Fourth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 14), "#ff6600", "#ffffff");    // Fifth frequent symbol
 
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //second column check
-    {
-        //Check second frequent symbol
-        pos = QPoint(1, 5);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    // Third column check: T > G > C > A > R
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");    // T
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");    // G
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");    // C
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#c0c0c0");    // A
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 4), "#ff6600", "#ffffff");    // R
 
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    // Fourth column: M > S > V > W > Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#0000ff", "#00ffff");    // M
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 2), "#ff00ff", "#ffffff");    // S
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 4), "#000000", "#ffffff");    // V
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");    // W
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 3), "#ff6600", "#ffffff");    // Y
 
-        //Check third frequent symbol
-        pos = QPoint(1, 9);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check fourth frequent symbol
-        pos = QPoint(1, 12);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-#ifndef Q_OS_WIN
-        //Check fifth frequent symbol
-        pos = QPoint(1, 14);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-#endif    // !Q_OS_WIN
-    }
-    //third column check
-    {
-        //Check symbol priorities T > G > C > A > R
-        //Check T
-        pos = QPoint(2, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check G
-        pos = QPoint(2, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check C
-        pos = QPoint(2, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check A
-        pos = QPoint(2, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check R
-        pos = QPoint(2, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //fourth column
-    {
-        //Check symbol priorities M > S > V > W > Y
-        //Check M
-        pos = QPoint(3, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check S
-        pos = QPoint(3, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check V
-        pos = QPoint(3, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check W
-        pos = QPoint(3, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check Y
-        pos = QPoint(3, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //fifth column
-    {
-        //Check symbol priorities D > H > K > N > X
-        //Check D
-        pos = QPoint(4, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check H
-        pos = QPoint(4, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff" || fontColor == "#ff66ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check K
-        pos = QPoint(4, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check N
-        pos = QPoint(4, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check X
-        pos = QPoint(4, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
+    // Fifth column: D > H > K > N > X
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 2), "#0000ff", "#00ffff");    // D
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 1), "#ff00ff", "#ffffff");    // H
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 0), "#000000", "#ffffff");    // K
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 3), "#000000", "#c0c0c0");    // N
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 4), "#ff6600", "#ffffff");    // X
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6548_2) {
@@ -5629,7 +5473,7 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
 GUI_TEST_CLASS_DEFINITION(test_6715) {
     QDir().mkpath(sandBoxDir + "read_only_dir");
     GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
-    
+
     class Scenario : public CustomScenario {
     public:
         Scenario() {};
@@ -5639,8 +5483,8 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
             QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
             CHECK_SET_ERR(tree, "tree widget not found");
 
-            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));            
-            
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));
+
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok", "You don't have permissions to write in selected folder."));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir + "read_only_dir").absoluteFilePath(), "", GTFileDialogUtils::Choose, GTGlobals::UseMouse));
 
@@ -5648,8 +5492,8 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
-    
-    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}. 
+
+    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
