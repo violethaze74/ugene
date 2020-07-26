@@ -2702,28 +2702,15 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    // Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    //Expected colors:
     QStringList backgroundColors = {"#00ffff", "#ffffff"};
     QStringList fontColors = {"#0000ff", "#000000"};
     QList<int> columns = {1, 2, 5, 6};
-    //Expected colors:
-    //background - 2, 3 column: #00ffff; 6, 7 column: #ffffff
-    //font - 2, 3 column: #0000ff; 6, 7 column: #000000
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        int num = 1;
-        if (i == 1 || i == 2) {
-            num = 0;
-        }
-        QString expectedBackgroundColor = backgroundColors[num];
-        QString expectedFontColor = fontColors[num];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    foreach (int i, columns) {
+        int colorIndex = (i == 1 || i == 2) ? 0 : 1;
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[colorIndex], backgroundColors[colorIndex]);
     }
 
     //4. Set Threshold to 900
@@ -2731,38 +2718,18 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     CHECK_SET_ERR(nullptr != colorThresholdSlider, "Can't find colorThresholdSlider");
 
     GTSlider::setValue(os, colorThresholdSlider, 900);
-    GTGlobals::sleep();
-    //Expected colors:
-    //background - all columns #ffffff
-    //font - all columns ##000000
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[1];
-        QString expectedFontColor = fontColors[1];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Expected colors: background - all columns #ffffff, font - all columns ##000000
+    foreach (int i, columns) {
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[1], backgroundColors[1]);
     }
 
     //5. Set Threshold to 100
     GTSlider::setValue(os, colorThresholdSlider, 100);
-    GTGlobals::sleep();
-    //Expected colors:
-    //background - all columns #00ffff
-    //font - all columns ##0000ff
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[0];
-        QString expectedFontColor = fontColors[0];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected colors: background - all columns #00ffff, font - all columns ##0000ff
+    foreach (int i, columns) {
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[0], backgroundColors[0]);
     }
 }
 
