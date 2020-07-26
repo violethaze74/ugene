@@ -2679,24 +2679,15 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
+    // Zoom to max
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+
+    //Expected colors:
     QStringList backgroundColors = {"#ffff00", "#00ffff", "#00ffff", "#00ff00", "#00ff00", "#ffffff", "#ffffff", "#ffffff", "#ffffff"};
     QStringList fontColors = {"#ff0000", "#0000ff", "#0000ff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"};
 
-    //Expected colors:
-    //background - #ffff00, #00ffff, #00ffff, #00ff00, #00ff00, #ffffff, #ffffff, #ffffff, #ffffff
-    //font - #ff0000, #0000ff, #0000ff, #000000, #000000, #000000, #000000, #000000, #000000
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
-    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
     for (int i = 0; i < 9; i++) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[i];
-        QString expectedFontColor = fontColors[i];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[i], backgroundColors[i]);
     }
 }
 
@@ -3408,7 +3399,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    //Zoom to max
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
 
     // First column check
@@ -3454,7 +3445,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    //Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
     QPoint pos;
     QString fontColor;
