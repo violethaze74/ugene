@@ -242,7 +242,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3690, "hotkeys on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_4148, "It always fails on MacOS. Improve the test");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_Assembly_browser::test_0012, "permission setter issue");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_msa_editor::test_0062, "UGENE-6674");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0006, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0007, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0008, "UTI-245");
@@ -2264,7 +2263,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0060);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0061);
-
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0062);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0063);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0064);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0065);
