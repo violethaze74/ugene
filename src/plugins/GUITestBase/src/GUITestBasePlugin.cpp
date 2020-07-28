@@ -180,8 +180,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005, "runs > 8 mins in teamcity");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006, "runs > 8 mins in teamcity");
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006);
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");

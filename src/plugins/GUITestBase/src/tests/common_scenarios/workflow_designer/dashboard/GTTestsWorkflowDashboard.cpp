@@ -3842,7 +3842,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTMouseDriver::click();
 
     //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
 
     //    8. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -3860,7 +3860,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTMouseDriver::click();
 
     //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
 
     //    13. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
