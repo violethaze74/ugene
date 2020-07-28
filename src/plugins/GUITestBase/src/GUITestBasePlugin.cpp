@@ -180,10 +180,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_Assembly_browser::test_0015);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3545);
-
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
@@ -200,7 +196,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006, "runs > 8 mins in teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007, "runs > 8 mins in teamcity");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008, "Very long test muted in the teamcity");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, "UGENE-5979");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1003, "too long test");
@@ -216,11 +211,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3732, "big data");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4022, "big data");
+
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3333, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3452, "temporary ignored because of mac failing");
-
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3288, 420000);
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3687_1, 350000);
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3687_2, 350000);
@@ -1046,6 +1041,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3518);
     REGISTER_TEST(GUITest_regression_scenarios::test_3519_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3519_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3545);
     REGISTER_TEST(GUITest_regression_scenarios::test_3552);
     REGISTER_TEST(GUITest_regression_scenarios::test_3553);
     REGISTER_TEST(GUITest_regression_scenarios::test_3555);
@@ -2882,10 +2878,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0002);
     REGISTER_TEST(GUITest_Assembly_browser::test_0010);
     REGISTER_TEST(GUITest_Assembly_browser::test_0011);
-
     REGISTER_TEST(GUITest_Assembly_browser::test_0013);
     REGISTER_TEST(GUITest_Assembly_browser::test_0014);
-
+    REGISTER_TEST(GUITest_Assembly_browser::test_0015);
     REGISTER_TEST(GUITest_Assembly_browser::test_0016);
     REGISTER_TEST(GUITest_Assembly_browser::test_0017);
     REGISTER_TEST(GUITest_Assembly_browser::test_0018);
@@ -3023,6 +3018,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Estimating
