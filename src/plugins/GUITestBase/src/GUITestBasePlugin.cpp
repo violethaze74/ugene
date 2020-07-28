@@ -254,7 +254,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1166, "mem");
     REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_2971, "mem");
     REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_4164, "mem");
-    REGISTER_TEST_MAC(GUITest_regression_scenarios::test_0339, "Mac specific test");
     REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);    // There is no "Shift + Insert" hotkey on mac
     REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0002);    //, "qt dialog can't be shown");
     REGISTER_TEST_NOT_FOR_MAC(GUITest_regression_scenarios::test_0889);    //"Spidey tool is not avaluable on mac"
@@ -314,6 +313,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
     //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
+    REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_0339);
 
     if (QSysInfo::WordSize == 32) {
         REGISTER_TEST(GUITest_regression_scenarios::test_4563);
