@@ -418,18 +418,18 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="574"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="615"/>
         <source>Percentage identity</source>
-        <translation>По процентному соотношению</translation>
+        <translation>Процентное соотношение</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="575"/>
         <source>Percentage identity (colored)</source>
-        <translation>По процентному соотношению (цветное)</translation>
+        <translation>Процентное соотношение (цветное)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="576"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="616"/>
         <source>Percentage identity (gray)</source>
-        <translation>По процентному соотношению (серый)</translation>
+        <translation>Процентное соотношение (серый)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
