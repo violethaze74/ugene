@@ -182,7 +182,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_Assembly_browser::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0005_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1946);
     REGISTER_TEST(GUITest_regression_scenarios::test_3545);
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
@@ -312,7 +311,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2801_1, "Specific API should be written for Linux and Mac");
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); not completed yet
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
-    //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946);
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
     //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
@@ -730,6 +728,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1919);
     REGISTER_TEST(GUITest_regression_scenarios::test_1921);
     REGISTER_TEST(GUITest_regression_scenarios::test_1924);
+	REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1946); // TopHat
     REGISTER_TEST(GUITest_regression_scenarios::test_1984);
     REGISTER_TEST(GUITest_regression_scenarios::test_1986);
 
