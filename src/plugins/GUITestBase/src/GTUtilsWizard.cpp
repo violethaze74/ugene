@@ -26,6 +26,7 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -58,31 +59,29 @@ const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUt
 
 #define GT_METHOD_NAME "setInputFiles"
 void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus &os, const QList<QStringList> &inputFiles) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "wizard not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     int i = 0;
-    foreach (const QStringList &datasetFiles, inputFiles) {
-        QTabWidget *tabWidget = dialog->findChild<QTabWidget *>();
-        GT_CHECK(tabWidget != NULL, "tabWidget not found");
+    for (const QStringList &datasetFiles : inputFiles) {
+        QTabWidget *tabWidget = GTWidget::findWidgetByType<QTabWidget *>(os, dialog, "tabWidget not found");
         GTTabWidget::setCurrentIndex(os, tabWidget, i);
 
         QMap<QString, QStringList> dir2files;
-        foreach (const QString &datasetFile, datasetFiles) {
-            const QFileInfo fileInfo(datasetFile);
+        for (const QString &datasetFile : datasetFiles) {
+            QFileInfo fileInfo(datasetFile);
             dir2files[fileInfo.absoluteDir().path()] << fileInfo.fileName();
         }
 
-        foreach (const QString &dir, dir2files.keys()) {
+        for (const QString &dir : dir2files.keys()) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, dir, dir2files[dir]));
-            QList<QWidget *> adds = dialog->findChildren<QWidget *>("addFileButton");
-            foreach (QWidget *add, adds) {
-                if (add->isVisible()) {
-                    GTWidget::click(os, add);
+            QList<QWidget *> addFileButtonList = dialog->findChildren<QWidget *>("addFileButton");
+            for (QWidget *addFileButton : addFileButtonList) {
+                if (addFileButton->isVisible()) {
+                    GTWidget::click(os, addFileButton);
                     break;
                 }
             }
         }
-
+        GTThread::waitForMainThread();
         i++;
     }
 }
