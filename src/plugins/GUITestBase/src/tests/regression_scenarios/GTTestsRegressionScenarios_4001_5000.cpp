@@ -313,7 +313,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     //3. Select the whole sequence.
     //4. Use context menu {Copy->Copy sequence}.
     QString sequence;
-    for (int i = 0; i < 1376256; i++) {
+    for (int i = 0; i < 344064; i++) {
         sequence += "AAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTT";
     }
     QClipboard *clipboard = QApplication::clipboard();
@@ -335,7 +335,6 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
             GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
             GTGlobals::sleep();
 
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "An error occurred", "ExceptionWarning"));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "amount of data"));
             GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
@@ -2071,6 +2070,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209) {
 
     GTUtilsWorkflowDesigner::click(os, "Align to Reference");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference URL", testDir + "_common_data/scenarios/_regression/4209/seq1.gb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", testDir + "_common_data/scenarios/sandbox/4209/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/reads/e_coli_10000snp.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

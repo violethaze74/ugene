@@ -210,7 +210,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3732, "big data");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4022, "big data");
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_5425, "Fix the test");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");
@@ -1149,6 +1149,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4011);
     REGISTER_TEST(GUITest_regression_scenarios::test_4010);
     REGISTER_TEST(GUITest_regression_scenarios::test_4013);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4022);
     REGISTER_TEST(GUITest_regression_scenarios::test_4026);
     REGISTER_TEST(GUITest_regression_scenarios::test_4030);
     REGISTER_TEST(GUITest_regression_scenarios::test_4033);
@@ -1361,7 +1362,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5018);
     REGISTER_TEST(GUITest_regression_scenarios::test_5026);
 
-
     REGISTER_TEST(GUITest_regression_scenarios::test_5027_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5029);
     REGISTER_TEST(GUITest_regression_scenarios::test_5039);
@@ -1388,7 +1388,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5252);
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
-
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5335);
