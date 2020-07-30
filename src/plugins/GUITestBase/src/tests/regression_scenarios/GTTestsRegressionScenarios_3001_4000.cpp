@@ -4666,12 +4666,16 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "memBox", dialog), "200");
+            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memorySpinBox");
+            CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
+            GTSpinBox::setValue(os, memBox, 200, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemoryLimitSetScenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
 
     //    2. Open file "_common_data/scenarios/_regression/1688/sr100.000.fa" as separate sequences.
     //    Expected state: there is an error in the log: "MemoryLocker - Not enough memory error, 41 megabytes are required".
