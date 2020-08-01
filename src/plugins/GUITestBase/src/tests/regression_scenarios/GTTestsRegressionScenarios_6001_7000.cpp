@@ -1753,15 +1753,12 @@ GUI_TEST_CLASS_DEFINITION(test_6249_2) {
     //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\FASTQ\eas.fastq"
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     //4. Set parameter "Output file" to any location
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "FastQC Quality Control"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_6249_2_zzzz.html", GTUtilsWorkflowDesigner::textValue);
 
     //5. Run workflow, and check result files on dashboard
@@ -1770,8 +1767,8 @@ GUI_TEST_CLASS_DEFINITION(test_6249_2) {
 
     QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
 
-    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output files not contains desired file test_6249_2_zzzz.html"));
-    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output files not contains desired file test_6249_2_zzzz_1.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output file is not found: test_6249_2_zzzz.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output file is not found: test_6249_2_zzzz_1.html"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6249_3) {
