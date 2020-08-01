@@ -106,13 +106,13 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QList<QAbstractButton *> allButtonList;
         if (parentWidget == nullptr) {
-            foreach (QWidget *mainWidget, GTMainWindow::getMainWindowsAsWidget(os)) {
+            for (QWidget *mainWidget : GTMainWindow::getMainWindowsAsWidget(os)) {
                 allButtonList << mainWidget->findChildren<QAbstractButton *>();
             }
         } else {
             allButtonList << parentWidget->findChildren<QAbstractButton *>();
         }
-        foreach (QAbstractButton *button, allButtonList) {
+        for (QAbstractButton *button : allButtonList) {
             if (button->text().contains(text, Qt::CaseInsensitive)) {
                 resultButtonList << button;
             }

@@ -116,7 +116,6 @@ int WorkflowTabView::appendDashboard(Dashboard *db) {
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_closeTab()));
     connect(db, SIGNAL(si_loadSchema(const QString &)), parent, SLOT(sl_loadScene(const QString &)));
     connect(db, SIGNAL(si_hideLoadBtnHint()), this, SIGNAL(si_hideLoadBtnHint()));
-    connect(this, SIGNAL(si_hideLoadBtnHint()), db, SLOT(sl_hideLoadBtnHint()));
 
     emit si_countChanged();
     return idx;

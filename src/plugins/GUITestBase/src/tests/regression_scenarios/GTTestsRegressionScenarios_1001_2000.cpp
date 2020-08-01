@@ -39,7 +39,6 @@
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -118,7 +117,6 @@
 #include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
@@ -6708,7 +6706,7 @@ GUI_TEST_CLASS_DEFINITION(test_1662) {
     GTUtilsDashboard::getExternalToolNode(os, "actor_tophat_run_2_tool_TopHat_run_1");
 
     int topHatRunCount = GTUtilsDashboard::getExternalToolNodesByText(os, nullptr, "TopHat run").size();
-    CHECK_SET_ERR(topHatRunCount == 2,  "Unexpected topHatRuns count. Expected 2, got: " + QString::number(topHatRunCount));
+    CHECK_SET_ERR(topHatRunCount == 2, "Unexpected topHatRuns count. Expected 2, got: " + QString::number(topHatRunCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1664) {
@@ -7758,8 +7756,8 @@ GUI_TEST_CLASS_DEFINITION(test_1738) {
     GTWidget::click(os, GTAction::button(os, "Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
-    GTGlobals::sleep(500);
+    QLabel *timeLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
+    CHECK_SET_ERR(timeLabel->text().contains("00:00:0"), "Workflow is not stopped. Execution time is > 10 seconds");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1751) {
@@ -7889,26 +7887,27 @@ GUI_TEST_CLASS_DEFINITION(test_1764) {
     //    4) Run workflow, click on dashboard "readed_fasta.fa"
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    HIWebElement button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep();
-    //GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
+    QWidget *button = GTWidget::findButtonByText(os, "readed_fasta.fa", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
     //    Expected state: "readed_fasta.fa" is opened in UGENE
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     //    5) Click "Return to workflow", repeat step 4
     GTUtilsMdi::activateWindow(os, "Workflow Designer - New workflow");
     GTWidget::click(os, GTWidget::findButtonByText(os, "To Workflow Designer"));
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep();
+    button = GTWidget::findButtonByText(os, "readed_fasta.fa", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     //    Expected state: opened fasta files have different file path in tooltips
+
     QList<QModelIndex> docs = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "readed_fasta.fa");
     CHECK_SET_ERR(docs.size() == 2, QString("unexpected documents number: %1").arg(docs.size()));
     QString toolTip0 = docs[0].data(Qt::ToolTipRole).toString();
     QString toolTip1 = docs[1].data(Qt::ToolTipRole).toString();
 
-    CHECK_SET_ERR(toolTip0 != toolTip1, "tooltips are equal");
+    CHECK_SET_ERR(toolTip0 != toolTip1, "tooltips are equal, first: " + toolTip0 + ", second: " + toolTip1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1771) {
@@ -8150,9 +8149,9 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement button = GTUtilsDashboard::findWebElement(os, "COI.aln.meg", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep(1000);
+    QWidget *button = GTWidget::findButtonByText(os, "COI.aln.meg", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "COI.aln.meg");
 
     //Expected state: Scheme ran successfully, the "COI.aln.mega" output file has appeared on the "Output Files" panel of the dashboard.

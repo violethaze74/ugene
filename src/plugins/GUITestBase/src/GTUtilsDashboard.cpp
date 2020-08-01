@@ -21,7 +21,6 @@
 
 #include <GTUtilsMdi.h>
 #include <primitives/GTTabWidget.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 
 #include <QRegularExpression>
@@ -96,11 +95,6 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 }
 #undef GT_METHOD_NAME
 
-WebView *GTUtilsDashboard::getDashboardWebView(HI::GUITestOpStatus &os) {
-    Dashboard *dashboard = findDashboard(os);
-    return dashboard == nullptr ? nullptr : dashboard->getWebView();
-}
-
 QTabWidget *GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os) {
     return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
@@ -115,57 +109,30 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
 }
 
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
-    QString selector = "div#outputWidget button.btn.full-width.long-text";
-    QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, GTGlobals::FindOptions(false));
+    auto dashboard = getDashboard(os);
+    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
+    QList<QToolButton *> buttons = outputFilesWidget->findChildren<QToolButton *>();
     QStringList outputFilesNames;
-    foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
-        const QString outputFileName = outputFilesButton.toPlainText();
-        if (!outputFileName.isEmpty()) {
-            outputFilesNames << outputFileName;
-        }
+    for (auto button : buttons) {
+        outputFilesNames << button->text();
     }
     return outputFilesNames;
 }
 
 #define GT_METHOD_NAME "clickOutputFile"
 void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outputFileName) {
-    const QString selector = "div#outputWidget button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector);
-    foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
-        QString buttonText = outputFilesButton.toPlainText();
-        if (buttonText == outputFileName) {
-            click(os, outputFilesButton);
-            return;
-        }
-
-        if (buttonText.endsWith("...")) {
-            buttonText.chop(QString("...").length());
-            if (!buttonText.isEmpty() && outputFileName.startsWith(buttonText)) {
-                click(os, outputFilesButton);
-                return;
-            }
-        }
-    }
-
-    GT_CHECK(false, QString("The output file with name '%1' not found").arg(outputFileName));
+    auto dashboard = getDashboard(os);
+    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
+    auto button = GTWidget::findButtonByText(os, outputFileName, outputFilesWidget);
+    GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTUtilsDashboard::findWebElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch) {
-    return GTWebView::findElement(os, getDashboardWebView(os), text, tag, exactMatch);
-}
-
-HIWebElement GTUtilsDashboard::findWebContextMenuElement(HI::GUITestOpStatus &os, QString text) {
-    return GTWebView::findContextMenuElement(os, getDashboardWebView(os), text);
-}
-
-void GTUtilsDashboard::click(HI::GUITestOpStatus &os, HIWebElement el, Qt::MouseButton button) {
-    GTWebView::click(os, getDashboardWebView(os), el, button);
-}
-
-bool GTUtilsDashboard::areThereNotifications(HI::GUITestOpStatus &os) {
+bool GTUtilsDashboard::hasNotifications(HI::GUITestOpStatus &os) {
     openTab(os, Overview);
-    return GTWebView::doesElementExist(os, getDashboardWebView(os), "Notifications", "DIV", true);
+    auto dashboard = getDashboard(os);
+    auto notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", dashboard);
+    return notificationsWidget->isVisible();
 }
 
 QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
@@ -208,8 +175,8 @@ void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "doesTabExist"
-bool GTUtilsDashboard::doesTabExist(HI::GUITestOpStatus &os, Tabs tab) {
+#define GT_METHOD_NAME "hasTab"
+bool GTUtilsDashboard::hasTab(HI::GUITestOpStatus &os, Tabs tab) {
     QWidget *dashboard = findDashboard(os);
     GT_CHECK_RESULT(dashboard != nullptr, "Dashboard is not found", false);
 

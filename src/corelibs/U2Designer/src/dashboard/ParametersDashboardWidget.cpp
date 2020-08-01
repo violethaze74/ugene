@@ -25,12 +25,9 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileInfo>
-#include <QLabel>
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
-#include <U2Core/ProjectModel.h>
 
 #include <U2Gui/HoverQLabel.h>
 
@@ -46,14 +43,14 @@ namespace U2 {
 #define DIR_MARKER_CLASS "dir-marker"
 #define DATASET_MARKER_CLASS "dataset-marker"
 
-static QList<WorkerInfo> dom2WorkerInfos(const QDomElement &dom) {
-    QList<WorkerInfo> workers;
+static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &dom) {
+    QList<WorkerParametersInfo> workers;
     QDomElement navTabsEl = DomUtils::findChildElementByClass(dom, "params-nav-tabs", 2);
     QDomNodeList workerNameList = navTabsEl.elementsByTagName("li");
     for (int i = 0; i < workerNameList.size(); i++) {
         QDomElement workerNameLi = workerNameList.at(i).toElement();
         QList<WorkerParameterInfo> parameters;
-        workers << WorkerInfo(workerNameLi.text().simplified(), parameters);
+        workers << WorkerParametersInfo(workerNameLi.text().simplified(), parameters);
     }
     QDomElement paramTablesRoot = DomUtils::findChildElementByClass(dom, "params-tab-content", 2);
     QList<QDomElement> paramTableList = DomUtils::findChildElementsByClass(paramTablesRoot, "param-value-column");
@@ -82,13 +79,11 @@ static QList<WorkerInfo> dom2WorkerInfos(const QDomElement &dom) {
                 QDomElement button = td2.firstChildElement("div").firstChildElement("div").firstChildElement("button");
                 if (!button.isNull()) {
                     isDir = button.hasAttribute("disabled");
-                    int prefixLen = QString("agent.openUrl('").length();
-                    int suffixLen = QString("')").length();
-                    value = button.attribute("onclick");
-                    if (value.length() > prefixLen + suffixLen) {
-                        value = value.mid(prefixLen, value.length() - prefixLen - suffixLen);
+                    QString valueFromOnClick = DashboardWidgetUtils::parseOpenUrlValueFromOnClick(button.attribute("onclick"));
+                    if (valueFromOnClick.length() > 0) {
+                        value = valueFromOnClick;
+                        isUrl = true;
                     }
-                    isUrl = value.length() > 0;
                 }
             }
             if (rowSpan > 0) {
@@ -105,8 +100,8 @@ static QList<WorkerInfo> dom2WorkerInfos(const QDomElement &dom) {
     return workers;
 }
 
-static QList<WorkerInfo> params2WorkerInfos(const QList<Workflow::Monitor::WorkerParamsInfo> &workerInfoList) {
-    QList<WorkerInfo> result;
+static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Monitor::WorkerParamsInfo> &workerInfoList) {
+    QList<WorkerParametersInfo> result;
     for (auto workerInfo : workerInfoList) {
         QList<WorkerParameterInfo> parameters;
         for (auto p : workerInfo.parameters) {
@@ -140,7 +135,7 @@ static QList<WorkerInfo> params2WorkerInfos(const QList<Workflow::Monitor::Worke
 
             parameters << WorkerParameterInfo(name, value, isUrl, isDir, isDataset);
         }
-        result << WorkerInfo(workerInfo.workerName, parameters);
+        result << WorkerParametersInfo(workerInfo.workerName, parameters);
     }
     return result;
 }
@@ -164,12 +159,12 @@ ParametersDashboardWidget::ParametersDashboardWidget(const QString &dashboardDir
     rightWidget->setLayout(rightWidgetLayout);
     layout->addWidget(rightWidget);
 
-    parametersLayout = new QGridLayout();
-    parametersLayout->setSpacing(0);
-    rightWidgetLayout->addLayout(parametersLayout);
+    parametersGridLayout = new QGridLayout();
+    parametersGridLayout->setSpacing(0);
+    rightWidgetLayout->addLayout(parametersGridLayout);
     rightWidgetLayout->addStretch(1000);
 
-    workers << dom2WorkerInfos(dom);
+    workers << dom2WorkerParametersInfo(dom);
     if (monitor != nullptr) {
         workers << params2WorkerInfos(monitor->getWorkersParameters());
     }
@@ -195,12 +190,10 @@ void ParametersDashboardWidget::sl_workerLabelClicked() {
     showWorkerParameters(index);
 }
 
-#define ACTION_CODE_KEY "action-code"
-
 void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
     CHECK(workerIndex >= 0 && workerIndex <= workers.size(), );
     QLayoutItem *item;
-    while ((item = parametersLayout->takeAt(0)) != nullptr) {
+    while ((item = parametersGridLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
@@ -218,151 +211,38 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
         }
     }
 
-    QString commonHeaderStyle = "border: 1px solid #999; background-color: rgb(101, 101, 101);";
-    QString commonHeaderLabelStyle = "color: white; padding: 5px 10px;";
-    auto parameterNameWidget = new QWidget();
-    parameterNameWidget->setObjectName("nameHeaderWidget");
-    parameterNameWidget->setStyleSheet("#nameHeaderWidget { " + commonHeaderStyle + "border-top-left-radius: 4px ;border-right: 0px;}");
-    auto parameterNameWidgetLayout = new QVBoxLayout();
-    parameterNameWidgetLayout->setContentsMargins(0, 0, 0, 0);
-    parameterNameWidget->setLayout(parameterNameWidgetLayout);
-    auto parameterNameHeaderLabel = new QLabel(tr("Parameter"));
-    parameterNameHeaderLabel->setStyleSheet(commonHeaderLabelStyle);
-    parameterNameWidgetLayout->addWidget(parameterNameHeaderLabel);
-    parametersLayout->addWidget(parameterNameWidget, 0, 0);
-
-    auto parameterValueWidget = new QWidget();
-    parameterValueWidget->setObjectName("nameValueWidget");
-    parameterValueWidget->setStyleSheet("#nameValueWidget {" + commonHeaderStyle + "border-left: 1px solid white; border-top-right-radius: 4px;}");
-    auto parameterValueWidgetLayout = new QVBoxLayout();
-    parameterValueWidgetLayout->setContentsMargins(0, 0, 0, 0);
-    parameterValueWidget->setLayout(parameterValueWidgetLayout);
-    auto parameterValueHeaderLabel = new QLabel(tr("Value"));
-    parameterValueHeaderLabel->setStyleSheet(commonHeaderLabelStyle);
-    parameterValueWidgetLayout->addWidget(parameterValueHeaderLabel);
-    parametersLayout->addWidget(parameterValueWidget, 0, 1);
-
+    // Parameters table.
+    addTableHeadersRow(parametersGridLayout, QStringList() << tr("Parameter") << tr("Value"));
     QList<WorkerParameterInfo> &parameters = workers[workerIndex].parameters;
     for (int parameterIndex = 0; parameterIndex < parameters.size(); parameterIndex++) {
-        const WorkerParameterInfo &parameter = parameters[parameterIndex];
-        bool isLast = parameterIndex == parameters.size() - 1;
-        auto nameWidget = new QWidget();
-        nameWidget->setObjectName("nameWidget");
-        nameWidget->setStyleSheet("#nameWidget {border: 1px solid #ddd; border-right: 0px; border-top: 0px;" + QString(isLast ? "border-bottom-left-radius:4px;" : "") + "}");
-        auto nameWidgetLayout = new QVBoxLayout();
-        nameWidgetLayout->setContentsMargins(0, 0, 0, 0);
-        nameWidget->setLayout(nameWidgetLayout);
-        auto nameLabel = new QLabel(parameter.name);
-        nameLabel->setWordWrap(true);
-        nameLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-        nameLabel->setStyleSheet("padding: 7px 10px;");
-        nameWidgetLayout->addWidget(nameLabel);
-        nameWidgetLayout->addStretch();
-        parametersLayout->addWidget(nameWidget, parameterIndex + 1, 0);
+        auto parameter = parameters[parameterIndex];
+        bool isLastRow = parameterIndex == parameters.size() - 1;
+        int rowIndex = parameterIndex + 1;
+        addTableCell(parametersGridLayout, parameter.name, parameter.name, rowIndex, 0, isLastRow, false);
+
+        bool renderValueAsFileButton = !parameter.value.isEmpty() && (parameter.isUrl || parameter.isDir || parameter.isDataset);
+        if (!renderValueAsFileButton) {
+            addTableCell(parametersGridLayout, parameter.name, parameter.value, rowIndex, 1, isLastRow, true);
+            continue;
+        }
 
         auto valueWidget = new QWidget();
         valueWidget->setObjectName("valueWidget");
-        valueWidget->setStyleSheet("#valueWidget {border: 1px solid #ddd; border-top: 0px;" + QString(isLast ? "border-bottom-right-radius:4px;" : "") + "}");
         auto valueWidgetLayout = new QVBoxLayout();
         valueWidgetLayout->setContentsMargins(0, 0, 0, 0);
-        valueWidgetLayout->setSpacing(0);
         valueWidget->setLayout(valueWidgetLayout);
 
-        if (!parameter.value.isEmpty() && (parameter.isUrl || parameter.isDir || parameter.isDataset)) {
-            QStringList urls = parameter.value.split("\n");
-            for (int i = 0; i < urls.length(); i++) {
-                QString actionCode = QString::number(workerIndex) + "-" + QString::number(parameterIndex) + "-" + QString::number(i);
-                auto button = new QToolButton();
-                button->setText(QFileInfo(urls[i]).fileName());
-                button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-                button->setStyleSheet("QToolButton {"
-                                      "  margin: 7px 10px; height: 1.33em; border-radius: 4px;"
-                                      "  border: 1px solid #aaa; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);"
-                                      "}"
-                                      "QToolButton:pressed {"
-                                      "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);"
-                                      "}"
-                                      "QToolButton::menu-button {"
-                                      "  border: 1px solid #aaa;"
-                                      "  border-top-right-radius: 4px; border-bottom-right-radius: 4px;"
-                                      "  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);"
-                                      "  width: 1.5em;"
-                                      "}");
-                connect(button, SIGNAL(clicked()), SLOT(sl_openFileClicked()));
-
-                if (!parameter.isDir) {
-                    button->setProperty(ACTION_CODE_KEY, "ugene-" + actionCode);
-
-                    auto menu = new PopupMenu(button, this);
-
-                    auto openFolderAction = new QAction(tr("Open folder with the file"), button);
-                    openFolderAction->setProperty(ACTION_CODE_KEY, "dir-" + actionCode);
-                    connect(openFolderAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
-                    menu->addAction(openFolderAction);
-
-                    auto openFileAction = new QAction(tr("Open file by OS"), button);
-                    openFileAction->setProperty(ACTION_CODE_KEY, "file-" + actionCode);
-                    connect(openFileAction, SIGNAL(triggered()), SLOT(sl_openFileClicked()));
-                    menu->addAction(openFileAction);
-
-                    button->setMenu(menu);
-                    button->setPopupMode(QToolButton::MenuButtonPopup);
-                } else {
-                    button->setProperty(ACTION_CODE_KEY, "file-" + actionCode);
-                }
-                valueWidgetLayout->addWidget(button);
+        QStringList urlList = parameter.value.split("\n");
+        for (auto url : urlList) {
+            QFileInfo fileInfo(url);
+            if (!fileInfo.isAbsolute()) {
+                fileInfo = QFileInfo(QDir(dashboardDir), url).absoluteFilePath();
             }
-        } else {
-            auto valueLabel = new QLabel(parameter.value);
-            valueLabel->setWordWrap(true);
-            valueLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-            valueLabel->setStyleSheet("padding: 7px 10px;");
-            valueWidgetLayout->addWidget(valueLabel);
+            auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), parameter.isDir);
+            valueWidgetLayout->addWidget(button);
         }
         valueWidgetLayout->addStretch();
-        parametersLayout->addWidget(valueWidget, parameterIndex + 1, 1);
-    }
-}
-
-void ParametersDashboardWidget::sl_openFileClicked() {
-    QString actionCode = sender()->property(ACTION_CODE_KEY).toString();
-    QStringList tokens = actionCode.split("-");
-    CHECK(tokens.length() == 4, );
-
-    bool ok;
-    int workerIndex = tokens[1].toInt(&ok);
-    CHECK(ok && workerIndex >= 0 && workerIndex < workers.size(), );
-
-    const WorkerInfo &worker = workers[workerIndex];
-    int parameterIndex = tokens[2].toInt(&ok);
-    CHECK(ok && parameterIndex >= 0 && parameterIndex < worker.parameters.size(), );
-
-    auto parameter = worker.parameters[parameterIndex];
-    QStringList lines = parameter.value.split("\n");
-    int lineIndex = tokens[3].toInt(&ok);
-    CHECK(ok && lineIndex >= 0 && lineIndex < lines.size(), );
-    QString url = lines[lineIndex];
-
-    QFileInfo fileInfo(url);
-    if (!fileInfo.isAbsolute()) {
-        fileInfo = QFileInfo(QDir(dashboardDir), url);
-    }
-    if (tokens[0] == "dir") {
-        fileInfo = QFileInfo(fileInfo.absolutePath());
-    }
-    if (!fileInfo.exists()) {
-        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("File is not found: %1").arg(fileInfo.absoluteFilePath()));
-        return;
-    }
-    if (tokens[0] == "ugene") {
-        QVariantMap hints;
-        hints[ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed] = true;
-        Task *task = AppContext::getProjectLoader()->openWithProjectTask(fileInfo.absoluteFilePath(), hints);
-        CHECK(task != nullptr, );
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    } else {
-        QString fullFilePath = "file://" + fileInfo.absoluteFilePath();
-        QDesktopServices::openUrl(fullFilePath);
+        addTableCell(parametersGridLayout, parameter.name, valueWidget, rowIndex, 1, isLastRow, true);
     }
 }
 
@@ -416,7 +296,7 @@ QString ParametersDashboardWidget::toHtml() const {
     return html;
 }
 
-WorkerInfo::WorkerInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters)
+WorkerParametersInfo::WorkerParametersInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters)
     : workerName(workerName), parameters(parameters) {
 }
 
@@ -424,13 +304,4 @@ WorkerParameterInfo::WorkerParameterInfo(const QString &name, const QString &val
     : name(name), value(value), isUrl(isUrl), isDir(isDir), isDataset(isDataset) {
 }
 
-PopupMenu::PopupMenu(QAbstractButton *button, QWidget *parent)
-    : QMenu(parent), button(button) {
-}
-
-void PopupMenu::showEvent(QShowEvent *event) {
-    QPoint position = this->pos();
-    QRect rect = button->geometry();
-    this->move(position.x() + rect.width() - this->geometry().width(), position.y());
-}
 }    // namespace U2

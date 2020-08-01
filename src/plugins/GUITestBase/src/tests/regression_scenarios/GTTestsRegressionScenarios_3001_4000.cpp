@@ -48,7 +48,6 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHeaderView>
-#include <QListWidget>
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
@@ -2658,28 +2657,26 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3414) {
-    /*  check time on dashboard
- *  1. Open WD
- *  2. Select "Remote BLASTing" sample
- *  3. Set input file samples/FASTA/human_T1.fa
- *  4. Execute workflow
- *  5. Check elapsed time
- * */
+    /*
+     Check time is updated on the dashboard
+        - Open WD.
+        - Run Align with MUSCLE.
+        - Execute workflow.
+        - Check elapsed time is changed.
+    */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
-
+    GTUtilsWorkflowDesigner::click(os, "Read alignment");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/PF07724_full_family.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTGlobals::sleep(1000);
-    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
-    QString s = initEl.toPlainText();
-    GTGlobals::sleep(5000);
-    HIWebElement finalEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
-    QString s1 = finalEl.toPlainText();
-    CHECK_SET_ERR(s != s1, "timer not changed");
+
+    QLabel *timeLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
+    QString timeBefore = timeLabel->text();
+    GTGlobals::sleep(3000);
+    QString timeAfter = timeLabel->text();
+    CHECK_SET_ERR(timeBefore != timeAfter, "timer is not changed, timeBefore: " + timeBefore + ", timeAfter: " + timeAfter);
     GTUtilsTask::cancelTask(os, "Execute workflow");
 }
 

@@ -62,7 +62,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -86,7 +85,6 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsPrimerLibrary.h"
@@ -141,7 +139,6 @@
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentProviderSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
@@ -1056,12 +1053,12 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
     //Current state : the "Write Sequence" worker gives the "Nothing to write" error in the log.
     GTUtilsLog::check(os, l);
 
-    HIWebElement button = GTUtilsDashboard::findWebElement(os, "Dataset 1.gb", "BUTTON");
-    GTUtilsDashboard::click(os, button);
+    QAbstractButton *button = GTWidget::findButtonByText(os, "Dataset 1.gb", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QString activeWindowName = GTUtilsMdi::activeWindow(os)->windowTitle();
+    QString activeWindowName = GTUtilsMdi::activeWindow(os)->windowTitle();
     CHECK_SET_ERR(activeWindowName == "Dataset 1 [s] NC_001363", "Unexpected active window name: " + activeWindowName);
     GTUtilsProjectTreeView::findIndex(os, "NC_001363");
     GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
@@ -1132,7 +1129,7 @@ GUI_TEST_CLASS_DEFINITION(test_4110) {
 
     //    4. Drag&drop annotation object "ugene_gui_test_win:/view_test_0001/NC_001363 features" to the sequence view.
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    QWidget* panOrDetView = GTUtilsSequenceView::getPanOrDetView(os);
+    QWidget *panOrDetView = GTUtilsSequenceView::getPanOrDetView(os);
     GTUtilsProjectTreeView::dragAndDrop(os, annotationIndex, panOrDetView);
     GTThread::waitForMainThread();
 
@@ -2267,7 +2264,7 @@ GUI_TEST_CLASS_DEFINITION(test_4244) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4266) {
-    //    1. Create the workflow: Read Seqeunce --> Write Sequence
+    //    1. Create the workflow: Read Sequence --> Write Sequence
     //    2. Input data: "_common_data/fasta/Gene.fa"
     //    3. Run the workflow
     //    Expected state: there is a warning about empty sequences on the dashboard
@@ -2286,7 +2283,7 @@ GUI_TEST_CLASS_DEFINITION(test_4266) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDashboard::findWebElement(os, "Loaded sequences: 139.");
+    GTWidget::findLabelByText(os, "Loaded sequences: 139.", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4272) {
@@ -3057,7 +3054,7 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there are no errors neither in log nor in dashboard.
-    bool hasErrorNotifications = GTUtilsDashboard::areThereNotifications(os);
+    bool hasErrorNotifications = GTUtilsDashboard::hasNotifications(os);
     CHECK_SET_ERR(!hasErrorNotifications, "There are error notifications on the dashboard");
     GTUtilsLog::check(os, logTracer);
 }

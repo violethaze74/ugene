@@ -22,16 +22,17 @@
 #ifndef _U2_PARAMETERS_DASHBOARD_WIDGET_H_
 #define _U2_PARAMETERS_DASHBOARD_WIDGET_H_
 
+#include <QAbstractButton>
 #include <QDomElement>
 #include <QGridLayout>
 #include <QHBoxLayout>
-#include <QTextBrowser>
 #include <QMenu>
-#include <QToolButton>
 
 #include <U2Core/global.h>
 
 #include <U2Lang/WorkflowMonitor.h>
+
+#include "./DashboardWidget.h"
 
 namespace U2 {
 
@@ -47,19 +48,19 @@ public:
     bool isDataset;
 };
 
-class U2DESIGNER_EXPORT WorkerInfo {
+class U2DESIGNER_EXPORT WorkerParametersInfo {
 public:
-    WorkerInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters);
+    WorkerParametersInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters);
     QString workerName;
     QList<WorkerParameterInfo> parameters;
 };
 
-class U2DESIGNER_EXPORT ParametersDashboardWidget : public QWidget {
+class U2DESIGNER_EXPORT ParametersDashboardWidget : public QWidget, DashboardWidgetUtils {
     Q_OBJECT
 public:
     ParametersDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
 
-    const QList<WorkerInfo> &getWorkers() const {
+    const QList<WorkerParametersInfo> &getWorkers() const {
         return workers;
     }
 
@@ -69,30 +70,18 @@ public:
 
     void showWorkerParameters(int workerIndex);
 
+
 public slots:
     void sl_workerLabelClicked();
-    void sl_openFileClicked();
 
 private:
     QString dashboardDir;
     QHBoxLayout *layout;
 
-    QTextBrowser *paramsTextBrowser;
-    QGridLayout *parametersLayout;
-    QList<WorkerInfo> workers;
+    QGridLayout *parametersGridLayout;
+    QList<WorkerParametersInfo> workers;
     QList<HoverQLabel *> workerNameLabels;
 };
-
-class PopupMenu : public QMenu {
-    Q_OBJECT
-public:
-    explicit PopupMenu(QAbstractButton *button, QWidget *parent = 0);
-    void showEvent(QShowEvent *event);
-
-private:
-    QAbstractButton *button;
-};
-
 }    // namespace U2
 
 #endif

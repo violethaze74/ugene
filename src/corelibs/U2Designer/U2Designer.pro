@@ -28,20 +28,17 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/dashboard/Dashboard.h \
            src/dashboard/DashboardInfo.h \
            src/dashboard/DashboardInfoRegistry.h \
-           src/dashboard/DashboardJsAgent.h \
-           src/dashboard/DashboardPageController.h \
-           src/dashboard/ExternalToolsDashboardWidget.h \
-           src/dashboard/FlowLayout.h \
-           src/dashboard/ParametersDashboardWidget.h \
-           src/dashboard/RemoveDashboardsTask.h \
-           src/dashboard/ScanDashboardsDirTask.h \
            src/dashboard/DashboardTabPage.h \
            src/dashboard/DashboardWidget.h \
            src/dashboard/DomUtils.h \
-           src/dashboard/webview/JavaScriptAgent.h \
-           src/dashboard/webview/U2WebView.h \
-           src/dashboard/webview/WebViewController.h \
-           src/dashboard/webview/WebViewControllerPrivate.h \
+           src/dashboard/ExternalToolsDashboardWidget.h \
+           src/dashboard/OutputFilesDashboardWidget.h \
+           src/dashboard/ParametersDashboardWidget.h \
+           src/dashboard/NotificationsDashboardWidget.h \
+           src/dashboard/RemoveDashboardsTask.h \
+           src/dashboard/ScanDashboardsDirTask.h \
+           src/dashboard/StatisticsDashboardWidget.h \
+           src/dashboard/StatusDashboardWidget.h \
            src/support/OutputDirectoryWidget.h \
            src/support/URLLineEdit.h \
            src/wizard/BowtieWidgetController.h \
@@ -57,16 +54,6 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/wizard/WidgetController.h \
            src/wizard/WizardController.h \
            src/wizard/WizardPageController.h
-
-useWebKit() {
-    HEADERS += src/dashboard/webview/webkit/WebViewWebKitControllerPrivate.h
-} else {
-    HEADERS += src/dashboard/webview/qtwebengine/WebViewQtWebEngineControllerPrivate.h \
-               src/dashboard/webview/qtwebengine/webchannel/U2WebChannel.h \
-               src/dashboard/webview/qtwebengine/webchannel/WebSocketClientWrapper.h \
-               src/dashboard/webview/qtwebengine/webchannel/WebSocketTransport.h
-}
-
 
 FORMS += src/AnnsActionDialog.ui \
          src/BreakpointHitCountDialog.ui \
@@ -116,19 +103,17 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/dashboard/Dashboard.cpp \
            src/dashboard/DashboardInfo.cpp \
            src/dashboard/DashboardInfoRegistry.cpp \
-           src/dashboard/DashboardJsAgent.cpp \
-           src/dashboard/DashboardPageController.cpp \
-           src/dashboard/ExternalToolsDashboardWidget.cpp \
-           src/dashboard/FlowLayout.cpp \
-           src/dashboard/RemoveDashboardsTask.cpp \
-           src/dashboard/ParametersDashboardWidget.cpp \
-           src/dashboard/ScanDashboardsDirTask.cpp \
            src/dashboard/DashboardTabPage.cpp \
            src/dashboard/DashboardWidget.cpp \
            src/dashboard/DomUtils.cpp \
-           src/dashboard/webview/JavaScriptAgent.cpp \
-           src/dashboard/webview/WebViewController.cpp \
-           src/dashboard/webview/WebViewControllerPrivate.cpp \
+           src/dashboard/ExternalToolsDashboardWidget.cpp \
+           src/dashboard/NotificationsDashboardWidget.cpp \
+           src/dashboard/OutputFilesDashboardWidget.cpp \
+           src/dashboard/ParametersDashboardWidget.cpp \
+           src/dashboard/RemoveDashboardsTask.cpp \
+           src/dashboard/ScanDashboardsDirTask.cpp \
+           src/dashboard/StatisticsDashboardWidget.cpp \
+           src/dashboard/StatusDashboardWidget.cpp \
            src/support/OutputDirectoryWidget.cpp \
            src/support/URLLineEdit.cpp \
            src/wizard/BowtieWidgetController.cpp \
@@ -144,17 +129,6 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/wizard/WidgetController.cpp \
            src/wizard/WizardController.cpp \
            src/wizard/WizardPageController.cpp
-
-useWebKit() {
-    SOURCES += src/dashboard/webview/webkit/WebViewWebKitControllerPrivate.cpp
-} else {
-    SOURCES += src/dashboard/webview/qtwebengine/WebViewQtWebEngineControllerPrivate.cpp \
-               src/dashboard/webview/qtwebengine/webchannel/U2WebChannel.cpp \
-               src/dashboard/webview/qtwebengine/webchannel/WebSocketClientWrapper.cpp \
-               src/dashboard/webview/qtwebengine/webchannel/WebSocketTransport.cpp
-
-}
-
 
 RESOURCES += U2Designer.qrc
 TRANSLATIONS += transl/russian.ts

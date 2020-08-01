@@ -42,7 +42,6 @@
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -65,14 +64,12 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
-#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -83,13 +80,11 @@
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
-#include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsStartPage.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -1028,9 +1023,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
     // There is no message "Task is in progress.." after finished task where 2 notifications are present
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
-    HI::HIWebElement el = GTUtilsDashboard::findWebElement(os, "The workflow task has been finished");
-    CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
+    GTWidget::findLabelByText(os, "The workflow task has been finished", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6207) {
@@ -1657,8 +1650,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     GTGlobals::sleep();
 
     //Expected: The dashboard appears
-    QWidget *dashboard = GTUtilsDashboard::getDashboardWebView(os);
-    CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
+    GTUtilsDashboard::getDashboard(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6243) {
@@ -2540,11 +2532,13 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an output file on the dashboard.
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
-    const int expectedCount = 1;
+
+    int expectedCount = 1;
     CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
-    const QString expectedName = "human_T1_cutted.fa";
+
+    QString expectedName = "human_T1_cutted.fa";
     CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
 
     //    7. Open a menu on the output item on the dashboard.

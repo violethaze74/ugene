@@ -30,15 +30,16 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "DashboardTabPage.h"
-#include "webview/U2WebView.h"
 
 namespace U2 {
 using namespace Workflow;
 
-class DashboardJsAgent;
-class DashboardPageController;
 class ExternalToolsDashboardWidget;
 class ParametersDashboardWidget;
+class NotificationsDashboardWidget;
+class StatisticsDashboardWidget;
+class StatusDashboardWidget;
+class OutputFilesDashboardWidget;
 
 class U2DESIGNER_EXPORT Dashboard : public QWidget {
     Q_OBJECT
@@ -60,14 +61,7 @@ public:
 
     QString getPageFilePath() const;
 
-    /** Modifies the application settings and emits signal for all dashboards */
-    void initiateHideLoadButtonHint();
-
     bool isWorkflowInProgress();
-
-    U2WebView *getWebView() const {
-        return webView;
-    }
 
     static const QString REPORT_SUB_DIR;
     static const QString DB_FILE_NAME;
@@ -89,13 +83,10 @@ signals:
     void si_serializeContent(const QString &content);
 
 public slots:
-    /** Hides the hint on the current dashboard instance */
-    void sl_hideLoadBtnHint();
     void sl_loadSchema();
 
 private slots:
     void sl_runStateChanged(bool paused);
-    void sl_pageReady();
     void sl_serialize();
     void sl_onLogChanged(Monitor::LogEntry logEntry);
     void sl_setDirectory(const QString &dir);
@@ -107,7 +98,6 @@ private slots:
 private:
     /** Initializes layout with all widgets initialized with the given initial states. */
     void initLayout();
-    void loadDocument();
     void saveSettings();
     void loadSettings();
     static QMap<QString, QDomElement> readInitialWidgetStates(const QString &htmlUrl);
@@ -117,14 +107,12 @@ private:
     void reserveName() const;
     void initExternalToolsTabWidget();
 
-    bool loadingStarted;
     QString loadUrl;
     QString name;
     QString dir;
     bool opened;
     const QPointer<const WorkflowMonitor> monitor;
     bool workflowInProgress;
-    DashboardPageController *dashboardPageController;
 
     QVBoxLayout *mainLayout;
 
@@ -133,13 +121,19 @@ private:
     QToolButton *externalToolsTabButton;
 
     QStackedWidget *stackedWidget;
-    U2WebView *webView;
+
+    DashboardTabPage *overviewTabPage;
+    NotificationsDashboardWidget *notificationsWidget;
+    StatisticsDashboardWidget *statisticsWidget;
+    StatusDashboardWidget *statusWidget;
+    OutputFilesDashboardWidget *outputFilesWidget;
 
     DashboardTabPage *inputTabPage;
     ParametersDashboardWidget *parametersWidget;
 
     DashboardTabPage *externalToolsTabPage;
     ExternalToolsDashboardWidget *externalToolsWidget;
+
     QMap<QString, QDomElement> initialWidgetStates;
 };
 

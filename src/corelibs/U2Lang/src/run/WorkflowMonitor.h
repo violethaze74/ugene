@@ -144,6 +144,8 @@ public:
 
     void onLogChanged(const WDListener *listener, int messageType, const QString &message);
 
+    Monitor::TaskState getTaskState() const;
+
     static const QString WORKFLOW_FILE_NAME;
 
 public slots:

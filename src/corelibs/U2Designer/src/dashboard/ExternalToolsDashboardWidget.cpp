@@ -60,7 +60,7 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     : monitor(monitor) {
     setMinimumWidth(1100);    // TODO: make it expanding.
     layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setMargin(12);
     layout->setSpacing(0);
     setLayout(layout);
 

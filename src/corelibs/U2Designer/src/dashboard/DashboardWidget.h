@@ -22,16 +22,69 @@
 #ifndef _U2_DASHBOARD_WIDGET_H_
 #define _U2_DASHBOARD_WIDGET_H_
 
+#include <QGridLayout>
+#include <QMenu>
+#include <QToolButton>
 #include <QWidget>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
+/**
+ * Container class for all Dashboard widgets.
+ *
+ * Adds title and bounding box around widget content.
+ */
 class U2DESIGNER_EXPORT DashboardWidget : public QWidget {
     Q_OBJECT
 public:
-    DashboardWidget(const QString& title, QWidget* contentWidget);
+    DashboardWidget(const QString &title, QWidget *contentWidget);
+};
+
+class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
+    Q_OBJECT
+public:
+    DashboardFileButton(const QStringList &urlList, bool isFolderMode = false);
+
+private slots:
+    void sl_openFileClicked();
+
+private:
+    void addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction = false);
+
+    QStringList urlList;
+};
+
+/** Styled dashboard menu used with file buttons. */
+class U2DESIGNER_EXPORT DashboardPopupMenu : public QMenu {
+    Q_OBJECT
+public:
+    explicit DashboardPopupMenu(QAbstractButton *button, QWidget *parent = 0);
+    void showEvent(QShowEvent *event);
+
+private:
+    QAbstractButton *button;
+};
+
+/** Various Dashboard widget helpers. */
+class U2DESIGNER_EXPORT DashboardWidgetUtils {
+public:
+    static void addTableHeadersRow(QGridLayout *gridLayout, const QStringList &headerNameList);
+
+    static void addTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList);
+
+    static void addTableCell(QGridLayout *gridLayout, const QString &rowId, QWidget *widget, int row, int column, bool isLastRow, bool isLastColumn);
+
+    static void addTableCell(QGridLayout *gridLayout, const QString &rowId, const QString &text, int row, int column, bool isLastRow, bool isLastColumn);
+
+    /**
+     * Adds new row or updates existing row in the table. Uses rowId to compare rows.
+     * Returns true if a new row was added.
+     */
+    static bool addOrUpdateTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList);
+
+    static QString parseOpenUrlValueFromOnClick(const QString &onclickValue);
 };
 
 }    // namespace U2

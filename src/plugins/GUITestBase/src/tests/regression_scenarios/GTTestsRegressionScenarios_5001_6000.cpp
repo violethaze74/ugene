@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
+    GTWidget::findLabelByText(os, "There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
@@ -383,7 +383,6 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(256)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
@@ -400,7 +399,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
+    GTWidget::findLabelByText(os, "There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5029) {
@@ -481,8 +480,7 @@ GUI_TEST_CLASS_DEFINITION(test_5069) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const bool areThereProblems = GTUtilsDashboard::areThereNotifications(os);
-    CHECK_SET_ERR(!areThereProblems, "Workflow has finished with problems");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Workflow has finished with problems");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5082) {

@@ -22,18 +22,15 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QCheckBox>
 #include <QFileInfo>
 #include <QLineEdit>
-#include <QSpinBox>
 
 #include "GTTestsSanger.h"
 #include "GTUtilsDashboard.h"

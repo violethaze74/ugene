@@ -29,16 +29,19 @@
 
 namespace U2 {
 
+class DashboardWidget;
+
 class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
     Q_OBJECT
 
 public:
-    DashboardTabPage(const QString &tabObjectName, bool useFlowLayout = false);
+    DashboardTabPage(const QString &tabObjectName);
 
-    void addDashboardWidget(const QString &title, QWidget *contentWidget);
+    DashboardWidget *addDashboardWidget(const QString &title, QWidget *contentWidget);
 
 private:
-    QLayout *widgetsLayout;
+    QVBoxLayout *leftColumnLayout;
+    QVBoxLayout *rightColumnLayout;
 };
 
 }    // namespace U2

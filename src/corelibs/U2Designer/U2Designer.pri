@@ -5,12 +5,6 @@ include( ../../ugene_lib_common.pri )
 
 QT += svg xml
 
-useWebKit() {
-    QT += webkitwidgets
-} else {
-    QT += webenginewidgets websockets webchannel
-}
-
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
 
 LIBS += -L../../$$out_dir()

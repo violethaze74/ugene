@@ -22,18 +22,17 @@
 #include "DashboardTabPage.h"
 
 #include "DashboardWidget.h"
-#include "FlowLayout.h"
 
 namespace U2 {
 
-DashboardTabPage::DashboardTabPage(const QString &tabObjectName, bool useFlowLayout) {
+DashboardTabPage::DashboardTabPage(const QString &tabObjectName) {
     setObjectName(tabObjectName);
     setStyleSheet("QWidget#tabPageStyleRoot {"
                   " background: url(':U2Designer/images/background.png') repeat scroll 0 0 transparent; "
                   " padding: 10px;"
                   "}");
 
-    QWidget *mainWidget = new QWidget();
+    auto mainWidget = new QWidget();
 
     auto layout = new QHBoxLayout();
     layout->setMargin(0);
@@ -50,23 +49,38 @@ DashboardTabPage::DashboardTabPage(const QString &tabObjectName, bool useFlowLay
     styleRootWidget->setLayout(styleRootWidgetLayout);
 
     styleRootWidgetLayout->addStretch(1);
-    int widgetSpacing = 15;
-    if (useFlowLayout) {
-        widgetsLayout = new FlowLayout(widgetSpacing, widgetSpacing, widgetSpacing);
-    } else {
-        auto vBoxLayout = new QVBoxLayout();
-        vBoxLayout->setContentsMargins(widgetSpacing, widgetSpacing, widgetSpacing, widgetSpacing);
-        widgetsLayout = vBoxLayout;
-    }
-    styleRootWidgetLayout->addLayout(widgetsLayout);
+    auto centerWidget = new QWidget();
+    centerWidget->setMinimumWidth(1150);
+    styleRootWidgetLayout->addWidget(centerWidget);
     styleRootWidgetLayout->addStretch(1);
+
+    auto centerWidgetLayout = new QHBoxLayout();
+    centerWidgetLayout->setSpacing(0);
+    centerWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    centerWidget->setLayout(centerWidgetLayout);
+
+    int widgetSpacing = 20;
+    leftColumnLayout = new QVBoxLayout();
+    leftColumnLayout->setSpacing(widgetSpacing);
+    leftColumnLayout->setContentsMargins(widgetSpacing, widgetSpacing, widgetSpacing / 2, widgetSpacing);
+    leftColumnLayout->addStretch(1000);
+    centerWidgetLayout->addLayout(leftColumnLayout);
+
+    rightColumnLayout = new QVBoxLayout();
+    rightColumnLayout->setSpacing(widgetSpacing);
+    rightColumnLayout->setContentsMargins(widgetSpacing / 2, widgetSpacing, widgetSpacing, widgetSpacing);
+    rightColumnLayout->addStretch(1000);
+    centerWidgetLayout->addLayout(rightColumnLayout);
 
     setWidget(mainWidget);
     setWidgetResizable(true);    // make the widget to fill whole available space
 }
 
-void DashboardTabPage::addDashboardWidget(const QString &title, QWidget *contentWidget) {
-    widgetsLayout->addWidget(new DashboardWidget(title, contentWidget));
+DashboardWidget *DashboardTabPage::addDashboardWidget(const QString &title, QWidget *contentWidget) {
+    auto layout = leftColumnLayout->count() <= rightColumnLayout->count() ? leftColumnLayout : rightColumnLayout;
+    auto dashboardWidget = new DashboardWidget(title, contentWidget);
+    layout->insertWidget(layout->count() - 1, dashboardWidget);    // the last is stretch.
+    return dashboardWidget;
 }
 
 }    // namespace U2

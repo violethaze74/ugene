@@ -36,7 +36,6 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h>
@@ -2391,8 +2390,8 @@ GUI_TEST_CLASS_DEFINITION(test_2374) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Expected state: there is no "External Tools" page on the WD dashboards
-    GTWebView::checkElement(os, GTUtilsDashboard::getDashboardWebView(os), "External Tools", "A", false);
+    // Expected state: there is no "External Tools" page on the WD dashboards
+    CHECK_SET_ERR(!GTUtilsDashboard::hasTab(os, GTUtilsDashboard::ExternalTools), "External tools tab exists, but is not expected!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2375) {
