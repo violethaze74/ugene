@@ -52,7 +52,10 @@ public:
 
     static const QString getDashboardName(HI::GUITestOpStatus &os, int dashboardNumber);
 
+    static QStringList getInputFiles(HI::GUITestOpStatus &os);
+
     static QStringList getOutputFiles(HI::GUITestOpStatus &os);
+
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
     static QString getTabObjectName(Tabs tab);

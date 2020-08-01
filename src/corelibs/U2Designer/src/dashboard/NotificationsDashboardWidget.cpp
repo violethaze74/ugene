@@ -51,8 +51,6 @@ static QList<NotificationsDashboardInfo> dom2NotificationInfo(const QDomElement 
         }
         result << NotificationsDashboardInfo(tr.attribute("id"), actorName, type, message, count);
     }
-    printf("Results: %d\n", result.size());
-    fflush(stdout);
     return result;
 }
 
@@ -92,11 +90,11 @@ void NotificationsDashboardWidget::updateVisibility() {
 
 void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification &wdNotification, int count) {
     for (int i = 0; i < notificationList.size(); i++) {
-        auto oldNotification = notificationList[i];
+        NotificationsDashboardInfo& oldNotification = notificationList[i];
         if (oldNotification.actorId == wdNotification.actorId &&
             oldNotification.type == wdNotification.type &&
             oldNotification.message == wdNotification.message) {
-            notificationList[i].count = count;
+            oldNotification.count = count;
             updateNotificationRow(i);
             return;
         }

@@ -108,15 +108,26 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
     return GTTabWidget::getTabName(os, getTabWidget(os), dashboardNumber);
 }
 
+static QStringList getFileButtonLabels(QWidget *parentWidget) {
+    QList<QToolButton *> buttons = parentWidget->findChildren<QToolButton *>();
+    QStringList labels;
+    for (auto button : buttons) {
+        labels << button->text();
+    }
+    return labels;
+}
+
+QStringList GTUtilsDashboard::getInputFiles(HI::GUITestOpStatus &os) {
+    openTab(os, Input);
+    auto dashboard = getDashboard(os);
+    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", dashboard);
+    return getFileButtonLabels(parametersWidget);
+}
+
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
     auto dashboard = getDashboard(os);
     auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
-    QList<QToolButton *> buttons = outputFilesWidget->findChildren<QToolButton *>();
-    QStringList outputFilesNames;
-    for (auto button : buttons) {
-        outputFilesNames << button->text();
-    }
-    return outputFilesNames;
+    return getFileButtonLabels(outputFilesWidget);
 }
 
 #define GT_METHOD_NAME "clickOutputFile"

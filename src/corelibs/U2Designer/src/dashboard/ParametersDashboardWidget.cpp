@@ -142,6 +142,7 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
 
 ParametersDashboardWidget::ParametersDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor)
     : dashboardDir(dashboardDir) {
+    setObjectName("ParametersDashboardWidget");
     setMinimumWidth(1100);
 
     layout = new QHBoxLayout();

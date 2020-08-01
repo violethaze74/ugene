@@ -471,8 +471,6 @@ static void makeValidDomFromHtml(QString &htmlData) {
 }
 
 static void removeProblemsWidgetDom(QString &htmlData) {
-    printf("removeProblemsWidgetDom\n");
-    fflush(stdout);
     QString startToken = "<tbody scroll=\"yes\" id=\"problemsWidget123\">";
     QString endToken = "</tbody>";
     int startIndex = htmlData.indexOf(startToken);
