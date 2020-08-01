@@ -4156,8 +4156,8 @@ GUI_TEST_CLASS_DEFINITION(test_2638) {
     // 4. Open "input" tab on the dashboard
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
     QWidget *indexButton = GTWidget::findButtonByText(os, "index", GTUtilsDashboard::getDashboard(os));
-    QString actionCode = indexButton->property("action-code").toString();
-    CHECK_SET_ERR(actionCode.startsWith("file-"), "Unexpected action type, expected file, got: " + actionCode);
+    QString type = indexButton->property("file-url").toString().split("\n")[0];
+    CHECK_SET_ERR(type == "file", "Unexpected action type, expected file, got: " + type);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2640) {
