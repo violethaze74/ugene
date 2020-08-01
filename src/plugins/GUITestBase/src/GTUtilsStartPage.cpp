@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <primitives/GTWebView.h>
-#include <primitives/GTWidget.h>
-
 #include "GTUtilsMdi.h"
 #include "GTUtilsStartPage.h"
 

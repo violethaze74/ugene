@@ -28,7 +28,6 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
