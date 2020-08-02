@@ -59,10 +59,20 @@ static QString fixOldStyleOpenFileJs(const QString &html) {
 ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor) {
     setMinimumWidth(1100);    // TODO: make it expanding.
+
+    // A frame with rounded borders around the content.
+    auto frameLayout = new QVBoxLayout();
+    frameLayout->setContentsMargins(12, 12, 12, 12);
+    setLayout(frameLayout);
+    auto frameWidget = new QWidget();
+    frameWidget->setStyleSheet("border: 1px solid #ddd; padding: 8px; border-radius: 6px");
+    frameLayout->addWidget(frameWidget);
+
+    // Vertical layout with all nodes.
     layout = new QVBoxLayout();
     layout->setMargin(12);
     layout->setSpacing(0);
-    setLayout(layout);
+    frameWidget->setLayout(layout);
 
     QList<QDomElement> actorElementList = DomUtils::findChildElementsByClass(DomUtils::findElementById(dom, TREE_ID), NODE_CLASS_ACTOR, 2);
     for (auto actorSpan : actorElementList) {
