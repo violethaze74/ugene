@@ -89,15 +89,15 @@ QString StatisticsDashboardWidget::toHtml() const {
 }
 
 static QString formatTimeString(qint64 microseconds) {
-    int milliseconds = (microseconds / 1000) % 1000;
-    int seconds = (milliseconds / 1000) % 60;
-    int minutes = (seconds / 60) % 60;
+    int milliseconds = microseconds / 1000;
+    int seconds = milliseconds / 1000;
+    int minutes = seconds / 60;
     int hours = minutes / 60;
     return QString("%1:%2:%3.%4")
         .arg(QString::number(hours), 2, '0')
-        .arg(QString::number(minutes), 2, '0')
-        .arg(QString::number(seconds), 2, '0')
-        .arg(QString::number(milliseconds), 3, '0');
+        .arg(QString::number(minutes % 60), 2, '0')
+        .arg(QString::number(seconds % 60), 2, '0')
+        .arg(QString::number(milliseconds % 1000), 3, '0');
 }
 
 void StatisticsDashboardWidget::sl_workerInfoChanged(const QString &actorId, const Monitor::WorkerInfo &info) {

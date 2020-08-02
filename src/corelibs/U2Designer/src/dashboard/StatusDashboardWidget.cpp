@@ -137,13 +137,13 @@ void StatusDashboardWidget::updateTimeLabel() {
         timerStartMillis = currentTimeMillis;
     }
     int milliseconds = QDateTime::currentMSecsSinceEpoch() - timerStartMillis;
-    int seconds = (milliseconds / 1000) % 60;
-    int minutes = (seconds / 60) % 60;
+    int seconds = milliseconds / 1000;
+    int minutes = seconds / 60;
     int hours = minutes / 60;
     timeText = QString("%1:%2:%3")
                    .arg(QString::number(hours), 2, '0')
-                   .arg(QString::number(minutes), 2, '0')
-                   .arg(QString::number(seconds), 2, '0');
+                   .arg(QString::number(minutes % 60), 2, '0')
+                   .arg(QString::number(seconds % 60), 2, '0');
     timeLabel->setText(tr("Time %1").arg(timeText));
 }
 
