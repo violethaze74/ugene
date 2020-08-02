@@ -24,17 +24,16 @@
 #include <QGraphicsView>
 #include <QInputDialog>
 #include <QMenu>
+#include <QFileInfo>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QTabBar>
-#include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/SignalBlocker.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>
-#include <U2Designer/ScanDashboardsDirTask.h>
 
 #include "WorkflowViewController.h"
 
@@ -97,25 +96,26 @@ void WorkflowTabView::sl_workflowStateChanged(bool isRunning) {
     closeButton->setEnabled(!isRunning);
 }
 
-int WorkflowTabView::appendDashboard(Dashboard *db) {
+int WorkflowTabView::appendDashboard(Dashboard *dashboard) {
     RegistryConnectionBlocker registryConnectionBlocker(this);
     Q_UNUSED(registryConnectionBlocker);
 
-    if (db->getName().isEmpty()) {
-        db->setName(generateName());
+    if (dashboard->getName().isEmpty()) {
+        dashboard->setName(generateName());
     }
 
-    int idx = addTab(db, db->getName());
+    int idx = addTab(dashboard, dashboard->getName());
+    QStringList existingIds = allIds();
 
-    CloseButton *closeButton = new CloseButton(db);
+    CloseButton *closeButton = new CloseButton(dashboard);
     tabBar()->setTabButton(idx, QTabBar::RightSide, closeButton);
-    if (db->isWorkflowInProgress()) {
+    if (dashboard->isWorkflowInProgress()) {
         closeButton->setEnabled(false);
-        connect(db, SIGNAL(si_workflowStateChanged(bool)), SLOT(sl_workflowStateChanged(bool)));
+        connect(dashboard, SIGNAL(si_workflowStateChanged(bool)), SLOT(sl_workflowStateChanged(bool)));
     }
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_closeTab()));
-    connect(db, SIGNAL(si_loadSchema(const QString &)), parent, SLOT(sl_loadScene(const QString &)));
-    connect(db, SIGNAL(si_hideLoadBtnHint()), this, SIGNAL(si_hideLoadBtnHint()));
+    connect(dashboard, SIGNAL(si_loadSchema(const QString &)), parent, SLOT(sl_loadScene(const QString &)));
+    connect(dashboard, SIGNAL(si_hideLoadBtnHint()), this, SIGNAL(si_hideLoadBtnHint()));
 
     emit si_countChanged();
     return idx;
@@ -160,10 +160,10 @@ void WorkflowTabView::sl_renameTab() {
     Q_UNUSED(registryConnectionBlocker);
 
     QAction *rename = dynamic_cast<QAction *>(sender());
-    CHECK(NULL != rename, );
+    CHECK(rename != nullptr, );
     int idx = rename->data().toInt();
     Dashboard *db = dynamic_cast<Dashboard *>(widget(idx));
-    CHECK(NULL != db, );
+    CHECK(db != nullptr, );
 
     bool ok = false;
     QString newName = QInputDialog::getText(this, tr("Rename Dashboard"), tr("New dashboard name:"), QLineEdit::Normal, db->getName(), &ok);
@@ -184,8 +184,8 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
 
         for (int i = count() - 1; i >= 0; --i) {
             Dashboard *dashboard = qobject_cast<Dashboard *>(widget(i));
-            SAFE_POINT(nullptr != dashboard, "Can't cast QWidget to Dashboard", );
-            const QString id = dashboard->getDashboardId();
+            SAFE_POINT(dashboard != nullptr, "Can't cast QWidget to Dashboard", );
+            QString id = dashboard->getDashboardId();
 
             if (removed.contains(id)) {
                 removeDashboard(dashboard);
@@ -195,20 +195,20 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
         countBeforeAdding = count();
 
         DashboardInfoRegistry *dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
-        const QStringList existingIds = allIds();
-        foreach (const QString &dashboardId, added) {
+        QStringList existingIds = allIds();
+        for (const QString &dashboardId : added) {
             if (!existingIds.contains(dashboardId)) {
-                const DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
-                if (dashboardInfo.opened) {
-                    Dashboard *dashboard = new Dashboard(dashboardInfo.path, this);
-                    appendDashboard(dashboard);
+                DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
+                // Checking that file exists, because a new dashboard can be created in separate WD window and have no file written yet.
+                if (dashboardInfo.opened && QFileInfo(dashboardInfo.path + Dashboard::REPORT_SUB_DIR + Dashboard::DB_FILE_NAME).exists()) {
+                    appendDashboard(new Dashboard(dashboardInfo.path, this));
                 }
             }
         }
     }
 
-    const int countAfterAdding = count();
-    if (0 == countBeforeAdding && countAfterAdding > 0) {
+    int countAfterAdding = count();
+    if (countBeforeAdding == 0 && countAfterAdding > 0) {
         const int newIndex = countAfterAdding - 1;
         if (newIndex > 0) {
             setCurrentIndex(countAfterAdding - 1);

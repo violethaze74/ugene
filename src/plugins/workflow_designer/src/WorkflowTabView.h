@@ -62,7 +62,7 @@ private slots:
     void sl_workflowStateChanged(bool isRunning);
 
 private:
-    int appendDashboard(Dashboard *db);
+    int appendDashboard(Dashboard *dashboard);
     void removeDashboard(Dashboard *db);
     QString generateName(const QString &baseName = "") const;
     QSet<QString> allNames() const;
