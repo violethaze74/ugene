@@ -84,7 +84,7 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 /* Dashboard */
 /************************************************************************/
 Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent)
-    : QWidget(parent), loadUrl("qrc:///U2Designer/html/Dashboard.html"), name(name), opened(true),
+    : QWidget(parent), name(name), opened(true),
       monitor(monitor), workflowInProgress(true),
       mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
       statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
@@ -92,7 +92,6 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
     setObjectName("Dashboard");
     setContextMenuPolicy(Qt::NoContextMenu);
     initLayout();
-    connect(monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
     connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
     connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
     connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
@@ -101,7 +100,6 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
 
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     : QWidget(parent),
-      loadUrl(QUrl::fromLocalFile(dirPath + REPORT_SUB_DIR + DB_FILE_NAME).toString()),
       dir(dirPath), opened(true), monitor(nullptr), workflowInProgress(false),
       mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
       statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
@@ -291,10 +289,6 @@ void Dashboard::setName(const QString &value) {
     updateDashboard();
 }
 
-QString Dashboard::getPageFilePath() const {
-    return dir + REPORT_SUB_DIR + DB_FILE_NAME;
-}
-
 void Dashboard::sl_loadSchema() {
     QString url = dir + REPORT_SUB_DIR + WorkflowMonitor::WORKFLOW_FILE_NAME;
     emit si_loadSchema(url);
@@ -319,7 +313,7 @@ void Dashboard::sl_onLogChanged(Monitor::LogEntry logEntry) {
     externalToolsWidget->addLogEntry(logEntry);
 }
 
-void Dashboard::sl_serialize() {
+void Dashboard::saveReportFile() {
     CHECK(mainLayout != nullptr, );
     QString reportDir = dir + REPORT_SUB_DIR;
     QDir d(reportDir);
@@ -363,7 +357,7 @@ void Dashboard::sl_serialize() {
         html.replace("<div class=\"widget-content\" id=\"externalToolsWidget\"></div>",
                      "<div class=\"widget-content\" id=\"externalToolsWidget\">\n" + externalToolsWidget->toHtml() + "</div>\n");
     }
-    IOAdapterUtils::writeTextFile(getPageFilePath(), html);
+    IOAdapterUtils::writeTextFile(dir + REPORT_SUB_DIR + DB_FILE_NAME, html);
 }
 
 void Dashboard::sl_setDirectory(const QString &value) {
@@ -374,11 +368,13 @@ void Dashboard::sl_setDirectory(const QString &value) {
 
 void Dashboard::sl_workflowStateChanged(Monitor::TaskState state) {
     workflowInProgress = (state == Monitor::RUNNING) || (state == Monitor::RUNNING_WITH_PROBLEMS);
-    if (!workflowInProgress) {
-        emit si_workflowStateChanged(workflowInProgress);
-        registerDashboard();
-        AppContext::getDashboardInfoRegistry()->releaseReservedName(getDashboardId());
+    if (workflowInProgress) {
+        return;
     }
+    emit si_workflowStateChanged(workflowInProgress);
+    saveReportFile();
+    registerDashboard();
+    AppContext::getDashboardInfoRegistry()->releaseReservedName(getDashboardId());
 }
 
 void Dashboard::saveSettings() {
@@ -397,9 +393,7 @@ void Dashboard::loadSettings() {
 void Dashboard::registerDashboard() const {
     DashboardInfo dashboardInfo(directory());
     dashboardInfo.name = name;
-    const bool registered = AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
-    Q_ASSERT(registered);
-    Q_UNUSED(registered);
+    AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
 }
 
 void Dashboard::updateDashboard() const {

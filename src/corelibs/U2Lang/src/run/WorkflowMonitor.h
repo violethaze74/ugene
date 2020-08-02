@@ -162,7 +162,6 @@ signals:
     void si_runStateChanged(bool paused);
     void si_taskStateChanged(Monitor::TaskState state);
     void si_updateProducers();
-    void si_report();
     void si_dirSet(const QString &dir);
     void si_logChanged(Monitor::LogEntry entry);
 

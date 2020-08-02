@@ -59,8 +59,6 @@ public:
     const QString &getName() const;
     void setName(const QString &value);
 
-    QString getPageFilePath() const;
-
     bool isWorkflowInProgress();
 
     static const QString REPORT_SUB_DIR;
@@ -87,7 +85,6 @@ public slots:
 
 private slots:
     void sl_runStateChanged(bool paused);
-    void sl_serialize();
     void sl_onLogChanged(Monitor::LogEntry logEntry);
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
@@ -96,6 +93,8 @@ private slots:
     void sl_onTabButtonToggled(int id, bool checked);
 
 private:
+    void saveReportFile();
+
     /** Initializes layout with all widgets initialized with the given initial states. */
     void initLayout(const QMap<QString, QDomElement> &initialWidgetStates = QMap<QString, QDomElement>());
     void saveSettings();
@@ -107,7 +106,6 @@ private:
     void reserveName() const;
     void initExternalToolsTabWidget();
 
-    QString loadUrl;
     QString name;
     QString dir;
     bool opened;

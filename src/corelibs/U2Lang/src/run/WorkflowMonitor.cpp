@@ -249,7 +249,6 @@ void WorkflowMonitor::sl_taskStateChanged() {
         i.value().logs.clear();
     }
     emit si_taskStateChanged(state);
-    emit si_report();
 }
 
 void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {

@@ -199,8 +199,7 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
         for (const QString &dashboardId : added) {
             if (!existingIds.contains(dashboardId)) {
                 DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
-                // Checking that file exists, because a new dashboard can be created in separate WD window and have no file written yet.
-                if (dashboardInfo.opened && QFileInfo(dashboardInfo.path + Dashboard::REPORT_SUB_DIR + Dashboard::DB_FILE_NAME).exists()) {
+                if (dashboardInfo.opened) {
                     appendDashboard(new Dashboard(dashboardInfo.path, this));
                 }
             }
