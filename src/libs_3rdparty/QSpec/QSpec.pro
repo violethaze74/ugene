@@ -42,7 +42,6 @@ HEADERS += \
            src/primitives/GTToolbar.h \
            src/primitives/GTTreeView.h \
            src/primitives/GTTreeWidget.h \
-           src/primitives/GTWebView.h \
            src/primitives/GTWidget.h \
            src/primitives/PopupChooser.h \
            src/primitives/private/GTMenuPrivate.h \
@@ -101,7 +100,6 @@ SOURCES += \
            src/primitives/GTToolbar.cpp \
            src/primitives/GTTreeView.cpp \
            src/primitives/GTTreeWidget.cpp \
-           src/primitives/GTWebView.cpp \
            src/primitives/GTWidget.cpp \
            src/primitives/PopupChooser.cpp \
            src/primitives/private/GTMenuPrivate.cpp \
@@ -121,13 +119,15 @@ SOURCES += \
            src/core/TestThread.cpp \
            src/core/GUITestsLauncher.cpp
 
-useWebKit() {
-    HEADERS += src/primitives/GTWebkitView.h
-    SOURCES += src/primitives/GTWebkitView.cpp
-} else {
-    HEADERS += src/primitives/GTWebEngineView.h
-    SOURCES += src/primitives/GTWebEngineView.cpp
-}
+# UGENE does not use either WebKit nor WebEngine anymore.
+# If the helper files below are needed add a special qmake parameter to include them into QSpec.
+#useWebKit() {
+#    HEADERS += src/primitives/GTWebkitView.h src/primitives/GTWebView.h
+#    SOURCES += src/primitives/GTWebkitView.cpp src/primitives/GTWebView.cpp
+#} else {
+#    HEADERS += src/primitives/GTWebEngineView.h src/primitives/GTWebView.h
+#    SOURCES += src/primitives/GTWebEngineView.cpp src/primitives/GTWebView.cpp
+#}
 
 macx {
 OBJECTIVE_HEADERS += src/primitives/private/GTMenuPrivateMac.h

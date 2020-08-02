@@ -8,12 +8,6 @@ use_opencl(){
 
 QT += xml network script widgets
 
-useWebKit() {
-    QT += webkit webkitwidgets
-} else {
-    QT += webengine webenginewidgets webchannel websockets
-}
-
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
 macx : CONFIG -= app_bundle

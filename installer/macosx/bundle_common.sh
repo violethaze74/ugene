@@ -107,9 +107,6 @@ restorePluginsQtInstallNames () {
         restorePluginsQtInstallName QtSql $PLUGIN_LIB
         restorePluginsQtInstallName QtSvg $PLUGIN_LIB
         restorePluginsQtInstallName QtTest $PLUGIN_LIB
-        restorePluginsQtInstallName QtWebChannel $PLUGIN_LIB
-        restorePluginsQtInstallName QtWebKit $PLUGIN_LIB
-        restorePluginsQtInstallName QtWebKitWidgets $PLUGIN_LIB
         restorePluginsQtInstallName QtWidgets $PLUGIN_LIB
         restorePluginsQtInstallName QtXml $PLUGIN_LIB
         restorePluginsQtInstallName QtXmlPatterns $PLUGIN_LIB
