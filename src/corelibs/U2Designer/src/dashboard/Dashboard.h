@@ -97,7 +97,7 @@ private slots:
 
 private:
     /** Initializes layout with all widgets initialized with the given initial states. */
-    void initLayout();
+    void initLayout(const QMap<QString, QDomElement> &initialWidgetStates = QMap<QString, QDomElement>());
     void saveSettings();
     void loadSettings();
     static QMap<QString, QDomElement> readInitialWidgetStates(const QString &htmlUrl);
@@ -133,8 +133,7 @@ private:
 
     DashboardTabPage *externalToolsTabPage;
     ExternalToolsDashboardWidget *externalToolsWidget;
-
-    QMap<QString, QDomElement> initialWidgetStates;
+    QDomElement externalToolsWidgetState;
 };
 
 }    // namespace U2

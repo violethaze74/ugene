@@ -84,44 +84,35 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 /* Dashboard */
 /************************************************************************/
 Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent)
-    : QWidget(parent),
-      loadUrl("qrc:///U2Designer/html/Dashboard.html"),
-      name(name),
-      opened(true),
-      monitor(monitor),
-      workflowInProgress(true),
-      externalToolsWidget(nullptr) {
+    : QWidget(parent), loadUrl("qrc:///U2Designer/html/Dashboard.html"), name(name), opened(true),
+      monitor(monitor), workflowInProgress(true),
+      mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
+      statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
+      parametersWidget(nullptr), externalToolsTabPage(nullptr), externalToolsWidget(nullptr) {
+    setObjectName("Dashboard");
+    setContextMenuPolicy(Qt::NoContextMenu);
     initLayout();
     connect(monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
     connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
     connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
     connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
     connect(getMonitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
-
-    setContextMenuPolicy(Qt::NoContextMenu);
-    sl_onTabButtonToggled(OVERVIEW_TAB_INDEX, true);
 }
 
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     : QWidget(parent),
       loadUrl(QUrl::fromLocalFile(dirPath + REPORT_SUB_DIR + DB_FILE_NAME).toString()),
-      dir(dirPath),
-      opened(true),
-      monitor(NULL),
-      workflowInProgress(false),
-      externalToolsWidget(nullptr) {
-    initialWidgetStates = readInitialWidgetStates(dirPath + REPORT_SUB_DIR + DB_FILE_NAME);
-    initLayout();
-
+      dir(dirPath), opened(true), monitor(nullptr), workflowInProgress(false),
+      mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
+      statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
+      parametersWidget(nullptr), externalToolsTabPage(nullptr), externalToolsWidget(nullptr) {
+    setObjectName("Dashboard");
     setContextMenuPolicy(Qt::NoContextMenu);
     loadSettings();
     saveSettings();
-    sl_onTabButtonToggled(OVERVIEW_TAB_INDEX, true);
 }
 
-void Dashboard::initLayout() {
-    setObjectName("Dashboard");
-
+void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates) {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -235,20 +226,21 @@ void Dashboard::initLayout() {
     externalToolsTabPage = new DashboardTabPage("external_tools_tab_page");
     stackedWidget->addWidget(externalToolsTabPage);
 
-    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
     externalToolsTabButton->setVisible(!externalToolsWidgetState.isNull());
+
+    stackedWidget->setCurrentIndex(0);
 }
 
 void Dashboard::initExternalToolsTabWidget() {
-    CHECK(externalToolsWidget == nullptr, );
-    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    CHECK(externalToolsWidget == nullptr && mainLayout != nullptr, );
     externalToolsWidget = new ExternalToolsDashboardWidget(externalToolsWidgetState, monitor);
     externalToolsTabPage->addDashboardWidget(tr("External Tools"), externalToolsWidget);
     externalToolsTabButton->setVisible(true);
 }
 
 void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
-    if (!checked) {
+    if (!checked || mainLayout == nullptr) {
         return;
     }
     switch (id) {
@@ -266,6 +258,9 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
 }
 
 void Dashboard::onShow() {
+    if (mainLayout == nullptr) {
+        initLayout(readInitialWidgetStates(dir + REPORT_SUB_DIR + DB_FILE_NAME));
+    }
 }
 
 const QPointer<const WorkflowMonitor> &Dashboard::getMonitor() const {
@@ -310,6 +305,7 @@ bool Dashboard::isWorkflowInProgress() {
 }
 
 void Dashboard::sl_runStateChanged(bool paused) {
+    CHECK(mainLayout != nullptr, );
     if (paused) {
         statusWidget->stopTimer();
     } else {
@@ -318,11 +314,13 @@ void Dashboard::sl_runStateChanged(bool paused) {
 }
 
 void Dashboard::sl_onLogChanged(Monitor::LogEntry logEntry) {
+    CHECK(mainLayout != nullptr, );
     initExternalToolsTabWidget();
     externalToolsWidget->addLogEntry(logEntry);
 }
 
 void Dashboard::sl_serialize() {
+    CHECK(mainLayout != nullptr, );
     QString reportDir = dir + REPORT_SUB_DIR;
     QDir d(reportDir);
     if (!d.exists(reportDir)) {
