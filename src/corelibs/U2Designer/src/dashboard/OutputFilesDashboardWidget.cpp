@@ -67,7 +67,7 @@ static QList<WorkerOutputInfo> dom2WorkerOutputInfo(const QDomElement &dom) {
 
 OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor) {
-    setFixedWidth(525);
+    setFixedWidth(550);
     setObjectName("OutputFilesDashboardWidget");
     tableGridLayout = new QGridLayout();
     tableGridLayout->setSpacing(0);

@@ -56,7 +56,7 @@ static QList<NotificationsDashboardInfo> dom2NotificationInfo(const QDomElement 
 
 NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor), dashboardWidget(nullptr) {
-    setFixedWidth(525);
+    setFixedWidth(550);
     setObjectName("NotificationsDashboardWidget");
     tableGridLayout = new QGridLayout();
     tableGridLayout->setSpacing(0);

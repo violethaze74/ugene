@@ -67,7 +67,7 @@ static Monitor::TaskState parseStateFromClass(const QString &cssClass) {
 
 StatusDashboardWidget::StatusDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor), timer(nullptr), timerStartMillis(0) {
-    setFixedWidth(525);
+    setFixedWidth(550);
     setObjectName("StatusDashboardWidget");
     timeText = DomUtils::findElementById(dom, "timer").text();
     int progress = parseProgress(dom);

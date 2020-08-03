@@ -49,7 +49,7 @@ static QList<StatisticsRow> dom2StatisticRows(const QDomElement &dom) {
 
 StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
     : monitor(monitor) {
-    setFixedWidth(525);
+    setFixedWidth(550);
     tableGridLayout = new QGridLayout();
     tableGridLayout->setSpacing(0);
     setLayout(tableGridLayout);
