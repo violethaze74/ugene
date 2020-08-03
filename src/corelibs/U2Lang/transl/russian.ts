@@ -880,22 +880,22 @@
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2127"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2129"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2151"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2153"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2154"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2156"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2161"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2163"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
@@ -1887,6 +1887,14 @@
         <location filename="../src/model/actor/ActorScriptValidator.cpp" line="64"/>
         <source>Wrong attribute id: </source>
         <translation>Некорректный идентификатор: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::WorkflowMonitor</name>
+    <message>
+        <location filename="../src/run/WorkflowMonitor.cpp" line="209"/>
+        <source>An unexpected contentType: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

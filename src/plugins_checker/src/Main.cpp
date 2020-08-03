@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
         if (useGui) {
             QMessageBox msgBox;
             msgBox.setWindowTitle("Information");
-            msgBox.setText("Use \"ugeneui\" to start Unipro UGENE graphical interface \nor \"ugenecl\" to use the command-line interface.");
+            msgBox.setText("Use \"ugeneui\" to start Unipro graphical interface \nor \"ugenecl\" to use the command-line interface.");
             msgBox.exec();
         } else {
             printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
