@@ -742,7 +742,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 2. Select a group on annotations editor
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
@@ -757,7 +756,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     // 3. Open context menu on sequence area
     // Expected state: { Edit -> Annotation } action is enabled
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
-    //GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "CDS");
 }
 
