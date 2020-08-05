@@ -210,7 +210,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates
 
     QDomElement statisticsWidgetState = initialWidgetStates.value(STATISTICS_WIDGET_STATE_KEY);
     statisticsWidget = new StatisticsDashboardWidget(statisticsWidgetState, monitor);
-    overviewTabPage->addDashboardWidget(tr("Common Statistics"), statisticsWidget);
+    overviewTabPage->addDashboardWidget(tr("Common statistics"), statisticsWidget);
 
     // Input tab.
     inputTabPage = new DashboardTabPage("input_tab_page");

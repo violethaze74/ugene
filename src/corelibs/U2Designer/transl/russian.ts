@@ -770,7 +770,7 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
-        <source>Common Statistics</source>
+        <source>Common statistics</source>
         <translation>Общая статистика</translation>
     </message>
     <message>
