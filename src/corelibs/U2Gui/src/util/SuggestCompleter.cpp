@@ -27,8 +27,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 const int INVALID_ITEM_INDEX = -1;
 
@@ -63,39 +61,42 @@ BaseCompleter::~BaseCompleter() {
 }
 
 bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
+    QEvent::Type eventType = ev->type();
     if (obj == editor) {
-        if (QEvent::FocusOut == ev->type()) {
-            QFocusEvent *fe = static_cast<QFocusEvent *>(ev);
-            if (Qt::PopupFocusReason == fe->reason()) {
+        if (eventType == QEvent::FocusOut) {
+            QFocusEvent *focusEvent = static_cast<QFocusEvent *>(ev);
+            if (focusEvent->reason() == Qt::PopupFocusReason) {
                 return true;
             }
         }
         return false;
     }
-    if (obj != popup)
-        return false;
 
-    if (ev->type() == QEvent::MouseButtonPress) {
+    if (obj != popup) {
+        return false;
+    }
+
+    if (eventType == QEvent::MouseButtonPress) {
         popup->hide();
         emit si_completerClosed();
         return false;
     }
 
-    if (ev->type() == QEvent::KeyPress) {
-        bool consumed = false;
+    bool isConsumed = false;
+    if (eventType == QEvent::KeyPress || eventType == QEvent::ShortcutOverride) {
         int key = static_cast<QKeyEvent *>(ev)->key();
         switch (key) {
         case Qt::Key_Enter:
         case Qt::Key_Return:
-            doneCompletion();
-            consumed = true;
-
         case Qt::Key_Escape:
-            editor->setFocus();
+            isConsumed = true;
+            if (key == Qt::Key_Enter || key == Qt::Key_Return) {
+                doneCompletion();
+            }
             popup->hide();
+            editor->setFocus();
             emit si_completerClosed();
-            consumed = true;
-
+            break;
         case Qt::Key_Up:
         case Qt::Key_Down:
         case Qt::Key_Home:
@@ -103,17 +104,12 @@ bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
         case Qt::Key_PageUp:
         case Qt::Key_PageDown:
             break;
-
         default:
             editor->setFocus();
             editor->event(ev);
-            break;
         }
-
-        return consumed;
     }
-
-    return false;
+    return isConsumed;
 }
 
 void BaseCompleter::showCompletion(const QStringList &choices) {
@@ -172,20 +168,18 @@ int BaseCompleter::getLastChosenItemIndex() const {
     return lastChosenItemIndex;
 }
 
-QStringList MSACompletionFiller::getSuggestions(const QString &str) {
+QStringList MSACompletionFiller::getSuggestions(const QString &userText) {
     QStringList result;
-    QString ss = str.toLower();
-    foreach (QString s, seqNameList) {
-        QString podbor = s.toLower();
-        if (podbor.startsWith(ss)) {
-            result.append(s);
+    QString userTextLc = userText.toLower();    //TODO: does toLower work correctly for non-Latin1 characters range?
+    for (QString sequenceName : seqNameList) {
+        QString sequenceNameLc = sequenceName.toLower();
+        if (sequenceNameLc.startsWith(userTextLc)) {
+            result.append(sequenceName);
         }
     }
-
     if (result.isEmpty()) {
         result.append(defaultValue);
     }
-
     return result;
 }
 
