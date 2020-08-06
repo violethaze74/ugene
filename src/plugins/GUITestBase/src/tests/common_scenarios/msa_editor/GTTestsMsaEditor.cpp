@@ -43,8 +43,6 @@
 
 #include <QApplication>
 
-#include <U2Gui/ToolsMenu.h>
-
 #include <U2Test/UGUITest.h>
 
 #include <U2View/ADVConstants.h>
@@ -2247,56 +2245,29 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {    //DIFFERENCE: context menu is used
     //    Expected state: image is exported
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0026_2_linux) {
+GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
     //    2. press "export as image" on toolbar
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
-    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
     QAbstractButton *saveImage = GTAction::button(os, "Export as image");
-    CHECK_SET_ERR(saveImage, "Save as image button not found");
-
     GTWidget::click(os, saveImage);
+
     //    Expected state: export dialog appeared
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/smallImage.bmp", "JPG", 50));
     GTWidget::click(os, saveImage);
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    3. fill dialog:
     //    file name: test/_common_data/scenarios/sandbox/image.bmp
     //    press OK
     qint64 bigSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-
-    //    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    CHECK_SET_ERR(bigSize == 5098695 && smallSize > 996000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    //    Expected state: image is exported
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0026_2_windows) {
-    //    1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
-    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
-    QAbstractButton *saveImage = GTAction::button(os, "Export as image");
-    CHECK_SET_ERR(saveImage, "Save as image button not found");
-
-    GTWidget::click(os, saveImage);
-    //    Expected state: export dialog appeared
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/smallImage.bmp", "JPG", 50));
-    GTWidget::click(os, saveImage);
-    //    3. fill dialog:
-    //    file name: test/_common_data/scenarios/sandbox/image.bmp
-    //    press OK
-    qint64 bigSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
-    qint64 smallSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-
-    CHECK_SET_ERR(bigSize > 3000000 && bigSize < 5500000 && smallSize > 700000 && smallSize < 1500000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    //    Expected state: image is exported
+    CHECK_SET_ERR(bigSize > 4 * 1000 * 1000 && bigSize < 6 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
+    CHECK_SET_ERR(smallSize > 800 * 1000 && smallSize < 1.5 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {

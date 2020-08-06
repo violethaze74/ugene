@@ -288,7 +288,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6378);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_6581);    //old MAFFT version  v7.212 for Windows32
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0025);
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0026_2_linux);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0026_2);
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_msa_editor::test_0028_linux);
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);
     REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);
@@ -297,7 +297,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_1680);
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_6238);
     REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
-    REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0026_2_windows);
     REGISTER_TEST_ONLY_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
     REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_2089);    //, "no forbidden folder characters on linux and mac");
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2801, "Specific API should be written for Linux and Mac");
