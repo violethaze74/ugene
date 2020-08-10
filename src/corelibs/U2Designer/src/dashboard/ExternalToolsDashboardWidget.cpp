@@ -25,7 +25,6 @@
 #include <QClipboard>
 #include <QHBoxLayout>
 #include <QPainter>
-#include <QScrollArea>
 
 #include <U2Core/U2SafePoints.h>
 
@@ -466,6 +465,8 @@ BadgeLabel::BadgeLabel(int kind, const QString &text, bool isImportant)
         logView->setTextInteractionFlags(Qt::TextBrowserInteraction);
         logView->setContextMenuPolicy(Qt::DefaultContextMenu);
         logView->setOpenExternalLinks(true);
+        logView->setMinimumHeight(qBound(56, 30 * qMax(text.count("\n"), text.size() / 84), 400));
+        logView->setMaximumHeight(800);
         logView->setHtml("<code>" + text + "</code>");
         layout->addWidget(logView);
     } else {
