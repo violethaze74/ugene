@@ -64,7 +64,8 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     frameLayout->setContentsMargins(12, 12, 12, 12);
     setLayout(frameLayout);
     auto frameWidget = new QWidget();
-    frameWidget->setStyleSheet("border: 1px solid #ddd; padding: 8px; border-radius: 6px");
+    frameWidget->setObjectName("frameWidget");
+    frameWidget->setStyleSheet("#frameWidget {border: 1px solid #ddd; padding: 8px; border-radius: 6px;}");
     frameLayout->addWidget(frameWidget);
 
     // Vertical layout with all nodes.
