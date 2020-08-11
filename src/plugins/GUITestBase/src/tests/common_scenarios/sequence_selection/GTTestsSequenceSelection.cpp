@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
                << "Copy selected complementary 5'-3' sequence"
                << "Copy amino acids"
                << "Copy amino acids of complementary 5'-3' strand"
-               << "Copy annotation direct strand"
+               << "Copy annotation sequence"
                << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, menuPath, itemsNames, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -523,10 +523,8 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //    "Copy amino acids"
     //    "Copy amino acids of complementary 5'-3' strand"
     //    The following items are enabled :
-    //    "Copy annotation direct strand"
-    //    "Copy annotation complementary 5'-3' strand"
+    //    "Copy annotation sequence"
     //    "Copy annotation amino acids"
-    //    "Copy annotation amino acids of complementary 5'-3' strand"
     QStringList enabledItemsNames = QStringList() << "Copy selected sequence"
                                                   << "Copy selected complementary 5'-3' sequence"
                                                   << "Copy amino acids"
@@ -567,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
 
     //6. Click "Copy annotation direct strand".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy annotation direct strand"));
+                                                                              << "Copy annotation sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -637,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     //    The following buttons are disabled :
     //    "Copy annotation sequence"
     //    "Copy annotation sequence translation"
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", QStringList() << "Copy annotation direct strand"
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", QStringList() << "Copy annotation sequence"
                                                                                                              << "Copy annotation amino acids",
                                                             PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));

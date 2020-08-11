@@ -33,9 +33,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
-#include <U2Core/SelectionUtils.h>
 #include <U2Core/SequenceUtils.h>
-#include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -87,21 +85,13 @@ ADVClipboard::ADVClipboard(AnnotatedDNAView *c)
     copyComplementTranslationAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(copyComplementTranslationAction, SIGNAL(triggered()), SLOT(sl_copyComplementTranslation()));
 
-    copyAnnotationSequenceAction = new QAction(QIcon(":/core/images/copy_annotation_sequence.png"), tr("Copy annotation direct strand"), this);
+    copyAnnotationSequenceAction = new QAction(QIcon(":/core/images/copy_annotation_sequence.png"), tr("Copy annotation sequence"), this);
     copyAnnotationSequenceAction->setObjectName("action_copy_annotation_sequence");
     connect(copyAnnotationSequenceAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequence()));
-
-    copyComplementAnnotationSequenceAction = new QAction(QIcon(":/core/images/copy_complement_annotation_sequence.png"), tr("Copy annotation complementary 5'-3' strand"), this);
-    copyComplementAnnotationSequenceAction->setObjectName("copy_complementary_annotation");
-    connect(copyComplementAnnotationSequenceAction, SIGNAL(triggered()), SLOT(sl_copyComplementAnnotationSequence()));
 
     copyAnnotationSequenceTranslationAction = new QAction(QIcon(":/core/images/copy_annotation_translation.png"), tr("Copy annotation amino acids"), this);
     copyAnnotationSequenceTranslationAction->setObjectName("Copy annotation sequence translation");
     connect(copyAnnotationSequenceTranslationAction, SIGNAL(triggered()), SLOT(sl_copyAnnotationSequenceTranslation()));
-
-    copyComplementAnnotationSequenceTranslationAction = new QAction(QIcon(":/core/images/copy_complement_annotation_translation.png"), tr("Copy annotation amino acids of complementary 5'-3' strand"), this);
-    copyComplementAnnotationSequenceTranslationAction->setObjectName("copy_complement_annotation_translation");
-    connect(copyComplementAnnotationSequenceTranslationAction, SIGNAL(triggered()), SLOT(sl_copyComplementAnnotationSequenceTranslation()));
 
     copyQualifierAction = new QAction(QIcon(":/core/images/copy_qualifier.png"), tr("Copy qualifier text"), this);
     copyQualifierAction->setEnabled(false);
@@ -130,16 +120,8 @@ QAction *ADVClipboard::getCopyAnnotationSequenceAction() const {
     return copyAnnotationSequenceAction;
 }
 
-QAction *ADVClipboard::getCopyComplementAnnotationSequenceAction() const {
-    return copyComplementAnnotationSequenceAction;
-}
-
 QAction *ADVClipboard::getCopyAnnotationSequenceTranslationAction() const {
     return copyAnnotationSequenceTranslationAction;
-}
-
-QAction *ADVClipboard::getCopyComplementAnnotationSequenceTranslationAction() const {
-    return copyComplementAnnotationSequenceTranslationAction;
 }
 
 QAction *ADVClipboard::getCopyQualifierAction() const {
@@ -198,21 +180,16 @@ void ADVClipboard::copySequenceSelection(const bool complement, const bool amino
             QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("An error occurred during getting sequence data: %1").arg(os.getError()));
             return;
         }
-        if (seqParts.size() == 1) {
-            putIntoClipboard(seqParts.first());
-            return;
-        }
         res = U1SequenceUtils::joinRegions(seqParts);
     }
     putIntoClipboard(res);
 }
 
-void ADVClipboard::copyAnnotationSelection(const bool complement, const bool amino) {
-    QByteArray res;
-    const QList<Annotation *> &as = ctx->getAnnotationsSelection()->getAnnotations();
+void ADVClipboard::copyAnnotationSelection(const bool amino) {
+    const QList<Annotation *> &selectedAnnotationList = ctx->getAnnotationsSelection()->getAnnotations();
 #ifdef UGENE_X86
     qint64 totalLen = 0;
-    foreach (const Annotation *a, as) {
+    foreach (const Annotation *a, selectedAnnotationList) {
         totalLen += a->getRegionsLen();
     }
     if (totalLen > MAX_COPY_SIZE_FOR_X86) {
@@ -221,25 +198,22 @@ void ADVClipboard::copyAnnotationSelection(const bool complement, const bool ami
     }
 #endif
 
-    //BUG528: add alphabet symbol role: insertion mark
-    //TODO: reuse AnnotationSelection utils
-    const char gapSym = '-';
-    const int size = as.size();
-    for (int i = 0; i < size; i++) {
-        const Annotation *annotation = as.at(i);
-        if (i != 0) {
-            res.append('\n');    //?? generate sequence with len == region-len using default sym?
+    QByteArray res;
+    for (auto annotation : selectedAnnotationList) {
+        if (!res.isEmpty()) {
+            res.append('\n');
         }
         ADVSequenceObjectContext *seqCtx = ctx->getSequenceContext(annotation->getGObject());
-        CHECK_OPERATIONS(seqCtx != nullptr, res.append(gapSym), continue);
-
-        DNATranslation *complTT = complement ? seqCtx->getComplementTT() : nullptr;
+        if (seqCtx == nullptr) {
+            res.append(U2Msa::GAP_CHAR);    // insert gap instead of the sequence, if the sequence is not available.
+            continue;
+        }
+        DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation *aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
         U2OpStatus2Log os;
-        QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqCtx->getSequenceRef(), annotation->getRegions(), complTT, aminoTT, annotation->isJoin(), os);
+        // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR
+        AnnotationSelection::getSequenceInRegions(res, annotation->getRegions(), U2Msa::GAP_CHAR, seqCtx->getSequenceRef(), complTT, aminoTT, os);
         CHECK_OP(os, );
-
-        res += U1SequenceUtils::joinRegions(parts);
     }
     putIntoClipboard(res);
 }
@@ -276,19 +250,11 @@ void ADVClipboard::sl_copyComplementTranslation() {
 }
 
 void ADVClipboard::sl_copyAnnotationSequence() {
-    copyAnnotationSelection(false, false);
-}
-
-void ADVClipboard::sl_copyComplementAnnotationSequence() {
-    copyAnnotationSelection(true, false);
+    copyAnnotationSelection(false);
 }
 
 void ADVClipboard::sl_copyAnnotationSequenceTranslation() {
-    copyAnnotationSelection(false, true);
-}
-
-void ADVClipboard::sl_copyComplementAnnotationSequenceTranslation() {
-    copyAnnotationSelection(true, true);
+    copyAnnotationSelection(true);
 }
 
 void ADVClipboard::sl_setCopyQualifierActionStatus(bool isEnabled, QString text) {
@@ -298,7 +264,7 @@ void ADVClipboard::sl_setCopyQualifierActionStatus(bool isEnabled, QString text)
 
 void ADVClipboard::updateActions() {
     ADVSequenceObjectContext *seqCtx = getSequenceContext();
-    CHECK(nullptr != seqCtx, );
+    CHECK(seqCtx != nullptr, );
 
     DNASequenceSelection *sel = seqCtx->getSequenceSelection();
     SAFE_POINT(nullptr != sel, "DNASequenceSelection isn't found.", );
@@ -312,97 +278,60 @@ void ADVClipboard::updateActions() {
         copyComplementSequenceAction->setVisible(false);
         copyComplementTranslationAction->setVisible(false);
 
-        copyAnnotationSequenceAction->setText("Copy annotation");
-        copyComplementAnnotationSequenceAction->setVisible(false);
+        copyAnnotationSequenceAction->setText(tr("Copy annotation"));
         copyAnnotationSequenceTranslationAction->setVisible(false);
-        copyComplementAnnotationSequenceTranslationAction->setVisible(false);
     }
 
     auto setActionsEnabled =
-        [](QList<QAction *> copyActions, const bool setEnabled) {
-            foreach (QAction *action, copyActions) {
-                action->setEnabled(setEnabled);
+        [](const QList<QAction *> &copyActions, const bool isEnabled) {
+            for (QAction *action : copyActions) {
+                if (action != nullptr) {
+                    action->setEnabled(isEnabled);
+                }
             }
         };
-    auto setActionsShortcuted =
-        [](QAction *copy,
-           QAction *copyComplement,
-           QAction *copyTranslation,
-           QAction *copyComplementTranslation,
-           const bool setShortcuted) {
-            copy->setShortcut(setShortcuted ? QKeySequence(Qt::CTRL | Qt::Key_C) : QKeySequence());
-            copyComplement->setShortcut(setShortcuted ? QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C) : QKeySequence());
-            copyTranslation->setShortcut(setShortcuted ? QKeySequence(Qt::CTRL | Qt::Key_T) : QKeySequence());
-            copyComplementTranslation->setShortcut(setShortcuted ? QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T) : QKeySequence());
-        };
-    auto setActionsEnabledAndShortcuted =
-        [&setActionsEnabled, &setActionsShortcuted](QAction *copy,
-                                                    QAction *copyComplement,
-                                                    QAction *copyTranslation,
-                                                    QAction *copyComplementTranslation,
-                                                    const bool setEnabledAndShortcuted) {
-            setActionsEnabled(QList<QAction *>() = {copy, copyComplement, copyTranslation, copyComplementTranslation}, setEnabledAndShortcuted);
-            setActionsShortcuted(copy, copyComplement, copyTranslation, copyComplementTranslation, setEnabledAndShortcuted);
+    auto setActionShortcutsEnabled =
+        [](const QList<QAction *> &copyActions, const bool isShortcutEnabled) {
+            SAFE_POINT(copyActions.size() == 4, "copyActions size must be 4!", );
+            // [0] is copy sequence direct.
+            copyActions[0]->setShortcut(isShortcutEnabled ? QKeySequence(Qt::CTRL | Qt::Key_C) : QKeySequence());
+
+            // [1] is copy sequence complement.
+            if (copyActions[1] != nullptr) {
+                copyActions[1]->setShortcut(isShortcutEnabled ? QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C) : QKeySequence());
+            }
+
+            // [2] is copy amino direct.
+            copyActions[2]->setShortcut(isShortcutEnabled ? QKeySequence(Qt::CTRL | Qt::Key_T) : QKeySequence());
+
+            // [3] is copy amino complement.
+            if (copyActions[3] != nullptr) {
+                copyActions[3]->setShortcut(isShortcutEnabled ? QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T) : QKeySequence());
+            }
         };
 
-    const bool selectionIsNotEmpty = !sel->getSelectedRegions().isEmpty();
+    auto setActionsAndShortcutsEnabled =
+        [&setActionsEnabled, &setActionShortcutsEnabled](const QList<QAction *> &copyActions, const bool isEnabled) {
+            setActionsEnabled(copyActions, isEnabled);
+            setActionShortcutsEnabled(copyActions, isEnabled);
+        };
+
+    const bool hasSequenceSelection = !sel->getSelectedRegions().isEmpty();
     const bool hasAnnotationSelection = !ctx->getAnnotationsSelection()->isEmpty();
-    if (!selectionIsNotEmpty && !hasAnnotationSelection) {
-        setActionsEnabled(QList<QAction *>() = {copySequenceAction,
-                                                copyComplementSequenceAction,
-                                                copyTranslationAction,
-                                                copyComplementTranslationAction},
-                          false);
-        setActionsShortcuted(copySequenceAction,
-                             copyComplementSequenceAction,
-                             copyTranslationAction,
-                             copyComplementTranslationAction,
-                             true);
-        setActionsEnabledAndShortcuted(copyAnnotationSequenceAction,
-                                       copyComplementAnnotationSequenceAction,
-                                       copyAnnotationSequenceTranslationAction,
-                                       copyComplementAnnotationSequenceTranslationAction,
-                                       false);
-    } else if (selectionIsNotEmpty && !hasAnnotationSelection) {
-        setActionsEnabledAndShortcuted(copySequenceAction,
-                                       copyComplementSequenceAction,
-                                       copyTranslationAction,
-                                       copyComplementTranslationAction,
-                                       true);
-        setActionsEnabledAndShortcuted(copyAnnotationSequenceAction,
-                                       copyComplementAnnotationSequenceAction,
-                                       copyAnnotationSequenceTranslationAction,
-                                       copyComplementAnnotationSequenceTranslationAction,
-                                       false);
-    } else if (!selectionIsNotEmpty && hasAnnotationSelection) {
-        setActionsEnabledAndShortcuted(copySequenceAction,
-                                       copyComplementSequenceAction,
-                                       copyTranslationAction,
-                                       copyComplementTranslationAction,
-                                       false);
-        setActionsEnabledAndShortcuted(copyAnnotationSequenceAction,
-                                       copyComplementAnnotationSequenceAction,
-                                       copyAnnotationSequenceTranslationAction,
-                                       copyComplementAnnotationSequenceTranslationAction,
-                                       true);
-    } else if (selectionIsNotEmpty && hasAnnotationSelection) {
-        setActionsEnabledAndShortcuted(copySequenceAction,
-                                       copyComplementSequenceAction,
-                                       copyTranslationAction,
-                                       copyComplementTranslationAction,
-                                       true);
-        setActionsEnabled(QList<QAction *>() = {copyAnnotationSequenceAction,
-                                                copyComplementAnnotationSequenceAction,
-                                                copyAnnotationSequenceTranslationAction,
-                                                copyComplementAnnotationSequenceTranslationAction},
-                          true);
-        setActionsShortcuted(copyAnnotationSequenceAction,
-                             copyComplementAnnotationSequenceAction,
-                             copyAnnotationSequenceTranslationAction,
-                             copyComplementAnnotationSequenceTranslationAction,
-                             false);
+    // Create lists of 4 selection actions for sequence & annotation selections: copy/copyComplement/copyTranslation/copyComplementTranslation.
+    QList<QAction *> sequenceActions = QList<QAction *>() << copySequenceAction << copyComplementSequenceAction << copyTranslationAction << copyComplementTranslationAction;
+    QList<QAction *> annotationActions = QList<QAction *>() << copyAnnotationSequenceAction << nullptr << copyAnnotationSequenceTranslationAction << nullptr;
+    if (!hasSequenceSelection && !hasAnnotationSelection) {
+        setActionsEnabled(sequenceActions, false);
+        setActionShortcutsEnabled(sequenceActions, true);    // Assign shortcuts to the currently disabled actions, so they will visually appear in the menu.
+        setActionsAndShortcutsEnabled(annotationActions, false);
+    } else if (hasSequenceSelection && hasAnnotationSelection) {
+        setActionsAndShortcutsEnabled(sequenceActions, true);
+        setActionsEnabled(annotationActions, true);
+        setActionShortcutsEnabled(annotationActions, false);
     } else {
-        FAIL("Unexpected selection type", );
+        setActionsAndShortcutsEnabled(sequenceActions, hasSequenceSelection);
+        setActionsAndShortcutsEnabled(annotationActions, hasAnnotationSelection);
     }
 }
 
@@ -416,9 +345,7 @@ void ADVClipboard::addCopyMenu(QMenu *m) {
     copyMenu->addAction(copyComplementTranslationAction);
     copyMenu->addSeparator();
     copyMenu->addAction(copyAnnotationSequenceAction);
-    copyMenu->addAction(copyComplementAnnotationSequenceAction);
     copyMenu->addAction(copyAnnotationSequenceTranslationAction);
-    copyMenu->addAction(copyComplementAnnotationSequenceTranslationAction);
     copyMenu->addSeparator();
     copyMenu->addAction(copyQualifierAction);
     copyMenu->addSeparator();

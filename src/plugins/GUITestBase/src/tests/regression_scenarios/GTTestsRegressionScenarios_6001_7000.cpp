@@ -4640,111 +4640,111 @@ GUI_TEST_CLASS_DEFINITION(test_6684) {
 GUI_TEST_CLASS_DEFINITION(test_6685_1) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are disabled
+    //2. Click right button on the sequence view -> Copy/Paste. The all following buttons with hotkeys are disabled:
     //Copy selected sequence -- Ctrl + C
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T
     //Copy amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}, {"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_2) {
     //1. Open "_common_data/fasta/AMINO.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are disabled
+    //2. Click right button on the sequence view -> Copy/Paste. The all following buttons with hotkeys are disabled:
     //Copy selected sequence -- Ctrl + C
     //Copy annotation
     //Copy qualifier text
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy annotation", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_AMINO263"));
-
-    //The all following buttons are no exist
+    //The all following buttons do not exist:
     //Copy selected complementary 5 '-3' sequence
     //Copy amino acids
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation complementary 5 '-3' strand
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {"Copy selected complementary 5'-3' sequence", "Copy amino acids", "Copy amino acids of complementary 5'-3' strand", "Copy annotation complementary 5'-3' strand", "Copy annotation amino acids", "Copy annotation amino acids of complementary 5'-3' strand"}, PopupChecker::CheckOptions(PopupChecker::isNotVisible)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_AMINO263"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    "Copy selected complementary 5'-3' sequence",
+                                                                                    "Copy amino acids",
+                                                                                    "Copy amino acids of complementary 5'-3' strand",
+                                                                                    "Copy annotation amino acids",
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::isNotVisible)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_3) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click on the CDS annotaion
+    //2. Click on the CDS annotation.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2);
 
-    //3. Click right button on the zoom view -> Copy/Paste. Items 1-4 and 9 are disabled, items 5-8 are enabled.
+    //3. Click right button on the sequence view -> Copy/Paste. Items 1-4 and 9 are disabled, items 5-8 are enabled.
     //Copy selected sequence
     //Copy selected complementary 5 '-3' sequence
     //Copy amino acids
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation direct strand -- Ctrl + C
-    //Copy annotation complementary 5 '-3' strand -- Ctrl + Shift + C
+    //Copy annotation sequence -- Ctrl + C
     //Copy annotation amino acids -- Ctrl + T
-    //Copy annotation amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence()}, {"Copy selected complementary 5'-3' sequence", QKeySequence()}, {"Copy amino acids", QKeySequence()}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence()},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence()},
+                                                                                    {"Copy amino acids", QKeySequence()},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy annotation direct strand", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy annotation amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy annotation sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy annotation amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: CGTAGG in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
-    //5. Click Ctrl + Shift + C
-    //Expected state: CCTACG in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "CCTACG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
-
-    //6. Click Ctrl + T
+    //5. Click Ctrl + T
     //Expected state: RR in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "RR", QString("Unexpected sequence, expected: RR, current: %1").arg(clipText));
-
-    //7. Click Ctrl + Shift + T
-    //Expected state: PT in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "PT", QString("Unexpected sequence, expected: PT, current: %1").arg(clipText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_4) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Select region 3-8
     GTUtilsSequenceView::selectSequenceRegion(os, 3, 8);
@@ -4754,50 +4754,47 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T -- Ctrl + Shift + T
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: GTAGGT in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "GTAGGT", QString("Unexpected sequence, expected: GTAGGT, current: %1").arg(clipText));
 
     //5. Click Ctrl + Shift + C
     //Expected state: ACCTAC in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier | Qt::ShiftModifier);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "ACCTAC", QString("Unexpected sequence, expected: ACCTAC, current: %1").arg(clipText));
 
     //6. Click Ctrl + T
     //Expected state: VG in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "VG", QString("Unexpected sequence, expected: VG, current: %1").arg(clipText));
 
     //7. Click Ctrl + Shift + T
     //Expected state: TY in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier | Qt::ShiftModifier);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "TY", QString("Unexpected sequence, expected: TY, current: %1").arg(clipText));
 }
@@ -4805,9 +4802,9 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
 GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    //2. Double click on the CDS annotaion
+    //2. Double click on the CDS annotation.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2, 0, true);
 
     //3. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are enabled except the last one
@@ -4815,52 +4812,37 @@ GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T
     //Copy amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}, {"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: CGTAGG in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
-    //5. Click Ctrl + Shift + C
-    //Expected state: CCTACG in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "CCTACG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
-
-    //6. Click Ctrl + T
+    //5. Click Ctrl + T
     //Expected state: RR in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "RR", QString("Unexpected sequence, expected: RR, current: %1").arg(clipText));
-
-    //7. Click Ctrl + Shift + T
-    //Expected state: PT in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "PT", QString("Unexpected sequence, expected: PT, current: %1").arg(clipText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6684_1) {

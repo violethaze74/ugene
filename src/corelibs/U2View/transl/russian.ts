@@ -2226,23 +2226,13 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="90"/>
-        <source>Copy annotation direct strand</source>
-        <translation>Копировать аннотацию прямой цепи</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="94"/>
-        <source>Copy annotation complementary 5&apos;-3&apos; strand</source>
-        <translation>Копировать аннотацию комплементарной 5&apos;-3&apos; цепи</translation>
+        <source>Copy annotation sequence</source>
+        <translation>Копировать последовательность аннотации</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="98"/>
         <source>Copy annotation amino acids</source>
-        <translation>Копировать аннотацию аминной последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/ADVClipboard.cpp" line="102"/>
-        <source>Copy annotation amino acids of complementary 5&apos;-3&apos; strand</source>
-        <translation>Копировать аннотацию аминной последоватльности комплементарной 5&apos;-3&apos; цепи</translation>
+        <translation>Копировать аминную последовательность аннотации</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="106"/>

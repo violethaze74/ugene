@@ -94,16 +94,15 @@ void AnnotationSelection::remove(Annotation *a) {
     }
 }
 
-void AnnotationSelection::getAnnotationSequence(QByteArray &res, const Annotation *annotation, char gapSym, const U2EntityRef &seqRef, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os) {
-    QVector<U2Region> regions = annotation->getRegions();
+void AnnotationSelection::getSequenceInRegions(QByteArray &res, const QVector<U2Region> &regions, char gapSym, const U2EntityRef &seqRef, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os) {
     QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqRef, regions, complTT, aminoTT, false, os);
     CHECK_OP(os, )
     qint64 resLen = 0;
-    foreach (const QByteArray &p, parts) {
+    for (const QByteArray &p : parts) {
         resLen += p.length() + 1;    // +1 is for the gap char.
     }
     res.reserve(resLen);
-    foreach (const QByteArray &p, parts) {
+    for (const QByteArray &p : parts) {
         if (!res.isEmpty()) {
             res.append(gapSym);
         }

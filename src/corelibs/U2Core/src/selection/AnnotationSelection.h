@@ -54,7 +54,11 @@ public:
 
     bool contains(Annotation *a) const;
 
-    static void getAnnotationSequence(QByteArray &res, const Annotation *annotation, char gapSym, const U2EntityRef &ref, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os);
+    /**
+     * Appends sequence in regions to the result buffer.
+     * If complTT or transTT is not 'nullptr', the corresponding transformation is applied.
+     */
+    static void getSequenceInRegions(QByteArray &res, const QVector<U2Region> &regions, char gapSym, const U2EntityRef &ref, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os);
 
 signals:
 
