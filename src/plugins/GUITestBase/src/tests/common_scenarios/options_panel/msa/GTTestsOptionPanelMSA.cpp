@@ -718,7 +718,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c0bdbb");    //e
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#3df490");    //f
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff5082");    //g
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#fff233");    //h
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(7, 0), "#fff233");    //h
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00abed");    //i
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#6699ff");    //j
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#ffee00");    //k

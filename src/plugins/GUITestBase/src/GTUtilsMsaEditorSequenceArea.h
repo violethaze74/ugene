@@ -90,7 +90,8 @@ public:
     static bool isSequenceHightighted(GUITestOpStatus &os, const QString &seqName);
     static QString getColor(GUITestOpStatus &os, QPoint p);
     static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint& p, const QColor& color);
-    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint& pos, const QString& fgColor, const QString bgColor);
+    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint& pos, const QString& fgColor, const QString& bgColor);
+    static void checkMsaCellColor(GUITestOpStatus &os, const QPoint& pos, const QString& color);
     static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 
