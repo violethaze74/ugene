@@ -81,8 +81,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     checkColor(os, QPoint(2, 2), "#2aa1e1", 5, 3);
 
     //check T
-    checkColor(os, QPoint(0, 2), "#ff7195", 5);
-
+    GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, QPoint(0, 2), "#ff7195");
+    
     //check C
     checkColor(os, QPoint(4, 0), "#49f949");
 
