@@ -349,7 +349,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
 
     //10. Click "Copy annotation sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy annotation direct strand"));
+                                                                              << "Copy annotation sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -533,17 +533,15 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList disabledItemsNames = QStringList() << "Copy annotation direct strand"
-                                                   << "Copy annotation complementary 5'-3' strand"
-                                                   << "Copy annotation amino acids"
-                                                   << "Copy annotation amino acids of complementary 5'-3' strand";
+    QStringList disabledItemsNames = QStringList() << "Copy annotation sequence"
+                                                   << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", disabledItemsNames, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy annotation sequence" item.
     QKeySequence check_ks = QKeySequence(QKeySequence(Qt::CTRL | Qt::Key_C));
-    QAction *copy = GTAction::findActionByText(os, "Copy annotation direct strand");
+    QAction *copy = GTAction::findActionByText(os, "Copy annotation sequence");
     QKeySequence ks = copy->shortcut();
     CHECK_SET_ERR(ks == check_ks, "Unexpected shortcut");
 
@@ -563,7 +561,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     //5. Look at the SV toolbar.
     //    Expected state : the same buttons as on step 1 are disabled / enabled.
 
-    //6. Click "Copy annotation direct strand".
+    //6. Click "Copy annotation sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy annotation sequence"));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
@@ -607,7 +605,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
                                                        << "Copy selected complementary 5'-3' sequence"
                                                        << "Copy amino acids"
                                                        << "Copy amino acids of complementary 5'-3' strand"
-                                                       << "Copy annotation direct strand"
+                                                       << "Copy annotation sequence"
                                                        << "Copy annotation amino acids";
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste", enabledItemsNamesFirst, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
