@@ -82,7 +82,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //check T
     GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, QPoint(0, 2), "#ff7195");
-    
+
     //check C
     checkColor(os, QPoint(4, 0), "#49f949");
 
@@ -126,12 +126,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                         << "Jalview"));
     GTMenu::showContextMenu(os, seq);
     //Expected state: background for symbols must be:
-    //A - green G - red T - blue  C - orange gap - no backround
+    //A - green G - red T - blue  C - orange gap - no background
     //check A
     checkColor(os, QPoint(0, 1), "#48f718", 5);
 
     //check G
-    checkColor(os, QPoint(2, 2), "#eb1a17", 5, 3);
+    GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, QPoint(2, 2), "#eb1a17");
 
     //check T
     checkColor(os, QPoint(0, 2), "#1674ee", 5);
