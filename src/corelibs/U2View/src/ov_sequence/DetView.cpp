@@ -22,7 +22,6 @@
 #include "DetView.h"
 
 #include <QApplication>
-#include <QFontMetrics>
 #include <QLayout>
 #include <QMenu>
 #include <QMessageBox>
@@ -36,23 +35,18 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/Settings.h>
 #include <U2Core/SignalBlocker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
-#include <U2Gui/GraphUtils.h>
-#include <U2Gui/SelectionModificationHelper.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "DetViewSequenceEditor.h"
 #include "view_rendering/DetViewMultiLineRenderer.h"
-#include "view_rendering/DetViewSingleLineRenderer.h"
 
 namespace U2 {
 
@@ -120,7 +114,7 @@ DetView::DetView(QWidget *p, SequenceObjectContext *ctx)
     showTranslationAction->setChecked(hasAmino);
 
     assert(ctx->getSequenceObject() != NULL);
-    featureFlags &= !GSLV_FF_SupportsCustomRange;
+    featureFlags &= !GSLV_FF_SupportsCustomRange;    //TODO: bug?
     renderArea = new DetViewRenderArea(this);
     renderArea->setObjectName("render_area_" + ctx->getSequenceObject()->getSequenceName());
 
@@ -475,16 +469,9 @@ void DetView::hideEvent(QHideEvent *e) {
     GSequenceLineViewAnnotated::hideEvent(e);
 }
 
-void DetView::uncheckAllTranslations() {
-    for (int i = 0; i < 6; i++) {
-        ctx->showTranslationFrame(i, false);
-    }
-}
-
 void DetView::setSelectedTranslations() {
     if ((ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection)) {
-        uncheckAllTranslations();
-        updateTranslationsState();
+        updateTranslationRowsVisibilityBySelectionState();
     }
 
     getDetViewRenderArea()->getRenderer()->update();
@@ -493,27 +480,15 @@ void DetView::setSelectedTranslations() {
     completeUpdate();
 }
 
-void DetView::updateTranslationsState() {
-    updateTranslationsState(U2Strand::Direct);
-    updateTranslationsState(U2Strand::Complementary);
-}
-
-void DetView::updateTranslationsState(const U2Strand::Direction direction) {
-    QVector<U2Region> selectedRegions = ctx->getSequenceSelection()->getSelectedRegions();
-    QList<bool> lineState = QList<bool>() << false << false << false;
-    foreach (const U2Region &reg, selectedRegions) {
-        int mod = direction == U2Strand::Direct ? reg.startPos % 3 : ((ctx->getSequenceLength() - reg.endPos()) % 3);
-        lineState[mod] = true;
+void DetView::updateTranslationRowsVisibilityBySelectionState() {
+    QVector<bool> frameRowVisibilityFlag(6, false);
+    for (auto region : ctx->getSequenceSelection()->getSelectedRegions()) {
+        frameRowVisibilityFlag[region.startPos % 3] = true;    // direct frame
+        frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;    // complement frame.
     }
-    const int start = direction == U2Strand::Direct ? 0 : 3;
-    const int end = direction == U2Strand::Direct ? 3 : 6;
-    const int indent = direction == U2Strand::Direct ? 0 : 3;
-    for (int i = start; i < end; i++) {
-        const bool state = lineState[i - indent];
-        if (!state) {
-            continue;
-        }
-        ctx->showTranslationFrame(i, state);
+    for (int frameIndex = 0; frameIndex < frameRowVisibilityFlag.size(); frameIndex++) {
+        bool isFrameActionChecked = frameRowVisibilityFlag[frameIndex];
+        ctx->showTranslationFrame(frameIndex, isFrameActionChecked);
     }
 }
 
@@ -716,7 +691,7 @@ void DetView::updateVerticalScrollBar() {
         verticalScrollBar->setSliderPosition(0);
     }
 
-    int maximum = 0;
+    int maximum;
     if (isWrapMode()) {
         DetViewRenderArea *detArea = getDetViewRenderArea();
         int linesCount = seqLen / detArea->getSymbolsPerLine();

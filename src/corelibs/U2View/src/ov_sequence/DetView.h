@@ -133,9 +133,7 @@ private:
     void setBorderCursor(const QPoint &p);
     void setDefaultState();
 
-    void uncheckAllTranslations();
-    void updateTranslationsState();
-    void updateTranslationsState(const U2Strand::Direction direction);
+    void updateTranslationRowsVisibilityBySelectionState();
     void updateSelectedTranslations(const SequenceObjectContext::TranslationState &state);
 
     static const QString SEQUENCE_SETTINGS;

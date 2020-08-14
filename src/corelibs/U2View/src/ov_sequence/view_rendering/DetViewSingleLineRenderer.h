@@ -32,12 +32,12 @@ namespace U2 {
 class DetViewSingleLineRenderer : public DetViewRenderer {
 private:
     struct TranslationMetrics {
-        TranslationMetrics();
-        TranslationMetrics(DetView *detView,
+        TranslationMetrics(const SequenceObjectContext *ctx,
                            const U2Region &visibleRange,
                            const QFont &commonSequenceFont);
 
-        QVector<bool> visibleRows;
+        /** Visible translation frames. */
+        QVector<bool> visibleFrames;
 
         qint64 minUsedPos;
         qint64 maxUsedPos;
@@ -89,14 +89,22 @@ private:
     void drawComplement(QPainter &p, const U2Region &visibleRange);
 
     void drawTranslations(QPainter &p, const U2Region &visibleRange);
-    void drawDirectTranslations(QPainter &p,
+
+    /**
+     * Draws direct translation rows.
+     * 'visibleSequence' is a pointer to the visible region sequence with -1 & +1 extra bases required for the complete translation.
+     * */
+    void drawDirectTranslations(QPainter &painter,
                                 const U2Region &visibleRange,
-                                const char *seqBlock,
-                                const QList<SharedAnnotationData> &annotationsInRange);
-    void drawComplementTranslations(QPainter &p,
+                                const char *visibleSequence,
+                                const QList<SharedAnnotationData> &annotationsInRange,
+                                const TranslationMetrics &translationMetrics);
+
+    void drawComplementTranslations(QPainter &painter,
                                     const U2Region &visibleRange,
                                     const char *seqBlock,
-                                    const QList<SharedAnnotationData> &annotationsInRange);
+                                    const QList<SharedAnnotationData> &annotationsInRange,
+                                    TranslationMetrics &translationMetrics);
 
     void drawRuler(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
     void drawSequenceSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
@@ -117,7 +125,8 @@ private:
     void setFontAndPenForTranslation(const char *seq,
                                      const QColor &charColor,
                                      bool inAnnotation,
-                                     QPainter &p);
+                                     QPainter &p,
+                                     const TranslationMetrics &translationMetrics);
 
     void highlight(QPainter &p, const U2Region &regionToHighlight, int line, const QSize &canvasSize, const U2Region &visibleRange);
 
@@ -125,8 +134,6 @@ private:
     int posToComplTransLine(int p) const;
 
 private:
-    TranslationMetrics trMetrics;
-
     int numLines;
     int rulerLine;
     int directLine;
