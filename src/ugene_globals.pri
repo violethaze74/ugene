@@ -64,6 +64,8 @@ linux-g++ {
     # Some of the warnings must be errors
     QMAKE_CXXFLAGS += -Werror=return-type
     QMAKE_CXXFLAGS += -Werror=parentheses
+    QMAKE_CXXFLAGS += -Werror=uninitialized
+    QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
