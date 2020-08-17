@@ -33,13 +33,11 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
 #include <QApplication>
 #include <QGroupBox>
-#include <QTreeWidget>
 #include <QTreeWidgetItem>
 
 #include <U2Core/AppContext.h>
@@ -47,7 +45,6 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/DetView.h>
 #include <U2View/GSequenceGraphView.h>
-#include <U2View/GSequenceLineView.h>
 #include <U2View/Overview.h>
 
 #include "GTGlobals.h"
@@ -74,7 +71,6 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
@@ -306,13 +302,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         AllActionsPopupChooser(HI::GUITestOpStatus &_os)
             : PopupChooser(_os, QStringList()) {
         }
-        void run() {
+        void run() override {
             GTGlobals::sleep(100);
             QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
 
             int i = 0;
             QList<QAction *> act = activePopupMenu->actions();
-            foreach (QAction *a, act) {
+            for (QAction *a : act) {
                 QString s = a->objectName();
                 if (i == 1) {
                     GTMenu::clickMenuItem(os, activePopupMenu, s, GTGlobals::UseMouse);
@@ -752,7 +748,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
         RegionChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
             GTWidget::clickWindowTitle(os, dialog);
@@ -820,7 +816,8 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
         LimitsChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
             GTWidget::clickWindowTitle(os, dialog);
@@ -892,7 +889,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             : Filler(os, "ImageExportForm") {
         }
 
-        virtual void run() {
+        void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             // set SVG format
@@ -1035,7 +1032,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
     class UncheckComplement : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Set up frames manually");
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame -1");
@@ -1051,7 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     //  Check "Show direct only"
     class DirectPopupChecker : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             QAction *direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true);
             QAction *direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true);
@@ -1076,7 +1073,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     //    Check "Show complement only"
     class UncheckDirectCheckComplement : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame +1");
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Frame +2");
@@ -1093,7 +1090,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     GTUtilsDialog::waitAllFinished(os);
 
     class ComplPopupChecker : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             QAction *direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true);
             QAction *direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true);
@@ -1117,7 +1114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     //    Check "Show all".
     class ShowAllFramesScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << "Show all frames");
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -1129,7 +1126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     // Check results of Show all frames.
     class AllPopupChecker : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QMenu *activePopupMenu = GTWidget::getActivePopupMenu(os);
             QAction *direct1 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +1", true);
             QAction *direct2 = GTMenu::getMenuItem(os, activePopupMenu, "Frame +2", true);
@@ -1498,7 +1495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
     QList<QScrollBar *> list = pan->findChildren<QScrollBar *>();
     QScrollBar *vertical = NULL;
-    foreach (QScrollBar *b, list) {
+    for (QScrollBar *b : list) {
         if (b->orientation() == Qt::Vertical) {
             vertical = b;
         }
@@ -1573,7 +1570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
 GUI_TEST_CLASS_DEFINITION(test_0050) {
     class WrongNameChecker : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
@@ -1588,7 +1585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
     class WrongDistanceChecker : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
@@ -1631,7 +1628,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 GUI_TEST_CLASS_DEFINITION(test_0050_1) {
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
@@ -1696,19 +1693,19 @@ GUI_TEST_CLASS_DEFINITION(test_0052_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    DetView *det = GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView();
-    GTWidget::click(os, det);
-    QImage image1 = GTWidget::getImage(os, det);
+    QWidget *sequenceArea = GTUtilsSequenceView::getDetViewByNumber(os, 0)->getDetViewRenderArea();
+    GTWidget::click(os, sequenceArea);
+    QImage image1 = GTWidget::getImage(os, sequenceArea);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTWidget::click(os, det);
-    QImage image2 = GTWidget::getImage(os, det);
+    GTWidget::click(os, sequenceArea);
+    QImage image2 = GTWidget::getImage(os, sequenceArea);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "do_not_translate_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTWidget::click(os, det);
-    QImage image3 = GTWidget::getImage(os, det);
+    GTWidget::click(os, sequenceArea);
+    QImage image3 = GTWidget::getImage(os, sequenceArea);
 
     CHECK_SET_ERR(image1 != image2, "Image was not changed");
     CHECK_SET_ERR(image1 == image3, "Image was not restored");
@@ -1772,7 +1769,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     GTWidget::click(os, graphView);
     //GTWidget::getAllWidgetsInfo(os, GTUtilsSequenceView::getGraphView(os));
     QWidget *pointer = NULL;
-    foreach (QWidget *w, GTUtilsSequenceView::getGraphView(os)->findChildren<QWidget *>()) {
+    for (QWidget *w : GTUtilsSequenceView::getGraphView(os)->findChildren<QWidget *>()) {
         if (w->geometry().width() == 10) {
             pointer = w;
         }
@@ -1823,7 +1820,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -1987,7 +1984,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
-    //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A    
+    //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
@@ -2484,7 +2481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
             : Filler(os, "FindEnzymesDialog") {
         }
 
-        void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
