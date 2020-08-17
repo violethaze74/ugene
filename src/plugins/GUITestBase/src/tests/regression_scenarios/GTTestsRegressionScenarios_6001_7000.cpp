@@ -5920,9 +5920,9 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     GTWidget::click(os, GTAction::button(os, editMode));
 
-    QPoint point = GTMouseDriver::getMousePosition();
-    GTMouseDriver::moveTo(QPoint(point.x() + 100, point.y()));
-    GTMouseDriver::press();
+    QPoint editButtonPoint = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(editButtonPoint + QPoint(100, 0));    // Move mouse to the right into the sequence area.
+    GTMouseDriver::click();
 
     //3. Paste content with non-sequence characters
     //Expected state: log contains error message
