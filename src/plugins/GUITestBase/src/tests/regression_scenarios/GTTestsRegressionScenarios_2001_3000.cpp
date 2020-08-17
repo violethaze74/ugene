@@ -5435,11 +5435,11 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     int oldItemsNumber = combo->count();
 
     //    3. Create a new custom nucleotide color scheme.
-    const QString colorSchemeName = getName() + "_NewScheme";
+    QString colorSchemeName = getName() + "_NewScheme";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
@@ -5452,7 +5452,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     GTMenu::showContextMenu(os, msaSeqArea);
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     int newItemsNumber = combo->count();
 
     CHECK_SET_ERR(newItemsNumber == oldItemsNumber, "exportButton is disabled unexpectedly");

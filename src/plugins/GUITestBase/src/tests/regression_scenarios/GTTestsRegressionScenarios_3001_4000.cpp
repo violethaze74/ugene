@@ -857,7 +857,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     GTGlobals::sleep(500);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    foreach (const U2Region &r, regions) {
+    for (const U2Region &r: regions) {
         CHECK_SET_ERR(r.length > 0, "Invalid annotated region!");
     }
 }
@@ -1017,7 +1017,7 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
         CancelClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
@@ -1058,7 +1058,7 @@ public:
     test_3165_messageBoxDialogFiller(HI::GUITestOpStatus &os, QMessageBox::StandardButton _b)
         : MessageBoxDialogFiller(os, _b) {
     }
-    virtual void run() override {
+    void run() override {
         QWidget *activeModal = QApplication::activeModalWidget();
         QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
         CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
     GTGlobals::systemSleep();
-    foreach (Task *task, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    for (Task *task: AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (task->getTaskName() != "Auto-annotations update task") {
             continue;
         }
@@ -1467,23 +1467,21 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    const int initialItemsNumber = combo->count();
+    int initialItemsNumber = combo->count();
 
     // 3. Create a new color scheme, accept the preferences dialog.
-    const QString colorSchemeName = "test scheme";
+    QString colorSchemeName = GTUtils::genUniqueString("test scheme_3245");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
-    QWidget *area = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    GTWidget::click(os, area, Qt::RightButton);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // 4. Ensure that the new scheme is added to the context menu. Call the preferences dialog again.
     // 5. Remove the custom scheme and cancel the preferences dialog.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
-    QWidget *area1 = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    GTWidget::click(os, area1, Qt::RightButton);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
@@ -1492,14 +1490,13 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl, NewColorSchemeCreator::Delete, true));
-    QWidget *area2 = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    GTWidget::click(os, area2, Qt::RightButton);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Expected state: the scheme presents in the context menu, it is shown in the preferences dialog.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
-    QWidget *area3 = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    GTWidget::click(os, area3, Qt::RightButton);
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
@@ -1970,7 +1967,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
     QString name;
-    foreach (const QString &key, keys) {
+    for (const QString &key: keys) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2156,7 +2153,7 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
     //    3. Select a single enzyme: "AbaBGI". Start the search.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             //3. Press "Select by length"
             //4. Input "7" and press "Ok"
             GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 8));
@@ -2635,10 +2632,10 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
             continue;
         }
         QList<Task *> innertList;
-        foreach (Task *t, tList) {
+        for (Task *t: tList) {
             innertList.append(t->getPureSubtasks());
         }
-        foreach (Task *t, innertList) {
+        for (Task *t: innertList) {
             if (t->getTaskName().contains("Opening view")) {
                 end = true;
                 break;
@@ -2851,7 +2848,7 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
         ExportHighlightedDialogFiller(HI::GUITestOpStatus &os)
             : Filler(os, "ExportHighlightedDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
@@ -2909,7 +2906,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
         CancelExportHighlightedDialogFiller(HI::GUITestOpStatus &os)
             : Filler(os, "ExportHighlightedDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
@@ -3302,7 +3299,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_1) {
         SiteconCustomFiller(HI::GUITestOpStatus &os)
             : Filler(os, "SiteconSearchDialog") {
         }
-        virtual void run() {
+        void run()  override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3347,7 +3344,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
         SiteconCustomFiller(HI::GUITestOpStatus &os)
             : Filler(os, "SiteconSearchDialog") {
         }
-        virtual void run() {
+        void run()  override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3367,7 +3364,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
 
     class AllEnzymesSearchScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3611,7 +3608,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
     // 1. Open file "test/_common_data/fasta/numbers_in_the_middle.fa" in sequence view
     class Custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3655,7 +3652,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
     // 1. Open file test/_common_data/fasta/numbers_in_the_middle.fa in sequence view
     class Custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3876,7 +3873,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     GTGlobals::sleep(1000);
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
@@ -4650,7 +4647,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTGlobals::sleep();
 
     QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    foreach (U2Region curRegion, annotatedRegions) {
+    for (const U2Region& curRegion : annotatedRegions)  {
         CHECK_SET_ERR(curRegion.startPos >= 20, "Incorrect annotated region");
     }
 }
@@ -4658,7 +4655,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
 GUI_TEST_CLASS_DEFINITION(test_3732) {
     //    1. Open UGENE preferences, open "Resources" tab, set UGENE memory limit to 200Mb.
     class MemoryLimitSetScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
@@ -4749,7 +4746,7 @@ GUI_TEST_CLASS_DEFINITION(test_3749) {
     GTMouseDriver::click(Qt::LeftButton);
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             //GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
             GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 10));
             GTMouseDriver::click();
@@ -4847,7 +4844,7 @@ GUI_TEST_CLASS_DEFINITION(test_3768) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
@@ -4947,7 +4944,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "HmmerBuildDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK(dialog, );
 
@@ -4993,7 +4990,7 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
     //Expected state: the message about file name appears, the dialog is not closed (the export task does not start).
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "dialog is NULL");
             QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
@@ -5038,13 +5035,13 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTGlobals::sleep(1000);
 
     //Expected: task started.
-    CHECK_SET_ERR(1 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task did not started");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==1, "Task did not started");
 
     //3. Close the alignment view.
     GTUtilsMdi::closeWindow(os, GTUtilsMdi::activeWindow(os)->objectName());
 
     //Expected: task is still running.
-    CHECK_SET_ERR(1 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task is cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==1, "Task is cancelled");
 
     //4. Delete the document from the project.
     GTUtilsProjectTreeView::click(os, "fungal - all.aln");
@@ -5052,7 +5049,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task is not cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "Task is not cancelled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3785_2) {
@@ -5082,7 +5079,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task is not cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "Task is not cancelled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3788) {
@@ -5105,7 +5102,7 @@ GUI_TEST_CLASS_DEFINITION(test_3788) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    CHECK_SET_ERR(0 == annotatedRegions.size(), "There are annotations unexpectedly");
+    CHECK_SET_ERR(annotatedRegions.isEmpty(), "There are annotations unexpectedly");
 
     GTUtilsLog::check(os, logTracer);
 }
@@ -5188,7 +5185,7 @@ GUI_TEST_CLASS_DEFINITION(test_3813) {
     //2. Press "Find restriction sites" toolbutton
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             //3. Press "Select by length"
             //4. Input "7" and press "Ok"
             GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 6));
@@ -5325,7 +5322,7 @@ GUI_TEST_CLASS_DEFINITION(test_3829) {
     QModelIndex index = GTUtilsProjectTreeView::findIndex(os, "Ca20Chr1 features");
     //    Expected state: UGENE warning about annotation is out of range.
     class scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(buttonBox != NULL, "buttonBox is NULL");
@@ -5368,7 +5365,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
-    foreach (QModelIndex index, list) {
+    for (QModelIndex index :  list) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
@@ -5519,7 +5516,7 @@ GUI_TEST_CLASS_DEFINITION(test_3886) {
             : Filler(os, "Extract Alignment Consensus as Sequence") {
         }
 
-        void run() {
+        void run() override {
             //4. Click Next.
             //Expected: UGENE does not crash.
             GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton1"));
@@ -5709,7 +5706,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
         ORFDialogFiller(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        virtual void run() {
+        void run() override  {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
 
@@ -5734,7 +5731,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    foreach (const U2Region &r, regions) {
+    for (const U2Region &r: regions) {
         CHECK_SET_ERR((r.startPos >= 1000 && r.startPos <= 4000 &&
                        r.endPos() >= 1000 && r.endPos() <= 4000),
                       "Invalid annotated region!");
