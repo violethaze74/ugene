@@ -74,7 +74,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
@@ -2186,12 +2185,11 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. press "change font button" on toolbar
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
-
-    QAbstractButton *change_font = GTAction::button(os, "Change Font");
-    GTWidget::click(os, change_font);
+    GTWidget::click(os, GTAction::button(os, "Change Font"));
     GTGlobals::sleep(500);
 
     QWidget *nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
@@ -2200,7 +2198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";
 
-    CHECK_SET_ERR(f.toString() == expectedFont, "Expected: " + expectedFont + "found: " + f.toString());
+    CHECK_SET_ERR(f.toString().startsWith(expectedFont), "Expected: " + expectedFont + ", found: " + f.toString());
     //    Expected state: change font dialog appeared
 
     //    3. choose some font, press OK
@@ -2972,7 +2970,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_4) {
     //Expected state: tree appeared
 }
 
-void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention) {
+void test_0039_function(HI::GUITestOpStatus &os, int comboNum, const QString &extension) {
     //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, UGUITest::dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2991,7 +2989,7 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: transl.aln appeared in project
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl." + extention));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl." + extension));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
@@ -3151,7 +3149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         ExportDialogChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3183,7 +3181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
         ExportChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3234,7 +3232,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             : Filler(os, "SelectSubalignmentDialog") {
         }
 
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
             QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
@@ -3271,7 +3269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
         ExportChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3304,7 +3302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         CustomFiller_0048(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3413,7 +3411,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
         CustomFiller_0052(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3650,7 +3648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     //    {Export->Export subalignment}
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
 
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
@@ -3678,7 +3676,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
 
             QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
@@ -3706,7 +3704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 GUI_TEST_CLASS_DEFINITION(test_0057) {
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep();
 
@@ -3732,7 +3730,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
 GUI_TEST_CLASS_DEFINITION(test_0058) {
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3773,7 +3771,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customColorSelector : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -3821,7 +3819,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customColorSchemeCreator : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -3841,7 +3839,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3871,7 +3869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     //    Open "Color schemes" dialog.
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3903,7 +3901,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
 
     class customAppSettingsFiller1 : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3944,7 +3942,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     class customColorSchemeCreator : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -3970,7 +3968,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -4001,7 +3999,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     //    Open "Export subalignment" dialog
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
@@ -4065,7 +4063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
 
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QStringList expectedActions = QStringList() << "Align with muscle"
                                                         << "Align sequences to profile with MUSCLE"
                                                         << "Align profile to profile with MUSCLE"
@@ -4078,7 +4076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
             CHECK_SET_ERR(m != NULL, "menu not found");
             QList<QAction *> menuActions = m->actions();
             CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            foreach (QAction *act, menuActions) {
+            for (QAction *act : menuActions) {
                 CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
             }
 
@@ -4351,7 +4349,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     //    Open "Export subalignment" dialog
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -4374,7 +4372,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
 
             GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
             list = ExtractSelectedAsMSADialogFiller::getSequences(os, true);
-            CHECK_SET_ERR(list.size() == 0, QString("list is not cleared: %1").arg(list.size()));
+            CHECK_SET_ERR(list.isEmpty(), QString("list is not cleared: %1").arg(list.size()));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
