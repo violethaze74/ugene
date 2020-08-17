@@ -1470,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     int initialItemsNumber = combo->count();
 
     // 3. Create a new color scheme, accept the preferences dialog.
-    QString colorSchemeName = GTUtils::genUniqueString("test scheme_3245");
+    QString colorSchemeName = GTUtils::genUniqueString(getName());
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));

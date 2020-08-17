@@ -5439,7 +5439,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     int oldItemsNumber = combo->count();
 
     //    3. Create a new custom nucleotide color scheme.
-    QString colorSchemeName = getName() + "_NewScheme";
+    QString colorSchemeName = GTUtils::genUniqueString(getName());
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
