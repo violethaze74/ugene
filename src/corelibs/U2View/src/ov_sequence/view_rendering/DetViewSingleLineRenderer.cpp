@@ -450,7 +450,7 @@ void DetViewSingleLineRenderer::drawDirectTranslations(QPainter &painter,
         if (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection) {
             aminoVisibilityFlags.fill(false);    // Mark as visible only acids within selected regions.
             U2Region translatableRange(visibleRange.startPos + translationIndent, aminoSequence.length() * 3);
-            for (auto selectedRegion : ctx->getSequenceSelection()->getSelectedRegions()) {
+            for (const U2Region &selectedRegion : ctx->getSequenceSelection()->getSelectedRegions()) {
                 if (selectedRegion.startPos % 3 == frameIndex) {
                     U2Region regionToTranslate = translatableRange.intersect(selectedRegion);
                     qint64 regionAminoOffset = (regionToTranslate.startPos - translationStartPos) / 3;

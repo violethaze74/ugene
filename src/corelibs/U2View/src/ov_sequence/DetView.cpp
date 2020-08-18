@@ -482,7 +482,7 @@ void DetView::setSelectedTranslations() {
 
 void DetView::updateTranslationRowsVisibilityBySelectionState() {
     QVector<bool> frameRowVisibilityFlag(6, false);
-    for (auto region : ctx->getSequenceSelection()->getSelectedRegions()) {
+    for (const U2Region& region : ctx->getSequenceSelection()->getSelectedRegions()) {
         frameRowVisibilityFlag[region.startPos % 3] = true;    // direct frame
         frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;    // complement frame.
     }
