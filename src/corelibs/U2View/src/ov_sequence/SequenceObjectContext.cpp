@@ -433,7 +433,7 @@ bool SequenceObjectContext::isRowChoosed() {
     return rowChoosed;
 }
 
-QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() {
+QVector<bool> SequenceObjectContext::getTranslationRowsVisibleStatus() const {
     QVector<bool> result;
     if (visibleFrames != NULL) {
         foreach (QAction *a, visibleFrames->actions()) {
@@ -471,10 +471,10 @@ void SequenceObjectContext::showComplementActions(bool show) {
     }
 }
 
-void SequenceObjectContext::showTranslationFrame(const int numOfAction, const bool setChecked) {
+void SequenceObjectContext::showTranslationFrame(const int frameIndex, const bool isChecked) {
     QList<QAction *> actions = visibleFrames->actions();
-    SAFE_POINT(0 <= numOfAction && numOfAction < 6, "Incorrect action", );
-    actions[numOfAction]->setChecked(setChecked);
+    SAFE_POINT(0 <= frameIndex && frameIndex < actions.size(), "Incorrect action", );
+    actions[frameIndex]->setChecked(isChecked);
 }
 
 }    // namespace U2
