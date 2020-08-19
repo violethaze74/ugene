@@ -2097,7 +2097,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
 
     // Expected result: the highlighting mode is the same, human_T1 is still the reference.
     CHECK_SET_ERR(highlightingSchemeCombo->currentText() == "Disagreements", "Invalid highlighting scheme");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"), "Unexpected reference sequence");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"), "Unexpected reference sequence");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3319) {

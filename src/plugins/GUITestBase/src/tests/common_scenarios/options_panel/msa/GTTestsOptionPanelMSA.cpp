@@ -76,7 +76,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
     //    Expected state: Phaneroptera_falcata highlighted as reference
 
     //    4. Use button to remove reference
@@ -86,7 +86,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
     CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
-    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
     //    Phaneroptera_falcata highlighted as reference
 
     //    4. Use button to remove reference
@@ -115,7 +115,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
     CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
-    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0002) {
@@ -704,7 +704,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_7) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     //    1. Open file test/_common_data/alphabets/extended_amino.aln
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "UGENE" color scheme
@@ -718,7 +719,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 0), "#c0bdbb");    //e
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(5, 0), "#3df490");    //f
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(6, 0), "#ff5082");    //g
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(7, 0), "#fff233");    //h
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 0), "#fff233");    //h
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(8, 0), "#00abed");    //i
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(28, 0), "#6699ff");    //j
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(9, 0), "#ffee00");    //k
