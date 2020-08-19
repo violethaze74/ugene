@@ -24,7 +24,6 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -85,12 +84,12 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     //    reference sequence line edit contains "select and add"
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
-    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
+    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
-    //Difference: pupup completer is used
+    //Difference: popup completer is used
     const QString seqName = "Phaneroptera_falcata";
     //    1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -114,7 +113,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     //    reference sequence line edit contains "select and add"
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
-    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
+    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
@@ -130,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
     QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
-    //Expected state: popup helper contains Phaneroptera_falcata.(case insencivity is checked)
+    //Expected state: popup helper contains Phaneroptera_falcata.(case insensitivity is checked)
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
 
@@ -2435,18 +2434,16 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
 
     QComboBox *treeViewCombo = GTWidget::findExactWidget<QComboBox *>(os, "treeViewCombo");
     GTComboBox::setIndexWithText(os, treeViewCombo, "Cladogram");
-    QString initialColor;
-#ifndef Q_OS_MAC
     setLabelsColor(os, 255, 0, 0);
-    initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
-#endif
+    QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
     QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
     QLineEdit *l = fontComboBox->findChild<QLineEdit *>();
 #ifdef Q_OS_LINUX
-    GTLineEdit::setText(os, l, "Serif");
+    QString fontName = "Serif";
 #else
-    GTLineEdit::setText(os, l, "Tahoma");
+    QString fontName = "Tahoma";
 #endif
+    GTLineEdit::setText(os, l, fontName);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     QSpinBox *fontSizeSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox");
@@ -2460,7 +2457,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
 
     //check settings
     layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
@@ -2474,15 +2470,8 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
 
     CHECK_SET_ERR(layoutCombo->currentText() == "Circular", QString("unexpected layout: %1").arg(layoutCombo->currentText()));
     CHECK_SET_ERR(treeViewCombo->currentText() == "Cladogram", QString("unexpected tree view: %1").arg(treeViewCombo->currentText()));
-#ifndef Q_OS_MAC
-    QString color = GTWidget::getColor(os, labelsColorButton, QPoint(10, 10)).name();
-    CHECK_SET_ERR(color == initialColor, QString("unexpected color: %1").arg(color));
-#endif
-#ifdef Q_OS_LINUX
-    CHECK_SET_ERR(fontComboBox->currentText().contains("Serif"), QString("unexpected font: %1").arg(fontComboBox->currentText()));
-#else
-    CHECK_SET_ERR(fontComboBox->currentText().contains("Tahoma"), QString("unexpected font: %1").arg(fontComboBox->currentText()));
-#endif
+    CHECK_SET_ERR(GTWidget::hasPixelWithColor(os, labelsColorButton, initialColor), QString("Initial color is not found: %1").arg(initialColor));
+    CHECK_SET_ERR(fontComboBox->currentText().contains(fontName), QString("unexpected font: %1").arg(fontComboBox->currentText()));
     CHECK_SET_ERR(fontSizeSpinBox->value() == 14, QString("unexpected font size: %1").arg(fontSizeSpinBox->value()));
     CHECK_SET_ERR(boldAttrButton->isChecked(), "boldAttrButton is not checked");
     CHECK_SET_ERR(italicAttrButton->isChecked(), "italicAttrButton is not checked");
@@ -2514,18 +2503,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTCheckBox::setChecked(os, showDistancesCheck, false);
     GTSlider::setValue(os, widthSlider, 50);
     GTSlider::setValue(os, heightSlider, 20);
-    QString initialColor;
-#ifndef Q_OS_MAC
     setBranchColor(os, 255, 0, 0);
-    initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
-#endif
+    QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
     GTSpinBox::setValue(os, lineWeightSpinBox, 2);
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
 
     //checks
     showNamesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showNamesCheck");
@@ -2540,17 +2525,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     CHECK_SET_ERR(widthSlider->value() == 50, QString("unexpected width slider value: %1").arg(widthSlider->value()));
     CHECK_SET_ERR(heightSlider->value() == 20, QString("unexpected height slider value: %1").arg(heightSlider->value()));
     CHECK_SET_ERR(lineWeightSpinBox->value() == 2, QString("unexpected line width: %1").arg(lineWeightSpinBox->value()));
-#ifndef Q_OS_MAC
-    QString color = GTWidget::getColor(os, branchesColorButton, QPoint(10, 10)).name();
-    CHECK_SET_ERR(color == initialColor, QString("Unexpected color: %1. Expected: %2").arg(color).arg(initialColor));
-#endif
+    CHECK_SET_ERR(GTWidget::hasPixelWithColor(os, branchesColorButton, initialColor), QString("Initial color is not found: %1").arg(initialColor));
 }
 
 GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2.  Set scrict consensus
+    //    2.  Set strict consensus
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     QComboBox *consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
     GTComboBox::setIndexWithText(os, consensusType, "Strict");
@@ -2580,14 +2562,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
 
     CHECK_SET_ERR(pathLe->text().contains("some_path"), QString("unexpected path: %1").arg(pathLe->text()));
     CHECK_SET_ERR(formatCb->currentText() == "GenBank", QString("unexpected format: %1").arg(formatCb->currentText()));
-    CHECK_SET_ERR(keepGapsChb->isChecked(), "keep gaps checkBox is unexpectidly unchecked");
+    CHECK_SET_ERR(keepGapsChb->isChecked(), "keep gaps checkBox is unexpectedly unchecked");
 }
 
 GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2.  Set scrict consensus
+    //    2.  Set strict consensus
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 
@@ -2618,11 +2600,11 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     excludeGapsCheckBox = GTWidget::findExactWidget<QCheckBox *>(os, "excludeGapsCheckBox");
     autoUpdateCheck = GTWidget::findExactWidget<QCheckBox *>(os, "autoUpdateCheck");
 
-    CHECK_SET_ERR(showDistancesColumnCheck->isChecked(), "show distancses is unexpectidly unchedked");
+    CHECK_SET_ERR(showDistancesColumnCheck->isChecked(), "show distances is unexpectedly unchecked");
     CHECK_SET_ERR(algoComboBox->currentText() == "Similarity", QString("unexpected algorithm: %1").arg(algoComboBox->currentText()));
     CHECK_SET_ERR(countsButton->isChecked(), "counts radio is not checked");
     CHECK_SET_ERR(excludeGapsCheckBox->isChecked(), "exclude gaps not checked");
-    CHECK_SET_ERR(!autoUpdateCheck->isChecked(), "auto update is unexpectidly checked");
+    CHECK_SET_ERR(!autoUpdateCheck->isChecked(), "auto update is unexpectedly checked");
 }
 }    // namespace GUITest_common_scenarios_options_panel_MSA
 }    // namespace U2

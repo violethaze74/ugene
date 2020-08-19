@@ -267,6 +267,27 @@ QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "hasPixelWithColor"
+bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor) {
+    QImage image = getImage(os, widget);
+    return hasPixelWithColor(os, image, expectedColor);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "hasPixelWithColorInImage"
+bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor) {
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            QColor pixelColor = image.pixel(x, y);
+            if (pixelColor == expectedColor) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "clickLabelLink"
 void GTWidget::clickLabelLink(GUITestOpStatus &os, QWidget *label, int step, int indent) {
     QRect r = label->rect();
