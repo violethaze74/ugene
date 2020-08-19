@@ -2502,7 +2502,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTCheckBox::setChecked(os, showNamesCheck, false);
     GTCheckBox::setChecked(os, showDistancesCheck, false);
     GTSlider::setValue(os, widthSlider, 50);
-    GTSlider::setValue(os, heightSlider, 20);F
+    GTSlider::setValue(os, heightSlider, 20);
     setBranchColor(os, 255, 255, 255);
     QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
     GTSpinBox::setValue(os, lineWeightSpinBox, 2);
