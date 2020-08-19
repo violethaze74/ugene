@@ -5928,8 +5928,13 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     //Expected state: log contains error message
     GTClipboard::setText(os, "?!@#$%^*(");
     GTLogTracer lt;
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Paste sequence"));
+    MWMDIWindow *mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click(Qt::RightButton);
     GTUtilsLog::checkContainsError(os, lt, "No sequences detected in the pasted content.");
+    GTWidget::click(os, GTAction::button(os, editMode));
 }
 
 }    // namespace GUITest_regression_scenarios
