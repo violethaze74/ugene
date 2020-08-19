@@ -2535,14 +2535,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     lineWeightSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "lineWeightSpinBox");
     QWidget *branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
 
-    CHECK_SET_ERR(!showNamesCheck->isChecked(), "show names checkbox is unexpectidly checked");
-    CHECK_SET_ERR(!showDistancesCheck->isChecked(), "show distanses checkbox is unexpectidly checked");
+    CHECK_SET_ERR(!showNamesCheck->isChecked(), "show names checkbox is unexpectedly checked");
+    CHECK_SET_ERR(!showDistancesCheck->isChecked(), "show distances checkbox is unexpectedly checked");
     CHECK_SET_ERR(widthSlider->value() == 50, QString("unexpected width slider value: %1").arg(widthSlider->value()));
     CHECK_SET_ERR(heightSlider->value() == 20, QString("unexpected height slider value: %1").arg(heightSlider->value()));
     CHECK_SET_ERR(lineWeightSpinBox->value() == 2, QString("unexpected line width: %1").arg(lineWeightSpinBox->value()));
 #ifndef Q_OS_MAC
     QString color = GTWidget::getColor(os, branchesColorButton, QPoint(10, 10)).name();
-    CHECK_SET_ERR(color == initialColor, QString("unexpected color: %1. Expected: %2").arg(color).arg(initialColor));
+    CHECK_SET_ERR(color == initialColor, QString("Unexpected color: %1. Expected: %2").arg(color).arg(initialColor));
 #endif
 }
 
