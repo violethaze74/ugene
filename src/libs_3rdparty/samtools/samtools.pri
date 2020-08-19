@@ -4,7 +4,7 @@ TEMPLATE = lib
 CONFIG +=thread debug_and_release staticlib warn_off
 INCLUDEPATH += src src/samtools ../../include
 win32 : INCLUDEPATH += src/samtools/win32
-DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
+DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE
 win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 
 LIBS += -L../../$$out_dir()
