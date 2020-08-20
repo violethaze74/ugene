@@ -43,7 +43,7 @@ typedef struct {
 } cache_t;
 KHASH_MAP_INIT_INT64(cache, cache_t)
 
-#if defined(_WIN32) || defined(_MSC_VER)
+#if defined(_WIN32) || defined(_MSC_VER) || defined(Q_OS_WIN)
 #define ftello(fp) ftell(fp)
 #define fseeko(fp, offset, whence) fseek(fp, offset, whence)
 #else
