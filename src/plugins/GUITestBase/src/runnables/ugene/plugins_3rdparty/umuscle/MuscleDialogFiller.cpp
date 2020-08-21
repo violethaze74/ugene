@@ -45,7 +45,7 @@ void MuscleDialogFiller::commonScenario() {
 
     QComboBox *modeBox = dialog->findChild<QComboBox *>("confBox");
     GT_CHECK(modeBox != NULL, "combobox not found");
-    GTComboBox::setCurrentIndex(os, modeBox, mode);
+    GTComboBox::selectItemByIndex(os, modeBox, mode);
 
     QCheckBox *stableCB = dialog->findChild<QCheckBox *>("stableCB");
     GTCheckBox::setChecked(os, stableCB, doNotReArr);

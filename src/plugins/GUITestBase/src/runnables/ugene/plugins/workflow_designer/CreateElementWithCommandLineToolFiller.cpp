@@ -141,7 +141,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView *table, 
 
         QComboBox *box = qobject_cast<QComboBox *>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
-        GTComboBox::setIndexWithText(os, box, fullValue);
+        GTComboBox::selectItemByText(os, box, fullValue);
 #ifdef Q_OS_WIN
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif
@@ -183,10 +183,10 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget *dialog, Q
             CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
 
             if (cbIntegratedTools->findText(settings.tool) == -1) {
-                GTComboBox::setIndexWithText(os, cbIntegratedTools, "Show all tools", false);
+                GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
                 GTKeyboardDriver::keyClick(Qt::Key_Escape);
             }
-            GTComboBox::setIndexWithText(os, cbIntegratedTools, settings.tool, false, HI::GTGlobals::UseKeyBoard);
+            GTComboBox::selectItemByText(os, cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
         }
         break;
     }

@@ -572,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "UGENE Genome Aligner") {
-                    GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+                    GTComboBox::selectItemByIndex(os, methodNamesBox, i);
                 }
             }
 
@@ -1470,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0778) {
 
             QComboBox *caseCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "caseCombo"));
             CHECK_SET_ERR(caseCombo != NULL, "No caseCombo");
-            GTComboBox::setIndexWithText(os, caseCombo, name);
+            GTComboBox::selectItemByText(os, caseCombo, name);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1869,7 +1869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0828) {
             CHECK(NULL != buttonBox, );
 
             QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "typeBox"));
-            GTComboBox::setIndexWithText(os, combo, "Sequence name markers", true);
+            GTComboBox::selectItemByText(os, combo, "Sequence name markers");
 
             QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK(NULL != button, );
@@ -2161,7 +2161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
 
             QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algoComboBox"));
             CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
-            GTComboBox::setIndexWithText(os, combo, "Suffix array");
+            GTComboBox::selectItemByText(os, combo, "Suffix array");
 
             QLineEdit *pathEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath"));
             pathEdit->setText(sandBoxDir + "test_0844.gb");
@@ -2689,8 +2689,8 @@ GUI_TEST_CLASS_DEFINITION(test_0899) {
                             << "Custom region";
             GTComboBox::checkValuesPresence(os, region_type_combo, regionComboList);
 
-            GTComboBox::setIndexWithText(os, documentFormatComboBox, "GenBank");
-            GTComboBox::setIndexWithText(os, region_type_combo, "Whole sequence");
+            GTComboBox::selectItemByText(os, documentFormatComboBox, "GenBank");
+            GTComboBox::selectItemByText(os, region_type_combo, "Whole sequence");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3436,7 +3436,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    3. Fill fields "Range start" and "Range end" with values "1" and "2" respectively.
 
@@ -3467,7 +3467,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    4. Press "Start prediction".
             GTGlobals::sleep();

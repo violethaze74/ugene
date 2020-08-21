@@ -73,7 +73,7 @@ void ImportAPRFileFiller::commonScenario() {
         if (!format.isEmpty()) {
             QComboBox *cb = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
             CHECK_SET_ERR(cb != NULL, "Radio Button not found");
-            GTComboBox::setIndexWithText(os, cb, format);
+            GTComboBox::selectItemByText(os, cb, format);
         }
     }
 

@@ -60,7 +60,7 @@ void BlastAllSupportDialogFiller::commonScenario() {
 
     QComboBox *programName = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "programName", dialog));
     GT_CHECK(programName, "programName is NULL");
-    GTComboBox::setIndexWithText(os, programName, parameters.programNameText);
+    GTComboBox::selectItemByText(os, programName, parameters.programNameText);
 
     if (!parameters.dbPath.isEmpty()) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.dbPath));

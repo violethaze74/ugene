@@ -42,7 +42,7 @@ void SpadesGenomeAssemblyDialogFiller::commonScenario() {
     GTWidget::click(os, GTWidget::findWidget(os, "setResultDirNameButton", dialog));
 
     QComboBox *libraryComboBox = GTWidget::findExactWidget<QComboBox *>(os, "libraryComboBox", dialog);
-    GTComboBox::setIndexWithText(os, libraryComboBox, library);
+    GTComboBox::selectItemByText(os, libraryComboBox, library);
 
     foreach (QString s, leftReads) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, s));
@@ -57,12 +57,12 @@ void SpadesGenomeAssemblyDialogFiller::commonScenario() {
     QComboBox *combo;
     if (!datasetType.isEmpty()) {
         combo = GTWidget::findExactWidget<QComboBox *>(os, "typeCombo", dialog);
-        GTComboBox::setIndexWithText(os, combo, datasetType);
+        GTComboBox::selectItemByText(os, combo, datasetType);
     }
 
     if (!runningMode.isEmpty()) {
         combo = GTWidget::findExactWidget<QComboBox *>(os, "modeCombo", dialog);
-        GTComboBox::setIndexWithText(os, combo, runningMode);
+        GTComboBox::selectItemByText(os, combo, runningMode);
     }
 
     QLineEdit *lineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "kmerEdit", dialog);

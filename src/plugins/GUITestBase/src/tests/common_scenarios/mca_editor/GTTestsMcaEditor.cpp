@@ -3500,7 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");

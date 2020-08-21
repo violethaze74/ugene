@@ -846,7 +846,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
     CHECK_SET_ERR(algorithmBox != NULL, "Cannot find boxAlgorithm widget!");
 
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
+    GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
     GTGlobals::sleep(200);
@@ -1808,7 +1808,7 @@ GUI_TEST_CLASS_DEFINITION(test_3277) {
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
     //    Select different highlighting schemes.
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Gaps");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Gaps");
     //    Current state: the highlighting doesn't work for all sequences except the reference sequence.
 
     QColor after = GTWidget::getColor(os, seqArea, QPoint(1, 1));
@@ -2070,7 +2070,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     // 5. Change the highlighting mode to "Disagreements"
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *highlightingSchemeCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::setIndexWithText(os, highlightingSchemeCombo, "Disagreements");
+    GTComboBox::selectItemByText(os, highlightingSchemeCombo, "Disagreements");
 
     // 6. Use the dots
     QCheckBox *useDotsCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "useDots"));
@@ -2838,7 +2838,7 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "Agreements");
+    GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget *exportButton = GTWidget::findWidget(os, "exportHighlightning");
     CHECK_SET_ERR(exportButton != NULL, "exportButton not found");
@@ -2896,7 +2896,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
 
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "Agreements");
+    GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget *exportButton = GTWidget::findWidget(os, "exportHighlightning");
     CHECK_SET_ERR(exportButton != NULL, "exportButton not found");
@@ -3737,7 +3737,7 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     if (!regionComboBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
-    GTComboBox::setIndexWithText(os, regionComboBox, "Selected region");
+    GTComboBox::selectItemByText(os, regionComboBox, "Selected region");
 
     QWidget *renderArea = GTUtilsSequenceView::getSeqWidgetByNumber(os);
     CHECK_SET_ERR(renderArea != NULL, "Render area is NULL");
@@ -3923,7 +3923,7 @@ GUI_TEST_CLASS_DEFINITION(test_3612) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Algorithm settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox"), "Smith-Waterman");
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox"), "Smith-Waterman");
     GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "gapOpen"), 1);
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "inNewWindowCheckBox"), false);
     GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));
@@ -4503,7 +4503,7 @@ GUI_TEST_CLASS_DEFINITION(test_3710) {
     GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "export_test_3710"));
 
     QComboBox *highlightingScheme = GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme");
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Agreements");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Agreements");
     GTWidget::click(os, GTWidget::findWidget(os, "exportHighlightning"));
     GTGlobals::sleep();
     //    5. Export.
@@ -4800,7 +4800,7 @@ GUI_TEST_CLASS_DEFINITION(test_3755) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Select different highlighting schemes.
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Conservation level");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
     QWidget *w = GTWidget::findWidget(os, "thresholdSlider");
     QSlider *slider = qobject_cast<QSlider *>(w);
     GTSlider::setValue(os, slider, 80);
@@ -5273,7 +5273,7 @@ GUI_TEST_CLASS_DEFINITION(test_3817) {
 
     QComboBox *boxRegion = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion"));
 
-    GTComboBox::setIndexWithText(os, boxRegion, "Custom region");
+    GTComboBox::selectItemByText(os, boxRegion, "Custom region");
 
     QLineEdit *editStart = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart"));
     QLineEdit *editEnd = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd"));
@@ -5281,13 +5281,13 @@ GUI_TEST_CLASS_DEFINITION(test_3817) {
     GTLineEdit::setText(os, editStart, "123");
     GTLineEdit::setText(os, editEnd, "1000");
 
-    GTComboBox::setIndexWithText(os, boxRegion, "Whole sequence");
+    GTComboBox::selectItemByText(os, boxRegion, "Whole sequence");
     CHECK_SET_ERR(!editStart->isVisible() && !editEnd->isVisible(), "Region boundary fields are unexpectedly visible");
 
-    GTComboBox::setIndexWithText(os, boxRegion, "Custom region");
+    GTComboBox::selectItemByText(os, boxRegion, "Custom region");
     CHECK_SET_ERR(editStart->isVisible() && editEnd->isVisible(), "Region boundary fields are unexpectedly invisible");
 
-    GTComboBox::setIndexWithText(os, boxRegion, "Selected region", false);
+    GTComboBox::selectItemByText(os, boxRegion, "Selected region");
     CHECK_SET_ERR(boxRegion->currentText() == "Custom region", QString("Region type value is unexpected: %1. Expected: Custom region").arg(boxRegion->currentText()));
 }
 
@@ -6015,7 +6015,7 @@ GUI_TEST_CLASS_DEFINITION(test_3994) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Select different highlighting schemes.
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Conservation level");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
     QWidget *w = GTWidget::findWidget(os, "thresholdLessRb");
     GTRadioButton::click(os, qobject_cast<QRadioButton *>(w));
     GTGlobals::sleep();

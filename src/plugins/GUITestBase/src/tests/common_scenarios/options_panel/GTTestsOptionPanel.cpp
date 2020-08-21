@@ -623,10 +623,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     QComboBox *positionComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "labelPositionComboBox"));
     CHECK_SET_ERR(positionComboBox != NULL, "Position comboBox is NULL");
     CHECK_SET_ERR(positionComboBox->count() == 4, "Wrong amount of available label position");
-    GTComboBox::setCurrentIndex(os, positionComboBox, 0);
-    GTComboBox::setCurrentIndex(os, positionComboBox, 1);
-    GTComboBox::setCurrentIndex(os, positionComboBox, 2);
-    GTComboBox::setCurrentIndex(os, positionComboBox, 3);
+    GTComboBox::selectItemByIndex(os, positionComboBox, 0);
+    GTComboBox::selectItemByIndex(os, positionComboBox, 1);
+    GTComboBox::selectItemByIndex(os, positionComboBox, 2);
+    GTComboBox::selectItemByIndex(os, positionComboBox, 3);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
@@ -699,7 +699,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     QFontComboBox *fontComboBox = qobject_cast<QFontComboBox *>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR(fontComboBox != NULL, "Font comboBox is NULL");
 #ifdef Q_OS_LINUX
-    GTComboBox::setIndexWithText(os, fontComboBox, "Serif", false);
+    GTComboBox::selectItemByText(os, fontComboBox, "Serif");
 #else
     GTComboBox::setIndexWithText(os, fontComboBox, "Verdana");
 #endif

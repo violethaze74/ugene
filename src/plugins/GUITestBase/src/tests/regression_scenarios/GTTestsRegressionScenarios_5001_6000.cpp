@@ -421,7 +421,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
     GTGlobals::sleep(200);
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     //3. Add an additional sequence from file : "test/_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
@@ -668,7 +668,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -873,14 +873,14 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
             //2.1 Choose Classic algorithm
             QComboBox *comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
             const int swRealizationIndex = comboRealization->findText("Classic 2");
-            GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
+            GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
             //3. Open tab "Input and output"
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1642,7 +1642,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
 
             //    4. Select "CSV" format.
             //    Expected state: a "CSV" format is selected, the "Add to project" checkbox is disabled.
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(!addToProjectCheck->isEnabled(), "addToProjectCheck is unexpectedly enabled");
 
@@ -1693,7 +1693,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
             //    Expected state: the "Add to project" checkbox becomes disabled only for CSV format.
             const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog));
             foreach (const QString &format, formats) {
-                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
+                GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
                 CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
                 CHECK_SET_ERR(addToProjectCheck->isEnabled() != (format == "CSV"), QString("addToProjectCheck is unexpectedly enabled for format '%1'").arg(format));
             }
@@ -1933,7 +1933,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_1) {
     GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
 
     //5. Set combo box value "Hamming dissimilarity"
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox"), "Hamming dissimilarity");
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox"), "Hamming dissimilarity");
 
     //6. Set radio button value "Percents"
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsButton"));
@@ -1965,7 +1965,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "dialog not found");
             //4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
             //5. Set radio button value "Percents"
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsRB", dialog));
             //6. Click check box "Exclude gaps"
@@ -2016,7 +2016,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "dialog not found");
             //4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
             //5. Set radio button value "Percents"
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsRB", dialog));
             //6. Click check box "Exclude gaps"
@@ -4066,7 +4066,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_1) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //    4. Open "Branch Support" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
@@ -4114,7 +4114,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_2) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             GTWidget::checkEnabled(os, "tranSpinBox", false, dialog);
 
@@ -4160,7 +4160,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //    4. Open "Branch Support" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
@@ -4175,7 +4175,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
             GTRadioButton::click(os, "fastMethodCheckbox", dialog);
 
             //    8. Set "Use fast likelihood-based method" combobox value to "Chi2-based".
-            GTComboBox::setIndexWithText(os, "fastMethodCombo", dialog, "Chi2-based");
+            GTComboBox::selectItemByText(os, "fastMethodCombo", dialog, "Chi2-based");
 
             //    9. Set other necessary values and accept the dialog.
             GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_5786_3.nwk", dialog);
@@ -4899,7 +4899,7 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
             //GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
             GTLineEdit::setText(os, endLineEdit, "50");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);

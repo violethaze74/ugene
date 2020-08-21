@@ -3155,7 +3155,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-            GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseMouse);
+            GTComboBox::selectItemByText(os, exportType, "Custom region", GTGlobals::UseMouse);
 
             GTGlobals::sleep();
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
@@ -3493,7 +3493,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "Mega");
+    GTComboBox::selectItemByText(os, copyType, "Mega");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
@@ -3522,7 +3522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "CLUSTALW");
+    GTComboBox::selectItemByText(os, copyType, "CLUSTALW");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
@@ -3589,7 +3589,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "Rich text (HTML)");
+    GTComboBox::selectItemByText(os, copyType, "Rich text (HTML)");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
@@ -3827,7 +3827,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0059_scheme");
 
             QComboBox *alphabetComboBox = (GTWidget::findExactWidget<QComboBox *>(os, "alphabetComboBox", dialog));
-            GTComboBox::setIndexWithText(os, alphabetComboBox, "Nucleotide");
+            GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new customColorSelector()));
 
@@ -3959,7 +3959,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
             CHECK_SET_ERR(validLabel->text() == "Warning: Color scheme with the same name already exists.", "unexpected hint: " + validLabel->text());
 
             QComboBox *alphabetComboBox = (GTWidget::findExactWidget<QComboBox *>(os, "alphabetComboBox", dialog));
-            GTComboBox::setIndexWithText(os, alphabetComboBox, "Nucleotide");
+            GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTGlobals::sleep(500);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);

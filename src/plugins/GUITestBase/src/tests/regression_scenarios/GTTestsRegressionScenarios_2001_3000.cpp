@@ -1711,7 +1711,7 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
             QWidget *dialog = QApplication::activeModalWidget();
 
             QComboBox *methodNamesBox = GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog);
-            GTComboBox::setIndexWithText(os, methodNamesBox, "Bowtie2");
+            GTComboBox::selectItemByText(os, methodNamesBox, "Bowtie2");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1093/refrence.fa"));
             QWidget *addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
@@ -1885,7 +1885,7 @@ GUI_TEST_CLASS_DEFINITION(test_2293) {
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "Bowtie2") {
-                    GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+                    GTComboBox::selectItemByIndex(os, methodNamesBox, i);
                 }
             }
 
@@ -3325,7 +3325,7 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     //    Switch to the circular layout on the tree view.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_TREES_WIDGET"));
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Select the last node, then call a context menu for it. It contains two menu items: "swap siblings" and "reroot".
@@ -3771,7 +3771,7 @@ GUI_TEST_CLASS_DEFINITION(test_2578) {
     //    3. Select 'agreements' highlighting scheme.
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "Agreements");
+    GTComboBox::selectItemByText(os, combo, "Agreements");
 
     QWidget *exportButton = GTWidget::findWidget(os, "exportHighlightning");
     CHECK_SET_ERR(NULL != exportButton, "exportButton not found");
@@ -4452,14 +4452,14 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
             QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
             QWidget *spin = dialog->findChild<QSpinBox *>("qualitySpinBox");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
+            GTComboBox::selectItemByText(os, formatsBox, "SVG");
             CHECK_SET_ERR(!spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "PDF");
+            GTComboBox::selectItemByText(os, formatsBox, "PDF");
             CHECK_SET_ERR(!spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "PS");
+            GTComboBox::selectItemByText(os, formatsBox, "PS");
             CHECK_SET_ERR(!spin->isVisible(), "Quality spin box is visible!");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "JPG");
+            GTComboBox::selectItemByText(os, formatsBox, "JPG");
             CHECK_SET_ERR(spin->isVisible(), "Quality spin box not visible!");
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
@@ -6107,7 +6107,7 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
 
     //    4. Click a "Layout" button on the tree view toolbar, select a "Circular" menu item.
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTGlobals::sleep(500);
     //    Expected state: the tree becomes circular.
     QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");

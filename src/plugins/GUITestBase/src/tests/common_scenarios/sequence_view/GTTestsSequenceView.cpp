@@ -895,7 +895,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
             // set SVG format
             QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
             CHECK_SET_ERR(formatsBox != nullptr, "formatBox is NULL");
-            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
+            GTComboBox::selectItemByText(os, formatsBox, "SVG");
 
             // export is not available
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));

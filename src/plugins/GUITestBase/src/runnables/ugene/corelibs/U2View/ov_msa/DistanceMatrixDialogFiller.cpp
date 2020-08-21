@@ -74,9 +74,9 @@ void DistanceMatrixDialogFiller::commonScenario() {
 
     QComboBox *algoCombo = dialog->findChild<QComboBox *>("algoCombo");
     if (hamming) {
-        GTComboBox::setCurrentIndex(os, algoCombo, 0);
+        GTComboBox::selectItemByIndex(os, algoCombo, 0);
     } else {
-        GTComboBox::setCurrentIndex(os, algoCombo, 1);
+        GTComboBox::selectItemByIndex(os, algoCombo, 1);
     }
 
     if (counts) {

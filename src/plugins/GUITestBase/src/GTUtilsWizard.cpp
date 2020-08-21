@@ -186,7 +186,7 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus &os, QString parName) {
 void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value) {
     QComboBox *combo = qobject_cast<QComboBox *>(w);
     if (combo != NULL) {
-        GTComboBox::setIndexWithText(os, combo, value.toString());
+        GTComboBox::selectItemByText(os, combo, value.toString());
         return;
     }
     QSpinBox *spin = qobject_cast<QSpinBox *>(w);

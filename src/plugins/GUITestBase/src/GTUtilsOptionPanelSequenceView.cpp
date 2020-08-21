@@ -417,7 +417,7 @@ void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus &os, QString 
     if (!strand->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
-    GTComboBox::setIndexWithText(os, strand, strandStr);
+    GTComboBox::selectItemByText(os, strand, strandStr);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME
@@ -425,7 +425,7 @@ void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus &os, QString 
 #define GT_METHOD_NAME "setRegionType"
 void GTUtilsOptionPanelSequenceView::setRegionType(HI::GUITestOpStatus &os, const QString &regionType) {
     openSearchInShowHideWidget(os);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "boxRegion"), regionType, false);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "boxRegion"), regionType);
 }
 #undef GT_METHOD_NAME
 
@@ -455,7 +455,7 @@ void GTUtilsOptionPanelSequenceView::setAlgorithm(HI::GUITestOpStatus &os, QStri
     if (!algoBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
     }
-    GTComboBox::setIndexWithText(os, algoBox, algorithm);
+    GTComboBox::selectItemByText(os, algoBox, algorithm);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME
@@ -531,9 +531,9 @@ void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus 
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
     if (inTranslation) {
-        GTComboBox::setIndexWithText(os, searchIn, "Translation");
+        GTComboBox::selectItemByText(os, searchIn, "Translation");
     } else {
-        GTComboBox::setIndexWithText(os, searchIn, "Sequence");
+        GTComboBox::selectItemByText(os, searchIn, "Sequence");
     }
     GTGlobals::sleep(2500);
 }
@@ -547,7 +547,7 @@ void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus &os
     if (!region->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
-    GTComboBox::setIndexWithText(os, region, locationStr, false);
+    GTComboBox::selectItemByText(os, region, locationStr);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME

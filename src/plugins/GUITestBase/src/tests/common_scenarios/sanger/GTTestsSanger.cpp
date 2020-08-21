@@ -277,7 +277,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
             AlignToReferenceBlastDialogFiller::setDestination(os, sandBoxDir + "sanger_test_0005_2.ugenedb", dialog);
 
             //    3. Set 'Read name in result alignment' to 'File name'.
-            GTComboBox::setIndexWithText(os, "cbRowNaming", dialog, "File name");
+            GTComboBox::selectItemByText(os, "cbRowNaming", dialog, "File name");
 
             //    4. Click the 'Map' button.
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -480,7 +480,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                     << testDir + "_common_data/sanger/dataset3/pFB7-CDK5RAP2_P1713799_009.ab1";
             AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
 
-            GTComboBox::setIndexWithText(os, "cbRowNaming", dialog, "File name");
+            GTComboBox::selectItemByText(os, "cbRowNaming", dialog, "File name");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };

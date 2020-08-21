@@ -860,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(test_1047) {
     //    2. Choose a color scheme in options panel of assembly browser. Try zooming with mouse wheel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     QComboBox *colorBox = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
-    GTComboBox::setIndexWithText(os, colorBox, "Strand direction");
+    GTComboBox::selectItemByText(os, colorBox, "Strand direction");
     //    Bug state: Zoom and color scheme changing simultaneously.
     QWidget *assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPoint p = assembly_reads_area->mapToGlobal(assembly_reads_area->rect().center());
@@ -1064,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             CHECK_SET_ERR(NULL != dialog, "Unable to find active dialog");
 
             QComboBox *typeBox = GTWidget::findExactWidget<QComboBox *>(os, "typeBox", dialog);
-            GTComboBox::setIndexWithText(os, typeBox, "Qualifier text value markers");
+            GTComboBox::selectItemByText(os, typeBox, "Qualifier text value markers");
 
             QLineEdit *addParamEdit = GTWidget::findExactWidget<QLineEdit *>(os, "addParamEdit", dialog);
             GTLineEdit::setText(os, addParamEdit, "protein_id");
@@ -2209,7 +2209,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189) {
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     QComboBox *regBox = (QComboBox *)GTWidget::findWidget(os, "boxRegion");
-    GTComboBox::setCurrentIndex(os, regBox, 2);
+    GTComboBox::selectItemByIndex(os, regBox, 2);
 
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
@@ -2245,7 +2245,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     QComboBox *regBox = (QComboBox *)GTWidget::findWidget(os, "boxRegion");
-    GTComboBox::setCurrentIndex(os, regBox, 2);
+    GTComboBox::selectItemByIndex(os, regBox, 2);
 
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
@@ -2351,7 +2351,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
 
             //    3) Set "Search the search type" to "blastn"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastn");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastn");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             QLineEdit *entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
@@ -2360,7 +2360,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             //    4) Set "Search the search type" to "blastp"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 0);
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastp");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastp");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
@@ -2369,7 +2369,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             //    5) Set "Search the search type" to "cdd"
             //    Expected state: "Advanced options" tab is disabled
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 0);
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "cdd");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "cdd");
             QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog);
             CHECK_SET_ERR(NULL != tabWidget, "tabWidget is NULL");
             CHECK_SET_ERR(!tabWidget->isTabEnabled(1), "'Advanced options' tab is unexpectedly enabled");
@@ -2498,7 +2498,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
 
             //    5. Check that "pattern sequence name" is "PN", where "N" is number of SW search launch.
             GTLineEdit::checkText(os, GTWidget::findExactWidget<QLineEdit *>(os, "patternSequenceName", dialog), "P1");
@@ -2689,9 +2689,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
             int index = comboBox->findText("FASTA");
 
             CHECK_SET_ERR(index != -1, QString("item \"FASTA\" in combobox not found"));
-            if (comboBox->currentIndex() != index) {
-                GTComboBox::setCurrentIndex(os, comboBox, index);
-            }
+            GTComboBox::selectItemByIndex(os, comboBox, index);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1245", GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
@@ -2749,9 +2747,7 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
             int index = comboBox->findText("SAM");
 
             CHECK_SET_ERR(index != -1, QString("item \"SAM\" in combobox not found"));
-            if (comboBox->currentIndex() != index) {
-                GTComboBox::setCurrentIndex(os, comboBox, index);
-            }
+            GTComboBox::selectItemByIndex(os, comboBox, index);
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
@@ -3207,7 +3203,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
+            GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
             QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1295.nwk");
@@ -3470,7 +3466,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
-            GTComboBox::setIndexWithText(os, algorithmBox, "PHYLIP Neighbor Joining");
+            GTComboBox::selectItemByText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -4104,10 +4100,10 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
 
     QComboBox *highlightingBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "READS_HIGHLIGHTNING_COMBO"));
     CHECK_SET_ERR(highlightingBox != NULL, "READS_HIGHLIGHTNING_COMBO not found");
-    GTComboBox::setIndexWithText(os, highlightingBox, "Nucleotide");
+    GTComboBox::selectItemByText(os, highlightingBox, "Nucleotide");
     CHECK_SET_ERR(hint->text().isEmpty(), "Hint is not empty, but must be");
 
-    GTComboBox::setIndexWithText(os, highlightingBox, "Difference");
+    GTComboBox::selectItemByText(os, highlightingBox, "Difference");
     CHECK_SET_ERR(!hint->text().isEmpty(), "Hint is empty, but must not be");
 }
 
@@ -4448,7 +4444,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "Bowtie") {
-                    GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+                    GTComboBox::selectItemByIndex(os, methodNamesBox, i);
                 }
             }
 
@@ -4538,7 +4534,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
+    GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
     GTKeyboardDriver::keySequence("> header");
@@ -4574,7 +4570,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
+    GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
     GTKeyboardDriver::keySequence("ATTCACCAAAGTTGAA");
@@ -4924,7 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
         void run(HI::GUITestOpStatus &os) {
             QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", QApplication::activeModalWidget());
             CHECK_SET_ERR(NULL != comboMatrix, "Matrix combobox is NULL");
-            GTComboBox::setIndexWithText(os, comboMatrix, "rna");
+            GTComboBox::selectItemByText(os, comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
@@ -5076,7 +5072,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
+            GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
             QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1499.nwk");
@@ -5146,7 +5142,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506) {
     //    Expected: the tree appears synchronized with the MSA Editor. Clustering blue line is shown.
     //    5) Click the "Layout" button on the Tree View toolbar and choose the circular or unrooted layout.
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     //    6) Zoom in the tree using mouse scroll.
     GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
     for (int i = 0; i < 10; i++) {
@@ -6784,7 +6780,7 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     QCheckBox *showDistancesColumnCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     QComboBox *algoCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algoComboBox"));
-    GTComboBox::setIndexWithText(os, algoCombo, "Similarity");
+    GTComboBox::selectItemByText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
     CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
 }
@@ -8067,7 +8063,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     //3. Change the value of the scale spinbox. E.g. set it to 75%
     QComboBox *scaleCombo = dynamic_cast<QComboBox *>(GTWidget::findWidget(os, "wdScaleCombo"));
     CHECK_SET_ERR(NULL != scaleCombo, "Unable to find scale combobox!");
-    GTComboBox::setIndexWithText(os, scaleCombo, "75%");
+    GTComboBox::selectItemByText(os, scaleCombo, "75%");
 
     //4. Store the scheme to some file using "Save scheme as" button
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, workflowOutputDir.absolutePath() + "/" + "test.uwl", "Scheme"));

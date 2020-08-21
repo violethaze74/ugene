@@ -816,12 +816,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 900), "UGENE Database"));
-    QAbstractButton *button = GTAction::button(os, "ExtractAssemblyRegion");
-    GTWidget::click(os, button);
+    GTWidget::click(os, GTAction::button(os, "ExtractAssemblyRegion"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //      3. Check expected coverage values
     QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
+    CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("330"), "expected coverage value not found");
@@ -948,8 +948,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change reads highlighting to "strand direction" and "complement"
     QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
-    GTComboBox::setIndexWithText(os, box, "Strand direction");
-    GTComboBox::setIndexWithText(os, box, "Paired reads");
+    GTComboBox::selectItemByText(os, box, "Strand direction");
+    GTComboBox::selectItemByText(os, box, "Paired reads");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {
@@ -962,7 +962,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change consensus algorithm
     QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "consensusAlgorithmCombo");
-    GTComboBox::setIndexWithText(os, box, "SAMtools");
+    GTComboBox::selectItemByText(os, box, "SAMtools");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {

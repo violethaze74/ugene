@@ -1223,13 +1223,13 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
             CHECK_SET_ERR(removeButton->isEnabled(), "Remove button is unexpectedly disabled");
 
             //    5. Choose "Shared database" in the combobox.
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", dialog), "Shared database");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", dialog), "Shared database");
 
             //    Expected: the "OK" button is disabled.
             CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
 
             //    6. Choose "Local file(s)" in the combobox.
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", dialog), "Local file(s)");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", dialog), "Local file(s)");
 
             //    Expected: the "OK" button is enabled.
             CHECK_SET_ERR(okButton->isEnabled(), "OK button is unexpectedly disabled");
@@ -1360,7 +1360,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
         virtual void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             QComboBox *methodNamesBox = GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog);
-            GTComboBox::setIndexWithText(os, methodNamesBox, "UGENE Genome Aligner");
+            GTComboBox::selectItemByText(os, methodNamesBox, "UGENE Genome Aligner");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
             QWidget *addRefButton = GTWidget::findWidget(os, "addRefButton", dialog);
@@ -1540,7 +1540,7 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
                      << "Bowtie2";
             QComboBox *methodNamesBox = GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog);
             foreach (const QString &al, aligners) {
-                GTComboBox::setIndexWithText(os, methodNamesBox, al);
+                GTComboBox::selectItemByText(os, methodNamesBox, al);
                 GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
                 GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
             }
@@ -1664,7 +1664,7 @@ GUI_TEST_CLASS_DEFINITION(test_4153) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     //    Select different highlighting schemes.
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Conservation level");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
 
     QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
     CHECK_SET_ERR(thresholdSlider != NULL, "Threshold slider is null");
@@ -3334,7 +3334,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -3370,7 +3370,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
 
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
             CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
@@ -4188,7 +4188,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_1) {
 
     //    3. Set "Strict" consensus algorithm
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
@@ -4230,7 +4230,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_2) {
     GTGlobals::sleep(500);
     //    5. Set consensus algorithm "Levitsky"
     QComboBox *consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
-    GTComboBox::setIndexWithText(os, consensusType, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     //    6. Close the tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::General);
     GTGlobals::sleep(500);
@@ -4247,7 +4247,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_2) {
     consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
     CHECK_SET_ERR(consensusType->currentText() == "ClustalW", QString("unexpected consensus: %1").arg(consensusType->currentText()));
     //    10. Change algorithm
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     CHECK_SET_ERR(consensusType->currentText() == "Strict", QString("unexpected consensus: %1").arg(consensusType->currentText()));
     //Expected: UGENE does not crash
 }
@@ -5963,7 +5963,7 @@ GUI_TEST_CLASS_DEFINITION(test_4965) {
                          << "SAM"
                          << "UGENE Database";
             foreach (const QString &format, checkFormats) {
-                GTComboBox::setIndexWithText(os, comboBox, format, true);
+                GTComboBox::selectItemByText(os, comboBox, format);
                 CHECK_SET_ERR(!compressCheckBox->isEnabled(),
                               QString("Compress checkbox is unexpectedly enabled for '%1' format!").arg(format));
             }

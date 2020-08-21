@@ -1148,13 +1148,13 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget *par
         break;
     }
     case (comboValue): {
-        int comboVal = value.toInt(&ok);
+        int itemIndex = value.toInt(&ok);
         QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox widget");
         if (!ok) {
-            QString comboString = value.toString();
-            GTComboBox::setIndexWithText(os, comboBox, comboString, true, method);
+            QString itemText = value.toString();
+            GTComboBox::selectItemByText(os, comboBox, itemText, method);
         } else {
-            GTComboBox::setCurrentIndex(os, comboBox, comboVal, true, method);
+            GTComboBox::selectItemByIndex(os, comboBox, itemIndex, method);
         }
         break;
     }
@@ -1522,7 +1522,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QSt
     //SET VALUE
     QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK(box != nullptr, "QComboBox not found. Scripting might be unavaluable for this parameter");
-    GTComboBox::setIndexWithText(os, box, scriptMode, false);
+    GTComboBox::selectItemByText(os, box, scriptMode);
 }
 #undef GT_METHOD_NAME
 

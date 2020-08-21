@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -3349,7 +3349,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
     //2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+    GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
     //Zoom to max
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
@@ -3395,7 +3395,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
     //2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+    GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
     //Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
@@ -4244,7 +4244,7 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
-    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    GTComboBox::selectItemByIndex(os, annsComboBox, 1);
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5819,11 +5819,11 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     // Set "Sort by" as "Name" and "Sort order" as "Ascending"
     QComboBox *sortByCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortByComboBox"));
     CHECK_SET_ERR(sortByCombo != nullptr, "sortByCombo is NULL");
-    GTComboBox::setIndexWithText(os, sortByCombo, "Name");
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
 
     QComboBox *sortOrderCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortOrderComboBox"));
     CHECK_SET_ERR(sortOrderCombo != nullptr, "sortOrderCombo is NULL");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Ascending");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -5838,8 +5838,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList[17] == "Zychia_baranovi", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Name" and "Sort order" as "Descending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Name");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Descending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -5854,8 +5854,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList1[17] == "Bicolorana_bicolor_EF540830", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Length" and "Sort order" as "Descending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Length");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Descending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -5870,8 +5870,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList2[17] == "Podisma_sapporensis", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Length" and "Sort order" as "Ascending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Length");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Ascending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));

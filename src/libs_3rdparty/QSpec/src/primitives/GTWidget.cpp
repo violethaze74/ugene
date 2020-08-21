@@ -73,7 +73,7 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (parentWidget == nullptr) {
             QList<QWidget *> allWidgetList;
-            foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
+            for(QWidget *parent: GTMainWindow::getMainWindowsAsWidget(os)) {
                 allWidgetList << parent->findChildren<QWidget *>(widgetName);
             }
             int nMatches = allWidgetList.count();
