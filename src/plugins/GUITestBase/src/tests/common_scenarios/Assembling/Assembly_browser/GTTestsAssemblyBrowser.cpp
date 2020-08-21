@@ -387,10 +387,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     //    3. Check that "Output file" parameter is required, "Export" parameter is invisible.
     GTUtilsWorkflowDesigner::click(os, "Extract Coverage from Assembly");
-    const bool isOutputFileRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Output file");
-    const bool isFormatRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Format");
+    bool isOutputFileRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Output file");
+    bool isFormatRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Format");
     bool isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
-    const bool isThresholdRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Threshold");
+    bool isThresholdRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Threshold");
     CHECK_SET_ERR(isOutputFileRequired, "The 'Output file' parameter is unexpectedly not required");
     CHECK_SET_ERR(!isFormatRequired, "The 'Format' parameter is unexpectedly required");
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
@@ -404,11 +404,11 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //    Threshold minimum value - "0";
     //    Threshold maximum value - "65535";
     QString outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
-    const QString formatValue = GTUtilsWorkflowDesigner::getParameter(os, "Format");
-    const QString thresholdValue = GTUtilsWorkflowDesigner::getParameter(os, "Threshold");
-    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("An unexpected default value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
-    CHECK_SET_ERR("Bedgraph" == formatValue, QString("An unexpected default value of the 'Format' parameter: expect '%1', got '%2'").arg("Bedgraph").arg(formatValue));
-    CHECK_SET_ERR("1" == thresholdValue, QString("An unexpected default value of the 'Threshold' parameter: expect '%1', got '%2'").arg("1").arg(thresholdValue));
+    QString formatValue = GTUtilsWorkflowDesigner::getParameter(os, "Format");
+    QString thresholdValue = GTUtilsWorkflowDesigner::getParameter(os, "Threshold");
+    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
+    CHECK_SET_ERR("Bedgraph" == formatValue, QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
+    CHECK_SET_ERR("1" == thresholdValue, QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
 
     GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
     QSpinBox *sbThreshold = qobject_cast<QSpinBox *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox *>());
@@ -420,7 +420,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsWorkflowDesigner::setParameter(os, "Format", 1, GTUtilsWorkflowDesigner::comboValue);
     outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
     isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
-    CHECK_SET_ERR("assembly_coverage.histogram" == outputFileValue, QString("An unexpected value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.histogram").arg(outputFileValue));
+    CHECK_SET_ERR("assembly_coverage.histogram" == outputFileValue, QString("2. Unexpected value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.histogram").arg(outputFileValue));
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
 
     //    6. Set format "Per base".
@@ -431,10 +431,10 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
     const bool isExportTypeRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Export");
     const QString exportTypeValue = GTUtilsWorkflowDesigner::getParameter(os, "Export");
-    CHECK_SET_ERR("assembly_coverage.txt" == outputFileValue, QString("An unexpected value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.txt").arg(outputFileValue));
-    CHECK_SET_ERR(isExportTypeVisible, "The 'Export' parameter is unexpectedly invisible");
-    CHECK_SET_ERR(isExportTypeRequired, "The 'Export' parameter is unexpectedly not required");
-    CHECK_SET_ERR(exportTypeValue == "coverage", QString("An unexpected value of 'Export' parameter: expect '%1' got '%2'").arg("coverage").arg(exportTypeValue));
+    CHECK_SET_ERR("assembly_coverage.txt" == outputFileValue, QString("3. Unexpected value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.txt").arg(outputFileValue));
+    CHECK_SET_ERR(isExportTypeVisible, "The 'Export' parameter is not 'visible'");
+    CHECK_SET_ERR(isExportTypeRequired, "The 'Export' parameter is not 'required'");
+    CHECK_SET_ERR(exportTypeValue == "coverage", QString("An unexpected value of 'Export' parameter: expected '%1' got '%2'").arg("coverage").arg(exportTypeValue));
 
     //    7. Set format "Bedgraph".
     //    Expected state: output file is "assembly_coverage.bedgraph", "Export" parameter is invisible.
@@ -442,7 +442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsWorkflowDesigner::setParameter(os, "Format", 0, GTUtilsWorkflowDesigner::comboValue);
     outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
     isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
-    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("An unexpected default value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
+    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("4. Unexpected default value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
 
     //    8. Enter any value to the "Output file" parameter.

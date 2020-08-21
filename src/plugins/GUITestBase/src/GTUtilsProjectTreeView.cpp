@@ -203,23 +203,10 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
         QModelIndex index;
     };
 
-    class MainThreadActionScroll : public CustomScenario {
-    public:
-        MainThreadActionScroll(QTreeView *treeView, const QModelIndex &index)
-            : CustomScenario(), treeView(treeView), index(index) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
-            treeView->scrollTo(index);
-        }
-        QTreeView *treeView;
-        QModelIndex index;
-    };
     GTThread::runInMainThread(os, new MainThreadActionExpand(treeView, index));
     GTThread::waitForMainThread();
 
-    GTThread::runInMainThread(os, new MainThreadActionScroll(treeView, index));
-    GTThread::waitForMainThread();
+    GTWidget::scrollToIndex(os, treeView, index);
 }
 #undef GT_METHOD_NAME
 

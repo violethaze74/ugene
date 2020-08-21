@@ -421,6 +421,29 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "scrollToIndex"
+void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index) {
+    GT_CHECK(itemView != nullptr, "ItemView is nullptr");
+    GT_CHECK(index.isValid(), "Model index is invalid");
+
+    // Find cell. TODO: scroll to parameter by mouse/keyboard?
+    class MainThreadActionScroll : public CustomScenario {
+    public:
+        MainThreadActionScroll(QAbstractItemView *itemView, const QModelIndex &index)
+            : CustomScenario(), itemView(itemView), index(index) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            itemView->scrollTo(index);
+        }
+        QAbstractItemView *itemView;
+        QModelIndex index;
+    };
+    GTThread::runInMainThread(os, new MainThreadActionScroll(itemView, index));
+    GTThread::waitForMainThread();
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }    // namespace HI

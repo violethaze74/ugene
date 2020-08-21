@@ -1031,7 +1031,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setParameter"
+#define GT_METHOD_NAME "getRowIndexOrFail"
 static int getRowIndexOrFail(HI::GUITestOpStatus &os, QTableView *table, const QString &parameter) {
     QAbstractItemModel *model = table->model();
     int rowIndex = -1;
@@ -1051,25 +1051,14 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", wdWindow));
     CHECK_SET_ERR(table, "tableView not found");
 
-    // Find cell. TODO: scroll to parameter by mouse/keyboard
-    class MainThreadAction : public CustomScenario {
-    public:
-        MainThreadAction(QTableView *table, const QString &parameter)
-            : CustomScenario(), table(table), parameter(parameter) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            int rowIndex = getRowIndexOrFail(os, table, parameter);
-            table->scrollTo(table->model()->index(rowIndex, 1));
-        }
-        QTableView *table;
-        QString parameter;
-    };
-    GTThread::runInMainThread(os, new MainThreadAction(table, parameter));
-    GTThread::waitForMainThread();
-
     int rowIndex = getRowIndexOrFail(os, table, parameter);
+    QModelIndex modelIndex = table->model()->index(rowIndex, 1);
+    GTWidget::scrollToIndex(os, table, modelIndex);
+
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, rowIndex));
+    GTThread::waitForMainThread();
     GTMouseDriver::click();
+
     GTGlobals::sleep();
 
     //SET VALUE
