@@ -38,6 +38,7 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
@@ -87,7 +88,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
-#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -2715,7 +2715,7 @@ GUI_TEST_CLASS_DEFINITION(test_5681) {
 GUI_TEST_CLASS_DEFINITION(test_5696) {
     //1. Open "COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //3. Select region with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 1), QPoint(43, 3));
@@ -2728,12 +2728,13 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 
-    QString sequence = "фыва...";
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(sequence);
+    // TODO: can't use Russian text today: PasteController uses UTF-8 to save the text, but TextFormat uses local8Bit to read it and fails.
+    // This makes 2 concurrent popups to appear.
+    // GTClipboard::setText(os, "фыва...");
+    GTClipboard::setText(os, "#$%^&*(");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);    // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
-    GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
+    GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 }
 
