@@ -36,11 +36,12 @@ namespace HI {
 #define GT_METHOD_NAME "setCurrentIndex"
 void GTComboBox::setCurrentIndex(GUITestOpStatus &os, QComboBox *comboBox, int index, bool checkVal, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
-    // Find cell. TODO: scroll to parameter by mouse/keyboard?
+
+    // Access to the internal comboBox->view() must be done from the main thread (the view is lazily instantiated).
     class MainThreadAction : public CustomScenario {
     public:
-        MainThreadAction(QComboBox *comboBox, int index, bool checkVal, GTGlobals::UseMethod method)
-            : CustomScenario(), comboBox(comboBox), index(index), checkVal(checkVal), method(method) {
+        MainThreadAction(QComboBox *comboBox, int index, GTGlobals::UseMethod method)
+            : CustomScenario(), comboBox(comboBox), index(index), method(method) {
         }
         void run(HI::GUITestOpStatus &os) {
             if (comboBox->currentIndex() == index) {
@@ -52,7 +53,7 @@ void GTComboBox::setCurrentIndex(GUITestOpStatus &os, QComboBox *comboBox, int i
             if (comboBox->isEditable()) {
                 GTWidget::click(os, comboBox, Qt::LeftButton, QPoint(comboBox->rect().width() - 10, 10));
                 GTThread::waitForMainThread();
-            } else if (!comboBox->view()->isVisible()) { // activate dropdown if it is not visible.
+            } else if (!comboBox->view()->isVisible()) {    // activate dropdown if it is not visible.
                 GTWidget::click(os, comboBox);
                 GTThread::waitForMainThread();
             }
@@ -69,13 +70,6 @@ void GTComboBox::setCurrentIndex(GUITestOpStatus &os, QComboBox *comboBox, int i
                     GTKeyboardDriver::keyClick(directionKey);
                     GTThread::waitForMainThread();
                 }
-                GTKeyboardDriver::keyClick(Qt::Key_Enter);
-                GTThread::waitForMainThread();
-
-                if (checkVal) {
-                    currIndex = comboBox->currentIndex();
-                    GT_CHECK(currIndex == index, "Can't set index! Current: " + QString::number(currIndex) + ", expected: " + QString::number(index));
-                }
                 break;
             }
             case GTGlobals::UseMouse: {
@@ -87,7 +81,6 @@ void GTComboBox::setCurrentIndex(GUITestOpStatus &os, QComboBox *comboBox, int i
                 QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
                 qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", itemPointLocal.x(), itemPointLocal.y(), itemPointGlobal.x(), itemPointGlobal.y());
                 GTMouseDriver::moveTo(itemPointGlobal);
-                GTMouseDriver::click();
                 break;
             }
             default:
@@ -96,11 +89,25 @@ void GTComboBox::setCurrentIndex(GUITestOpStatus &os, QComboBox *comboBox, int i
         }
         QComboBox *comboBox;
         int index;
-        bool checkVal;
         GTGlobals::UseMethod method;
     };
-    GTThread::runInMainThread(os, new MainThreadAction(comboBox, index, comboBox, method));
+    GTThread::runInMainThread(os, new MainThreadAction(comboBox, index, method));
     GTThread::waitForMainThread();
+
+    // Activate the final action from a separate thread. Reason: it may trigger other popups or dialogs (they can't be processed in the main thread).
+    if (method == GTGlobals::UseMouse) {
+        GTMouseDriver::click();
+    } else {
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    }
+
+    if (checkVal) {
+        int currIndex = comboBox->currentIndex();
+        for (int time = 0; time < GT_OP_WAIT_MILLIS && currIndex != index; time += GT_OP_CHECK_MILLIS) {
+            currIndex = comboBox->currentIndex();
+        }
+        GT_CHECK(currIndex == index, "Can't set index! Current: " + QString::number(currIndex) + ", expected: " + QString::number(index));
+    }
 }
 #undef GT_METHOD_NAME
 
