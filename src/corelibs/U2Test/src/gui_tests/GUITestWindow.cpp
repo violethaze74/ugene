@@ -31,8 +31,6 @@
 #include <QMenuBar>
 #include <QMouseEvent>
 #include <QRadioButton>
-#include <QSpinBox>
-#include <QToolBox>
 #include <QToolButton>
 
 #include <U2Core/U2SafePoints.h>
@@ -129,13 +127,13 @@ bool EventFilter::eventFilter(QObject *obj, QEvent *event) {
             }
             o = o->parent();
         }
-        generateMouseMeassage();
+        generateMouseMessage();
     }
     // standard event processing
     return QObject::eventFilter(obj, event);
 }
 
-void EventFilter::generateMouseMeassage() {
+void EventFilter::generateMouseMessage() {
     CHECK_EXT(m, coreLog.error(QString("MouseEvent is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
 
     //widget info
@@ -228,7 +226,7 @@ QString EventFilter::generateCode(QWidget *w) {
 
     QRadioButton *radio = qobject_cast<QRadioButton *>(w);
     if (radio) {
-        result.append(radioButtinCode(radio));
+        result.append(radioButtonCode(radio));
         return result;
     }
 
@@ -275,7 +273,7 @@ QString EventFilter::setValuesWhenFocusGone(QWidget *w) {
         }
         result.append(QString("QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(combo->objectName()));
         result.append(QString("CHECK_SET_ERR(combo != NULL, \"%1 not found!\");\n").arg(combo->objectName()));
-        result.append(QString("GTComboBox::setIndexWithText(os, combo , \"%1\");\n\n").arg(combo->currentText()));
+        result.append(QString("GTComboBox::selectItemByText(os, combo , \"%1\");\n\n").arg(combo->currentText()));
         focusWidget = NULL;
         return result;
     }
@@ -301,7 +299,7 @@ QString EventFilter::menuCode(QMenu *menu) {
     QAction *menuAct = menu->actionAt(menu->mapFromGlobal(m->globalPos()));
     if (menuAct != NULL) {
         if (menuAct->menu()) {
-            if (isSubmenuClicked == false) {
+            if (!isSubmenuClicked) {
                 result.append(QString("GTMenu::clickMenuItemByName(os, menu, QStringList() << \"%1\"").arg(menuAct->objectName()));
                 isSubmenuClicked = true;
                 return result;
@@ -309,7 +307,7 @@ QString EventFilter::menuCode(QMenu *menu) {
             result.append(QString(" << \"%1\"").arg(menuAct->objectName()));
             return result;
         } else {
-            if (isSubmenuClicked == true) {
+            if (isSubmenuClicked) {
                 result.append(QString(" << \"%1\");\n\n").arg(menuAct->objectName()));
                 isSubmenuClicked = false;
                 return result;
@@ -333,7 +331,7 @@ QString EventFilter::checkBoxCode(QCheckBox *check) const {
     return result;
 }
 
-QString EventFilter::radioButtinCode(QRadioButton *radio) const {
+QString EventFilter::radioButtonCode(QRadioButton *radio) const {
     QString result("");
     CHECK(radio != NULL, "");
 
@@ -381,7 +379,7 @@ QString EventFilter::contextMenuCode(QWidget *w) const {
 #define LINEEDIT_VAR(name) "line_" + name + "_text"
 #define SPIN_VAR(name) "spin_" + name + "_value"
 #define DOUBLE_SPIN_VAR(name) "doubleSpin_" + name + "_value"
-#define CHECK_BOX_VAR(name) "ckeckBox_" + name + "_checked"
+#define CHECK_BOX_VAR(name) "checkBox_" + name + "_checked"
 #define RADIO_BUTTON_VAR(name) "radio_" + name + "_clicked"
 #define BUTTON_VAR(name) "button_" + name + "_clicked"
 #define GROUP_BOX_VAR(name) "groupBox_" + name + "_checked"
@@ -424,7 +422,7 @@ QString EventFilter::generateFillerHeader() {
     return result;
 }
 
-/**************SOURSE******************/
+/**************SOURCE******************/
 QString EventFilter::generateFillerSource() const {
     QString result;
     result.append("\n\nSOURCE\n\n");
@@ -726,7 +724,7 @@ QString EventFilter::widgetsProcessingCode(QGroupBox *groupBox) const {
 QString EventFilter::widgetsProcessingCode(QComboBox *combo) const {
     return QString("    QComboBox* %1 = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\");\n"
-                   "    GTComboBox::setIndexWithText(os, %1, parameters->%2);\n\n")
+                   "    GTComboBox::selectItemByText(os, %1, parameters->%2);\n\n")
         .arg(combo->objectName())
         .arg(COMBO_VAR(combo->objectName()));
 }

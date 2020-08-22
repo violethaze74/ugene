@@ -701,7 +701,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 #ifdef Q_OS_LINUX
     GTComboBox::selectItemByText(os, fontComboBox, "Serif");
 #else
-    GTComboBox::setIndexWithText(os, fontComboBox, "Verdana");
+    GTComboBox::selectItemByText(os, fontComboBox, "Verdana");
 #endif
 }
 

@@ -96,7 +96,7 @@ protected:
     virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private:
-    void generateMouseMeassage();
+    void generateMouseMessage();
 
     void getInfo(QWidget *w);
 
@@ -105,7 +105,7 @@ private:
     QString menuBarCode(QMenuBar *menuBar) const;
     QString menuCode(QMenu *menu);
     QString checkBoxCode(QCheckBox *check) const;
-    QString radioButtinCode(QRadioButton *radio) const;
+    QString radioButtonCode(QRadioButton *radio) const;
     QString toolButtonCode(QToolButton *toolButton) const;
     QString contextMenuCode(QWidget *w) const;
 
