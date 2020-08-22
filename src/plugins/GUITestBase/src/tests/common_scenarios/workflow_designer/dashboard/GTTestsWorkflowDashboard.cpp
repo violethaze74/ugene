@@ -3514,8 +3514,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //   Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    int tabIndex1 = setUpMuscleSchemeInNewWdWindow(os, testDir + "_common_data/clustal/50_sequences.aln");
-    int tabIndex2 = setUpMuscleSchemeInNewWdWindow(os, testDir + "_common_data/clustal/50_sequences.aln");
+    QString msaFilePath =testDir + "_common_data/clustal/100_sequences.aln";
+    int tabIndex1 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
+    int tabIndex2 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
 
     //   Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
