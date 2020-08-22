@@ -1505,7 +1505,7 @@ GUI_TEST_CLASS_DEFINITION(test_2259) {
     CHECK_SET_ERR(mainWindow != NULL, "QMainWindow is NULL");
 
     QAction *menu = mainWindow->findChild<QAction *>(MWMENU_SETTINGS);
-    CHECK_SET_ERR(menu->menu()->actions().size() == 2, "wrong numder of actions");
+    CHECK_SET_ERR(menu->menu()->actions().size() == 2, "wrong number of actions");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2266_1) {
