@@ -23,7 +23,6 @@
 
 #include <QCryptographicHash>
 #include <QSqlError>
-#include <QSqlQuery>
 
 #include <U2Core/Folder.h>
 #include <U2Core/U2DbiPackUtils.h>
@@ -55,7 +54,7 @@ void MysqlObjectDbi::initSqlSchema(U2OpStatus &os) {
     // rank: see U2DbiObjectRank
     // name is a visual name of the object shown to user.
     U2SqlQuery("CREATE TABLE Object (id BIGINT PRIMARY KEY AUTO_INCREMENT, type INTEGER NOT NULL, "
-               "version BIGINT NOT NULL DEFAULT 1, rank INTEGER NOT NULL, "
+               "version BIGINT NOT NULL DEFAULT 1, `rank` INTEGER NOT NULL, "
                "name TEXT NOT NULL, trackMod INTEGER NOT NULL DEFAULT 0) ENGINE=InnoDB DEFAULT CHARSET=utf8",
                db,
                os)
@@ -110,7 +109,7 @@ void MysqlObjectDbi::initSqlSchema(U2OpStatus &os) {
 
 //////////////////////////////////////////////////////////////////////////
 // Read methods for objects
-#define TOP_LEVEL_FILTER ("rank = " + QString::number(U2DbiObjectRank_TopLevel))
+#define TOP_LEVEL_FILTER ("`rank` = " + QString::number(U2DbiObjectRank_TopLevel))
 
 qint64 MysqlObjectDbi::countObjects(U2OpStatus &os) {
     static const QString queryString = "SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER;
@@ -293,7 +292,7 @@ qint64 MysqlObjectDbi::getFolderGlobalVersion(const QString &folder, U2OpStatus 
 }
 
 U2DbiObjectRank MysqlObjectDbi::getObjectRank(const U2DataId &objectId, U2OpStatus &os) {
-    static const QString queryString("SELECT rank FROM Object WHERE id = :id");
+    static const QString queryString("SELECT `rank` FROM Object WHERE id = :id");
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", objectId);
     return static_cast<U2DbiObjectRank>(q.selectInt32());
@@ -694,18 +693,18 @@ void MysqlObjectDbi::redo(const U2DataId &objId, U2OpStatus &os) {
         return;
     }
 
-    foreach (const QList<U2SingleModStep> &multiStepSingleSteps, modSteps) {
+    for (const QList<U2SingleModStep> &multiStepSingleSteps : modSteps) {
         QSet<U2DataId> objectIds;
 
-        foreach (const U2SingleModStep &modStep, multiStepSingleSteps) {
+        for (const U2SingleModStep &modStep : multiStepSingleSteps) {
             redoSingleModStep(modStep, os);
             CHECK_OP(os, );
             objectIds.insert(modStep.objectId);
         }
         objectIds.insert(objId);
 
-        foreach (U2DataId objId, objectIds) {
-            incrementVersion(objId, os);
+        for (const U2DataId &objectId : objectIds) {
+            incrementVersion(objectId, os);
             if (os.hasError()) {
                 coreLog.trace("Can't increment an object version");
                 os.setError(errorDescr);
@@ -734,7 +733,7 @@ U2DataId MysqlObjectDbi::createObject(U2Object &object, const QString &folder, U
     const QString &vname = object.visualName;
     int trackMod = object.trackModType;
 
-    static const QString objectInsertString = "INSERT INTO Object(type, rank, name, trackMod) VALUES(:type, :rank, :name, :trackMod)";
+    static const QString objectInsertString = "INSERT INTO Object(type, `rank`, name, trackMod) VALUES(:type, :rank, :name, :trackMod)";
     U2SqlQuery objectInsertQuery(objectInsertString, db, os);
     objectInsertQuery.bindType(":type", type);
     objectInsertQuery.bindInt32(":rank", rank);
@@ -777,7 +776,7 @@ U2DataId MysqlObjectDbi::createObject(U2Object &object, const QString &folder, U
 }
 
 void MysqlObjectDbi::setObjectRank(const U2DataId &objectId, U2DbiObjectRank newRank, U2OpStatus &os) {
-    static const QString queryStr("UPDATE Object SET rank = :rank WHERE id = :id");
+    static const QString queryStr("UPDATE Object SET `rank` = :rank WHERE id = :id");
     U2SqlQuery query(queryStr, db, os);
     CHECK_OP(os, );
     query.bindInt32(":rank", newRank);
