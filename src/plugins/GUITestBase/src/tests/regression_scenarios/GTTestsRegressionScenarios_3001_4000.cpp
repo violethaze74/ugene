@@ -857,7 +857,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     GTGlobals::sleep(500);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r: regions) {
+    for (const U2Region &r : regions) {
         CHECK_SET_ERR(r.length > 0, "Invalid annotated region!");
     }
 }
@@ -1035,22 +1035,26 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
 
 GUI_TEST_CLASS_DEFINITION(test_3156) {
     //    1. Connect to a shared database
-    //QString conName = "ugene_gui_test";
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     GTUtilsProjectTreeView::expandProjectView(os);
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", "test_3156");
+
+    QString folderName = GTUtils::genUniqueString("test_3156");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", folderName);
+
     //    2. Open file "data/samples/Genbank/murine.gb"
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_3156_murine.gb");
     GTFileDialog::openFile(os, sandBoxDir, "test_3156_murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    3. Drag the document item onto the DB item in project view
-    QModelIndex from = GTUtilsProjectTreeView::findIndex(os, "test_3156_murine.gb");
-    QModelIndex to = GTUtilsProjectTreeView::findIndex(os, "test_3156");
-    GTUtilsProjectTreeView::dragAndDrop(os, from, to);
-    GTGlobals::sleep(10000);
+    QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "test_3156_murine.gb");
+    QModelIndex targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
+    GTUtilsProjectTreeView::dragAndDrop(os, documentIndex, targetFolderIndex);
+
+
     //    Expected state: a new folder has appeared in the DB, objects from the document have been imported into it.
-    to = GTUtilsProjectTreeView::findIndex(os, "test_3156");
-    GTUtilsProjectTreeView::checkItem(os, "murine.gb", to);
+    targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
+    GTUtilsProjectTreeView::checkItem(os, "test_3156_murine.gb", targetFolderIndex);
 }
 
 class test_3165_messageBoxDialogFiller : public MessageBoxDialogFiller {
@@ -1163,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
     GTGlobals::systemSleep();
-    for (Task *task: AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    for (Task *task : AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (task->getTaskName() != "Auto-annotations update task") {
             continue;
         }
@@ -1496,7 +1500,6 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes" << colorSchemeName));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
@@ -1967,7 +1970,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
     QString name;
-    for (const QString &key: keys) {
+    for (const QString &key : keys) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2632,10 +2635,10 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
             continue;
         }
         QList<Task *> innertList;
-        for (Task *t: tList) {
+        for (Task *t : tList) {
             innertList.append(t->getPureSubtasks());
         }
-        for (Task *t: innertList) {
+        for (Task *t : innertList) {
             if (t->getTaskName().contains("Opening view")) {
                 end = true;
                 break;
@@ -3299,7 +3302,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_1) {
         SiteconCustomFiller(HI::GUITestOpStatus &os)
             : Filler(os, "SiteconSearchDialog") {
         }
-        void run()  override {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -3344,7 +3347,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
         SiteconCustomFiller(HI::GUITestOpStatus &os)
             : Filler(os, "SiteconSearchDialog") {
         }
-        void run()  override {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
@@ -4647,7 +4650,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTGlobals::sleep();
 
     QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region& curRegion : annotatedRegions)  {
+    for (const U2Region &curRegion : annotatedRegions) {
         CHECK_SET_ERR(curRegion.startPos >= 20, "Incorrect annotated region");
     }
 }
@@ -5035,13 +5038,13 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTGlobals::sleep(1000);
 
     //Expected: task started.
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==1, "Task did not started");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
 
     //3. Close the alignment view.
     GTUtilsMdi::closeWindow(os, GTUtilsMdi::activeWindow(os)->objectName());
 
     //Expected: task is still running.
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==1, "Task is cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task is cancelled");
 
     //4. Delete the document from the project.
     GTUtilsProjectTreeView::click(os, "fungal - all.aln");
@@ -5049,7 +5052,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "Task is not cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3785_2) {
@@ -5079,7 +5082,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
-    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "Task is not cancelled");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3788) {
@@ -5365,7 +5368,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
-    for (QModelIndex index :  list) {
+    for (QModelIndex index : list) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
@@ -5706,7 +5709,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
         ORFDialogFiller(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        void run() override  {
+        void run() override {
             QWidget *w = QApplication::activeWindow();
             CHECK(NULL != w, );
 
@@ -5731,7 +5734,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r: regions) {
+    for (const U2Region &r : regions) {
         CHECK_SET_ERR((r.startPos >= 1000 && r.startPos <= 4000 &&
                        r.endPos() >= 1000 && r.endPos() <= 4000),
                       "Invalid annotated region!");
