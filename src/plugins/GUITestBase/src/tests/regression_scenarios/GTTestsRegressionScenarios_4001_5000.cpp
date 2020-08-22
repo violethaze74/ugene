@@ -3322,7 +3322,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     //    1. Open "_common_data/fasta/400000_symbols_msa.fasta".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/400000_symbols_msa.fasta");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2.  Click "Export as image" button on the toolbar.
     //    Expected state: an "Export Image" dialog appears.
@@ -3331,17 +3331,12 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     class Scenario1 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
-
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
-            CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
             CHECK_SET_ERR(hintLabel->isVisible(), "hintLabel is invisible");
-            const QString expectedSubstring = "selected region is too big";
-            CHECK_SET_ERR(hintLabel->text().contains(expectedSubstring), QString("An expected substing not found: substing - '%1', text - '%2'").arg(expectedSubstring).arg(hintLabel->text()));
-
+            QString expectedSubstring = "selected region is too big";
+            CHECK_SET_ERR(hintLabel->text().contains(expectedSubstring), QString("An expected substring not found: substring - '%1', text - '%2'").arg(expectedSubstring).arg(hintLabel->text()));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -3368,12 +3363,9 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is NULL");
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
-
             QLabel *hintLabel = GTWidget::findExactWidget<QLabel *>(os, "hintLabel", dialog);
-            CHECK_SET_ERR(NULL != hintLabel, "hintLabel is NULL");
             CHECK_SET_ERR(!hintLabel->isVisible(), "hintLabel is visible");
 
             QDir().mkpath(sandBoxDir + "test_4508");
@@ -3392,7 +3384,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "test_4508/test_4508.svg"), QString("File '%1' doesn't exist").arg(sandBoxDir + "test_4508/test_4508.svg"));
-    CHECK_SET_ERR(0 < GTFile::getSize(os, sandBoxDir + "test_4508/test_4508.svg"), QString("File '%1' has zero size").arg(sandBoxDir + "test_4508/test_4508.svg"));
+    CHECK_SET_ERR(GTFile::getSize(os, sandBoxDir + "test_4508/test_4508.svg") > 0, QString("File '%1' has zero size").arg(sandBoxDir + "test_4508/test_4508.svg"));
     GTUtilsLog::check(os, logTracer);
 }
 

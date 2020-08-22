@@ -75,9 +75,10 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus &os, QComboBox *comboBox, int
                 GT_CHECK(listView != nullptr, "list view not found");
                 QModelIndex modelIndex = listView->model()->index(index, 0);
                 GTWidget::scrollToIndex(os, listView, modelIndex);
-                QPoint itemPointLocal = listView->visualRect(modelIndex).center();
+                QRect rect = listView->visualRect(modelIndex);
+                QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);    // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
                 QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
-                qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", itemPointLocal.x(), itemPointLocal.y(), itemPointGlobal.x(), itemPointGlobal.y());
+                qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
                 GTMouseDriver::moveTo(itemPointGlobal);
                 break;
             }
