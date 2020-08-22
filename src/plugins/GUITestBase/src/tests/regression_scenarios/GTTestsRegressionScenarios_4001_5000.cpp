@@ -5265,43 +5265,39 @@ GUI_TEST_CLASS_DEFINITION(test_4803_4) {
 GUI_TEST_CLASS_DEFINITION(test_4804_1) {
     //    1. Open _common_data/scenarios/_regression/4804/standard_dna.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Add dna extended sequence throu context menu {Add->Sequence from file}
+    //    2. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_dna.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Add dna extended sequence throu context menu {Add->Sequence from file}
+    //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended DNA\" to \"Raw\"");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_2) {
     //    1. Open _common_data/scenarios/_regression/4804/standard_rna.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_rna.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Add rna extended sequence throu menu {Actions->Add->Sequence from file}
+    //    2. Add rna extended sequence via menu {Actions->Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Extended RNA\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from file...");
-    GTGlobals::sleep();
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "Sequence from file...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Add dna extended sequence throu context menu {Add->Sequence from file}
+    //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/standard_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended RNA\" to \"Raw\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from file...");
-    GTGlobals::sleep();
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "Sequence from file...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_3) {
