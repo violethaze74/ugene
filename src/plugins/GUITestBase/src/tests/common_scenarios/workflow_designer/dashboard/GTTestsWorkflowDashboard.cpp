@@ -60,15 +60,15 @@ using namespace HI;
 namespace {
 
 QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName) {
-    Q_UNUSED(os)
+    Q_UNUSED(os);
 
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK_SET_ERR_RESULT(nullptr != etRegistry, "ExternalToolRegistry is nullptr", QString());
+    CHECK_SET_ERR_RESULT(etRegistry != nullptr, "ExternalToolRegistry is nullptr", QString());
 
     ExternalTool *tool = etRegistry->getByName(toolName);
-    CHECK_SET_ERR_RESULT(nullptr != tool, QString("'%1' tool not found in the registry is nullptr").arg(toolName), QString());
+    CHECK_SET_ERR_RESULT(tool != nullptr, QString("'%1' tool not found in the registry is nullptr").arg(toolName), QString());
 
-    const QString toolPath = tool->getPath();
+    QString toolPath = tool->getPath();
     CHECK_SET_ERR_RESULT(!toolPath.isEmpty(), QString("'%1' tool path is empty").arg(toolName), QString());
     CHECK_SET_ERR_RESULT(tool->isValid(), QString("'%1' tool is invalid").arg(toolName), QString());
 
@@ -2185,7 +2185,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
                       .arg(url)
                       .arg(expectedFileNamePart));
 
-    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>");
+    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>").replace("\r", "");
     CHECK_SET_ERR(fileData.startsWith(nodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
                       .arg(url)
@@ -2272,7 +2272,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
                       .arg(url)
                       .arg(expectedFileNamePart));
 
-    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>");
+    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>").replace("\r", "");
+    ;
     CHECK_SET_ERR(fileData.startsWith(nodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
                       .arg(url)
@@ -2414,7 +2415,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(stderrLogUrl)
                       .arg(expectedFileNamePart));
 
-    fileData = GTFile::readAll(os, stderrLogUrl).replace("\n", "<br/>");
+    fileData = GTFile::readAll(os, stderrLogUrl).replace("\n", "<br/>").replace("\r", "");
+    ;
     CHECK_SET_ERR(fileData.startsWith(stderrNodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
                       .arg(stderrLogUrl)
@@ -3483,7 +3485,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTGlobals::sleep();
 }
 
-static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus &os, const QString& file) {
+static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus &os, const QString &file) {
     //    Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3514,7 +3516,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //   Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString msaFilePath =testDir + "_common_data/clustal/100_sequences.aln";
+    QString msaFilePath = testDir + "_common_data/clustal/100_sequences.aln";
     int tabIndex1 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
     int tabIndex2 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
 
@@ -3569,11 +3571,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 90000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
+    viewSwitchButton = qobject_cast<QAbstractButton *>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
     CHECK_SET_ERR(viewSwitchButton != nullptr, "'To Workflow Designer' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");

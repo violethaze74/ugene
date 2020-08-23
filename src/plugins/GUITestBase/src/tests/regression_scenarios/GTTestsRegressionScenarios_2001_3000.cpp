@@ -667,7 +667,7 @@ GUI_TEST_CLASS_DEFINITION(test_2049) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
     GTGlobals::sleep(500);
     QWidget *w = GTWidget::findWidget(os, "Codon table widget");
     int ititHeight = GTWidget::findWidget(os, "Leucine (Leu, L)", w)->geometry().height();
@@ -848,7 +848,7 @@ GUI_TEST_CLASS_DEFINITION(test_2100_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Click toolbutton "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
@@ -870,7 +870,7 @@ GUI_TEST_CLASS_DEFINITION(test_2100_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Click toolbutton "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //3. Select Mecopoda_sp.__Malaysia_
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Mecopoda_sp.__Malaysia_"));
@@ -963,7 +963,7 @@ GUI_TEST_CLASS_DEFINITION(test_2093_2) {
 
     QToolBar *wdToolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     CHECK_SET_ERR(wdToolbar, "Toolbar not found");
-    QWidget *loadButton = GTToolbar::getWidgetForActionName(os, wdToolbar, "Load workflow");
+    QWidget *loadButton = GTToolbar::getWidgetForActionObjectName(os, wdToolbar, "Load workflow");
     CHECK_SET_ERR(loadButton, "Load button not found");
     GTWidget::click(os, loadButton);
 
@@ -1946,7 +1946,7 @@ GUI_TEST_CLASS_DEFINITION(test_2284) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Press the "Switch on/off collapsing" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
@@ -1974,7 +1974,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click the "Switch on/off collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
     //    Expected state: Collapsed mode is switched on, there are one collapsed group.
     int visableNamesNum = GTUtilsMSAEditorSequenceArea::getVisibleNames(os).count();
     CHECK_SET_ERR(visableNamesNum == 17,
@@ -2009,7 +2009,7 @@ GUI_TEST_CLASS_DEFINITION(test_2306) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Turn on collapsing mode in MSA
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
@@ -2202,9 +2202,9 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
     for (int i = 0; i < 15; ++i) {
         GTUtilsDialog::waitForDialog(os, new RapidProjectCreator(os, projectName, projectFolder, projectFile));
         GTWidget::click(os,
-                        GTToolbar::getWidgetForActionName(os,
-                                                          GTToolbar::getToolbar(os, MWTOOLBAR_MAIN),
-                                                          ACTION_PROJECTSUPPORT__NEW_PROJECT));
+                        GTToolbar::getWidgetForActionObjectName(os,
+                                                                GTToolbar::getToolbar(os, MWTOOLBAR_MAIN),
+                                                                ACTION_PROJECTSUPPORT__NEW_PROJECT));
     }
 }
 
@@ -6140,7 +6140,7 @@ GUI_TEST_CLASS_DEFINITION(test_2987) {
 
     QDir().mkpath(sandBoxDir + "test_3305");
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "misc_feature", "complement(1..5)", sandBoxDir + "test_2987/test_2987.gb"));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "create_annotation_action"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "create_annotation_action"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_2987/test_2987", ExportAnnotationsFiller::csv, os));

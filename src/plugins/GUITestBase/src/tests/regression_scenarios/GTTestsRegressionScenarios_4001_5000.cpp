@@ -3203,7 +3203,7 @@ GUI_TEST_CLASS_DEFINITION(test_4483) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
@@ -3342,9 +3342,9 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     };
 
     for (int i = 0; i < 6; i++) {
-        QWidget *zoomOutAction = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out");
+        QWidget *zoomOutAction = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out");
         CHECK_BREAK(zoomOutAction->isEnabled());
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
         GTGlobals::sleep(500);
     }
 
@@ -3357,7 +3357,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     GTUtilsMsaEditor::removeColumn(os, 1);
     GTThread::waitForMainThread();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
     GTGlobals::sleep(500);
 
     class Scenario2 : public CustomScenario {
@@ -3471,7 +3471,7 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     CHECK_SET_ERR(imageFileSize > 0, "Export MSA to image failed. Unexpected image file size");
 
     // Current state : "undo" action becomes disabled.
-    QWidget *undoButton = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo");
+    QWidget *undoButton = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo");
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is disabled unexpectedly");
 }
 

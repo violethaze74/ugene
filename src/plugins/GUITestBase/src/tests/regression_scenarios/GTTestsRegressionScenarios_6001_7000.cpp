@@ -3344,7 +3344,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11) {
 GUI_TEST_CLASS_DEFINITION(test_6548_1) {
     //1. Open _common_data/scenarios/_regression/6548/6548_extended_DNA.aln.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6548/6548_extended_DNA.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -3423,7 +3423,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Enable "Collapsing mode". As result 2 names in the name list are hidden.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).

@@ -1015,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     //2. Find next restriction sites "AaaI" and "AagI"
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI"
                                                                                    << "AagI"));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsNotifications::waitForNotification(os, false);
@@ -1336,7 +1336,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "HinfI"));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
@@ -2214,7 +2214,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
     //5. Push "Show/Hide Chromatograms" button in the main menu
     bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B70");
     if (isChromatogramShown) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
     }
 
     //6. Select read "SZYD_Cas9_CR51"
@@ -2379,7 +2379,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
     //5. Push "Show/Hide Chromatograms" button in the main menu
     bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B70");
     if (isChromatogramShown) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
     }
 
     //6. Select read "SZYD_Cas9_CR51"
@@ -3651,7 +3651,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
     GTGlobals::sleep(1000);
 
     //8. Hide chromatograms
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //9. Change the state of the last row
     bool isShownFirstState = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_CR66");

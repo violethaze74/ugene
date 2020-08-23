@@ -1905,9 +1905,9 @@ GUI_TEST_CLASS_DEFINITION(test_0829) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QApplication::activeWindow();
     GTWidget::click(os,
-                    GTToolbar::getWidgetForActionName(os,
-                                                      GTToolbar::getToolbar(os, "mwtoolbar_activemdi"),
-                                                      "toggleDashboard"));
+                    GTToolbar::getWidgetForActionObjectName(os,
+                                                            GTToolbar::getToolbar(os, "mwtoolbar_activemdi"),
+                                                            "toggleDashboard"));
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
     GTUtilsWorkflowDesigner::removeItem(os, "Assembly Sequences with CAP3");

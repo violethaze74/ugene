@@ -635,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTGlobals::sleep();
 
     //4. Rlick Undo button. CHANGES: clicking undo by mouse
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "msa_action_undo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "msa_action_undo"));
     GTGlobals::sleep();
 
     //Expected state: Tettigonia_viridissima renamed back
@@ -1878,7 +1878,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1894,7 +1894,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_1) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1910,7 +1910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_2) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1990,14 +1990,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -2011,14 +2011,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021_1) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -2032,14 +2032,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021_2) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -3526,7 +3526,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
     QString clipboardText = GTClipboard::text(os);
@@ -3567,7 +3567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    QWidget *w = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
+    QWidget *w = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
     CHECK_SET_ERR(w != NULL, "no copy action on the toolbar");
     CHECK_SET_ERR(w->isEnabled() == false, "selection is empty but the action is enabled");
 }
@@ -3593,7 +3593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
     QString clipboardText = GTClipboard::text(os);

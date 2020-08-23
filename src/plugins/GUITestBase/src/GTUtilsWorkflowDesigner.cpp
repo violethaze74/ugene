@@ -133,7 +133,7 @@ void GTUtilsWorkflowDesigner::loadWorkflow(HI::GUITestOpStatus &os, const QStrin
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, fileUrl));
     QToolBar *wdToolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     GT_CHECK(wdToolbar, "Toolbar is not found");
-    QWidget *loadButton = GTToolbar::getWidgetForActionName(os, wdToolbar, "Load workflow");
+    QWidget *loadButton = GTToolbar::getWidgetForActionObjectName(os, wdToolbar, "Load workflow");
     GT_CHECK(loadButton, "Load button is not found");
     GTWidget::click(os, loadButton);
     GTGlobals::sleep();
