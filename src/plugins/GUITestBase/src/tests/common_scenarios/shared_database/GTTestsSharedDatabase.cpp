@@ -21,17 +21,14 @@
 
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <core/GUITest.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
-#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -420,36 +417,30 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            const QString conName = "cm_test_0006: uninitialized database";
-
-            GTGlobals::sleep(500);
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog), conName);
+            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog), "cm_test_0006: uninitialized database");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "is not initialized"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));
-            GTGlobals::sleep();
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "is not initialized"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));
-
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTGlobals::sleep();
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
 
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            const QString conName = "cm_test_0006: uninitialized database";
+            QString conName = "cm_test_0006: uninitialized database";
             checkConnectionItemIcon(os, conName, ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, conName, "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -459,6 +450,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario2));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
