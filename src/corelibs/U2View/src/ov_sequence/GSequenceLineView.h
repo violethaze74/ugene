@@ -59,6 +59,7 @@ enum GSLV_UpdateFlag {
 };
 
 enum GSLV_FeatureFlag {
+    /** If set the view can show any requested custom range. Same with Zooming. */
     GSLV_FF_SupportsCustomRange = 0x1
 };
 

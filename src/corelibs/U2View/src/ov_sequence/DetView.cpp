@@ -114,7 +114,7 @@ DetView::DetView(QWidget *p, SequenceObjectContext *ctx)
     showTranslationAction->setChecked(hasAmino);
 
     assert(ctx->getSequenceObject() != NULL);
-    featureFlags &= !GSLV_FF_SupportsCustomRange;    //TODO: bug?
+    featureFlags &= ~GSLV_FF_SupportsCustomRange;    // DetView does not support zooming.
     renderArea = new DetViewRenderArea(this);
     renderArea->setObjectName("render_area_" + ctx->getSequenceObject()->getSequenceName());
 
@@ -348,11 +348,7 @@ void DetView::sl_onAminoTTChanged() {
 
 void DetView::sl_translationRowsChanged() {
     QVector<bool> visibleRows = getSequenceContext()->getTranslationRowsVisibleStatus();
-    bool anyFrame = false;
-    foreach (bool b, visibleRows) {
-        anyFrame = anyFrame || b;
-    }
-    if (!anyFrame) {
+    if (!visibleRows.contains(true)) {
         if (showTranslationAction->isChecked()) {
             sl_showTranslationToggle(false);
         }
@@ -482,7 +478,7 @@ void DetView::setSelectedTranslations() {
 
 void DetView::updateTranslationRowsVisibilityBySelectionState() {
     QVector<bool> frameRowVisibilityFlag(6, false);
-    for (const U2Region& region : ctx->getSequenceSelection()->getSelectedRegions()) {
+    for (const U2Region &region : ctx->getSequenceSelection()->getSelectedRegions()) {
         frameRowVisibilityFlag[region.startPos % 3] = true;    // direct frame
         frameRowVisibilityFlag[3 + (ctx->getSequenceLength() - region.endPos()) % 3] = true;    // complement frame.
     }
