@@ -148,7 +148,7 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 533 << 567 << 460 << 515 << -1;
+        testsPerSuite << 533 << 567 << 455 << 515 << -1;
     }
     QList<HI::GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
@@ -264,7 +264,7 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
-static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, const QString&iniFilePath) {
+static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, const QString &iniFilePath) {
     QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
     if (!testsDir.exists()) {
         coreLog.error("UGENE_TESTS_PATH is not set!");
