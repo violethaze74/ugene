@@ -312,14 +312,20 @@ void DashboardFileButton::sl_openFileClicked() {
     QString type = tokens[0];
     QString url = tokens[1];
     QFileInfo fileInfo(url);
-    if (type == "folder") {
+    bool isFolder = type == "folder";
+    if (isFolder) {
         fileInfo = QFileInfo(fileInfo.absolutePath());
     }
     if (!fileInfo.exists()) {
         fileInfo = findFileOpenCandidateInTheDashboardOutputDir(dashboardDirInfo, fileInfo);
         if (!fileInfo.exists()) {
-            QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), DashboardWidget::tr("File is not found: %1").arg(fileInfo.absoluteFilePath()));
-            return;
+            if (isFolder) {
+                // We can't locate the original dashboard sub-folder. Opening the dashboard folder instead of error message.
+                fileInfo = dashboardDirInfo;
+            } else {
+                QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), DashboardWidget::tr("File is not found: %1").arg(fileInfo.absoluteFilePath()));
+                return;
+            }
         }
     }
     if (type == "ugene") {
@@ -329,8 +335,7 @@ void DashboardFileButton::sl_openFileClicked() {
         CHECK(task != nullptr, );
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {
-        QString fullFilePath = "file://" + fileInfo.absoluteFilePath();
-        QDesktopServices::openUrl(QUrl(fullFilePath));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
     }
 }
 

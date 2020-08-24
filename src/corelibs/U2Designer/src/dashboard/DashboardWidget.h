@@ -46,7 +46,7 @@ public:
 class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
     Q_OBJECT
 public:
-    DashboardFileButton(const QStringList &urlList, const QString&dashboardDir, bool isFolderMode = false);
+    DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, bool isFolderMode = false);
 
 private slots:
     void sl_openFileClicked();
