@@ -22,6 +22,7 @@
 #ifndef _U2_DASHBOARD_WIDGET_H_
 #define _U2_DASHBOARD_WIDGET_H_
 
+#include <QFileInfo>
 #include <QGridLayout>
 #include <QMenu>
 #include <QToolButton>
@@ -45,7 +46,7 @@ public:
 class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
     Q_OBJECT
 public:
-    DashboardFileButton(const QStringList &urlList, bool isFolderMode = false);
+    DashboardFileButton(const QStringList &urlList, const QString&dashboardDir, bool isFolderMode = false);
 
 private slots:
     void sl_openFileClicked();
@@ -54,6 +55,7 @@ private:
     void addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction = false);
 
     QStringList urlList;
+    QFileInfo dashboardDirInfo;
 };
 
 /** Styled dashboard menu used with file buttons. */

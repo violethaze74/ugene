@@ -196,7 +196,7 @@ void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates
     stackedWidget->addWidget(overviewTabPage);
 
     QDomElement outputFilesWidgetState = initialWidgetStates.value(OUTPUT_FILES_WIDGET_STATE_KEY);
-    outputFilesWidget = new OutputFilesDashboardWidget(outputFilesWidgetState, monitor);
+    outputFilesWidget = new OutputFilesDashboardWidget(dir, outputFilesWidgetState, monitor);
     overviewTabPage->addDashboardWidget(tr("Output files"), outputFilesWidget);
 
     QDomElement statusWidgetState = initialWidgetStates.value(STATUS_WIDGET_STATE_KEY);

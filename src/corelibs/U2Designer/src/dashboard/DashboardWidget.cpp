@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFileInfo>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -212,8 +213,8 @@ void DashboardPopupMenu::showEvent(QShowEvent *event) {
 
 #define FILE_URL_KEY "file-url"
 
-DashboardFileButton::DashboardFileButton(const QStringList &urlList, bool isFolderMode)
-    : urlList(urlList) {
+DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, bool isFolderMode)
+    : urlList(urlList), dashboardDirInfo(dashboardDir) {
     setObjectName("DashboardFileButton");
     QString buttonText = urlList.size() != 1 ? tr("%1 file(s)").arg(urlList.size()) : QFileInfo(urlList[0]).fileName();
     if (buttonText.length() > 27) {
@@ -280,6 +281,30 @@ void DashboardFileButton::addUrlActionsToMenu(QMenu *menu, const QString &url, b
     menu->addAction(openFileAction);
 }
 
+/**
+ * Finds a file in the given dashboard dir by path suffix of the 'fileInfo'.
+ * Returns new file info or the old one if the file detection algorithm is failed.
+ * This method is designed to find dashboard output files in moved dashboard.
+ */
+static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo &dashboardDirInfo, const QFileInfo &fileInfo) {
+    // Split 'fileInfo' into path tokens: list of dirs + file name.
+    QStringList fileInfoPathTokens;
+    QFileInfo currentPathInfo(QDir::cleanPath(fileInfo.absoluteFilePath()));
+    while (!currentPathInfo.isRoot()) {
+        fileInfoPathTokens.prepend(currentPathInfo.fileName());
+        currentPathInfo = QFileInfo(currentPathInfo.path());
+    }
+    // Try to find the file by the path suffix inside dashboard dir. Check the longest possible variant first.
+    while (!fileInfoPathTokens.isEmpty()) {
+        QFileInfo resultFileInfo(dashboardDirInfo.absoluteFilePath() + fileInfoPathTokens.join("/"));
+        if (resultFileInfo.exists()) {
+            return resultFileInfo;
+        }
+        fileInfoPathTokens.removeFirst();
+    }
+    return fileInfo;
+}
+
 void DashboardFileButton::sl_openFileClicked() {
     QString typeAndUrl = sender()->property(FILE_URL_KEY).toString();
     QStringList tokens = typeAndUrl.split("\n");
@@ -291,8 +316,11 @@ void DashboardFileButton::sl_openFileClicked() {
         fileInfo = QFileInfo(fileInfo.absolutePath());
     }
     if (!fileInfo.exists()) {
-        QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), DashboardWidget::tr("File is not found: %1").arg(fileInfo.absoluteFilePath()));
-        return;
+        fileInfo = findFileOpenCandidateInTheDashboardOutputDir(dashboardDirInfo, fileInfo);
+        if (!fileInfo.exists()) {
+            QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), DashboardWidget::tr("File is not found: %1").arg(fileInfo.absoluteFilePath()));
+            return;
+        }
     }
     if (type == "ugene") {
         QVariantMap hints;

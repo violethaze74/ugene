@@ -239,7 +239,7 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
             if (!fileInfo.isAbsolute()) {
                 fileInfo = QFileInfo(QDir(dashboardDir), url).absoluteFilePath();
             }
-            auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), parameter.isDir);
+            auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), dashboardDir, parameter.isDir);
             valueWidgetLayout->addWidget(button);
         }
         valueWidgetLayout->addStretch();

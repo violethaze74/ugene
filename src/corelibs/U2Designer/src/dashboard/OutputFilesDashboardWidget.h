@@ -46,7 +46,7 @@ public:
 class U2DESIGNER_EXPORT OutputFilesDashboardWidget : public QWidget, public DashboardWidgetUtils {
     Q_OBJECT
 public:
-    OutputFilesDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    OutputFilesDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
 
     static bool isValidDom(const QDomElement &dom);
 
@@ -61,6 +61,7 @@ private:
     /** Ensures the table has at least 3 rows: add empty rows to the end. */
     void addTrailingEmptyRows(bool callTableUpdate);
 
+    QString dashboardDir;
     const WorkflowMonitor *monitor;
     QGridLayout *tableGridLayout;
     QList<WorkerOutputInfo> workerOutputList;

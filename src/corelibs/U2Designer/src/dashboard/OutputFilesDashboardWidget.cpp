@@ -65,8 +65,8 @@ static QList<WorkerOutputInfo> dom2WorkerOutputInfo(const QDomElement &dom) {
 /** When number of files will be > MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON a single DashboardFileButton will be used to show all of them. */
 #define MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON 11
 
-OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
-    : monitor(monitor) {
+OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor)
+    : dashboardDir(dashboardDir), monitor(monitor) {
     setFixedWidth(550);
     setObjectName("OutputFilesDashboardWidget");
     tableGridLayout = new QGridLayout();
@@ -97,7 +97,7 @@ void OutputFilesDashboardWidget::addTrailingEmptyRows(bool callTableUpdate) {
 
 void OutputFilesDashboardWidget::sl_newOutputFile(const Monitor::FileInfo &info) {
     for (int i = 0; i < workerOutputList.size(); i++) {
-        WorkerOutputInfo& worker = workerOutputList[i];
+        WorkerOutputInfo &worker = workerOutputList[i];
         if (worker.id == info.actor) {
             worker.files << info.url;
             updateWorkerRow(i);
@@ -125,7 +125,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
     if (worker.files.isEmpty()) {
         addTableCell(tableGridLayout, worker.name, "", workerIndex + 1, 0, isLastRow, false);
     } else if (worker.files.length() == 1 || worker.files.length() >= MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON) {
-        auto button = new DashboardFileButton(worker.files);
+        auto button = new DashboardFileButton(worker.files, dashboardDir);
         addTableCell(tableGridLayout, worker.name, button, workerIndex + 1, 0, isLastRow, false);
     } else {
         auto cellWidget = new QWidget();
@@ -133,7 +133,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
         cellWidgetLayout->setContentsMargins(0, 0, 0, 0);
         cellWidget->setLayout(cellWidgetLayout);
         for (auto url : worker.files) {
-            cellWidgetLayout->addWidget(new DashboardFileButton(QStringList() << url));
+            cellWidgetLayout->addWidget(new DashboardFileButton(QStringList() << url, dashboardDir));
         }
         addTableCell(tableGridLayout, worker.name, cellWidget, workerIndex + 1, 0, isLastRow, false);
     }
