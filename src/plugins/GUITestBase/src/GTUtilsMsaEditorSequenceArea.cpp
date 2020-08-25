@@ -615,10 +615,10 @@ QString GTUtilsMSAEditorSequenceArea::getColor(GUITestOpStatus &os, QPoint p) {
 
 #define GT_METHOD_NAME "checkMsaCellColors"
 void GTUtilsMSAEditorSequenceArea::checkMsaCellColors(GUITestOpStatus &os, const QPoint &pos, const QString &fgColor, const QString &bgColor) {
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, fgColor), "Wrong FG color: " + fgColor);
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::hasPixelWithColor(os, pos, fgColor), "Wrong FG color: " + fgColor + ", position: " + QString::number(pos.x()) + "," + QString::number(pos.y()));
 
     QString actualBgColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-    CHECK_SET_ERR(actualBgColor == bgColor, QString("wrong BG color! Expected: %1, got: %2").arg(bgColor).arg(actualBgColor));
+    CHECK_SET_ERR(actualBgColor == bgColor, QString("Wrong BG color! Expected: %1, got: %2").arg(bgColor).arg(actualBgColor));
 }
 #undef GT_METHOD_NAME
 

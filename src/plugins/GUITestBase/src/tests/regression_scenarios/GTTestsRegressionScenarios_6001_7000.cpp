@@ -256,16 +256,17 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
     GTUtilsWorkflowDesigner::click(os, clarkElement);
     GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
-    QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+    {
+        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        CHECK_SET_ERR(inputPortTable != NULL, "inputPortTable is NULL");
 
-    QStringList inputSlotsNames;
-    for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-        inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        QStringList inputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        }
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
     }
-
-    CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
-    CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
 
     //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
     //    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
@@ -277,7 +278,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(inputPortTable != nullptr, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -3351,8 +3352,10 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
-    //Zoom to max
-    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    // Zoom in multiple times to make chars bigger. (Do not zoom to max because it will move some chars out of the screen on Windows agents).
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMSAEditorSequenceArea::zoomIn(os);
+    }
 
     // First column check
     GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 0), "#0000ff", "#00ffff");
