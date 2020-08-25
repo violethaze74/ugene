@@ -56,11 +56,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
-
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
