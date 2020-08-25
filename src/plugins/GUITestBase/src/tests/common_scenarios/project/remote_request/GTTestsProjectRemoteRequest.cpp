@@ -134,11 +134,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 2, true, true, false, sandBoxDir + "remote_request/test_0005"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "ENSG00000205571.fa");
     GTUtilsDocument::checkDocument(os, "ENSG00000205571.fa", AnnotatedDNAViewFactory::ID);
+
     GTUtilsDocument::isDocumentLoaded(os, "ENSG00000146463.fa");
     GTUtilsDocument::checkDocument(os, "ENSG00000146463.fa", AnnotatedDNAViewFactory::ID);
 }
