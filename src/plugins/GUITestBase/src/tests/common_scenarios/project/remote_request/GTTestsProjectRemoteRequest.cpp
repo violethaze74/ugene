@@ -21,12 +21,8 @@
 
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeWidget.h>
-#include <utils/GTUtilsApp.h>
-#include <utils/GTUtilsToolTip.h>
 
 #include <QDir>
 
@@ -35,18 +31,14 @@
 
 #include "GTTestsProjectRemoteRequest.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
-#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 namespace U2 {
 
 namespace GUITest_common_scenarios_project_remote_request {
@@ -327,8 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(20000);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsDocument::isDocumentLoaded(os, "1ezg.pdb");
 }
 
