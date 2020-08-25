@@ -305,32 +305,20 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4022) {
-    //1. Download sequence: http://www.ncbi.nlm.nih.gov/nuccore/CM000265.1
-    //2. Open the sequence by UGENE.
-    //3. Select the whole sequence.
-    //4. Use context menu {Copy->Copy sequence}.
-    QString sequence;
-    for (int i = 0; i < 344064; i++) {
-        sequence += "AAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTT";
-    }
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(sequence);
-
-    //5. Use menu {File->New document from text...}.
-    //Expected state: "Create document" dialog appeared.
-    //6. Paste sequence into the dialog.
+    //1. Put very long sequence into clipboard.
+    //2. Paste it into New document from text dialog and see the warning.
     //Expected: UGENE does not crash.
+
+    QApplication::clipboard()->setText(QString("AAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTT").repeated(344064));
+
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog not found");
-            QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-            CHECK_SET_ERR(plainText != NULL, "plain text not found");
-            GTWidget::click(os, plainText);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findExactWidget<QPlainTextEdit *>(os, "sequenceEdit", dialog));
+
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "amount of data"));
             GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-            GTGlobals::sleep();
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "amount of data"));
             GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
@@ -340,12 +328,10 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     };
 
     GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, new Scenario()));
-    GTGlobals::sleep();
-
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4026) {
@@ -5290,13 +5276,17 @@ GUI_TEST_CLASS_DEFINITION(test_4804_2) {
     //    2. Add rna extended sequence via menu {Actions->Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Extended RNA\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "Sequence from file...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Add"
+                                                << "Sequence from file...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/standard_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Extended RNA\" to \"Raw\"");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "Sequence from file...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Add"
+                                                << "Sequence from file...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
