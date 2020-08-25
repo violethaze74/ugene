@@ -4223,7 +4223,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_6) {
     GTGlobals::sleep(1000);
 
     // 3. Select any column on reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 2);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 2);
 
     // 4. Expected state: No any selected read, selected column only
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);

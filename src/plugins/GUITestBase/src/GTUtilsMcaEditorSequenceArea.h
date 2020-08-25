@@ -50,7 +50,7 @@ public:
     static U2Region getSelectedRowsNum(GUITestOpStatus &os);
     static QStringList getSelectedRowsNames(GUITestOpStatus &os);
     static QRect getSelectedRect(GUITestOpStatus &os);
-    static void clickToReferencePosition(GUITestOpStatus &os, const qint64 num);
+    static void clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint& clickPointAdjustment = QPoint(0, 0));
     /**
     *0 - ViewMode
     *1 - ReplaceCharMode

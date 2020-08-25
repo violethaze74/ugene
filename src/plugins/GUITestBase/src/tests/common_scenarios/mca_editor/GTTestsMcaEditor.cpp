@@ -1978,7 +1978,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     CHECK_SET_ERR(reg.length == 0, "Some reads are selected");
 
     //4. Select any region in the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 500);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 500);
     GTGlobals::sleep(500);
 
     //5. Push Esc

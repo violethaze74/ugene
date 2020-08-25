@@ -2134,11 +2134,11 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select reference pos 15
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 15);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 15);
 
     //6. Press reference pos 35 with shift modifier
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 35);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 35);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep();
 
@@ -2296,7 +2296,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select reference pos 15
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 15);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 15);
 
     //6. Press right 5 times with shift modifier
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -3095,22 +3095,19 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
         void run(HI::GUITestOpStatus &os) {
             //Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            CHECK_SET_ERR(quality == 30, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
             //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            bool isAddToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(isAddToProject, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            CHECK_SET_ERR(!output.isEmpty(), "Incorrect output line: is empty");
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -3118,7 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
             bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(checkContains, "Incorrect output line: do not contain default path");
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
@@ -3126,14 +3123,11 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
             for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
                 QString num = QString::number(i);
                 if (num.size() == 1) {
                     num = "0" + QString::number(i);
                 }
-                name += num;
-                name += ".ab1";
-                reads << name;
+                reads << ("sanger_" + num + ".ab1");
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3152,21 +3146,20 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    //5. Click to the position 6316 at the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6372);
+    //5. Click to the position 6372 at the reference sequence (first half of the char).
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 6372, QPoint(-2, 0));
 
     //6. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    const int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
-    QPoint destPos(newXPos, currentPos.y());
-    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, destPos);
+    int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
+    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(newXPos, currentPos.y()));
+    GTThread::waitForMainThread();
 
     //Expected: selected length = 4
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
-    int sel = reg.length;
-    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, current: %1").arg(QString::number(sel)));
+    CHECK_SET_ERR(reg.length == 4, QString("Unexpected selection length, expected: 4, got: %1").arg(reg.length));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5747) {
