@@ -311,7 +311,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickToReferencePositionCenter"
-void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint& clickPointAdjustment) {
+void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &clickPointAdjustment) {
     QPoint selectedPoint(position, 2);
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
@@ -323,12 +323,15 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatu
 
     scrollToPosition(os, selectedPoint);
 
-    int centerX = mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
-    QPoint clickPosition(centerX + clickPointAdjustment.x(), 2 + clickPointAdjustment.y());
+    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getUI();
+    int centerX = mcaWidget->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
+    int centerY = mcaWidget->getRowHeightController()->getSingleRowHeight() / 2;
+    QPoint clickPosition(centerX + clickPointAdjustment.x(), centerY + clickPointAdjustment.y());
     GT_CHECK(mcaSeqArea->rect().contains(clickPosition, false), "Position is not visible");
 
-    QWidget* refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
+    QWidget *refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
     GTMouseDriver::moveTo(refSeqView->mapToGlobal(clickPosition));
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
