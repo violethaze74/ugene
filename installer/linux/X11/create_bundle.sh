@@ -1,40 +1,36 @@
+#!/bin/bash
 # this script's home dir is trunk/installer/linux/X11
 
 PRODUCT_NAME="ugene"
 
-VERSION_MAJOR=`cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
-VERSION_MINOR=`cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
-VERSION=`cat ../../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
-         sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
-             -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g'`
+VERSION_MAJOR=$(cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}')
+VERSION_MINOR=$(cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}')
+VERSION=$(cat ../../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' |
+  sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
+    -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g')
 
 RELEASE_DIR=../../../src/_release
 SYMBOLS_DIR=symbols
 DUMP_SYMBOLS_LOG=dump_symbols_log.txt
-DATA_DIR=../../../data
 TARGET_APP_DIR="${PRODUCT_NAME}-${VERSION}"
 PACKAGE_TYPE="linux"
-ARCH=`uname -m`
+ARCH=$(uname -m)
 
 source create_bundle_common.sh
 
-if [ -z "$PATH_TO_QT_LIBS" ]; then 
-   echo PATH_TO_QT_LIBS environment variable is not set!
-   exit -1
-fi
-
-if [ -z "$PATH_TO_LIBPNG12" ]; then 
-   echo PATH_TO_LIBPNG12 environment variable is not set!
+if [ -z "$PATH_TO_QT_LIBS" ]; then
+  echo PATH_TO_QT_LIBS environment variable is not set!
+  exit 1
 fi
 
 echo cleaning previous bundle
-rm -rf ${TARGET_APP_DIR}
+rm -rf "${TARGET_APP_DIR}"
 rm -rf "${SYMBOLS_DIR}"
 rm -f "${DUMP_SYMBOLS_LOG}"
+# shellcheck disable=SC2035
 rm -rf *.tar.gz
-mkdir $TARGET_APP_DIR
+mkdir "${TARGET_APP_DIR}"
 mkdir "${SYMBOLS_DIR}"
-
 
 echo
 echo copying ugenecl
@@ -78,24 +74,24 @@ cp -v $RELEASE_DIR/transl_en.qm "$TARGET_APP_DIR"
 cp -v $RELEASE_DIR/transl_ru.qm "$TARGET_APP_DIR"
 
 echo copying data dir
-cp -R "$RELEASE_DIR/../../data"  "${TARGET_APP_DIR}"
-if [ ! -z $UGENE_CISTROME_PATH ]; then
+cp -r "../../../data" "${TARGET_APP_DIR}"
+if [ ! -z "$UGENE_CISTROME_PATH" ]; then
   echo "Copying cistrome data"
   mkdir -p "${TARGET_APP_DIR}/data/cistrome"
-  mv $UGENE_CISTROME_PATH/* ${TARGET_APP_DIR}/data/cistrome/
+  mv "$UGENE_CISTROME_PATH"/* "${TARGET_APP_DIR}"/data/cistrome/
 fi
 echo
 
 #include external tools package if applicable
 echo copying tools dir
 if [ -e "$RELEASE_DIR/../../tools" ]; then
-    cp -R "$RELEASE_DIR/../../tools" "${TARGET_APP_DIR}/"
-    find $TARGET_APP_DIR -name ".svn" | xargs rm -rf
-    PACKAGE_TYPE="linux-full" 
-    if [ ! -z $UGENE_R_DIST_PATH ]; then
-      echo "Copying R tool"
-      cp -R $UGENE_R_DIST_PATH "${TARGET_APP_DIR}/tools"
-    fi
+  cp -R "$RELEASE_DIR/../../tools" "${TARGET_APP_DIR}/"
+  find "$TARGET_APP_DIR" -name ".svn" | xargs rm -rf
+  PACKAGE_TYPE="linux-full"
+  if [ ! -z "$UGENE_R_DIST_PATH" ]; then
+    echo "Copying R tool"
+    cp -R "$UGENE_R_DIST_PATH" "${TARGET_APP_DIR}/tools"
+  fi
 fi
 
 echo
@@ -117,32 +113,24 @@ echo copying qt libraries
 add-qt-library Qt5Core
 add-qt-library Qt5DBus
 add-qt-library Qt5Gui
-add-qt-library Qt5Multimedia
-add-qt-library Qt5MultimediaWidgets
 add-qt-library Qt5Network
 add-qt-library Qt5OpenGL
-add-qt-library Qt5Positioning
 add-qt-library Qt5PrintSupport
-add-qt-library Qt5Qml
-add-qt-library Qt5Quick
 add-qt-library Qt5Script
 add-qt-library Qt5ScriptTools
-add-qt-library Qt5Sensors
 add-qt-library Qt5Sql
 add-qt-library Qt5Svg
 add-qt-library Qt5Test
 add-qt-library Qt5Widgets
+add-qt-library Qt5XcbQpa
 add-qt-library Qt5Xml
-if [ ! -z "$PATH_TO_LIBPNG12" ]; then 
-   cp -v "$PATH_TO_LIBPNG12/libpng12.so.0" "${TARGET_APP_DIR}"
-   strip -v "${TARGET_APP_DIR}/libpng12.so.0"
-fi
-if [ ! -z "$PATH_TO_LIBPROC" ]; then 
-   cp -v "$PATH_TO_LIBPROC" "${TARGET_APP_DIR}"
-   strip -v "${TARGET_APP_DIR}"
+
+if [ ! -z "$PATH_TO_LIBPROC" ]; then
+  cp -v "$PATH_TO_LIBPROC" "${TARGET_APP_DIR}"
+  strip -v "${TARGET_APP_DIR}"
 fi
 if [ ! -z "$PATH_TO_INCLUDE_LIBS" ]; then
-   cp -v "$PATH_TO_INCLUDE_LIBS"/* "${TARGET_APP_DIR}"
+  cp -v "$PATH_TO_INCLUDE_LIBS"/* "${TARGET_APP_DIR}"
 fi
 
 mkdir "${TARGET_APP_DIR}/sqldrivers"
@@ -153,21 +141,17 @@ cp -r -v "$PATH_TO_QT_LIBS/../plugins/platforms" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}/platforms"/*.so
 
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/imageformats" "${TARGET_APP_DIR}"
-strip -v ${TARGET_APP_DIR}/imageformats/*.so
+strip -v "${TARGET_APP_DIR}"/imageformats/*.so
 
-PATH_TO_MYSQL_CLIENT_LIB=`ldd "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so" |grep libmysqlclient |cut -d " " -f3`
-cp -v "$PATH_TO_MYSQL_CLIENT_LIB" "${TARGET_APP_DIR}"
-
-PATH_TO_ICU_DATA_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicudata.so |cut -d " " -f3`
+PATH_TO_ICU_DATA_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicudata.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_DATA_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_I18N_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicui18n.so |cut -d " " -f3`
+PATH_TO_ICU_I18N_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicui18n.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_I18N_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_UUC_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicuuc.so |cut -d " " -f3`
+PATH_TO_ICU_UUC_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicuuc.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_UUC_LIB" "${TARGET_APP_DIR}"
 
-if [ "$1" == "-test" ]
-    then
-        cp "$PATH_TO_QT_LIBS/libQtTest.so.4" "${TARGET_APP_DIR}"
+if [ "$1" == "-test" ]; then
+  cp "$PATH_TO_QT_LIBS/libQtTest.so.4" "${TARGET_APP_DIR}"
 fi
 
 echo copying plugins
@@ -217,24 +201,24 @@ if [ "$1" == "-test" ]; then
 fi
 
 # remove svn dirs
-find $TARGET_APP_DIR -name ".svn" | xargs rm -rf
+find "$TARGET_APP_DIR" -name ".svn" | xargs rm -rf
 
+# shellcheck disable=SC2154
 REVISION=$BUILD_VCS_NUMBER_new_trunk
 if [ -z "$REVISION" ]; then
-    REVISION=`svn status -u | sed -n -e '/revision/p' | awk '{print $4}'`
+  REVISION=$(svn status -u | sed -n -e '/revision/p' | awk '{print $4}')
 fi
-
-DATE=`date '+%d_%m_%H-%M'`
 
 if [ "$1" == "-test" ]; then
-   TEST="-test"
+  TEST="-test"
 fi
 
+# shellcheck disable=SC2027
 PACKAGE_NAME=$PRODUCT_NAME"-"$VERSION"-$PACKAGE_TYPE-"$ARCH"-r"$REVISION$TEST
 
 tar -czf ${SYMBOLS_DIR}.tar.gz $SYMBOLS_DIR/
-tar -czf $PACKAGE_NAME.tar.gz $TARGET_APP_DIR/
-if [ ! -z $UGENE_CISTROME_PATH ]; then
+tar -czf "$PACKAGE_NAME".tar.gz "$TARGET_APP_DIR"/
+if [ ! -z "$UGENE_CISTROME_PATH" ]; then
   echo "Copying cistrome data"
-  mv ${TARGET_APP_DIR}/data/cistrome/* $UGENE_CISTROME_PATH
+  mv "${TARGET_APP_DIR}"/data/cistrome/* "$UGENE_CISTROME_PATH"
 fi
