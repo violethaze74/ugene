@@ -435,9 +435,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    9. Close active view
     GTUtilsMdi::closeActiveWindow(os);
 
-    //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
+    //    10. Select "Open view" from context menu and select "Open new view: "Sanger Reads Editor" from context view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Alignment Editor",
+                                                                              << "Open new view: Sanger Reads Editor",
                                                             GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
