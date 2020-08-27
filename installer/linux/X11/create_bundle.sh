@@ -207,10 +207,8 @@ fi
 # remove svn dirs
 find "$TARGET_APP_DIR" -name ".svn" | xargs rm -rf
 
-# shellcheck disable=SC2154
-REVISION=$BUILD_VCS_NUMBER_new_trunk
 if [ -z "$REVISION" ]; then
-  REVISION=$(svn status -u | sed -n -e '/revision/p' | awk '{print $4}')
+  REVISION=$(git rev-parse --short HEAD)
 fi
 
 if [ "$1" == "-test" ]; then
