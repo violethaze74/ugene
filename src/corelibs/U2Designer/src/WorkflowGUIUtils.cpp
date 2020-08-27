@@ -23,6 +23,7 @@
 
 #include <QAbstractTextDocumentLayout>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPalette>
 #include <QTextDocument>
 #include <QUrl>

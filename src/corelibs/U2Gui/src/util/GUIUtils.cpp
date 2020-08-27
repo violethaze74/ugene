@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QPainter>
+#include <QPainterPath>
 #include <QProcess>
 #include <QUrl>
 
