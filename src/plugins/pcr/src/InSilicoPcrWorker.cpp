@@ -318,7 +318,7 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
     QScopedPointer<U2SequenceObject> seq(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
     if (seq.isNull()) {
         QString filename = context->getMetadataStorage().get(message.getMetadataId()).getFileUrl();
-        os.setError(tr("The input file \"%1\" doesn't contain valid sequence.").arg(filename));
+        os.setError(tr("The input file \"%1\" doesn't contain a valid sequence.").arg(filename));
         return nullptr;
     }
     if (seq->getSequenceLength() > InSilicoPcrTaskSettings::MAX_SEQUENCE_LENGTH) {
