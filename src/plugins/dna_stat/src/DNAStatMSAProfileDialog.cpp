@@ -51,7 +51,7 @@ DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget *p, MSAEditor *_c)
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500056");
+    new HelpButton(this, buttonBox, "49447427");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     initSaveController();

@@ -31,7 +31,7 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     : anaglyphStatus(NOT_AVAILABLE), anaglyphSettings(AnaglyphSettings::defaultSettings()) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "46499891");
+    new HelpButton(this, buttonBox, "49447260");
 
     glWidget = NULL;
     initColorSchemes();

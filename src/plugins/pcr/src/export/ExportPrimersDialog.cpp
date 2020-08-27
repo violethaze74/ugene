@@ -61,7 +61,7 @@ ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers, QWidget *
     : QDialog(parent),
       primers(primers) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46501130");
+    new HelpButton(this, buttonBox, "49448501");
 
     init();
     connectSignals();
