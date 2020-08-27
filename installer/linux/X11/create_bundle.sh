@@ -136,9 +136,13 @@ fi
 mkdir "${TARGET_APP_DIR}/sqldrivers"
 cp -v "$PATH_TO_QT_LIBS/../plugins/sqldrivers/libqsqlmysql.so" "${TARGET_APP_DIR}/sqldrivers"
 strip -v "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so"
+# Make 'sql' libs search for qt libs in 1 folder up.
+chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so"
 
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/platforms" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}/platforms"/*.so
+# Make 'platform' libs search for qt libs in 1 folder up.
+chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/platforms"/*.so
 
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}"/imageformats/*.so
