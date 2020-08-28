@@ -16,20 +16,20 @@ function dump_symbols() {
 
 function add-qt-library() {
   library=lib${1}.so.5
-  cp -v "$PATH_TO_QT_LIBS/${library}" "${TARGET_APP_DIR}"
+  cp -v "${QT_DIR}/lib/${library}" "${TARGET_APP_DIR}"
   strip -v "${TARGET_APP_DIR}/${library}"
 }
 
 function add-binary() {
   binary=$1
-  cp -v "$RELEASE_DIR/${binary}" "$TARGET_APP_DIR"
+  cp -v "${RELEASE_DIR}/${binary}" "$TARGET_APP_DIR"
   dump_symbols "${TARGET_APP_DIR}/${binary}"
   strip -v "${TARGET_APP_DIR}/${binary}"
 }
 
 function add-core-library() {
   library=lib${1}.so.1
-  cp -v "$RELEASE_DIR/${library}" "${TARGET_APP_DIR}"
+  cp -v "${RELEASE_DIR}/${library}" "${TARGET_APP_DIR}"
   dump_symbols "${TARGET_APP_DIR}/${library}"
   strip -v "${TARGET_APP_DIR}/${library}"
 }

@@ -18,8 +18,8 @@ ARCH=$(uname -m)
 
 source create_bundle_common.sh
 
-if [ -z "$PATH_TO_QT_LIBS" ]; then
-  echo PATH_TO_QT_LIBS environment variable is not set!
+if [ -z "$QT_DIR" ]; then
+  echo QT_DIR environment variable is not set!
   exit 1
 fi
 
@@ -124,6 +124,9 @@ add-qt-library Qt5Test
 add-qt-library Qt5Widgets
 add-qt-library Qt5XcbQpa
 add-qt-library Qt5Xml
+if [ "$1" == "-test" ]; then
+  add-qt-library Qt5Test
+fi
 
 if [ ! -z "$PATH_TO_LIBPROC" ]; then
   cp -v "$PATH_TO_LIBPROC" "${TARGET_APP_DIR}"
@@ -134,29 +137,25 @@ if [ ! -z "$PATH_TO_INCLUDE_LIBS" ]; then
 fi
 
 mkdir "${TARGET_APP_DIR}/sqldrivers"
-cp -v "$PATH_TO_QT_LIBS/../plugins/sqldrivers/libqsqlmysql.so" "${TARGET_APP_DIR}/sqldrivers"
+cp -v "${QT_DIR}/plugins/sqldrivers/libqsqlmysql.so" "${TARGET_APP_DIR}/sqldrivers"
 strip -v "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so"
 # Make 'sql' libs search for qt libs in 1 folder up.
 chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so"
 
-cp -r -v "$PATH_TO_QT_LIBS/../plugins/platforms" "${TARGET_APP_DIR}"
+cp -r -v "${QT_DIR}/plugins/platforms" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}/platforms"/*.so
 # Make 'platform' libs search for qt libs in 1 folder up.
 chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/platforms"/*.so
 
-cp -r -v "$PATH_TO_QT_LIBS/../plugins/imageformats" "${TARGET_APP_DIR}"
+cp -r -v "${QT_DIR}/plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}"/imageformats/*.so
 
-PATH_TO_ICU_DATA_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicudata.so | cut -d " " -f3)
+PATH_TO_ICU_DATA_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicudata.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_DATA_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_I18N_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicui18n.so | cut -d " " -f3)
+PATH_TO_ICU_I18N_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicui18n.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_I18N_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_UUC_LIB=$(ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" | grep libicuuc.so | cut -d " " -f3)
+PATH_TO_ICU_UUC_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicuuc.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_UUC_LIB" "${TARGET_APP_DIR}"
-
-if [ "$1" == "-test" ]; then
-  cp "$PATH_TO_QT_LIBS/libQtTest.so.4" "${TARGET_APP_DIR}"
-fi
 
 echo copying plugins
 add-plugin annotator
