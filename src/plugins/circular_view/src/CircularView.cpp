@@ -835,8 +835,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
     QList<CircularAnnotationRegionItem *> regions;
     if (circularView->isCircularTopology()) {
         // For a circular sequence merge regions around 0 point.
-        QList<RegionsPair> mergedRegions;
-        mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
+        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
         for (const RegionsPair &pair : mergedRegions) {
             int idx = aDataLocation.indexOf(pair.first);
             CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(U2Region(pair.first.startPos, pair.first.length + pair.second.length), seqLen, yLevel, isComplementaryStrand, idx);

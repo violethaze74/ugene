@@ -187,7 +187,7 @@ protected:
 
 private:
     int findOrbit(const QVector<U2Region> &location, Annotation *a);
-    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, bool isComplementStrand, int index);
+    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, bool isComplementaryStrand, int index);
     QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect, const QRect &middleRect, bool complementary, bool isShort) const;
     void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
 
