@@ -9,6 +9,11 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
 CONFIG += c++11
 
+# Do not use library suffix names for files and ELF-dependency sections on Linux.
+# Reason: we do not support multiple versions of UGENE in the same folder and
+#  use -Wl,-rpath to locate dependencies for own libraries.
+unix:!macx: CONFIG += unversioned_libname unversioned_soname
+
 # NGS package
 _UGENE_NGS = $$(UGENE_NGS)
 contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
