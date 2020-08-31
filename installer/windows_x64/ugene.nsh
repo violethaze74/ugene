@@ -161,7 +161,6 @@ SetRegView 64
     File "..\..\LICENSE.3rd_party.txt"
     File "${PATH_TO_VS_BIN}\msvcp140.dll"
     File "${PATH_TO_VS_BIN}\vcruntime140.dll"
-    File "${PATH_TO_VS_BIN}\vcruntime140_1.dll"
     File "${PATH_TO_INCLUDE_LIBS}\*.*"
     File "${PATH_TO_QT_LIBS}\Qt5Core.dll"
     File "${PATH_TO_QT_LIBS}\Qt5Gui.dll"
