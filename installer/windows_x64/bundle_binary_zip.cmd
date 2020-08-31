@@ -46,7 +46,6 @@ copy %PATH_TO_QT_LIBS%\Qt5Svg.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Test.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Widgets.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Xml.dll %OUTPUT_DIR%
-copy %PATH_TO_QT_LIBS%\icu* %OUTPUT_DIR%
 mkdir "%OUTPUT_DIR%\sqldrivers"
 copy %PATH_TO_QT_LIBS%\..\plugins\sqldrivers\qsqlmysql.dll %OUTPUT_DIR%\sqldrivers\
 mkdir "%OUTPUT_DIR%\imageformats"

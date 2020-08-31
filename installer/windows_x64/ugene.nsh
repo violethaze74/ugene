@@ -180,7 +180,6 @@ SetRegView 64
     File "${PATH_TO_QT_LIBS}\Qt5Test.dll"
     File "${PATH_TO_QT_LIBS}\Qt5Widgets.dll"
     File "${PATH_TO_QT_LIBS}\Qt5Xml.dll"
-    File "${PATH_TO_QT_LIBS}\icu*"
 
     SetOutPath $INSTDIR\sqldrivers
     File "${PATH_TO_QT_LIBS}\..\plugins\sqldrivers\qsqlmysql.dll"
