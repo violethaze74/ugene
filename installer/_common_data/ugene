@@ -40,7 +40,7 @@ esac
 ugene_i686=false
 ugene_x86_64=false
 
-case "$(file -b \"$dirname\"/\"$appname\" | cut -d "," -f1 | grep 64 | wc -l | tr -d ' ')" in
+case "$(file -b "$dirname/$appname" | cut -d "," -f1 | grep 64 | wc -l | tr -d ' ')" in
 0*) ugene_i686=true ;;
 1*) ugene_x86_64=true ;;
 esac
