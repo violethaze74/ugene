@@ -331,7 +331,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::waitAllFinished(os, 60000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4026) {
