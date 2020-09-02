@@ -241,7 +241,7 @@ DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QStri
     if (urlList.size() == 1) {
         QString url = urlList[0];
         if (isFolderMode) {
-            setProperty(FILE_URL_KEY, "file\n" + url);
+            setProperty(FILE_URL_KEY, "folder\n" + url);
         } else {
             setProperty(FILE_URL_KEY, "ugene\n" + url);
             auto menu = new DashboardPopupMenu(this, this);
