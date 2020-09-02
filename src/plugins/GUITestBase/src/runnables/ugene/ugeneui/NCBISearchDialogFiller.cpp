@@ -314,17 +314,11 @@ void NcbiSearchDialogFiller::waitTasksFinish() {
 #define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogFillerDeprecated"
 #define GT_METHOD_NAME "commonScenario"
 void NCBISearchDialogFillerDeprecated::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    GTGlobals::sleep(500);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *queryEditLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "queryEditLineEdit", dialog));
-    GT_CHECK(queryEditLE != NULL, "queryEdit line not found");
+    GT_CHECK(queryEditLE != nullptr, "queryEdit line not found");
     GTLineEdit::setText(os, queryEditLE, query);
-
-    GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
-    GTGlobals::sleep(5000);
 
     if (term != "") {
         QComboBox *term_box = GTWidget::findExactWidget<QComboBox *>(os, "term_box", dialog);
@@ -352,11 +346,14 @@ void NCBISearchDialogFillerDeprecated::commonScenario() {
         return;
     }
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
-    QTreeWidget *w = dialog->findChild<QTreeWidget *>("treeWidget");
-    GT_CHECK(w, "treeWidget not found");
+    // Run search
+    GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
+    // Wait the search is finished.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QTreeWidget *resultsTreeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "treeWidget", dialog));
 
-    GTWidget::click(os, w, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
+    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != NULL, "buttonBox is NULL");
