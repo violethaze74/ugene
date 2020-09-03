@@ -114,7 +114,7 @@ void GUITestLauncher::run() {
             try {
                 QString testResult = runTest(testName);
                 results[testName] = testResult;
-                if (GUITestTeamcityLogger::testFailed(testResult)) {
+                if (GUITestTeamcityLogger::isTestFailed(testResult)) {
                     renameTestLog(testName);
                 }
 
@@ -347,7 +347,7 @@ QString GUITestLauncher::runTest(const QString &testName) {
         }
         U2OpStatusImpl os;
         testOutput = runTestOnce(os, testName, iteration, isVideoRecordingOn && iteration > 0);
-        bool isFailed = os.hasError() || GUITestTeamcityLogger::testFailed(testOutput);
+        bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
         }
@@ -399,7 +399,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
         }
-        if (!GUITestTeamcityLogger::testFailed(testResult)) {
+        if (!GUITestTeamcityLogger::isTestFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }
@@ -448,7 +448,7 @@ QString GUITestLauncher::generateReport() const {
     QMap<QString, QString>::const_iterator i;
     for (i = results.begin(); i != results.end(); ++i) {
         QString color = "green";
-        if (GUITestTeamcityLogger::testFailed(i.value())) {
+        if (GUITestTeamcityLogger::isTestFailed(i.value())) {
             color = "red";
         }
         res += QString("<tr><th><font color='%3'>%1</font></th><th><font color='%3'>%2</font></th></tr>").arg(i.key()).arg(i.value()).arg(color);
