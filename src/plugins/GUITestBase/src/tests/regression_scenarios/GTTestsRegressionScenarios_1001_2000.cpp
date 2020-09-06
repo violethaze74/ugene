@@ -8553,7 +8553,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     //1. Run UGENE
     //2. Use main toolbar { File -> Search NCBI Genbank }
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogFillerDeprecated(os, "human", false, 5, "Organism"));
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogFillerDeprecated(os, "mouse", false, 5, "Organism"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...");
     GTGlobals::sleep();
