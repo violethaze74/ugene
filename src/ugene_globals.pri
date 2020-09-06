@@ -53,24 +53,24 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wall
 
     # We have a lot of such warning from QT -> disable them.
-    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-catch-value
     QMAKE_CXXFLAGS += -Wno-class-memaccess
+    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
+    QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
+    QMAKE_CXXFLAGS += -Wno-sign-compare
     QMAKE_CXXFLAGS += -Wno-unused-parameter
     QMAKE_CXXFLAGS += -Wno-unused-variable
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
-    QMAKE_CXXFLAGS += -Wno-catch-value
-    QMAKE_CXXFLAGS += -Wno-sign-compare
-    QMAKE_CXXFLAGS += -Wno-ignored-attributes
 
     # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
     QMAKE_CXXFLAGS += -Wno-cast-function-type
 
     # Some of the warnings must be errors
-    QMAKE_CXXFLAGS += -Werror=return-type
-    QMAKE_CXXFLAGS += -Werror=parentheses
-    QMAKE_CXXFLAGS += -Werror=uninitialized
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
+    QMAKE_CXXFLAGS += -Werror=parentheses
+    QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=uninitialized
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
