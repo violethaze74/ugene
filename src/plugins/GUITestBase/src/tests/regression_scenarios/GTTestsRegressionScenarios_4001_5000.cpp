@@ -307,9 +307,10 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
 GUI_TEST_CLASS_DEFINITION(test_4022) {
     //1. Put very long sequence into clipboard.
     //2. Paste it into New document from text dialog and see the warning.
-    //Expected: UGENE does not crash.
+    //Expected: UGENE shows warning & does not crash.
 
-    QApplication::clipboard()->setText(QString("AAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTT").repeated(344064));
+    // 10Mb (40 * 250_000)
+    QApplication::clipboard()->setText(QString("AAAAAAAAAACCCCCCCCCCGGGGGGGGGGTTTTTTTTTT").repeated(250000));
 
     class Scenario : public CustomScenario {
     public:
@@ -331,7 +332,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTUtilsDialog::waitAllFinished(os, 60000);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4026) {
