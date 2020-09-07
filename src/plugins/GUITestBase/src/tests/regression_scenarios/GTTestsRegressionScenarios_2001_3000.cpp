@@ -1488,7 +1488,7 @@ GUI_TEST_CLASS_DEFINITION(test_2204) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2225) {
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat", true);
+    Runnable *filler = new NCBISearchDialogSimpleFiller(os, "rat", true);
 
     GTUtilsDialog::waitForDialog(os, filler);
 
@@ -5237,7 +5237,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2853) {
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogFillerDeprecated(os, "rat"));
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
