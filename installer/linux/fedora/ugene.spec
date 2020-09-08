@@ -19,8 +19,6 @@ BuildRequires: qt5-qtscript-devel
 BuildRequires: qt5-qtsensors-devel
 BuildRequires: qt5-qtsvg-devel
 BuildRequires: qt5-qttools-devel
-BuildRequires: qt5-qtwebchannel-devel
-BuildRequires: qt5-qtwebkit-devel
 BuildRequires: qt5-qtxmlpatterns-devel
 BuildRequires: zlib-devel
 

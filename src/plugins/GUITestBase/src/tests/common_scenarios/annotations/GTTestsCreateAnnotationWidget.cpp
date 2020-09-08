@@ -110,7 +110,7 @@ QString getTypeFromNormalWidget(HI::GUITestOpStatus &os, QWidget *dialog) {
 }
 
 void setTypeInNormalWidget(HI::GUITestOpStatus &os, const QString &type, QWidget *dialog) {
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType", dialog), type, true, GTGlobals::UseMouse);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType", dialog), type, GTGlobals::UseMouse);
 }
 
 bool checkTypePresenceInNormalWidget(HI::GUITestOpStatus &os, const QString &type, QWidget *dialog) {
@@ -133,7 +133,7 @@ QString getTypeFromOptionsPanelWidget(HI::GUITestOpStatus &os) {
 
 void setTypeInOptionsPanelWidget(HI::GUITestOpStatus &os, const QString &type) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType"), type, true, GTGlobals::UseMouse);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType"), type, GTGlobals::UseMouse);
 }
 
 bool checkTypePresenceInOptionsPanelWidget(HI::GUITestOpStatus &os, const QString &type) {
@@ -180,7 +180,7 @@ void setGenbankLocation(HI::GUITestOpStatus &os, const QString &locationString, 
 void setExistingTable(HI::GUITestOpStatus &os, QWidget *dialog = NULL, const QString &tableName = "") {
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog));
     if (!tableName.isEmpty()) {
-        GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog), tableName);
+        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog), tableName);
     }
 }
 

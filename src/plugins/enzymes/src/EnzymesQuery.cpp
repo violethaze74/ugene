@@ -143,7 +143,7 @@ QString EnzymesSelectorDialogHandler::getSelectedString(QDialog *dlg) {
 EnzymesSelectorDialog::EnzymesSelectorDialog(EnzymesSelectorDialogHandler *parent)
     : factory(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46501094");
+    new HelpButton(this, buttonBox, "49448465");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

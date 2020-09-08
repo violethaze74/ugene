@@ -133,7 +133,7 @@ void GTUtilsWorkflowDesigner::loadWorkflow(HI::GUITestOpStatus &os, const QStrin
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, fileUrl));
     QToolBar *wdToolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     GT_CHECK(wdToolbar, "Toolbar is not found");
-    QWidget *loadButton = GTToolbar::getWidgetForActionName(os, wdToolbar, "Load workflow");
+    QWidget *loadButton = GTToolbar::getWidgetForActionObjectName(os, wdToolbar, "Load workflow");
     GT_CHECK(loadButton, "Load button is not found");
     GTWidget::click(os, loadButton);
     GTGlobals::sleep();
@@ -1031,7 +1031,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setParameter"
+#define GT_METHOD_NAME "getRowIndexOrFail"
 static int getRowIndexOrFail(HI::GUITestOpStatus &os, QTableView *table, const QString &parameter) {
     QAbstractItemModel *model = table->model();
     int rowIndex = -1;
@@ -1051,25 +1051,14 @@ void GTUtilsWorkflowDesigner::setParameter(HI::GUITestOpStatus &os, QString para
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", wdWindow));
     CHECK_SET_ERR(table, "tableView not found");
 
-    // Find cell. TODO: scroll to parameter by mouse/keyboard
-    class MainThreadAction : public CustomScenario {
-    public:
-        MainThreadAction(QTableView *table, const QString &parameter)
-            : CustomScenario(), table(table), parameter(parameter) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            int rowIndex = getRowIndexOrFail(os, table, parameter);
-            table->scrollTo(table->model()->index(rowIndex, 1));
-        }
-        QTableView *table;
-        QString parameter;
-    };
-    GTThread::runInMainThread(os, new MainThreadAction(table, parameter));
-    GTThread::waitForMainThread();
-
     int rowIndex = getRowIndexOrFail(os, table, parameter);
+    QModelIndex modelIndex = table->model()->index(rowIndex, 1);
+    GTWidget::scrollToIndex(os, table, modelIndex);
+
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, rowIndex));
+    GTThread::waitForMainThread();
     GTMouseDriver::click();
+
     GTGlobals::sleep();
 
     //SET VALUE
@@ -1159,13 +1148,13 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget *par
         break;
     }
     case (comboValue): {
-        int comboVal = value.toInt(&ok);
+        int itemIndex = value.toInt(&ok);
         QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox widget");
         if (!ok) {
-            QString comboString = value.toString();
-            GTComboBox::setIndexWithText(os, comboBox, comboString, true, method);
+            QString itemText = value.toString();
+            GTComboBox::selectItemByText(os, comboBox, itemText, method);
         } else {
-            GTComboBox::setCurrentIndex(os, comboBox, comboVal, true, method);
+            GTComboBox::selectItemByIndex(os, comboBox, itemIndex, method);
         }
         break;
     }
@@ -1533,7 +1522,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus &os, QSt
     //SET VALUE
     QComboBox *box = qobject_cast<QComboBox *>(table->findChild<QComboBox *>());
     GT_CHECK(box != nullptr, "QComboBox not found. Scripting might be unavaluable for this parameter");
-    GTComboBox::setIndexWithText(os, box, scriptMode, false);
+    GTComboBox::selectItemByText(os, box, scriptMode);
 }
 #undef GT_METHOD_NAME
 

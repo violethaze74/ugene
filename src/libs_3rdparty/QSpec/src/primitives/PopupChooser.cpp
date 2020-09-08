@@ -122,7 +122,7 @@ void PopupChecker::commonScenario() {
         GT_CHECK(act != NULL, "action '" + actName + "' not found");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(Exists)");
     } else {
-        GT_CHECK(act == NULL, "action '" + actName + "' unexpectidly found");
+        GT_CHECK(act == NULL, "action '" + actName + "' unexpectedly found");
     }
     if (options.testFlag(IsEnabled)) {
         GT_CHECK(act->isEnabled(), "action '" + act->objectName() + "' is not enabled");
@@ -134,7 +134,7 @@ void PopupChecker::commonScenario() {
     }
     if (options.testFlag(IsChecable)) {
         GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checkable");
-        qDebug("GT_DEBUG_MESSAGE options.testFlag(IsChecable)");
+        qDebug("GT_DEBUG_MESSAGE options.testFlag(IsCheckable)");
     }
     if (options.testFlag(IsChecked)) {
         GT_CHECK(act->isChecked(), "action '" + act->objectName() + "' is not checked");

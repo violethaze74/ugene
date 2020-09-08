@@ -389,7 +389,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo != NULL, "colorScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "No colors");
+    GTComboBox::selectItemByText(os, combo, "No colors");
     GTGlobals::sleep(200);
 
     //    3. Change Color Scheme.
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //    5. Select Highlighting to "Gaps"
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "Gaps");
+    GTComboBox::selectItemByText(os, combo, "Gaps");
 
     //    6. Go to MSA overview context menu (right click on MSA Overview).
     //    7. Select {Calculation method -> Highlighting}.
@@ -487,7 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     //    5. Change Highlighting.
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
-    GTComboBox::setIndexWithText(os, combo, "Agreements");
+    GTComboBox::selectItemByText(os, combo, "Agreements");
 
     //    Expected state: graph displays percent of highlighted cells in column.
     //save grahpView
@@ -495,7 +495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     CHECK_SET_ERR(img != img1, "overview not changed");
 
     //    Overview changes after each highlighting change.
-    GTComboBox::setIndexWithText(os, combo, "Disagreements");
+    GTComboBox::selectItemByText(os, combo, "Disagreements");
     const QImage img2 = GTWidget::getImage(os, overviewGraph);
     CHECK_SET_ERR(img != img2, "overview not changed");
 }

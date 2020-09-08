@@ -23,23 +23,28 @@
 
 namespace U2 {
 
-HoverQLabel::HoverQLabel(const QString &html, const QString &_normalStyle, const QString &_hoveredStyle, const QString &objectName)
-    : QLabel(html), normalStyle(_normalStyle), hoveredStyle(_hoveredStyle) {
+HoverQLabel::HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName)
+    : QLabel(html), isHovered(false) {
     setCursor(Qt::PointingHandCursor);
     setObjectName(objectName);
-    if (!objectName.isEmpty()) {
-        normalStyle = "#" + objectName + " {" + normalStyle + "}";
-        hoveredStyle = "#" + objectName + " {" + hoveredStyle + "}";
-    }
-    setStyleSheet(normalStyle);
+    updateStyles(normalStyle, hoveredStyle);
+}
+
+void HoverQLabel::updateStyles(const QString &newNormalStyle, const QString &newHoveredStyle) {
+    QString objName = objectName();
+    normalStyle = objName.isEmpty() ? newNormalStyle : "#" + objName + " {" + newNormalStyle + "}";
+    hoveredStyle = objName.isEmpty() ? newHoveredStyle : "#" + objName + " {" + newHoveredStyle + "}";
+    setStyleSheet(isHovered ? hoveredStyle : normalStyle);
 }
 
 void HoverQLabel::enterEvent(QEvent *event) {
+    isHovered = true;
     setStyleSheet(hoveredStyle);
     QLabel::enterEvent(event);
 }
 
 void HoverQLabel::leaveEvent(QEvent *event) {
+    isHovered = false;
     setStyleSheet(normalStyle);
     QLabel::leaveEvent(event);
 }

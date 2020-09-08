@@ -126,9 +126,7 @@ void InsertSequenceFiller::commonScenario() {
 
         int index = comboBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-        if (comboBox->currentIndex() != index) {
-            GTComboBox::setCurrentIndex(os, comboBox, index);
-        }
+        GTComboBox::selectItemByIndex(os, comboBox, index);
     }
 
     if (wrongInput) {

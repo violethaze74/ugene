@@ -46,7 +46,7 @@ void AddNewDocumentDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(NULL != dialog, "Active modal widget is NULL");
 
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "documentTypeCombo", dialog), format);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "documentTypeCombo", dialog), format);
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "documentURLEdit", dialog), path);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

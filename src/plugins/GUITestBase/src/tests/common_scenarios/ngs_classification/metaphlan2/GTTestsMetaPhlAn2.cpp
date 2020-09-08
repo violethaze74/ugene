@@ -195,6 +195,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
@@ -281,6 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
@@ -321,6 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
@@ -361,6 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();

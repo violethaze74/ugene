@@ -34,11 +34,11 @@ public:
     public:
         Parameters();
 
-        bool ckeckBox_gapOpenCheckBox_checked;
+        bool checkBox_gapOpenCheckBox_checked;
         double doubleSpin_gapOpenSpinBox_value;
-        bool ckeckBox_gapExtCheckBox_checked;
+        bool checkBox_gapExtCheckBox_checked;
         double doubleSpin_gapExtSpinBox_value;
-        bool ckeckBox_maxNumberIterRefinementCheckBox_checked;
+        bool checkBox_maxNumberIterRefinementCheckBox_checked;
         int spin_maxNumberIterRefinementSpinBox_value;
     };
 

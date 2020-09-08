@@ -98,9 +98,7 @@ void ExportAnnotationsFiller::commonScenario() {
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    if (comboBox->currentIndex() != index) {
-        GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
-    }
+    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
     if (!addToProject) {
         QCheckBox *addToProjectButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectCheck"));
         GT_CHECK(addToProjectButton != nullptr, "Check box not found");

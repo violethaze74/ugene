@@ -378,12 +378,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="199"/>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="200"/>
         <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
         <translation>Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="204"/>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="205"/>
         <source>Simple extended</source>
         <translation>Простой с расширенным алфавитом</translation>
     </message>
@@ -418,18 +418,18 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="574"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="615"/>
         <source>Percentage identity</source>
-        <translation>По процентному соотношению</translation>
+        <translation>Процентное соотношение</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="575"/>
         <source>Percentage identity (colored)</source>
-        <translation>По процентному соотношению (цветное)</translation>
+        <translation>Процентное соотношение (цветное)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="576"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="616"/>
         <source>Percentage identity (gray)</source>
-        <translation>По процентному соотношению (серый)</translation>
+        <translation>Процентное соотношение (серый)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>

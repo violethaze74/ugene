@@ -200,9 +200,7 @@ int main(int argc, char **argv) {
         CrashHandler::setSendCrashReports(false);
     }
 
-    const char *build = QT_VERSION_STR, *runtime = qVersion();
-    if (strcmp(build, runtime) > 0) {
-        printf("Installed Qt version must be %s or greater \r\n", QT_VERSION_STR);
+    if (!Version::checkBuildAndRuntimeVersions()) {
         return -1;
     }
 

@@ -11,7 +11,6 @@ include_directories(../../include)
 add_definitions(
         -D_FILE_OFFSET_BITS=64
         -D_LARGEFILE64_SOURCE
-        -D_USE_KNETFILE
 )
 
 file(GLOB_RECURSE SRCS src/*.cpp src/*.c)

@@ -493,22 +493,22 @@
         <translation>Показать информацию о праймерах</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="134"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="137"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="138"/>
         <source>Warning: </source>
         <translation>Предупреждение: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="138"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="139"/>
         <source>Find product(s) anyway</source>
         <translation>Найти продукт(ы) в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="215"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="216"/>
         <source>Extract In Silico PCR products</source>
         <translation>Извлечь продукты ПЦР in silico</translation>
     </message>
@@ -1054,77 +1054,82 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
 <context>
     <name>U2::PrimerStatistics</name>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="41"/>
+        <location filename="../src/PrimerStatistics.cpp" line="43"/>
         <source>The primers contain a character from the Extended DNA alphabet.</source>
         <translation>Праймеры содержат символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="43"/>
+        <location filename="../src/PrimerStatistics.cpp" line="45"/>
         <source>The forward primer contains a character from the Extended DNA alphabet.</source>
         <translation>Прямой праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="45"/>
+        <location filename="../src/PrimerStatistics.cpp" line="47"/>
         <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
         <translation>Обратный праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="223"/>
+        <location filename="../src/PrimerStatistics.cpp" line="50"/>
+        <source> Unable to calculate primer statistics.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="227"/>
         <source>low GC-content</source>
         <translation>low GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="224"/>
+        <location filename="../src/PrimerStatistics.cpp" line="228"/>
         <source>high GC-content</source>
         <translation>high GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="230"/>
+        <location filename="../src/PrimerStatistics.cpp" line="234"/>
         <source>low melting temperature</source>
         <translation>low melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="231"/>
+        <location filename="../src/PrimerStatistics.cpp" line="235"/>
         <source>high melting temperature</source>
         <translation>high melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="237"/>
+        <location filename="../src/PrimerStatistics.cpp" line="241"/>
         <source>low GC clamp</source>
         <translation>low GC clamp</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="243"/>
+        <location filename="../src/PrimerStatistics.cpp" line="247"/>
         <source>high base runs value</source>
         <translation>high base runs value</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="250"/>
+        <location filename="../src/PrimerStatistics.cpp" line="254"/>
         <source>forward primer has %1.</source>
         <translation>прямой праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="252"/>
+        <location filename="../src/PrimerStatistics.cpp" line="256"/>
         <source>reverse primer has %1.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="320"/>
+        <location filename="../src/PrimerStatistics.cpp" line="324"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="321"/>
+        <location filename="../src/PrimerStatistics.cpp" line="325"/>
         <source>Valid Values</source>
         <translation>Допустимые значения</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="322"/>
+        <location filename="../src/PrimerStatistics.cpp" line="326"/>
         <source>Forward</source>
         <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="323"/>
+        <location filename="../src/PrimerStatistics.cpp" line="327"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>

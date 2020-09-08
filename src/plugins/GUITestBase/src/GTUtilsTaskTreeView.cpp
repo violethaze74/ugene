@@ -29,7 +29,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
-#include <U2Core/global.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -45,7 +44,7 @@ const QString GTUtilsTaskTreeView::widgetName = DOCK_TASK_TREE_VIEW;
 
 void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis) {
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    for (int time = 0  ; time < timeoutMillis && !scheduler->getTopLevelTasks().isEmpty(); time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < timeoutMillis && !scheduler->getTopLevelTasks().isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(GT_OP_CHECK_MILLIS);
     }
     if (!scheduler->getTopLevelTasks().isEmpty()) {
@@ -173,15 +172,17 @@ void GTUtilsTaskTreeView::moveToOpenedView(HI::GUITestOpStatus &os, const QStrin
 QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(HI::GUITestOpStatus &os, const QString &itemName) {
     QTreeWidget *treeWidget = getTreeWidget(os);
     GT_CHECK_RESULT(treeWidget != NULL, "treeWidget is NULL", QPoint());
-    QTreeWidgetItem *item = getTreeWidgetItem(os, itemName);
-
-    QPoint p = treeWidget->rect().center();
-    if (item) {
-        p = treeWidget->visualItemRect(item).center();
-        p.setY(p.y() + treeWidget->visualItemRect(item).height() + 5);    //+ height because of header item; +5 because height is not enough
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        QTreeWidgetItem *item = getTreeWidgetItem(os, itemName);
+        if (item) {
+            QPoint itemCenter = treeWidget->visualItemRect(item).center();
+            itemCenter.setY(itemCenter.y() + treeWidget->visualItemRect(item).height() + 5);    //+ height because of header item; +5 because height is not enough
+            return treeWidget->mapToGlobal(itemCenter);
+        }
     }
-
-    return treeWidget->mapToGlobal(p);
+    //TODO: report error?
+    return treeWidget->mapToGlobal(treeWidget->rect().center());
 }
 #undef GT_METHOD_NAME
 

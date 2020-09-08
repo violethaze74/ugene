@@ -86,7 +86,7 @@ void EditConnectionDialogFiller::commonScenario() {
     }
 
     QString buttonName = parameters.accept ? "OK" : "Cancel";
-    GTWidget::click(os, GTWidget::findButtonByText(os, buttonName));
+    GTWidget::click(os, GTWidget::findButtonByText(os, buttonName, dialog));
 }
 
 #undef GT_METHOD_NAME
@@ -100,8 +100,7 @@ AuthenticationDialogFiller::AuthenticationDialogFiller(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "commonScenario"
 
 void AuthenticationDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *leLogin = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leLogin", dialog));
     GT_CHECK(leLogin, "leLogin is NULL");

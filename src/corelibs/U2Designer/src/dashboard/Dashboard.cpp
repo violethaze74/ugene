@@ -30,12 +30,6 @@
 #include <QMessageBox>
 #include <QSettings>
 
-#if UGENE_WEB_KIT
-#    include <QWebFrame>
-#else
-#    include <QWebEnginePage>
-#endif
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/GUrlUtils.h>
@@ -49,14 +43,16 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include "DashboardJsAgent.h"
-#include "DashboardPageController.h"
 #include "DashboardTabPage.h"
 #include "DomUtils.h"
 #include "ExternalToolsDashboardWidget.h"
+#include "NotificationsDashboardWidget.h"
+#include "OutputFilesDashboardWidget.h"
+#include "ParametersDashboardWidget.h"
+#include "StatisticsDashboardWidget.h"
+#include "StatusDashboardWidget.h"
 
 namespace U2 {
 
@@ -78,58 +74,43 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 #define EXTERNAL_TOOLS_TAB_INDEX 2
 
 #define EXTERNAL_TOOLS_WIDGET_STATE_KEY "external_tools_widget"
+#define PARAMETERS_WIDGET_STATE_KEY "parameters_widget"
+#define NOTIFICATIONS_WIDGET_STATE_KEY "notifications_widget"
+#define STATISTICS_WIDGET_STATE_KEY "statistics_widget"
+#define STATUS_WIDGET_STATE_KEY "status_widget"
+#define OUTPUT_FILES_WIDGET_STATE_KEY "output_files_widget"
 
 /************************************************************************/
 /* Dashboard */
 /************************************************************************/
 Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent)
-    : QWidget(parent),
-      loadingStarted(false),
-      loadUrl("qrc:///U2Designer/html/Dashboard.html"),
-      name(name),
-      opened(true),
-      monitor(monitor),
-      workflowInProgress(true),
-      dashboardPageController(nullptr),
-      externalToolsWidget(nullptr) {
+    : QWidget(parent), name(name), opened(true),
+      monitor(monitor), workflowInProgress(true),
+      mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
+      statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
+      parametersWidget(nullptr), externalToolsTabPage(nullptr), externalToolsWidget(nullptr) {
+    setObjectName("Dashboard");
+    setContextMenuPolicy(Qt::NoContextMenu);
     initLayout();
-    dashboardPageController = new DashboardPageController(this, webView);
-    connect(monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
     connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
     connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
     connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
-
-    connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_serialize()));
-    connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
-
-    setContextMenuPolicy(Qt::NoContextMenu);
-    loadDocument();
+    connect(getMonitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
 }
 
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
     : QWidget(parent),
-      loadingStarted(false),
-      loadUrl(QUrl::fromLocalFile(dirPath + REPORT_SUB_DIR + DB_FILE_NAME).toString()),
-      dir(dirPath),
-      opened(true),
-      monitor(NULL),
-      workflowInProgress(false),
-      dashboardPageController(nullptr),
-      externalToolsWidget(nullptr) {
-    initialWidgetStates = readInitialWidgetStates(dirPath + REPORT_SUB_DIR + DB_FILE_NAME);
-    initLayout();
-    dashboardPageController = new DashboardPageController(this, webView);
-
+      dir(dirPath), opened(true), monitor(nullptr), workflowInProgress(false),
+      mainLayout(nullptr), stackedWidget(nullptr), overviewTabPage(nullptr), notificationsWidget(nullptr),
+      statisticsWidget(nullptr), statusWidget(nullptr), outputFilesWidget(nullptr), inputTabPage(nullptr),
+      parametersWidget(nullptr), externalToolsTabPage(nullptr), externalToolsWidget(nullptr) {
+    setObjectName("Dashboard");
     setContextMenuPolicy(Qt::NoContextMenu);
     loadSettings();
     saveSettings();
-
-    connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
 }
 
-void Dashboard::initLayout() {
-    setObjectName("Dashboard");
-
+void Dashboard::initLayout(const QMap<QString, QDomElement> &initialWidgetStates) {
     mainLayout = new QVBoxLayout(this);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
@@ -158,7 +139,6 @@ void Dashboard::initLayout() {
                                   "  color: #005580;"
                                   "  background: white;"
                                   "}\n";
-
     setObjectName("dashboardWidget");
 
     overviewTabButton = new QToolButton(tabButtonsRow);
@@ -167,6 +147,7 @@ void Dashboard::initLayout() {
     overviewTabButton->setStyleSheet(tabButtonStyleSheet);
     overviewTabButton->setCursor(Qt::PointingHandCursor);
     overviewTabButton->setCheckable(true);
+    overviewTabButton->setChecked(true);
     tabButtonsLayout->addWidget(overviewTabButton);
 
     inputTabButton = new QToolButton(tabButtonsRow);
@@ -210,47 +191,74 @@ void Dashboard::initLayout() {
     stackedWidget = new QStackedWidget();
     mainLayout->addWidget(stackedWidget, INT_MAX);
 
-    webView = new U2WebView();
-    stackedWidget->addWidget(webView);
+    // Overview tab.
+    overviewTabPage = new DashboardTabPage("overview_tab_page");
+    stackedWidget->addWidget(overviewTabPage);
 
+    QDomElement outputFilesWidgetState = initialWidgetStates.value(OUTPUT_FILES_WIDGET_STATE_KEY);
+    outputFilesWidget = new OutputFilesDashboardWidget(dir, outputFilesWidgetState, monitor);
+    overviewTabPage->addDashboardWidget(tr("Output files"), outputFilesWidget);
+
+    QDomElement statusWidgetState = initialWidgetStates.value(STATUS_WIDGET_STATE_KEY);
+    statusWidget = new StatusDashboardWidget(statusWidgetState, monitor);
+    overviewTabPage->addDashboardWidget(tr("Workflow task"), statusWidget);
+
+    QDomElement notificationsWidgetState = initialWidgetStates.value(NOTIFICATIONS_WIDGET_STATE_KEY);
+    notificationsWidget = new NotificationsDashboardWidget(notificationsWidgetState, monitor);
+    auto notificationsDashboardWidget = overviewTabPage->addDashboardWidget(tr("Notifications"), notificationsWidget);
+    notificationsWidget->setDashboardWidget(notificationsDashboardWidget);
+
+    QDomElement statisticsWidgetState = initialWidgetStates.value(STATISTICS_WIDGET_STATE_KEY);
+    statisticsWidget = new StatisticsDashboardWidget(statisticsWidgetState, monitor);
+    overviewTabPage->addDashboardWidget(tr("Common statistics"), statisticsWidget);
+
+    // Input tab.
+    inputTabPage = new DashboardTabPage("input_tab_page");
+    stackedWidget->addWidget(inputTabPage);
+
+    QDomElement parametersWidgetState = initialWidgetStates.value(PARAMETERS_WIDGET_STATE_KEY);
+    parametersWidget = new ParametersDashboardWidget(dir, parametersWidgetState, monitor);
+    inputTabPage->addDashboardWidget(tr("Parameters"), parametersWidget);
+
+    // External tools tab.
     externalToolsTabPage = new DashboardTabPage("external_tools_tab_page");
     stackedWidget->addWidget(externalToolsTabPage);
 
-    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
     externalToolsTabButton->setVisible(!externalToolsWidgetState.isNull());
+
+    stackedWidget->setCurrentIndex(0);
 }
 
 void Dashboard::initExternalToolsTabWidget() {
-    CHECK(externalToolsWidget == nullptr, );
-    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    CHECK(externalToolsWidget == nullptr && mainLayout != nullptr, );
     externalToolsWidget = new ExternalToolsDashboardWidget(externalToolsWidgetState, monitor);
     externalToolsTabPage->addDashboardWidget(tr("External Tools"), externalToolsWidget);
     externalToolsTabButton->setVisible(true);
 }
 
 void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
-    if (!checked) {
+    if (!checked || mainLayout == nullptr) {
         return;
     }
     switch (id) {
     case OVERVIEW_TAB_INDEX:
         stackedWidget->setCurrentIndex(0);
-        dashboardPageController->getAgent()->si_switchTab("overview_tab");
         break;
     case INPUT_TAB_INDEX:
-        stackedWidget->setCurrentIndex(0);
-        dashboardPageController->getAgent()->si_switchTab("input_tab");
+        stackedWidget->setCurrentIndex(1);
         break;
     case EXTERNAL_TOOLS_TAB_INDEX:
         initExternalToolsTabWidget();
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(2);
         break;
     }
 }
 
 void Dashboard::onShow() {
-    CHECK(!loadingStarted, );
-    loadDocument();
+    if (mainLayout == nullptr) {
+        initLayout(readInitialWidgetStates(dir + REPORT_SUB_DIR + DB_FILE_NAME));
+    }
 }
 
 const QPointer<const WorkflowMonitor> &Dashboard::getMonitor() const {
@@ -281,76 +289,32 @@ void Dashboard::setName(const QString &value) {
     updateDashboard();
 }
 
-QString Dashboard::getPageFilePath() const {
-    return dir + REPORT_SUB_DIR + DB_FILE_NAME;
-}
-
 void Dashboard::sl_loadSchema() {
     QString url = dir + REPORT_SUB_DIR + WorkflowMonitor::WORKFLOW_FILE_NAME;
     emit si_loadSchema(url);
-}
-
-void Dashboard::initiateHideLoadButtonHint() {
-    WorkflowSettings::setShowLoadButtonHint(false);
-    emit si_hideLoadBtnHint();
 }
 
 bool Dashboard::isWorkflowInProgress() {
     return workflowInProgress;
 }
 
-void Dashboard::sl_hideLoadBtnHint() {
-    dashboardPageController->runJavaScript("hideLoadBtnHint()");
-}
-
 void Dashboard::sl_runStateChanged(bool paused) {
-    QString script = paused ? "pauseTimer()" : "startTimer()";
-    dashboardPageController->runJavaScript(script);
-}
-
-static bool isExternalToolsButtonVisibleInHtml(const QString &html) {
-    int externalToolsStartIndex = html.indexOf("ext_tools_tab_menu");
-    if (externalToolsStartIndex < 0) {
-        return false;
+    CHECK(mainLayout != nullptr, );
+    if (paused) {
+        statusWidget->stopTimer();
+    } else {
+        statusWidget->startTimer();
     }
-    int externalToolsEndIndex = html.indexOf(">", externalToolsStartIndex);
-    if (externalToolsEndIndex < 0) {
-        return false;
-    }
-    QString tag = html.mid(externalToolsStartIndex, externalToolsEndIndex - externalToolsStartIndex);
-    return !tag.contains("display: none");
-}
-
-void Dashboard::sl_pageReady() {
-    if (getMonitor() != nullptr) {
-        connect(getMonitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
-    }
-
-    if (!WorkflowSettings::isShowLoadButtonHint()) {
-        dashboardPageController->runJavaScript("hideLoadBtnHint()");
-    }
-#ifdef UGENE_WEB_KIT
-    QString html = webView->page()->mainFrame()->toHtml();
-    if (isExternalToolsButtonVisibleInHtml(html)) {
-        externalToolsTabButton->setVisible(true);
-    }
-#else
-    webView->page()->toHtml([this](const QString &html) mutable {
-        if (isExternalToolsButtonVisibleInHtml(html)) {
-            externalToolsTabButton->setVisible(true);
-        }
-    });
-#endif
 }
 
 void Dashboard::sl_onLogChanged(Monitor::LogEntry logEntry) {
+    CHECK(mainLayout != nullptr, );
     initExternalToolsTabWidget();
     externalToolsWidget->addLogEntry(logEntry);
 }
 
-void Dashboard::sl_serialize() {
-    CHECK(dashboardPageController->isPageReady(), );
-    QCoreApplication::processEvents();
+void Dashboard::saveReportFile() {
+    CHECK(mainLayout != nullptr, );
     QString reportDir = dir + REPORT_SUB_DIR;
     QDir d(reportDir);
     if (!d.exists(reportDir)) {
@@ -359,19 +323,41 @@ void Dashboard::sl_serialize() {
     }
     saveSettings();
 
-#if UGENE_WEB_KIT
-    QString html = webView->page()->mainFrame()->toHtml();
+    QFile file(":U2Designer/html/Dashboard.html");
+    if (!file.open(QIODevice::ReadOnly)) {
+        coreLog.error(tr("Failed to open Dashboard.html"));
+        return;
+    };
+    QString html = QString::fromUtf8(file.readAll());
+
+    // Output
+    html.replace("<div class=\"tab-pane active\" id=\"overview_tab\">",
+                 "<div class=\"tab-pane active\" id=\"overview_tab\">\n" + outputFilesWidget->toHtml() + "\n");
+
+    // Notifications
+    if (notificationsWidget->isVisible()) {
+        html.replace("<div class=\"tab-pane active\" id=\"overview_tab\">",
+                     "<div class=\"tab-pane active\" id=\"overview_tab\">\n" + notificationsWidget->toHtml() + "\n");
+    }
+
+    // Status
+    html.replace("<div class=\"tab-pane active\" id=\"overview_tab\">",
+                 "<div class=\"tab-pane active\" id=\"overview_tab\">\n" + statusWidget->toHtml() + "\n");
+
+    // Statistics
+    html.replace("<div class=\"tab-pane active\" id=\"overview_tab\">",
+                 "<div class=\"tab-pane active\" id=\"overview_tab\">\n" + statisticsWidget->toHtml() + "\n");
+
+    // Input parameters
+    html.replace("<div class=\"widget-content\" id=\"parametersWidget\"></div>",
+                 "<div class=\"widget-content\" id=\"parametersWidget\">\n" + parametersWidget->toHtml() + "</div>\n");
+
+    // External tools
     if (externalToolsWidget != nullptr) {
         html.replace("<div class=\"widget-content\" id=\"externalToolsWidget\"></div>",
-                     "<div class=\"widget-content\" id=\"externalToolsWidget\">" + externalToolsWidget->toHtml() + "</div>");
+                     "<div class=\"widget-content\" id=\"externalToolsWidget\">\n" + externalToolsWidget->toHtml() + "</div>\n");
     }
-    IOAdapterUtils::writeTextFile(getPageFilePath(), html);
-#else
-//TODO: test
-//     webView->page()->toHtml([this](const QString &html) mutable {
-//        IOAdapterUtils::writeTextFile(getPageFilePath(), html);
-//    });
-#endif
+    IOAdapterUtils::writeTextFile(dir + REPORT_SUB_DIR + DB_FILE_NAME, html);
 }
 
 void Dashboard::sl_setDirectory(const QString &value) {
@@ -382,16 +368,13 @@ void Dashboard::sl_setDirectory(const QString &value) {
 
 void Dashboard::sl_workflowStateChanged(Monitor::TaskState state) {
     workflowInProgress = (state == Monitor::RUNNING) || (state == Monitor::RUNNING_WITH_PROBLEMS);
-    if (!workflowInProgress) {
-        emit si_workflowStateChanged(workflowInProgress);
-        registerDashboard();
-        AppContext::getDashboardInfoRegistry()->releaseReservedName(getDashboardId());
+    if (workflowInProgress) {
+        return;
     }
-}
-
-void Dashboard::loadDocument() {
-    loadingStarted = true;
-    dashboardPageController->loadPage(loadUrl);
+    emit si_workflowStateChanged(workflowInProgress);
+    saveReportFile();
+    registerDashboard();
+    AppContext::getDashboardInfoRegistry()->releaseReservedName(getDashboardId());
 }
 
 void Dashboard::saveSettings() {
@@ -410,9 +393,7 @@ void Dashboard::loadSettings() {
 void Dashboard::registerDashboard() const {
     DashboardInfo dashboardInfo(directory());
     dashboardInfo.name = name;
-    const bool registered = AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
-    Q_ASSERT(registered);
-    Q_UNUSED(registered);
+    AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
 }
 
 void Dashboard::updateDashboard() const {
@@ -435,11 +416,16 @@ static void trimToWrapper(QString &html) {
 }
 
 static void fixImages(QString &html) {
-    int startIdx = html.indexOf("<img src=");
-    int endIdx = html.indexOf(">", startIdx);
-    if (startIdx > 0 && endIdx > 0) {
+    int startIdx = 0;
+    while (true) {
+        startIdx = html.indexOf("<img src=", startIdx);
+        int endIdx = html.indexOf(">", startIdx);
+        if (startIdx < 0 || endIdx < 0) {
+            break;
+        }
         html.insert(endIdx, '/');
-    }
+        startIdx = endIdx;
+    };
 }
 
 static void removeExtraDiv(QString &html) {
@@ -488,7 +474,6 @@ static void removeProblemsWidgetDom(QString &htmlData) {
 
 QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htmlUrl) {
     QMap<QString, QDomElement> map;
-
     QString html = IOAdapterUtils::readTextFile(htmlUrl);
     if (html.isNull()) {
         coreLog.error(tr("Error reading dashboard file: %1").arg(htmlUrl));
@@ -499,7 +484,7 @@ QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htm
     QString error;
     QDomDocument doc = DomUtils::fromString(html, error);
     if (!error.isEmpty()) {
-        // There is an known issue with old UGENE version with illegal ProblemsWidget DOM: inner-ids were not escaped. Remove this widget and try to parse again.
+        // There is an known issue with old UGENE version (<35) with illegal ProblemsWidget DOM: inner-ids were not escaped. Remove this widget and try to parse again.
         removeProblemsWidgetDom(html);
         doc = DomUtils::fromString(html, error);
         if (!error.isEmpty()) {
@@ -508,9 +493,26 @@ QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htm
         }
     }
 
-    QDomElement rootElement = doc.documentElement();
-    QDomElement externalToolsEl = DomUtils::findElementById(rootElement, "externalToolsWidget");
+    QDomElement rootEl = doc.documentElement();
+
+    QDomElement statisticsWidgetEl = DomUtils::findElementById(rootEl, "statisticsWidget");
+    map[STATISTICS_WIDGET_STATE_KEY] = StatisticsDashboardWidget::isValidDom(statisticsWidgetEl) ? statisticsWidgetEl : QDomElement();
+
+    QDomElement notificationsWidgetEl = DomUtils::findElementById(rootEl, "problemsWidget");
+    map[NOTIFICATIONS_WIDGET_STATE_KEY] = NotificationsDashboardWidget::isValidDom(notificationsWidgetEl) ? notificationsWidgetEl : QDomElement();
+
+    QDomElement statusWidgetEl = DomUtils::findElementById(rootEl, "statusWidget");
+    map[STATUS_WIDGET_STATE_KEY] = StatusDashboardWidget::isValidDom(statusWidgetEl) ? statusWidgetEl : QDomElement();
+
+    QDomElement outputFilesWidgetEl = DomUtils::findElementById(rootEl, "outputWidget");
+    map[OUTPUT_FILES_WIDGET_STATE_KEY] = OutputFilesDashboardWidget::isValidDom(outputFilesWidgetEl) ? outputFilesWidgetEl : QDomElement();
+
+    QDomElement parametersWidgetEl = DomUtils::findElementById(rootEl, "parametersWidget");
+    map[PARAMETERS_WIDGET_STATE_KEY] = ParametersDashboardWidget::isValidDom(parametersWidgetEl) ? parametersWidgetEl : QDomElement();
+
+    QDomElement externalToolsEl = DomUtils::findElementById(rootEl, "externalToolsWidget");
     map[EXTERNAL_TOOLS_WIDGET_STATE_KEY] = ExternalToolsDashboardWidget::isValidDom(externalToolsEl) ? externalToolsEl : QDomElement();
+
     return map;
 }
 

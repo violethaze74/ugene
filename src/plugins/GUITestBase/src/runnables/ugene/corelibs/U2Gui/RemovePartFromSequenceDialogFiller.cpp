@@ -92,7 +92,7 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
         int index = formatBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
-        GTComboBox::setCurrentIndex(os, formatBox, index);
+        GTComboBox::selectItemByIndex(os, formatBox, index);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

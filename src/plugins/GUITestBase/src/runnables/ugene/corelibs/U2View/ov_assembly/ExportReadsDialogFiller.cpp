@@ -52,7 +52,7 @@ void ExportReadsDialogFiller::commonScenario() {
 
     QComboBox *formatComboBox = dialog->findChild<QComboBox *>("documentFormatComboBox");
     GT_CHECK(formatComboBox != NULL, "Format comboBox not found");
-    GTComboBox::setIndexWithText(os, formatComboBox, format);
+    GTComboBox::selectItemByText(os, formatComboBox, format);
 
     QCheckBox *addToPrj = dialog->findChild<QCheckBox *>("addToProjectCheckBox");
     GT_CHECK(addToPrj != NULL, "Add to project check box not found");

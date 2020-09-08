@@ -310,9 +310,9 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickToReferencePosition"
-void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os, const qint64 num) {
-    QPoint selectedPoint(num, 2);
+#define GT_METHOD_NAME "clickToReferencePositionCenter"
+void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &clickPointAdjustment) {
+    QPoint selectedPoint(position, 2);
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMcaEditor::getActiveMcaEditorWindow(os));
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
@@ -323,15 +323,14 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
 
     scrollToPosition(os, selectedPoint);
 
-    const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x()), 2);
-    GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
+    McaEditorWgt *mcaWidget = mcaSeqArea->getEditor()->getUI();
+    int centerX = mcaWidget->getBaseWidthController()->getBaseScreenCenter(selectedPoint.x());
+    int centerY = mcaWidget->getRowHeightController()->getSingleRowHeight() / 2;
+    QPoint clickPosition(centerX + clickPointAdjustment.x(), centerY + clickPointAdjustment.y());
+    GT_CHECK(mcaSeqArea->rect().contains(clickPosition, false), "Position is not visible");
 
-    PanView *panView = qobject_cast<PanView *>(GTWidget::findWidget(os, "mca_editor_reference_area"));
-    GT_CHECK(panView != NULL, "Pan view area is not found");
-
-    QPoint p = panView->mapToGlobal(positionCenter);
-
-    GTMouseDriver::moveTo(p);
+    QWidget *refSeqView = GTWidget::findWidget(os, "mca_editor_reference_area");
+    GTMouseDriver::moveTo(refSeqView->mapToGlobal(clickPosition));
     GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME

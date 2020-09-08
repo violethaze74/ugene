@@ -6,7 +6,7 @@ PLUGIN_VENDOR=Unipro
 CONFIG += warn_off
 include( ../../ugene_plugin_common.pri )
 
-DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE _USE_KNETFILE
+DEFINES+="_FILE_OFFSET_BITS=64" _LARGEFILE64_SOURCE
 win32 : DEFINES += _USE_MATH_DEFINES "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 
 win32 {

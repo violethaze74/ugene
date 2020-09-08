@@ -73,7 +73,7 @@ void ExportSequenceAsAlignmentFiller::commonScenario() {
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::setCurrentIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QCheckBox *checkBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectBox"));
     GTCheckBox::setChecked(os, checkBox, addToProject);

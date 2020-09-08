@@ -59,7 +59,6 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OptionsPanel.h>

@@ -309,10 +309,10 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     suite->testTimeout = testTimeout.toInt();
     suite->testTimeout = (suite->testTimeout == 0) ? -1 : suite->testTimeout;    // -1 means timeout check disabled
 
-    foreach (GTestRef *r, suiteTests) {
+    for (GTestRef *r : suiteTests) {
         r->setSuite(suite);
     }
-    foreach (GTestRef *r, excluded.keys()) {
+    for (GTestRef *r : excluded.keys()) {
         r->setSuite(suite);
     }
 
@@ -321,37 +321,31 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
 
 QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringList &errs) {
     QList<GTestSuite *> result;
-    QFile *suitListFile;
-    suitListFile = new QFile(url);
-    //QString dir = AppContext::getSettings()->getValue(SETTINGS_ROOT + "lastDir", QString()).toString();
+    QFile suitListFile(url);
     QString dir = QFileInfo(url).dir().absolutePath();
-    if (suitListFile != NULL) {
-        if (!suitListFile->open(QIODevice::ReadOnly | QIODevice::Text)) {
-            printf("%s\n", tr("Can't load suite list %1").arg(url).toLatin1().constData());
-            errs << tr("Can't open suite list %1").arg(url);
-            return result;
+    if (!suitListFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        printf("%s\n", tr("Can't load suite list %1").arg(url).toLatin1().constData());
+        errs << tr("Can't open suite list %1").arg(url);
+        return result;
+    }
+    QString suiteFileContent = suitListFile.readAll();
+    QStringList suiteNamesList = suiteFileContent.split(QRegExp("\\s+"));
+    for (auto suiteName : suiteNamesList) {
+        if (suiteName.isEmpty()) {
+            continue;
         }
-        QString suiteFileContent = suitListFile->readAll();
-        QStringList suiteNamesList = suiteFileContent.split(QRegExp("\\s+"));
-        QString suiteName;
-        foreach (suiteName, suiteNamesList) {
-            if (suiteName.isEmpty()) {
-                continue;
-            }
-            suiteName = suiteName.trimmed();
-            if (suiteName.startsWith("#")) {    //this is a comment line
-                continue;
-            }
-            QFileInfo fifs(dir + "/" + suiteName);
-            QString urlfs = fifs.absoluteFilePath();
-            QString errt;
-            GTestSuite *ts = GTestSuite::readTestSuite(urlfs, errt);
-            if (ts == NULL) {
-                assert(!errt.isEmpty());
-                errs << errt;
-            } else {
-                result << ts;
-            }
+        suiteName = suiteName.trimmed();
+        if (suiteName.startsWith("#")) {    //this is a comment line
+            continue;
+        }
+        QString absolutePath = QFileInfo(dir + "/" + suiteName).absoluteFilePath();
+        QString error;
+        GTestSuite *ts = GTestSuite::readTestSuite(absolutePath, error);
+        if (ts == nullptr) {
+            assert(!error.isEmpty());
+            errs << error;
+        } else {
+            result << ts;
         }
     }
     return result;

@@ -22,10 +22,6 @@
 #ifndef _U2_GT_UTILS_START_PAGE_
 #define _U2_GT_UTILS_START_PAGE_
 
-#include <primitives/GTWebView.h>
-
-#include <U2Designer/U2WebView.h>
-
 #include "GTGlobals.h"
 
 namespace U2 {
@@ -33,16 +29,7 @@ using namespace HI;
 
 class GTUtilsStartPage {
 public:
-    enum Buttons { OpenFile,
-                   CreateSequence,
-                   CreateWorkflow,
-                   QuickStartGuide };
     static void openStartPage(HI::GUITestOpStatus &os);
-    static U2WebView *getStartPage(HI::GUITestOpStatus &os);
-    static HIWebElement getButton(HI::GUITestOpStatus &os, Buttons button);
-    static void clickButton(HI::GUITestOpStatus &os, Buttons button);
-    static void clickResentDocument(HI::GUITestOpStatus &os, QString text);
-    static void clickResentProject(HI::GUITestOpStatus &os, QString text);
 };
 
 }    // namespace U2

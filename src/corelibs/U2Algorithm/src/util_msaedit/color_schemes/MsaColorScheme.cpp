@@ -274,32 +274,36 @@ void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
 void addUgeneAmino(QVector<QColor> &colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
+    // Note: Using direct RGB colors instead of .lighter()/.darker()
+    // Reason: lighter() & darker() produce a color that can be mapped back to the RGB space differently on different OSes (RBG space is limited).
+    // To make GUI testing stable across different OS-es we hard-code the some RBB values.
+
     //amino groups: "KRH", "GPST", "FWY", "ILM"
-    QColor krh("#FFEE00");
+    QColor krh("#ffee00");
     SET_C('K', krh);
-    SET_C('R', krh.darker(120));
-    SET_C('H', krh.lighter(120));
+    SET_C('R', "#d5c700");    // krh.darker(120)
+    SET_C('H', "#fff233");    // krh.lighter(120));
 
-    QColor gpst("#FF5082");
+    QColor gpst("#ff5082");
     SET_C('G', gpst);
-    SET_C('P', gpst.darker(120));
-    SET_C('S', gpst.lighter(120));
-    SET_C('T', gpst.lighter(150));
+    SET_C('P', "#d5426c");    // gpst.darker(120).
+    SET_C('S', "#ff83a7");    // gpst.lighter(120)
+    SET_C('T', "#ffd0dd");    // gpst.lighter(150)
 
-    QColor fwy("#3DF490");
+    QColor fwy("#3df490");
     SET_C('F', fwy);
-    SET_C('W', fwy.darker(120));
-    SET_C('Y', fwy.lighter(120));
+    SET_C('W', "#33cc78");    // fwy.darker(120)
+    SET_C('Y', "#65ffab");    // fwy.lighter(120)
 
-    QColor ilm("#00ABED");
+    QColor ilm("#00abed");
     SET_C('I', ilm);
-    SET_C('L', ilm.darker(120));
-    SET_C('M', ilm.lighter(120));
+    SET_C('L', "#008fc6");    // ilm.darker(120).
+    SET_C('M', "#1dc0ff");    // ilm.lighter(120)
 
     //fix some color overlaps:
     //e looks like q by default
-    SET_C('E', "#C0BDBB");    //gray
-    SET_C('X', "#FCFCFC");
+    SET_C('E', "#c0bdbb");    //gray
+    SET_C('X', "#fcfcfc");
 }
 
 void addUgeneNucleotide(QVector<QColor> &colorsPerChar) {

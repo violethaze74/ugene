@@ -22,7 +22,6 @@
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 
 #include "GTTestsStartPage.h"
@@ -33,7 +32,6 @@
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
 namespace U2 {

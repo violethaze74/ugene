@@ -34,7 +34,7 @@ namespace U2 {
 CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget *w, const ColumnConfig &_config)
     : QDialog(w), config(_config) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499847");
+    new HelpButton(this, buttonBox, "49447216");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

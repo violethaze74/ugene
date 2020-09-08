@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //6. Choose "Inner" annotation extraction.
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
-    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
     //7. Click "Export product(s)".
     QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
@@ -450,7 +450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
-    GTComboBox::setCurrentIndex(os, annsComboBox, 0);
+    GTComboBox::selectItemByIndex(os, annsComboBox, 0);
 
     //9. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
@@ -465,7 +465,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
-    GTComboBox::setCurrentIndex(os, annsComboBox, 2);
+    GTComboBox::selectItemByIndex(os, annsComboBox, 2);
 
     //11. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");

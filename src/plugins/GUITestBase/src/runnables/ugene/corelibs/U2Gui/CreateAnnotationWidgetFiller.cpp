@@ -75,7 +75,7 @@ void CreateAnnotationWidgetFiller::commonScenario() {
         GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog));
 
         if (!saveTo.isEmpty()) {
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog), saveTo);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog), saveTo);
         }
     }
 

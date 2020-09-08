@@ -45,6 +45,13 @@ public:
 
     static Version parseVersion(const QString &text);
 
+    /**
+     * Checks that build and runtime versions are compatible.
+     * Logs error message to stdout if versions are not compatible.
+     * Returns false if versions are not compatible or true otherwise.
+     */
+    static bool checkBuildAndRuntimeVersions();
+
     bool operator>(const Version &v) const;
     bool operator>=(const Version &v) const;
     bool operator<(const Version &v) const;

@@ -6,12 +6,12 @@
 
 Make sure the Qt (>= 5.3.2) development libraries are installed:
 
-* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev`
+* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev
 * Ubuntu 12.04:
     * Download and install Qt 5.5.1: www.qt.io/download-open-source/
     * Set the system variable: export PATH=$PATH:~/Qt5.5.1/5.5/gcc_64/bin
     * `sudo apt-get install g++ libgl1-mesa-dev libglu1-mesa-dev`
-* Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist qt5-qtwebkit-devel gcc-c++ redhat-rpm-config mesa-libGLU-devel`
+* Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist gcc-c++ redhat-rpm-config mesa-libGLU-devel`
 * Arch Linux:   `sudo pacman -S qt`
 * Mac OS X: download from Qt official site (http://www.qt.io/download/)
 * Windows: download from Qt official site (http://www.qt.io/download/)
@@ -20,14 +20,12 @@ Make sure the Qt (>= 5.3.2) development libraries are installed:
 
 To build with devenv (Visual Studio)
 
-1. `qmake -r -tp vc ugene.pro`
-   1.1. add "CONFIG+=x64" to qmake command for 64-bit build
+1. `qmake -r -tp vc ugene.pro CONFIG+=x64`
 2. open ugene.sln from Visual Studio or run `devenv.exe ugene.sln /Build` from MSVC command line
 
 To build with nmake.exe:
 
-1. `qmake -r ugene.pro`
-   1.1. add "CONFIG+=x64" to qmake command for 64-bit build
+1. `qmake -r ugene.pro CONFIG+=x64`
 2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
 
 Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit to "../ugene/src/_debug" folder

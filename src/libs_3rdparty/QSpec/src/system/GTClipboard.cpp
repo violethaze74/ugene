@@ -49,11 +49,8 @@ QString GTClipboard::text(GUITestOpStatus &os) {
             const QMimeData *mimeData = clipboard->mimeData();
             GT_CHECK(mimeData != NULL, "Clipboard MimeData is NULL");
 
-            GT_CHECK(mimeData->hasText() == true, "Clipboard doesn't contain text data");
-            QString clipboardText = mimeData->text();
-            text = clipboardText;
-            // need to clear clipboard, UGENE will crash on close otherwise because of Qt assert
-            clipboard->clear();
+            GT_CHECK(mimeData->hasText(), "Clipboard doesn't contain text data");
+            text = QString(mimeData->text()); // make a copy of clipboard text.
         }
     private:
         QString &text;

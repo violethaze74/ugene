@@ -141,7 +141,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView *table, 
 
         QComboBox *box = qobject_cast<QComboBox *>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
-        GTComboBox::setIndexWithText(os, box, fullValue);
+        GTComboBox::selectItemByText(os, box, fullValue);
 #ifdef Q_OS_WIN
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif
@@ -183,10 +183,10 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget *dialog, Q
             CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
 
             if (cbIntegratedTools->findText(settings.tool) == -1) {
-                GTComboBox::setIndexWithText(os, cbIntegratedTools, "Show all tools", false);
+                GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
                 GTKeyboardDriver::keyClick(Qt::Key_Escape);
             }
-            GTComboBox::setIndexWithText(os, cbIntegratedTools, settings.tool, false, HI::GTGlobals::UseKeyBoard);
+            GTComboBox::selectItemByText(os, cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
         }
         break;
     }
@@ -225,7 +225,6 @@ bool CreateElementWithCommandLineToolFiller::processThirdPage(QWidget *dialog, Q
 
     fillTheTable(tvAttributes, pbAdd, settings.parameters);
 
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -277,7 +276,6 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
         GTTextEdit::setText(os, tePrompter, settings.prompter);
     }
 
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
     return true;
@@ -286,7 +284,6 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
 bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget *dialog, QString &errorMessage) {
     MessageBoxDialogFiller *msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
-    //GTGlobals::sleep();
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);

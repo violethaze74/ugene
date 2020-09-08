@@ -50,7 +50,7 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor> &col
 
 int ColorSchemaDialogController::adjustAlphabetColors() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499977");
+    new HelpButton(this, buttonBox, "49447346");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
@@ -187,7 +187,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
 CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData *_newSchema, QStringList _usedNames)
     : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499977");
+    new HelpButton(this, buttonBox, "49447346");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

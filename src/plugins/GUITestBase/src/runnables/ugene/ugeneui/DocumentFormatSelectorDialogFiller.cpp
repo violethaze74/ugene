@@ -66,7 +66,7 @@ void DocumentFormatSelectorDialogFiller::commonScenario() {
         GTGlobals::sleep();
 
         QComboBox *userSelectedFormat = GTWidget::findExactWidget<QComboBox *>(os, "userSelectedFormat", dialog);
-        GTComboBox::setIndexWithText(os, userSelectedFormat, format, true, GTGlobals::UseMouse);
+        GTComboBox::selectItemByText(os, userSelectedFormat, format, GTGlobals::UseMouse);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

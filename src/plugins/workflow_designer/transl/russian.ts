@@ -977,12 +977,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateCmdlineBasedWorkerWizard</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="212"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="214"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="213"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="215"/>
         <source>You&apos;ve changed the element structure (input data, parameters, or output data).
 
 If you apply the changes, all elements of this type will be removed from the scene.You can then add a new such element to the scene by dragging it from the &quot;Custom Elements with External Tools&quot; group of the &quot;Elements&quot; palette.
@@ -993,7 +993,7 @@ Would you like to apply the changes ? </source>
 Вы действительно хотите применить изменения?</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="244"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="246"/>
         <source>Configure Element with External Tool</source>
         <translation>Создание элемента при помощи внешних инструментов</translation>
     </message>
@@ -1001,22 +1001,22 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::CreateCmdlineBasedWorkerWizardCommandPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="796"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="798"/>
         <source>Create Element</source>
         <translation>Создание элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="797"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="799"/>
         <source>You don&apos;t use listed parameters in template string. Continue?</source>
         <translation>Вы не использовали перечисленные параметры в строке. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="810"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="812"/>
         <source>Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="811"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="813"/>
         <source>Abort</source>
         <translation>Вернуться</translation>
     </message>
@@ -1024,12 +1024,12 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::CreateCmdlineBasedWorkerWizardGeneralSettingsPage</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="316"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="318"/>
         <source>UGENE can&apos;t find the tool specified in this element. Please specify another tool.</source>
         <translation>Невозможно найти инструмент, указанный в этом элементе. Укажите другой инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="370"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="372"/>
         <source>Select an executable file</source>
         <translation>Выбрать исполняемый файл</translation>
     </message>
@@ -1176,23 +1176,23 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::ExternalToolSelectComboBox</name>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="901"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="903"/>
         <source>Show customs tools only</source>
         <translation>Показать только пользовательские инструменты</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="906"/>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="954"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="908"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="956"/>
         <source>Show all tools</source>
         <translation>Показать все инструменты</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="918"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="920"/>
         <source>Supported tools</source>
         <translation>Поддерживаемые инструменты</translation>
     </message>
     <message>
-        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="949"/>
+        <location filename="../src/library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.cpp" line="951"/>
         <source>Custom tools</source>
         <translation>Пользовательские инструменты</translation>
     </message>
@@ -6217,27 +6217,27 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowTabView</name>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="47"/>
+        <location filename="../src/WorkflowTabView.cpp" line="46"/>
         <source>Close dashboard</source>
         <translation>Закрыть панель</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="170"/>
+        <location filename="../src/WorkflowTabView.cpp" line="169"/>
         <source>Rename Dashboard</source>
         <translation>Переименовать панель</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="170"/>
+        <location filename="../src/WorkflowTabView.cpp" line="169"/>
         <source>New dashboard name:</source>
         <translation>Имя новой панели:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="296"/>
+        <location filename="../src/WorkflowTabView.cpp" line="294"/>
         <source>Run</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowTabView.cpp" line="319"/>
+        <location filename="../src/WorkflowTabView.cpp" line="317"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>

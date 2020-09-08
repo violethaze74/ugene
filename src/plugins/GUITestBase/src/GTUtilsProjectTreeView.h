@@ -85,7 +85,7 @@ public:
                                         const QModelIndex &parent = QModelIndex(),
                                         int parentDepth = 0,
                                         const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndexList findIndeciesInTreeNoWait(HI::GUITestOpStatus &os,
+    static QModelIndexList findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
                                         QTreeView *treeView,
                                         const QString &itemName,
                                         const QModelIndex &parent = QModelIndex(),

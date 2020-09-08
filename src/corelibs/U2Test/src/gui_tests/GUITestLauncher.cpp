@@ -148,7 +148,7 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 517 << 565 << 485 << 518 << -1;
+        testsPerSuite << 530 << 570 << 450 << 520 << -1;
     }
     QList<HI::GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
@@ -264,7 +264,7 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
-static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
+static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, const QString &iniFilePath) {
     QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
     if (!testsDir.exists()) {
         coreLog.error("UGENE_TESTS_PATH is not set!");
@@ -279,6 +279,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
     processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
     processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
+    processEnv.insert("UGENE_USER_INI", iniFilePath);
     qint64 startTimeMicros = GTimer::currentTimeMicros();
     QProcess process;
     process.setProcessEnvironment(processEnv);
@@ -320,15 +321,15 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &te
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
 
-    QString iniFileName = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
+    QString iniFilePath = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
-        QFile::copy(iniFileTemplate, iniFileName);
+        QFile::copy(iniFileTemplate, iniFilePath);
     }
-    env.insert(U2_USER_INI, iniFileName);
+    env.insert(U2_USER_INI, iniFilePath);
 
     QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
     if (!externalScriptToRestore.isEmpty()) {
-        if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
+        if (restoreTestDirWithExternalScript(externalScriptToRestore, iniFilePath)) {
             env.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
         }
     }

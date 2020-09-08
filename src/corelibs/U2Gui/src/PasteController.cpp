@@ -125,7 +125,7 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
 PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     QStringList dirs;
-    foreach (const QUrl &url, toPasteUrls) {
+    for (const QUrl &url : toPasteUrls) {
         QString parsedUrl = parseUrl(url.toLocalFile());
         if (QFileInfo(parsedUrl).isDir()) {
             dirs << parsedUrl;
@@ -139,7 +139,7 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject
         return;
     }
     CHECK(!urls.isEmpty(), );
-    foreach (const GUrl &url, urls) {
+    for (const GUrl &url : urls) {
         DocumentProviderTask *loadDocTask = LoadDocumentTask::getCommonLoadDocTask(url);
         if (loadDocTask) {
             addSubTask(loadDocTask);

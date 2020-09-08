@@ -58,10 +58,10 @@ QWidget *ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus &os) {
 void ExportPrimersDialogFiller::setExportTarget(HI::GUITestOpStatus &os, ExportPrimersDialogFiller::ExportTarget exportTarget) {
     switch (exportTarget) {
     case LocalFile:
-        GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExport", getDialog(os)), "Local file");
+        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExport", getDialog(os)), "Local file");
         break;
     case SharedDb:
-        GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExport", getDialog(os)), "Shared database");
+        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbExport", getDialog(os)), "Shared database");
         break;
     default:
         os.setError("Unexpected export target");
@@ -71,7 +71,7 @@ void ExportPrimersDialogFiller::setExportTarget(HI::GUITestOpStatus &os, ExportP
 
 #define GT_METHOD_NAME "setFormat"
 void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus &os, const QString &format) {
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbFormat", getDialog(os)), format);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbFormat", getDialog(os)), format);
 }
 #undef GT_METHOD_NAME
 
@@ -93,7 +93,7 @@ void ExportPrimersDialogFiller::setDatabase(HI::GUITestOpStatus &os, const QStri
         GTWidget::click(os, GTWidget::findWidget(os, "tbConnect", getDialog(os)));
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
-    GTComboBox::setIndexWithText(os, cbDatabase, database);
+    GTComboBox::selectItemByText(os, cbDatabase, database);
 }
 #undef GT_METHOD_NAME
 

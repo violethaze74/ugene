@@ -4,7 +4,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 REQUIRED Core Gui Widgets Xml Svg WebKit PrintSupport)
+find_package(Qt5 REQUIRED Core Gui Widgets Xml Svg PrintSupport)
 
 add_definitions(-DBUILDING_U2VIEW_DLL)
 

@@ -73,7 +73,7 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (parentWidget == nullptr) {
             QList<QWidget *> allWidgetList;
-            foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
+            for(QWidget *parent: GTMainWindow::getMainWindowsAsWidget(os)) {
                 allWidgetList << parent->findChildren<QWidget *>(widgetName);
             }
             int nMatches = allWidgetList.count();
@@ -106,13 +106,13 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QList<QAbstractButton *> allButtonList;
         if (parentWidget == nullptr) {
-            foreach (QWidget *mainWidget, GTMainWindow::getMainWindowsAsWidget(os)) {
+            for (QWidget *mainWidget : GTMainWindow::getMainWindowsAsWidget(os)) {
                 allButtonList << mainWidget->findChildren<QAbstractButton *>();
             }
         } else {
             allButtonList << parentWidget->findChildren<QAbstractButton *>();
         }
-        foreach (QAbstractButton *button, allButtonList) {
+        for (QAbstractButton *button : allButtonList) {
             if (button->text().contains(text, Qt::CaseInsensitive)) {
                 resultButtonList << button;
             }
@@ -121,7 +121,7 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
             break;
         }
     }
-    GT_CHECK_RESULT(resultButtonList.count() <= 1, QString("There are %1 buttons with text").arg(resultButtonList.count()), nullptr);
+    GT_CHECK_RESULT(resultButtonList.count() <= 1, QString("There are %1 buttons with text '%2'").arg(resultButtonList.count()).arg(text), nullptr);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(resultButtonList.count() != 0, QString("Button with the text <%1> is not found").arg(text), nullptr);
     }
@@ -267,6 +267,27 @@ QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "hasPixelWithColor"
+bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor) {
+    QImage image = getImage(os, widget);
+    return hasPixelWithColor(os, image, expectedColor);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "hasPixelWithColorInImage"
+bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor) {
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            QColor pixelColor = image.pixel(x, y);
+            if (pixelColor == expectedColor) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "clickLabelLink"
 void GTWidget::clickLabelLink(GUITestOpStatus &os, QWidget *label, int step, int indent) {
     QRect r = label->rect();
@@ -397,6 +418,29 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
 #define GT_METHOD_NAME "checkEnabled"
 void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, QWidget const *const parent) {
     checkEnabled(os, GTWidget::findWidget(os, widgetName, parent), expectedEnabledState);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "scrollToIndex"
+void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index) {
+    GT_CHECK(itemView != nullptr, "ItemView is nullptr");
+    GT_CHECK(index.isValid(), "Model index is invalid");
+
+    // Find cell. TODO: scroll to parameter by mouse/keyboard?
+    class MainThreadActionScroll : public CustomScenario {
+    public:
+        MainThreadActionScroll(QAbstractItemView *itemView, const QModelIndex &index)
+            : CustomScenario(), itemView(itemView), index(index) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            itemView->scrollTo(index);
+        }
+        QAbstractItemView *itemView;
+        QModelIndex index;
+    };
+    GTThread::runInMainThread(os, new MainThreadActionScroll(itemView, index));
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

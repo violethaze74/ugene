@@ -126,7 +126,7 @@ void NcbiSearchDialogFiller::setField(const QVariant &actionData) {
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
     QWidget *blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(value.first), dialog);
     GT_CHECK(NULL != blockWidget, "Block widget is NULL");
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "term_box", blockWidget), value.second);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "term_box", blockWidget), value.second);
 }
 #undef GT_METHOD_NAME
 
@@ -163,7 +163,7 @@ void NcbiSearchDialogFiller::removeTerm(const QVariant &actionData) {
 void NcbiSearchDialogFiller::setDatabase(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the database name from the action data");
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "databaseBox", dialog), actionData.toString());
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "databaseBox", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 
@@ -328,7 +328,7 @@ void NCBISearchDialogFillerDeprecated::commonScenario() {
 
     if (term != "") {
         QComboBox *term_box = GTWidget::findExactWidget<QComboBox *>(os, "term_box", dialog);
-        GTComboBox::setIndexWithText(os, term_box, term);
+        GTComboBox::selectItemByText(os, term_box, term);
     }
     if (resultLimit != -1) {
         QSpinBox *resultLimitBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "resultLimitBox", dialog));

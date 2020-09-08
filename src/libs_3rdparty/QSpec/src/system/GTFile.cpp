@@ -226,13 +226,10 @@ bool GTFile::equals(GUITestOpStatus &os, const QString &path1) {
 #undef GT_METHOD_NAME
 #define GT_METHOD_NAME "getSize"
 qint64 GTFile::getSize(GUITestOpStatus &os, const QString &path){
-    QFile f(path);
-    bool ok = f.open(QIODevice::ReadOnly);
-    GT_CHECK_RESULT(ok, "file " + path + "not found",-1);
-
-    int size = f.size();
-    f.close();
-    return size;
+    QFile file(path);
+    bool ok = file.open(QIODevice::ReadOnly);
+    GT_CHECK_RESULT(ok, "file '" + path + "' is not found", -1);
+    return file.size();
 }
 #undef GT_METHOD_NAME
 

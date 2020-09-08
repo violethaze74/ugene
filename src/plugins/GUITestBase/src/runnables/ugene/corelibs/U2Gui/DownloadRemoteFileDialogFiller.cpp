@@ -117,7 +117,7 @@ void DownloadRemoteFileDialogFiller::setResourceIds(const QVariant &actionData) 
 void DownloadRemoteFileDialogFiller::setDatabase(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get database name from the action data");
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "databasesBox", dialog), actionData.toString());
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "databasesBox", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 
@@ -145,7 +145,7 @@ void DownloadRemoteFileDialogFiller::setOutputFormat(const QVariant &actionData)
     QComboBox *formatBox = GTWidget::findExactWidget<QComboBox *>(os, "formatBox", dialog);
     GT_CHECK(NULL != formatBox, "Format combobox was not found");
     GT_CHECK(formatBox->isVisible(), "Format combobox is invisible");
-    GTComboBox::setIndexWithText(os, formatBox, actionData.toString());
+    GTComboBox::selectItemByText(os, formatBox, actionData.toString());
 }
 #undef GT_METHOD_NAME
 
@@ -252,13 +252,13 @@ void RemoteDBDialogFillerDeprecated::commonScenario() {
     }
 
     QComboBox *databasesBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "databasesBox", dialog));
-    GTComboBox::setCurrentIndex(os, databasesBox, DBItemNum, true, useMethod);
+    GTComboBox::selectItemByIndex(os, databasesBox, DBItemNum, useMethod);
 
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "chbForceDownloadSequence", dialog), forceGetSequence);
 
     if (outFormatVal != -1) {
         QComboBox *formatBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatBox"));
-        GTComboBox::setCurrentIndex(os, formatBox, outFormatVal, true, useMethod);
+        GTComboBox::selectItemByIndex(os, formatBox, outFormatVal, useMethod);
     }
     if (!addToProject) {
         QCheckBox *addToProjectButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("chbAddToProjectCheck"));

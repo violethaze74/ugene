@@ -19,9 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <primitives/GTWebView.h>
-#include <primitives/GTWidget.h>
-
 #include "GTUtilsMdi.h"
 #include "GTUtilsStartPage.h"
 
@@ -30,43 +27,6 @@ namespace U2 {
 
 void GTUtilsStartPage::openStartPage(HI::GUITestOpStatus &os) {
     GTUtilsMdi::activateWindow(os, "Start Page");
-}
-
-U2WebView *GTUtilsStartPage::getStartPage(HI::GUITestOpStatus &os) {
-    QWidget *startPageWidget = GTWidget::findWidget(os, "Start Page");
-    return GTWidget::findExactWidget<U2WebView *>(os, "webView", startPageWidget);
-}
-
-#define GT_METHOD_NAME "getButton"
-HIWebElement GTUtilsStartPage::getButton(HI::GUITestOpStatus &os, Buttons button) {
-    switch (button) {
-    case OpenFile:
-        return GTWebView::findElement(os, getStartPage(os), "Open File(s)", "DIV");
-    case CreateSequence:
-        return GTWebView::findElement(os, getStartPage(os), "Create Sequence", "DIV");
-    case CreateWorkflow:
-        return GTWebView::findElement(os, getStartPage(os), "Run or Create Workflow", "DIV");
-    case QuickStartGuide:
-        // You do not need this button
-        GT_CHECK_RESULT(false, "Not implemented", HIWebElement());
-    default:
-        GT_CHECK_RESULT(false, "Not implemented", HIWebElement());
-    }
-}
-#undef GT_METHOD_NAME
-
-void GTUtilsStartPage::clickButton(HI::GUITestOpStatus &os, Buttons b) {
-    HIWebElement but = getButton(os, b);
-    GTWebView::click(os, getStartPage(os), but);
-}
-
-void GTUtilsStartPage::clickResentDocument(HI::GUITestOpStatus &os, QString text) {
-    HIWebElement el = GTWebView::findElement(os, getStartPage(os), "- " + text, "A");
-    GTWebView::click(os, getStartPage(os), el);
-}
-
-void GTUtilsStartPage::clickResentProject(HI::GUITestOpStatus &os, QString text) {
-    clickResentDocument(os, text);
 }
 
 #undef GT_CLASS_NAME

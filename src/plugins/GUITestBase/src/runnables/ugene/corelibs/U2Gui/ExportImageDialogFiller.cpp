@@ -65,7 +65,7 @@ void ExportImage::commonScenario() {
 
     if (comboValue != "") {
         QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::setIndexWithText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, formatsBox, comboValue);
     }
 
     if (spinValue) {
@@ -89,7 +89,7 @@ void CircularViewExportImage::commonScenario() {
 
     if (comboValue != "") {
         QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::setIndexWithText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, formatsBox, comboValue);
     }
 
     if (spinValue) {
@@ -99,7 +99,7 @@ void CircularViewExportImage::commonScenario() {
 
     if (!exportedSequenceName.isEmpty()) {
         QComboBox *seqsCombo = dialog->findChild<QComboBox *>("Exported_sequence_combo");
-        GTComboBox::setIndexWithText(os, seqsCombo, exportedSequenceName);
+        GTComboBox::selectItemByText(os, seqsCombo, exportedSequenceName);
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
@@ -124,7 +124,7 @@ void ExportMsaImage::commonScenario() {
             GTUtilsDialog::waitForDialog(os, new SelectSubalignmentFiller(os, region));
         }
         QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-        GTComboBox::setIndexWithText(os, exportType, "Custom region");
+        GTComboBox::selectItemByText(os, exportType, "Custom region");
     }
 
     QCheckBox *namesCB = dialog->findChild<QCheckBox *>("exportSeqNames");
@@ -141,7 +141,7 @@ void ExportMsaImage::commonScenario() {
 
     if (comboValue != "") {
         QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::setIndexWithText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, formatsBox, comboValue);
     }
 
     if (spinValue) {
@@ -195,7 +195,7 @@ void ExportSequenceImage::commonScenario() {
 
     if (comboValue != "") {
         QComboBox *formatsBox = dialog->findChild<QComboBox *>("formatsBox");
-        GTComboBox::setIndexWithText(os, formatsBox, comboValue);
+        GTComboBox::selectItemByText(os, formatsBox, comboValue);
     }
 
     if (spinValue) {
@@ -276,7 +276,7 @@ void ImageExportFormFiller::commonScenario() {
 
     QComboBox *formatsBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatsBox", dialog));
     GT_CHECK(formatsBox, "formatsBox is NULL");
-    GTComboBox::setIndexWithText(os, formatsBox, parameters.format);
+    GTComboBox::selectItemByText(os, formatsBox, parameters.format);
 
     QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
     GT_CHECK(box != NULL, "buttonBox is NULL");

@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMenu::showContextMenu(os, seq);
 
     //    Expected state: background for symbols must be:
-    //    A - yellow    G - blue    T - red    C - green    gap - no backround
+    //    A - yellow    G - blue    T - red    C - green    gap - no background
     //check A
     checkColor(os, QPoint(0, 1), "#fdff6a", 5);
 
@@ -81,7 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     checkColor(os, QPoint(2, 2), "#2aa1e1", 5, 3);
 
     //check T
-    checkColor(os, QPoint(0, 2), "#ff7195", 5);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#FF99B1");
 
     //check C
     checkColor(os, QPoint(4, 0), "#49f949");
@@ -126,12 +126,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                                         << "Jalview"));
     GTMenu::showContextMenu(os, seq);
     //Expected state: background for symbols must be:
-    //A - green G - red T - blue  C - orange gap - no backround
+    //A - green G - red T - blue  C - orange gap - no background
     //check A
     checkColor(os, QPoint(0, 1), "#48f718", 5);
 
     //check G
-    checkColor(os, QPoint(2, 2), "#eb1a17", 5, 3);
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#EB413C");
 
     //check T
     checkColor(os, QPoint(0, 2), "#1674ee", 5);

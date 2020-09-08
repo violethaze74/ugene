@@ -38,6 +38,7 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
@@ -87,7 +88,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
-#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -350,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
+    GTWidget::findLabelByText(os, "There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
@@ -383,7 +383,6 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemorySetter(256)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
-    GTGlobals::sleep(100);
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
@@ -400,7 +399,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWebView::findElement(os, GTUtilsDashboard::getDashboardWebView(os), "There is not enough memory to complete the SnpEff execution.");
+    GTWidget::findLabelByText(os, "There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5029) {
@@ -422,7 +421,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
     GTGlobals::sleep(200);
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     //3. Add an additional sequence from file : "test/_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
@@ -481,8 +480,7 @@ GUI_TEST_CLASS_DEFINITION(test_5069) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const bool areThereProblems = GTUtilsDashboard::areThereNotifications(os);
-    CHECK_SET_ERR(!areThereProblems, "Workflow has finished with problems");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Workflow has finished with problems");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5082) {
@@ -670,7 +668,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -875,14 +873,14 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
             //2.1 Choose Classic algorithm
             QComboBox *comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
             const int swRealizationIndex = comboRealization->findText("Classic 2");
-            GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
+            GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
             //3. Open tab "Input and output"
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1017,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     //2. Find next restriction sites "AaaI" and "AagI"
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI"
                                                                                    << "AagI"));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsNotifications::waitForNotification(os, false);
@@ -1338,7 +1336,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "HinfI"));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
@@ -1394,19 +1392,13 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     //Expected state: assembly opened successfully
 
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
 
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(os, ob);
-
     ob->openFileDialog();
-    GTThread::waitForMainThread();
-    GTGlobals::sleep(100);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -1650,7 +1642,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
 
             //    4. Select "CSV" format.
             //    Expected state: a "CSV" format is selected, the "Add to project" checkbox is disabled.
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), "CSV");
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(!addToProjectCheck->isEnabled(), "addToProjectCheck is unexpectedly enabled");
 
@@ -1701,7 +1693,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
             //    Expected state: the "Add to project" checkbox becomes disabled only for CSV format.
             const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog));
             foreach (const QString &format, formats) {
-                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
+                GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "formatsBox", dialog), format);
                 CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
                 CHECK_SET_ERR(addToProjectCheck->isEnabled() != (format == "CSV"), QString("addToProjectCheck is unexpectedly enabled for format '%1'").arg(format));
             }
@@ -1941,7 +1933,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_1) {
     GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
 
     //5. Set combo box value "Hamming dissimilarity"
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox"), "Hamming dissimilarity");
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox"), "Hamming dissimilarity");
 
     //6. Set radio button value "Percents"
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsButton"));
@@ -1973,7 +1965,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "dialog not found");
             //4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
             //5. Set radio button value "Percents"
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsRB", dialog));
             //6. Click check box "Exclude gaps"
@@ -2024,7 +2016,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "dialog not found");
             //4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algoCombo", dialog), "Hamming dissimilarity");
             //5. Set radio button value "Percents"
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "percentsRB", dialog));
             //6. Click check box "Exclude gaps"
@@ -2142,11 +2134,11 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select reference pos 15
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 15);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 15);
 
     //6. Press reference pos 35 with shift modifier
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 35);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 35);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep();
 
@@ -2222,7 +2214,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
     //5. Push "Show/Hide Chromatograms" button in the main menu
     bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B70");
     if (isChromatogramShown) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
     }
 
     //6. Select read "SZYD_Cas9_CR51"
@@ -2304,7 +2296,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //5. Select reference pos 15
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 15);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 15);
 
     //6. Press right 5 times with shift modifier
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -2387,7 +2379,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
     //5. Push "Show/Hide Chromatograms" button in the main menu
     bool isChromatogramShown = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_5B70");
     if (isChromatogramShown) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
     }
 
     //6. Select read "SZYD_Cas9_CR51"
@@ -2717,7 +2709,7 @@ GUI_TEST_CLASS_DEFINITION(test_5681) {
 GUI_TEST_CLASS_DEFINITION(test_5696) {
     //1. Open "COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //3. Select region with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 1), QPoint(43, 3));
@@ -2730,12 +2722,13 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 
-    QString sequence = "фыва...";
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(sequence);
+    // TODO: can't use Russian text today: PasteController uses UTF-8 to save the text, but TextFormat uses local8Bit to read it and fails.
+    // This makes 2 concurrent popups to appear.
+    // GTClipboard::setText(os, "фыва...");
+    GTClipboard::setText(os, "#$%^&*(");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);    // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
-    GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
 
+    GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 }
 
@@ -3102,22 +3095,19 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
         void run(HI::GUITestOpStatus &os) {
             //Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            CHECK_SET_ERR(quality == 30, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
             //Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            bool isAddToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
+            CHECK_SET_ERR(isAddToProject, QString("incorrect addToProject state: expected true, got false"));
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            CHECK_SET_ERR(!output.isEmpty(), "Incorrect output line: is empty");
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -3125,7 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             bool checkContainsThird = output.contains("UGENE_Data");
             bool checkContainsFourth = output.contains("Documents");
             bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(checkContains, "Incorrect output line: do not contain default path");
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
@@ -3133,14 +3123,11 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
             for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
                 QString num = QString::number(i);
                 if (num.size() == 1) {
                     num = "0" + QString::number(i);
                 }
-                name += num;
-                name += ".ab1";
-                reads << name;
+                reads << ("sanger_" + num + ".ab1");
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3159,21 +3146,20 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Sanger data analysis"
                                                 << "Map reads to reference...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    //5. Click to the position 6316 at the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 6372);
+    //5. Click to the position 6372 at the reference sequence (first half of the char).
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 6372, QPoint(-2, 0));
 
     //6. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    const int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
-    QPoint destPos(newXPos, currentPos.y());
-    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, destPos);
+    int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
+    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(newXPos, currentPos.y()));
+    GTThread::waitForMainThread();
 
     //Expected: selected length = 4
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
-    int sel = reg.length;
-    CHECK_SET_ERR(sel == 4, QString("Unexpected selection length, expectedL 4, current: %1").arg(QString::number(sel)));
+    CHECK_SET_ERR(reg.length == 4, QString("Unexpected selection length, expected: 4, got: %1").arg(reg.length));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5747) {
@@ -3658,7 +3644,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
     GTGlobals::sleep(1000);
 
     //8. Hide chromatograms
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //9. Change the state of the last row
     bool isShownFirstState = GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, "SZYD_Cas9_CR66");
@@ -4073,7 +4059,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_1) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //    4. Open "Branch Support" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
@@ -4121,7 +4107,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_2) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             GTWidget::checkEnabled(os, "tranSpinBox", false, dialog);
 
@@ -4167,7 +4153,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //    4. Open "Branch Support" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
@@ -4182,7 +4168,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
             GTRadioButton::click(os, "fastMethodCheckbox", dialog);
 
             //    8. Set "Use fast likelihood-based method" combobox value to "Chi2-based".
-            GTComboBox::setIndexWithText(os, "fastMethodCombo", dialog, "Chi2-based");
+            GTComboBox::selectItemByText(os, "fastMethodCombo", dialog, "Chi2-based");
 
             //    9. Set other necessary values and accept the dialog.
             GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "test_5786_3.nwk", dialog);
@@ -4550,6 +4536,26 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
     CHECK_SET_ERR(!isExited, "The document has not been deleted")
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5842) {
+    //1. Open "_common_data/sanger/aligment.ugenedb".
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Unload document.
+    GTUtilsDocument::unloadDocument(os, "alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer l;
+    //3. Open the view from the context menu.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
+                                                                        << "action_open_view"));
+    GTUtilsProjectTreeView::click(os, "alignment.ugenedb", Qt::RightButton);
+
+    //Expected state: the view is opened without errors.
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5847) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
@@ -4906,7 +4912,7 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
             //GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
             GTLineEdit::setText(os, endLineEdit, "50");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);

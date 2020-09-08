@@ -39,7 +39,6 @@
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -118,7 +117,6 @@
 #include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
@@ -862,7 +860,7 @@ GUI_TEST_CLASS_DEFINITION(test_1047) {
     //    2. Choose a color scheme in options panel of assembly browser. Try zooming with mouse wheel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     QComboBox *colorBox = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
-    GTComboBox::setIndexWithText(os, colorBox, "Strand direction");
+    GTComboBox::selectItemByText(os, colorBox, "Strand direction");
     //    Bug state: Zoom and color scheme changing simultaneously.
     QWidget *assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPoint p = assembly_reads_area->mapToGlobal(assembly_reads_area->rect().center());
@@ -888,7 +886,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *act = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "readHintEnabledAction");
+    QWidget *act = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "readHintEnabledAction");
     GTWidget::click(os, act);
 
     QWidget *w2 = GTUtilsMdi::activeWindow(os);
@@ -926,7 +924,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
     //    Expected state: some sequences are collapsed into two groups.
 
     //    3. Click {Statistics->Generate distance matrix} in the context menu.
@@ -1066,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             CHECK_SET_ERR(NULL != dialog, "Unable to find active dialog");
 
             QComboBox *typeBox = GTWidget::findExactWidget<QComboBox *>(os, "typeBox", dialog);
-            GTComboBox::setIndexWithText(os, typeBox, "Qualifier text value markers");
+            GTComboBox::selectItemByText(os, typeBox, "Qualifier text value markers");
 
             QLineEdit *addParamEdit = GTWidget::findExactWidget<QLineEdit *>(os, "addParamEdit", dialog);
             GTLineEdit::setText(os, addParamEdit, "protein_id");
@@ -2211,7 +2209,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189) {
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     QComboBox *regBox = (QComboBox *)GTWidget::findWidget(os, "boxRegion");
-    GTComboBox::setCurrentIndex(os, regBox, 2);
+    GTComboBox::selectItemByIndex(os, regBox, 2);
 
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
@@ -2247,7 +2245,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     QComboBox *regBox = (QComboBox *)GTWidget::findWidget(os, "boxRegion");
-    GTComboBox::setCurrentIndex(os, regBox, 2);
+    GTComboBox::selectItemByIndex(os, regBox, 2);
 
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
@@ -2353,7 +2351,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
 
             //    3) Set "Search the search type" to "blastn"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastn");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastn");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             QLineEdit *entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
@@ -2362,7 +2360,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             //    4) Set "Search the search type" to "blastp"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 0);
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastp");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "blastp");
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 1);
             entrezQueryEdit = GTWidget::findExactWidget<QLineEdit *>(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(NULL != entrezQueryEdit, "entrezQueryEdit is NULL");
@@ -2371,7 +2369,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             //    5) Set "Search the search type" to "cdd"
             //    Expected state: "Advanced options" tab is disabled
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog), 0);
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "cdd");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "dataBase", dialog), "cdd");
             QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "optionsTab", dialog);
             CHECK_SET_ERR(NULL != tabWidget, "tabWidget is NULL");
             CHECK_SET_ERR(!tabWidget->isTabEnabled(1), "'Advanced options' tab is unexpectedly enabled");
@@ -2500,7 +2498,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
 
             //    5. Check that "pattern sequence name" is "PN", where "N" is number of SW search launch.
             GTLineEdit::checkText(os, GTWidget::findExactWidget<QLineEdit *>(os, "patternSequenceName", dialog), "P1");
@@ -2691,9 +2689,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
             int index = comboBox->findText("FASTA");
 
             CHECK_SET_ERR(index != -1, QString("item \"FASTA\" in combobox not found"));
-            if (comboBox->currentIndex() != index) {
-                GTComboBox::setCurrentIndex(os, comboBox, index);
-            }
+            GTComboBox::selectItemByIndex(os, comboBox, index);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_1245", GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseButton"));
@@ -2751,9 +2747,7 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
             int index = comboBox->findText("SAM");
 
             CHECK_SET_ERR(index != -1, QString("item \"SAM\" in combobox not found"));
-            if (comboBox->currentIndex() != index) {
-                GTComboBox::setCurrentIndex(os, comboBox, index);
-            }
+            GTComboBox::selectItemByIndex(os, comboBox, index);
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
@@ -3209,7 +3203,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
+            GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
             QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1295.nwk");
@@ -3472,7 +3466,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
-            GTComboBox::setIndexWithText(os, algorithmBox, "PHYLIP Neighbor Joining");
+            GTComboBox::selectItemByText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -4106,10 +4100,10 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
 
     QComboBox *highlightingBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "READS_HIGHLIGHTNING_COMBO"));
     CHECK_SET_ERR(highlightingBox != NULL, "READS_HIGHLIGHTNING_COMBO not found");
-    GTComboBox::setIndexWithText(os, highlightingBox, "Nucleotide");
+    GTComboBox::selectItemByText(os, highlightingBox, "Nucleotide");
     CHECK_SET_ERR(hint->text().isEmpty(), "Hint is not empty, but must be");
 
-    GTComboBox::setIndexWithText(os, highlightingBox, "Difference");
+    GTComboBox::selectItemByText(os, highlightingBox, "Difference");
     CHECK_SET_ERR(!hint->text().isEmpty(), "Hint is empty, but must not be");
 }
 
@@ -4450,7 +4444,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "Bowtie") {
-                    GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+                    GTComboBox::selectItemByIndex(os, methodNamesBox, i);
                 }
             }
 
@@ -4540,7 +4534,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
+    GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
     GTKeyboardDriver::keySequence("> header");
@@ -4576,7 +4570,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
 
     QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
+    GTComboBox::selectItemByText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
     GTKeyboardDriver::keySequence("ATTCACCAAAGTTGAA");
@@ -4926,7 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
         void run(HI::GUITestOpStatus &os) {
             QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", QApplication::activeModalWidget());
             CHECK_SET_ERR(NULL != comboMatrix, "Matrix combobox is NULL");
-            GTComboBox::setIndexWithText(os, comboMatrix, "rna");
+            GTComboBox::selectItemByText(os, comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
@@ -4980,7 +4974,7 @@ GUI_TEST_CLASS_DEFINITION(test_1483) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Press tool button "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //    3. Start selection in sequences name list and then go for the lower boundary of the list
     //    Expected state: Ugene doesn't crashes
@@ -5078,7 +5072,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
-            GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
+            GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
             QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1499.nwk");
@@ -5148,7 +5142,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506) {
     //    Expected: the tree appears synchronized with the MSA Editor. Clustering blue line is shown.
     //    5) Click the "Layout" button on the Tree View toolbar and choose the circular or unrooted layout.
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     //    6) Zoom in the tree using mouse scroll.
     GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
     for (int i = 0; i < 10; i++) {
@@ -5505,7 +5499,7 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
     //    Expected state: a tree view synchronized with msa appears.
     QDir().mkpath(sandBoxDir + "test_1554");
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_1554/COI.nwk", 0, 0, true));
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Build Tree"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    4. Call a context menu of the tree view by the right mouse button clicking.
@@ -5640,7 +5634,7 @@ GUI_TEST_CLASS_DEFINITION(test_1574) {
 
     //    2. Turn on the collapsing mode with the "Switch on/off collapsing" button on the toolbar.
     //    Expected state: there are two collapsed groups.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //    3. Try to select some area in the Sequence area (selection start point must be in the white space under sequences).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 15), QPoint(2, 0), GTGlobals::UseMouse);
@@ -5673,7 +5667,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     //    3. Open any group and try to edit any sequence:
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
@@ -5777,7 +5771,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Enable collapsing mode.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // 3. Select a sequence area including collapsed rows, sequences above and below them.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 9), QPoint(10, 12));
@@ -6282,9 +6276,9 @@ GUI_TEST_CLASS_DEFINITION(test_1616) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(0, 17));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1622) {
@@ -6708,7 +6702,7 @@ GUI_TEST_CLASS_DEFINITION(test_1662) {
     GTUtilsDashboard::getExternalToolNode(os, "actor_tophat_run_2_tool_TopHat_run_1");
 
     int topHatRunCount = GTUtilsDashboard::getExternalToolNodesByText(os, nullptr, "TopHat run").size();
-    CHECK_SET_ERR(topHatRunCount == 2,  "Unexpected topHatRuns count. Expected 2, got: " + QString::number(topHatRunCount));
+    CHECK_SET_ERR(topHatRunCount == 2, "Unexpected topHatRuns count. Expected 2, got: " + QString::number(topHatRunCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1664) {
@@ -6786,7 +6780,7 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     QCheckBox *showDistancesColumnCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showDistancesColumnCheck"));
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     QComboBox *algoCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algoComboBox"));
-    GTComboBox::setIndexWithText(os, algoCombo, "Similarity");
+    GTComboBox::selectItemByText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
     CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
 }
@@ -7758,8 +7752,8 @@ GUI_TEST_CLASS_DEFINITION(test_1738) {
     GTWidget::click(os, GTAction::button(os, "Stop workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
-    GTGlobals::sleep(500);
+    QLabel *timeLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
+    CHECK_SET_ERR(timeLabel->text().contains("00:00:0"), "Workflow is not stopped. Execution time is > 10 seconds");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1751) {
@@ -7862,7 +7856,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
             QLineEdit *line = dialog->findChild<QLineEdit *>();
             //    6. Change name and press "Ok" button
             GTLineEdit::setText(os, line, "new_name");
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Ok"));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Ok", dialog));
         }
     };
     //    Expected state: Showed popup menu with action "Rename"
@@ -7872,7 +7866,6 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
     //    Expected state: Workflow dasboard tab renamed.
     QString newName = GTTabWidget::getTabName(os, tabView, tabView->currentIndex());
     CHECK_SET_ERR(newName == "new_name", "unexpected tab name: " + newName);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1764) {
@@ -7890,26 +7883,27 @@ GUI_TEST_CLASS_DEFINITION(test_1764) {
     //    4) Run workflow, click on dashboard "readed_fasta.fa"
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    HIWebElement button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep();
-    //GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
+    QWidget *button = GTWidget::findButtonByText(os, "readed_fasta.fa", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
     //    Expected state: "readed_fasta.fa" is opened in UGENE
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     //    5) Click "Return to workflow", repeat step 4
     GTUtilsMdi::activateWindow(os, "Workflow Designer - New workflow");
     GTWidget::click(os, GTWidget::findButtonByText(os, "To Workflow Designer"));
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    button = GTUtilsDashboard::findWebElement(os, "readed_fasta.fa", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep();
+    button = GTWidget::findButtonByText(os, "readed_fasta.fa", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     //    Expected state: opened fasta files have different file path in tooltips
+
     QList<QModelIndex> docs = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, "readed_fasta.fa");
     CHECK_SET_ERR(docs.size() == 2, QString("unexpected documents number: %1").arg(docs.size()));
     QString toolTip0 = docs[0].data(Qt::ToolTipRole).toString();
     QString toolTip1 = docs[1].data(Qt::ToolTipRole).toString();
 
-    CHECK_SET_ERR(toolTip0 != toolTip1, "tooltips are equal");
+    CHECK_SET_ERR(toolTip0 != toolTip1, "tooltips are equal, first: " + toolTip0 + ", second: " + toolTip1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1771) {
@@ -8069,7 +8063,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     //3. Change the value of the scale spinbox. E.g. set it to 75%
     QComboBox *scaleCombo = dynamic_cast<QComboBox *>(GTWidget::findWidget(os, "wdScaleCombo"));
     CHECK_SET_ERR(NULL != scaleCombo, "Unable to find scale combobox!");
-    GTComboBox::setIndexWithText(os, scaleCombo, "75%");
+    GTComboBox::selectItemByText(os, scaleCombo, "75%");
 
     //4. Store the scheme to some file using "Save scheme as" button
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, workflowOutputDir.absolutePath() + "/" + "test.uwl", "Scheme"));
@@ -8151,9 +8145,9 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    HIWebElement button = GTUtilsDashboard::findWebElement(os, "COI.aln.meg", "BUTTON");
-    GTUtilsDashboard::click(os, button);
-    GTGlobals::sleep(1000);
+    QWidget *button = GTWidget::findButtonByText(os, "COI.aln.meg", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "COI.aln.meg");
 
     //Expected state: Scheme ran successfully, the "COI.aln.mega" output file has appeared on the "Output Files" panel of the dashboard.

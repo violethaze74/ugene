@@ -500,9 +500,7 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar *tb) {
     tb->addAction(clipb->getCopyTranslationAction());
     tb->addAction(clipb->getCopyComplementTranslationAction());
     tb->addAction(clipb->getCopyAnnotationSequenceAction());
-    tb->addAction(clipb->getCopyComplementAnnotationSequenceAction());
     tb->addAction(clipb->getCopyAnnotationSequenceTranslationAction());
-    tb->addAction(clipb->getCopyComplementAnnotationSequenceTranslationAction());
     tb->addAction(clipb->getCopyQualifierAction());
     tb->addAction(clipb->getPasteSequenceAction());
     tb->addSeparator();

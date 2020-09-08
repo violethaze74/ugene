@@ -90,7 +90,7 @@ QDomElement DomUtils::findChildElementByClass(const QDomNode &node, const QStrin
         return QDomElement();
     }
     QList<QDomElement> list;
-    findChildElementsByClass(node, className, list, maxDepth - 1);
+    findChildElementsByClass(node, className, list, maxDepth);
     return list.size() > 0 ? list.first() : QDomElement();
 }
 

@@ -35,7 +35,7 @@ namespace U2 {
 StartupDialog::StartupDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500220");
+    new HelpButton(this, buttonBox, "49447591");
 
     label->setStyleSheet(Theme::infoHintStyleSheet());
 

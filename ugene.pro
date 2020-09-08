@@ -118,7 +118,7 @@ for( i, UGENE_TRANSL_IDX ) {
         for( targetDir, UGENE_TRANSL_QM_TARGET_DIR ) {
             targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_en.qm' etc.
             targetQmFile = $$join( targetQmFile, , , .qm )              # special workaround for adding suffix started with '.'
-            message( Generating traslations for language: $$curTranslTag )
+            message( Generating translations: $$curTranslTag )
             system( $$UGENE_LRELEASE $$UGENE_TRANSLATIONS -qm $$targetQmFile > $$UGENE_DEV_NULL )
         }
     } else {

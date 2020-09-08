@@ -52,7 +52,7 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     }
     if (formatVal >= 0) {
         QComboBox *formatCombo = dialog->findChild<QComboBox *>("formatCombo");
-        GTComboBox::setCurrentIndex(os, formatCombo, formatVal);
+        GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

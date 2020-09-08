@@ -133,7 +133,7 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
         GTGlobals::sleep(300);
         QComboBox *formatCombo = dialog->findChild<QComboBox *>("formatCombo");
         GT_CHECK(formatCombo != NULL, "formatCombo is null");
-        GTComboBox::setIndexWithText(os, formatCombo, format);
+        GTComboBox::selectItemByText(os, formatCombo, format);
     }
 
     QTableWidget *table = dialog->findChild<QTableWidget *>("sequencesTableWidget");

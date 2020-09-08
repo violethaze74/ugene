@@ -97,7 +97,7 @@ void BuildTreeDialogFiller::commonScenario() {
     }
 
     if (0 != model) {
-        GTComboBox::setCurrentIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "cbModel", dialog), model);
+        GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "cbModel", dialog), model);
     }
 
     if (0 != alpha) {
@@ -112,7 +112,7 @@ void BuildTreeDialogFiller::commonScenario() {
         GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "chbEnableBootstrapping"), true);
         GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "sbReplicatesNumber"), replicates, GTGlobals::UseKeyBoard);
         GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "sbSeed"), seed, GTGlobals::UseKeyBoard);
-        GTComboBox::setCurrentIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "cbConsensusType"), type);
+        GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "cbConsensusType"), type);
         if (type == M1) {
             GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox *>(os, "sbFraction"), fraction, GTGlobals::UseKeyBoard);
         }
@@ -142,7 +142,7 @@ void BuildTreeDialogFillerPhyML::commonScenario() {
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog), "PhyML Maximum Likelihood");
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog), "PhyML Maximum Likelihood");
 
     if (freqOptimRadioPressed) {
         GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "freqOptimRadio", dialog));

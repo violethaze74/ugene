@@ -22,13 +22,10 @@
 #ifndef _U2_GT_UTILS_DASHBOARD_H_
 #define _U2_GT_UTILS_DASHBOARD_H_
 
-#include <primitives/GTWebView.h>
-
 #include <QToolButton>
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/ExternalToolsDashboardWidget.h>
-#include <U2Designer/U2WebView.h>
 
 #include "GTGlobals.h"
 
@@ -41,9 +38,6 @@ public:
     enum Tabs { Overview,
                 Input,
                 ExternalTools };
-
-    /** Returns active dashboard's WebView or nullptr if not found. */
-    static WebView *getDashboardWebView(HI::GUITestOpStatus &os);
 
     /** Returns active dashboard or nullptr if not found. */
     static Dashboard *findDashboard(HI::GUITestOpStatus &os);
@@ -58,17 +52,17 @@ public:
 
     static const QString getDashboardName(HI::GUITestOpStatus &os, int dashboardNumber);
 
+    static QStringList getInputFiles(HI::GUITestOpStatus &os);
+
     static QStringList getOutputFiles(HI::GUITestOpStatus &os);
+
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
-    static HI::HIWebElement findWebElement(HI::GUITestOpStatus &os, QString text, QString tag = "*", bool exactMatch = false);
-    static HI::HIWebElement findWebContextMenuElement(HI::GUITestOpStatus &os, QString text);
-    static void click(HI::GUITestOpStatus &os, HI::HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
     static QString getTabObjectName(Tabs tab);
-    static bool areThereNotifications(HI::GUITestOpStatus &os);
+    static bool hasNotifications(HI::GUITestOpStatus &os);
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
-    static bool doesTabExist(HI::GUITestOpStatus &os, Tabs tab);
+    static bool hasTab(HI::GUITestOpStatus &os, Tabs tab);
 
     // External tools tab
     static QString getNodeText(HI::GUITestOpStatus &os, const QString &nodeId);

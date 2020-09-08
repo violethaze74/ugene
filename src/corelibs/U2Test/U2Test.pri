@@ -14,10 +14,6 @@ if (contains(DEFINES, HI_EXCLUDED)) {
     # GUI testing is not included into public build
     LIBS -= -lQSpec$$D
 }
-if (!useWebKit()) {
-    # GUI testing is available only with WebKit.
-    LIBS -= -lQSpec$$D
-}
 
 DESTDIR = ../../$$out_dir()
 

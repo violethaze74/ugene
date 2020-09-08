@@ -65,7 +65,8 @@ public:
     // zero-based position
     static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus &os);
-    static QPair<U2Region, U2Region> convertCoordinatesToRegions(GUITestOpStatus &os, const QPoint p);
+    /** Returns on-screen (global) bounding rectangle for the base position. */
+    static QRect getPositionRect(GUITestOpStatus &os, const QPoint& position);
     static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
     static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
@@ -87,10 +88,11 @@ public:
     static bool offsetsVisible(GUITestOpStatus &os);
 
     static bool hasAminoAlphabet(GUITestOpStatus &os);
-    static bool isSequenceHightighted(GUITestOpStatus &os, const QString &seqName);
+    static bool isSequenceHighlighted(GUITestOpStatus &os, const QString &seqName);
     static QString getColor(GUITestOpStatus &os, QPoint p);
-    //To increase the accuracy of this function I advice you to maximize the font size before calling
-    static QString getFontColor(GUITestOpStatus &os, QPoint p);
+    static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint& p, const QColor& color);
+    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint& pos, const QString& fgColor, const QString& bgColor);
+    static void checkMsaCellColor(GUITestOpStatus &os, const QPoint& pos, const QString& color);
     static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 
@@ -114,7 +116,7 @@ public:
     static void zoomToMax(GUITestOpStatus &os);
     static void zoomToMin(GUITestOpStatus &os);
 
-    static const QString highlightningColorName;
+    static const QString highlightingColor;
 };
 
 }    // namespace U2

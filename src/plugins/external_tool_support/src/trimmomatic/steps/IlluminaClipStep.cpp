@@ -263,7 +263,7 @@ IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const
     : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "46500506");
+    new HelpButton(this, buttonBox, "49447877");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 

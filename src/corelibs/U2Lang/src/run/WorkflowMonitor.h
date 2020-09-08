@@ -144,6 +144,8 @@ public:
 
     void onLogChanged(const WDListener *listener, int messageType, const QString &message);
 
+    Monitor::TaskState getTaskState() const;
+
     static const QString WORKFLOW_FILE_NAME;
 
 public slots:
@@ -160,7 +162,6 @@ signals:
     void si_runStateChanged(bool paused);
     void si_taskStateChanged(Monitor::TaskState state);
     void si_updateProducers();
-    void si_report();
     void si_dirSet(const QString &dir);
     void si_logChanged(Monitor::LogEntry entry);
 

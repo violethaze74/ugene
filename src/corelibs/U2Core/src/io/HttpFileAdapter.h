@@ -24,7 +24,6 @@
 
 #include <QAuthenticator>
 #include <QEventLoop>
-#include <QLinkedList>
 #include <QMutex>
 #include <QNetworkProxy>
 
@@ -132,7 +131,7 @@ private:
     qint64 waitData(qint64 until);
 
     static const int CHUNKSIZE = 32 * 1024;
-    QLinkedList<QByteArray> chunk_list;
+    QList<QByteArray> chunk_list;
     QByteArray cache;
     bool is_cached;
     int begin_ptr;    //pointer to the first byte of data in first chunk

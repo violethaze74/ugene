@@ -42,7 +42,7 @@ void BuildIndexDialogFiller::commonScenario() {
     QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
     for (int i = 0; i < methodNamesBox->count(); i++) {
         if (methodNamesBox->itemText(i) == method) {
-            GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+            GTComboBox::selectItemByIndex(os, methodNamesBox, i);
         }
     }
 

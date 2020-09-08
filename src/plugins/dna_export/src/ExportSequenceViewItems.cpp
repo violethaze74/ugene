@@ -33,26 +33,18 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DocumentSelection.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectSelection.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionUtils.h>
-#include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportAnnotationsDialog.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -485,11 +477,10 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
     QSet<QString> names;
     int rowIdx = 0;
 
-    foreach (const Annotation *annotation, selection) {
+    for (const Annotation *annotation : selection) {
         SAFE_POINT(annotation->getName() == BLAST_ANNOTATION_NAME, tr("%1 is not a BLAST annotation").arg(annotation->getName()), );
 
-        AnnotationTableObject *ao = annotation->getGObject();
-        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(ao);
+        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(annotation->getGObject());
         CHECK_EXT(seqCtx != NULL, os.setError(tr("No sequence object found")), );
         CHECK_EXT(seqCtx == commonSeq, os.setError(tr("Can not export BLAST annotations from different sequences")), );
 
@@ -507,7 +498,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
         if (!subjSeq.isEmpty()) {
             ma->addRow(rowName, subjSeq.toLatin1());
         } else {
-            AnnotationSelection::getAnnotationSequence(rowSequence, annotation, U2Msa::GAP_CHAR, seqRef, NULL, NULL, os);
+            AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, NULL, NULL, os);
             CHECK_OP(os, );
             ma->addRow(rowName, rowSequence);
         }
@@ -534,14 +525,12 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
 
     // check that all sequences are present and have the same alphabets
     const DNAAlphabet *al = NULL;
-    const DNATranslation *complTT = NULL;
     foreach (const Annotation *annotation, selection) {
         AnnotationTableObject *ao = annotation->getGObject();
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(ao);
         CHECK_EXT(seqCtx != NULL, os.setError(tr("No sequence object found")), );
         if (al == NULL) {
             al = seqCtx->getAlphabet();
-            complTT = seqCtx->getComplementTT();
         } else {
             const DNAAlphabet *al2 = seqCtx->getAlphabet();
             //BUG524: support alphabet reduction
@@ -560,11 +549,10 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
 
         maxLen = qMax(maxLen, annotation->getRegionsLen());
         CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
-
-        bool doComplement = annotation->getStrand().isCompementary();
+        const DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
         const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : NULL;
         QByteArray rowSequence;
-        AnnotationSelection::getAnnotationSequence(rowSequence, annotation, U2Msa::GAP_CHAR, seqRef, doComplement ? complTT : NULL, aminoTT, os);
+        AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, complTT, aminoTT, os);
         CHECK_OP(os, );
 
         ma->addRow(rowName, rowSequence);

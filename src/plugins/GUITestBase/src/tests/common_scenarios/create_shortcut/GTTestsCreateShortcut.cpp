@@ -27,7 +27,6 @@
 #include <shlobj.h>
 #elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
-#include <QDir>
 #include <QFile>
 #elif defined(Q_OS_MAC)
 #include <QCoreApplication>
@@ -38,21 +37,13 @@
 #endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
 
 #include <base_dialogs/DefaultDialogFiller.h>
-#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTWebView.h>
-#include <primitives/GTWidget.h>
 
 #include "GTTestsCreateShortcut.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsStartPage.h"
-#include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
 namespace U2 {

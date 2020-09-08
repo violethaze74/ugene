@@ -981,7 +981,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     }
 
     //2. Push "Show/Hide Chromatograms" button in the main menu
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //Expected state : "Show/Hide Chromatograms" button is in normal state
     //All reads are collapsed
@@ -991,7 +991,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     }
 
     //3. Push "Show/Hide Chromatograms" button again
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //All reads are expanded, chromatograms if any are displayed for each reads
     //Expected state : All reads are expanded, chromatograms(if any) are displayed for each reads
@@ -1496,9 +1496,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //4. Push "Jump to next variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "G"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1551,7 +1551,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //3. Push "Jump to next variation" button
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
     GTUtilsDialog::waitAllFinished(os);
 
     //4. Push "Jump to next variation" from context menu
@@ -1599,9 +1599,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //3. Push "Jump to previous variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : difference between reference "C" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1659,7 +1659,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1709,7 +1709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1752,7 +1752,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTKeyboardDriver::keyClick('a', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 #else
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 #endif
     GTGlobals::sleep();
 
@@ -1766,9 +1766,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //3. Push "Jump to next ambiguous character" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     //Expected state : reference "C", consensus "M", read "M".
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1833,7 +1833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
     QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
-    QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionName(os, toolbar, "prev_ambiguous");
+    QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "prev_ambiguous");
     GTWidget::click(os, prevAmbiguousButton);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -1884,9 +1884,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //3. Push "Jump to previous variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
 
     //Expected state: reference "G", consensus "N", read "N"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1978,7 +1978,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     CHECK_SET_ERR(reg.length == 0, "Some reads are selected");
 
     //4. Select any region in the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 500);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 500);
     GTGlobals::sleep(500);
 
     //5. Push Esc
@@ -3500,7 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");

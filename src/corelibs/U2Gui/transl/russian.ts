@@ -1750,32 +1750,32 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateDocumentFromTextDialogController</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="129"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="128"/>
         <source>Select file to save...</source>
         <translation>Сохранение файла...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="56"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="58"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="82"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="81"/>
         <source>No path specified</source>
         <translation>Путь не задан</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="95"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="94"/>
         <source>Sequence name is empty</source>
         <translation>Имя последовательности пусто</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="77"/>
+        <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="76"/>
         <source>Filename is empty</source>
         <translation>Не задано имя файла</translation>
     </message>
@@ -2657,28 +2657,40 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::PasteFactory</name>
     <message>
-        <location filename="../src/PasteController.cpp" line="73"/>
         <source>Unable to handle so huge data in clipboard.</source>
-        <translation>Unable to handle so huge data in clipboard.</translation>
+        <translation type="vanished">Unable to handle so huge data in clipboard.</translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="77"/>
         <source>UGENE can not recognize current clipboard content as one of supported formats.</source>
-        <translation>UGENE can not recognize current clipboard content as one of supported formats.</translation>
+        <translation type="vanished">UGENE can not recognize current clipboard content as one of supported formats.</translation>
+    </message>
+    <message>
+        <location filename="../src/PasteController.cpp" line="113"/>
+        <source>Data in clipboard is too large.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::PasteTextTask</name>
     <message>
-        <location filename="../src/PasteController.cpp" line="202"/>
         <source>Cannot detect file format</source>
-        <translation>Cannot detect file format</translation>
+        <translation type="vanished">Cannot detect file format</translation>
+    </message>
+    <message>
+        <location filename="../src/PasteController.cpp" line="160"/>
+        <source>Failed to detect pasted data format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PasteController.cpp" line="168"/>
+        <source>Failed to create tmp file for clipboard content: %1.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::PasteUrlsTask</name>
     <message>
-        <location filename="../src/PasteController.cpp" line="177"/>
+        <location filename="../src/PasteController.cpp" line="138"/>
         <source>Pasting of folders is not supported:</source>
         <translation>Pasting of folders is not supported:</translation>
     </message>
