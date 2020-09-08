@@ -1051,7 +1051,6 @@ GUI_TEST_CLASS_DEFINITION(test_3156) {
     QModelIndex targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
     GTUtilsProjectTreeView::dragAndDrop(os, documentIndex, targetFolderIndex);
 
-
     //    Expected state: a new folder has appeared in the DB, objects from the document have been imported into it.
     targetFolderIndex = GTUtilsProjectTreeView::findIndex(os, folderName);
     GTUtilsProjectTreeView::checkItem(os, "test_3156_murine.gb", targetFolderIndex);
@@ -1656,31 +1655,34 @@ GUI_TEST_CLASS_DEFINITION(test_3266) {
     //1. Connect to a shared database.
     Document *doc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
+    QString folder1 = GTUtils::genUniqueString("regression_3266_1");
+    QString folder2 = GTUtils::genUniqueString("regression_3266_2");
+
     //2. Create a folder "1" somewhere.
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/", "regression_3266_1");
+    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/", folder1);
 
     //3. Create a folder "2" in the folder "1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/regression_3266_1", "regression_3266_2");
+    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/" + folder1, folder2);
 
     //4. Remove the folder "2".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_3266_2"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder2));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
     //Expected state: the folder "2" is in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_2");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder2);
 
     //5. Create another folder "2" in the folder "1".
-    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/regression_3266_1", "regression_3266_2");
+    GTUtilsSharedDatabaseDocument::createFolder(os, doc, "/" + folder1, folder2);
 
     //6. Remove the folder "1".
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_3266_1"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folder1));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
     //Expected state: folders "1" and "2" both are in the Recycle bin.
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_1");
-    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/regression_3266_2");
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder1);
+    GTUtilsSharedDatabaseDocument::checkItemExists(os, doc, "/Recycle bin/" + folder2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3270) {
