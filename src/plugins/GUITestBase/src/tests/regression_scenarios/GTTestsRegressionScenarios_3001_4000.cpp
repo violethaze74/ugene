@@ -805,13 +805,14 @@ GUI_TEST_CLASS_DEFINITION(test_3137) {
     Document *dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     // 2. Add folder;
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", "regression_test_3137");
+    QString folderName = GTUtils::genUniqueString("regression_test_3137");
+    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folderName);
 
     // 3. Import some file to this folder(eg.COI.aln);
-    GTUtilsSharedDatabaseDocument::importFiles(os, dbDoc, "/regression_test_3137", QStringList() << dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsSharedDatabaseDocument::importFiles(os, dbDoc, "/" + folderName, QStringList() << dataDir + "samples/CLUSTALW/COI.aln");
 
     // 4. Delete folder;
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "regression_test_3137"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, folderName));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -821,8 +822,8 @@ GUI_TEST_CLASS_DEFINITION(test_3137) {
     // Expected state : folder does not appear.
     GTGlobals::FindOptions findOptions(false);
     findOptions.depth = 1;
-    const QModelIndex innerFolderNotFoundIndex = GTUtilsProjectTreeView::findIndex(os, "regression_test_3137", findOptions);
-    CHECK_SET_ERR(!innerFolderNotFoundIndex.isValid(), "The 'regression_test_3137' folder was found in the database but expected to disappear");
+    QModelIndex innerFolderNotFoundIndex = GTUtilsProjectTreeView::findIndex(os, folderName, findOptions);
+    CHECK_SET_ERR(!innerFolderNotFoundIndex.isValid(), "The '" + folderName + "' folder was found in the database but expected to disappear");
 
     GTUtilsLog::check(os, l);
 }
