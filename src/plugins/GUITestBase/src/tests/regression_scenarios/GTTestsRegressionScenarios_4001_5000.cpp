@@ -319,10 +319,10 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
             GTWidget::click(os, GTWidget::findExactWidget<QPlainTextEdit *>(os, "sequenceEdit", dialog));
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "amount of data"));
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::paste(os);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "amount of data"));
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::paste(os);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
