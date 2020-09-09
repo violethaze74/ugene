@@ -4,11 +4,10 @@
 
 ### Prerequisites
 
-Make sure the Qt (>= 5.3.2 and < 5.15) development libraries are installed:
+Make sure the Qt (>= 5.4.2 and <= 5.15) development libraries are installed:
 
 We highly recommend you to install Qt to any operating system with Qt online-installer. This is the main way for Windows and macOS operating systems, also available  for Linux. To install Qt, download the online-installer from Qt official site (http://www.qt.io/download/). Make sure, that you have installed the following components:
 * Qt Prebuild components
-* QtCharts
 * QtScript
 
 Other options to install Qt:
