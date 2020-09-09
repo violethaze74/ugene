@@ -4,31 +4,37 @@
 
 ### Prerequisites
 
-Make sure the Qt (>= 5.3.2) development libraries are installed:
+Make sure the Qt (>= 5.3.2 and < 5.15) development libraries are installed:
 
+We highly recommend you to install Qt to any operating system with Qt online-installer. This is the main way for Windows and macOS operating systems, also available  for Linux. To install Qt, download the online-installer from Qt official site (http://www.qt.io/download/). Make sure, that you have installed the following components:
+* Qt Prebuild components
+* QtCharts
+* QtScript
+
+Other options to install Qt:
 * Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev
 * Ubuntu 12.04:
     * Download and install Qt 5.5.1: www.qt.io/download-open-source/
     * Set the system variable: export PATH=$PATH:~/Qt5.5.1/5.5/gcc_64/bin
     * `sudo apt-get install g++ libgl1-mesa-dev libglu1-mesa-dev`
 * Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist gcc-c++ redhat-rpm-config mesa-libGLU-devel`
-* Arch Linux:   `sudo pacman -S qt`
-* Mac OS X: download from Qt official site (http://www.qt.io/download/)
-* Windows: download from Qt official site (http://www.qt.io/download/)
+* Arch Linux:   `sudo pacman -S qt`available
+
+Also add "path/to/Qt/<component>/bin" to the PATH variable.
 
 ### For Windows users:
 
 To build with devenv (Visual Studio)
 
-1. `qmake -r -tp vc ugene.pro CONFIG+=x64`
-2. open ugene.sln from Visual Studio or run `devenv.exe ugene.sln /Build` from MSVC command line
+1. `qmake -r -tp vc ugene.pro`
+2. open ugene.sln from Visual Studio and build or run `devenv.exe ugene.sln /Build` from MSVC command line
 
 To build with nmake.exe:
 
-1. `qmake -r ugene.pro CONFIG+=x64`
+1. `qmake -r ugene.pro`
 2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
 
-Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit to "../ugene/src/_debug" folder
+Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit. Put these libs to the directory which is avaliable with the PATH variable.
 
 ### For *nix users:
 
@@ -53,7 +59,7 @@ Some more information you can see in installer/_common_data/README file.
    CUDA_INC_PATH=/path_where_cuda_installed/include
    PATH=$PATH:/path_where_cuda_installed/bin
    ```
-   
+
    for *nix: `LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_LIB_PATH`
 
 3. cd ./src and open ugene_globals.pri, find and set variable UGENE_CUDA_DETECTED = 1
@@ -67,4 +73,9 @@ Some more information you can see in installer/_common_data/README file.
           `OPENCL_INC_PATH=/path_where_open_cl_installed`
 4. cd ./src and open ugene_globals.pri, find and set variable `UGENE_OPENCL_DETECTED = 1`
 
-> Notes: UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
+### Global notes:
+ 1) UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
+ 2) UGENE will be built for x86_64 arch by default, add CONFIG+=x86 to the qmake command to build 32-bit version of UGENE.
+    E.g. for Windows:
+    `qmake -r -tp vc CONFIG+=x86 ugene.pro`
+    > ATTENTION: 32-bit version isn't supported since UGENE v. 34.0, the behavior is unpredictable!
