@@ -97,6 +97,10 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
 //        }
 #    endif
     }
+#ifdef Q_OS_MAC
+    bool isNativeMenuBar = menuBar->isNativeMenuBar();
+    menuBar->setNativeMenuBar(true);
+#endif
 #endif
     return qmenu;
 }
