@@ -30,6 +30,7 @@
 #include "primitives/PopupChooser.h"
 #include "utils/GTUtilsDialog.h"
 
+#include <QCoreApplication>
 #include <QMainWindow>
 #include <QMenuBar>
 
@@ -43,6 +44,8 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus &os, const QStringList &it
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
 #ifdef Q_OS_MAC
     Q_UNUSED(method);
+    bool dontUseNativeMenuBar = QCoreApplication::testAttribute(Qt::AA_DontUseNativeMenuBar);
+    GT_CHECK(!dontUseNativeMenuBar, QString("Menu bar is not native!"));
     GTMenuPrivateMac::clickMainMenuItem(os, itemPath, matchFlag);
 #else
     QStringList cuttedItemPath = itemPath;
