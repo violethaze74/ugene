@@ -84,7 +84,7 @@ private:
 class NCBISearchDialogSimpleFiller : public Filler {
 public:
     NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os, QString _query, bool _doubleEnter = false, int _resultLimit = -1, QString _term = "")
-        : Filler(os, "SearchGenbankSequenceDialog"),
+        : Filler(os, "NCBISearchDialogSimpleFiller"),
           query(_query),
           doubleEnter(_doubleEnter),
           resultLimit(_resultLimit),

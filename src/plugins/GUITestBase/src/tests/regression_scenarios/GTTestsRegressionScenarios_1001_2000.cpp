@@ -7526,10 +7526,10 @@ GUI_TEST_CLASS_DEFINITION(test_1714) {
 GUI_TEST_CLASS_DEFINITION(test_1720) {
     GTLogTracer l;
 
-//    1. Load a remote document
-//    2. Load the document with the same ID again
-//    Expected state: the view of the document is opened
-//    Bug state: error message is shown
+    //    1. Load a remote document
+    //    2. Load the document with the same ID again
+    //    Expected state: the view of the document is opened
+    //    Bug state: error message is shown
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
@@ -8555,40 +8555,19 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
-    //1. Run UGENE
-    //2. Use main toolbar { File -> Search NCBI Genbank }
+    // Download a sequence from NCBI. Use "limit" for results.
     GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "mouse", false, 5, "Organism"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...");
-    GTGlobals::sleep();
 
-    //Expected state: the "NCBI Sequence Search" dialog has appeared
+    //Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //3. Type "human" to the request string
-
-    //4. In the dialog's right bottom corner set "Result limit" to 5
-
-    //5. Press the "Search" button
-
-    //Expected state: only 5 results has appeared in the "Results" list
-
-    //6. Choose some result sequence
-
-    //7. Press the "Download" button
-
-    //Expected state: the "Fetch Data from Remote Database" dialog has appeared, it has the "Output format" combobox
-
-    //8. Select "fasta" output format
-
-    //9. Press "OK"
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     ProjectViewModel *model = qobject_cast<ProjectViewModel *>(treeView->model());
     QString text = model->data(model->index(0, 0, QModelIndex()), Qt::DisplayRole).toString();
 
     CHECK_SET_ERR(text.contains(".fasta"), text);
-
-    //Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
 }
 
 }    // namespace GUITest_regression_scenarios
