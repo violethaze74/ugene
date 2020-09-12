@@ -7524,24 +7524,28 @@ GUI_TEST_CLASS_DEFINITION(test_1714) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1720) {
-    //1. Use menu {File->Access remote database...}
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Access remote database...",
-                              GTGlobals::UseKey);
-
     GTLogTracer l;
-    GTGlobals::sleep(8000);    //some time needed for request
-    //2. Fill field "Resource ID" with value D11266. Click "OK"
 
-    //3. Use menu {File->Access remote database...}
+//    1. Load a remote document
+//    2. Load the document with the same ID again
+//    Expected state: the view of the document is opened
+//    Bug state: error message is shown
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTUtilsDialog::waitAllFinished(os);
-    //4. Fill field "Resource ID" with value D11266. Click "OK"
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsMdi::closeActiveWindow(os);
+
+    // Load again
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Access remote database...",
+                              GTGlobals::UseKey);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "D11266.gb"));
     GTUtilsLog::check(os, l);
     //Expected state: project view with document "D11266.gb", no error messages in log appear
