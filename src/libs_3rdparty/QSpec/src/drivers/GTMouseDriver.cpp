@@ -27,6 +27,7 @@
 
 namespace HI {
 
+#ifndef Q_OS_MAC
 bool GTMouseDriver::click(Qt::MouseButton button) {
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
@@ -34,6 +35,7 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     GTGlobals::sleep(100);    // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
+#endif
 
 namespace {
 
