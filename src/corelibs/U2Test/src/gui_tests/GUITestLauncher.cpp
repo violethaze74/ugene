@@ -285,10 +285,10 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
-    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-                 ", tests dir: " + testsDir.dirName() +
-                 ", data dir: " + dataDir.dirName() +
-                 ", script: " + pathToShellScript);
+//    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
+//                 ", tests dir: " + testsDir.dirName() +
+//                 ", data dir: " + dataDir.dirName() +
+//                 ", script: " + pathToShellScript);
 #ifdef Q_OS_WIN
     process.start("cmd /C " + pathToShellScript);
 #else
@@ -333,9 +333,7 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &te
 
     QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
     if (!externalScriptToRestore.isEmpty()) {
-        if (restoreTestDirWithExternalScript(externalScriptToRestore, iniFilePath)) {
-            env.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
-        }
+        restoreTestDirWithExternalScript(externalScriptToRestore, iniFilePath);
     }
 
     return env;
