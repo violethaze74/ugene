@@ -1488,14 +1488,10 @@ GUI_TEST_CLASS_DEFINITION(test_2204) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2225) {
-    Runnable *filler = new NCBISearchDialogSimpleFiller(os, "rat", true);
-
-    GTUtilsDialog::waitForDialog(os, filler);
-
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", true));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2259) {
