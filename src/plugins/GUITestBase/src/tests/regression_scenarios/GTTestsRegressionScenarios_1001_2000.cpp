@@ -2194,17 +2194,13 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 GUI_TEST_CLASS_DEFINITION(test_1189) {
     //1) Open samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2) Press Ctrl+F
+    //2) Select any region of the sequence
+    GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
+
+    //3) Activate search widget with Ctrl+F
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
-    //3) Select any region of the sequence
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 100, 200));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
-                                                                        << "Sequence region"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2224,23 +2220,17 @@ GUI_TEST_CLASS_DEFINITION(test_1189) {
 GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //1) Open samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2) Press Ctrl+F
-    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
-    //3) Select any region of the sequence
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    QPoint p;
-    p = GTMouseDriver::getMousePosition();
-    p.setX(p.x() - 100);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::press();
-    p.setX(p.x() + 200);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::release();
+    //2) Select any region of the sequence
+    QWidget *panView = GTUtilsSequenceView::getPanOrDetView(os);
+    QPoint centerPos = panView->mapToGlobal(panView->rect().center());
+    //    GTWidget::click(os, centerPos - QPoint(-100, 0));
+    GTMouseDriver::dragAndDrop(centerPos + QPoint(-100, 0), centerPos + QPoint(100, 0));
     GTThread::waitForMainThread();
+
+    //3) Activate search widget with Ctrl+F
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2250,9 +2240,11 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
     CHECK_SET_ERR(start->isVisible(), "editStart line is not visiable");
+    CHECK_SET_ERR(start->text() != "1", "Wrong startValue: 1."); // 1 is default
 
     QLineEdit *end = (QLineEdit *)GTWidget::findWidget(os, "editEnd");
     CHECK_SET_ERR(end->isVisible(), "editEnd line is not visiable");
+    CHECK_SET_ERR(start->text() != "199950", "Wrong endValue: 199950."); // 199950 is the length of human_T1 and is default value.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1190) {    //add AlignShortReadsFiller

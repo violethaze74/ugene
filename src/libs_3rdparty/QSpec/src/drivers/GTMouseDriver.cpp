@@ -37,13 +37,11 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
 }
 #endif
 
-namespace {
-
-bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
-    return (end - start).manhattanLength() > 2 * QApplication::startDragDistance();
+static bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
+    int manhattanLength = (end - start).manhattanLength();
+    int startDragDistance2x = 2 * QApplication::startDragDistance();
+    return manhattanLength > startDragDistance2x;
 }
-
-}    // namespace
 
 bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     DRIVER_CHECK(moveTo(start), QString("Mouse could not be moved to point (%1, %2)").arg(start.x()).arg(start.y()));
