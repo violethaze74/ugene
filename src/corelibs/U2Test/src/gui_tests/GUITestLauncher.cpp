@@ -289,7 +289,11 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
                  ", tests dir: " + testsDir.dirName() +
                  ", data dir: " + dataDir.dirName() +
                  ", script: " + pathToShellScript);
+#ifdef Q_OS_WIN
+    process.start("cmd /C " + pathToShellScript);
+#else
     process.start("/bin/bash", QStringList() << pathToShellScript);
+#endif
     qint64 processId = process.processId();
     bool isStarted = process.waitForStarted();
     if (!isStarted) {
