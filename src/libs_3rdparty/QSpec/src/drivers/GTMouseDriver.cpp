@@ -27,7 +27,6 @@
 
 namespace HI {
 
-#ifndef Q_OS_MAC
 bool GTMouseDriver::click(Qt::MouseButton button) {
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
@@ -35,13 +34,14 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     GTGlobals::sleep(100);    // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
-#endif
 
-static bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
-    int manhattanLength = (end - start).manhattanLength();
-    int startDragDistance2x = 2 * QApplication::startDragDistance();
-    return manhattanLength > startDragDistance2x;
+namespace {
+
+bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
+    return (end - start).manhattanLength() > 2 * QApplication::startDragDistance();
 }
+
+}    // namespace
 
 bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     DRIVER_CHECK(moveTo(start), QString("Mouse could not be moved to point (%1, %2)").arg(start.x()).arg(start.y()));
