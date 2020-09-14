@@ -63,7 +63,9 @@ QString getTestDirImpl() {
 
 QString getTestDir() {
     QString result = getTestDirImpl();
-    qDebug("Test dir: %s", result.toLocal8Bit().constData());
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+        qDebug("Test dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
+    }
     return result;
 }
 
@@ -106,10 +108,11 @@ QString getDataDirImpl() {
 
 QString getDataDir() {
     QString result = getDataDirImpl();
-    qDebug("Data dir: %s", result.toLocal8Bit().constData());
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+        qDebug("Data dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
+    }
     return result;
 }
-
 
 QString getScreenshotDir() {
     QString result;
