@@ -124,6 +124,13 @@ void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus &os, 
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNotificationDialogText"
+void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus &os, const QString &textToken) {
+    GTUtilsDialog::waitForDialog(os, new NotificationDialogFiller(os, textToken));
+    clickOnNotificationWidget(os);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "clickOnNotificationWidget"
 void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {

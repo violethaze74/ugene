@@ -245,14 +245,14 @@ GUI_TEST_CLASS_DEFINITION(test_1001_4) {
 
 GUI_TEST_CLASS_DEFINITION(test_1003) {
     // 1. Open "murine.gb", search for all available restriction sites (i.e. click "Select All" in the "Find Restriction Sites" dialog).
-    // Expected state: UGENE not hangs at 100% complition of 'Auto-annotation update task'
+    // Expected state: UGENE not hangs at 100% completion of 'Auto-annotation update task'
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     class Scenario_test_1003 : public CustomScenario {
     public:
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
@@ -2240,11 +2240,11 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
     CHECK_SET_ERR(start->isVisible(), "editStart line is not visiable");
-    CHECK_SET_ERR(start->text() != "1", "Wrong startValue: 1."); // 1 is default
+    CHECK_SET_ERR(start->text() != "1", "Wrong startValue: 1.");    // 1 is default
 
     QLineEdit *end = (QLineEdit *)GTWidget::findWidget(os, "editEnd");
     CHECK_SET_ERR(end->isVisible(), "editEnd line is not visiable");
-    CHECK_SET_ERR(start->text() != "199950", "Wrong endValue: 199950."); // 199950 is the length of human_T1 and is default value.
+    CHECK_SET_ERR(start->text() != "199950", "Wrong endValue: 199950.");    // 199950 is the length of human_T1 and is default value.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1190) {    //add AlignShortReadsFiller
@@ -5434,17 +5434,15 @@ GUI_TEST_CLASS_DEFINITION(test_1537) {
 GUI_TEST_CLASS_DEFINITION(test_1548) {
     // 1. Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Build tree for the alignment
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/1548.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Ensure that the "Sort alignment by tree" button on the tree view toolbar is disabled.
     QAction *sortAction = GTAction::findAction(os, "Sort Alignment");
-    CHECK_SET_ERR(NULL != sortAction, "'Sort alignment by tree' was not found");
     CHECK_SET_ERR(!sortAction->isEnabled(), "'Sort alignment by tree' is unexpectedly enabled");
 }
 
@@ -7227,15 +7225,12 @@ GUI_TEST_CLASS_DEFINITION(test_1687) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1688) {
-    // 1) Open file "_common_data/scenarios/_regression/1688/sr100.000.fa"
-    // Expected state: UGENE show error, not crashed
-    GTLogTracer l;
-
+    // Open file "_common_data/scenarios/_regression/1688/sr100.000.fa" (100k sequences, open as separate)
+    // Expected state: UGENE shows error about too many sequences and does not crash.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/1688/sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    GTUtilsNotifications::checkNotificationDialogText(os, "contains too many sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1693) {

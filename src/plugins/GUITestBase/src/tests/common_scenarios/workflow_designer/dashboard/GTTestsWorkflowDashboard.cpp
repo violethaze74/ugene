@@ -576,10 +576,6 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 }
 
-GUI_TEST_CLASS_DEFINITION(misc_test_0005) {
-    os.setError("Not implemented");
-}
-
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0001) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
 
