@@ -126,70 +126,7 @@ bool GTMouseDriver::release(Qt::MouseButton button)
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "click"
-bool GTMouseDriver::click(Qt::MouseButton button) {
-    QPoint mousePos = QCursor::pos();
-    CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-    CGEventType eTypeDown = kCGEventLeftMouseDown;
-    CGEventType eTypeUp = kCGEventLeftMouseUp;
-    CGMouseButton mButton = kCGMouseButtonLeft;
-
-    if (button == Qt::LeftButton) {
-        eTypeDown = kCGEventLeftMouseDown;
-        eTypeUp = kCGEventLeftMouseUp;
-        mButton = kCGMouseButtonLeft;
-    } else if (button == Qt::RightButton) {
-        eTypeDown = kCGEventRightMouseDown;
-        eTypeUp = kCGEventRightMouseUp;
-        mButton = kCGMouseButtonRight;
-    } else if (button == Qt::MidButton) {
-        eTypeDown = kCGEventOtherMouseDown;
-        eTypeUp = kCGEventOtherMouseUp;
-        mButton = kCGMouseButtonCenter;
-    }
-
-    CGEventRef theEvent = CGEventCreateMouseEvent(NULL, eTypeDown, pt, mButton);
-    DRIVER_CHECK(theEvent != NULL, "Can't create event");
-    CGEventPost(kCGHIDEventTap, theEvent);
-    CGEventSetType(theEvent, eTypeUp);
-    CGEventPost(kCGHIDEventTap, theEvent);
-
-    GTGlobals::sleep(100);
-    CFRelease(theEvent);
-
-    return true;
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "doubleClick"
-#define NEW_DBL_CLK 1
-
-#ifdef NEW_DBL_CLK
-
-bool GTMouseDriver::doubleClick() {
-    QPoint mousePos = QCursor::pos();
-    CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-
-    CGEventRef theEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
-    DRIVER_CHECK(theEvent != NULL, "Can't create event");
-    CGEventPost(kCGHIDEventTap, theEvent);
-    CGEventSetType(theEvent, kCGEventLeftMouseUp);
-    CGEventPost(kCGHIDEventTap, theEvent);
-
-    CGEventSetIntegerValueField(theEvent, kCGMouseEventClickState, 2);
-    CGEventSetType(theEvent, kCGEventLeftMouseDown);
-    CGEventPost(kCGHIDEventTap, theEvent);
-    CGEventSetType(theEvent, kCGEventLeftMouseUp);
-    CGEventPost(kCGHIDEventTap, theEvent);
-
-    GTGlobals::sleep(100);
-    CFRelease(theEvent);
-
-    return true;
-}
-
-#else
-
 bool GTMouseDriver::doubleClick() {
 
     QPoint mousePos = QCursor::pos();
@@ -221,9 +158,6 @@ bool GTMouseDriver::doubleClick() {
 
     return true;
 }
-
-#endif
-
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scroll"
