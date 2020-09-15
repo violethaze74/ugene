@@ -173,7 +173,7 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
 
     n = pat_n * 2;
     int dirn = (4 + pat_n + 3) >> 2;
-    int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn);
+    int *buf, *matrix = new int[n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn];
     char *score, *score1 = (char *)(matrix + n);
     unsigned char *dir, *dir2, *dir1 = (unsigned char *)score1 + pat_n * 0x80;
     memset(matrix, 0, n * sizeof(int));
@@ -307,7 +307,7 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
         }
     } while (++i <= static_cast<int>(src_n));
 
-    free(matrix);
+    delete matrix;
 }
 
 void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
@@ -317,7 +317,7 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
 
     n = pat_n * 3;
-    int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80);
+    int *buf, *matrix = new int[n * sizeof(int) + pat_n * 0x80];
     char *score, *score1 = (char *)(matrix + n);
     memset(matrix, 0, n * sizeof(int));
 
@@ -414,7 +414,7 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
     }
 #endif
 
-    free(matrix);
+    delete matrix;
 }
 
 }    // namespace U2
