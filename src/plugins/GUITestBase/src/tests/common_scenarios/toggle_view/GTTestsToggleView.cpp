@@ -191,7 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been closed, but toolbar still present.
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been appeared
-    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -225,7 +225,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been closed, but toolbar still present.
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -244,7 +244,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been appeared
-    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
 
     overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
@@ -273,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been closed, but toolbar still present.
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -287,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been appeared
-    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -311,7 +311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been closed, but toolbar still present.
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -324,7 +324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: views for se2 sequence has been appeared
-    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     overViewSe2 = GTWidget::findWidget(os, "overview_se2");
     detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2");
     zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2");
@@ -823,9 +823,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     QToolBar *toolBarSe1 = mainWindow->findChild<QToolBar *>("tool_bar_se1");
     CHECK_SET_ERR(toolBarSe1 != nullptr, "Tool bar not found");
 
-    QAbstractButton *zoomButton = GTAction::button(os, "zoom_to_range_se1");
+    GTAction::button(os, "zoom_to_range_se1");
+    GTAction::button(os, "action_zoom_out_se1");
     QAbstractButton *zoomInButton = GTAction::button(os, "action_zoom_in_se1");
-    QAbstractButton *zoomOutButton = GTAction::button(os, "action_zoom_out_se1");
 
     // 2. Press 'Zoom in' button for seq1.
     GTWidget::click(os, zoomInButton);
@@ -854,12 +854,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     CHECK_SET_ERR(toolBarSe1 != nullptr, "Tool bar not found");
     CHECK_SET_ERR(toolBarSe2 != nullptr, "Tool bar not found");
 
-    QAbstractButton *zoomButton1 = GTAction::button(os, "action_zoom_in_se1");
-    QAbstractButton *zoomButton2 = GTAction::button(os, "action_zoom_in_se2");
+    GTAction::button(os, "action_zoom_in_se1");
+    GTAction::button(os, "action_zoom_in_se2");
     QAbstractButton *zoomInButton1 = GTAction::button(os, "action_zoom_in_se1");
-    QAbstractButton *zoomOutButton1 = GTAction::button(os, "action_zoom_out_se1");
+    GTAction::button(os, "action_zoom_out_se1");
     QAbstractButton *zoomInButton2 = GTAction::button(os, "action_zoom_in_se2");
-    QAbstractButton *zoomOutButton2 = GTAction::button(os, "action_zoom_out_se2");
+    GTAction::button(os, "action_zoom_out_se2");
 
     // 2. Press 'Zoom in' button for both. CHANGES: for both instead of seq1
     GTWidget::click(os, zoomInButton1);
@@ -898,12 +898,12 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     CHECK_SET_ERR(toolBarSe1 != nullptr, "Tool bar not found");
     CHECK_SET_ERR(toolBarSe2 != nullptr, "Tool bar not found");
 
-    QAbstractButton *zoomButton1 = GTAction::button(os, "zoom_to_range_se1");
-    QAbstractButton *zoomButton2 = GTAction::button(os, "zoom_to_range_se2");
+    GTAction::button(os, "zoom_to_range_se1");
+    GTAction::button(os, "zoom_to_range_se2");
     QAbstractButton *zoomInButton1 = GTAction::button(os, "action_zoom_in_se1");
-    QAbstractButton *zoomOutButton1 = GTAction::button(os, "action_zoom_out_se1");
+    GTAction::button(os, "action_zoom_out_se1");
     QAbstractButton *zoomInButton2 = GTAction::button(os, "action_zoom_in_se2");
-    QAbstractButton *zoomOutButton2 = GTAction::button(os, "action_zoom_out_se2");
+    GTAction::button(os, "action_zoom_out_se2");
 
     // 2. Press 'Zoom in' button for both. CHANGES: for both instead of seq1
     GTWidget::click(os, zoomInButton1);
