@@ -620,6 +620,12 @@ int main(int argc, char **argv) {
     MainWindowImpl *mw = new MainWindowImpl();
     appContext->setMainWindow(mw);
     mw->prepare();
+#ifdef Q_OS_MAC
+    // TODO: need to check for other OS and remove #ifdef
+    if (cmdLineRegistry->hasParameter("gui-test")) {
+        mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
+    }
+#endif
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 
     AppSettingsGUI *appSettingsGUI = new AppSettingsGUIImpl();
