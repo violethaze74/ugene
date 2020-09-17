@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <3rdparty/zlib/zlib.h>
 #include <unistd.h>
 #include "sam.h"
 
@@ -180,11 +179,7 @@ int bam_rmdup(int argc, char *argv[])
 {
 	int c, is_se = 0, force_se = 0;
 	samfile_t *in, *out;
-#ifdef Q_OS_WIN 
-    while ((c = getopt()) >= 0) { //this code never been called so it just fix for compilation
-#else
     while ((c = getopt(argc, argv, "sS")) >= 0) {
-#endif
 		switch (c) {
 		case 's': is_se = 1; break;
 		case 'S': force_se = is_se = 1; break;
