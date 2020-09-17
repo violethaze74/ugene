@@ -60,7 +60,6 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
     QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
     QMAKE_CXXFLAGS += -Wno-sign-compare
-    QMAKE_CXXFLAGS += -Wno-unused-parameter
     QMAKE_CXXFLAGS += -Wno-unused-variable
 
     # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
