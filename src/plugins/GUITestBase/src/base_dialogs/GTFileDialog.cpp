@@ -241,7 +241,11 @@ void GTFileDialogUtils::selectFile() {
     }
 
     case GTGlobals::UseMouse:
+#ifdef Q_OS_MAC
+        w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
+#else
         w->scrollTo(index);
+#endif
         indexCenter = w->visualRect(index).center();
         indexCenter.setY(indexCenter.y() + w->header()->rect().height());
         indexCenter.setX(indexCenter.x() + 1);
