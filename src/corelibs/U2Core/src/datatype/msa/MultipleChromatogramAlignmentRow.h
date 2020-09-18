@@ -153,7 +153,6 @@ public:
      * If the sequence is empty, the offset is ignored (if any).
      */
     void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
-    void setRowContent(const DNAChromatogram &chromatogram, const QByteArray &bytes, int offset, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
