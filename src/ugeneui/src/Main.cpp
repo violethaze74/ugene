@@ -622,8 +622,15 @@ int main(int argc, char **argv) {
     mw->prepare();
 #ifdef Q_OS_MAC
     // TODO: need to check for other OS and remove #ifdef
-    if (cmdLineRegistry->hasParameter("gui-test")) {
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
         mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)) {
+        if (cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)=="0") {
+            mw->getQMainWindow()->menuBar()->setNativeMenuBar(true);
+        } else {
+            mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
+        }
     }
 #endif
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));

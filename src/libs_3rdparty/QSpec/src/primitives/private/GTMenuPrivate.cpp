@@ -112,6 +112,11 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
     int key = 0;
     int key_pos = 0;
 
+#ifdef Q_OS_MAC
+    // TODO: workaround for MacOS
+    //      menubar's submenu can't be opened by keyboard in non-native mode
+    m = GTGlobals::UseMouse;
+#endif
     switch(m) {
     case GTGlobals::UseMouse:
         pos = mainWindow->menuBar()->actionGeometry(menu).center();
