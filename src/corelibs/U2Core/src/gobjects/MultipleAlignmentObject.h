@@ -140,8 +140,6 @@ public:
 
     int deleteGapByRowIndexList(U2OpStatus &os, const QList<int> &rowIndexes, int pos, int maxGaps);
 
-    virtual void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1) = 0;
-
     /**
      * Performs shift of the region specified by parameters @startPos (leftmost column number),
      * @startRow (top row number), @nBases (region width), @nRows (region height) in no more

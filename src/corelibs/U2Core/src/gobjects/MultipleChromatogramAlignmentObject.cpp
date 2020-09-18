@@ -189,8 +189,7 @@ void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<in
     MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, true);
 }
 
-QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps(int requiredGapsCount) const {
-    assert(-1 == requiredGapsCount || requiredGapsCount == getNumRows() + 1);
+QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps() const {
     U2MsaListGapModel gapModel = getGapModel();
     gapModel.prepend(getReferenceGapModel());
     return MSAUtils::getColumnsWithGaps(gapModel, getLength());
@@ -209,9 +208,8 @@ void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos,
     replaceCharacter(pos, rowIndex, newChar);
 }
 
-void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount) {
-    assert(-1 == requiredGapsCount || requiredGapsCount == getNumRows() + 1);
-    const QList<U2Region> regionsToDelete = getColumnsWithGaps(requiredGapsCount);
+void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os) {
+    const QList<U2Region> regionsToDelete = getColumnsWithGaps();
     CHECK(!regionsToDelete.isEmpty(), );
     CHECK(regionsToDelete.first().length != getLength(), );
 
