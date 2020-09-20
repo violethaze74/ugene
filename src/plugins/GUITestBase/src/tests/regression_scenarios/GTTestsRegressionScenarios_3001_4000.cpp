@@ -3446,10 +3446,14 @@ GUI_TEST_CLASS_DEFINITION(test_3553) {
     //1. Open "_common_data/clustal/big.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //2. Select both sequences.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(1, 1));
-    //3. Open the "Pairwise Alignment" OP tab.
+
+    //3. Open the "Pairwise Alignment" OP tab. Wait for overview to re-render.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //4. Press the "Align" button several times(~5).
     for (int i = 0; i < 5; i++) {
         GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));

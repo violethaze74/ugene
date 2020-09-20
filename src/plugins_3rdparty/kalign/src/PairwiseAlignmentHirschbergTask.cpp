@@ -2,9 +2,6 @@
 
 #include <QRegExp>
 #include <QString>
-#include <QVariant>
-
-#include <U2Algorithm/MsaUtilTasks.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -16,7 +13,6 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -24,7 +20,6 @@
 #include <U2Core/U2SequenceDbi.h>
 
 #include <U2Lang/SimpleWorkflowTask.h>
-#include <U2Lang/WorkflowSettings.h>
 
 #include "KalignTask.h"
 
@@ -122,12 +117,11 @@ QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) 
             Project *currentProject = AppContext::getProject();
 
             DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
-            Document *alignmentDoc = nullptr;
 
             QString newFileUrl = settings->resultFileName.getURLString();
             changeGivenUrlIfDocumentExists(newFileUrl, currentProject);
 
-            alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
+            Document *alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
@@ -167,10 +161,6 @@ QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) 
 
 Task::ReportResult PairwiseAlignmentHirschbergTask::report() {
     propagateSubtaskError();
-    CHECK_OP(stateInfo, ReportResult_Finished);
-
-    assert(kalignSubTask->inputMA->getNumRows() == kalignSubTask->resultMA->getNumRows());
-
     return ReportResult_Finished;
 }
 
