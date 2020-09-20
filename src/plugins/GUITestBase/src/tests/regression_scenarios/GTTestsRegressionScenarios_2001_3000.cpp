@@ -1600,26 +1600,22 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     origToolDir.cdUp();    // exit from 'bin' folder
 #endif
 
-    GTFile::copyDir(os, origToolDir.absolutePath(), sandBoxDir + "GUITest_regression_scenarios_test_2268/");
+    QString newToolDir = sandBoxDir + "GUITest_regression_scenarios_test_2268/";
+    GTFile::copyDir(os, origToolDir.absolutePath(), newToolDir);
 #ifdef Q_OS_LINUX
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/bin/t_coffee");
+    const QFileInfo newToolPath(newToolDir + "bin/t_coffee");
 #elif defined(Q_OS_WIN)
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee.bat");
+    const QFileInfo newToolPath(newToolDir + "t_coffee.bat");
 #else
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee");
+    const QFileInfo newToolPath(newToolDir + "t_coffee");
 #endif
 
     // Hack, it is better to set the tool path via the preferences dialog
     CHECK_SET_ERR(newToolPath.exists(), "The copied T-coffee tool does not exist");
     tCoffee->setPath(newToolPath.absoluteFilePath());
 
-    QDir newToolDir = origToolPath.dir();
-#ifdef Q_OS_LINUX
-    newToolDir.cdUp();    // exit from 'bin' folder
-#endif
-
     // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
-    GTFile::setReadOnly(os, newToolDir.path(), true);
+    GTFile::setReadOnly(os, newToolDir, true);
 
     // 2. Open "_common_data/clustal/align.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/align.aln");
