@@ -27,7 +27,7 @@ BackgroundTaskRunner_base::~BackgroundTaskRunner_base() {
 }
 
 void BackgroundTaskRunner_base::emitFinished() {
-    emit(si_finished());
+    emit si_finished();
 }
 
 }    // namespace U2

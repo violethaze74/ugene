@@ -51,7 +51,7 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setMinimumWidth(getMinimumWidgetWidth());
 }
 
-void McaEditorNameList::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection & /*oldSelection*/) {
+void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*/, const MaEditorSelection & /*oldSelection*/) {
     sl_updateActions();
     sl_completeRedraw();
     emit si_selectionChanged();

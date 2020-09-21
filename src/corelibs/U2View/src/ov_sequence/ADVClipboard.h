@@ -46,9 +46,7 @@ public:
     QAction *getCopyComplementTranslationAction() const;
 
     QAction *getCopyAnnotationSequenceAction() const;
-    QAction *getCopyComplementAnnotationSequenceAction() const;
     QAction *getCopyAnnotationSequenceTranslationAction() const;
-    QAction *getCopyComplementAnnotationSequenceTranslationAction() const;
 
     QAction *getCopyQualifierAction() const;
     QAction *getPasteSequenceAction() const;
@@ -73,16 +71,14 @@ public slots:
     void sl_copyComplementTranslation();
 
     void sl_copyAnnotationSequence();
-    void sl_copyComplementAnnotationSequence();
     void sl_copyAnnotationSequenceTranslation();
-    void sl_copyComplementAnnotationSequenceTranslation();
 
     void sl_setCopyQualifierActionStatus(bool isEnabled, QString text);
 
 private:
     void updateActions();
     void copySequenceSelection(const bool complement, const bool amino);
-    void copyAnnotationSelection(const bool complement, const bool amino);
+    void copyAnnotationSelection(const bool amino);
     void putIntoClipboard(const QString &data);
 
     AnnotatedDNAView *ctx;
@@ -92,9 +88,7 @@ private:
     QAction *copyComplementTranslationAction;
 
     QAction *copyAnnotationSequenceAction;
-    QAction *copyComplementAnnotationSequenceAction;
     QAction *copyAnnotationSequenceTranslationAction;
-    QAction *copyComplementAnnotationSequenceTranslationAction;
 
     QAction *copyQualifierAction;
 

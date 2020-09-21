@@ -52,7 +52,7 @@ void Dataset::setName(const QString &value) {
 }
 
 void Dataset::addUrl(URLContainer *url) {
-    if (NULL != url) {
+    if (url != nullptr) {
         urls << url;
     }
 }

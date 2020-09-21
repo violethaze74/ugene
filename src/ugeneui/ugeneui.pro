@@ -12,8 +12,10 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.h \
            src/main_window/AboutDialogController.h \
            src/main_window/DockWidgetPainter.h \
+           src/main_window/ProxyStyle.h \
            src/main_window/SplashScreen.h \
            src/main_window/CheckUpdatesTask.h \
+           src/main_window/CreateDesktopShortcutTask.h \
            src/main_window/DockManagerImpl.h \
            src/main_window/MainWindowImpl.h \
            src/main_window/MDIManagerImpl.h \
@@ -73,8 +75,10 @@ SOURCES += src/Main.cpp \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.cpp \
            src/main_window/AboutDialogController.cpp \
            src/main_window/DockWidgetPainter.cpp \
+           src/main_window/ProxyStyle.cpp \
            src/main_window/SplashScreen.cpp \
            src/main_window/CheckUpdatesTask.cpp \
+           src/main_window/CreateDesktopShortcutTask.cpp \
            src/main_window/DockManagerImpl.cpp \
            src/main_window/MainWindowImpl.cpp \
            src/main_window/MDIManagerImpl.cpp \

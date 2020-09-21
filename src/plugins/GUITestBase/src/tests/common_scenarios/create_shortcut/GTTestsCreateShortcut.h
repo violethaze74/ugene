@@ -19,24 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FOREVER_TASK_H_
-#define _U2_FOREVER_TASK_H_
+#ifndef GTTESTSCREATESHORTCUT_H
+#define GTTESTSCREATESHORTCUT_H
 
-#include <U2Core/Task.h>
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-/* need for congene not to die */
-class ForeverTask : public Task {
-    Q_OBJECT
-public:
-    ForeverTask();
-    ~ForeverTask();
+namespace GUITest_common_scenarios_create_shortcut {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_create_shortcut"
 
-    virtual void run();
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
-};    // ForeverTask
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_create_shortcut
 
 }    // namespace U2
 
-#endif    // _U2_FOREVER_TASK_H_
+#endif    // GTTESTSCREATESHORTCUT_H

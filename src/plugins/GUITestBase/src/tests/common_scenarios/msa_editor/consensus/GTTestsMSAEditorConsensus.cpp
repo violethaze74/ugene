@@ -61,7 +61,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "ClustalW");
+    GTComboBox::selectItemByText(os, consensusCombo, "ClustalW");
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "              ");
     //    Expected state: consensus must be empty
@@ -88,7 +88,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Default");
+    GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -118,7 +118,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Default");
+    GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -143,7 +143,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Default");
+    GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -168,7 +168,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Strict");
+    GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -198,7 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Strict");
+    GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -224,7 +224,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Strict");
+    GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -249,7 +249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -278,7 +278,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != NULL, "consensusCombo is NULL");
@@ -340,13 +340,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != NULL, "consensus combobox not found");
     //3. Select "Default" consensus mode. Limits are 1-100
-    GTComboBox::setIndexWithText(os, consensusType, "Default");
+    GTComboBox::selectItemByText(os, consensusType, "Default");
     checkLimits(os, 1, 100);
     //4. Select "Levitsky" consensus mode. Limits are 50-100
-    GTComboBox::setIndexWithText(os, consensusType, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     checkLimits(os, 50, 100);
     //4. Select "Strict" consensus mode. Limits are 50-100
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     checkLimits(os, 1, 100);
 }
 
@@ -378,19 +378,19 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QWidget *thresholdResetButton = GTWidget::findWidget(os, "thresholdResetButton");
     CHECK_SET_ERR(thresholdResetButton != NULL, "thresholdResetButton not found");
     //3. Select "Default" consensus mode
-    GTComboBox::setIndexWithText(os, consensusType, "Default");
+    GTComboBox::selectItemByText(os, consensusType, "Default");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     GTGlobals::sleep(500);
     checkValues(os, 100);
     //3. Select "Levitsky" consensus mode
-    GTComboBox::setIndexWithText(os, consensusType, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     GTGlobals::sleep(500);
     checkValues(os, 90);
     //3. Select "Strict" consensus mode
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
     GTGlobals::sleep(500);

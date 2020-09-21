@@ -715,10 +715,10 @@ void ProjectLoaderImpl::updateRecentItemsMenu() {
 
 void ProjectLoaderImpl::sl_paste() {
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
-    SAFE_POINT(pasteFactory != NULL, "PasteFactory is null", );
+    SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
-    PasteTask *task = pasteFactory->pasteTask(true);
-
+    PasteTask *task = pasteFactory->createPasteTask(true);
+    CHECK(task != nullptr,);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
@@ -815,7 +815,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499627");
+    new HelpButton(this, buttonBox, "49446999");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -871,8 +871,7 @@ void ProjectDialogController::keyPressEvent(QKeyEvent *event) {
 }
 
 void ProjectDialogController::sl_fileSelectClicked() {
-    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString(), 
-        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
+    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString(), tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (filepath.isEmpty())
         return;
     projectFilePathEdit->setText(filepath);

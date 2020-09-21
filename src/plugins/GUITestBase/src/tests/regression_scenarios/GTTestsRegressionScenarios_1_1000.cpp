@@ -32,7 +32,6 @@
 #include <primitives/GTListWidget.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
@@ -47,7 +46,6 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QPlainTextEdit>
-#include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTextStream>
@@ -57,14 +55,10 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 
-#include <U2Gui/ProjectViewModel.h>
-#include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AnnotationsTreeView.h>
-#include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/DetView.h>
 #include <U2View/GSequenceGraphView.h>
 #include <U2View/MSAEditor.h>
@@ -73,126 +67,74 @@
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
 #include "GTGlobals.h"
-#include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsAnnotationsTreeView.h"
-#include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
-#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
-#include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
 #include "primitives/GTAction.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
-#include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
-#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
-#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/CreateFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
-#include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
-#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentProviderSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
 #include "system/GTFile.h"
-#include "utils/GTKeyboardUtils.h"
 #include "utils/GTThread.h"
 #include "utils/GTUtilsDialog.h"
-#include "utils/GTUtilsToolTip.h"
 
 namespace U2 {
 
@@ -630,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
             for (int i = 0; i < methodNamesBox->count(); i++) {
                 if (methodNamesBox->itemText(i) == "UGENE Genome Aligner") {
-                    GTComboBox::setCurrentIndex(os, methodNamesBox, i);
+                    GTComboBox::selectItemByIndex(os, methodNamesBox, i);
                 }
             }
 
@@ -968,7 +910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
     QModelIndex projectTreeItem = GTUtilsProjectTreeView::findIndex(os, "Annotations");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem ,GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
@@ -1528,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0778) {
 
             QComboBox *caseCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "caseCombo"));
             CHECK_SET_ERR(caseCombo != NULL, "No caseCombo");
-            GTComboBox::setIndexWithText(os, caseCombo, name);
+            GTComboBox::selectItemByText(os, caseCombo, name);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1699,86 +1641,73 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     QString somenameEtcFile = sandBoxDir + "807.etc";
     QFile::copy(testDir + "_common_data/scenarios/workflow designer/somename.etc", somenameEtcFile);
 
-    //1. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "somename");
 
-    //2. Import the CMDLine element: _common_data/scenarios/workflow designer/somename.etc.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, somenameEtcFile));
     GTWidget::click(os, GTAction::button(os, "AddElementWithCommandLineTool"));
-    GTUtilsDialog::waitAllFinished(os);
 
-    //Expected state: the last page of the "Create Element with External Tool" dialog appeared.
-    class Scenario1 : public CustomScenario {
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.tool = "bedtools";
+    settings.command = "testtest $in";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "somename"));
+    GTMouseDriver::click();
+    GTMouseDriver::click(Qt::RightButton);
+
+    class ResetAndApplyScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QLineEdit *templateEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "templateLineEdit"));
-            GTLineEdit::setText(os, templateEdit, "testtest $in");
+            QWidget *nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Reset));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
 
-            //5. Type anything in the {Execution string} and {Parameterized description} fields. Press {OK} button. If message box with question about unused parameters apeeares, click {Continue} button.
+            // Same wizard is shown now. The first page is opened.
+
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Apply));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ResetAndApplyScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "somename"));
+    GTMouseDriver::click();
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);
+
+    class ApplyScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1");
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, GTWidget::findWidget(os, "pbDeleteInput"));
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTWidget::click(os, nextButton);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Apply"));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
         }
     };
 
-    //Expected: the element appears on the scene.
-    //3. Select this element on the scene and call its context menu.
-    //Expected state: {Edit configuration...} menu item is presented.
-    //4. Click this menu item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario1()));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    class Scenario2 : public CustomScenario {
-        bool reset;
-
-    public:
-        Scenario2(bool reset)
-            : reset(reset) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton0"));
-
-            QWidget *addButton = GTWidget::findWidget(os, "addAttributeButton");
-            GTWidget::click(os, addButton);
-
-            QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "attributesTableView"));
-            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, table->model()->rowCount() - 1));
-            GTMouseDriver::click();
-
-            GTKeyboardDriver::keySequence("attr");
-            GTKeyboardDriver::keyClick(Qt::Key_Enter);
-
-            GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton1"));
-            QLineEdit *templateEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "templateLineEdit"));
-            GTLineEdit::setText(os, templateEdit, "testtest $in $attr");
-
-            //Expected state: message box with notification about structure changes appears. Thre buttons presented: {Reset}, {No}, {Yes}.
-            //7. Click {Reset} button.
-            //Expected state: "Create Element with External Tool" dialog not closed. Changes from point 7 are reset.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, reset ? QMessageBox::Reset : QMessageBox::Yes));
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
-            if (reset) {
-                GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
-            }
-            GTUtilsDialog::waitAllFinished(os);
-        }
-    };
-    //Expected state: element wasn't dissapear from the scene.
-    //6. Select {Edit configuration...} menu item again. Change something in previous pages of the dialog. Then return to the last page and click {Finish} button. If message box about unused parameters appeares, click {Continue} button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario2(true)));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    //8. Repeat actions from point 7.
-    //Expected state: the same as in point 7.
-    //9. Click {Yes} button.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration..."));
-    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new Scenario2(false)));
-    GTUtilsWorkflowDesigner::click(os, "somename", QPoint(0, 0), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
-
-    //Expected state: element dissapeared from the scene.
+    //Expected state: element disappeared from the scene.
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getWorkers(os).isEmpty(), "The worker is not deleted");
 }
 
@@ -1940,7 +1869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0828) {
             CHECK(NULL != buttonBox, );
 
             QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "typeBox"));
-            GTComboBox::setIndexWithText(os, combo, "Sequence name markers", true);
+            GTComboBox::selectItemByText(os, combo, "Sequence name markers");
 
             QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK(NULL != button, );
@@ -1976,9 +1905,9 @@ GUI_TEST_CLASS_DEFINITION(test_0829) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QApplication::activeWindow();
     GTWidget::click(os,
-                    GTToolbar::getWidgetForActionName(os,
-                                                      GTToolbar::getToolbar(os, "mwtoolbar_activemdi"),
-                                                      "toggleDashboard"));
+                    GTToolbar::getWidgetForActionObjectName(os,
+                                                            GTToolbar::getToolbar(os, "mwtoolbar_activemdi"),
+                                                            "toggleDashboard"));
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
     GTUtilsWorkflowDesigner::removeItem(os, "Assembly Sequences with CAP3");
@@ -2232,7 +2161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
 
             QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algoComboBox"));
             CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
-            GTComboBox::setIndexWithText(os, combo, "Suffix array");
+            GTComboBox::selectItemByText(os, combo, "Suffix array");
 
             QLineEdit *pathEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath"));
             pathEdit->setText(sandBoxDir + "test_0844.gb");
@@ -2513,10 +2442,11 @@ GUI_TEST_CLASS_DEFINITION(test_0873) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: there are more then 10 result files and they are grouped into sublists
 
-    HIWebElement button = GTUtilsDashboard::findElement(os, "merged.fa", "BUTTON");
-    GTUtilsDashboard::click(os, button);
+    QWidget *button = GTWidget::findButtonByText(os, "merged.fa", GTUtilsDashboard::getDashboard(os));
+    GTWidget::click(os, button);
     GTThread::waitForMainThread();
 
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     int sequenceLength = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(sequenceLength == 35594, "Sequence length is " + QString::number(sequenceLength) + ", expected 35594");
 }
@@ -2690,9 +2620,8 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
-    WorkflowProcessItem *samtools = GTUtilsWorkflowDesigner::addElement(os, "SAMtools", true);
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::getWorker(os, "File List");
-    GTUtilsWorkflowDesigner::connect(os, fileList, samtools);
+    WorkflowProcessItem *samtools = GTUtilsWorkflowDesigner::getWorker(os, "SAMtools", true);
+
     GTUtilsWorkflowDesigner::click(os, samtools);
     QTableWidget *table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
     GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
@@ -2760,8 +2689,8 @@ GUI_TEST_CLASS_DEFINITION(test_0899) {
                             << "Custom region";
             GTComboBox::checkValuesPresence(os, region_type_combo, regionComboList);
 
-            GTComboBox::setIndexWithText(os, documentFormatComboBox, "GenBank");
-            GTComboBox::setIndexWithText(os, region_type_combo, "Whole sequence");
+            GTComboBox::selectItemByText(os, documentFormatComboBox, "GenBank");
+            GTComboBox::selectItemByText(os, region_type_combo, "Whole sequence");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3507,7 +3436,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    3. Fill fields "Range start" and "Range end" with values "1" and "2" respectively.
 
@@ -3538,7 +3467,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    4. Press "Start prediction".
             GTGlobals::sleep();

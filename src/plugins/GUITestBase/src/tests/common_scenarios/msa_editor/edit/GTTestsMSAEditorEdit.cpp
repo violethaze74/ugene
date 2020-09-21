@@ -753,7 +753,7 @@ static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QS
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
-    GTComboBox::setCurrentIndex(os, consensusCombo, comboVal);
+    GTComboBox::selectItemByIndex(os, consensusCombo, comboVal);
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");

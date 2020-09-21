@@ -58,7 +58,7 @@ bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
 DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p)
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499637");
+    new HelpButton(this, buttonBox, "49447011");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -94,6 +94,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &
         } else if (r.importer != NULL) {
             // #A6392E is the same color as Theme::errorColorLabelStr(). For some reason Qt's HTML parser cannot handle this value as rgb.
             text = tr("<b><font color=#A6392E>Import: </font>%1</b>. Score: %2 (<i>%3</i>)").arg(r.importer->getImporterName()).arg(r.score()).arg(score2Text(r.score()));
+            objName = r.importer->getImporterName();
         } else {
             assert(0);
             continue;

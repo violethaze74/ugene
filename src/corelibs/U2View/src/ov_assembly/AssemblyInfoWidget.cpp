@@ -120,13 +120,13 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
 ////////////////////////////////////
 const QString AssemblyInfoWidgetFactory::GROUP_ID = "OP_ASS_INFO";
 const QString AssemblyInfoWidgetFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
-const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "46500208";
+const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "49447579";
 
 AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblyInfoWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AssemblyInfoWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

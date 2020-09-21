@@ -9,6 +9,11 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
 CONFIG += c++11
 
+# Do not use library suffix names for files and ELF-dependency sections on Linux.
+# Reason: we do not support multiple versions of UGENE in the same folder and
+#  use -Wl,-rpath to locate dependencies for own libraries.
+unix:!macx: CONFIG += unversioned_libname unversioned_soname
+
 # NGS package
 _UGENE_NGS = $$(UGENE_NGS)
 contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
@@ -25,10 +30,11 @@ win32-msvc2015|greaterThan(QMAKE_MSC_VER, 1909) {
     QMAKE_CFLAGS-=Zc:strictStrings
     QMAKE_CXXFLAGS-=-g
     QMAKE_CFLAGS-=-g
+    DEFINES += __STDC_LIMIT_MACROS
 }
 
 greaterThan(QMAKE_MSC_VER, 1909) {
-    DEFINES += _ALLOW_KEYWORD_MACROS __STDC_LIMIT_MACROS
+    DEFINES += _ALLOW_KEYWORD_MACROS
 }
 
 win32 : QMAKE_CFLAGS_RELEASE += -O2 -Oy- -MD -Zi
@@ -47,22 +53,23 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wall
 
     # We have a lot of such warning from QT -> disable them.
-    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
-    QMAKE_CXXFLAGS += -Wno-class-memaccess
-    QMAKE_CXXFLAGS += -Wno-unused-parameter
-    QMAKE_CXXFLAGS += -Wno-unused-variable
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
     QMAKE_CXXFLAGS += -Wno-catch-value
-    QMAKE_CXXFLAGS += -Wno-sign-compare
+    QMAKE_CXXFLAGS += -Wno-class-memaccess
+    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
+    QMAKE_CXXFLAGS += -Wno-sign-compare
+    QMAKE_CXXFLAGS += -Wno-unused-variable
 
     # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
     QMAKE_CXXFLAGS += -Wno-cast-function-type
 
     # Some of the warnings must be errors
-    QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses
+    QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=uninitialized
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
@@ -281,75 +288,6 @@ defineTest(minQtVersion) {
     greaterThan(QT_MAJOR_VERSION, $$maj) {
         return(true)
     }
-    return(false)
-}
-
-# Define which web engine should be used
-_UGENE_WEB_ENGINE__AUTO = "auto"
-_UGENE_WEB_ENGINE__WEBKIT = "webkit"
-_UGENE_WEB_ENGINE__QT = "qt"
-
-_UGENE_WEB_ENGINE = $$(UGENE_WEB_ENGINE)
-isEmpty(_UGENE_WEB_ENGINE): _UGENE_WEB_ENGINE = $$_UGENE_WEB_ENGINE__AUTO
-
-defineReplace(tryUseWebkit) {
-    !qtHaveModule(webkit) | !qtHaveModule(webkitwidgets) {
-        error("WebKit is not available. It is not included to Qt framework since Qt5.6. Qt WebEngine should be used instead")
-        return()
-    } else {
-#        message("Qt version is $${QT_VERSION}, WebKit is selected")
-        DEFINES += UGENE_WEB_KIT
-        DEFINES -= UGENE_QT_WEB_ENGINE
-        return($$DEFINES)
-    }
-}
-
-defineReplace(tryUseQtWebengine) {
-    !minQtVersion(5, 4, 0) {
-        message("Cannot build Unipro UGENE with Qt version $${QT_VERSION} and Qt WebEngine")
-        error("Use at least Qt 5.4.0 or build with WebKit")
-        return()
-    } else: !qtHaveModule(webengine) | !qtHaveModule(webenginewidgets) {
-        error("Qt WebEngine is not available. Ensure that it is installed.")
-        return()
-    } else {
-#        message("Qt version is $${QT_VERSION}, Qt WebEngine is selected")
-        DEFINES -= UGENE_WEB_KIT
-        DEFINES += UGENE_QT_WEB_ENGINE
-        return($$DEFINES)
-    }
-}
-
-equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__WEBKIT) {
-    DEFINES = $$tryUseWebkit()
-} else: equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__QT) {
-    DEFINES = $$tryUseQtWebengine()
-} else {
-    !equals(_UGENE_WEB_ENGINE, $$_UGENE_WEB_ENGINE__AUTO) {
-        warning("An unknown UGENE_WEB_ENGINE value: $${_UGENE_WEB_ENGINE}. The web engine will be selected automatically.")
-    }
-#    message("Selecting web engine automatically...")
-
-    macx {
-        # A Qt WebEngine is preferred for macOS because there are high definition displays on macs
-        minQtVersion(5, 4, 0) {
-            DEFINES = $$tryUseQtWebengine()
-        } else {
-            DEFINES = $$tryUseWebkit()
-        }
-    } else {
-        # We don't try to search WebKit on the Qt5.6 and more modern versions.
-        minQtVersion(5, 6, 0) {
-            DEFINES = $$tryUseQtWebengine()
-        } else {
-            DEFINES = $$tryUseWebkit()
-        }
-    }
-}
-
-defineTest(useWebKit) {
-    contains(DEFINES, UGENE_WEB_KIT): return(true)
-    contains(DEFINES, UGENE_QT_WEB_ENGINE): return(false)
     return(false)
 }
 

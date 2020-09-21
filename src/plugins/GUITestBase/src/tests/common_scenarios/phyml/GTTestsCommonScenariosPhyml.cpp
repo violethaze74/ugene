@@ -55,7 +55,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");
@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");
@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");
@@ -236,7 +236,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");
@@ -279,7 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             //3. Select the "PhyML Maximum Likelihood" algorithm.
-            GTComboBox::setIndexWithText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
 
             //4. Open the "Tree Searching" tab.
             GTTabWidget::clickTab(os, "twSettings", dialog, "Tree Searching");

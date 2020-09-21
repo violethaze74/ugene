@@ -176,7 +176,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         }
     };
 
-    GTThread::runInMainThread(os, new Scenario);
+    GTThread::runInMainThread(os, new Scenario());
 #else
     // GUI on Mac hangs because of bug in QCocoaEventDispatcher
     // It looks like this issue: https://bugreports.qt.io/browse/QTBUG-45389
@@ -189,15 +189,15 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
 
     bool tabbedView = isTabbedLayout(os);
 
-    while (NULL != (mdiWindow = GTUtilsMdi::activeWindow(os, options))) {
-        GT_CHECK(prevWindow != mdiWindow, "Can't close MDI window");
+    while ((mdiWindow = GTUtilsMdi::activeWindow(os, options)) != nullptr) {
+        GT_CHECK(mdiWindow != prevWindow, "Can't close MDI window");
         prevWindow = mdiWindow;
 
         MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
         GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
 
         if (!tabbedView) {
-            const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
+            QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
             GTMouseDriver::moveTo(closeButtonPos);
             GTMouseDriver::click();
         } else {
@@ -315,11 +315,11 @@ void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowTi
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkWindowIsActive"
-void GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
-    GT_CHECK(!windowTitlePart.isEmpty(), "windowTitlePart is empty");
+QWidget *GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
+    GT_CHECK_RESULT(!windowTitlePart.isEmpty(), "windowTitlePart is empty", nullptr);
 
     MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK(mainWindow != nullptr, "MainWindow == nullptr");
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", nullptr);
 
     QWidget *window = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && window == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -329,8 +329,9 @@ void GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &win
             window = activeWindow;
         }
     }
-    GT_CHECK(window != nullptr, "Window with title part '" + windowTitlePart + "' is not found");
+    GT_CHECK_RESULT(window != nullptr, "Window with title part '" + windowTitlePart + "' is not found", nullptr);
     GTThread::waitForMainThread();
+    return window;
 }
 #undef GT_METHOD_NAME
 

@@ -121,9 +121,7 @@ void CreateDocumentFiller::commonScenario() {
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 
-        if (alphabetComboBox->currentIndex() != alphabetIndex) {
-            GTComboBox::setCurrentIndex(os, alphabetComboBox, alphabetIndex, true, useMethod);
-        }
+        GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
@@ -136,9 +134,7 @@ void CreateDocumentFiller::commonScenario() {
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
-    if (comboBox->currentIndex() != index) {
-        GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
-    }
+    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
     GT_CHECK(lineEditName != NULL, "line edit not found");
@@ -207,9 +203,7 @@ void CancelCreateDocumentFiller::commonScenario() {
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 
-        if (alphabetComboBox->currentIndex() != alphabetIndex) {
-            GTComboBox::setCurrentIndex(os, alphabetComboBox, alphabetIndex, true, useMethod);
-        }
+        GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
@@ -222,9 +216,7 @@ void CancelCreateDocumentFiller::commonScenario() {
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
-    if (comboBox->currentIndex() != index) {
-        GTComboBox::setCurrentIndex(os, comboBox, index, true, useMethod);
-    }
+    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
     GT_CHECK(lineEditName != NULL, "line edit not found");

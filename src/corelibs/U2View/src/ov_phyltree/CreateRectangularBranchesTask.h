@@ -31,20 +31,25 @@ class GraphicsRectangularBranchItem;
 
 class CreateRectangularBranchesTask : public CreateBranchesTask {
     Q_OBJECT
+public:
+    CreateRectangularBranchesTask(const PhyNode *n);
+    void run() override;
 
+    TreeLayout getLayoutType() const override {
+        return RECTANGULAR_LAYOUT;
+    }
+
+    qreal getScale() const {
+        return scale;
+    }
+
+private:
     int size;
     int current;
     qreal scale;
     const PhyNode *node;
     qreal minDistance, maxDistance;
     GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
-
-public:
-    CreateRectangularBranchesTask(const PhyNode *n);
-    void run();
-    qreal getScale() {
-        return scale;
-    }
 };
 
 }    // namespace U2

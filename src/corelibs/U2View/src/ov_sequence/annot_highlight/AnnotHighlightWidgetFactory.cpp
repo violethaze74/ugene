@@ -33,13 +33,13 @@ namespace U2 {
 
 const QString AnnotHighlightWidgetFactory::GROUP_ID = "OP_ANNOT_HIGHLIGHT";
 const QString AnnotHighlightWidgetFactory::GROUP_ICON_STR = ":core/images/annotation_settings.png";
-const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "46499827";
+const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "49447196";
 
 AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *AnnotHighlightWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AnnotHighlightWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

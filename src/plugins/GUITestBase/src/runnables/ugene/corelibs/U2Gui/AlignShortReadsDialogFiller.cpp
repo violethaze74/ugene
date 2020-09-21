@@ -79,7 +79,7 @@ void AlignShortReadsFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setCommonParameters"
 void AlignShortReadsFiller::setCommonParameters(QWidget *dialog) {
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->referenceFile));
     GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
@@ -97,7 +97,7 @@ void AlignShortReadsFiller::setCommonParameters(QWidget *dialog) {
     QComboBox *libraryComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "libraryComboBox", dialog));
     GT_CHECK(libraryComboBox, "libraryComboBox is NULL");
     if (libraryComboBox->isEnabled()) {
-        GTComboBox::setIndexWithText(os, libraryComboBox, parameters->getLibrary());
+        GTComboBox::selectItemByText(os, libraryComboBox, parameters->getLibrary());
     }
 
     QCheckBox *samBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "samBox", dialog));
@@ -142,7 +142,7 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
     QComboBox *modeComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "modeComboBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(modeComboBox, "modeComboBox is NULL");
-    GTComboBox::setIndexWithText(os, modeComboBox, bowtie2Parameters->getMode());
+    GTComboBox::selectItemByText(os, modeComboBox, bowtie2Parameters->getMode());
     CHECK_OP(os, );
 
     QSpinBox *mismatchesSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "mismatchesSpinBox", dialog));
@@ -267,7 +267,7 @@ void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams 
 
 #define GT_METHOD_NAME "setBwaAdditionalParameters"
 void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters *bwaParameters, QWidget *dialog) {
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
 }
 #undef GT_METHOD_NAME
 

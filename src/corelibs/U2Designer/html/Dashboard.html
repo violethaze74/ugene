@@ -39,67 +39,13 @@
 </head>
 
 <body>
+
 <script>
-    "use strict";
-    var sec = 0;
-    var min = 0;
-    var hour = 0;
-    var paused = true;
-
-    function startTimer() {
-        if (paused) {
-            paused = false;
-            tickTimer();
-            document.getElementById("progressBar").className += " progress-striped active";
-        }
-    }
-
-    function pauseTimer() {
-        paused = true;
-        var classes = document.getElementById("progressBar").className;
-        document.getElementById("progressBar").className = classes.replace(/ progress-striped active/, "");
-    }
-
-    function timeToString(h, m, s) {
-        var ss = (s < 10) ? "0" + s : s;
-        var ms = (m < 10) ? "0" + m : m;
-        var hs = (h < 10) ? "0" + h : h;
-        return hs + ":" + ms + ":" + ss;
-    }
-
-    function tickTimer() {
-        if (!paused) {
-            setTimeout(tickTimer, 1000);
-        }
-        if (sec === 60) {
-            sec = 0;
-            min++;
-        }
-        if (min === 60) {
-            min = 0;
-            hour++;
-        }
-        document.getElementById("timer").innerHTML = timeToString(hour, min, sec);
-        sec++;
-    }
-
-    function containerSize(insideElt, name) {
-        var cont = document.getElementById(name);
-        if (tabContainer == null) {
-            agent.sl_onJsError("NULL container");
-            return;
-        }
-        return cont.getElementsByName(".widget").length;
-    }
-
-    addEventListeners();
-    var externalToolsWidget = null;
-    var outputWidget;
-    var parametersWidget;
-    var problemWidget = null;
-    var statisticsWidget;
-    var statusWidget;
+setTimeout(function() {
+  document.getElementById("wrapper").innerHTML = "<center><b>This dashboard was created with a newer version of UGENE. Please <a href='https://ugene.net'>update</a>.</b></center>";
+}, 500);
 </script>
+
 <div id="wrapper">
     <div class="tabbable">
         <div class="dash-menu-line">

@@ -45,8 +45,6 @@ public:
 
     static QToolButton *getExpandButton(HI::GUITestOpStatus &_os);
 
-    static void setInputFiles();
-
 private:
     QList<QStringList> inputFiles;
     QMap<QString, QVariant> map;

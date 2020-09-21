@@ -33,13 +33,13 @@ namespace U2 {
 
 const QString FindPatternWidgetFactory::GROUP_ID = "OP_FIND_PATTERN";
 const QString FindPatternWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
-const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "46499777";
+const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "49447152";
 
 FindPatternWidgetFactory::FindPatternWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *FindPatternWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *FindPatternWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

@@ -1312,7 +1312,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>ugenedb это внутренний формат файла базы данных UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="156"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="151"/>
         <source>Invalid destination database reference</source>
         <translation>Неверное расположение референса базы</translation>
     </message>
@@ -2053,8 +2053,8 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Внутренняя ошибка! Неверный аргумент: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/IOAdapterUtils.cpp" line="98"/>
-        <location filename="../src/util/IOAdapterUtils.cpp" line="106"/>
+        <location filename="../src/util/IOAdapterUtils.cpp" line="101"/>
+        <location filename="../src/util/IOAdapterUtils.cpp" line="109"/>
         <source>Failed to detect IO adapter for %1</source>
         <translation>Невозможно определить IO адаптер для %1</translation>
     </message>
@@ -2080,63 +2080,63 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="207"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="220"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="208"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="221"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Чтение документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="241"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
         <source>Document format is NULL!</source>
         <translation>Формат документа NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="243"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO адаптер NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="256"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="257"/>
         <source>The fileURL  to load is empty</source>
         <translation>The fileURL  to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="259"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="260"/>
         <source>Cannot get an IO file adapter factory for the file URL: %1</source>
         <translation>Cannot get an IO file adapter factory for the file URL: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="263"/>
         <source>Cannot detect the file format: %1</source>
         <translation>Cannot detect the file format: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="265"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
         <source>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</source>
         <translation>Document format is NULL (format ID: &apos;%1&apos;, file URL: &apos;%2&apos;)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="420"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="421"/>
         <source>Document not found %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="438"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="439"/>
         <source>Not enough memory to load document %1</source>
         <translation>Недостаточно памяти для загрузки документа %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="454"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="455"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="484"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="485"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="491"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="492"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>
@@ -2162,7 +2162,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="162"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="163"/>
         <source>Project Document:</source>
         <translation>Документ проекта:</translation>
     </message>
@@ -2187,7 +2187,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="180"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="181"/>
         <source>Annotation object not found</source>
         <translation>Не найдена таблица аннотаций</translation>
     </message>
@@ -2338,22 +2338,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="357"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="350"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="363"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="356"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="367"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="360"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="376"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2411,22 +2411,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="318"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="311"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="335"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="328"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="336"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="329"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="340"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="333"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2442,56 +2442,56 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="53"/>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="69"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="54"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="70"/>
         <source>Save document</source>
         <translation>Сохранение документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="62"/>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="74"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="63"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="75"/>
         <source>No permission to write to &apos;%1&apos; file.</source>
         <translation>Нет прав на запись в &apos;%1&apos; файл.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="84"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="85"/>
         <source>Document was removed</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="96"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="97"/>
         <source>Saving document %1
 </source>
         <translation>Сохранение документа: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="125"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="126"/>
         <source>Can&apos;t create tmp file</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="130"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="131"/>
         <source>Can&apos;t copy file to tmp file while trying to save document by append</source>
         <translation>Невозможно скопировать скопировать файл во временный файл при попытке сохранения файла при добавлении</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="147"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="148"/>
         <source>Can&apos;t remove original file to place tmp file instead</source>
         <translation>Невозможно удалить оригинальный файл чтобы заменить его временным</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="150"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="151"/>
         <source>Can&apos;t rename saved tmp file to original file</source>
         <translation>Невозможно переименовать сохраненный временный файл в оригинальный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="189"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="189"/>
         <source>unexpected error</source>
         <translation>неожиданная ошибка</translation>
     </message>
@@ -2499,34 +2499,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="205"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="206"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="216"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="217"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="217"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="218"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="274"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="276"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="296"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="290"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>

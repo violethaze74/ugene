@@ -142,7 +142,7 @@ void ExportCoverageDialogFiller::selectFile(const QVariant &actionData) {
 void ExportCoverageDialogFiller::setFormat(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a format name from the action data");
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbFormat", dialog), actionData.toString());
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbFormat", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 

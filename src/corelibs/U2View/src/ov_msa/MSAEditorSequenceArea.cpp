@@ -59,7 +59,6 @@
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/Notification.h>
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OptionsPanel.h>
@@ -573,10 +572,11 @@ void MSAEditorSequenceArea::sl_paste() {
         return;
     }
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
-    SAFE_POINT(pasteFactory != NULL, "PasteFactory is null", );
+    SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
     bool focus = ui->isAncestorOf(QApplication::focusWidget());
-    PasteTask *task = pasteFactory->pasteTask(!focus);
+    PasteTask *task = pasteFactory->createPasteTask(!focus);
+    CHECK(task != nullptr, );
     if (focus) {
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task *)));
     }

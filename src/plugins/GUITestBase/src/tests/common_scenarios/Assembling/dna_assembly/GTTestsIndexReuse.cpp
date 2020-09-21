@@ -54,7 +54,7 @@ public:
     void run(HI::GUITestOpStatus &os) {
         QWidget *dialog = QApplication::activeModalWidget();
         CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-        GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), aligner);
+        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), aligner);
 
         //    2. Set wrong file as reference
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, wrongRef));

@@ -203,23 +203,10 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
         QModelIndex index;
     };
 
-    class MainThreadActionScroll : public CustomScenario {
-    public:
-        MainThreadActionScroll(QTreeView *treeView, const QModelIndex &index)
-            : CustomScenario(), treeView(treeView), index(index) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
-            treeView->scrollTo(index);
-        }
-        QTreeView *treeView;
-        QModelIndex index;
-    };
     GTThread::runInMainThread(os, new MainThreadActionExpand(treeView, index));
     GTThread::waitForMainThread();
 
-    GTThread::runInMainThread(os, new MainThreadActionScroll(treeView, index));
-    GTThread::waitForMainThread();
+    GTWidget::scrollToIndex(os, treeView, index);
 }
 #undef GT_METHOD_NAME
 
@@ -325,7 +312,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView
     QModelIndexList foundIndexes;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && foundIndexes.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        foundIndexes = findIndeciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
+        foundIndexes = findIndiciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
         if (!options.failIfNotFound) {
             break;
         }
@@ -359,7 +346,7 @@ QModelIndexList GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(HI::GUIT
     QTreeView *treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "Tree widget is NULL", QModelIndexList());
 
-    return findIndeciesInTreeNoWait(os, treeView, itemName, parent, parentDepth, options);
+    return findIndiciesInTreeNoWait(os, treeView, itemName, parent, parentDepth, options);
 }
 #undef GT_METHOD_NAME
 
@@ -374,8 +361,8 @@ bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags 
 }
 }    // namespace
 
-#define GT_METHOD_NAME "findIndeciesInTreeNoWait"
-QModelIndexList GTUtilsProjectTreeView::findIndeciesInTreeNoWait(HI::GUITestOpStatus &os,
+#define GT_METHOD_NAME "findIndiciesInTreeNoWait"
+QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
                                                                  QTreeView *treeView,
                                                                  const QString &itemName,
                                                                  const QModelIndex &parent,
@@ -415,11 +402,11 @@ QModelIndexList GTUtilsProjectTreeView::findIndeciesInTreeNoWait(HI::GUITestOpSt
             if (compareStrings(itemName, s, options.matchPolicy)) {
                 foundIndecies << index;
             } else {
-                foundIndecies << findIndeciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
+                foundIndecies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
             }
         } else {
             foundIndecies << index;
-            foundIndecies << findIndeciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
+            foundIndecies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
         }
     }
 
@@ -559,7 +546,7 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeV
     QModelIndexList indexList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && indexList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        indexList = findIndeciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
+        indexList = findIndiciesInTreeNoWait(os, treeView, itemName, parent, 0, options);
         if (!options.failIfNotFound) {
             break;
         }

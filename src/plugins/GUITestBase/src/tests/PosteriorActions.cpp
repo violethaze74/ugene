@@ -103,6 +103,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
 #ifdef Q_OS_MAC
+        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+        GTGlobals::sleep(5000);
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
 #else
@@ -114,13 +116,13 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     }
 
     GTUtilsMdi::closeAllWindows(os);
-
     AppContext::getTaskScheduler()->cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
     if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
     // Restore backup files
@@ -139,12 +141,13 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
     if (QDir(sandBoxDir).exists()) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
-        foreach (const QString &path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+        for (const QString &path: sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

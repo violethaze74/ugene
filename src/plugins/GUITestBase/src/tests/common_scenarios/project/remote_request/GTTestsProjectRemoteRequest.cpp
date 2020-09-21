@@ -21,12 +21,8 @@
 
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeWidget.h>
-#include <utils/GTUtilsApp.h>
-#include <utils/GTUtilsToolTip.h>
 
 #include <QDir>
 
@@ -35,41 +31,34 @@
 
 #include "GTTestsProjectRemoteRequest.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
-#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 namespace U2 {
 
 namespace GUITest_common_scenarios_project_remote_request {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
+    GTUtilsTaskTreeView::openView(os);
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "3EZB", 3));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
-
-    GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NC_001363", 0));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
-
-    GTGlobals::sleep(20000);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsDocument::isDocumentLoaded(os, "NC_001363.gb");
     GTUtilsDocument::checkDocument(os, "NC_001363.gb", AnnotatedDNAViewFactory::ID);
 }
@@ -146,11 +135,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 2, true, true, false, sandBoxDir + "remote_request/test_0005"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...");
-    GTGlobals::sleep();
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::isDocumentLoaded(os, "ENSG00000205571.fa");
     GTUtilsDocument::checkDocument(os, "ENSG00000205571.fa", AnnotatedDNAViewFactory::ID);
+
     GTUtilsDocument::isDocumentLoaded(os, "ENSG00000146463.fa");
     GTUtilsDocument::checkDocument(os, "ENSG00000146463.fa", AnnotatedDNAViewFactory::ID);
 }
@@ -331,8 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(20000);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsDocument::isDocumentLoaded(os, "1ezg.pdb");
 }
 

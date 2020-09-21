@@ -33,13 +33,13 @@ namespace U2 {
 
 const QString SequenceInfoFactory::GROUP_ID = "OP_SEQ_INFO";
 const QString SequenceInfoFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
-const QString SequenceInfoFactory::GROUP_DOC_PAGE = "46499736";
+const QString SequenceInfoFactory::GROUP_DOC_PAGE = "49447111";
 
 SequenceInfoFactory::SequenceInfoFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *SequenceInfoFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *SequenceInfoFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

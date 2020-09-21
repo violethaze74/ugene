@@ -138,7 +138,6 @@ public:
      * Assumes that the row index is valid.
      * Can modify the overall alignment length (increase or decrease).
      */
-    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const QByteArray &sequence, int offset = 0);
     void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel);
     void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
 

@@ -49,7 +49,7 @@ namespace U2 {
 #define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
 
-ExternalToolRunTask::ExternalToolRunTask(const QString &_toolId, const QStringList &_arguments, ExternalToolLogParser *_logParser, const QString &_workingDirectory, const QStringList &_additionalPaths, const QString &_additionalProcessToKill, bool parseOutputFile)
+ExternalToolRunTask::ExternalToolRunTask(const QString &_toolId, const QStringList &_arguments, ExternalToolLogParser *_logParser, const QString &_workingDirectory, const QStringList &_additionalPaths, bool parseOutputFile)
     : Task(AppContext::getExternalToolRegistry()->getToolNameById(_toolId) + tr(" tool"), TaskFlag_None),
       arguments(_arguments),
       logParser(_logParser),
@@ -59,7 +59,6 @@ ExternalToolRunTask::ExternalToolRunTask(const QString &_toolId, const QStringLi
       externalToolProcess(NULL),
       helper(NULL),
       listener(NULL),
-      additionalProcessToKill(_additionalProcessToKill),
       parseOutputFile(parseOutputFile) {
     CHECK_EXT(AppContext::getExternalToolRegistry()->getById(toolId) != nullptr, stateInfo.setError(tr("External tool is absent")), );
 
@@ -118,7 +117,7 @@ void ExternalToolRunTask::run() {
     }
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
-            killProcess(externalToolProcess, additionalProcessToKill);
+            killProcess(externalToolProcess);
             algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
             return;
         }
@@ -148,7 +147,7 @@ void ExternalToolRunTask::run() {
     }
 }
 
-void ExternalToolRunTask::killProcess(QProcess *process, QString childProcesses) {
+void ExternalToolRunTask::killProcess(QProcess *process) {
     CmdlineTaskRunner::killProcessTree(process);
 }
 

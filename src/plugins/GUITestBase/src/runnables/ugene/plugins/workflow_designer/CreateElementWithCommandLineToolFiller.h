@@ -155,7 +155,7 @@ private:
 
         QComboBox *box = qobject_cast<QComboBox *>(QApplication::focusWidget());
         QString dataType = dataTypeToString(type);
-        GTComboBox::setIndexWithText(os, box, dataType);
+        GTComboBox::selectItemByText(os, box, dataType);
 #ifdef Q_OS_WIN
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif

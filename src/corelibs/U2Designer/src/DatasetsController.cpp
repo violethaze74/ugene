@@ -732,7 +732,7 @@ void URLListController::createWidget() {
 }
 
 void URLListController::addItemWidget(URLContainer *url) {
-    SAFE_POINT(NULL != widget, "NULL url list widget", );
+    SAFE_POINT(widget != nullptr, "NULL url list widget", );
     ItemWidgetCreator wc;
     url->accept(&wc);
     urlMap[wc.getWidget()] = url;
@@ -763,7 +763,7 @@ void URLListController::replaceUrl(int pos, int newPos) {
 
 void URLListController::addUrl(const QString &url, U2OpStatus &os) {
     URLContainer *urlCont = URLContainerFactory::createUrlContainer(url);
-    if (NULL == urlCont) {
+    if (urlCont == nullptr) {
         os.setError(tr("This file or folder does not exist: %1").arg(url));
         return;
     }

@@ -23,7 +23,6 @@
 
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -50,7 +49,7 @@ CreateDocumentFromTextDialogController::CreateDocumentFromTextDialogController(Q
       saveController(NULL) {
     ui = new Ui_CreateDocumentFromTextDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "46499629");
+    new HelpButton(this, ui->buttonBox, "49447002");
 
     initSaveController();
 

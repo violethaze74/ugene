@@ -114,7 +114,7 @@ void GUITestLauncher::run() {
             try {
                 QString testResult = runTest(testName);
                 results[testName] = testResult;
-                if (GUITestTeamcityLogger::testFailed(testResult)) {
+                if (GUITestTeamcityLogger::isTestFailed(testResult)) {
                     renameTestLog(testName);
                 }
 
@@ -147,6 +147,8 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
         testsPerSuite << 900 << 840 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
+    } else if (suiteCount == 5) {
+        testsPerSuite << 535 << 570 << 448 << 525 << -1;
     }
     QList<HI::GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
@@ -197,14 +199,15 @@ bool GUITestLauncher::initGUITestBase() {
         }
         char buf[1024];
         while (suite.readLine(buf, sizeof(buf)) != -1) {
-            QString testName = QString(buf).remove('\n').remove('\t').remove(' ');
+            QString testName = QString(buf).remove('\n').remove('\r').remove('\t').remove(' ');
             if (testName.startsWith("#") || testName.isEmpty()) {
                 continue;    // comment line or empty line.
             }
             bool added = false;
             foreach (HI::GUITest *test, allTestList) {
                 QString fullTestName = test->getFullName();
-                QString fullTestNameInTeamcityFormat = fullTestName.replace(':', '_');
+                QString fullTestNameInTeamcityFormat = fullTestName;
+                fullTestNameInTeamcityFormat.replace(':', '_');
                 if (testName == fullTestName || testName == fullTestNameInTeamcityFormat) {
                     tests << test;
                     added = true;
@@ -261,7 +264,7 @@ QString GUITestLauncher::getTestOutDir() {
     return d.absolutePath();
 }
 
-static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
+static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, const QString &iniFilePath) {
     QDir testsDir(qgetenv("UGENE_TESTS_PATH"));
     if (!testsDir.exists()) {
         coreLog.error("UGENE_TESTS_PATH is not set!");
@@ -276,16 +279,21 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
     processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
     processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
+    processEnv.insert("UGENE_USER_INI", iniFilePath);
     qint64 startTimeMicros = GTimer::currentTimeMicros();
     QProcess process;
     process.setProcessEnvironment(processEnv);
     QString restoreProcessWorkDir = QFileInfo(testsDir.absolutePath() + "/../").absolutePath();
     process.setWorkingDirectory(restoreProcessWorkDir);    // Parent dir of the test dir.
-    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
-                 ", tests dir: " + testsDir.dirName() +
-                 ", data dir: " + dataDir.dirName() +
-                 ", script: " + pathToShellScript);
+//    coreLog.info("Running restore process, work dir: " + restoreProcessWorkDir +
+//                 ", tests dir: " + testsDir.dirName() +
+//                 ", data dir: " + dataDir.dirName() +
+//                 ", script: " + pathToShellScript);
+#ifdef Q_OS_WIN
+    process.start("cmd /C " + pathToShellScript);
+#else
     process.start("/bin/bash", QStringList() << pathToShellScript);
+#endif
     qint64 processId = process.processId();
     bool isStarted = process.waitForStarted();
     if (!isStarted) {
@@ -317,17 +325,15 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &te
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
 
-    QString iniFileName = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
+    QString iniFilePath = testOutDir + "/inis/" + QString(testName).replace(':', '_') + "_run_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
-        QFile::copy(iniFileTemplate, iniFileName);
+        QFile::copy(iniFileTemplate, iniFilePath);
     }
-    env.insert(U2_USER_INI, iniFileName);
+    env.insert(U2_USER_INI, iniFilePath);
 
     QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
     if (!externalScriptToRestore.isEmpty()) {
-        if (restoreTestDirWithExternalScript(externalScriptToRestore)) {
-            env.insert("UGENE_TEST_SKIP_BACKUP_AND_RESTORE", "1");
-        }
+        restoreTestDirWithExternalScript(externalScriptToRestore, iniFilePath);
     }
 
     return env;
@@ -343,7 +349,7 @@ QString GUITestLauncher::runTest(const QString &testName) {
         }
         U2OpStatusImpl os;
         testOutput = runTestOnce(os, testName, iteration, isVideoRecordingOn && iteration > 0);
-        bool isFailed = os.hasError() || GUITestTeamcityLogger::testFailed(testOutput);
+        bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
         }
@@ -395,7 +401,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
         }
-        if (!GUITestTeamcityLogger::testFailed(testResult)) {
+        if (!GUITestTeamcityLogger::isTestFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }
@@ -444,7 +450,7 @@ QString GUITestLauncher::generateReport() const {
     QMap<QString, QString>::const_iterator i;
     for (i = results.begin(); i != results.end(); ++i) {
         QString color = "green";
-        if (GUITestTeamcityLogger::testFailed(i.value())) {
+        if (GUITestTeamcityLogger::isTestFailed(i.value())) {
             color = "red";
         }
         res += QString("<tr><th><font color='%3'>%1</font></th><th><font color='%3'>%2</font></th></tr>").arg(i.key()).arg(i.value()).arg(color);

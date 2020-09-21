@@ -89,7 +89,7 @@ void AppSettingsDialogFiller::commonScenario() {
     }
     if (itemStyle != none) {
         QComboBox *styleCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "styleCombo", dialog));
-        GTComboBox::setCurrentIndex(os, styleCombo, itemStyle);
+        GTComboBox::selectItemByIndex(os, styleCombo, itemStyle);
     }
 
     if (r != -1) {
@@ -422,7 +422,7 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
     QComboBox *alphabetComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "alphabetComboBox", dialog));
     GT_CHECK(alphabetComboBox, "alphabetComboBox lineEdit not found ");
 
-    GTComboBox::setCurrentIndex(os, alphabetComboBox, al);
+    GTComboBox::selectItemByIndex(os, alphabetComboBox, al);
     GTGlobals::sleep(500);
 
     GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os));

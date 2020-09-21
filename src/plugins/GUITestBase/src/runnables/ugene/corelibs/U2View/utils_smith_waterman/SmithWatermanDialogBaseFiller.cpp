@@ -94,7 +94,7 @@ void SmithWatermanDialogFiller::commonScenario() {
     } else {
         assert(0);
     }
-    GTComboBox::setCurrentIndex(os, resultViewVariants, resultViewIndex);
+    GTComboBox::selectItemByIndex(os, resultViewVariants, resultViewIndex);
 
     if (!resultFilesPath.isEmpty()) {
         QLineEdit *resultFilePathContainer = NULL;
@@ -151,10 +151,10 @@ void SmithWatermanDialogFiller::commonScenario() {
         }
 
         const int swRealizationIndex = comboRealization->findText(realizationName);
-        GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
+        GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
         QComboBox *comboResultFilter = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboResultFilter", dialog));
-        GTComboBox::setIndexWithText(os, comboResultFilter, "filter-intersections");
+        GTComboBox::selectItemByText(os, comboResultFilter, "filter-intersections");
 
         QSpinBox *spinScorePercent = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinScorePercent", dialog));
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);

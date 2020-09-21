@@ -229,13 +229,13 @@ QWidget *AssemblySettingsWidget::createRulerSettings() {
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
 const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "46500210";
+const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "49447581";
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblySettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AssemblySettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

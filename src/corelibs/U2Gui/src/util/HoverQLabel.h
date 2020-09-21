@@ -18,30 +18,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+#ifndef _U2_HOVER_QLABEL_H_
+#define _U2_HOVER_QLABEL_H_
 
-#ifndef _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
-#define _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
+#include <QLabel>
 
-#include "../WebViewControllerPrivate.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class WebViewWebKitControllerPrivate : public WebViewControllerPrivate {
+class U2GUI_EXPORT HoverQLabel : public QLabel {
     Q_OBJECT
 public:
-    WebViewWebKitControllerPrivate(U2WebView *webView);
+    HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
+    void updateStyles(const QString &newNormalStyle, const QString &newHoveredStyle);
 
-    void loadPage(const QString &pageUrl);
-    void savePage(const QString &pageUrl);
+signals:
+    void clicked();
 
-    void registerJavaScriptAgent(JavaScriptAgent *agent);
-    void runJavaScript(const QString &script);
-    void runJavaScript(const QString &script, WebViewCallback callback);
+protected:
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
-private:
-    void init();
+public:
+    QString normalStyle;
+    QString hoveredStyle;
+    bool isHovered;
 };
 
 }    // namespace U2
-
-#endif    // _U2_WEB_VIEW_WEB_KIT_CONTROLLER_PRIVATE_H_
+#endif

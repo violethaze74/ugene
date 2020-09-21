@@ -47,9 +47,6 @@ copy %PATH_TO_QT_LIBS%\Qt5Sensors.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Sql.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Svg.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Test.dll %OUTPUT_DIR%
-copy %PATH_TO_QT_LIBS%\Qt5WebChannel.dll %OUTPUT_DIR%
-copy %PATH_TO_QT_LIBS%\Qt5WebKit.dll %OUTPUT_DIR%
-copy %PATH_TO_QT_LIBS%\Qt5WebKitWidgets.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Widgets.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\Qt5Xml.dll %OUTPUT_DIR%
 copy %PATH_TO_QT_LIBS%\icu* %OUTPUT_DIR%

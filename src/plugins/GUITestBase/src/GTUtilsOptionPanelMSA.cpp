@@ -219,7 +219,7 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFor
         GT_CHECK_RESULT(false, "Unexpected format", );
         break;
     }
-    GTComboBox::setIndexWithText(os, copyType, stringFormat);
+    GTComboBox::selectItemByText(os, copyType, stringFormat);
 
     QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
     GT_CHECK_RESULT(copyButton != nullptr, "copyType not found", );
@@ -231,7 +231,7 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFor
 #define GT_METHOD_NAME "setColorScheme"
 void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method) {
     openTab(os, Highlighting);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName, true, method);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName, method);
 }
 #undef GT_METHOD_NAME
 
@@ -247,7 +247,7 @@ QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "setHighlightingScheme"
 void GTUtilsOptionPanelMsa::setHighlightingScheme(GUITestOpStatus &os, const QString &highlightingSchemeName) {
     openTab(os, Highlighting);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme"), highlightingSchemeName);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme"), highlightingSchemeName);
 }
 #undef GT_METHOD_NAME
 
@@ -319,7 +319,7 @@ QPushButton *GTUtilsOptionPanelMsa::getAlignButton(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
 void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus &os, const QString &algorithm) {
     openTab(os, PairwiseAlignment);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox"), algorithm);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox"), algorithm);
 }
 #undef GT_METHOD_NAME
 
@@ -437,7 +437,7 @@ void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus &os, QString algori
     if (!algoBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
     }
-    GTComboBox::setIndexWithText(os, algoBox, algorithm);
+    GTComboBox::selectItemByText(os, algoBox, algorithm);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME
@@ -514,7 +514,7 @@ void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "setRegionType"
 void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus &os, const QString &regionType) {
     openSearchInShowHideWidget(os);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "boxRegion"), regionType, false);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "boxRegion"), regionType);
 }
 #undef GT_METHOD_NAME
 
@@ -530,7 +530,7 @@ void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus &os, int from, int to)
 void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus &os, const QString &context) {
     QComboBox *searchContextBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "searchContextComboBox"));
     GT_CHECK(searchContextBox != nullptr, "searchContextBox is NULL");
-    GTComboBox::setIndexWithText(os, searchContextBox, context);
+    GTComboBox::selectItemByText(os, searchContextBox, context);
 }
 #undef GT_METHOD_NAME
 

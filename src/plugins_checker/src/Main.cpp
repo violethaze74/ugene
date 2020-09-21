@@ -31,6 +31,7 @@
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/Timer.h>
 #include <U2Core/UserApplicationsSettings.h>
+#include <U2Core/Version.h>
 
 #include <U2Lang/LocalDomain.h>
 
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
     bool useGui = true;
 #if defined(Q_OS_UNIX)
     useGui = (getenv("DISPLAY") != 0);
-    if (!useGui && argc==1) {
+    if (!useGui && argc == 1) {
         printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
         return 1;
     }
@@ -71,9 +72,7 @@ int main(int argc, char **argv) {
     CrashHandler::setupHandler();
     CrashHandler::setSendCrashReports(false);
 
-    const char *build = QT_VERSION_STR, *runtime = qVersion();
-    if (strcmp(build, runtime) > 0) {
-        printf("Installed Qt version must be %s or greater \r\n", QT_VERSION_STR);
+    if (!Version::checkBuildAndRuntimeVersions()) {
         return -1;
     }
 
@@ -86,7 +85,7 @@ int main(int argc, char **argv) {
         if (useGui) {
             QMessageBox msgBox;
             msgBox.setWindowTitle("Information");
-            msgBox.setText("Use \"ugeneui\" to start Unipro UGENE graphical interface \nor \"ugenecl\" to use the command-line interface.");
+            msgBox.setText("Use \"ugeneui\" to start Unipro graphical interface \nor \"ugenecl\" to use the command-line interface.");
             msgBox.exec();
         } else {
             printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");

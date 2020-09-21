@@ -226,13 +226,10 @@ bool GTFile::equals(GUITestOpStatus &os, const QString &path1) {
 #undef GT_METHOD_NAME
 #define GT_METHOD_NAME "getSize"
 qint64 GTFile::getSize(GUITestOpStatus &os, const QString &path){
-    QFile f(path);
-    bool ok = f.open(QIODevice::ReadOnly);
-    GT_CHECK_RESULT(ok, "file " + path + "not found",-1);
-
-    int size = f.size();
-    f.close();
-    return size;
+    QFile file(path);
+    bool ok = file.open(QIODevice::ReadOnly);
+    GT_CHECK_RESULT(ok, "file '" + path + "' is not found", -1);
+    return file.size();
 }
 #undef GT_METHOD_NAME
 
@@ -331,8 +328,11 @@ void GTFile::removeDir(QString dirName)
 
 #define GT_METHOD_NAME "backup"
 void GTFile::backup(GUITestOpStatus &os, const QString& path) {
+    qDebug("Backup file %s", path.toLocal8Bit().constData());
     if (QFile(path).exists()) {
         copy(os, path, path + backupPostfix);
+    } else {
+        qDebug("Failed to backup. Files does not exist: %s", path.toLocal8Bit().constData());
     }
 }
 #undef GT_METHOD_NAME
@@ -346,7 +346,7 @@ void GTFile::backupDir(GUITestOpStatus &os, const QString& path) {
 
 #define GT_METHOD_NAME "restore"
 void GTFile::restore(GUITestOpStatus &os, const QString& path) {
-
+    qDebug("Restoring file %s", path.toLocal8Bit().constData());
     QFile backupFile(path + backupPostfix);
 
     bool ok = backupFile.open(QIODevice::ReadOnly);

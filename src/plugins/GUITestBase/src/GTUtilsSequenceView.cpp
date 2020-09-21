@@ -588,7 +588,7 @@ void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, in
     CHECK_SET_ERR(detView != nullptr, "DetView is NULL");
 
     QToolBar *toolbar = GTWidget::findExactWidget<QToolBar *>(os, "", detView);
-    QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionName(os, toolbar, "edit_sequence_action"));
+    QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionObjectName(os, toolbar, "edit_sequence_action"));
     CHECK_SET_ERR(NULL != editButton, "'edit_sequence_action' button is NULL");
     if (editButton->isChecked() != enable) {
         if (editButton->isVisible()) {

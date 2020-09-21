@@ -29,13 +29,13 @@ namespace U2 {
 
 const QString PairAlignFactory::GROUP_ID = "OP_PAIRALIGN";
 const QString PairAlignFactory::GROUP_ICON_STR = ":core/images/pairwise.png";
-const QString PairAlignFactory::GROUP_DOC_PAGE = "46500026";
+const QString PairAlignFactory::GROUP_DOC_PAGE = "49447396";
 
 PairAlignFactory::PairAlignFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *PairAlignFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *PairAlignFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

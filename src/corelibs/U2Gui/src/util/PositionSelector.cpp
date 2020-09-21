@@ -96,7 +96,7 @@ PositionSelector::PositionSelector(QDialog *dialog, qint64 rangeStart, qint64 ra
     QPushButton *helpButton = new QPushButton(this);
     helpButton->setText(tr("Help"));
     helpButton->setObjectName("helpButton");
-    new HelpButton(dialog, helpButton, "46499760");
+    new HelpButton(dialog, helpButton, "49447135");
 
     QHBoxLayout *l3 = new QHBoxLayout();
     l3->setMargin(0);

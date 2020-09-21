@@ -120,7 +120,7 @@ void SelectSubalignmentDialog::init() {
     SAFE_POINT(editor != NULL, tr("Ma Editor is NULL"), );
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500043");
+    new HelpButton(this, buttonBox, "49447414");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));

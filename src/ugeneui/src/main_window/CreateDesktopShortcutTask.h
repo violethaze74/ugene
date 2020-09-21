@@ -19,40 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_
-#define _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_
+#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
 
-#include <QPointer>
+#include <QMessageBox>
 
-#include "U2WebView.h"
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Task.h>
+#include <U2Core/Version.h>
+
+class QPushButton;
 
 namespace U2 {
 
-class JavaScriptAgent;
-
-class WebViewControllerPrivate : public QObject {
+class CreateDesktopShortcutTask : public Task {
     Q_OBJECT
+
 public:
-    WebViewControllerPrivate(U2WebView *webView);
+    enum Answer { Create,
+                  DoNothing };
 
-    virtual void init() = 0;
+    CreateDesktopShortcutTask(bool startUp = false);
+    void run();
+    bool createDesktopShortcut();
+    ReportResult report();
+    static Answer getAnswer();
 
-    virtual void loadPage(const QString &pageUrl) = 0;
-    virtual void savePage(const QString &pageUrl) = 0;
-
-    virtual void registerJavaScriptAgent(JavaScriptAgent *agent) = 0;
-    virtual void runJavaScript(const QString &script) = 0;
-    virtual void runJavaScript(const QString &script, WebViewCallback callback) = 0;
-
-    static void saveContent(const QString &url, const QString &data);
-
-private slots:
-    void sl_linkClicked(const QUrl &url);
-
-protected:
-    QPointer<U2WebView> webView;
+private:
+    bool runOnStartup;
+    bool startError;
 };
 
 }    // namespace U2
 
-#endif    // _U2_WEB_VIEW_CONTROLLER_PRIVATE_H_
+#endif

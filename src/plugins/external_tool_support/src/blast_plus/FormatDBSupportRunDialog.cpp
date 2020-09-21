@@ -39,7 +39,7 @@ namespace U2 {
 FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatDBSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), name(_name), settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46501068");
+    new HelpButton(this, buttonBox, "49448439");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Format"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     formatButton = buttonBox->button(QDialogButtonBox::Ok);

@@ -50,7 +50,7 @@ static const int NO_LIMIT = -1;
 class BaseDefaultPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    BaseDefaultPropertyWidget(int maxLength, QWidget *parent);
+    BaseDefaultPropertyWidget(QWidget *parent);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
     virtual void setRequired();

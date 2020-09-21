@@ -396,28 +396,28 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "undo"
 void GTUtilsMsaEditor::undo(GUITestOpStatus &os) {
     getActiveMsaEditorWindow(os);
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "redo"
 void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
     getActiveMsaEditorWindow(os);
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus &os) {
     getActiveMsaEditorWindow(os);
-    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isRedoEnabled"
 bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus &os) {
     getActiveMsaEditorWindow(os);
-    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
+    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 

@@ -152,27 +152,27 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::DisableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="276"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="275"/>
         <source>Disable &apos;%1&apos; service</source>
         <translation>Остановка сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="289"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="288"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="290"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="289"/>
         <source>Service is not enabled</source>
         <translation>Сервис недоступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="296"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="295"/>
         <source>Active top-level task name: %1</source>
         <translation>Активная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="298"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="297"/>
         <source>Active task was found</source>
         <translation>Имеются неоконченные задачи</translation>
     </message>
@@ -188,24 +188,28 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::EnableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="183"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="214"/>
         <source>Service is enabled</source>
         <translation>Сервис доступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="184"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="215"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="189"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="220"/>
         <source>Circular service dependency: %1</source>
         <translation>Циркулярная зависимость модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="195"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="226"/>
+        <source>Required services are not enabled: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Required service is not enabled: %1</source>
-        <translation>Не запущен обеспечивающий зависимость сервис: %1</translation>
+        <translation type="vanished">Не запущен обеспечивающий зависимость сервис: %1</translation>
     </message>
     <message>
         <location filename="../src/ServiceRegistryImpl.cpp" line="174"/>
@@ -450,12 +454,12 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::UnregisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="251"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="250"/>
         <source>Unregister &apos;%1&apos; service</source>
         <translation>Дерегистрация сервиса &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="256"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="255"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>

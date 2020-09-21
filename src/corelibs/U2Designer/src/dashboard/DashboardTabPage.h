@@ -19,39 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JAVA_SCRIPT_AGENT_H_
-#define _U2_JAVA_SCRIPT_AGENT_H_
+#ifndef _U2_DASHBOARD_TAB_PAGE_H_
+#define _U2_DASHBOARD_TAB_PAGE_H_
 
-#include <QObject>
+#include <QLayout>
+#include <QScrollArea>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
-class U2DESIGNER_EXPORT JavaScriptAgent : public QObject {
+class DashboardWidget;
+
+class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
     Q_OBJECT
 
-    Q_PROPERTY(QString lang MEMBER lang CONSTANT)
-    Q_PROPERTY(bool needAdditionalInitialization MEMBER needAdditionalInitialization CONSTANT)
-
 public:
-    JavaScriptAgent(QObject *parent);
+    DashboardTabPage(const QString &tabObjectName);
 
-    virtual const QString &getId() const;
-
-signals:
-    void si_pageInitialized();
-
-public slots:
-    void sl_pageInitialized();
+    DashboardWidget *addDashboardWidget(const QString &title, QWidget *contentWidget);
 
 private:
-    QString lang;
-    bool needAdditionalInitialization;
-
-    static const QString ID;
+    QVBoxLayout *leftColumnLayout;
+    QVBoxLayout *rightColumnLayout;
 };
 
 }    // namespace U2
-
-#endif    // _U2_JAVA_SCRIPT_AGENT_H_
+#endif

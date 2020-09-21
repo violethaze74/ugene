@@ -31,13 +31,13 @@ namespace U2 {
 
 const QString MSAHighlightingFactory::GROUP_ID = "OP_MSA_HIGHLIGHTING";
 const QString MSAHighlightingFactory::GROUP_ICON_STR = ":core/images/highlight.png";
-const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "46499981";
+const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "49447350";
 
 MSAHighlightingFactory::MSAHighlightingFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *MSAHighlightingFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *MSAHighlightingFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

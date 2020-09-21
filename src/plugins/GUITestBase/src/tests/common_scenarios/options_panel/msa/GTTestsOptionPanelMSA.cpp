@@ -24,7 +24,6 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -36,6 +35,7 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -76,7 +76,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
     //    Expected state: Phaneroptera_falcata highlighted as reference
 
     //    4. Use button to remove reference
@@ -85,12 +85,12 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     //    reference sequence line edit contains "select and add"
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
-    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
-    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
-    //Difference: pupup completer is used
+    //Difference: popup completer is used
     const QString seqName = "Phaneroptera_falcata";
     //    1. Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
     //    Phaneroptera_falcata highlighted as reference
 
     //    4. Use button to remove reference
@@ -114,8 +114,8 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     //    reference sequence line edit contains "select and add"
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
-    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text ecpected").arg(text));
-    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_test_0002) {
@@ -130,7 +130,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
     QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
-    //Expected state: popup helper contains Phaneroptera_falcata.(case insencivity is checked)
+    //Expected state: popup helper contains Phaneroptera_falcata.(case insensitivity is checked)
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
 
@@ -212,7 +212,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "UGENE" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "UGENE");
+    GTComboBox::selectItemByText(os, colorScheme, "UGENE");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "No colors" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "No colors");
+    GTComboBox::selectItemByText(os, colorScheme, "No colors");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -258,7 +258,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Jalview" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Jalview");
+    GTComboBox::selectItemByText(os, colorScheme, "Jalview");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -281,7 +281,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Percentage identity" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Percentage identity");
+    GTComboBox::selectItemByText(os, colorScheme, "Percentage identity");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -304,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Percentage identity (gray)" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Percentage identity (gray)");
+    GTComboBox::selectItemByText(os, colorScheme, "Percentage identity (gray)");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
@@ -335,8 +335,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
 
     //    Expected state: color scheme added to "Color" combobox
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "No colors");
-    GTComboBox::setIndexWithText(os, colorScheme, schemeName);
+    GTComboBox::selectItemByText(os, colorScheme, "No colors");
+    GTComboBox::selectItemByText(os, colorScheme, schemeName);
 
     //    4. Select custom scheme
     //    Expected state: scheme changed
@@ -367,9 +367,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002_1) {
     //    Expected state: color schemes added to "Color" combobox
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, scheme1);
-    GTComboBox::setIndexWithText(os, colorScheme, scheme2);
-    GTComboBox::setIndexWithText(os, colorScheme, scheme3);
+    GTComboBox::selectItemByText(os, colorScheme, scheme1);
+    GTComboBox::selectItemByText(os, colorScheme, scheme2);
+    GTComboBox::selectItemByText(os, colorScheme, scheme3);
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
@@ -384,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    4. Select custom scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, scheme);
+    GTComboBox::selectItemByText(os, colorScheme, scheme);
     //    5. Delete scheme which is selected
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
     GTGlobals::sleep(500);
@@ -414,7 +414,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "No color" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "No colors");
+    GTComboBox::selectItemByText(os, colorScheme, "No colors");
     //    4. Check colors for all symbols
     for (int i = 0; i < 29; i++) {
         GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(i, 0), "#ffffff");
@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Buried index" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Buried index");
+    GTComboBox::selectItemByText(os, colorScheme, "Buried index");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00a35c");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#00eb14");    //b
@@ -469,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Clustal X" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Clustal X");
+    GTComboBox::selectItemByText(os, colorScheme, "Clustal X");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#80a0f0");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
@@ -509,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_3) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Helix propensity" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Helix propensity");
+    GTComboBox::selectItemByText(os, colorScheme, "Helix propensity");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#e718e7");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#49b649");    //b
@@ -549,7 +549,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_4) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Hydrophobicity" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Hydrophobicity");
+    GTComboBox::selectItemByText(os, colorScheme, "Hydrophobicity");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#0c00f3");    //b
@@ -589,7 +589,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_5) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Strand propensity" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Strand propensity");
+    GTComboBox::selectItemByText(os, colorScheme, "Strand propensity");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#5858a7");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#4343bc");    //b
@@ -629,7 +629,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_6) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Tailor" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Tailor");
+    GTComboBox::selectItemByText(os, colorScheme, "Tailor");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ccff00");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
@@ -669,7 +669,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_7) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Turn propensity" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Turn propensity");
+    GTComboBox::selectItemByText(os, colorScheme, "Turn propensity");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#2cd3d3");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#f30c0c");    //b
@@ -704,12 +704,13 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_7) {
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_8) {
     //    1. Open file test/_common_data/alphabets/extended_amino.aln
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "UGENE" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "UGENE");
+    GTComboBox::selectItemByText(os, colorScheme, "UGENE");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#00ccff");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ccff99");    //b
@@ -749,7 +750,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0004_9) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    3. Select "Zappo" color scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Zappo");
+    GTComboBox::selectItemByText(os, colorScheme, "Zappo");
     //    4. Check colors for all symbols
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ffafaf");    //a
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(1, 0), "#ffffff");    //b
@@ -793,8 +794,8 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     //    Expected state: color scheme added to "Color" combobox
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "No colors");
-    GTComboBox::setIndexWithText(os, colorScheme, scheme);
+    GTComboBox::selectItemByText(os, colorScheme, "No colors");
+    GTComboBox::selectItemByText(os, colorScheme, scheme);
     //    4. Select custom scheme
     //    Expected state: scheme changed
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0, 0), "#ad0052");    //a
@@ -842,9 +843,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
     //    Expected state: color schemes added to "Color" combobox
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, scheme1, true);
-    GTComboBox::setIndexWithText(os, colorScheme, scheme2, true);
-    GTComboBox::setIndexWithText(os, colorScheme, scheme3, true);
+    GTComboBox::selectItemByText(os, colorScheme, scheme1);
+    GTComboBox::selectItemByText(os, colorScheme, scheme2);
+    GTComboBox::selectItemByText(os, colorScheme, scheme3);
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
@@ -863,7 +864,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 
     //    4. Select custom scheme
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, scheme);
+    GTComboBox::selectItemByText(os, colorScheme, scheme);
 
     //    5. Delete scheme which is selected
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
@@ -886,7 +887,7 @@ namespace {
 void setHighlightingType(HI::GUITestOpStatus &os, const QString &type) {
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     CHECK_SET_ERR(highlightingScheme != NULL, "highlightingScheme not found");
-    GTComboBox::setIndexWithText(os, highlightingScheme, type);
+    GTComboBox::selectItemByText(os, highlightingScheme, type);
 }
 }    // namespace
 
@@ -1588,7 +1589,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     const QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTGlobals::sleep(500);
 
     //    Expected state: layout changed, height slider is disabled
@@ -1597,7 +1598,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for circular layout");
 
     //    4. Select unrooted layout
-    GTComboBox::setIndexWithText(os, layoutCombo, "Unrooted");
+    GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     GTGlobals::sleep(500);
 
     //    Expected state: layout changed, height slider is disabled
@@ -1606,7 +1607,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     CHECK_SET_ERR(!heightSlider->isEnabled(), "heightSlider in enabled for unrooted layout");
 
     //    5. Select rectangular layout
-    GTComboBox::setIndexWithText(os, layoutCombo, "Rectangular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
     GTGlobals::sleep(500);
 
     //    Expected state: tree is similar to the beginning, height slider is enabled
@@ -1636,7 +1637,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     const QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select phylogram view
-    GTComboBox::setIndexWithText(os, treeViewCombo, "Phylogram");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
     GTGlobals::sleep(500);
 
     //    Expected state: layout changed
@@ -1644,7 +1645,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     CHECK_SET_ERR(initImage != circularImage, "tree view not changed to Phylogram");
 
     //    4. Select cladogram view
-    GTComboBox::setIndexWithText(os, treeViewCombo, "Cladogram");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
     GTGlobals::sleep(500);
 
     //    Expected state: layout changed
@@ -1652,7 +1653,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
 
     //    5. Select default view
-    GTComboBox::setIndexWithText(os, treeViewCombo, "Default");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Default");
     GTGlobals::sleep(500);
 
     //    Expected state: tree is similar to the beginning
@@ -1683,7 +1684,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
 
     QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
-    QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    QList<QGraphicsSimpleTextItem *> initDistanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     int initNamesNumber = initNames.count();
     int initDistansesNumber = initDistanses.count();
 
@@ -1710,7 +1711,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: distanses are not shown
-    QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == 0, QString("unexpected number of distanses: %1").arg(names.count()));
 
     //    6. Check "show distanses" checkbox.
@@ -1718,7 +1719,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTGlobals::sleep(500);
 
     //    Expected state: distanses are shown
-    distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
+    distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == initDistansesNumber, QString("unexpected number of distanses: %1").arg(names.count()));
 
     //    7. Check "align labels" checkbox.
@@ -2042,27 +2043,28 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
     const QString dirName = "export_consensus_test_0003";
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
+
     //    3. Select some existing file in read-only directory as output
     QString dirPath = sandBoxDir + dirName;
     bool ok = QDir().mkpath(dirPath);
     CHECK_SET_ERR(ok, "subfolder not created");
     GTFile::setReadOnly(os, dirPath);
 
-    const QString filePath = dirPath + '/' + fileName;
+    QString filePath = dirPath + '/' + fileName;
     setConsensusOutputPath(os, filePath);
+
     //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTGlobals::sleep(300);
-    //    Expected state: error in log: Task {Pairwise Alignment Task} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
-    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
-    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
-    CHECK_SET_ERR(error == expected, QString("Unexpected error: %1").arg(error));
+    GTThread::waitForMainThread();
 
-    GTFile::setReadWrite(os, dirPath);
+    //    Expected state: notification is shown that folder is read-only.
+    QString error = l.getJoinedErrorString();
+    QString expected = QString("Task {Export consensus} finished with error: Folder is read-only: %1").arg(QFileInfo(filePath).absolutePath());
+    CHECK_SET_ERR(error == expected, QString("Unexpected error: '%1', expected: '%2'").arg(error).arg(expected));
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
@@ -2174,7 +2176,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002) {
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
     //    5. Check identity algorithm
     QComboBox *algoComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algoComboBox");
-    GTComboBox::setIndexWithText(os, algoComboBox, "Similarity");
+    GTComboBox::selectItemByText(os, algoComboBox, "Similarity");
     /*
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "100%", QString("Unexpected similarity at line 1: %1").arg(s0));
@@ -2252,7 +2254,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0001) {
 
     //set some parameters
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
     //close and open option panel
@@ -2286,8 +2288,8 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0002) {
 
     //set some parameters
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    GTComboBox::setIndexWithText(os, colorScheme, "Jalview");
-    GTComboBox::setIndexWithText(os, highlightingScheme, "Agreements");
+    GTComboBox::selectItemByText(os, colorScheme, "Jalview");
+    GTComboBox::selectItemByText(os, highlightingScheme, "Agreements");
     GTCheckBox::setChecked(os, useDots, true);
 
     //close and open option panel
@@ -2379,7 +2381,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
 
     //find widgets
     QComboBox *algorithmListComboBox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmListComboBox");
-    GTComboBox::setIndexWithText(os, algorithmListComboBox, "Smith-Waterman");
+    GTComboBox::selectItemByText(os, algorithmListComboBox, "Smith-Waterman");
 
     QComboBox *algorithmVersion = GTWidget::findExactWidget<QComboBox *>(os, "algorithmVersion");
     QComboBox *scoringMatrix = GTWidget::findExactWidget<QComboBox *>(os, "scoringMatrix");
@@ -2387,8 +2389,8 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
     QSpinBox *gapExtd = GTWidget::findExactWidget<QSpinBox *>(os, "gapExtd");
 
     //setValues
-    GTComboBox::setIndexWithText(os, algorithmVersion, "SW_classic");
-    GTComboBox::setIndexWithText(os, scoringMatrix, "dna", false);
+    GTComboBox::selectItemByText(os, algorithmVersion, "SW_classic");
+    GTComboBox::selectItemByText(os, scoringMatrix, "dna");
     GTSpinBox::setValue(os, gapOpen, 5);
     GTSpinBox::setValue(os, gapExtd, 5);
 
@@ -2430,22 +2432,20 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     //set some values
     expandFontSettings(os);
     QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
-    GTComboBox::setIndexWithText(os, layoutCombo, "Circular");
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
 
     QComboBox *treeViewCombo = GTWidget::findExactWidget<QComboBox *>(os, "treeViewCombo");
-    GTComboBox::setIndexWithText(os, treeViewCombo, "Cladogram");
-    QString initialColor;
-#ifndef Q_OS_MAC
-    setLabelsColor(os, 255, 0, 0);
-    initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
-#endif
+    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
+    setLabelsColor(os, 255, 255, 255);
+    QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
     QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
     QLineEdit *l = fontComboBox->findChild<QLineEdit *>();
 #ifdef Q_OS_LINUX
-    GTLineEdit::setText(os, l, "Serif");
+    QString fontName = "Serif";
 #else
-    GTLineEdit::setText(os, l, "Tahoma");
+    QString fontName = "Tahoma";
 #endif
+    GTLineEdit::setText(os, l, fontName);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     QSpinBox *fontSizeSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox");
@@ -2459,7 +2459,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
 
     //check settings
     layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
@@ -2473,15 +2472,8 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
 
     CHECK_SET_ERR(layoutCombo->currentText() == "Circular", QString("unexpected layout: %1").arg(layoutCombo->currentText()));
     CHECK_SET_ERR(treeViewCombo->currentText() == "Cladogram", QString("unexpected tree view: %1").arg(treeViewCombo->currentText()));
-#ifndef Q_OS_MAC
-    QString color = GTWidget::getColor(os, labelsColorButton, QPoint(10, 10)).name();
-    CHECK_SET_ERR(color == initialColor, QString("unexpected color: %1").arg(color));
-#endif
-#ifdef Q_OS_LINUX
-    CHECK_SET_ERR(fontComboBox->currentText().contains("Serif"), QString("unexpected font: %1").arg(fontComboBox->currentText()));
-#else
-    CHECK_SET_ERR(fontComboBox->currentText().contains("Tahoma"), QString("unexpected font: %1").arg(fontComboBox->currentText()));
-#endif
+    CHECK_SET_ERR(GTWidget::hasPixelWithColor(os, labelsColorButton, initialColor), QString("Initial color is not found: %1").arg(initialColor));
+    CHECK_SET_ERR(fontComboBox->currentText().contains(fontName), QString("unexpected font: %1").arg(fontComboBox->currentText()));
     CHECK_SET_ERR(fontSizeSpinBox->value() == 14, QString("unexpected font size: %1").arg(fontSizeSpinBox->value()));
     CHECK_SET_ERR(boldAttrButton->isChecked(), "boldAttrButton is not checked");
     CHECK_SET_ERR(italicAttrButton->isChecked(), "italicAttrButton is not checked");
@@ -2513,18 +2505,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTCheckBox::setChecked(os, showDistancesCheck, false);
     GTSlider::setValue(os, widthSlider, 50);
     GTSlider::setValue(os, heightSlider, 20);
-    QString initialColor;
-#ifndef Q_OS_MAC
-    setBranchColor(os, 255, 0, 0);
-    initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
-#endif
+    setBranchColor(os, 255, 255, 255);
+    QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "branchesColorButton"), QPoint(10, 10)).name();
     GTSpinBox::setValue(os, lineWeightSpinBox, 2);
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
 
     //checks
     showNamesCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showNamesCheck");
@@ -2534,25 +2522,22 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     lineWeightSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "lineWeightSpinBox");
     QWidget *branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
 
-    CHECK_SET_ERR(!showNamesCheck->isChecked(), "show names checkbox is unexpectidly checked");
-    CHECK_SET_ERR(!showDistancesCheck->isChecked(), "show distanses checkbox is unexpectidly checked");
+    CHECK_SET_ERR(!showNamesCheck->isChecked(), "show names checkbox is unexpectedly checked");
+    CHECK_SET_ERR(!showDistancesCheck->isChecked(), "show distances checkbox is unexpectedly checked");
     CHECK_SET_ERR(widthSlider->value() == 50, QString("unexpected width slider value: %1").arg(widthSlider->value()));
     CHECK_SET_ERR(heightSlider->value() == 20, QString("unexpected height slider value: %1").arg(heightSlider->value()));
     CHECK_SET_ERR(lineWeightSpinBox->value() == 2, QString("unexpected line width: %1").arg(lineWeightSpinBox->value()));
-#ifndef Q_OS_MAC
-    QString color = GTWidget::getColor(os, branchesColorButton, QPoint(10, 10)).name();
-    CHECK_SET_ERR(color == initialColor, QString("unexpected color: %1. Expected: %2").arg(color).arg(initialColor));
-#endif
+    CHECK_SET_ERR(GTWidget::hasPixelWithColor(os, branchesColorButton, initialColor), QString("Initial color is not found: %1").arg(initialColor));
 }
 
 GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2.  Set scrict consensus
+    //    2.  Set strict consensus
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     QComboBox *consensusType = GTWidget::findExactWidget<QComboBox *>(os, "consensusType");
-    GTComboBox::setIndexWithText(os, consensusType, "Strict");
+    GTComboBox::selectItemByText(os, consensusType, "Strict");
     //    3. Open export consensus tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
@@ -2563,7 +2548,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
 
     //set some values
     GTLineEdit::setText(os, pathLe, "some_path");
-    GTComboBox::setIndexWithText(os, formatCb, "GenBank");
+    GTComboBox::selectItemByText(os, formatCb, "GenBank");
     GTCheckBox::setChecked(os, keepGapsChb, true);
 
     //close and open option panel
@@ -2579,14 +2564,14 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
 
     CHECK_SET_ERR(pathLe->text().contains("some_path"), QString("unexpected path: %1").arg(pathLe->text()));
     CHECK_SET_ERR(formatCb->currentText() == "GenBank", QString("unexpected format: %1").arg(formatCb->currentText()));
-    CHECK_SET_ERR(keepGapsChb->isChecked(), "keep gaps checkBox is unexpectidly unchecked");
+    CHECK_SET_ERR(keepGapsChb->isChecked(), "keep gaps checkBox is unexpectedly unchecked");
 }
 
 GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2.  Set scrict consensus
+    //    2.  Set strict consensus
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
 
@@ -2599,7 +2584,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
 
     //set some parameters
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    GTComboBox::setIndexWithText(os, algoComboBox, "Similarity");
+    GTComboBox::selectItemByText(os, algoComboBox, "Similarity");
     GTRadioButton::click(os, countsButton);
     GTCheckBox::setChecked(os, excludeGapsCheckBox, true);
     GTCheckBox::setChecked(os, autoUpdateCheck, false);
@@ -2617,11 +2602,11 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
     excludeGapsCheckBox = GTWidget::findExactWidget<QCheckBox *>(os, "excludeGapsCheckBox");
     autoUpdateCheck = GTWidget::findExactWidget<QCheckBox *>(os, "autoUpdateCheck");
 
-    CHECK_SET_ERR(showDistancesColumnCheck->isChecked(), "show distancses is unexpectidly unchedked");
+    CHECK_SET_ERR(showDistancesColumnCheck->isChecked(), "show distances is unexpectedly unchecked");
     CHECK_SET_ERR(algoComboBox->currentText() == "Similarity", QString("unexpected algorithm: %1").arg(algoComboBox->currentText()));
     CHECK_SET_ERR(countsButton->isChecked(), "counts radio is not checked");
     CHECK_SET_ERR(excludeGapsCheckBox->isChecked(), "exclude gaps not checked");
-    CHECK_SET_ERR(!autoUpdateCheck->isChecked(), "auto update is unexpectidly checked");
+    CHECK_SET_ERR(!autoUpdateCheck->isChecked(), "auto update is unexpectedly checked");
 }
 }    // namespace GUITest_common_scenarios_options_panel_MSA
 }    // namespace U2

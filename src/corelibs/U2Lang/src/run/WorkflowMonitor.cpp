@@ -206,7 +206,7 @@ QString WorkflowMonitor::getLogUrl(const QString &actorId, int actorRunNumber, c
     case ExternalToolListener::ERROR_LOG:
         return listener->getStderrLogFileUrl();
     default:
-        FAIL(QString("An unexpected contentType: %1").arg(contentType), QString());
+        FAIL(tr("An unexpected contentType: %1").arg(contentType), QString());
     }
 }
 
@@ -215,10 +215,10 @@ void WorkflowMonitor::sl_progressChanged() {
     emit si_progressChanged(task->getProgress());
 }
 
-void WorkflowMonitor::sl_taskStateChanged() {
-    CHECK(!task.isNull(), );
-    if (task->isFinished()) {
-        TaskState state = SUCCESS;
+Monitor::TaskState WorkflowMonitor::getTaskState() const {
+    TaskState state = RUNNING;
+    if (!task.isNull() && task->isFinished()) {
+        state = SUCCESS;
         if (task->isCanceled()) {
             state = CANCELLED;
         } else if (task->hasError()) {
@@ -228,19 +228,27 @@ void WorkflowMonitor::sl_taskStateChanged() {
                 state = FAILED;
             } else if (hasWarnings()) {
                 state = FINISHED_WITH_PROBLEMS;
-            } else {
-                state = SUCCESS;
             }
         }
-
-        for (QMap<QString, Monitor::WorkerLogInfo>::iterator i = workersLog.begin(); i != workersLog.end(); ++i) {
-            qDeleteAll(i.value().logs);
-            i.value().logs.clear();
+    } else {
+        for (const WorkflowNotification &notification : notifications) {
+            if (WorkflowNotification::U2_ERROR == notification.type || WorkflowNotification::U2_WARNING == notification.type) {
+                state = RUNNING_WITH_PROBLEMS;
+                break;
+            }
         }
-
-        emit si_taskStateChanged(state);
-        emit si_report();
     }
+    return state;
+}
+
+void WorkflowMonitor::sl_taskStateChanged() {
+    CHECK(!task.isNull() && task->isFinished(), );
+    TaskState state = getTaskState();
+    for (QMap<QString, Monitor::WorkerLogInfo>::iterator i = workersLog.begin(); i != workersLog.end(); ++i) {
+        qDeleteAll(i.value().logs);
+        i.value().logs.clear();
+    }
+    emit si_taskStateChanged(state);
 }
 
 void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {

@@ -156,4 +156,16 @@ bool Version::operator==(const Version &v) const {
     return major == v.major && minor == v.minor && patch == v.patch;
 }
 
+bool Version::checkBuildAndRuntimeVersions() {
+    Version buildVersion = parseVersion(QT_VERSION_STR);
+    Version runtimeVersion = parseVersion(qVersion());
+    if (runtimeVersion < buildVersion) {
+        printf("Runtime Qt version must be >= build version. Build version %s, runtime version: %s \r\n",
+               buildVersion.text.toUtf8().constData(),
+               runtimeVersion.text.toUtf8().constData());
+        return false;
+    }
+    return true;
+}
+
 }    // namespace U2

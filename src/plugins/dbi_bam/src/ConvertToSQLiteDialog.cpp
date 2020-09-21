@@ -28,13 +28,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/Theme.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -58,7 +58,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_b
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "46500141");
+    new HelpButton(this, ui.buttonBox, "49447512");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -342,7 +342,7 @@ bool checkWritePermissions(const QString &fileUrl) {
         bool created = dir.mkpath(dir.absolutePath());
         CHECK(created, false);
     }
-    return TmpDirChecker::checkWritePermissions(dir.absolutePath());
+    return FileAndDirectoryUtils::isDirectoryWritable(dir.absolutePath());
 }
 }    // namespace
 

@@ -34,7 +34,9 @@
 
 namespace U2 {
 
-bool PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, QString &message) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError) {
+    QString message;
+    isCriticalError = false;
     bool forwardIsValid = validate(forward);
     bool reverseIsValid = validate(reverse);
     if (!forwardIsValid && !reverseIsValid) {
@@ -45,12 +47,14 @@ bool PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByt
         message = tr("The reverse primer contains a character from the Extended DNA alphabet.");
     }
     if (!message.isEmpty()) {
-        return false;
+        message += tr(" Unable to calculate primer statistics.");
+        isCriticalError = true;
+        return message;
     }
 
     PrimersPairStatistics calc(forward, reverse);
     message = calc.getFirstError();
-    return message.isEmpty();
+    return message;
 }
 
 double PrimerStatistics::getMeltingTemperature(const QByteArray &sequence) {

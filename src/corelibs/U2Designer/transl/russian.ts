@@ -471,12 +471,12 @@ this merge sequence slot:</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="47"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="48"/>
         <source>Select a sample to start</source>
         <translation>Выберите пример</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="155"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="156"/>
         <source>Double click to load the sample</source>
         <translation>Двойной щелчок загрузит пример</translation>
     </message>
@@ -643,6 +643,14 @@ this merge sequence slot:</source>
     </message>
 </context>
 <context>
+    <name>U2::BadgeLabel</name>
+    <message>
+        <location filename="../src/dashboard/ExternalToolsDashboardWidget.cpp" line="483"/>
+        <source>Copy command line</source>
+        <translation>Скопировать командную строку</translation>
+    </message>
+</context>
+<context>
     <name>U2::BowtieWidgetController</name>
     <message>
         <location filename="../src/wizard/BowtieWidgetController.cpp" line="68"/>
@@ -725,29 +733,93 @@ bowtie index file</source>
 <context>
     <name>U2::Dashboard</name>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="156"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="145"/>
         <source>Overview</source>
-        <translation type="unfinished"></translation>
+        <translation>Обзор</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="164"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="154"/>
         <source>Input</source>
-        <translation type="unfinished"></translation>
+        <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="172"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="162"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="236"/>
         <source>External Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешние инструменты</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="192"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="181"/>
         <source>Open workflow schema</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть схему</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/Dashboard.cpp" line="330"/>
+        <location filename="../src/dashboard/Dashboard.cpp" line="200"/>
+        <source>Output files</source>
+        <translation>Выходные файлы</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="204"/>
+        <source>Workflow task</source>
+        <translation>Задача</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="208"/>
+        <source>Notifications</source>
+        <translation>Нотификации</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="213"/>
+        <source>Common statistics</source>
+        <translation>Общая статистика</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="221"/>
+        <source>Parameters</source>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="322"/>
         <source>Can not create a folder: </source>
         <translation>Невозможно создать папку: </translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="328"/>
+        <source>Failed to open Dashboard.html</source>
+        <translation>Невозможно открыть Dashboard.html</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="479"/>
+        <source>Error reading dashboard file: %1</source>
+        <translation>Error reading dashboard file: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/Dashboard.cpp" line="491"/>
+        <source>Error parsing dashboard file: &apos;%1&apos;, file: %2</source>
+        <translation>Error parsing dashboard file: &apos;%1&apos;, file: %2</translation>
+    </message>
+</context>
+<context>
+    <name>U2::DashboardFileButton</name>
+    <message>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="219"/>
+        <source>%1 file(s)</source>
+        <translation>%1 файл(ов)</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="267"/>
+        <source>Open file with UGENE</source>
+        <translation>Открыть в UGENE</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="273"/>
+        <source>Open folder with the file</source>
+        <translation>Открыть папку содержащую файл</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="278"/>
+        <source>Open file by OS</source>
+        <translation>Открыть файл при помощи операционной системы</translation>
     </message>
 </context>
 <context>
@@ -761,14 +833,20 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardJsAgent</name>
     <message>
-        <location filename="../src/dashboard/DashboardJsAgent.cpp" line="79"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardJsAgent.cpp" line="79"/>
         <source>The file does not exist</source>
-        <translation>Файл не существует</translation>
+        <translation type="vanished">Файл не существует</translation>
+    </message>
+</context>
+<context>
+    <name>U2::DashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="326"/>
+        <source>File is not found: %1</source>
+        <translation>Файл не найден: %1</translation>
     </message>
 </context>
 <context>
@@ -1095,6 +1173,27 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::NotificationsDashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <source>Element</source>
+        <translation>Элемент</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <source>Message</source>
+        <translation>Сообщение</translation>
+    </message>
+</context>
+<context>
     <name>U2::OutputDirectoryWidget</name>
     <message>
         <location filename="../src/support/OutputDirectoryWidget.cpp" line="43"/>
@@ -1132,6 +1231,36 @@ Set up the folder:</source>
         <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a file</source>
         <translation>Сохранить файл</translation>
+    </message>
+</context>
+<context>
+    <name>U2::OutputFilesDashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
+        <source>File</source>
+        <translation>Файл</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="76"/>
+        <location filename="../src/dashboard/OutputFilesDashboardWidget.cpp" line="151"/>
+        <source>Producer</source>
+        <translation>Производитель</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ParametersDashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="216"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="282"/>
+        <source>Parameter</source>
+        <translation>Параметр</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="216"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="282"/>
+        <source>Value</source>
+        <translation>Значение</translation>
     </message>
 </context>
 <context>
@@ -1244,6 +1373,66 @@ Set up the folder:</source>
         <location filename="../src/NewGrouperSlotDialog.cpp" line="153"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>U2::StatisticsDashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="64"/>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="77"/>
+        <source>Element</source>
+        <translation>Элемент</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="64"/>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="77"/>
+        <source>Elapsed time</source>
+        <translation>Время выполнения</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="64"/>
+        <location filename="../src/dashboard/StatisticsDashboardWidget.cpp" line="77"/>
+        <source>Output messages</source>
+        <translation>Выходные сообщения</translation>
+    </message>
+</context>
+<context>
+    <name>U2::StatusDashboardWidget</name>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="80"/>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="147"/>
+        <source>Time %1</source>
+        <translation>Время %1</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="157"/>
+        <source>The workflow task is in progress…</source>
+        <translation>Задача в процессе выполнения...</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="159"/>
+        <source>The workflow task is in progress. There are problems…</source>
+        <translation>Задача в процессе выполнения. Возникли следующие проблемы...</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="161"/>
+        <source>The workflow task has been finished with warnings!</source>
+        <translation>Задача закончилась с предупреждениями!</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="163"/>
+        <source>The workflow task has been finished with errors!</source>
+        <translation>Задача закончилась с ошибками!</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="165"/>
+        <source>The workflow task has been finished successfully!</source>
+        <translation>Задача закончилась без ошибок!</translation>
+    </message>
+    <message>
+        <location filename="../src/dashboard/StatusDashboardWidget.cpp" line="167"/>
+        <source>The workflow task has been canceled!</source>
+        <translation>Задача была отменена!</translation>
     </message>
 </context>
 <context>
@@ -1361,14 +1550,6 @@ Set up the folder:</source>
         <location filename="../src/PropertyWidget.cpp" line="521"/>
         <source>add</source>
         <translation>добавить</translation>
-    </message>
-</context>
-<context>
-    <name>U2::WebViewControllerPrivate</name>
-    <message>
-        <location filename="../src/dashboard/webview/WebViewControllerPrivate.cpp" line="40"/>
-        <source>Can not open a file for writing: </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

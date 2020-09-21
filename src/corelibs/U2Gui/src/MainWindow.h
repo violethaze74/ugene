@@ -80,7 +80,7 @@ class QMainWindow;
 #define ACTION_PROJECT__UNLOAD_SELECTED "action_project__unload_selected_action"
 #define ACTION_PROJECT__IMPORT_TO_DATABASE "action_project__import_to_database"
 #define ACTION_PROJECT__CREATE_FOLDER "action_project__create_folder"
-#define ACTION_PROJECT__SAVE_DOCUMENT "action_prpject__save_document"
+#define ACTION_PROJECT__SAVE_DOCUMENT "action_project__save_document"
 
 #define PROJECT_MENU_SEPARATOR_1 "project_menu_separator_1"
 #define ACTION_DOCUMENT__LOCK "action_document_lock"

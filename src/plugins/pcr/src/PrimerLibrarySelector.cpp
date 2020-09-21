@@ -35,7 +35,7 @@ PrimerLibrarySelector::PrimerLibrarySelector(QWidget *parent)
     : QDialog(parent) {
     GCOUNTER(cvar, tvar, "PrimerLibrarySelector");
     setupUi(this);
-    new HelpButton(this, buttonBox, "46501123");
+    new HelpButton(this, buttonBox, "49448494");
 
     connect(primerTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(accept()));
     connect(primerTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));

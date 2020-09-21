@@ -148,6 +148,7 @@ QList<Task *> Shtirlitz::wakeup() {
 
         if (!prevDate.isValid() || daysPassed > DAYS_BETWEEN_REPORTS) {
             coreLog.details(ShtirlitzTask::tr("%1 days passed passed since previous Shtirlitz's report. Shtirlitz is sending the new one."));
+            result << sendSystemReport();
             result << sendCountersReport();
             //and save the new date
             s->setValue(SETTINGS_PREVIOUS_REPORT_DATE, QDate::currentDate());
@@ -227,7 +228,13 @@ QString Shtirlitz::formSystemReport() {
     QString qtVersion = qVersion();
     QString osName;
     QString osVersion;
-    getOsNameAndVersion(osName, osVersion);
+    QString kernelType;
+    QString kernelVersion;
+    QString productVersion;
+    QString productType;
+    QString prettyProductName;
+    QString cpuArchitecture;
+    getSysInfo(osName, osVersion, kernelType, kernelVersion, productVersion, productType, prettyProductName, cpuArchitecture);
 
     QString systemReport;
     systemReport += "SYSTEM REPORT:\n";
@@ -238,12 +245,25 @@ QString Shtirlitz::formSystemReport() {
     systemReport += "Word size: " + QString::number(QSysInfo::WordSize) + "\n";
     systemReport += "OS name: " + osName + "\n";
     systemReport += "OS version: " + osVersion + "\n";
+    systemReport += "kernelType: " + kernelType + "\n";
+    systemReport += "kernelVersion: " + kernelVersion + "\n";
+    systemReport += "productVersion: " + productVersion + "\n";
+    systemReport += "productType: " + productType + "\n";
+    systemReport += "prettyProductName: " + prettyProductName + "\n";
+    systemReport += "cpuArchitecture: " + cpuArchitecture + "\n";
     systemReport += "ENDOF SYSTEM REPORT.\n";
 
     return systemReport;
 }
 
-void Shtirlitz::getOsNameAndVersion(QString &name, QString &version) {
+void Shtirlitz::getSysInfo(QString &name,
+                           QString &version,
+                           QString &kernelType,
+                           QString &kernelVersion,
+                           QString &productVersion,
+                           QString &productType,
+                           QString &prettyProductName,
+                           QString &cpuArchitecture) {
 #if defined(Q_OS_WIN)
     name = "Windows";
     version = QString::number(QSysInfo::WindowsVersion);
@@ -252,16 +272,23 @@ void Shtirlitz::getOsNameAndVersion(QString &name, QString &version) {
     version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)
     name = "Linux";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #elif defined(Q_OS_FREEBSD)
     name = "FreeBSD";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #elif defined(Q_OS_UNIX)
     name = "Unix";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #else
     name = "Other";
+    version = "unknown";
 #endif
+    kernelType = QSysInfo::kernelType();
+    kernelVersion = QSysInfo::kernelVersion();
+    productVersion = QSysInfo::productVersion();
+    productType = QSysInfo::productType();
+    prettyProductName = QSysInfo::prettyProductName();
+    cpuArchitecture = QSysInfo::currentCpuArchitecture();
 }
 
 void Shtirlitz::getFirstLaunchInfo(bool &allVersions, bool &minorVersions) {
@@ -292,7 +319,7 @@ void ShtirlitzTask::run() {
     stateInfo.setDescription(tr("Connecting to remote server"));
 
     //Creating SyncHttp object and enabling proxy if needed.
-    SyncHttp http(stateInfo, this);
+    SyncHttp http(stateInfo);
     NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
     bool isException = nc->getExceptionsList().contains(QUrl(DESTINATION_URL_KEEPER_SRV).host());
@@ -317,7 +344,7 @@ void ShtirlitzTask::run() {
     }
 
     //Checking proxy again, for the new url
-    SyncHttp http2(stateInfo, this);
+    SyncHttp http2(stateInfo);
     isException = nc->getExceptionsList().contains(QUrl(reportsPath).host());
     if (isProxy && !isException) {
         http2.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));

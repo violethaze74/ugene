@@ -46,7 +46,7 @@ namespace LocalWorkflow {
 SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500556");
+    new HelpButton(this, buttonBox, "49447927");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

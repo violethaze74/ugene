@@ -34,8 +34,8 @@ PasteFactory::PasteFactory(QObject *parent)
 
 ///////////////////
 ///PasteTask
-PasteTask::PasteTask()
-    : Task(tr("Paste data"), TaskFlag_None) {
+PasteTask::PasteTask(TaskFlags flags)
+    : Task(tr("Paste data"), flags) {
 }
 
 void PasteTask::processDocument(Document *) {
@@ -46,10 +46,10 @@ void PasteTask::processDocument(Document *) {
 QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpStatus &os) {
     QList<DNASequence> res;
 
-    foreach (Document *doc, docs) {
-        foreach (GObject *seqObj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
+    for (Document *doc : docs) {
+        for (GObject *seqObj : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
             U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(seqObj);
-            if (casted == NULL) {
+            if (casted == nullptr) {
                 continue;
             }
             DNASequence seq = casted->getWholeSequence(os);
@@ -59,12 +59,12 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpS
             seq.alphabet = casted->getAlphabet();
             res.append(seq);
         }
-        foreach (GObject *msaObj, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
+        for (GObject *msaObj : doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             MultipleSequenceAlignmentObject *casted = qobject_cast<MultipleSequenceAlignmentObject *>(msaObj);
-            if (casted == NULL) {
+            if (casted == nullptr) {
                 continue;
             }
-            foreach (const MultipleSequenceAlignmentRow &row, casted->getMsa()->getMsaRows()) {
+            for (const MultipleSequenceAlignmentRow &row : casted->getMsa()->getMsaRows()) {
                 DNASequence seq = row->getSequence();
                 seq.seq = row->getData();
                 seq.alphabet = casted->getAlphabet();

@@ -21,6 +21,8 @@
 
 #include "CreateSubalignmentDialogController.h"
 
+#include <QDir>
+
 #include <QMessageBox>
 #include <QPalette>
 
@@ -31,10 +33,10 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/GenbankLocationParser.h>
@@ -51,7 +53,7 @@ namespace U2 {
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect &selection, QWidget *p)
     : QDialog(p), mobj(_mobj), saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500039");
+    new HelpButton(this, buttonBox, "49447410");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -192,7 +194,7 @@ void CreateSubalignmentDialogController::accept() {
         QMessageBox::critical(this, this->windowTitle(), tr("Folder to save does not exist"));
         return;
     }
-    if (!TmpDirChecker::checkWritePermissions(dirToSave.absolutePath())) {
+    if (!FileAndDirectoryUtils::isDirectoryWritable(dirToSave.absolutePath())) {
         QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' folder").arg(dirToSave.absolutePath()));
         return;
     }
@@ -200,7 +202,7 @@ void CreateSubalignmentDialogController::accept() {
         QMessageBox::critical(this, this->windowTitle(), tr("No path specified"));
         return;
     }
-    if (fi.baseName().isEmpty()) {
+    if (fi.baseName().isEmpty() || fi.isDir()) {
         QMessageBox::critical(this, this->windowTitle(), tr("Filename to save is empty"));
         return;
     }

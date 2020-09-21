@@ -187,7 +187,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GT_CHECK(comboBox != NULL, "ComboBox not found");
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::setCurrentIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QSpinBox *spinBox = dialog->findChild<QSpinBox *>();
     GT_CHECK(spinBox != NULL, "SpinBox not found");

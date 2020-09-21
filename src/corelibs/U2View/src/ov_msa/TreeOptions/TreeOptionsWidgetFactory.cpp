@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString MSATreeOptionsWidgetFactory::GROUP_ID = "OP_MSA_TREES_WIDGET";
 const QString MSATreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "46500071";
+const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "49447442";
 
 MSATreeOptionsWidgetFactory::MSATreeOptionsWidgetFactory()
     : viewSettings(new TreeOpWidgetViewSettings) {
@@ -44,7 +44,7 @@ MSATreeOptionsWidgetFactory::~MSATreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
@@ -71,7 +71,7 @@ void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSet
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
 const QString TreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "46500071";
+const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "49447442";
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory()
     : viewSettings(new TreeOpWidgetViewSettings) {
@@ -82,7 +82,7 @@ TreeOptionsWidgetFactory::~TreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
@@ -110,13 +110,13 @@ void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettin
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
 const QString AddTreeWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "46500071";
+const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "49447442";
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *AddTreeWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AddTreeWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

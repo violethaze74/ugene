@@ -23,6 +23,7 @@
 #define _HI_GUI_GTWIDGET_H_
 
 #include <QAbstractButton>
+#include <QAbstractItemView>
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
@@ -51,6 +52,8 @@ public:
 
     //returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
+    static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
+    static bool hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor);
     static QImage getImage(GUITestOpStatus &os, QWidget *widget);
 
     static void close(GUITestOpStatus &os, QWidget *widget);
@@ -70,6 +73,8 @@ public:
     static void checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedEnabledState = true);
     static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, QWidget const *const parent = NULL);
 
+    static void scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index);
+
 #define GT_CLASS_NAME "GTWidget"
 #define GT_METHOD_NAME "findExactWidget"
     template<class T>
@@ -88,7 +93,7 @@ public:
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */
     template<class T>
-    static T findWidgetByType(GUITestOpStatus &os, QWidget *parentWidget, const QString& errorMessage) {
+    static T findWidgetByType(GUITestOpStatus &os, QWidget *parentWidget, const QString &errorMessage) {
         T widget = nullptr;
         for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
             GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);

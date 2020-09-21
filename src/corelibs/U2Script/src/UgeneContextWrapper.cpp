@@ -77,6 +77,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
+#include <U2Core/Version.h>
 #include <U2Core/VirtualFileSystem.h>
 
 #include <U2Formats/DocumentFormatUtils.h>
@@ -130,13 +131,9 @@ static void setSearchPaths() {
 
 UgeneContextWrapper::UgeneContextWrapper(const QString &workingDirectoryPath)
     : app(ARGC, NULL) {
-    const char *buildVersion = QT_VERSION_STR;
-    const char *runtimeVersion = qVersion();
-    if (strcmp(buildVersion, runtimeVersion) > 0) {
-        printf("Installed Qt version must be %s or greater \r\n", QT_VERSION_STR);
+    if (!Version::checkBuildAndRuntimeVersions()) {
         return;
     }
-
     GTIMER(c1, t1, "initialization of UGENE Context");
 
     appContext = AppContextImpl::getApplicationContext();

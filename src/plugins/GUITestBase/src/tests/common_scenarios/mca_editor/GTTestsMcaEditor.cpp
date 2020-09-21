@@ -89,13 +89,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         void run(HI::GUITestOpStatus &os) {
             //Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            CHECK_SET_ERR(quality == 30, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
             //Expected state : "Add to project" option is checked by default
             bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
@@ -103,8 +101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -120,20 +117,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
             for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
                 QString num = QString::number(i);
                 if (num.size() == 1) {
                     num = "0" + QString::number(i);
                 }
-                name += num;
-                name += ".ab1";
-                reads << name;
+                reads << ("sanger_" + num + ".ab1");
             }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger/", reads));
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Push "Align" button
@@ -162,27 +152,22 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    foreach (QString rowName, rowNames) {
-        bool checkCurrentName = false;
+    for (const QString &rowName : rowNames) {
+        bool isNameFound = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
             if (rowName == currentName) {
-                checkCurrentName = true;
+                isNameFound = true;
                 break;
             }
         }
-        CHECK_SET_ERR(checkCurrentName, QString("Name %1 is missing").arg(rowName));
+        CHECK_SET_ERR(isNameFound, QString("Name %1 is missing").arg(rowName));
     }
 
     //5. Report with info
-    GTUtilsNotifications::waitForNotification(os, false, "Mapped reads (16)");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)" << "Filtered by low similarity (4)");
 
-    //number of filtered sequences with the names: 4
-    GTUtilsNotifications::waitForNotification(os, false, "Filtered by quality (4)");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //No Еrrors in the Log
+    // No Еrrors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
     CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
 }
@@ -435,9 +420,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    9. Close active view
     GTUtilsMdi::closeActiveWindow(os);
 
-    //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
+    //    10. Select "Open view" from context menu and select "Open new view: "Sanger Reads Editor" from context view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Alignment Editor",
+                                                                              << "Open new view: Sanger Reads Editor",
                                                             GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
@@ -981,7 +966,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     }
 
     //2. Push "Show/Hide Chromatograms" button in the main menu
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //Expected state : "Show/Hide Chromatograms" button is in normal state
     //All reads are collapsed
@@ -991,7 +976,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     }
 
     //3. Push "Show/Hide Chromatograms" button again
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "chromatograms"));
 
     //All reads are expanded, chromatograms if any are displayed for each reads
     //Expected state : All reads are expanded, chromatograms(if any) are displayed for each reads
@@ -1496,9 +1481,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //4. Push "Jump to next variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "G"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1551,7 +1536,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     //3. Push "Jump to next variation" button
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
     GTUtilsDialog::waitAllFinished(os);
 
     //4. Push "Jump to next variation" from context menu
@@ -1599,9 +1584,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = T, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     //3. Push "Jump to previous variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : difference between reference "C" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1659,7 +1644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1709,7 +1694,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1752,7 +1737,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTKeyboardDriver::keyClick('a', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 #else
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 #endif
     GTGlobals::sleep();
 
@@ -1766,9 +1751,9 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //3. Push "Jump to next ambiguous character" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     //Expected state : reference "C", consensus "M", read "M".
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1833,7 +1818,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
     QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
-    QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionName(os, toolbar, "prev_ambiguous");
+    QWidget *prevAmbiguousButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "prev_ambiguous");
     GTWidget::click(os, prevAmbiguousButton);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -1884,9 +1869,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     //3. Push "Jump to previous variation" button twice
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
 
     //Expected state: reference "G", consensus "N", read "N"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1978,7 +1963,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     CHECK_SET_ERR(reg.length == 0, "Some reads are selected");
 
     //4. Select any region in the reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 500);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 500);
     GTGlobals::sleep(500);
 
     //5. Push Esc
@@ -3500,7 +3485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
-    GTComboBox::setIndexWithText(os, consensusCombo, "Levitsky");
+    GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
     QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");

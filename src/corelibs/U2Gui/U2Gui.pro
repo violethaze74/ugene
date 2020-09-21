@@ -61,6 +61,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/GScrollBar.h \
            src/util/GUIUtils.h \
            src/util/HelpButton.h \
+           src/util/HoverQLabel.h \
            src/util/ImportSequenceFromRawDataTask.h \
            src/util/InputWidgetsControllers.h \
            src/util/ImportWidgetsFactories.h \
@@ -219,6 +220,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/GScrollBar.cpp \
            src/util/GUIUtils.cpp \
            src/util/HelpButton.cpp \
+           src/util/HoverQLabel.cpp \
            src/util/ImportSequenceFromRawDataTask.cpp \
            src/util/InputWidgetsControllers.cpp \
            src/util/ImportWidgetsFactories.cpp \

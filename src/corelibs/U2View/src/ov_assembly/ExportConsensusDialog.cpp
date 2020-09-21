@@ -41,7 +41,7 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget *p, const ExportConsensusTa
       settings(settings_),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46500193");
+    new HelpButton(this, buttonBox, "49447564");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     //hide for this dialog

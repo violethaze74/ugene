@@ -90,7 +90,7 @@ bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
 #define GT_METHOD_NAME "setConsensusType"
 void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName) {
     openTab(os, Consensus);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"), consensusTypeName);
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"), consensusTypeName);
 }
 #undef GT_METHOD_NAME
 
@@ -169,7 +169,7 @@ QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
 void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat) {
     openTab(os, Consensus);
     QComboBox *formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
-    GTComboBox::setCurrentIndex(os, formatCb, fileFormat);
+    GTComboBox::selectItemByIndex(os, formatCb, fileFormat);
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME

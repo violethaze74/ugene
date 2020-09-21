@@ -43,8 +43,6 @@
 
 #include <QApplication>
 
-#include <U2Gui/ToolsMenu.h>
-
 #include <U2Test/UGUITest.h>
 
 #include <U2View/ADVConstants.h>
@@ -76,7 +74,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
@@ -638,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTGlobals::sleep();
 
     //4. Rlick Undo button. CHANGES: clicking undo by mouse
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "msa_action_undo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "msa_action_undo"));
     GTGlobals::sleep();
 
     //Expected state: Tettigonia_viridissima renamed back
@@ -1680,45 +1677,34 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped_edited.aln");
     GTFileDialog::openFile(os, sandBoxDir, "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // CHANGES: insert gaps in the beginning
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
 
-    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
-    //    from 'AAG' to 'CTT' and save file.
-    //CHANGES: backup old file, copy changed file
-    //GTFile::backup(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata' from 'AAG' to 'CTT' and save file.
+    //  Expected state: Dialog suggesting to reload modified document has appeared. Press 'Yes'.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTFile::copy(os, sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
-    GTFile::copy(os, sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    //    Expected state: Dialog suggesting to reload modified document has appeared.
-    // 3. Press 'Yes'.
-    GTGlobals::sleep(1000);
+    GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
-    //    Expected state: document was reloaded, view activated.
-    //    'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMdi::activeWindow(os);
-    GTGlobals::sleep();
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
+    // Wait for the document to reload (1 second granularity).
+    GTGlobals::sleep(2000);
+
+    // Expected state: document was reloaded, view activated.
+    // 'Phaneroptera_falcata' starts with CTT.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // copy to clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
+    GTKeyboardUtils::copy(os);
 
     QString clipboardText = GTClipboard::text(os);
-
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_2) {
@@ -1731,7 +1717,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     //    from 'AAG' to 'CTT' and save file.
     //CHANGES: backup old file, copy changed file
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTGlobals::sleep(1000); // ugene doesn't detect changes whithin one second interval
+    GTGlobals::sleep(1000);    // ugene doesn't detect changes whithin one second interval
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
 
     //    Expected state: Dialog suggesting to reload modified document has appeared.
@@ -1892,7 +1878,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1908,7 +1894,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_1) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1924,7 +1910,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_2) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -2004,14 +1990,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -2025,14 +2011,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021_1) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -2046,14 +2032,14 @@ GUI_TEST_CLASS_DEFINITION(test_0021_2) {
 
     // 2. zoom MSA to maximum
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom In"));
     }
 
     // Expected state: top sequence not overlaps with ruler
     GTGlobals::sleep();
 
     for (int i = 0; i < 8; i++) {
-        GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
+        GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Zoom Out"));
     }
 }
 
@@ -2199,12 +2185,11 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. press "change font button" on toolbar
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
-
-    QAbstractButton *change_font = GTAction::button(os, "Change Font");
-    GTWidget::click(os, change_font);
+    GTWidget::click(os, GTAction::button(os, "Change Font"));
     GTGlobals::sleep(500);
 
     QWidget *nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
@@ -2213,7 +2198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";
 
-    CHECK_SET_ERR(f.toString() == expectedFont, "Expected: " + expectedFont + "found: " + f.toString());
+    CHECK_SET_ERR(f.toString().startsWith(expectedFont), "Expected: " + expectedFont + ", found: " + f.toString());
     //    Expected state: change font dialog appeared
 
     //    3. choose some font, press OK
@@ -2258,56 +2243,29 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {    //DIFFERENCE: context menu is used
     //    Expected state: image is exported
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0026_2_linux) {
+GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
     //    2. press "export as image" on toolbar
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
-    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
     QAbstractButton *saveImage = GTAction::button(os, "Export as image");
-    CHECK_SET_ERR(saveImage, "Save as image button not found");
-
     GTWidget::click(os, saveImage);
+
     //    Expected state: export dialog appeared
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/smallImage.bmp", "JPG", 50));
     GTWidget::click(os, saveImage);
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //    3. fill dialog:
     //    file name: test/_common_data/scenarios/sandbox/image.bmp
     //    press OK
     qint64 bigSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-
-    //    CHECK_SET_ERR(bigSize==4785325 && smallSize>914000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    CHECK_SET_ERR(bigSize == 5098695 && smallSize > 996000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    //    Expected state: image is exported
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0026_2_windows) {
-    //    1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG", 100));
-    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
-    QAbstractButton *saveImage = GTAction::button(os, "Export as image");
-    CHECK_SET_ERR(saveImage, "Save as image button not found");
-
-    GTWidget::click(os, saveImage);
-    //    Expected state: export dialog appeared
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/smallImage.bmp", "JPG", 50));
-    GTWidget::click(os, saveImage);
-    //    3. fill dialog:
-    //    file name: test/_common_data/scenarios/sandbox/image.bmp
-    //    press OK
-    qint64 bigSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
-    qint64 smallSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
-
-    CHECK_SET_ERR(bigSize > 3000000 && bigSize < 5500000 && smallSize > 700000 && smallSize < 1500000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
-    //    Expected state: image is exported
+    CHECK_SET_ERR(bigSize > 4 * 1000 * 1000 && bigSize < 6 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
+    CHECK_SET_ERR(smallSize > 800 * 1000 && smallSize < 1.5 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
@@ -3012,7 +2970,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_4) {
     //Expected state: tree appeared
 }
 
-void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention) {
+void test_0039_function(HI::GUITestOpStatus &os, int comboNum, const QString &extension) {
     //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, UGUITest::dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3031,7 +2989,7 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, QString extention
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: transl.aln appeared in project
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl." + extention));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI_transl." + extension));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
@@ -3191,13 +3149,13 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         ExportDialogChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-            GTComboBox::setIndexWithText(os, exportType, "Custom region", false, GTGlobals::UseKey);
+            GTComboBox::selectItemByText(os, exportType, "Custom region", GTGlobals::UseMouse);
 
             GTGlobals::sleep();
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
@@ -3223,7 +3181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
         ExportChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3274,7 +3232,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             : Filler(os, "SelectSubalignmentDialog") {
         }
 
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
             QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
@@ -3311,7 +3269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
         ExportChecker(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3344,7 +3302,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         CustomFiller_0048(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3453,7 +3411,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
         CustomFiller_0052(HI::GUITestOpStatus &os)
             : Filler(os, "ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
 
@@ -3535,7 +3493,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "Mega");
+    GTComboBox::selectItemByText(os, copyType, "Mega");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
@@ -3564,11 +3522,11 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "CLUSTALW");
+    GTComboBox::selectItemByText(os, copyType, "CLUSTALW");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
     QString clipboardText = GTClipboard::text(os);
@@ -3609,7 +3567,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    QWidget *w = GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
+    QWidget *w = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
     CHECK_SET_ERR(w != NULL, "no copy action on the toolbar");
     CHECK_SET_ERR(w->isEnabled() == false, "selection is empty but the action is enabled");
 }
@@ -3631,11 +3589,11 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
 
-    GTComboBox::setIndexWithText(os, copyType, "Rich text (HTML)");
+    GTComboBox::selectItemByText(os, copyType, "Rich text (HTML)");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
     QString clipboardText = GTClipboard::text(os);
@@ -3690,7 +3648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     //    {Export->Export subalignment}
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
 
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
@@ -3718,7 +3676,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
 
             QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
@@ -3746,7 +3704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 GUI_TEST_CLASS_DEFINITION(test_0057) {
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep();
 
@@ -3772,7 +3730,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
 GUI_TEST_CLASS_DEFINITION(test_0058) {
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3813,7 +3771,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customColorSelector : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -3861,7 +3819,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customColorSchemeCreator : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -3869,7 +3827,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0059_scheme");
 
             QComboBox *alphabetComboBox = (GTWidget::findExactWidget<QComboBox *>(os, "alphabetComboBox", dialog));
-            GTComboBox::setIndexWithText(os, alphabetComboBox, "Nucleotide");
+            GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new customColorSelector()));
 
@@ -3881,7 +3839,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3911,7 +3869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     //    Open "Color schemes" dialog.
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3943,7 +3901,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
 
     class customAppSettingsFiller1 : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -3984,7 +3942,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     class customColorSchemeCreator : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
             QWidget *dialog = QApplication::activeModalWidget();
 
@@ -4001,7 +3959,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
             CHECK_SET_ERR(validLabel->text() == "Warning: Color scheme with the same name already exists.", "unexpected hint: " + validLabel->text());
 
             QComboBox *alphabetComboBox = (GTWidget::findExactWidget<QComboBox *>(os, "alphabetComboBox", dialog));
-            GTComboBox::setIndexWithText(os, alphabetComboBox, "Nucleotide");
+            GTComboBox::selectItemByText(os, alphabetComboBox, "Nucleotide");
 
             GTGlobals::sleep(500);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -4010,7 +3968,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     class customAppSettingsFiller : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -4041,7 +3999,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     //    Open "Export subalignment" dialog
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
@@ -4105,7 +4063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
 
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QStringList expectedActions = QStringList() << "Align with muscle"
                                                         << "Align sequences to profile with MUSCLE"
                                                         << "Align profile to profile with MUSCLE"
@@ -4118,7 +4076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
             CHECK_SET_ERR(m != NULL, "menu not found");
             QList<QAction *> menuActions = m->actions();
             CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            foreach (QAction *act, menuActions) {
+            for (QAction *act : menuActions) {
                 CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
             }
 
@@ -4391,7 +4349,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     //    Open "Export subalignment" dialog
     class custom : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
             GTGlobals::sleep(500);
 
@@ -4414,7 +4372,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
 
             GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
             list = ExtractSelectedAsMSADialogFiller::getSequences(os, true);
-            CHECK_SET_ERR(list.size() == 0, QString("list is not cleared: %1").arg(list.size()));
+            CHECK_SET_ERR(list.isEmpty(), QString("list is not cleared: %1").arg(list.size()));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }

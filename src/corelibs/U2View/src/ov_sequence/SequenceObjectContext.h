@@ -105,10 +105,10 @@ public:
     void removeSequenceWidget(ADVSequenceWidget *w);
 
     QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
-    QVector<bool> getTranslationRowsVisibleStatus();
+    QVector<bool> getTranslationRowsVisibleStatus() const;
     void setTranslationsVisible(bool visible);
     void showComplementActions(bool show);
-    void showTranslationFrame(const int numOfAction, const bool setChecked);
+    void showTranslationFrame(const int frameIndex, const bool isChecked);
 
     enum TranslationState {
         TS_DoNotTranslate,

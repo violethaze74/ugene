@@ -62,24 +62,6 @@ private:
     QVBoxLayout *recentProjectsLayout;
 };
 
-class HoverQLabel : public QLabel {
-    Q_OBJECT
-public:
-    HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
-
-signals:
-    void clicked();
-
-protected:
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-
-public:
-    QString normalStyle;
-    QString hoveredStyle;
-};
-
 }    // namespace U2
 
 #endif    // _U2_WELCOME_PAGE_WIDGET_H_

@@ -22,13 +22,18 @@
 #include "ColorSchemaDialogController.h"
 
 #include <QColorDialog>
+#include <QMessageBox>
 #include <QPainter>
 
 #include <U2Algorithm/ColorSchemeUtils.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Theme.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
@@ -45,7 +50,7 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor> &col
 
 int ColorSchemaDialogController::adjustAlphabetColors() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499977");
+    new HelpButton(this, buttonBox, "49447346");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
@@ -69,7 +74,6 @@ void ColorSchemaDialogController::paintEvent(QPaintEvent *) {
     if (rect_width == 0) {
         return;
     }
-    int rect_width_rest = alphabetColorsFrame->size().width() % columns;
 
     const int rows = (newColors.size() / columns) + ((newColors.size() % columns) ? 1 : 0);
     const int rect_height = static_cast<double>(alphabetColorsFrame->size().height()) / rows;
@@ -92,7 +96,7 @@ void ColorSchemaDialogController::paintEvent(QPaintEvent *) {
     int hLineY = 0;
     for (int i = 0; i < rows; ++i) {
         int rh = rect_height;
-        rect_width_rest = alphabetColorsFrame->size().width() % columns;
+        int rect_width_rest = alphabetColorsFrame->size().width() % columns;
         if (rect_height_rest > 0) {
             rh++;
             rect_height_rest--;
@@ -182,7 +186,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
 CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData *_newSchema, QStringList _usedNames)
     : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "46499977");
+    new HelpButton(this, buttonBox, "49447346");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -353,9 +357,16 @@ void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     update();
 }
 
-AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &) const {
+AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &err) const {
+    QString colorsDir = colorsDirEdit->text();
+    U2OpStatusImpl os;
+    GUrlUtils::prepareDirLocation(colorsDir, os);
+    if (os.hasError()) {
+        err = os.getError();
+        return nullptr;
+    }
     ColorSchemaSettingsPageState *state = new ColorSchemaSettingsPageState();
-    state->colorsDir = colorsDirEdit->text();
+    state->colorsDir = colorsDir;
     state->customSchemas = customSchemas;
     state->removedCustomSchemas = removedCustomSchemas;
     return state;
@@ -374,15 +385,20 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index) {
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (!dir.isEmpty()) {
-        colorsDirEdit->setText(dir);
-        ColorSchemeUtils::setColorsDir(dir);
-        customSchemas.clear();
-        colorSchemas->clear();
-        customSchemas = ColorSchemeUtils::getSchemas();
-        foreach (ColorSchemeData schema, customSchemas) {
-            colorSchemas->addItem(new QListWidgetItem(schema.name, colorSchemas));
-        }
+    if (dir.isEmpty()) {
+        return;
+    }
+    if (!FileAndDirectoryUtils::isDirectoryWritable(dir)) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("You don't have permissions to write in selected folder."));
+        return;
+    }
+    colorsDirEdit->setText(dir);
+    ColorSchemeUtils::setColorsDir(dir);
+    customSchemas.clear();
+    colorSchemas->clear();
+    customSchemas = ColorSchemeUtils::getSchemas();
+    foreach (ColorSchemeData schema, customSchemas) {
+        colorSchemas->addItem(new QListWidgetItem(schema.name, colorSchemas));
     }
 }
 

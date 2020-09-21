@@ -41,31 +41,35 @@
     <name>QObject</name>
     <message>
         <location filename="../src/BAMUtils.cpp" line="97"/>
+        <location filename="../src/BAMUtils.cpp" line="101"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="101"/>
+        <location filename="../src/BAMUtils.cpp" line="105"/>
+        <location filename="../src/BAMUtils.cpp" line="109"/>
         <source>Fail to read the header from the file: &quot;%1&quot;</source>
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="105"/>
+        <location filename="../src/BAMUtils.cpp" line="113"/>
         <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
         <translation>Невозможно построить индекс для файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="109"/>
+        <location filename="../src/BAMUtils.cpp" line="117"/>
+        <location filename="../src/BAMUtils.cpp" line="121"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="113"/>
+        <location filename="../src/BAMUtils.cpp" line="125"/>
+        <location filename="../src/BAMUtils.cpp" line="129"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="783"/>
+        <location filename="../src/BAMUtils.cpp" line="793"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
@@ -85,7 +89,7 @@
         <translation>Невозможно записать данные. База данных закрыта или данные были изменены.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="787"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="786"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -444,32 +448,32 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="180"/>
+        <location filename="../src/BAMUtils.cpp" line="194"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="339"/>
+        <location filename="../src/BAMUtils.cpp" line="352"/>
         <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
         <translation>Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="352"/>
+        <location filename="../src/BAMUtils.cpp" line="365"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="369"/>
+        <location filename="../src/BAMUtils.cpp" line="382"/>
         <source>Remove PCR duplicate in BAM file: &quot;%1&quot;. Resulting  file is: &quot;%2&quot;</source>
         <translation>Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="457"/>
+        <location filename="../src/BAMUtils.cpp" line="469"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="724"/>
+        <location filename="../src/BAMUtils.cpp" line="734"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -2537,8 +2541,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="606"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="631"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1142"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1151"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1141"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1150"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
@@ -2608,54 +2612,54 @@
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="608"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="607"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="671"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="670"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="812"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="918"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="811"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="917"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="866"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="865"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1074"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1073"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="302"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1118"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1117"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1133"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1132"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1164"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1163"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1182"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1181"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2887,7 +2891,7 @@
         <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="824"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="823"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
         <source>Object not found.</source>

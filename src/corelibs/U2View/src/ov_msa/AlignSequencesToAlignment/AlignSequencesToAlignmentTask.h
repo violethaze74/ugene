@@ -110,7 +110,7 @@ public:
 private:
     void fillSettingsByDefault();
 
-    QPointer<MultipleSequenceAlignmentObject> maObj;
+    QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     QStringList urls;
     StateLock *stateLock;
     StateLock *docStateLock;
@@ -132,7 +132,7 @@ public:
 
 private:
     QStringList urls;
-    QPointer<MultipleSequenceAlignmentObject> maObj;
+    QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     LoadSequencesTask *loadSequencesTask;
     bool forceUseUgeneNativeAligner;
 };

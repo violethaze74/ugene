@@ -206,10 +206,10 @@ function loadScript(url, callback) {
 }
 
 function createWidgets() {
-    parametersWidget = new ParametersWidget("parametersWidget");
-    outputWidget = new OutputFilesWidget("outputWidget");
-    statusWidget = new StatusWidget("statusWidget");
-    statisticsWidget = new StatisticsWidget("statisticsWidget");
+    parametersWidget = null; // new ParametersWidget("parametersWidget");
+    outputWidget = null;// new OutputFilesWidget("outputWidget");
+    statusWidget = null; // new StatusWidget("statusWidget");
+    statisticsWidget = null; // new StatisticsWidget("statisticsWidget");
     startTimer();
 }
 

@@ -305,43 +305,43 @@ void GTUtilsMcaEditor::removeRead(GUITestOpStatus &os, const QString &readName) 
 
 #define GT_METHOD_NAME "undo"
 void GTUtilsMcaEditor::undo(GUITestOpStatus &os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "redo"
 void GTUtilsMcaEditor::redo(GUITestOpStatus &os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomIn"
 void GTUtilsMcaEditor::zoomIn(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomOut"
 void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "resetZoom"
 void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus &os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMcaEditor::isUndoEnabled(GUITestOpStatus &os) {
-    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isRedoEnabled"
 bool GTUtilsMcaEditor::isRedoEnabled(GUITestOpStatus &os) {
-    return GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
+    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 

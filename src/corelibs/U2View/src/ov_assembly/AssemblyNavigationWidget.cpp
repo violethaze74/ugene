@@ -129,13 +129,13 @@ void CoveredRegionsLabel::sl_updateContent() {
 ////////////////////////////////////
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
 const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
-const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "46500206";
+const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "49447577";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblyNavigationWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AssemblyNavigationWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

@@ -42,7 +42,6 @@
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
-#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -55,6 +54,7 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -64,15 +64,12 @@
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
-#include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
-#include "GTUtilsMcaEditorStatusWidget.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -83,13 +80,10 @@
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
-#include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
-#include "GTUtilsStartPage.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -263,16 +257,17 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
     GTUtilsWorkflowDesigner::click(os, clarkElement);
     GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
-    QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+    {
+        QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+        CHECK_SET_ERR(inputPortTable != NULL, "inputPortTable is NULL");
 
-    QStringList inputSlotsNames;
-    for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
-        inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        QStringList inputSlotsNames;
+        for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
+            inputSlotsNames << GTTableView::data(os, inputPortTable, i, 0);
+        }
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
+        CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
     }
-
-    CHECK_SET_ERR(inputSlotsNames.contains("Input URL 1"), QString("'Input URL 1' slot not found in element '%1'").arg(clarkName));
-    CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(clarkName));
 
     //    4. Set 'Input data' parameter in each element to 'SE reads or contigs' ('SE reads' in 'Improve Reads with Trimmomatic' element).
     //    Expected state: 'Classify Sequences with Kraken' and 'Classify Sequences with CLARK' elements have one input slot ('Input URL 1') and some output slots;
@@ -284,7 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(inputPortTable != nullptr, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -763,7 +758,7 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
             GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -1028,9 +1023,7 @@ GUI_TEST_CLASS_DEFINITION(test_6204) {
 
     // There is no message "Task is in progress.." after finished task where 2 notifications are present
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
-    HI::HIWebElement el = GTUtilsDashboard::findElement(os, "The workflow task has been finished");
-    CHECK_SET_ERR(el.geometry() != QRect(), QString("Element with desired text not found"));
+    GTWidget::findLabelByText(os, "The workflow task has been finished", GTUtilsDashboard::getDashboard(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6207) {
@@ -1657,17 +1650,16 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     GTGlobals::sleep();
 
     //Expected: The dashboard appears
-    QWidget *dashboard = GTUtilsDashboard::getDashboardWebView(os);
-    CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
+    GTUtilsDashboard::getDashboard(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6243) {
-    //1. Select "File" -> "Access remove database...".
-    //2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
+    // 1. Select "File" -> "Access remove database...".
+    // 2 Select "ENSEMBL" database. Use any sample ID as "Resource ID". Accept the dialog.
     //Do it twice, for two different ids
-    QList<QString> ensemblyIds = QList<QString>() << "ENSG00000205571"
+    QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    foreach (const QString &id, ensemblyIds) {
+    for (auto id : ensembleIds) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
@@ -1679,14 +1671,13 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
                                                     << "Access remote database...",
                                   GTGlobals::UseMouse);
         GTUtilsTaskTreeView::waitTaskFinished(os);
-        GTGlobals::sleep();
     }
 
     //Expected state: the sequences are downloaded. The files names contain the sequence ID.
-    QString first = QString("%1.fa").arg(ensemblyIds.first());
-    QString second = QString("%1.fa").arg(ensemblyIds.last());
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The sequence %1 is absent in the project tree view").arg(first));
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The sequence %1 is absent in the project tree view").arg(second));
+    QString first = QString("%1.fa").arg(ensembleIds.first());
+    QString second = QString("%1.fa").arg(ensembleIds.last());
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, first), QString("The first sequence '%1' is absent in the project tree view").arg(first));
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, second), QString("The second sequence '%1' is absent in the project tree view").arg(second));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6247) {
@@ -1738,9 +1729,7 @@ GUI_TEST_CLASS_DEFINITION(test_6249_1) {
     //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\Assembly\chrM.sam"
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     //4. Run workflow, and check result files on dashboard
@@ -1749,8 +1738,8 @@ GUI_TEST_CLASS_DEFINITION(test_6249_1) {
 
     QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
 
-    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
-    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output files not contains desired file chrM_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output file is not found: eas_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output file is not found: chrM_fastqc.html"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6249_2) {
@@ -1764,15 +1753,12 @@ GUI_TEST_CLASS_DEFINITION(test_6249_2) {
     //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\FASTQ\eas.fastq"
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     //4. Set parameter "Output file" to any location
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "FastQC Quality Control"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_6249_2_zzzz.html", GTUtilsWorkflowDesigner::textValue);
 
     //5. Run workflow, and check result files on dashboard
@@ -1781,8 +1767,8 @@ GUI_TEST_CLASS_DEFINITION(test_6249_2) {
 
     QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
 
-    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output files not contains desired file test_6249_2_zzzz.html"));
-    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output files not contains desired file test_6249_2_zzzz_1.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz.html"), QString("Output file is not found: test_6249_2_zzzz.html"));
+    CHECK_SET_ERR(outFiles.contains("test_6249_2_zzzz_1.html"), QString("Output file is not found: test_6249_2_zzzz_1.html"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6249_3) {
@@ -1798,9 +1784,7 @@ GUI_TEST_CLASS_DEFINITION(test_6249_3) {
     //3. Set the input sequence files: "data\samples\FASTQ\eas.fastq" and "data\samples\Assembly\chrM.sam"
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read File URL(s)"));
     GTMouseDriver::click();
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTGlobals::sleep(300);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     //4. Run workflow, and check result files on dashboard
@@ -1809,10 +1793,10 @@ GUI_TEST_CLASS_DEFINITION(test_6249_3) {
 
     QStringList outFiles = GTUtilsDashboard::getOutputFiles(os);
 
-    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output files not contains desired file eas_fastqc.html"));
-    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output files not contains desired file chrM_fastqc.html"));
-    CHECK_SET_ERR(outFiles.contains("eas_fastqc_1.html"), QString("Output files not contains desired file eas_fastqc_1.html"));
-    CHECK_SET_ERR(outFiles.contains("chrM_fastqc_1.html"), QString("Output files not contains desired file chrM_fastqc_1.html"));
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc.html"), QString("Output file is not found:  eas_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc.html"), QString("Output file is not found:  chrM_fastqc.html"));
+    CHECK_SET_ERR(outFiles.contains("eas_fastqc_1.html"), QString("Output file is not found:  eas_fastqc_1.html"));
+    CHECK_SET_ERR(outFiles.contains("chrM_fastqc_1.html"), QString("Output file is not found:  file chrM_fastqc_1.html"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6256) {
@@ -2541,11 +2525,13 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an output file on the dashboard.
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "There are no output files on the dashboard");
-    const int expectedCount = 1;
+
+    int expectedCount = 1;
     CHECK_SET_ERR(expectedCount == outputFiles.size(), QString("There are too many output files on the dashboard: expected %1, got %2").arg(expectedCount).arg(outputFiles.size()));
-    const QString expectedName = "human_T1_cutted.fa";
+
+    QString expectedName = "human_T1_cutted.fa";
     CHECK_SET_ERR(expectedName == outputFiles.first(), QString("An unexpected output file name: expected '%1', got '%2'").arg(expectedName).arg(outputFiles.first()));
 
     //    7. Open a menu on the output item on the dashboard.
@@ -2680,24 +2666,15 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
+    // Zoom to max
+    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+
+    //Expected colors:
     QStringList backgroundColors = {"#ffff00", "#00ffff", "#00ffff", "#00ff00", "#00ff00", "#ffffff", "#ffffff", "#ffffff", "#ffffff"};
     QStringList fontColors = {"#ff0000", "#0000ff", "#0000ff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"};
 
-    //Expected colors:
-    //background - #ffff00, #00ffff, #00ffff, #00ff00, #00ff00, #ffffff, #ffffff, #ffffff, #ffffff
-    //font - #ff0000, #0000ff, #0000ff, #000000, #000000, #000000, #000000, #000000, #000000
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
-    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
     for (int i = 0; i < 9; i++) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[i];
-        QString expectedFontColor = fontColors[i];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[i], backgroundColors[i]);
     }
 }
 
@@ -2712,28 +2689,15 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    // Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+    //Expected colors:
     QStringList backgroundColors = {"#00ffff", "#ffffff"};
     QStringList fontColors = {"#0000ff", "#000000"};
     QList<int> columns = {1, 2, 5, 6};
-    //Expected colors:
-    //background - 2, 3 column: #00ffff; 6, 7 column: #ffffff
-    //font - 2, 3 column: #0000ff; 6, 7 column: #000000
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        int num = 1;
-        if (i == 1 || i == 2) {
-            num = 0;
-        }
-        QString expectedBackgroundColor = backgroundColors[num];
-        QString expectedFontColor = fontColors[num];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    foreach (int i, columns) {
+        int colorIndex = (i == 1 || i == 2) ? 0 : 1;
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[colorIndex], backgroundColors[colorIndex]);
     }
 
     //4. Set Threshold to 900
@@ -2741,38 +2705,18 @@ GUI_TEST_CLASS_DEFINITION(test_6474_2) {
     CHECK_SET_ERR(nullptr != colorThresholdSlider, "Can't find colorThresholdSlider");
 
     GTSlider::setValue(os, colorThresholdSlider, 900);
-    GTGlobals::sleep();
-    //Expected colors:
-    //background - all columns #ffffff
-    //font - all columns ##000000
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[1];
-        QString expectedFontColor = fontColors[1];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Expected colors: background - all columns #ffffff, font - all columns ##000000
+    foreach (int i, columns) {
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[1], backgroundColors[1]);
     }
 
     //5. Set Threshold to 100
     GTSlider::setValue(os, colorThresholdSlider, 100);
-    GTGlobals::sleep();
-    //Expected colors:
-    //background - all columns #00ffff
-    //font - all columns ##0000ff
-    foreach (const int i, columns) {
-        QPoint p(i, 0);
-        QString backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, p);
-        QString fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, p);
-        coreLog.info(QString("Background color on the %1th column of the 1th row: %2").arg(i + 1).arg(backgroundColor));
-        coreLog.info(QString("Font color on the %1th column of the 1th row: %2").arg(i + 1).arg(fontColor));
-        QString expectedBackgroundColor = backgroundColors[0];
-        QString expectedFontColor = fontColors[0];
-        CHECK_SET_ERR(backgroundColor == expectedBackgroundColor, QString("Unexpected background color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedBackgroundColor).arg(backgroundColor));
-        CHECK_SET_ERR(fontColor == expectedFontColor, QString("Unexpected font color on the %1th column of the 1th row, expected: %2, current: %3").arg(i + 1).arg(expectedFontColor).arg(fontColor));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected colors: background - all columns #00ffff, font - all columns ##0000ff
+    foreach (int i, columns) {
+        GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[0], backgroundColors[0]);
     }
 }
 
@@ -3400,204 +3344,50 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6548_1) {
-    //NOTE: here is problems with detecting #ff00ff color so double condition is used fontColor == "#ff00ff" || fontColor == "#ff66ff"
     //1. Open _common_data/scenarios/_regression/6548/6548_extended_DNA.aln.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6548/6548_extended_DNA.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+    GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
-    GTUtilsMSAEditorSequenceArea::zoomToMax(os);
-    QPoint pos;
-    QString fontColor;
-    QString backgroundColor;
-    //first column check
-    {
-        //Check most-frequent symbol
-        pos = QPoint(0, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check gap symbol
-        pos = QPoint(0, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    // Zoom in multiple times to make chars bigger. (Do not zoom to max because it will move some chars out of the screen on Windows agents).
+    for (int i = 0; i < 5; i++) {
+        GTUtilsMSAEditorSequenceArea::zoomIn(os);
     }
-    //second column check
-    {
-        //Check second frequent symbol
-        pos = QPoint(1, 5);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
 
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    // First column check
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 0), "#0000ff", "#00ffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(0, 3), "#000000", "#ffffff");    // Gap symbol
 
-        //Check third frequent symbol
-        pos = QPoint(1, 9);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    // Second column check
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 5), "#ff00ff", "#ffffff");    // Second frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 9), "#000000", "#ffffff");    // Third frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 12), "#000000", "#c0c0c0");    // Fourth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 14), "#ff6600", "#ffffff");    // Fifth frequent symbol
 
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+    // Third column check: T > G > C > A > R
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");    // T
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");    // G
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");    // C
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#c0c0c0");    // A
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 4), "#ff6600", "#ffffff");    // R
 
-        //Check fourth frequent symbol
-        pos = QPoint(1, 12);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    // Fourth column: M > S > V > W > Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#0000ff", "#00ffff");    // M
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 2), "#ff00ff", "#ffffff");    // S
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 4), "#000000", "#ffffff");    // V
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");    // W
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 3), "#ff6600", "#ffffff");    // Y
 
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-#ifndef Q_OS_WIN
-        //Check fifth frequent symbol
-        pos = QPoint(1, 14);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-#endif    // !Q_OS_WIN
-    }
-    //third column check
-    {
-        //Check symbol priorities T > G > C > A > R
-        //Check T
-        pos = QPoint(2, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check G
-        pos = QPoint(2, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check C
-        pos = QPoint(2, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check A
-        pos = QPoint(2, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check R
-        pos = QPoint(2, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //fourth column
-    {
-        //Check symbol priorities M > S > V > W > Y
-        //Check M
-        pos = QPoint(3, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check S
-        pos = QPoint(3, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check V
-        pos = QPoint(3, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check W
-        pos = QPoint(3, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check Y
-        pos = QPoint(3, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //fifth column
-    {
-        //Check symbol priorities D > H > K > N > X
-        //Check D
-        pos = QPoint(4, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check H
-        pos = QPoint(4, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff" || fontColor == "#ff66ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check K
-        pos = QPoint(4, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check N
-        pos = QPoint(4, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-
-        //Check X
-        pos = QPoint(4, 4);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
+    // Fifth column: D > H > K > N > X
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 2), "#0000ff", "#00ffff");    // D
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 1), "#ff00ff", "#ffffff");    // H
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 0), "#000000", "#ffffff");    // K
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 3), "#000000", "#c0c0c0");    // N
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(4, 4), "#ff6600", "#ffffff");    // X
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6548_2) {
@@ -3609,103 +3399,26 @@ GUI_TEST_CLASS_DEFINITION(test_6548_2) {
     //2. Open OP tab and select "Weak similarities" color scheme
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme, "Weak similarities");
+    GTComboBox::selectItemByText(os, colorScheme, "Weak similarities");
 
-    //Zoom to max before GTUtilsMSAEditorSequenceArea::getFontColor
+    //Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
-    QPoint pos;
-    QString fontColor;
-    QString backgroundColor;
 
-    //second column check
-    {
-        //U > H > M > X
-        //Check U
-        pos = QPoint(1, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
+    // Second column check
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 1), "#0000ff", "#00ffff");    // Second frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 0), "#ff00ff", "#ffffff");    // Third frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 2), "#000000", "#ffffff");    // Fourth frequent symbol
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(1, 3), "#000000", "#c0c0c0");    // Fifth frequent symbol
 
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
+    // Third column check: A > R > Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 3), "#0000ff", "#00ffff");    // A
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 2), "#ff00ff", "#ffffff");    // R
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 1), "#000000", "#ffffff");    // Y
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(2, 0), "#000000", "#ffffff");    // gap
 
-        //Check H
-        pos = QPoint(1, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff" || fontColor == "#ff66ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check M
-        pos = QPoint(1, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check X
-        pos = QPoint(1, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-    }
-    //third column check
-    {
-        //A > R > Y
-        //Check A
-        pos = QPoint(2, 3);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#0000ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#00ffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check R
-        pos = QPoint(2, 2);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#ff00ff", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check Y
-        pos = QPoint(2, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check gap
-        pos = QPoint(2, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-    }
-    //fourth column
-    {
-        //S > W
-        //Check S
-        pos = QPoint(3, 0);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
-
-        //Check W
-        pos = QPoint(3, 1);
-        fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
-        backgroundColor = GTUtilsMSAEditorSequenceArea::getColor(os, pos);
-
-        CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
-        CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
-    }
+    // Fourth column: S > W
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 0), "#000000", "#ffffff");    // S
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(3, 1), "#000000", "#c0c0c0");    // W
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6564) {
@@ -3714,7 +3427,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Enable "Collapsing mode". As result 2 names in the name list are hidden.
-    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
@@ -4514,7 +4227,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_6) {
     GTGlobals::sleep(1000);
 
     // 3. Select any column on reference
-    GTUtilsMcaEditorSequenceArea::clickToReferencePosition(os, 2);
+    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 2);
 
     // 4. Expected state: No any selected read, selected column only
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
@@ -4535,7 +4248,7 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
     QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
-    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    GTComboBox::selectItemByIndex(os, annsComboBox, 1);
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4931,111 +4644,111 @@ GUI_TEST_CLASS_DEFINITION(test_6684) {
 GUI_TEST_CLASS_DEFINITION(test_6685_1) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are disabled
+    //2. Click right button on the sequence view -> Copy/Paste. The all following buttons with hotkeys are disabled:
     //Copy selected sequence -- Ctrl + C
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T
     //Copy amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}, {"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_2) {
     //1. Open "_common_data/fasta/AMINO.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/AMINO.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are disabled
+    //2. Click right button on the sequence view -> Copy/Paste. The all following buttons with hotkeys are disabled:
     //Copy selected sequence -- Ctrl + C
     //Copy annotation
     //Copy qualifier text
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy annotation", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_AMINO263"));
-
-    //The all following buttons are no exist
+    //The all following buttons do not exist:
     //Copy selected complementary 5 '-3' sequence
     //Copy amino acids
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation complementary 5 '-3' strand
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {"Copy selected complementary 5'-3' sequence", "Copy amino acids", "Copy amino acids of complementary 5'-3' strand", "Copy annotation complementary 5'-3' strand", "Copy annotation amino acids", "Copy annotation amino acids of complementary 5'-3' strand"}, PopupChecker::CheckOptions(PopupChecker::isNotVisible)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_AMINO263"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    "Copy selected complementary 5'-3' sequence",
+                                                                                    "Copy amino acids",
+                                                                                    "Copy amino acids of complementary 5'-3' strand",
+                                                                                    "Copy annotation amino acids",
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::isNotVisible)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_3) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2. Click on the CDS annotaion
+    //2. Click on the CDS annotation.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2);
 
-    //3. Click right button on the zoom view -> Copy/Paste. Items 1-4 and 9 are disabled, items 5-8 are enabled.
+    //3. Click right button on the sequence view -> Copy/Paste. Items 1-4 and 9 are disabled, items 5-8 are enabled.
     //Copy selected sequence
     //Copy selected complementary 5 '-3' sequence
     //Copy amino acids
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation direct strand -- Ctrl + C
-    //Copy annotation complementary 5 '-3' strand -- Ctrl + Shift + C
+    //Copy annotation sequence -- Ctrl + C
     //Copy annotation amino acids -- Ctrl + T
-    //Copy annotation amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence()}, {"Copy selected complementary 5'-3' sequence", QKeySequence()}, {"Copy amino acids", QKeySequence()}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence()},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence()},
+                                                                                    {"Copy amino acids", QKeySequence()},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy annotation direct strand", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy annotation complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy annotation amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy annotation sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy annotation amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: CGTAGG in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
-    //5. Click Ctrl + Shift + C
-    //Expected state: CCTACG in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "CCTACG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
-
-    //6. Click Ctrl + T
+    //5. Click Ctrl + T
     //Expected state: RR in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "RR", QString("Unexpected sequence, expected: RR, current: %1").arg(clipText));
-
-    //7. Click Ctrl + Shift + T
-    //Expected state: PT in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "PT", QString("Unexpected sequence, expected: PT, current: %1").arg(clipText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6685_4) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Select region 3-8
     GTUtilsSequenceView::selectSequenceRegion(os, 3, 8);
@@ -5045,50 +4758,47 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T -- Ctrl + Shift + T
     //Copy amino acids of complementary 5 '-3' strand
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}, {"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: GTAGGT in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "GTAGGT", QString("Unexpected sequence, expected: GTAGGT, current: %1").arg(clipText));
 
     //5. Click Ctrl + Shift + C
     //Expected state: ACCTAC in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier | Qt::ShiftModifier);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "ACCTAC", QString("Unexpected sequence, expected: ACCTAC, current: %1").arg(clipText));
 
     //6. Click Ctrl + T
     //Expected state: VG in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "VG", QString("Unexpected sequence, expected: VG, current: %1").arg(clipText));
 
     //7. Click Ctrl + Shift + T
     //Expected state: TY in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
+    GTKeyboardDriver::keyClick('t', Qt::ControlModifier | Qt::ShiftModifier);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "TY", QString("Unexpected sequence, expected: TY, current: %1").arg(clipText));
 }
@@ -5096,9 +4806,9 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
 GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     //1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    //2. Double click on the CDS annotaion
+    //2. Double click on the CDS annotation.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2, 0, true);
 
     //3. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are enabled except the last one
@@ -5106,52 +4816,37 @@ GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     //Copy selected complementary 5 '-3' sequence -- Ctrl + Shift + C
     //Copy amino acids -- Ctrl + T
     //Copy amino acids of complementary 5 '-3' strand -- Ctrl + Shift + T
-    //Copy annotation direct strand
-    //Copy annotation complementary 5 '-3' strand
+    //Copy annotation sequence
     //Copy annotation amino acids
-    //Copy annotation amino acids of complementary 5 '-3' strand
     //Copy qualifier text
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)}, {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)}, {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)}, {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)}, {"Copy annotation direct strand", QKeySequence()}, {"Copy annotation complementary 5'-3' strand", QKeySequence()}, {"Copy annotation amino acids", QKeySequence()}, {"Copy annotation amino acids of complementary 5'-3' strand", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy selected sequence", QKeySequence(Qt::CTRL | Qt::Key_C)},
+                                                                                    {"Copy selected complementary 5'-3' sequence", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
+                                                                                    {"Copy amino acids", QKeySequence(Qt::CTRL | Qt::Key_T)},
+                                                                                    {"Copy amino acids of complementary 5'-3' strand", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T)},
+                                                                                    {"Copy annotation sequence", QKeySequence()},
+                                                                                    {"Copy annotation amino acids", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {{"Copy qualifier text", QKeySequence()}}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "pan_view_short"));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Copy/Paste"}, {
+                                                                                    {"Copy qualifier text", QKeySequence()},
+                                                                                },
+                                                            PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     //4. Click Ctrl + C
     //Expected state: CGTAGG in the clipboard
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     QString clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
-    //5. Click Ctrl + Shift + C
-    //Expected state: CCTACG in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "CCTACG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
-
-    //6. Click Ctrl + T
+    //5. Click Ctrl + T
     //Expected state: RR in the clipboard
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
     clipText = GTClipboard::text(os);
     CHECK_SET_ERR(clipText == "RR", QString("Unexpected sequence, expected: RR, current: %1").arg(clipText));
-
-    //7. Click Ctrl + Shift + T
-    //Expected state: PT in the clipboard
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
-    GTGlobals::sleep(400);
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(400);
-    clipText = GTClipboard::text(os);
-    CHECK_SET_ERR(clipText == "PT", QString("Unexpected sequence, expected: PT, current: %1").arg(clipText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6684_1) {
@@ -5482,25 +5177,23 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
 GUI_TEST_CLASS_DEFINITION(test_6707) {
     //1. Create a folder and put any file in there.
     QDir(sandBoxDir).mkdir("test_6707");
-    QString fileName = sandBoxDir + "/test_6707/file.txt";
-    QFile file(fileName);
-    bool wasOpened = file.open(QIODevice::ReadWrite);
-    CHECK_SET_ERR(wasOpened, QString("File %1 wasn't created").arg(fileName));
 
-    file.close();
+    IOAdapterUtils::writeTextFile(sandBoxDir + "test_6707/file.txt", "Hello!");
+
     //2. Open the "Alignment Color Scheme" tab of the "Application settings" dialog.
     //3. Set "Directory to save color scheme" to the folder you created on the step 1.
-
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "AppSettingsDialogFiller isn't found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::AlignmentColorScheme);
             QLineEdit *colorsDirEdit = GTWidget::findExactWidget<QLineEdit *>(os, "colorsDirEdit", dialog);
-            CHECK_SET_ERR(colorsDirEdit != nullptr, "colorsDirEdit isn't found");
 
-            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "/test_6707/file.txt");
+            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "test_6707/file.txt");
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder is a regular file."));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "test_6707");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -5509,8 +5202,8 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...",
                               GTGlobals::UseMouse);
-    //Expected result: the file is still in the folder, the color schemes appear in the folder.
-    CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
+    //Expected result: the file is still in the folder and is not removed/modified.
+    CHECK_SET_ERR(IOAdapterUtils::readTextFile(sandBoxDir + "test_6707/file.txt") == "Hello!", "The file was removed or modified");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {
@@ -5625,6 +5318,37 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6715) {
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
+    class Scenario : public CustomScenario {
+    public:
+        Scenario() {};
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
+            CHECK_SET_ERR(tree, "tree widget not found");
+
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok", "You don't have permissions to write in selected folder."));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir + "read_only_dir").absoluteFilePath(), "", GTFileDialogUtils::Choose, GTGlobals::UseMouse));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    // 2. Choose read only folder by pressing "..." button
+    // Expected state: warning message about read only folder has appeared
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6718) {
@@ -6097,11 +5821,11 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     // Set "Sort by" as "Name" and "Sort order" as "Ascending"
     QComboBox *sortByCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortByComboBox"));
     CHECK_SET_ERR(sortByCombo != nullptr, "sortByCombo is NULL");
-    GTComboBox::setIndexWithText(os, sortByCombo, "Name");
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
 
     QComboBox *sortOrderCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortOrderComboBox"));
     CHECK_SET_ERR(sortOrderCombo != nullptr, "sortOrderCombo is NULL");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Ascending");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -6116,8 +5840,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList[17] == "Zychia_baranovi", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Name" and "Sort order" as "Descending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Name");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Descending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -6132,8 +5856,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList1[17] == "Bicolorana_bicolor_EF540830", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Length" and "Sort order" as "Descending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Length");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Descending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -6148,8 +5872,8 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList2[17] == "Podisma_sapporensis", "The 18 sequence is incorrect");
 
     // Set "Sort by" as "Length" and "Sort order" as "Ascending"
-    GTComboBox::setIndexWithText(os, sortByCombo, "Length");
-    GTComboBox::setIndexWithText(os, sortOrderCombo, "Ascending");
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
 
     // Press "Sort" button
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
@@ -6163,6 +5887,58 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList3[16] == "Bicolorana_bicolor_EF540830", "The 17 sequence is incorrect");
     CHECK_SET_ERR(nameList3[17] == "Hetrodes_pupus_EF540832", "The 18 sequence is incorrect");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6816) {
+    //1. Open "_common_data/fasta/pcr_test.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Set both primers "Y"
+    QWidget *primerBox = GTWidget::findWidget(os, "forwardPrimerBox");
+    QLineEdit *primerLe = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", primerBox));
+    GTLineEdit::setText(os, primerLe, "y", true);
+
+    primerBox = GTWidget::findWidget(os, "reversePrimerBox");
+    primerLe = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", primerBox));
+    GTLineEdit::setText(os, primerLe, "y", true);
+
+    //Expected state: "Show primer details" label is hidden, "Unable to calculate primer statistics." warning message is shown
+    QLabel *detailsLinkLabel = dynamic_cast<QLabel *>(GTWidget::findWidget(os, "detailsLinkLabel"));
+    CHECK_SET_ERR(detailsLinkLabel->isHidden(), "detailsLinkLabel unexpectedly shown");
+
+    QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
+    CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6847) {
+    //    1. Open 'human_T1.fa'
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    //2. Switch on the editing mode.
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
+    QPoint editButtonPoint = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(editButtonPoint + QPoint(100, 0));    // Move mouse to the right into the sequence area.
+    GTMouseDriver::click();
+
+    //3. Paste content with non-sequence characters
+    //Expected state: log contains error message
+    GTClipboard::setText(os, "?!@#$%^*(");
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Paste sequence"));
+    MWMDIWindow *mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsLog::checkContainsError(os, lt, "No sequences detected in the pasted content.");
+    GTWidget::click(os, GTAction::button(os, editMode));
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

@@ -30,13 +30,13 @@ namespace U2 {
 
 const QString McaGeneralTabFactory::GROUP_ID = "OP_MCA_GENERAL";
 const QString McaGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "46500112";
+const QString McaGeneralTabFactory::GROUP_DOC_PAGE = "49447483";
 
 McaGeneralTabFactory::McaGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget *McaGeneralTabFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *McaGeneralTabFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
