@@ -103,6 +103,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
 #ifdef Q_OS_MAC
+        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+        GTGlobals::sleep(5000);
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
 #else
