@@ -93,11 +93,24 @@ bool GTMouseDriver::press(Qt::MouseButton button)
 {
     bp |= button;
     QPoint mousePos = QCursor::pos();
-    CGEventType eventType = button == Qt::LeftButton ? kCGEventLeftMouseDown :
-                                button == Qt::RightButton ? kCGEventRightMouseDown:
-                                button == Qt::MidButton ? kCGEventOtherMouseDown : kCGEventNull;
-    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft /*ignored*/);
+    CGEventType eventType;
+    CGMouseButton btn;
+    if (button == Qt::LeftButton) {
+        eventType = kCGEventLeftMouseDown;
+        btn = kCGMouseButtonLeft;
+    } else if (button == Qt::RightButton) {
+        eventType = kCGEventRightMouseDown;
+        btn = kCGMouseButtonRight;
+    } else if (button == Qt::MidButton) {
+        eventType = kCGEventOtherMouseDown;
+        btn = kCGMouseButtonCenter;
+    } else {
+        DRIVER_CHECK(false, "Unknown mouse button");
+    }
+    CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
+    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, pt, btn);
     DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
     GTGlobals::sleep(0); // don't touch, it's Mac's magic
@@ -112,11 +125,24 @@ bool GTMouseDriver::release(Qt::MouseButton button)
 {
     bp &= (Qt::MouseButtonMask^button);
     QPoint mousePos = QCursor::pos();
-    CGEventType eventType = button == Qt::LeftButton ? kCGEventLeftMouseUp :
-                                button == Qt::RightButton ? kCGEventRightMouseUp:
-                                button == Qt::MidButton ? kCGEventOtherMouseUp : kCGEventNull;
-    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft /*ignored*/);
+    CGEventType eventType;
+    CGMouseButton btn;
+    if (button == Qt::LeftButton) {
+        eventType = kCGEventLeftMouseUp;
+        btn = kCGMouseButtonLeft;
+    } else if (button == Qt::RightButton) {
+        eventType = kCGEventRightMouseUp;
+        btn = kCGMouseButtonRight;
+    } else if (button == Qt::MidButton) {
+        eventType = kCGEventOtherMouseUp;
+        btn = kCGMouseButtonCenter;
+    } else {
+        DRIVER_CHECK(false, "Unknown mouse button");
+    }
+    CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
+    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, pt, btn);
     DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
     GTGlobals::sleep(0); // don't touch, it's Mac's magic

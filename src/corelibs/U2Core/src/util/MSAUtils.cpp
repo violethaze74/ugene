@@ -411,8 +411,8 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     row.rowId = -1;    // set the ID automatically
 
     QByteArray oldSeqData = dnaSeq.seq;
-    int tailGapsIndex = 0;
-    for (tailGapsIndex = oldSeqData.length() - 1; tailGapsIndex >= 0; tailGapsIndex--) {
+    int tailGapsIndex = oldSeqData.length() - 1;
+    for (; tailGapsIndex >= 0; tailGapsIndex--) {
         if (U2Msa::GAP_CHAR != oldSeqData[tailGapsIndex]) {
             tailGapsIndex++;
             break;
@@ -474,7 +474,7 @@ bool MSAUtils::restoreRowNames(MultipleSequenceAlignment &ma, const QStringList 
 
 QList<U2Region> MSAUtils::getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
-    if (-1 == requiredGapsCount) {
+    if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
     }
 

@@ -20,26 +20,17 @@
  */
 #include <limits.h>
 
-#include <U2Algorithm/FindAlgorithmTask.h>
-#include <U2Algorithm/SArrayBasedFindTask.h>
-#include <U2Algorithm/SArrayIndex.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/AssemblyObject.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AssemblyDbi.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -84,7 +75,7 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
       lastQuery(NULL) {
     GCOUNTER(cvar, tvar, "GenomeAlignerTask");
     setMaxParallelSubtasks(4);
-    hasResults = true;
+    hasResults = false;
     readsCount = 0;
     readsAligned = 0;
     shortreadLoadTime = 0;
@@ -343,18 +334,18 @@ Task::ReportResult GenomeAlignerTask::report() {
         return ReportResult_Finished;
     }
 
-    qint64 aligned = readsAligned;
+    qint64 nReadsProcessed = readsAligned;
     if (!alignContext.bestMode) {
         SAFE_POINT_EXT(NULL != pWriteTask,
                        stateInfo.setError("No parallel write task in non best mode"),
                        ReportResult_Finished);
-        aligned = pWriteTask->getWrittenReadsCount();
+        nReadsProcessed = pWriteTask->getWrittenReadsCount();
     }
 
     if (readsCount > 0) {
         taskLog.info(tr("The aligning is finished."));
         taskLog.info(tr("Whole working time = %1.").arg((GTimer::currentTimeMicros() - inf.startTime) / (1000 * 1000)));
-        taskLog.info(tr("%1% reads aligned.").arg(100 * (double)aligned / readsCount));
+        taskLog.info(tr("%1% reads aligned.").arg(100 * (double)nReadsProcessed / readsCount));
         if (alignContext.bestMode) {    // not parallel writing could be measured
             taskLog.info(tr("Short-reads loading time = %1").arg(shortreadLoadTime / (1000 * 1000)));
             taskLog.info(tr("Results writing time = %1").arg(resultWriteTime / (1000 * 1000)));
@@ -363,7 +354,8 @@ Task::ReportResult GenomeAlignerTask::report() {
         taskLog.info(tr("Short-reads IO time = %1").arg(shortreadIOTime / (1000 * 1000)));
     }
 
-    hasResults = (aligned > 0);
+    hasResults = nReadsProcessed > 0;
+    taskLog.details(tr("Number of reads processed: ") + QString::number(nReadsProcessed));
 
     return ReportResult_Finished;
 }

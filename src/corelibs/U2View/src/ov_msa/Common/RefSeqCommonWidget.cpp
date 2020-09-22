@@ -79,11 +79,11 @@ RefSeqCommonWidgetFactory::RefSeqCommonWidgetFactory(QList<QString> groupIds)
 RefSeqCommonWidgetFactory::~RefSeqCommonWidgetFactory() {
 }
 
-QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
-    SAFE_POINT(NULL != objView, QString("NULL object view!"), NULL);
+QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+    SAFE_POINT(objView != NULL, QString("NULL object view!"), NULL);
 
     MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
-    SAFE_POINT(NULL != msa, QString("Not MSAEditor!"), NULL);
+    SAFE_POINT(msa != NULL, QString("Not MSAEditor!"), NULL);
 
     return new RefSeqCommonWidget(msa);
 }

@@ -500,22 +500,6 @@ void MultipleChromatogramAlignmentData::replaceChars(int row, char origChar, cha
     getMcaRow(row)->replaceChars(origChar, resultChar, os);
 }
 
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const QByteArray &sequence, int offset) {
-    SAFE_POINT(rowNumber >= 0 && rowNumber < getNumRows(),
-               QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::setRowContent: "
-                       "the number of rows is '%2'")
-                   .arg(rowNumber)
-                   .arg(getNumRows()), );
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    U2OpStatus2Log os;
-    getMcaRow(rowNumber)->setRowContent(chromatogram, sequence, offset, os);
-    SAFE_POINT_OP(os, );
-
-    length = qMax(length, (qint64)sequence.size() + offset);
-}
-
 void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getNumRows(),
                QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::setRowContent: "

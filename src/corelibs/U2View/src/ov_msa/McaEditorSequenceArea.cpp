@@ -318,7 +318,7 @@ void McaEditorSequenceArea::sl_removeColumnsOfGaps() {
     U2UseCommonUserModStep userModStep(editor->getMaObject()->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-    editor->getMaObject()->deleteColumnsWithGaps(os);
+    getEditor()->getMaObject()->deleteColumnsWithGaps(os);
 }
 
 void McaEditorSequenceArea::sl_trimLeftEnd() {

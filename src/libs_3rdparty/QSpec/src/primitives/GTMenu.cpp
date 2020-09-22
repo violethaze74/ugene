@@ -92,11 +92,13 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
     QStringList fixedItemPath = itemPath;
 #ifdef Q_OS_MAC
     // Some actions are moved to the application menu on mac
-#    ifdef _DEBUG
+#ifdef _DEBUG
     const QString appName = "ugeneuid";
-#    else
+#else
     const QString appName = "Unipro UGENE";
-#    endif
+#endif
+
+#ifdef USE_FAKE_MENU_ITEM_ON_MAC
     const QString menuName = "Apple";
 
     static const QStringList appSettingsPath = QStringList() << "Settings"
@@ -110,6 +112,7 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
     if (aboutPath == itemPath) {
         fixedItemPath = QStringList() << menuName << "About " + appName;
     }
+#endif
 #endif
     return fixedItemPath;
 }
