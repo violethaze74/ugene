@@ -49,7 +49,7 @@ void ExternalToolSearchTask::run() {
     // 1. Search for the tool in the tools folder
     QDir appDir(QCoreApplication::applicationDirPath());
     QStringList entryList = appDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    QString toolsDir = qEnvironmentVariable("UGENE_TOOLS_DIR");
+    QString toolsDir = qgetenv("UGENE_TOOLS_DIR");
 
     if (toolsDir.isEmpty()) {
         foreach (const QString &dirName, entryList) {
