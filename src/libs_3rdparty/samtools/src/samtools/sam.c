@@ -1,7 +1,4 @@
 #include <string.h>
-#ifdef Q_OS_WIN
-#include <io.h>
-#endif
 #include <unistd.h>
 #include "faidx.h"
 #include "sam.h"

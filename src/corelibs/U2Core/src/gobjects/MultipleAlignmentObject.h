@@ -107,7 +107,7 @@ public:
     bool isRegionEmpty(const QList<int> &rowIndexes, int x, int width) const;
 
     /** Returns list of ordered row ids. */
-    QList<qint64> getRowIds(U2OpStatus &os) const;
+    QList<qint64> getRowIds() const;
 
     /**
      * Updates the rows order.
@@ -139,8 +139,6 @@ public:
     int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
     int deleteGapByRowIndexList(U2OpStatus &os, const QList<int> &rowIndexes, int pos, int maxGaps);
-
-    virtual void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1) = 0;
 
     /**
      * Performs shift of the region specified by parameters @startPos (leftmost column number),

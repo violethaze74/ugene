@@ -364,8 +364,11 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+    //TODO: re-test support for MAC OS before enabling.
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+#endif
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
     if ("1" == qgetenv(ENV_TEST_CRASH_HANDLER)) {

@@ -22,13 +22,6 @@
 #ifndef _U2_REGION_H_
 #define _U2_REGION_H_
 
-//small hack, may be bad
-#ifndef LLONG_MAX
-#    ifdef Q_OS_LINUX
-#        include <limits.h>
-#    endif
-#endif
-
 #include <QObject>
 #include <QVector>
 

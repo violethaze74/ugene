@@ -49,7 +49,7 @@ namespace U2 {
 /************************************************************************/
 /* AbstractDefaultPropertyWidget */
 /************************************************************************/
-BaseDefaultPropertyWidget::BaseDefaultPropertyWidget(int maxLength, QWidget *parent)
+BaseDefaultPropertyWidget::BaseDefaultPropertyWidget(QWidget *parent)
     : PropertyWidget(parent) {
 }
 
@@ -84,7 +84,7 @@ void BaseDefaultPropertyWidget::configureLineEdit(const int maxLength) {
 /************************************************************************/
 
 DefaultPropertyWidget::DefaultPropertyWidget(int maxLength, QWidget *parent)
-    : BaseDefaultPropertyWidget(maxLength, parent) {
+    : BaseDefaultPropertyWidget(parent) {
     lineEdit = new QLineEdit(this);
     configureLineEdit(maxLength);
 }
@@ -94,7 +94,7 @@ DefaultPropertyWidget::DefaultPropertyWidget(int maxLength, QWidget *parent)
 /************************************************************************/
 
 IgnoreUpDownPropertyWidget::IgnoreUpDownPropertyWidget(int maxLength, QWidget *parent)
-    : BaseDefaultPropertyWidget(maxLength, parent) {
+    : BaseDefaultPropertyWidget(parent) {
     lineEdit = new LineEditIgnoreUpDown(this);
     configureLineEdit(maxLength);
 }

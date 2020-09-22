@@ -286,19 +286,6 @@ void MultipleChromatogramAlignmentRowData::setRowContent(const DNAChromatogram &
     syncLengths();
 }
 
-void MultipleChromatogramAlignmentRowData::setRowContent(const DNAChromatogram &newChromatogram, const QByteArray &bytes, int offset, U2OpStatus &os) {
-    // TODO: this method is strange. It is hard to synchronize a chromatogram with a sequence. I think, it should be removed.
-    QByteArray newSequenceBytes;
-    U2MsaRowGapModel newGapModel;
-
-    splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapModel);
-    DNASequence newSequence(getName(), newSequenceBytes);
-
-    addOffsetToGapModel(newGapModel, offset);
-
-    setRowContent(chromatogram, newSequence, newGapModel, os);
-}
-
 void MultipleChromatogramAlignmentRowData::insertGaps(int position, int count, U2OpStatus &os) {
     MsaRowUtils::insertGaps(os, gaps, getRowLengthWithoutTrailing(), position, count);
 }

@@ -281,7 +281,7 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
     return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget *dialog, QString &errorMessage) {
+bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget */*dialog*/, QString & /*errorMessage*/) {
     MessageBoxDialogFiller *msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);

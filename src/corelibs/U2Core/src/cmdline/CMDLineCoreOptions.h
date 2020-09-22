@@ -58,6 +58,7 @@ public:
     static const QString FILE_STORAGE_DIR;
     static const QString SESSION_DB;
     static const QString USE_SAME_INI_FOR_TESTS;
+    static const QString DONT_USE_NATIVE_MENUBAR;
 
 public:
     // initialize help for core cmdline options

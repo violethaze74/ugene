@@ -175,9 +175,12 @@ CheckUpdatesTask::Answer VersionMessage::getAnswer() const {
 }
 
 QString VersionMessage::getMessageText(const Version &thisVersion, const Version &newVersion) const {
-    QString message = "<table><tr><td>%1</td><td><b>%2</b></td></tr>"
-                      "<tr><td>%3</td><td><b>%4</b></td></tr></table>";
-    message = message.arg(tr("Your version:")).arg(thisVersion.text).arg(tr("Latest version:")).arg(newVersion.text);
+    QString message = QString("<table>"
+                              " <tr><td>%1</td><td><b>&nbsp;%2</b></td></tr>"
+                              " <tr><td>%3</td><td><b>&nbsp;%4</b></td></tr>"
+                              "</table>")
+                          .arg(tr("Your version:"), thisVersion.text, tr("Latest version:"), newVersion.text);
+
     if (thisVersion >= newVersion) {
         message += "<p>" + tr("You have the latest version") + "</p>";
     }

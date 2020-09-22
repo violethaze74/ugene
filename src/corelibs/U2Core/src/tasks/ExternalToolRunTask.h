@@ -53,7 +53,7 @@ public:
     /**
      * Don't delete logParser, it will be deleted automatically.
      */
-    ExternalToolRunTask(const QString &toolId, const QStringList &arguments, ExternalToolLogParser *logParser, const QString &workingDirectory = "", const QStringList &additionalPaths = QStringList(), const QString &additionalProcessToKill = QString(), bool parseOutputFile = false);
+    ExternalToolRunTask(const QString &toolId, const QStringList &arguments, ExternalToolLogParser *logParser, const QString &workingDirectory = "", const QStringList &additionalPaths = QStringList(), bool parseOutputFile = false);
     ~ExternalToolRunTask();
 
     void addOutputListener(ExternalToolListener *outputListener);
@@ -70,7 +70,7 @@ public:
         additionalEnvVariables = envVariable;
     }
 
-    static void killProcess(QProcess *process, QString childProcesses = "");
+    static void killProcess(QProcess *process);
 
 private:
     static QList<long> getChildPidsRecursive(long parentPid);

@@ -67,7 +67,7 @@ public:
 
     void insertGapByRowIndexList(const QList<int> &rowIndexes, int pos, int nGaps);
 
-    void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
+    void deleteColumnsWithGaps(U2OpStatus &os);
 
     void trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge);
     void saveState();
@@ -81,7 +81,7 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
 
-    QList<U2Region> getColumnsWithGaps(int requiredGapsCount) const;
+    QList<U2Region> getColumnsWithGaps() const;
     U2MsaRowGapModel getReferenceGapModel() const;
 
     mutable U2SequenceObject *referenceObj;

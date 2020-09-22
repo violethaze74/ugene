@@ -124,7 +124,7 @@ void GSequenceLineViewAnnotated::sl_onAnnotationActivated(U2::Annotation *annota
     }
 }
 
-void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelection *as, const QList<Annotation *> &_added, const QList<Annotation *> &_removed) {
+void GSequenceLineViewAnnotated::sl_onAnnotationSelectionChanged(AnnotationSelection * /*as*/, const QList<Annotation *> &_added, const QList<Annotation *> &_removed) {
     const QSet<AnnotationTableObject *> aos = ctx->getAnnotationObjects(true);
 
     bool changed = false;

@@ -98,6 +98,7 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox *spinBox, dou
             GTKeyboardDriver::keyClick( Qt::Key_Down);
             GTKeyboardDriver::keySequence(s);
             GTGlobals::sleep(100);
+            GT_CHECK(spinBox->value() == v, "fail to set value");
 
         }
     }

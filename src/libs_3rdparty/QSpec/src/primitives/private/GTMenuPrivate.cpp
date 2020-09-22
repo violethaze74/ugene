@@ -41,15 +41,11 @@ namespace HI {
 void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus &os, const QStringList &itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
-#ifdef Q_OS_MAC
-    Q_UNUSED(method);
-    GTMenuPrivateMac::clickMainMenuItem(os, itemPath, matchFlag);
-#else
+
     QStringList cuttedItemPath = itemPath;
     const QString menuName = cuttedItemPath.takeFirst();
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, cuttedItemPath, method, matchFlag));
     showMainMenu(os, menuName, method);
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -116,6 +112,11 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
     int key = 0;
     int key_pos = 0;
 
+#ifdef Q_OS_MAC
+    // TODO: workaround for MacOS
+    //      menubar's submenu can't be opened by keyboard in non-native mode
+    m = GTGlobals::UseMouse;
+#endif
     switch(m) {
     case GTGlobals::UseMouse:
         pos = mainWindow->menuBar()->actionGeometry(menu).center();
