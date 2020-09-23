@@ -92,13 +92,13 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
     QStringList fixedItemPath = itemPath;
 #ifdef Q_OS_MAC
     // Some actions are moved to the application menu on mac
-#ifdef _DEBUG
+#    ifdef _DEBUG
     const QString appName = "ugeneuid";
-#else
+#    else
     const QString appName = "Unipro UGENE";
-#endif
+#    endif
 
-#ifdef USE_FAKE_MENU_ITEM_ON_MAC
+#    ifdef USE_FAKE_MENU_ITEM_ON_MAC
     const QString menuName = "Apple";
 
     static const QStringList appSettingsPath = QStringList() << "Settings"
@@ -112,7 +112,7 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
     if (aboutPath == itemPath) {
         fixedItemPath = QStringList() << menuName << "About " + appName;
     }
-#endif
+#    endif
 #endif
     return fixedItemPath;
 }
@@ -237,15 +237,14 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
     case GTGlobals::UseMouse: {
         QPoint actionPosition = actionPos(os, menu, action);
         bool isVerticalMenu = cursorPosition.y() < menuCorner.y();    // TODO: assuming here that submenu is always lower then menu
-        QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :  // move by Y first
-                                              QPoint(actionPosition.x(), cursorPosition.y());   // move by X first
+        QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :    // move by Y first
+                                              QPoint(actionPosition.x(), cursorPosition.y());    // move by X first
 
         GTMouseDriver::moveTo(firstMoveTo);
         GTGlobals::sleep(200);
 
         GTMouseDriver::moveTo(actionPosition);    // move cursor to action
         GTGlobals::sleep(200);
-
 
 #ifdef Q_OS_WIN
         GTMouseDriver::click();

@@ -23,22 +23,19 @@
 #define HI_GUI_GTMOUSE_H_
 
 #include "GTGlobals.h"
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
+#if (QT_VERSION < 0x050000)    //Qt 5
+#    include <QtGui/QWidget>
 #else
-#include <QtWidgets/QWidget>
+#    include <QtWidgets/QWidget>
 #endif
-
 
 namespace HI {
 
 class HI_EXPORT GTMouseUtils {
 public:
-
     static void moveCursorToWidget(GUITestOpStatus &os, QWidget *widget);
     static void moveCursorOutOfWidget(GUITestOpStatus &os, QWidget *widget);
-
 };
 
-}
+}    // namespace HI
 #endif

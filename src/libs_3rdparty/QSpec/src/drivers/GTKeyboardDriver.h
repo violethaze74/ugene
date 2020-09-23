@@ -23,10 +23,11 @@
 #define _HI_GUI_GTKEYBOARDDRIVER_H_
 
 #include <QMap>
+
 #include "GTGlobals.h"
 
 #ifdef _WIN32
-#include <windows.h>
+#    include <windows.h>
 #endif
 
 #define ADD_KEY(name, code) insert(name, code)
@@ -66,16 +67,15 @@ public:
     class HI_EXPORT keys : private QMap<Qt::Key, int> {
     public:
         keys();
-        int operator [] (const Qt::Key &key) const;
+        int operator[](const Qt::Key &key) const;
     };
 
     static keys key;
 
 private:
     static QList<Qt::Key> modifiersToKeys(Qt::KeyboardModifiers m);
-
 };
 
-} //namespace
+}    // namespace HI
 
 #endif

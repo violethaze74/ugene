@@ -22,9 +22,9 @@
 #include "primitives/GTWidget.h"
 
 #include <QApplication>
-#include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QDoubleSpinBox>
 #include <QGuiApplication>
 #include <QLineEdit>
 #include <QStyle>
@@ -61,9 +61,9 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
 
-#ifdef Q_OS_MAC // TODO: workaround for MacOS gui tests
+#ifdef Q_OS_MAC    // TODO: workaround for MacOS gui tests
     if (!qobject_cast<QComboBox *>(w) &&
-            !qobject_cast<QDoubleSpinBox *>(w)) {
+        !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
 #else
@@ -81,7 +81,7 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (parentWidget == nullptr) {
             QList<QWidget *> allWidgetList;
-            for(QWidget *parent: GTMainWindow::getMainWindowsAsWidget(os)) {
+            for (QWidget *parent : GTMainWindow::getMainWindowsAsWidget(os)) {
                 allWidgetList << parent->findChildren<QWidget *>(widgetName);
             }
             int nMatches = allWidgetList.count();
