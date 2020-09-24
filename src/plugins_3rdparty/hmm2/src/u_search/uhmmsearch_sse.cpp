@@ -100,7 +100,7 @@ struct hmm_opt{
     }
 
     ~hmm_opt() {
-        delete[] mem;
+        free(mem);
     }
 
     void dump() {
