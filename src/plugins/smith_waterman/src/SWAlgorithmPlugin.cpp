@@ -61,14 +61,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-#ifdef SW2_BUILD_WITH_SSE2
-    bool runningOnSSEProc = AppResourcePool::isSSE2Enabled();
-    if (!runningOnSSEProc) {
-        return 0;
-    }
-#endif
-    SWAlgorithmPlugin *plug = new SWAlgorithmPlugin();
-    return plug;
+    return new SWAlgorithmPlugin();
 }
 
 SWAlgorithmPlugin::SWAlgorithmPlugin()
@@ -106,11 +99,9 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     par->registerAlgorithm(new SWPairwiseAlignmentAlgorithm());
     regDependedIMPLFromOtherPlugins();
 
-#ifdef SW2_BUILD_WITH_SSE2
     coreLog.trace("Registering SSE2 SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_sse2), QString("SSE2"));
     par->getAlgorithm("Smith-Waterman")->addAlgorithmRealization(new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2), "SSE2");
-#endif
 
     this->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(regDependedIMPLFromOtherPlugins()));
 }
@@ -127,6 +118,7 @@ void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
     SmithWatermanTaskFactoryRegistry *swar = AppContext::getSmithWatermanTaskFactoryRegistry();
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
     Q_UNUSED(swar);
+    Q_UNUSED(par);
 
 #ifdef SW2_BUILD_WITH_CUDA
     if (!AppContext::getCudaGpuRegistry()->empty()) {

@@ -30,14 +30,3 @@ unix {
         PRE_TARGETDEPS = src/u_spu/hmmercell_spu.a
     }
 }
-
-#adding SSE2 gcc compiler flag if building on SSE2 capable CPU
-use_sse2() {
-    !win32 {
-        QMAKE_CXXFLAGS += -msse2
-        QMAKE_CFLAGS_DEBUG += -msse2
-        QMAKE_CFLAGS_RELEASE += -msse2
-    }
-    DEFINES += HMMER_BUILD_WITH_SSE2
-}
-

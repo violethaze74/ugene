@@ -1,5 +1,3 @@
-#ifdef HMMER_BUILD_WITH_SSE2
-
 #include "uhmmsearch_opt.h"
 
 #include <U2Core/SequenceWalkerTask.h>
@@ -492,5 +490,3 @@ QList<float> sseScoring( unsigned char * dsq, int seqlen, plan7_s* hmm, HMMSeqGr
 	
 	return results;
 }
-
-#endif // HMMER_SSE

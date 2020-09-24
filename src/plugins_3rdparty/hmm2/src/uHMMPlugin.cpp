@@ -67,14 +67,7 @@ Q_DECLARE_METATYPE(QMenu *);
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-#ifdef HMMER_BUILD_WITH_SSE2
-    bool runningOnSSEProc = AppResourcePool::isSSE2Enabled();
-    if( !runningOnSSEProc ) {
-        return 0;
-    }
-#endif
-    uHMMPlugin * plug = new uHMMPlugin();
-    return plug;
+    return new uHMMPlugin();
 }
 
 uHMMPlugin::uHMMPlugin() : Plugin(tr("HMM2"), tr("Based on HMMER 2.3.2 package. Biological sequence analysis using profile hidden Markov models")), ctxMSA(NULL), ctxADV(NULL)

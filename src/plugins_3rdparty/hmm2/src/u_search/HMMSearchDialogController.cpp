@@ -89,9 +89,7 @@ void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
 #ifdef UGENE_CELL
     algoCombo->addItem(tr("Cell BE optimized"), HMMSearchAlgo_CellOptimized);
 #endif
-    if(AppResourcePool::isSSE2Enabled()){
-        algoCombo->addItem(tr("SSE optimized"), HMMSearchAlgo_SSEOptimized);
-    }
+    algoCombo->addItem(tr("SSE optimized"), HMMSearchAlgo_SSEOptimized);
     algoCombo->addItem(tr("Conservative"), HMMSearchAlgo_Conservative);
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);

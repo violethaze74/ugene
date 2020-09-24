@@ -1,53 +1,46 @@
 #include "uhmmsearch.h"
-#include <U2Core/Task.h>
-
-#include <hmmer2/funcs.h>
 #include <HMMIO.h>
-
+#include <hmmer2/funcs.h>
 #include <limits.h>
+
+#include <U2Core/Task.h>
 #ifdef UGENE_CELL
-#include "hmmer_ppu.h"
-#include "uhmmsearch_cell.h"
+#    include "hmmer_ppu.h"
+#    include "uhmmsearch_cell.h"
 #endif
 #include "uhmmsearch_opt.h"
-
-#ifdef HMMER_BUILD_WITH_SSE2
 #include "uhmmsearch_sse.h"
-#endif
 
 namespace U2 {
 
-static void main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct threshold_s *thresh, int do_forward,
-                            int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit,
-                            struct tophit_s *dhit, int *ret_nseq, TaskStateInfo& ti);
+static void main_loop_serial(struct plan7_s *hmm, const char *seq, int seqLen, struct threshold_s *thresh, int do_forward, int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit, struct tophit_s *dhit, int *ret_nseq, TaskStateInfo &ti);
 
-QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int seqLen, const UHMMSearchSettings& s, TaskStateInfo& si)
-{
-    plan7_s * hmm = HMMIO::cloneHMM( _hmm );
+QList<UHMMSearchResult> UHMMSearch::search(plan7_s *_hmm, const char *seq, int seqLen, const UHMMSearchSettings &s, TaskStateInfo &si) {
+    plan7_s *hmm = HMMIO::cloneHMM(_hmm);
     //Set up optional Pfam score thresholds.
-    threshold_s thresh;         // contains all threshold (cutoff) info
-    thresh.globE   = s.globE; // use a reasonable Eval threshold
-    thresh.globT   = -FLT_MAX;  // but no bit threshold
-	thresh.domT    = s.domT;  // no domain bit threshold
-	thresh.domE    = s.domE;   // and no domain Eval threshold
-    thresh.autocut = CUT_NONE;  // and no Pfam cutoffs used
-    thresh.Z       = s.eValueNSeqs; // Z not preset; use actual # of seqs
+    threshold_s thresh;    // contains all threshold (cutoff) info
+    thresh.globE = s.globE;    // use a reasonable Eval threshold
+    thresh.globT = -FLT_MAX;    // but no bit threshold
+    thresh.domT = s.domT;    // no domain bit threshold
+    thresh.domE = s.domE;    // and no domain Eval threshold
+    thresh.autocut = CUT_NONE;    // and no Pfam cutoffs used
+    thresh.Z = s.eValueNSeqs;    // Z not preset; use actual # of seqs
 
-    int   do_null2      = TRUE;    // TRUE to adjust scores with null model #2
-    int   do_forward    = FALSE;   // TRUE to use Forward() not Viterbi()
-    int   do_xnu        = FALSE;   // TRUE to filter sequences thru XNU
-    QList<UHMMSearchResult> res;   // the results of the method
+    int do_null2 = TRUE;    // TRUE to adjust scores with null model #2
+    int do_forward = FALSE;    // TRUE to use Forward() not Viterbi()
+    int do_xnu = FALSE;    // TRUE to filter sequences thru XNU
+    QList<UHMMSearchResult> res;    // the results of the method
 
     //get HMMERTaskLocalData
-	HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-	alphabet_s *al = &tld->al;
+    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
+    alphabet_s *al = &tld->al;
 
     SetAlphabet(hmm->atype);
 
-    P7Logoddsify(hmm, !do_forward); //TODO: clone model to avoid changes in it or make it thread safe??
+    P7Logoddsify(hmm, !do_forward);    //TODO: clone model to avoid changes in it or make it thread safe??
 
     if (do_xnu && al->Alphabet_type == hmmNUCLEIC) {
-        si.setError( "The HMM is a DNA model, and you can't use the --xnu filter on DNA data" );
+        si.setError("The HMM is a DNA model, and you can't use the --xnu filter on DNA data");
         return res;
     }
 
@@ -57,34 +50,31 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
     *****************************************************************/
 
     if (!SetAutocuts(&thresh, hmm)) {
-        si.setError(  "HMM did not contain the GA, TC, or NC cutoffs you needed" );
+        si.setError("HMM did not contain the GA, TC, or NC cutoffs you needed");
         return res;
     }
 
     // set up structures for storing output
-    histogram_s *histogram  = AllocHistogram(-200, 200, 100);  //keeps full histogram of all scores
-    tophit_s   *ghit        = AllocTophits(200);               // per-seq hits: 200=lumpsize
-    tophit_s   *dhit        = AllocTophits(200);               // domain hits:  200=lumpsize
+    histogram_s *histogram = AllocHistogram(-200, 200, 100);    //keeps full histogram of all scores
+    tophit_s *ghit = AllocTophits(200);    // per-seq hits: 200=lumpsize
+    tophit_s *dhit = AllocTophits(200);    // domain hits:  200=lumpsize
 
-    int     nseq = 0;         // number of sequences searched
+    int nseq = 0;    // number of sequences searched
 #ifdef UGENE_CELL
-    if( HMMSearchAlgo_CellOptimized == s.alg ) {
-        if( hmm->M < MAX_HMM_LENGTH ) {
+    if (HMMSearchAlgo_CellOptimized == s.alg) {
+        if (hmm->M < MAX_HMM_LENGTH) {
             main_loop_spe(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
         } else {
             main_loop_serial(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
         }
     } else
-#elif defined(HMMER_BUILD_WITH_SSE2)
-    if( HMMSearchAlgo_SSEOptimized == s.alg ) {
-        main_loop_opt(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si, sseScoring);
-    } else
 #endif
-    if( HMMSearchAlgo_Conservative == s.alg ) {
+        if (s.alg == HMMSearchAlgo_SSEOptimized) {
+        main_loop_opt(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si, sseScoring);
+    } else if (s.alg == HMMSearchAlgo_Conservative) {
         main_loop_serial(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
-    }
-    else {
-        assert( false && "bad hmmsearch algorithm selected" );
+    } else {
+        assert(false && "bad hmmsearch algorithm selected");
     }
     // Process hit lists, produce text output
 
@@ -93,7 +83,7 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
         ExtremeValueSetHistogram(histogram, hmm->mu, hmm->lambda, histogram->lowscore, histogram->highscore, 0);
     }
     if (!thresh.Z) {
-        thresh.Z = nseq;       // set Z for good now that we're done
+        thresh.Z = nseq;    // set Z for good now that we're done
     }
 
     //report our output
@@ -104,32 +94,33 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
 
     // Report domain hits (sorted on E-value)
     for (int i = 0; i < dhit->num && !si.cancelFlag; i++) {
-        float   sc;                 // score of an HMM search
-        double  pvalue;             // pvalue of an HMM score
-        double  evalue;             // evalue of an HMM score
-        char    *name, *desc;       // hit sequence name and description
-        double  motherp;            // pvalue of a whole seq HMM score
-        float   mothersc;           // score of a whole seq parent of domain
-        int     sqfrom, sqto;       // coordinates in sequence
-        int     sqlen;              // length of seq that was hit
-        int     hmmfrom, hmmto;     // coordinate in HMM
-        int     ndom;               // total # of domains in this seq
-        int     domidx;             // number of this domain
+        float sc;    // score of an HMM search
+        double pvalue;    // pvalue of an HMM score
+        double evalue;    // evalue of an HMM score
+        char *name, *desc;    // hit sequence name and description
+        double motherp;    // pvalue of a whole seq HMM score
+        float mothersc;    // score of a whole seq parent of domain
+        int sqfrom, sqto;    // coordinates in sequence
+        int sqlen;    // length of seq that was hit
+        int hmmfrom, hmmto;    // coordinate in HMM
+        int ndom;    // total # of domains in this seq
+        int domidx;    // number of this domain
 
-        GetRankedHit(dhit, i, &pvalue, &sc, &motherp, &mothersc,
-                    &name, NULL, &desc,
-                    &sqfrom, &sqto, &sqlen,      // seq position info
-                    &hmmfrom, &hmmto, NULL,      // HMM position info
-                    &domidx, &ndom,              // domain info
-                    NULL);                       // alignment info
+        GetRankedHit(dhit, i, &pvalue, &sc, &motherp, &mothersc, &name, NULL, &desc, &sqfrom, &sqto, &sqlen,    // seq position info
+                     &hmmfrom,
+                     &hmmto,
+                     NULL,    // HMM position info
+                     &domidx,
+                     &ndom,    // domain info
+                     NULL);    // alignment info
 
-        evalue = pvalue * (double) thresh.Z;
+        evalue = pvalue * (double)thresh.Z;
 
-        if (motherp * (double) thresh.Z > thresh.globE || mothersc < thresh.globT)  {
+        if (motherp * (double)thresh.Z > thresh.globE || mothersc < thresh.globT) {
             continue;
         } else if (evalue <= thresh.domE && sc >= thresh.domT) {
             // hmm reports results in range [1...N] -> translate it to [0..N)
-            res.append(UHMMSearchResult(U2Region(sqfrom-1, sqto-sqfrom+1), sc, evalue));
+            res.append(UHMMSearchResult(U2Region(sqfrom - 1, sqto - sqfrom + 1), sc, evalue));
         }
     }
 
@@ -137,11 +128,10 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
     FreeHistogram(histogram);
     FreeTophits(ghit);
     FreeTophits(dhit);
-	FreePlan7( hmm );
+    FreePlan7(hmm);
 
     return res;
 }
-
 
 // Function: main_loop_serial()
 // Date:     SRE, Wed Sep 23 10:20:49 1998 [St. Louis]
@@ -168,20 +158,17 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
 // Returns:  (void)
 
 static void
-main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct threshold_s *thresh, int do_forward,
-                 int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit, struct tophit_s *dhit,
-                 int *ret_nseq, TaskStateInfo& ti)
-{
-	//get HMMERTaskLocalData
-	HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-	alphabet_s *al = &tld->al;
+    main_loop_serial(struct plan7_s *hmm, const char *seq, int seqLen, struct threshold_s *thresh, int do_forward, int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit, struct tophit_s *dhit, int *ret_nseq, TaskStateInfo &ti) {
+    //get HMMERTaskLocalData
+    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
+    alphabet_s *al = &tld->al;
 
-    struct dpmatrix_s *mx;      // DP matrix, growable
-    struct p7trace_s *tr;       // traceback
-    unsigned char   *dsq;       // digitized target sequence
-    float  sc;                  // score of an HMM search
-    double pvalue;              // pvalue of an HMM score
-    double evalue;              // evalue of an HMM score
+    struct dpmatrix_s *mx;    // DP matrix, growable
+    struct p7trace_s *tr;    // traceback
+    unsigned char *dsq;    // digitized target sequence
+    float sc;    // score of an HMM search
+    double pvalue;    // pvalue of an HMM score
+    double evalue;    // evalue of an HMM score
 
     // Create a DP matrix; initially only two rows big, but growable;
     // we overalloc by 25 rows (L dimension) when we grow; not growable
@@ -211,8 +198,9 @@ main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct thresh
     //    whole sequence score; this overrides anything
     //    PostprocessSignificantHit() is going to do to the per-seq score.
     if (do_forward) {
-        sc  = P7Forward(dsq, seqLen, hmm, NULL);
-        if (do_null2)   sc -= TraceScoreCorrection(hmm, tr, dsq);
+        sc = P7Forward(dsq, seqLen, hmm, NULL);
+        if (do_null2)
+            sc -= TraceScoreCorrection(hmm, tr, dsq);
     }
 
     // 2. Store score/pvalue for global alignment; will sort on score,
@@ -224,17 +212,17 @@ main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct thresh
     //    output.
     //
     pvalue = PValue(hmm, sc);
-    evalue = thresh->Z ? (double) thresh->Z * pvalue : (double) pvalue;
-    if (sc >= thresh->globT && evalue <= thresh->globE)  {
-        sc = PostprocessSignificantHit(ghit, dhit,
-            tr, hmm, dsq, seqLen,
-			(char *)"sequence", //todo: sqinfo.name,
-            NULL,
-            NULL,
-            do_forward, sc,
-            do_null2,
-            thresh,
-            FALSE); // FALSE-> not hmmpfam mode, hmmsearch mode
+    evalue = thresh->Z ? (double)thresh->Z * pvalue : (double)pvalue;
+    if (sc >= thresh->globT && evalue <= thresh->globE) {
+        sc = PostprocessSignificantHit(ghit, dhit, tr, hmm, dsq, seqLen,
+                                       (char *)"sequence",    //todo: sqinfo.name,
+                                       NULL,
+                                       NULL,
+                                       do_forward,
+                                       sc,
+                                       do_null2,
+                                       thresh,
+                                       FALSE);    // FALSE-> not hmmpfam mode, hmmsearch mode
     }
     AddToHistogram(histogram, sc);
     P7FreeTrace(tr);
@@ -244,4 +232,4 @@ main_loop_serial(struct plan7_s *hmm, const char* seq, int seqLen, struct thresh
     return;
 }
 
-} //namespace
+}    // namespace U2

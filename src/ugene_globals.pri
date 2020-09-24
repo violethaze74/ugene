@@ -117,28 +117,6 @@ macx : DEFINES += RUN_WORKFLOW_IN_THREADS
 #  1) adding -msse2 compilation flag if needed (currently uhmmer and smith_waterman2)
 #  2) performing run-time check using cpuid instruction on intel proccessors.
 
-isEmpty( UGENE_SSE2_DETECTED ) {
-    UGENE_SSE2_DETECTED = 0
-
-    !win32 : exists( /proc/cpuinfo ) {
-        system( grep sse2 /proc/cpuinfo > /dev/null ) {
-            UGENE_SSE2_DETECTED = 1
-        }
-    }
-    macx {
-        !ppc{
-            system(/usr/sbin/system_profiler SPHardwareDataType | grep Processor | grep Intel > /dev/null) {
-               UGENE_SSE2_DETECTED = 1
-            }
-        }
-    }
-}
-
-defineTest( use_sse2 ) {
-    win32 : return (true)
-    contains( UGENE_SSE2_DETECTED, 1 ) : return (true)
-    return (false)
-}
 
 # CUDA environment
 UGENE_NVCC         = nvcc

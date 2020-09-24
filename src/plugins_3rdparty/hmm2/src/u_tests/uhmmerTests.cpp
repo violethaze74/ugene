@@ -223,10 +223,6 @@ void GTest_uHMMERSearch::prepare() {
     QString env_algo = env->getVar(ENV_HMMSEARCH_ALGORITHM_NAME);
     if( !env_algo.isEmpty() ) {
         if( ENV_HMMSEARCH_ALGORITHM_SSE == env_algo ) {
-#if !defined(HMMER_BUILD_WITH_SSE2)
-            stateInfo.setError( QString("SSE2 was not enabled in this build") );
-            return;
-#endif
             s.alg = HMMSearchAlgo_SSEOptimized;
         } else if( ENV_HMMSEARCH_ALGORITHM_CELL == env_algo ) {
 #if !defined UGENE_CELL

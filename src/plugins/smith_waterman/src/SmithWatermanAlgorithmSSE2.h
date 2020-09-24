@@ -19,14 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifdef SW2_BUILD_WITH_SSE2
+#ifndef _SMITHWATERMANALGORITHM_SSE2_H
+#define _SMITHWATERMANALGORITHM_SSE2_H
 
-#    ifndef _SMITHWATERMANALGORITHM_SSE2_H
-#        define _SMITHWATERMANALGORITHM_SSE2_H
+#include <emmintrin.h>
 
-#        include <emmintrin.h>
-
-#        include "SmithWatermanAlgorithm.h"
+#include "SmithWatermanAlgorithm.h"
 
 namespace U2 {
 
@@ -56,5 +54,4 @@ private:
 
 }    // namespace U2
 
-#    endif
-#endif    //SW2_BUILD_WITH_SSE2
+#endif

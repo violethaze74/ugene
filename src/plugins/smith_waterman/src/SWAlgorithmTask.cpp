@@ -185,7 +185,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
                                           true));
         break;
     case SW_sse2:
-#ifdef SW2_BUILD_WITH_SSE2
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
                                           SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
                                                                                               sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
@@ -195,7 +194,6 @@ void SWAlgorithmTask::setupTask(int maxScore) {
                                                                                               maxScore,
                                                                                               sWatermanConfig.resultView),
                                           true));
-#endif
         break;
     default:
         assert(0);
@@ -270,12 +268,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
 
     SmithWatermanAlgorithm *sw = NULL;
     if (algType == SW_sse2) {
-#ifdef SW2_BUILD_WITH_SSE2
         sw = new SmithWatermanAlgorithmSSE2;
-#else
-        coreLog.error("SSE2 was not enabled in this build");
-        return;
-#endif    //SW2_BUILD_WITH_SSE2
     } else if (algType == SW_cuda) {
 #ifdef SW2_BUILD_WITH_CUDA
         sw = new SmithWatermanAlgorithmCUDA;
@@ -586,12 +579,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask *t, Task
 
     SmithWatermanAlgorithm *sw = NULL;
     if (algType == SW_sse2) {
-#ifdef SW2_BUILD_WITH_SSE2
         sw = new SmithWatermanAlgorithmSSE2;
-#else
-        coreLog.error("SSE2 was not enabled in this build");
-        return;
-#endif    //SW2_BUILD_WITH_SSE2
     } else if (algType == SW_cuda) {
 #ifdef SW2_BUILD_WITH_CUDA
         sw = new SmithWatermanAlgorithmCUDA;
@@ -746,7 +734,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
                                           true));
         break;
     case SW_sse2:
-#ifdef SW2_BUILD_WITH_SSE2
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
                                           SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
                                                                                               sqnc->left(c.chunkSize * c.nThreads),
@@ -756,7 +743,6 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
                                                                                               maxScore,
                                                                                               SmithWatermanSettings::MULTIPLE_ALIGNMENT),
                                           true));
-#endif
         break;
     default:
         assert(0);
