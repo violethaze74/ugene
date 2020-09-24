@@ -4,7 +4,7 @@ MODULE_ID=U2Script
 
 include( ../../ugene_lib_common.pri )
 
-DEFINES +=          QT_FATAL_ASSERT BUILDING_U2SCRIPT_DLL
+DEFINES += QT_FATAL_ASSERT BUILDING_U2SCRIPT_DLL
 
 QT += network xml widgets
 
