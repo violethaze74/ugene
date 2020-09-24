@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
+#include "uhmmerTests.h"
+
 #include <QDir>
 #include <QFileInfo>
 
-#include <U2Core/DNASequence.h>
-#include <U2Core/TextUtils.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequence.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/GObject.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/TextObject.h>
+#include <U2Core/TextUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
-#include "uhmmerTests.h"
 #include "hmmer2/funcs.h"
 #include "u_build/HMMBuildDialogController.h"
 #include "u_calibrate/HMMCalibrateTask.h"
@@ -72,7 +71,6 @@ namespace U2 {
 
 #define ENV_HMMSEARCH_ALGORITHM_NAME "HMMSEARCH_ALGORITHM"
 #define ENV_HMMSEARCH_ALGORITHM_SSE "sse"
-#define ENV_HMMSEARCH_ALGORITHM_CELL "cell"
 
 class GTest_LoadDocument;
 class Document;
@@ -82,7 +80,7 @@ class GObject;
 
 /* TRANSLATOR U2::GTest */
 
-void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     evalueCutoff = 10;
@@ -110,18 +108,18 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
         failMissingValue(EXPERT_OPT_FLAG_ATTR);
         return;
     }
-    bool ok=false;
+    bool ok = false;
     expertOptions = exp_opt_str.toInt(&ok);
-    if(!ok) {
+    if (!ok) {
         failMissingValue(EXPERT_OPT_FLAG_ATTR);
         return;
     }
-    if(expertOptions) {
+    if (expertOptions) {
         QString eval_catoff_str = el.attribute(E_VALUE_CUTOFF_ATTR);
         if (!eval_catoff_str.isEmpty()) {
-            ok=false;
+            ok = false;
             evalueCutoff = eval_catoff_str.toFloat(&ok);
-            if(!ok) {
+            if (!ok) {
                 failMissingValue(E_VALUE_CUTOFF_ATTR);
                 return;
             }
@@ -129,9 +127,9 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
 
         QString num_of_seq_str = el.attribute(NUMBER_OF_SEQ_ATTR);
         if (!num_of_seq_str.isEmpty()) {
-            ok=false;
+            ok = false;
             number_of_seq = num_of_seq_str.toFloat(&ok);
-            if(!ok) {
+            if (!ok) {
                 failMissingValue(NUMBER_OF_SEQ_ATTR);
                 return;
             }
@@ -139,9 +137,9 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
 
         QString domEvalueCutoff_str = el.attribute(DOM_E_VALUE_CUTOFF_ATTR);
         if (!domEvalueCutoff_str.isEmpty()) {
-            ok=false;
-            domEvalueCutoff = domEvalueCutoff_str .toFloat(&ok);
-            if(!ok) {
+            ok = false;
+            domEvalueCutoff = domEvalueCutoff_str.toFloat(&ok);
+            if (!ok) {
                 failMissingValue(DOM_E_VALUE_CUTOFF_ATTR);
                 return;
             }
@@ -149,10 +147,9 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
 
         QString minScoreCutoff_str = el.attribute(MIN_SCORE_CUTOFF_ATTR);
         if (!minScoreCutoff_str.isEmpty()) {
-
-            ok=false;
+            ok = false;
             minScoreCutoff = minScoreCutoff_str.toFloat(&ok);
-            if(!ok) {
+            if (!ok) {
                 failMissingValue(MIN_SCORE_CUTOFF_ATTR);
                 return;
             }
@@ -162,9 +159,9 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
     customHmmSearchChunk = false;
     QString hmmSearchChunk_str = el.attribute(HMMSEARCH_CHUNK_ATTR);
     if (!hmmSearchChunk_str.isEmpty()) {
-        ok=false;
+        ok = false;
         hmmSearchChunk = hmmSearchChunk_str.toInt(&ok);
-        if(!ok) {
+        if (!ok) {
             failMissingValue(HMMSEARCH_CHUNK_ATTR);
             return;
         }
@@ -173,9 +170,9 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
     parallel_flag = false;
     QString parallel_flag_str = el.attribute(PARALLEL_FLAG_ATTR);
     if (!parallel_flag_str.isEmpty()) {
-        if(parallel_flag_str == "true")
+        if (parallel_flag_str == "true")
             parallel_flag = true;
-        else if(parallel_flag_str == "false")
+        else if (parallel_flag_str == "false")
             parallel_flag = false;
         else {
             failMissingValue(PARALLEL_FLAG_ATTR);
@@ -188,96 +185,87 @@ void GTest_uHMMERSearch::init(XMLTestFormat *tf, const QDomElement& el) {
     aDoc = NULL;
 }
 void GTest_uHMMERSearch::prepare() {
-    Document* doc = getContext<Document>(this, seqDocCtxName);
+    Document *doc = getContext<Document>(this, seqDocCtxName);
     if (doc == NULL) {
-        stateInfo.setError(  QString("context not found %1").arg(seqDocCtxName) );
+        stateInfo.setError(QString("context not found %1").arg(seqDocCtxName));
         return;
     }
 
-
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
 
     GObject *obj = list.first();
-    if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::SEQUENCE) );
+    if (obj == NULL) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::SEQUENCE));
         return;
     }
-    assert(obj!=NULL);
-    U2SequenceObject * mySequence = qobject_cast<U2SequenceObject*>(obj);
-    if(mySequence==NULL){
-        stateInfo.setError(  QString("error can't cast to sequence from GObject") );
+    assert(obj != NULL);
+    U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
+    if (mySequence == NULL) {
+        stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
 
     UHMMSearchSettings s;
-    if (expertOptions){
+    if (expertOptions) {
         s.globE = evalueCutoff;
         s.eValueNSeqs = number_of_seq;
         s.domE = domEvalueCutoff;
         s.domT = minScoreCutoff;
     }
     QString env_algo = env->getVar(ENV_HMMSEARCH_ALGORITHM_NAME);
-    if( !env_algo.isEmpty() ) {
-        if( ENV_HMMSEARCH_ALGORITHM_SSE == env_algo ) {
+    if (!env_algo.isEmpty()) {
+        if (env_algo == ENV_HMMSEARCH_ALGORITHM_SSE) {
             s.alg = HMMSearchAlgo_SSEOptimized;
-        } else if( ENV_HMMSEARCH_ALGORITHM_CELL == env_algo ) {
-#if !defined UGENE_CELL
-            stateInfo.setError( QString("HMMER-Cell was not enabled in this build") );
-            return;
-#endif
-            s.alg = HMMSearchAlgo_CellOptimized;
         } else {
-            stateInfo.setError( QString("unknown hmmsearch algorithm is selected") );
+            stateInfo.setError(QString("unknown hmmsearch algorithm is selected"));
             return;
         }
     }
-    if(customHmmSearchChunk) {
+    if (customHmmSearchChunk) {
         s.searchChunkSize = hmmSearchChunk;
     }
     QString annotationName = "hmm_signal";
-    QString url = env->getVar("TEMP_DATA_DIR")+"/uhmmsearch/"+resultDocName;
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+    QString url = env->getVar("TEMP_DATA_DIR") + "/uhmmsearch/" + resultDocName;
+    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     assert(aDoc == NULL);
     aDoc = df->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
-    AnnotationTableObject *ao = new AnnotationTableObject( "Annotations", aDoc->getDbiRef( ) );
+    AnnotationTableObject *ao = new AnnotationTableObject("Annotations", aDoc->getDbiRef());
     aDoc->addObject(ao);
     DNASequence dnaSequence = mySequence->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
-    searchTask = new HMMSearchToAnnotationsTask(env->getVar("COMMON_DATA_DIR")+"/"+hmmFileName, dnaSequence, ao, annotationName, "", U2FeatureTypes::MiscSignal, annotationName, s);
+    searchTask = new HMMSearchToAnnotationsTask(env->getVar("COMMON_DATA_DIR") + "/" + hmmFileName, dnaSequence, ao, annotationName, "", U2FeatureTypes::MiscSignal, annotationName, s);
     addSubTask(searchTask);
 }
 
-QList<Task*> GTest_uHMMERSearch::onSubTaskFinished(Task* subTask) {
+QList<Task *> GTest_uHMMERSearch::onSubTaskFinished(Task *subTask) {
     Q_UNUSED(subTask);
-    QList<Task*> res;
+    QList<Task *> res;
     if (hasError() || isCanceled()) {
         return res;
     }
 
-
-    if(saveTask && saveTask->isFinished()) {
+    if (saveTask && saveTask->isFinished()) {
         if (saveTask->hasError()) {
-            stateInfo.setError(  "SaveDocumentTask: "+saveTask->getError() );
+            stateInfo.setError("SaveDocumentTask: " + saveTask->getError());
         }
         return res;
-    } else if(searchTask!=NULL && searchTask->isFinished()) {
-
+    } else if (searchTask != NULL && searchTask->isFinished()) {
         if (searchTask->hasError()) {
-            stateInfo.setError(  searchTask->getError() );
+            stateInfo.setError(searchTask->getError());
             return res;
         }
 
-        if(aDoc == NULL) {
-            stateInfo.setError(  QString("documet creating error") );
+        if (aDoc == NULL) {
+            stateInfo.setError(QString("documet creating error"));
             return res;
         }
-        if(!resultDocName.isEmpty()) {
+        if (!resultDocName.isEmpty()) {
             QFileInfo fi(aDoc->getURLString());
             fi.absoluteDir().mkpath(fi.absoluteDir().absolutePath());
             saveTask = new SaveDocumentTask(aDoc);
@@ -300,7 +288,7 @@ GTest_uHMMERSearch::~GTest_uHMMERSearch() {
 }
 
 void GTest_uHMMERSearch::cleanup() {
-    if (aDoc!=NULL) {
+    if (aDoc != NULL) {
         delete aDoc;
         aDoc = NULL;
     }
@@ -308,13 +296,11 @@ void GTest_uHMMERSearch::cleanup() {
     XmlTest::cleanup();
 }
 
-
 //*****************************************************************************
 //**********uHMMER Build*******************************************************
 //*****************************************************************************
 
-
-void GTest_uHMMERBuild::init(XMLTestFormat* tf, const QDomElement& el) {
+void GTest_uHMMERBuild::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     QString inFile = el.attribute(IN_FILE_NAME_ATTR);
@@ -335,13 +321,14 @@ void GTest_uHMMERBuild::init(XMLTestFormat* tf, const QDomElement& el) {
     QString hmmName = el.attribute(HMM_NAME_ATTR);
 
     QString delTempStr = el.attribute(DEL_TEMP_FILE_ATTR);
-    if (delTempStr .isEmpty()) {
+    if (delTempStr.isEmpty()) {
         failMissingValue(DEL_TEMP_FILE_ATTR);
         return;
     }
-    if(delTempStr=="yes")
+    if (delTempStr == "yes")
         deleteTempFile = true;
-    else if(delTempStr=="no") deleteTempFile =false;
+    else if (delTempStr == "no")
+        deleteTempFile = false;
     else {
         failMissingValue(DEL_TEMP_FILE_ATTR);
         return;
@@ -349,45 +336,49 @@ void GTest_uHMMERBuild::init(XMLTestFormat* tf, const QDomElement& el) {
 
     UHMMBuildSettings s;
     s.name = hmmName;
-    if(expOpt=="LS") s.strategy = P7_LS_CONFIG;
-    else if(expOpt=="FS")  s.strategy = P7_FS_CONFIG;
-    else if(expOpt=="BASE")  s.strategy = P7_BASE_CONFIG;
-    else if(expOpt=="SW")  s.strategy = P7_SW_CONFIG;
+    if (expOpt == "LS")
+        s.strategy = P7_LS_CONFIG;
+    else if (expOpt == "FS")
+        s.strategy = P7_FS_CONFIG;
+    else if (expOpt == "BASE")
+        s.strategy = P7_BASE_CONFIG;
+    else if (expOpt == "SW")
+        s.strategy = P7_SW_CONFIG;
     else {
-        stateInfo.setError(  QString("invalid value %1, available values: LS, FS, BASE, SW").arg(EXP_OPT_ATTR) );
+        stateInfo.setError(QString("invalid value %1, available values: LS, FS, BASE, SW").arg(EXP_OPT_ATTR));
         return;
     }
-    QFileInfo fi(env->getVar("TEMP_DATA_DIR")+"/"+outFile);
+    QFileInfo fi(env->getVar("TEMP_DATA_DIR") + "/" + outFile);
     fi.absoluteDir().mkpath(fi.absoluteDir().absolutePath());
     QFile createFile(fi.absoluteFilePath());
     createFile.open(QIODevice::WriteOnly);
-    if(!createFile.isOpen()){
-        stateInfo.setError(  QString("File opening error \"%1\", description: ").arg(createFile.fileName())+createFile.errorString() );
+    if (!createFile.isOpen()) {
+        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(createFile.fileName()) + createFile.errorString());
         return;
-    }
-    else createFile.close();
-    buildTask = new HMMBuildToFileTask(env->getVar("COMMON_DATA_DIR")+"/"+inFile, createFile.fileName(), s);
+    } else
+        createFile.close();
+    buildTask = new HMMBuildToFileTask(env->getVar("COMMON_DATA_DIR") + "/" + inFile, createFile.fileName(), s);
     outFile = createFile.fileName();
     addSubTask(buildTask);
 }
 
 Task::ReportResult GTest_uHMMERBuild::report() {
     propagateSubtaskError();
-    if(buildTask->hasError())  {
-        stateInfo.setError(  buildTask->getError() );
+    if (buildTask->hasError()) {
+        stateInfo.setError(buildTask->getError());
     }
     return ReportResult_Finished;
 }
 
-void GTest_uHMMERBuild::cleanup(){
-    if (!hasError() && deleteTempFile){
+void GTest_uHMMERBuild::cleanup() {
+    if (!hasError() && deleteTempFile) {
         QFile::remove(outFile);
     }
 
     XmlTest::cleanup();
 }
 
-void GTest_hmmCompare::init(XMLTestFormat* tf, const QDomElement& el) {
+void GTest_hmmCompare::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     file1Name = el.attribute(IN_FILE1_NAME_ATTR);
@@ -395,7 +386,7 @@ void GTest_hmmCompare::init(XMLTestFormat* tf, const QDomElement& el) {
         failMissingValue(IN_FILE1_NAME_ATTR);
         return;
     }
-    file2Name= el.attribute(IN_FILE2_NAME_ATTR);
+    file2Name = el.attribute(IN_FILE2_NAME_ATTR);
     if (file2Name.isEmpty()) {
         failMissingValue(IN_FILE2_NAME_ATTR);
         return;
@@ -403,26 +394,25 @@ void GTest_hmmCompare::init(XMLTestFormat* tf, const QDomElement& el) {
 }
 
 Task::ReportResult GTest_hmmCompare::report() {
-
-    QFileInfo fi1(env->getVar("COMMON_DATA_DIR")+"/"+file1Name);
+    QFileInfo fi1(env->getVar("COMMON_DATA_DIR") + "/" + file1Name);
     QString url1 = fi1.absoluteFilePath();
-    IOAdapterFactory* iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url1));
+    IOAdapterFactory *iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url1));
     QScopedPointer<IOAdapter> io1(iof1->createIOAdapter());
     //QFile file1(fi1.absoluteFilePath());
-    QFileInfo fi2(env->getVar("TEMP_DATA_DIR")+"/"+file2Name);
+    QFileInfo fi2(env->getVar("TEMP_DATA_DIR") + "/" + file2Name);
     QString url2 = fi2.absoluteFilePath();
-    IOAdapterFactory* iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url2));
+    IOAdapterFactory *iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url2));
     QScopedPointer<IOAdapter> io2(iof2->createIOAdapter());
-    fi2.absoluteDir().mkdir(fi2.absoluteDir().absolutePath()); // ???
+    fi2.absoluteDir().mkdir(fi2.absoluteDir().absolutePath());    // ???
     //QFile file2(fi2.absoluteFilePath());
 
-    if(!io1->open(url1, IOAdapterMode_Read)){
-        stateInfo.setError(  QString("File opening error \"%1\", description: ").arg(url1) );//+file1.errorString() );
+    if (!io1->open(url1, IOAdapterMode_Read)) {
+        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url1));    //+file1.errorString() );
         return ReportResult_Finished;
     }
     //file2.open(QIODevice::ReadOnly|QIODevice::Text);
-    if(!io2->open(url2, IOAdapterMode_Read)){
-        stateInfo.setError(  QString("File opening error \"%1\", description: ").arg(url2) );//+file2.errorString() );
+    if (!io2->open(url2, IOAdapterMode_Read)) {
+        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url2));    //+file2.errorString() );
         return ReportResult_Finished;
     }
 
@@ -430,65 +420,65 @@ Task::ReportResult GTest_hmmCompare::report() {
 
     qint64 len1, len2, line1 = 0, line2 = 0;
     QByteArray readBuffer1(READ_BUFF_SIZE, '\0'), readBuffer2(READ_BUFF_SIZE, '\0');
-    char* cbuff1 = readBuffer1.data();
-    char* cbuff2 = readBuffer2.data();
+    char *cbuff1 = readBuffer1.data();
+    char *cbuff2 = readBuffer2.data();
     QRegExp rx("CKSUM ");
 
     bool ok = false;
-    while ( (len1 = io1->readUntil(cbuff1, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include)) > 0 ) {
+    while ((len1 = io1->readUntil(cbuff1, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include)) > 0) {
         line1++;
-        if ((ok = rx.indexIn(QString(QByteArray(cbuff1, len1))) !=-1)) {
+        if ((ok = rx.indexIn(QString(QByteArray(cbuff1, len1))) != -1)) {
             break;
         }
     }
-    if(!ok){
-        stateInfo.setError(  QString("can't find CKSUM in file \"%1\"").arg(url1) );
+    if (!ok) {
+        stateInfo.setError(QString("can't find CKSUM in file \"%1\"").arg(url1));
         return ReportResult_Finished;
     }
 
     ok = false;
-    while ( (len2 = io2->readUntil(cbuff2, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include)) > 0 ) {
+    while ((len2 = io2->readUntil(cbuff2, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include)) > 0) {
         line2++;
-        if ((ok = rx.indexIn(QString(QByteArray(cbuff2, len2))) !=-1)) {
+        if ((ok = rx.indexIn(QString(QByteArray(cbuff2, len2))) != -1)) {
             break;
         }
     }
-    if(!ok){
-        stateInfo.setError(  QString("can't find CKSUM in file \"%1\"").arg(url2) );
+    if (!ok) {
+        stateInfo.setError(QString("can't find CKSUM in file \"%1\"").arg(url2));
         return ReportResult_Finished;
     }
 
-    do{
+    do {
         len1 = io1->readUntil(cbuff1, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
         len2 = io2->readUntil(cbuff2, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
-        if(len1 == 0 && 0 != len2){
-            stateInfo.setError(  QString("hmm-compare: files not equal, desc: files length mismatch") );
+        if (len1 == 0 && 0 != len2) {
+            stateInfo.setError(QString("hmm-compare: files not equal, desc: files length mismatch"));
             return ReportResult_Finished;
         }
-        line1++;line2++;
+        line1++;
+        line2++;
         QString s1 = QString::fromLatin1(cbuff1, len1).trimmed();
         QString s2 = QString::fromLatin1(cbuff2, len2).trimmed();
 
-        if(s1 != s2)
-        {
-            stateInfo.setError( QString("hmm-compare: files not equal, desc: file1, line %1 \"%2\", expected file2, line %3 \"%4\"")
-                .arg(line1).arg(s1).arg(line2).arg(s2) );
+        if (s1 != s2) {
+            stateInfo.setError(QString("hmm-compare: files not equal, desc: file1, line %1 \"%2\", expected file2, line %3 \"%4\"")
+                                   .arg(line1)
+                                   .arg(s1)
+                                   .arg(line2)
+                                   .arg(s2));
             return ReportResult_Finished;
         }
 
-    } while(len1 > 0);
+    } while (len1 > 0);
 
     return ReportResult_Finished;
 }
-
-
 
 //*****************************************************************************
 //**********uHMMER Calibrate***************************************************
 //*****************************************************************************
 
-
-void GTest_uHMMERCalibrate::init(XMLTestFormat* tf, const QDomElement& el) {
+void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     calibrateTask = NULL;
@@ -503,9 +493,9 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat* tf, const QDomElement& el) {
         failMissingValue(MU_ATTR);
         return;
     }
-    bool ok=false;
+    bool ok = false;
     mu = mu_str.toFloat(&ok);
-    if(!ok) {
+    if (!ok) {
         failMissingValue(MU_ATTR);
         return;
     }
@@ -514,9 +504,9 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat* tf, const QDomElement& el) {
         failMissingValue(LAMBDA_ATTR);
         return;
     }
-    ok=false;
+    ok = false;
     lambda = lambda_str.toFloat(&ok);
-    if(!ok) {
+    if (!ok) {
         failMissingValue(LAMBDA_ATTR);
         return;
     }
@@ -525,18 +515,18 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat* tf, const QDomElement& el) {
         failMissingValue(NUMBER_OF_THREADS_ATTR);
         return;
     }
-    ok=false;
+    ok = false;
     int nThreads = nThreads_str.toFloat(&ok);
-    if(!ok) {
+    if (!ok) {
         failMissingValue(NUMBER_OF_THREADS_ATTR);
         return;
     }
     nCalibrates = 1;
     QString nCalibrates_str = el.attribute(RUN_N_CALIBRATES);
     if (!nCalibrates_str.isEmpty()) {
-        bool ok=false;
+        bool ok = false;
         nCalibrates = nCalibrates_str.toInt(&ok);
-        if(!ok) {
+        if (!ok) {
             failMissingValue(RUN_N_CALIBRATES);
             return;
         }
@@ -545,22 +535,22 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat* tf, const QDomElement& el) {
 
     QString seed_str = el.attribute(SEED_ATTR);
     if (!seed_str.isEmpty()) {
-        bool ok=false;
+        bool ok = false;
         int seed = seed_str.toInt(&ok);
-        if(!ok) {
+        if (!ok) {
             failMissingValue(SEED_ATTR);
             return;
         }
         s.seed = seed;
     }
 
-    calibrateTask = new HMMCalibrateToFileTask*[nCalibrates];
+    calibrateTask = new HMMCalibrateToFileTask *[nCalibrates];
 
     s.nThreads = nThreads;
 
     //Run nCalibrates HMMCalibrate tasks simultaneously
-    for(int i=0;i<nCalibrates;i++){
-        calibrateTask[i] = new HMMCalibrateToFileTask(env->getVar("COMMON_DATA_DIR")+"/"+hmmFile,env->getVar("TEMP_DATA_DIR")+"/temp111",s);
+    for (int i = 0; i < nCalibrates; i++) {
+        calibrateTask[i] = new HMMCalibrateToFileTask(env->getVar("COMMON_DATA_DIR") + "/" + hmmFile, env->getVar("TEMP_DATA_DIR") + "/temp111", s);
     }
     addSubTask(new GTest_uHMMERCalibrateSubtask(calibrateTask, nCalibrates));
 }
@@ -570,15 +560,15 @@ Task::ReportResult GTest_uHMMERCalibrate::report() {
     if (isCanceled() || hasError()) {
         return ReportResult_Finished;
     }
-    for(int i=0; i < nCalibrates; i++){
-        float new_mu = ((::plan7_s*)calibrateTask[i]->getHMM())->mu;
+    for (int i = 0; i < nCalibrates; i++) {
+        float new_mu = ((::plan7_s *)calibrateTask[i]->getHMM())->mu;
         if (qAbs(new_mu - mu) > 0.1) {
-            stateInfo.setError(  QString("mu value %1, expected %2").arg(new_mu).arg(mu) );
+            stateInfo.setError(QString("mu value %1, expected %2").arg(new_mu).arg(mu));
             break;
         }
-        float new_lambda = ((::plan7_s*)calibrateTask[i]->getHMM())->lambda;
-        if (qAbs(new_lambda - lambda) > 0.1){
-            stateInfo.setError(  QString("lambda value %1, expected %2").arg(new_lambda).arg(lambda) );
+        float new_lambda = ((::plan7_s *)calibrateTask[i]->getHMM())->lambda;
+        if (qAbs(new_lambda - lambda) > 0.1) {
+            stateInfo.setError(QString("lambda value %1, expected %2").arg(new_lambda).arg(lambda));
             break;
         }
     }
@@ -586,25 +576,24 @@ Task::ReportResult GTest_uHMMERCalibrate::report() {
 }
 
 GTest_uHMMERCalibrate::GTest_uHMMERCalibrateSubtask::GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask **calibrateTask, int n)
-:Task(tr("uhmmer-calibrate-subtask"),TaskFlags_NR_FOSCOE)
-{
-    assert(calibrateTask!=NULL);
-    for(int i=0;i<n;i++){
-        assert(calibrateTask[i]!=NULL);
+    : Task(tr("uhmmer-calibrate-subtask"), TaskFlags_NR_FOSCOE) {
+    assert(calibrateTask != NULL);
+    for (int i = 0; i < n; i++) {
+        assert(calibrateTask[i] != NULL);
         addSubTask(calibrateTask[i]);
     }
 }
-void GTest_uHMMERCalibrate::cleanup(){
+void GTest_uHMMERCalibrate::cleanup() {
     if (!hasError()) {
-        QFile::remove(env->getVar("TEMP_DATA_DIR")+"/temp111");
+        QFile::remove(env->getVar("TEMP_DATA_DIR") + "/temp111");
     }
     delete[] calibrateTask;
 
     XmlTest::cleanup();
 }
 
-QList<XMLTestFactory*> UHMMERTests::createTestFactories() {
-    QList<XMLTestFactory*> res;
+QList<XMLTestFactory *> UHMMERTests::createTestFactories() {
+    QList<XMLTestFactory *> res;
     res.append(GTest_uHMMERSearch::createFactory());
     res.append(GTest_uHMMERBuild::createFactory());
     res.append(GTest_hmmCompare::createFactory());
@@ -612,4 +601,4 @@ QList<XMLTestFactory*> UHMMERTests::createTestFactories() {
     return res;
 }
 
-}//namespace
+}    // namespace U2

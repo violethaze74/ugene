@@ -14,7 +14,6 @@ HEADERS += src/HMMIO.h \
            src/u_calibrate/HMMCalibrateDialogController.h \
            src/u_calibrate/HMMCalibrateTask.h \
            src/u_calibrate/uhmmcalibrate.h \
-           src/u_search/hmmer_ppu.h \
            src/u_search/HMMSearchDialogController.h \
            src/u_search/HMMSearchTask.h \
            src/u_search/HMMSearchWorker.h \
@@ -23,7 +22,6 @@ HEADERS += src/HMMIO.h \
            src/u_search/uhmmsearch_cell.h \
            src/u_search/uhmmsearch_opt.h \
            src/u_search/uhmmsearch_sse.h \
-           src/u_spu/hmmer_spu.h \
            src/u_tests/uhmmerTests.h
 FORMS += src/u_build/HMMBuildDialog.ui \
          src/u_calibrate/HMMCalibrateDialog.ui \
@@ -61,17 +59,13 @@ SOURCES += src/HMMIO.cpp \
            src/u_calibrate/HMMCalibrateDialogController.cpp \
            src/u_calibrate/HMMCalibrateTask.cpp \
            src/u_calibrate/uhmmcalibrate.cpp \
-           src/u_search/hmmer_ppu.cpp \
            src/u_search/HMMSearchDialogController.cpp \
            src/u_search/HMMSearchTask.cpp \
            src/u_search/HMMSearchWorker.cpp \
            src/u_search/HMMSearchQDActor.cpp \
            src/u_search/uhmmsearch.cpp \
-           src/u_search/uhmmsearch_cell.cpp \
            src/u_search/uhmmsearch_opt.cpp \
            src/u_search/uhmmsearch_sse.cpp \
-           src/u_spu/hmmer_spu.c \
-           src/u_spu/hmmercell_spu.c \
            src/u_tests/uhmmerTests.cpp
 RESOURCES += hmm2.qrc
 TRANSLATIONS += transl/russian.ts

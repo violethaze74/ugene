@@ -72,9 +72,8 @@ Some more information you can see in installer/_common_data/README file.
           `OPENCL_INC_PATH=/path_where_open_cl_installed`
 4. cd ./src and open ugene_globals.pri, find and set variable `UGENE_OPENCL_DETECTED = 1`
 
-### Global notes:
- 1) UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
- 2) UGENE will be built for x86_64 arch by default, add CONFIG+=x86 to the qmake command to build 32-bit version of UGENE.
+### Other notes:
+ 2) UGENE is be build for x86_64 arch by default, add CONFIG+=x86 to the qmake command to build 32-bit version of UGENE.
     E.g. for Windows:
     `qmake -r -tp vc CONFIG+=x86 ugene.pro`
-    > ATTENTION: 32-bit version isn't supported since UGENE v. 34.0, the behavior is unpredictable!
+    > ATTENTION: 32-bit version is not officially supported since UGENE v. 34.0

@@ -19,16 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include "HMMSearchDialogController.h"
+
 #include <QMessageBox>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -44,25 +43,21 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "HMMIO.h"
-#include "HMMSearchDialogController.h"
 #include "HMMSearchTask.h"
 #include "TaskLocalStorage.h"
 #include "hmmer2/funcs.h"
 
 namespace U2 {
 
-HMMSearchDialogController::HMMSearchDialogController(const U2SequenceObject* seqObj, QWidget* p)
-: QDialog(p), seqCtx(NULL)
-{
+HMMSearchDialogController::HMMSearchDialogController(const U2SequenceObject *seqObj, QWidget *p)
+    : QDialog(p), seqCtx(NULL) {
     init(seqObj);
 }
-HMMSearchDialogController::HMMSearchDialogController(ADVSequenceObjectContext* seqCtx, QWidget* p)
-: QDialog(p), seqCtx(seqCtx)
-{
-
+HMMSearchDialogController::HMMSearchDialogController(ADVSequenceObjectContext *seqCtx, QWidget *p)
+    : QDialog(p), seqCtx(seqCtx) {
     init(seqCtx->getSequenceObject());
 }
-void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
+void HMMSearchDialogController::init(const U2SequenceObject *seqObj) {
     qDebug() << "HMMSearchDialogController was created";
     U2OpStatusImpl os;
     dnaSequence = seqObj->getWholeSequence(os);
@@ -83,12 +78,9 @@ void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
     cm.sequenceLen = seqObj->getSequenceLength();
     createController = new CreateAnnotationWidgetController(cm, this);
 
-    QWidget* w = createController->getWidget();
-    QVBoxLayout* l = qobject_cast<QVBoxLayout*>(layout());
+    QWidget *w = createController->getWidget();
+    QVBoxLayout *l = qobject_cast<QVBoxLayout *>(layout());
     l->insertWidget(1, w);
-#ifdef UGENE_CELL
-    algoCombo->addItem(tr("Cell BE optimized"), HMMSearchAlgo_CellOptimized);
-#endif
     algoCombo->addItem(tr("SSE optimized"), HMMSearchAlgo_SSEOptimized);
     algoCombo->addItem(tr("Conservative"), HMMSearchAlgo_Conservative);
 
@@ -97,61 +89,59 @@ void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
 
     connect(hmmFileButton, SIGNAL(clicked()), SLOT(sl_hmmFileClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_okClicked()));
-    connect(domEvalueCuttofBox,SIGNAL(valueChanged(int)), SLOT(sl_expSpinBoxValueChanged(int)));
+    connect(domEvalueCuttofBox, SIGNAL(valueChanged(int)), SLOT(sl_expSpinBoxValueChanged(int)));
 }
 
 HMMSearchDialogController::~HMMSearchDialogController() {
     qDebug() << "HMMSearchDialogController was destroyed";
 }
 
-void HMMSearchDialogController::sl_expSpinBoxValueChanged(int i){
-    if(i>=0){
+void HMMSearchDialogController::sl_expSpinBoxValueChanged(int i) {
+    if (i >= 0) {
         domEvalueCuttofBox->setPrefix("1E+");
-    }
-    else {
+    } else {
         domEvalueCuttofBox->setPrefix("1E");
     }
 }
 
-void HMMSearchDialogController::reject(){
-    if (searchTask!=NULL){
+void HMMSearchDialogController::reject() {
+    if (searchTask != NULL) {
         searchTask->cancel();
     }
     QDialog::reject();
 }
 
-void HMMSearchDialogController::sl_hmmFileClicked(){
+void HMMSearchDialogController::sl_hmmFileClicked() {
     LastUsedDirHelper lod(HMMIO::HMM_ID);
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with HMM model"), lod, HMMIO::getHMMFileFilter());
-    if (lod.url.isEmpty()){
+    if (lod.url.isEmpty()) {
         return;
     }
     hmmFileEdit->setText(QFileInfo(lod.url).absoluteFilePath());
 }
 
-void HMMSearchDialogController::sl_okClicked(){
-    if (searchTask!= NULL){
-        accept(); //go to background
+void HMMSearchDialogController::sl_okClicked() {
+    if (searchTask != NULL) {
+        accept();    //go to background
         return;
     }
 
     QString errMsg;
     QString hmmFile = hmmFileEdit->text();
-    if (hmmFile.isEmpty()){
+    if (hmmFile.isEmpty()) {
         hmmFileEdit->setFocus();
         errMsg = tr("HMM file not set!");
     }
 
-
     UHMMSearchSettings s;
-    if (expertOptionsBox->isChecked()&& errMsg.isEmpty()){
-        s.domE = pow(10,(float)domEvalueCuttofBox->value());
+    if (expertOptionsBox->isChecked() && errMsg.isEmpty()) {
+        s.domE = pow(10, (float)domEvalueCuttofBox->value());
         s.domT = (float)minScoreBox->value();
         s.eValueNSeqs = evalueAsNSeqBox->value();
     }
     s.alg = HMMSearchAlgo(algoCombo->itemData(algoCombo->currentIndex()).toInt());
 
-    if (errMsg.isEmpty()){
+    if (errMsg.isEmpty()) {
         errMsg = createController->validate();
     }
 
@@ -161,13 +151,13 @@ void HMMSearchDialogController::sl_okClicked(){
     }
 
     bool objectPrepared = createController->prepareAnnotationObject();
-    if (!objectPrepared){
+    if (!objectPrepared) {
         QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
         return;
     }
 
-    const CreateAnnotationModel& cm = createController->getModel();
-    if(seqCtx != NULL){
+    const CreateAnnotationModel &cm = createController->getModel();
+    if (seqCtx != NULL) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(cm.getAnnotationObject());
     }
     QString annotationName = cm.data->name;
@@ -183,18 +173,18 @@ void HMMSearchDialogController::sl_okClicked(){
     cancelButton->setText(tr("Cancel"));
 
     // new default behavior: hide dialog and use taskview to track the progress and results
-    accept(); //go to background
+    accept();    //go to background
 }
 
-void HMMSearchDialogController::sl_onStateChanged(){
-    Task* t = qobject_cast<Task*>(sender());
+void HMMSearchDialogController::sl_onStateChanged() {
+    Task *t = qobject_cast<Task *>(sender());
     assert(searchTask != NULL);
-    if (searchTask!=t || t->getState()!= Task::State_Finished){
+    if (searchTask != t || t->getState() != Task::State_Finished) {
         return;
     }
     searchTask->disconnect(this);
-    const TaskStateInfo& si = searchTask->getStateInfo();
-    if (si.hasError()){
+    const TaskStateInfo &si = searchTask->getStateInfo();
+    if (si.hasError()) {
         statusLabel->setText(tr("HMM search finished with error: %1").arg(si.getError()));
     } else {
         statusLabel->setText(tr("HMM search finished successfuly!"));
@@ -205,7 +195,7 @@ void HMMSearchDialogController::sl_onStateChanged(){
     searchTask = NULL;
 }
 
-void HMMSearchDialogController::sl_onProgressChanged(){
+void HMMSearchDialogController::sl_onProgressChanged() {
     assert(searchTask == sender());
     statusLabel->setText(tr("Progress: %1%").arg(qMax(0, searchTask->getProgress())));
 }
@@ -213,18 +203,17 @@ void HMMSearchDialogController::sl_onProgressChanged(){
 //////////////////////////////////////////////////////////////////////////
 // TASKS
 
-HMMSearchToAnnotationsTask::HMMSearchToAnnotationsTask(const QString& _hmmFile,
-                                                       const DNASequence& s,
+HMMSearchToAnnotationsTask::HMMSearchToAnnotationsTask(const QString &_hmmFile,
+                                                       const DNASequence &s,
                                                        AnnotationTableObject *ao,
-                                                       const QString& _agroup,
+                                                       const QString &_agroup,
                                                        const QString &annDescription,
                                                        U2FeatureType aType,
-                                                       const QString& _aname,
-                                                       const UHMMSearchSettings& _settings)
-: Task("", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
-hmmFile(_hmmFile), dnaSequence(s), agroup(_agroup), annDescription(annDescription), aType(aType), aname(_aname), settings(_settings),
-readHMMTask(NULL), searchTask(NULL), createAnnotationsTask(NULL), aobj(ao)
-{
+                                                       const QString &_aname,
+                                                       const UHMMSearchSettings &_settings)
+    : Task("", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
+      hmmFile(_hmmFile), dnaSequence(s), agroup(_agroup), annDescription(annDescription), aType(aType), aname(_aname), settings(_settings),
+      readHMMTask(NULL), searchTask(NULL), createAnnotationsTask(NULL), aobj(ao) {
     setVerboseLogMode(true);
     setTaskName(tr("HMM search, file '%1'").arg(QFileInfo(hmmFile).fileName()));
 
@@ -238,12 +227,12 @@ readHMMTask(NULL), searchTask(NULL), createAnnotationsTask(NULL), aobj(ao)
     }
 }
 
-QList<Task*> HMMSearchToAnnotationsTask::onSubTaskFinished(Task* subTask){
+QList<Task *> HMMSearchToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     Q_UNUSED(subTask);
 
-    QList<Task*> res;
+    QList<Task *> res;
 
-    if (hasError()|| isCanceled()){
+    if (hasError() || isCanceled()) {
         return res;
     }
 
@@ -252,15 +241,15 @@ QList<Task*> HMMSearchToAnnotationsTask::onSubTaskFinished(Task* subTask){
         return res;
     }
 
-    if (searchTask == NULL){
+    if (searchTask == NULL) {
         assert(readHMMTask->isFinished());
-        plan7_s* hmm = readHMMTask->getHMM();
-        assert(hmm!=NULL);
+        plan7_s *hmm = readHMMTask->getHMM();
+        assert(hmm != NULL);
 
         searchTask = new HMMSearchTask(hmm, dnaSequence, settings);
         res.append(searchTask);
-    } else if (createAnnotationsTask == NULL){
-        assert(searchTask->isFinished()&& !searchTask->hasError());
+    } else if (createAnnotationsTask == NULL) {
+        assert(searchTask->isFinished() && !searchTask->hasError());
         QList<SharedAnnotationData> annotations = searchTask->getResultsAsAnnotations(aType, aname);
         U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
         if (!annotations.isEmpty()) {
@@ -272,26 +261,25 @@ QList<Task*> HMMSearchToAnnotationsTask::onSubTaskFinished(Task* subTask){
     return res;
 }
 
-QString HMMSearchToAnnotationsTask::generateReport()const {
+QString HMMSearchToAnnotationsTask::generateReport() const {
     QString res;
-    res+="<table>";
-    res+="<tr><td width=200><b>" + tr("HMM profile used")+ "</b></td><td>" + QFileInfo(hmmFile).absoluteFilePath()+ "</td></tr>";
+    res += "<table>";
+    res += "<tr><td width=200><b>" + tr("HMM profile used") + "</b></td><td>" + QFileInfo(hmmFile).absoluteFilePath() + "</td></tr>";
 
-    if (hasError()|| isCanceled()){
-        res+="<tr><td width=200><b>" + tr("Task was not finished")+ "</b></td><td></td></tr>";
-        res+="</table>";
+    if (hasError() || isCanceled()) {
+        res += "<tr><td width=200><b>" + tr("Task was not finished") + "</b></td><td></td></tr>";
+        res += "</table>";
         return res;
     }
 
-    res+="<tr><td><b>" + tr("Result annotation table")+ "</b></td><td>" + aobj->getDocument()->getName()+ "</td></tr>";
-    res+="<tr><td><b>" + tr("Result annotation group")+ "</b></td><td>" + agroup + "</td></tr>";
-    res+="<tr><td><b>" + tr("Result annotation name")+  "</b></td><td>" + aname + "</td></tr>";
+    res += "<tr><td><b>" + tr("Result annotation table") + "</b></td><td>" + aobj->getDocument()->getName() + "</td></tr>";
+    res += "<tr><td><b>" + tr("Result annotation group") + "</b></td><td>" + agroup + "</td></tr>";
+    res += "<tr><td><b>" + tr("Result annotation name") + "</b></td><td>" + aname + "</td></tr>";
 
     int nResults = createAnnotationsTask == NULL ? 0 : createAnnotationsTask->getAnnotationCount();
-    res+="<tr><td><b>" + tr("Results count")+  "</b></td><td>" + QString::number(nResults)+ "</td></tr>";
-    res+="</table>";
+    res += "<tr><td><b>" + tr("Results count") + "</b></td><td>" + QString::number(nResults) + "</td></tr>";
+    res += "</table>";
     return res;
 }
 
-
-}//namespace
+}    // namespace U2

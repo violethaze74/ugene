@@ -107,9 +107,6 @@ CONFIG(x86) {
 
 macx : DEFINES += RUN_WORKFLOW_IN_THREADS
 
-# uncomment when building on Cell BE
-# UGENE_CELL = 1
-
 # Checking if processor is SSE2 capable.
 # On Windows UGENE relies on run-time check.
 #

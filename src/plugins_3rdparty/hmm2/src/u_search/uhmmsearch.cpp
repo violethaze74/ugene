@@ -1,13 +1,9 @@
 #include "uhmmsearch.h"
 #include <HMMIO.h>
 #include <hmmer2/funcs.h>
-#include <limits.h>
 
 #include <U2Core/Task.h>
-#ifdef UGENE_CELL
-#    include "hmmer_ppu.h"
-#    include "uhmmsearch_cell.h"
-#endif
+
 #include "uhmmsearch_opt.h"
 #include "uhmmsearch_sse.h"
 
@@ -60,16 +56,7 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s *_hmm, const char *seq, int s
     tophit_s *dhit = AllocTophits(200);    // domain hits:  200=lumpsize
 
     int nseq = 0;    // number of sequences searched
-#ifdef UGENE_CELL
-    if (HMMSearchAlgo_CellOptimized == s.alg) {
-        if (hmm->M < MAX_HMM_LENGTH) {
-            main_loop_spe(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
-        } else {
-            main_loop_serial(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
-        }
-    } else
-#endif
-        if (s.alg == HMMSearchAlgo_SSEOptimized) {
+    if (s.alg == HMMSearchAlgo_SSEOptimized) {
         main_loop_opt(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si, sseScoring);
     } else if (s.alg == HMMSearchAlgo_Conservative) {
         main_loop_serial(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
