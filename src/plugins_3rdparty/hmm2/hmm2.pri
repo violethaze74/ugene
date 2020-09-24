@@ -1,5 +1,3 @@
-# include (hmm2.pri)
-
 PLUGIN_ID=hmm2
 PLUGIN_NAME=HMM2
 PLUGIN_VENDOR=Unipro

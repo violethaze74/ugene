@@ -1,5 +1,3 @@
-# include (ngs_reads_classification.pri)
-
 PLUGIN_ID=ngs_reads_classification
 PLUGIN_NAME=NGS reads classification
 PLUGIN_VENDOR=Unipro

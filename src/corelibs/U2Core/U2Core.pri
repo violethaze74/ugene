@@ -1,5 +1,3 @@
-# include (U2Core.pri)
-
 MODULE_ID=U2Core
 include( ../../ugene_lib_common.pri )
 

@@ -1,5 +1,3 @@
-# include (chroma_view.pri)
-
 PLUGIN_ID=chroma_view
 PLUGIN_NAME=Chromatogram viewer
 PLUGIN_VENDOR=Unipro

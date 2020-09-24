@@ -1,5 +1,3 @@
-# include (U2Script.pri)
-
 MODULE_ID=U2Script
 
 include( ../../ugene_lib_common.pri )

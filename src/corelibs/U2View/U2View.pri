@@ -1,5 +1,3 @@
-# include (U2View.pri)
-
 MODULE_ID=U2View
 include( ../../ugene_lib_common.pri )
 
