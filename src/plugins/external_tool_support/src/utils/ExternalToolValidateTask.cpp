@@ -31,7 +31,7 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#ifdef Q_MAC_OS
+#ifdef Q_OS_MAC
 #    include <U2Core/AppResources.h>
 #endif
 
