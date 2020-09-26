@@ -28,7 +28,6 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/CustomExternalTool.h>
 #include <U2Core/L10n.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
@@ -776,7 +775,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
 void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
     LastUsedDirHelper lod("toolpack path");
     QString dirPath;
-    lod.dir = dirPath = U2FileDialog::getExistingDirectory(this, tr("Choose Folder With External Tools Pack"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    lod.dir = dirPath = U2FileDialog::getExistingDirectory(this, tr("Select Folder With External Tools Package"), lod.dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (!dirPath.isEmpty()) {
         QDir dir = QDir(dirPath);
@@ -784,51 +783,47 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         assert(listOfItems.length() != 0);
         QStringList toolIds;
         StrStrMap toolPaths;
-        bool isPathValid = false;
+        bool isValidExternalToolsFolder = false;
 
-        foreach (ExternalTool *et, AppContext::getExternalToolRegistry()->getAllEntries()) {
-            if (et->isModule()) {
+        for (const ExternalTool *externalTool : AppContext::getExternalToolRegistry()->getAllEntries()) {
+            if (externalTool->isModule()) {
                 continue;
             }
-            QTreeWidgetItem *item = externalToolsItems.value(et->getId(), nullptr);
-            SAFE_POINT(NULL != item, QString("Tree item not found for the tool %1").arg(et->getName()), );
+            QTreeWidgetItem *item = externalToolsItems.value(externalTool->getId(), nullptr);
+            SAFE_POINT(item != nullptr, QString("Tree item not found for the tool %1").arg(externalTool->getName()), );
 
-            foreach (QString dirName, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
-                QString toolKitName = et->getToolKitName();
-                if (dirName.contains(toolKitName, Qt::CaseInsensitive)) {
-                    isPathValid = true;
-                    QWidget *itemWid = twIntegratedTools->itemWidget(item, 1);
-                    PathLineEdit *lineEdit = itemWid->findChild<PathLineEdit *>("PathLineEdit");
+            for (QString dirName : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+                if (!(externalTool->getDirName() == dirName || dirName.contains(externalTool->getToolKitName(), Qt::CaseInsensitive))) {
+                    continue;
+                }
+                isValidExternalToolsFolder = true;
+                QWidget *itemWid = twIntegratedTools->itemWidget(item, 1);
+                PathLineEdit *lineEdit = itemWid->findChild<PathLineEdit *>("PathLineEdit");
 
-                    QString toolPath = dirPath + QDir::separator() + dirName;
-                    QDir toolDir(toolPath);
-                    LimitedDirIterator it(toolDir);
-                    bool fileNotFound = true;
-                    QString executableFileName = AppContext::getExternalToolRegistry()->getById(et->getId())->getExecutableFileName();
-                    while (it.hasNext() && fileNotFound) {
-                        it.next();
-                        QString fName = it.filePath() + QDir::separator() + executableFileName;
-                        QFileInfo info(fName);
-                        if (info.exists() && info.isFile()) {
-                            QString path = QDir::toNativeSeparators(fName);
-                            lineEdit->setText(path);
-                            lineEdit->setModified(false);
-                            externalToolsInfo[item->data(0, Qt::UserRole).toString()].path = path;
-                            QToolButton *clearToolPathButton = itemWid->findChild<QToolButton *>("ClearToolPathButton");
-                            assert(clearToolPathButton);
-                            clearToolPathButton->setEnabled(true);
+                LimitedDirIterator it(dirPath + "/" + dirName);
+                QString executableFileName = AppContext::getExternalToolRegistry()->getById(externalTool->getId())->getExecutableFileName();
+                while (it.hasNext()) {
+                    it.next();
+                    QString executableFilePath = it.filePath() + "/" + executableFileName;
+                    if (QFileInfo(executableFilePath).isFile()) {
+                        QString path = QDir::toNativeSeparators(executableFilePath);
+                        lineEdit->setText(path);
+                        lineEdit->setModified(false);
+                        externalToolsInfo[item->data(0, Qt::UserRole).toString()].path = path;
 
-                            QString toolId = et->getId();
-                            toolIds << toolId;
-                            toolPaths.insert(toolId, path);
-                            fileNotFound = false;
-                        }
+                        QToolButton *clearToolPathButton = itemWid->findChild<QToolButton *>("ClearToolPathButton");
+                        SAFE_POINT(clearToolPathButton != nullptr, "ClearToolPathButton not found!", );
+                        clearToolPathButton->setEnabled(true);
+
+                        toolIds << externalTool->getId();
+                        toolPaths.insert(externalTool->getId(), path);
+                        break;
                     }
                 }
             }
         }
 
-        if (!isPathValid) {
+        if (!isValidExternalToolsFolder) {
             QMessageBox::warning(this, L10N::warningTitle(), tr("Not a valid external tools folder"), QMessageBox::Ok);
         }
         if (!toolIds.isEmpty()) {
