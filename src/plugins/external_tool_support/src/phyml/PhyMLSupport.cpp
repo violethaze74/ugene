@@ -33,8 +33,8 @@ const QString PhyMLSupport::PHYML_ID("USUPP_PHYML");
 const QString PhyMLSupport::PHYML_TEMP_DIR("phyml");
 
 PhyMLSupport::PhyMLSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "phyml", name, "") {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

@@ -24,7 +24,6 @@
 #include <QString>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
@@ -116,7 +115,7 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
-    foreach (const ExternalToolValidation &validation, validations) {
+    for (const ExternalToolValidation &validation : validations) {
         if (externalToolProcess != NULL) {
             delete externalToolProcess;
             externalToolProcess = NULL;
@@ -190,7 +189,7 @@ void ExternalToolJustValidateTask::cancelProcess() {
 
 void ExternalToolJustValidateTask::setEnvironment(ExternalTool *tool) {
     QStringList additionalPaths;
-    foreach (const QString &toolId, tool->getDependencies()) {
+    for (const QString &toolId : tool->getDependencies()) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (NULL != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
@@ -332,7 +331,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
     QList<Task *> subTasks;
     CHECK(!subTask->isCanceled(), subTasks);
 
-    if (searchTask == subTask) {
+    if (subTask == searchTask) {
         CHECK(!searchTask->hasError(), subTasks);
         toolPaths = searchTask->getPaths();
         if (toolPaths.isEmpty()) {
@@ -342,7 +341,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
         } else {
             toolIsFound = true;
             validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
-            if (validateTask->isValidTool()) { // in-place path-only validation. Used in GUI tests.
+            if (validateTask->isValidTool()) {    // in-place path-only validation. Used in GUI tests.
                 isValid = true;
                 toolPath = validateTask->getToolPath();
                 version = validateTask->getToolVersion();
@@ -353,9 +352,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
                 subTasks << validateTask;
             }
         }
-    }
-
-    if (validateTask == subTask) {
+    } else if (subTask == validateTask) {
         if (validateTask->isValidTool()) {
             isValid = true;
             toolPath = validateTask->getToolPath();

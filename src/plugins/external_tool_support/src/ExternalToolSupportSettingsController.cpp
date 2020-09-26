@@ -271,10 +271,11 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolAdded(const QString &
 
     ExternalToolInfo info;
     info.id = id;
+    info.dirName = tool->getDirName();
     info.name = tool->getName();
     info.path = tool->getPath();
     info.description = tool->getDescription();
-    info.valid = tool->isValid();
+    info.isValid = tool->isValid();
     info.version = tool->getVersion();
     info.isModule = tool->isModule();
     externalToolsInfo.insert(info.id, info);
@@ -330,15 +331,16 @@ void extractCustomTools(QList<QList<ExternalTool *>> &toolkits, QList<ExternalTo
 
 void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     ExternalToolSupportSettingsPageState *state = qobject_cast<ExternalToolSupportSettingsPageState *>(s);
-    SAFE_POINT(nullptr != state, "ExternalToolSupportSettingsPageState is absent", );
+    SAFE_POINT(state != nullptr, "ExternalToolSupportSettingsPageState is absent", );
 
-    foreach (ExternalTool *tool, state->getExternalTools()) {
+    for (ExternalTool *tool : state->getExternalTools()) {
         ExternalToolInfo info;
         info.id = tool->getId();
+        info.dirName = tool->getDirName();
         info.name = tool->getName();
         info.path = tool->getPath();
         info.description = tool->getDescription();
-        info.valid = tool->isValid();
+        info.isValid = tool->isValid();
         info.version = tool->getVersion();
         info.isModule = tool->isModule();
         externalToolsInfo.insert(info.id, info);
@@ -394,7 +396,7 @@ QTreeWidgetItem *ExternalToolSupportSettingsPageWidget::insertChild(QTreeWidgetI
     rootItem->insertChild(pos, item);
 
     if (isModule) {
-        QString toolStatus = externalToolsInfo.value(id).valid ? INSTALLED : NOT_INSTALLED;
+        QString toolStatus = externalToolsInfo.value(id).isValid ? INSTALLED : NOT_INSTALLED;
         treeWidget->setItemWidget(item, 1, new QLabel(toolStatus));
     } else {
         treeWidget->setItemWidget(item, 1, createPathEditor(treeWidget, externalToolsInfo[id].path));
@@ -402,7 +404,7 @@ QTreeWidgetItem *ExternalToolSupportSettingsPageWidget::insertChild(QTreeWidgetI
 
     if (externalToolsInfo.value(id).path.isEmpty()) {
         item->setIcon(0, AppContext::getExternalToolRegistry()->getById(id)->getGrayIcon());
-    } else if (externalToolsInfo.value(id).valid) {
+    } else if (externalToolsInfo.value(id).isValid) {
         item->setIcon(0, AppContext::getExternalToolRegistry()->getById(id)->getIcon());
     } else {
         item->setIcon(0, AppContext::getExternalToolRegistry()->getById(id)->getWarnIcon());
@@ -430,7 +432,7 @@ void ExternalToolSupportSettingsPageWidget::setToolState(ExternalTool *tool) {
     QTreeWidgetItem *item = externalToolsItems.value(tool->getId(), nullptr);
     SAFE_POINT(nullptr != item, QString("Tree item for the tool %1 not found").arg(tool->getName()), );
 
-    externalToolsInfo[tool->getId()].valid = tool->isValid();
+    externalToolsInfo[tool->getId()].isValid = tool->isValid();
     QLabel *moduleToolLabel = qobject_cast<QLabel *>(twIntegratedTools->itemWidget(item, 1));
     QString moduleToolState;
     QString toolStateDesc;
@@ -598,14 +600,13 @@ AppSettingsGUIPageState *ExternalToolSupportSettingsPageWidget::getState(QString
     Q_UNUSED(err);
 
     QList<ExternalTool *> externalTools;
-    foreach (ExternalToolInfo info, externalToolsInfo) {
-        ExternalTool *externalTool = new ExternalTool(info.id, info.name, info.path);
-        externalTool->setValid(info.valid);
+    for (const ExternalToolInfo &info : externalToolsInfo) {
+        auto externalTool = new ExternalTool(info.id, info.dirName, info.name, info.path);
+        externalTool->setValid(info.isValid);
         externalTool->setVersion(info.version);
         externalTools.append(externalTool);
     }
-    ExternalToolSupportSettingsPageState *state = new ExternalToolSupportSettingsPageState(externalTools);
-    return state;
+    return new ExternalToolSupportSettingsPageState(externalTools);
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
@@ -698,7 +699,7 @@ void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
 
 void ExternalToolSupportSettingsPageWidget::sl_onPathEditWidgetClick() {
     QWidget *s = qobject_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != s, "Unexpected message sender", );
+    SAFE_POINT(s != nullptr, "Unexpected message sender", );
 
     QList<QTreeWidgetItem *> listOfItems = twIntegratedTools->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     listOfItems << twCustomTools->findItems("", Qt::MatchContains | Qt::MatchRecursive);
@@ -709,7 +710,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onPathEditWidgetClick() {
     foreach (QTreeWidgetItem *item, listOfItems) {
         QWidget *par = s->parentWidget();
         QWidget *itemWid = item->treeWidget()->itemWidget(item, 1);
-        if (par == itemWid) {
+        if (itemWid == par) {
             item->setSelected(true);
         }
     }

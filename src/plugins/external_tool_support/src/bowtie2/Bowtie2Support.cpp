@@ -30,7 +30,6 @@
 
 namespace U2 {
 
-const QString Bowtie2Support::BOWTIE2_TMP_DIR = "bowtie2";
 const QString Bowtie2Support::ET_BOWTIE2_ALIGN = "Bowtie 2 aligner";
 const QString Bowtie2Support::ET_BOWTIE2_ALIGN_ID = "USUPP_BOWTIE2";
 const QString Bowtie2Support::ET_BOWTIE2_BUILD = "Bowtie 2 build indexer";
@@ -39,8 +38,8 @@ const QString Bowtie2Support::ET_BOWTIE2_INSPECT = "Bowtie 2 index inspector";
 const QString Bowtie2Support::ET_BOWTIE2_INSPECT_ID = "USUPP_BOWTIE2_INSPECT";
 
 Bowtie2Support::Bowtie2Support(const QString &id, const QString &name, const QString &path /* = */)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "bowtie2", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

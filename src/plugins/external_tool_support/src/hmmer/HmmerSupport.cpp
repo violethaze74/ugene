@@ -30,7 +30,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/ToolsMenu.h>
@@ -57,8 +56,8 @@ const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
 const QString HmmerSupport::PHMMER_TOOL_ID = "USUPP_PHMMER";
 
 HmmerSupport::HmmerSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "hmmer3", name, "") {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -255,15 +254,15 @@ bool HmmerSupport::isToolSet(const QString &name) const {
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
 

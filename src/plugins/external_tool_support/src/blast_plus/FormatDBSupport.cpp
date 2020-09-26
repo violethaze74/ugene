@@ -52,8 +52,8 @@ const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "UGENE_GPU_MAKE_BLAST_DB"
 const QString FormatDBSupport::FORMATDB_TMP_DIR = "FormatDB";
 
 FormatDBSupport::FormatDBSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow() != NULL) {
+    : ExternalTool(id, "blast2", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
         warnIcon = QIcon(":external_tool_support/images/ncbi_warn.png");
@@ -105,15 +105,15 @@ void FormatDBSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
     if (path.isEmpty()) {

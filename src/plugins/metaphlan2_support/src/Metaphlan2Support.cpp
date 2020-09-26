@@ -38,7 +38,7 @@ const QString Metaphlan2Support::ET_PYTHON_BIO_ID = "BIO";
 const QString Metaphlan2Support::ET_PYTHON_NUMPY_ID = "NUMPY";
 
 Metaphlan2Support::Metaphlan2Support(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "metaphlan2", name, path) {
     validationArguments << "--version";
 
     toolKitName = TOOL_NAME;

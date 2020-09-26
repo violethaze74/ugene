@@ -47,8 +47,8 @@ const QString PythonModuleBioSupport::ET_PYTHON_BIO = "Bio";
 const QString PythonModuleBioSupport::ET_PYTHON_BIO_ID = "BIO";
 
 PythonSupport::PythonSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(QStringList(), id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : RunnerTool(QStringList(), id, "python2", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/python.png");
         grayIcon = QIcon(":external_tool_support/images/python_gray.png");
         warnIcon = QIcon(":external_tool_support/images/python_warn.png");
@@ -71,7 +71,7 @@ PythonSupport::PythonSupport(const QString &id, const QString &name, const QStri
 }
 
 PythonModuleSupport::PythonModuleSupport(const QString &id, const QString &name)
-    : ExternalToolModule(id, name) {
+    : ExternalToolModule(id, "python2", name) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/python.png");
         grayIcon = QIcon(":external_tool_support/images/python_gray.png");

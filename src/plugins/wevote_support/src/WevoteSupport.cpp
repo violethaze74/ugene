@@ -27,7 +27,7 @@ const QString WevoteSupport::TOOL_NAME = "WEVOTE";
 const QString WevoteSupport::TOOL_ID = "USUPP_WEVOTE";
 
 WevoteSupport::WevoteSupport()
-    : ExternalTool(TOOL_ID, TOOL_NAME, "") {
+    : ExternalTool(TOOL_ID, "wevote", TOOL_NAME, "") {
     validMessage = "less than the required minimum number of options";
     executableFileName = "WEVOTE";
     description = tr("WEVOTE (WEighted VOting Taxonomic idEntification) is a metagenome shortgun sequencing DNA reads classifier "

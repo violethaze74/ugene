@@ -31,11 +31,9 @@
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include "MrBayesDialogWidget.h"
 #include "MrBayesTask.h"
-#include "MrBayesTests.h"
 
 namespace U2 {
 
@@ -44,8 +42,8 @@ const QString MrBayesSupport::ET_MRBAYES_ID = "USUPP_MRBAYES";
 const QString MrBayesSupport::MRBAYES_TMP_DIR = "mrbayes";
 
 MrBayesSupport::MrBayesSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "mrbayes", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/mrbayes.png");
         grayIcon = QIcon(":external_tool_support/images/mrbayes_gray.png");
         warnIcon = QIcon(":external_tool_support/images/mrbayes_warn.png");

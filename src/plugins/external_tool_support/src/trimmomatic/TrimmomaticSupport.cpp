@@ -21,8 +21,6 @@
 
 #include "TrimmomaticSupport.h"
 
-#include <QFileInfo>
-
 #include <U2Core/AppContext.h>
 
 #include "TrimmomaticStep.h"
@@ -45,7 +43,7 @@ const QString TrimmomaticSupport::ET_TRIMMOMATIC = "Trimmomatic";
 const QString TrimmomaticSupport::ET_TRIMMOMATIC_ID = "USUPP_TRIMMOMATIC";
 
 TrimmomaticSupport::TrimmomaticSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "trimmomatic", name, path) {
     toolKitName = "Trimmomatic";
     description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
 

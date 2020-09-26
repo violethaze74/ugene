@@ -37,11 +37,12 @@ class ShowHideSubgroupWidget;
 #define ExternalToolSupportSettingsPageId QString("ets")
 struct ExternalToolInfo {
     QString id;
+    QString dirName;
     QString name;
     QString path;
     QString description;
     QString version;
-    bool valid;
+    bool isValid;
     bool isModule;
 };
 
