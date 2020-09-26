@@ -185,17 +185,6 @@ QWidget *ExternalToolSupportSettingsPageWidget::createPathEditor(QWidget *parent
     return widget;
 }
 
-QTreeWidgetItem *ExternalToolSupportSettingsPageWidget::findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName) {
-    // It is acceptable until there are not so many tools and the method is called seldom
-    for (int i = 0, n = treeWidget->topLevelItemCount(); i < n; i++) {
-        QTreeWidgetItem *item = treeWidget->topLevelItem(i);
-        if (TOOLKIT_TYPE == item->type() && toolkitName == item->text(0)) {
-            return item;
-        }
-    }
-    return nullptr;
-}
-
 QTreeWidgetItem *ExternalToolSupportSettingsPageWidget::createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon) {
     QTreeWidgetItem *toolkitItem = new QTreeWidgetItem({toolkitName}, TOOLKIT_TYPE);
     toolkitItem->setData(0, Qt::ItemDataRole::UserRole, toolkitName);
@@ -793,7 +782,7 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
             SAFE_POINT(item != nullptr, QString("Tree item not found for the tool %1").arg(externalTool->getName()), );
 
             for (QString dirName : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
-                if (!(externalTool->getDirName() == dirName || dirName.contains(externalTool->getToolKitName(), Qt::CaseInsensitive))) {
+                if (externalTool->getDirName() != dirName) {
                     continue;
                 }
                 isValidExternalToolsFolder = true;
