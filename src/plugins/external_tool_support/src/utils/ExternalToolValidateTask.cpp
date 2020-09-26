@@ -31,6 +31,10 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
+#ifdef Q_MAC_OS
+#    include <U2Core/AppResources.h>
+#endif
+
 #include <U2Lang/WorkflowUtils.h>
 
 #include "ExternalToolSearchTask.h"
@@ -187,9 +191,9 @@ void ExternalToolJustValidateTask::cancelProcess() {
     CmdlineTaskRunner::killProcessTree(externalToolProcess);
 }
 
-void ExternalToolJustValidateTask::setEnvironment(ExternalTool *tool) {
+void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     QStringList additionalPaths;
-    for (const QString &toolId : tool->getDependencies()) {
+    for (const QString &toolId : externalTool->getDependencies()) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (NULL != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
