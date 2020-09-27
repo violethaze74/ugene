@@ -1400,7 +1400,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 GUI_TEST_CLASS_DEFINITION(test_2192) {
     QString samtoolsPath = "samtools/samtools";
 #ifdef Q_OS_WIN
-    samtoolsPath = "samtools-0.1.19\\samtools";
+    samtoolsPath = "samtools\\samtools";
 #endif
     //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
