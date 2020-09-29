@@ -19,7 +19,6 @@ HEADERS += src/HMMIO.h \
            src/u_search/HMMSearchWorker.h \
            src/u_search/HMMSearchQDActor.h \
            src/u_search/uhmmsearch.h \
-           src/u_search/uhmmsearch_cell.h \
            src/u_search/uhmmsearch_opt.h \
            src/u_search/uhmmsearch_sse.h \
            src/u_tests/uhmmerTests.h
