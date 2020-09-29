@@ -149,6 +149,7 @@ public:
 
     char charAt(int rowNumber, qint64 position) const;
     bool isGap(int rowNumber, qint64 pos) const;
+    bool isLeadingOrTrailingGap(int rowNumber, qint64 pos) const;
 
     /** Returns all rows' names in the alignment */
     QStringList getRowNames() const;
