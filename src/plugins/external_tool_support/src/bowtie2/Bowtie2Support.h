@@ -37,8 +37,6 @@ public:
     static const QString ET_BOWTIE2_BUILD_ID;
     static const QString ET_BOWTIE2_INSPECT;
     static const QString ET_BOWTIE2_INSPECT_ID;
-
-    static const QString BOWTIE2_TMP_DIR;
 };
 
 }    // namespace U2

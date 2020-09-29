@@ -1,5 +1,3 @@
-# include (kalign.pri)
-
 PLUGIN_ID=kalign
 PLUGIN_NAME=KAlign
 PLUGIN_VENDOR=Unipro

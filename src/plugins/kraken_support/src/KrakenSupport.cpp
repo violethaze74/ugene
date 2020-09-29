@@ -35,7 +35,7 @@ const QString KrakenSupport::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
 const QString KrakenSupport::GROUP_NAME = "Kraken";
 
 KrakenSupport::KrakenSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+    : ExternalTool(id, "kraken", name, "") {
     toolKitName = GROUP_NAME;
 
     validationArguments << "--version";
@@ -44,17 +44,15 @@ KrakenSupport::KrakenSupport(const QString &id, const QString &name)
     dependencies << "USUPP_PERL";
     toolRunnerProgram = "USUPP_PERL";
 
-    if (BUILD_TOOL == name) {
+    if (name == BUILD_TOOL) {
         initBuild();
-    }
-
-    if (CLASSIFY_TOOL == name) {
+    } else if (name == CLASSIFY_TOOL) {
         initClassify();
     }
 }
 
 QStringList KrakenSupport::getAdditionalPaths() const {
-    if (BUILD_TOOL == name) {
+    if (name == BUILD_TOOL) {
         return QStringList() << QFileInfo(path).dir().absolutePath() + "/jellyfish"
                              << QFileInfo(path).dir().absolutePath() + "/util";
     }

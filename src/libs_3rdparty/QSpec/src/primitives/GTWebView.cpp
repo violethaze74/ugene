@@ -20,20 +20,20 @@
  */
 
 #include "GTWebView.h"
+
 #include "drivers/GTMouseDriver.h"
 #include "utils/GTThread.h"
 
 #ifdef UGENE_WEB_KIT
-#include "GTWebkitView.h"
+#    include "GTWebkitView.h"
 #else
-#include "GTWebEngineView.h"
+#    include "GTWebEngineView.h"
 #endif
 
 namespace HI {
 
 HIWebElement::HIWebElement()
     : visible(false) {
-
 }
 
 HIWebElement::HIWebElement(const QRect &rect,
@@ -49,9 +49,7 @@ HIWebElement::HIWebElement(const QRect &rect,
       tag(tag),
       idAttribute(idAttribute),
       attributesMap(attributesMap),
-      visible(isVisible)
-{
-
+      visible(isVisible) {
 }
 
 const QRect &HIWebElement::geometry() const {
@@ -96,7 +94,7 @@ bool compare(const QString &s1, const QString &s2, bool exactMatch) {
     }
 }
 
-}
+}    // namespace
 
 #define GT_CLASS_NAME "GTWebView"
 
@@ -122,8 +120,8 @@ HIWebElement GTWebView::findElementById(GUITestOpStatus &os, WebView *view, cons
 
 #define GT_METHOD_NAME "findElementsById"
 QList<HIWebElement> GTWebView::findElementsById(GUITestOpStatus &os, WebView *view, const QString &id, const QString &tag, const HIWebElement &parentElement) {
-    const QString parentQuery = parentElement.tagName().isEmpty() ? "" : parentElement.tagName() + (id.isEmpty() ? ""  : "[id=" + parentElement.id() + "]") + " ";
-    const QString elementQuery = tag + (id.isEmpty() ? ""  : "[id=" + id + "]");
+    const QString parentQuery = parentElement.tagName().isEmpty() ? "" : parentElement.tagName() + (id.isEmpty() ? "" : "[id=" + parentElement.id() + "]") + " ";
+    const QString elementQuery = tag + (id.isEmpty() ? "" : "[id=" + id + "]");
     return findElementsBySelector(os, view, parentQuery + elementQuery, GTGlobals::FindOptions());
 }
 #undef GT_METHOD_NAME
@@ -143,7 +141,7 @@ QList<HIWebElement> GTWebView::findElementsBySelector(GUITestOpStatus &os, WebVi
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkElement"
-void GTWebView::checkElement(GUITestOpStatus &os, WebView *view, QString text, QString tag, bool exists, bool exactMatch){
+void GTWebView::checkElement(GUITestOpStatus &os, WebView *view, QString text, QString tag, bool exists, bool exactMatch) {
     const bool found = doesElementExist(os, view, text, tag, exactMatch);
     if (exists) {
         GT_CHECK(found, "element with text " + text + " and tag " + tag + " not found");
@@ -167,11 +165,11 @@ bool GTWebView::doesElementExist(GUITestOpStatus &os, WebView *view, const QStri
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTWebView::findTreeElement(GUITestOpStatus &os, WebView *view, QString text){
+HIWebElement GTWebView::findTreeElement(GUITestOpStatus &os, WebView *view, QString text) {
     return findElement(os, view, text, "SPAN");
 }
 
-HIWebElement GTWebView::findContextMenuElement(GUITestOpStatus &os, WebView *view, QString text){
+HIWebElement GTWebView::findContextMenuElement(GUITestOpStatus &os, WebView *view, QString text) {
     return findElement(os, view, text, "LI");
 }
 
@@ -181,10 +179,10 @@ void GTWebView::click(GUITestOpStatus & /*os*/, WebView *view, HIWebElement el, 
     GTThread::waitForMainThread();
 }
 
-void GTWebView::selectElementText(GUITestOpStatus & /*os*/, WebView *view, HIWebElement el){
-    GTMouseDriver::moveTo(view->mapToGlobal(el.geometry().topLeft()) + QPoint(5,5));
+void GTWebView::selectElementText(GUITestOpStatus & /*os*/, WebView *view, HIWebElement el) {
+    GTMouseDriver::moveTo(view->mapToGlobal(el.geometry().topLeft()) + QPoint(5, 5));
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(view->mapToGlobal(el.geometry().bottomRight()) - QPoint(5,5));
+    GTMouseDriver::moveTo(view->mapToGlobal(el.geometry().bottomRight()) - QPoint(5, 5));
     GTMouseDriver::release();
 }
 
@@ -198,4 +196,4 @@ void GTWebView::traceAllWebElements(GUITestOpStatus &os, WebView *view) {
 
 #undef GT_CLASS_NAME
 
-} // namespace HI
+}    // namespace HI

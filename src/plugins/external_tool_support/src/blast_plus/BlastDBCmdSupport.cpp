@@ -31,12 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
-
 #include <U2View/MSAEditor.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "BlastDBCmdDialog.h"
 #include "BlastDBCmdSupportTask.h"
@@ -49,7 +44,7 @@ const QString BlastDbCmdSupport::ET_BLASTDBCMD = "BlastDBCmd";
 const QString BlastDbCmdSupport::ET_BLASTDBCMD_ID = "USUPP_BLAST_DB_CMD";
 
 BlastDbCmdSupport::BlastDbCmdSupport(const QString &path)
-    : ExternalTool(ET_BLASTDBCMD_ID, ET_BLASTDBCMD, path) {
+    : ExternalTool(ET_BLASTDBCMD_ID, "blast2", ET_BLASTDBCMD, path) {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
@@ -85,15 +80,14 @@ void BlastDbCmdSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
+                break;
         }
     }
     if (path.isEmpty()) {

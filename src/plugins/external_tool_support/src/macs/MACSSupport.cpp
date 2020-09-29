@@ -30,7 +30,7 @@ const QString MACSSupport::ET_MACS = "MACS";
 const QString MACSSupport::ET_MACS_ID = "USUPP_MACS";
 
 MACSSupport::MACSSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+    : ExternalTool(id, "cistrome", name, "") {
     initialize();
 }
 

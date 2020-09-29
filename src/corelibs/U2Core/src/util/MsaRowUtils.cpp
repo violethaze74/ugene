@@ -327,6 +327,23 @@ bool MsaRowUtils::isGap(int dataLength, const U2MsaRowGapModel &gapModel, int po
     return false;
 }
 
+bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel &gapModel, int position) {
+    if (gapModel.isEmpty()) {
+        return false;
+    }
+    if (gapModel[0].offset == 0 && position < gapModel[0].endPos()) {
+        return true;    // leading gap.
+    }
+    int totalGapsLen = 0;
+    for (const U2MsaGap &gap : gapModel) {
+        totalGapsLen += gap.gap;
+        if (position < gap.offset) {
+            return false;    // somewhere in the middle.
+        }
+    }
+    return position >= dataLength + totalGapsLen;    // trailing gap.
+}
+
 void MsaRowUtils::chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength) {
     chopGapModel(gapModel, U2Region(0, maxLength));
 }

@@ -37,7 +37,7 @@ const QString BigWigSupport::GENOMES_DATA_NAME = "Genome files";
 const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 
 BigWigSupport::BigWigSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "bigwig", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

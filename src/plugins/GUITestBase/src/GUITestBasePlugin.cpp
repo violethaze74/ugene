@@ -275,6 +275,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1693);    //no tuxedo for windows
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1735);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2266_1);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2268); // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log. This path can't be overriden via environment.
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2282);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2638);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2640);
@@ -770,7 +771,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_2267_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2267_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2268);
     REGISTER_TEST(GUITest_regression_scenarios::test_2269);
     REGISTER_TEST(GUITest_regression_scenarios::test_2270);
     REGISTER_TEST(GUITest_regression_scenarios::test_2281);

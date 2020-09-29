@@ -23,11 +23,11 @@
 #define GTWEBVIEW_H
 
 #ifdef UGENE_WEB_KIT
-#include <QWebPage>
-#include <QWebView>
+#    include <QWebPage>
+#    include <QWebView>
 #else
-#include <QWebEnginePage>
-#include <QWebEngineView>
+#    include <QWebEnginePage>
+#    include <QWebEngineView>
 #endif
 
 #include "GTGlobals.h"
@@ -42,7 +42,7 @@ typedef class QWebEnginePage WebPage;
 
 namespace HI {
 
-class HI_EXPORT HIWebElement{
+class HI_EXPORT HIWebElement {
 public:
     HIWebElement();
     HIWebElement(const QRect &rect,
@@ -93,6 +93,6 @@ public:
     static void traceAllWebElements(GUITestOpStatus &os, WebView *view);
 };
 
-}
+}    // namespace HI
 
-#endif // GTWEBVIEW_H
+#endif    // GTWEBVIEW_H

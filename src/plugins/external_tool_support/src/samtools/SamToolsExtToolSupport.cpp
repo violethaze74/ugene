@@ -31,7 +31,7 @@ const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT = "SAMtools";
 const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
 
 SamToolsExtToolSupport::SamToolsExtToolSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "samtools", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

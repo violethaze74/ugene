@@ -32,10 +32,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/AppSettingsGUI.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
@@ -53,8 +50,8 @@ const QString ClustalWSupport::ET_CLUSTAL_ID = "USUPP_CLUSTALW";
 const QString ClustalWSupport::CLUSTAL_TMP_DIR = "clustal";
 
 ClustalWSupport::ClustalWSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "clustalw", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new ClustalWSupportContext(this);
         icon = QIcon(":external_tool_support/images/clustalx.png");
         grayIcon = QIcon(":external_tool_support/images/clustalx_gray.png");
@@ -87,15 +84,13 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
     if (path.isEmpty()) {
@@ -167,15 +162,13 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
     if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()) {

@@ -70,8 +70,8 @@ const QString RModuleSeqlogoSupport::ET_R_SEQLOGO = "seqLogo";
 const QString RModuleSeqlogoSupport::ET_R_SEQLOGO_ID = "USUPP_SEQLOGO";
 
 RSupport::RSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(QStringList(), id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : RunnerTool(QStringList(), id, "rscript", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/R.png");
         grayIcon = QIcon(":external_tool_support/images/R_gray.png");
         warnIcon = QIcon(":external_tool_support/images/R_warn.png");
@@ -95,8 +95,8 @@ RSupport::RSupport(const QString &id, const QString &name, const QString &path)
 }
 
 RModuleSupport::RModuleSupport(const QString &id, const QString &name)
-    : ExternalToolModule(id, name) {
-    if (AppContext::getMainWindow()) {
+    : ExternalToolModule(id, "rscript", name) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/R.png");
         grayIcon = QIcon(":external_tool_support/images/R_gray.png");
         warnIcon = QIcon(":external_tool_support/images/R_warn.png");

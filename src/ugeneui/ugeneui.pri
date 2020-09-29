@@ -1,5 +1,3 @@
-# include (ugeneui.pri)
-
 include( ../ugene_globals.pri )
 
 use_opencl(){

@@ -1,5 +1,3 @@
-# include (sqlite.pri)
-
 include( ../../ugene_globals.pri )
 
 TEMPLATE = lib

@@ -48,8 +48,8 @@ const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES = "getfilesToTaxNode
 const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES_ID = "USUPP_CLARK_GET_FILES_TO_TAX_NODES";
 
 ClarkSupport::ClarkSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "clark", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

@@ -1,5 +1,3 @@
-#include (dotplot.pri)
-
 PLUGIN_ID=dotplot
 PLUGIN_NAME=Dotplot viewer
 PLUGIN_VENDOR=Unipro

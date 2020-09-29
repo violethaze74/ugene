@@ -36,8 +36,8 @@ const QString JavaSupport::ARCHITECTURE_X64 = "x64";
 const QStringList JavaSupport::RUN_PARAMETERS = {"-jar"};
 
 JavaSupport::JavaSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(RUN_PARAMETERS, id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : RunnerTool(RUN_PARAMETERS, id, "java8", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -74,12 +74,12 @@ JavaSupport::Architecture JavaSupport::getArchitecture() const {
 
 QString JavaSupport::architecture2string(Architecture architecture) {
     switch (architecture) {
-    case JavaSupport::x32:
-        return ARCHITECTURE_X32;
-    case JavaSupport::x64:
-        return ARCHITECTURE_X64;
-    default:
-        FAIL("An unknown architecture", "");
+        case JavaSupport::x32:
+            return ARCHITECTURE_X32;
+        case JavaSupport::x64:
+            return ARCHITECTURE_X64;
+        default:
+            FAIL("An unknown architecture", "");
     }
 }
 

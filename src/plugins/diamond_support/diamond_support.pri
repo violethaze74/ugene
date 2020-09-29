@@ -1,4 +1,3 @@
-# include (diamond_support.pri)
 include (../../ugene_globals.pri)
 
 PLUGIN_ID=diamond_support

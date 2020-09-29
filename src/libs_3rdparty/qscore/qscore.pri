@@ -1,4 +1,3 @@
-# include (qscore.pri)
 include( ../../ugene_globals.pri )
 
 TEMPLATE = lib

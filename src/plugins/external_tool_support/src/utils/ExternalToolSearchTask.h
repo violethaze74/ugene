@@ -50,12 +50,10 @@ public:
     }
 
 private:
-    QString getExeName(ExternalTool *tool);
+    QString getExecutableFileName(ExternalTool *tool);
 
     QString toolId;
     QStringList toolPaths;
-
-    static const QString TOOLS;
 };
 
 class ExternalToolsSearchTask : public SequentialMultiTask {

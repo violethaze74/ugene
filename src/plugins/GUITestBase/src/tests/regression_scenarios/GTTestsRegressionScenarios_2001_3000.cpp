@@ -1398,9 +1398,9 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2192) {
-    QString samtoolsPath = "samtools-0.1.19/samtools";
+    QString samtoolsPath = "samtools/samtools";
 #ifdef Q_OS_WIN
-    samtoolsPath = "samtools-0.1.19\\samtools";
+    samtoolsPath = "samtools\\samtools";
 #endif
     //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -1600,7 +1600,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     origToolDir.cdUp();    // exit from 'bin' folder
 #endif
 
-    QString newToolDir = sandBoxDir + "GUITest_regression_scenarios_test_2268/";
+    QString newToolDir = sandBoxDir + GTUtils::genUniqueString("test_2268") + "/";
     GTFile::copyDir(os, origToolDir.absolutePath(), newToolDir);
 #ifdef Q_OS_LINUX
     const QFileInfo newToolPath(newToolDir + "bin/t_coffee");
@@ -4173,8 +4173,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Select "tuxedo" sample
     //    3. Set proper input data
-    QString expected = "tophat-2.1.1/tophat -p 94 --output-dir";
-    ;
+    QString expected = "tophat2/tophat -p 94 --output-dir";
 
     GTLogTracer l(expected);
     QMap<QString, QVariant> map;
@@ -4329,9 +4328,9 @@ GUI_TEST_CLASS_DEFINITION(test_2662) {
     GTWidget::click(os, node);
 
 #ifdef Q_OS_WIN
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19\\vcfutils.pl", false);
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools\\vcfutils.pl", false);
 #else
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19/vcfutils.pl", false);
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools/vcfutils.pl", false);
 #endif
 }
 

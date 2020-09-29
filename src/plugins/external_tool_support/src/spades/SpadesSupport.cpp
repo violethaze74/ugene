@@ -31,7 +31,7 @@ const QString SpadesSupport::ET_SPADES = "SPAdes";
 const QString SpadesSupport::ET_SPADES_ID = "USUPP_SPADES";
 
 SpadesSupport::SpadesSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "spades", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
