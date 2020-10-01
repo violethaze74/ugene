@@ -141,7 +141,7 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
 }
 
 ParametersDashboardWidget::ParametersDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor)
-    : dashboardDir(dashboardDir) {
+    : dashboardDir(dashboardDir), monitor(monitor) {
     setObjectName("ParametersDashboardWidget");
     setMinimumWidth(1100);
 
@@ -239,7 +239,7 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
             if (!fileInfo.isAbsolute()) {
                 fileInfo = QFileInfo(QDir(dashboardDir), url).absoluteFilePath();
             }
-            auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), dashboardDir, parameter.isDir);
+            auto button = new DashboardFileButton(QStringList() << fileInfo.absoluteFilePath(), dashboardDir, monitor, parameter.isDir);
             valueWidgetLayout->addWidget(button);
         }
         valueWidgetLayout->addStretch();
