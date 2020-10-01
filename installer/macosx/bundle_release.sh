@@ -160,7 +160,6 @@ done
 echo
 
 echo macdeployqt running...
-set -x
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
 echo macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
@@ -192,5 +191,3 @@ fi
 
 echo "Restore PATH env var"
 export PATH=${_PATH_SAVED_}
-
-set +x
