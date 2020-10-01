@@ -60,8 +60,8 @@ const QString SpideySupport::ET_SPIDEY_ID = "USUPP_SPIDEY";
 const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
 
 SpideySupport::SpideySupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "spidey", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new SpideySupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

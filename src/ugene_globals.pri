@@ -9,6 +9,11 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
 CONFIG += c++11
 
+# Do not use library suffix names for files and ELF-dependency sections on Linux.
+# Reason: we do not support multiple versions of UGENE in the same folder and
+#  use -Wl,-rpath to locate dependencies for own libraries.
+unix:!macx: CONFIG += unversioned_libname unversioned_soname
+
 # NGS package
 _UGENE_NGS = $$(UGENE_NGS)
 contains(_UGENE_NGS, 1) : DEFINES += UGENE_NGS
@@ -48,24 +53,23 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wall
 
     # We have a lot of such warning from QT -> disable them.
-    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
-    QMAKE_CXXFLAGS += -Wno-class-memaccess
-    QMAKE_CXXFLAGS += -Wno-unused-parameter
-    QMAKE_CXXFLAGS += -Wno-unused-variable
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
     QMAKE_CXXFLAGS += -Wno-catch-value
-    QMAKE_CXXFLAGS += -Wno-sign-compare
+    QMAKE_CXXFLAGS += -Wno-class-memaccess
+    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
     QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
+    QMAKE_CXXFLAGS += -Wno-sign-compare
+    QMAKE_CXXFLAGS += -Wno-unused-variable
 
     # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
     QMAKE_CXXFLAGS += -Wno-cast-function-type
 
     # Some of the warnings must be errors
-    QMAKE_CXXFLAGS += -Werror=return-type
-    QMAKE_CXXFLAGS += -Werror=parentheses
-    QMAKE_CXXFLAGS += -Werror=uninitialized
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
+    QMAKE_CXXFLAGS += -Werror=parentheses
+    QMAKE_CXXFLAGS += -Werror=return-type
+    QMAKE_CXXFLAGS += -Werror=uninitialized
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
@@ -103,9 +107,6 @@ CONFIG(x86) {
 
 macx : DEFINES += RUN_WORKFLOW_IN_THREADS
 
-# uncomment when building on Cell BE
-# UGENE_CELL = 1
-
 # Checking if processor is SSE2 capable.
 # On Windows UGENE relies on run-time check.
 #
@@ -113,28 +114,6 @@ macx : DEFINES += RUN_WORKFLOW_IN_THREADS
 #  1) adding -msse2 compilation flag if needed (currently uhmmer and smith_waterman2)
 #  2) performing run-time check using cpuid instruction on intel proccessors.
 
-isEmpty( UGENE_SSE2_DETECTED ) {
-    UGENE_SSE2_DETECTED = 0
-
-    !win32 : exists( /proc/cpuinfo ) {
-        system( grep sse2 /proc/cpuinfo > /dev/null ) {
-            UGENE_SSE2_DETECTED = 1
-        }
-    }
-    macx {
-        !ppc{
-            system(/usr/sbin/system_profiler SPHardwareDataType | grep Processor | grep Intel > /dev/null) {
-               UGENE_SSE2_DETECTED = 1
-            }
-        }
-    }
-}
-
-defineTest( use_sse2 ) {
-    win32 : return (true)
-    contains( UGENE_SSE2_DETECTED, 1 ) : return (true)
-    return (false)
-}
 
 # CUDA environment
 UGENE_NVCC         = nvcc

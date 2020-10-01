@@ -33,49 +33,50 @@
 
 namespace U2 {
 
-const QString ExternalToolSearchTask::TOOLS = "tools";
+#define DEFAULT_TOOLS_DIR_NAME "tools"
 
-ExternalToolSearchTask::ExternalToolSearchTask(const QString &_toolId)
-    : Task(tr("'%1' external tool search task").arg(AppContext::getExternalToolRegistry()->getToolNameById(_toolId)), TaskFlag_None),
-      toolId(_toolId) {
+ExternalToolSearchTask::ExternalToolSearchTask(const QString &toolId)
+    : Task(tr("'%1' external tool search task").arg(AppContext::getExternalToolRegistry()->getToolNameById(toolId)), TaskFlag_None),
+      toolId(toolId) {
 }
 
 void ExternalToolSearchTask::run() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "External tool registry is NULL", );
+
     ExternalTool *tool = etRegistry->getById(toolId);
-    CHECK_EXT(tool, setError(tr("An external tool '%1' isn't found in the registry").arg(toolId)), );
+    CHECK_EXT(tool, setError(tr("External tool '%1' is not registered").arg(toolId)), );
 
-    // 1. Search for the tool in the tools folder
+    // Search for pre-installed external tools first.
     QDir appDir(QCoreApplication::applicationDirPath());
-    QStringList entryList = appDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-    QString toolsDir;
+    QString toolsDir = qgetenv("UGENE_TOOLS_DIR");
 
-    foreach (const QString &dirName, entryList) {
-        if (dirName == TOOLS) {
-            toolsDir = appDir.absolutePath() + QDir::separator() + dirName;
-            break;
-        }
+    if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
+        toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
     }
 
     if (!toolsDir.isEmpty()) {
-        QString exeName = getExeName(tool);
-        CHECK(!exeName.isEmpty(), );
-        bool fileNotFound = true;
-        LimitedDirIterator it(toolsDir);
-
-        while (it.hasNext() && fileNotFound) {
+        QString executableFileName = getExecutableFileName(tool);
+        CHECK(!executableFileName.isEmpty(), );
+        QString searchDir = toolsDir;
+        if (!tool->getDirName().isEmpty()) {
+            searchDir += "/" + tool->getDirName();
+        }
+        LimitedDirIterator it(searchDir);
+        while (it.hasNext()) {
             it.next();
-            QString toolPath(it.filePath() + QDir::separator() + exeName);
-            QFileInfo info(toolPath);
-            if (info.exists() && info.isFile()) {
-                toolPaths << QDir::toNativeSeparators(toolPath);
-                fileNotFound = false;
+            QString executableFilePath = it.filePath() + "/" + executableFileName;
+            if (QFileInfo(executableFilePath).isFile()) {
+                toolPaths << QDir::toNativeSeparators(executableFilePath);
+                break;
             }
+        }
+        if (!toolPaths.isEmpty()) {
+            return;
         }
     }
 
-    // 2. Search for the tool in the PATH variable
+    // If there is no external tools dir search to for tools in PATH variable.
     QStringList envList = QProcessEnvironment::systemEnvironment().toStringList();
     int pathIndex = envList.indexOf(QRegExp("PATH=.*", Qt::CaseInsensitive));
 
@@ -91,7 +92,7 @@ void ExternalToolSearchTask::run() {
         QStringList paths;
 #    endif
 #endif
-        QString exeName = getExeName(tool);
+        QString exeName = getExecutableFileName(tool);
         CHECK(!exeName.isEmpty(), );
 
         foreach (const QString &curPath, paths) {
@@ -112,7 +113,7 @@ void ExternalToolSearchTask::run() {
     }
 }
 
-QString ExternalToolSearchTask::getExeName(ExternalTool *tool) {
+QString ExternalToolSearchTask::getExecutableFileName(ExternalTool *tool) {
     SAFE_POINT_EXT(tool, setError(tr("Tool pointer is NULL")), "");
 
     if (!tool->getExecutableFileName().isEmpty()) {

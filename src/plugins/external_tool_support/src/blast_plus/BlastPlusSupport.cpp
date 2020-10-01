@@ -34,9 +34,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -67,7 +65,6 @@ const QString BlastPlusSupport::ET_BLASTN = "BlastN";
 const QString BlastPlusSupport::ET_BLASTN_ID = "USUPP_BLASTN";
 const QString BlastPlusSupport::ET_BLASTP = "BlastP";
 const QString BlastPlusSupport::ET_BLASTP_ID = "USUPP_BLASTP";
-const QString BlastPlusSupport::ET_GPU_BLASTP = "GPU-BlastP";
 const QString BlastPlusSupport::ET_GPU_BLASTP_ID = "UGENE_GPU_BLASTP";
 const QString BlastPlusSupport::ET_BLASTX = "BlastX";
 const QString BlastPlusSupport::ET_BLASTX_ID = "USUPP_BLASTX";
@@ -80,7 +77,7 @@ const QString BlastPlusSupport::ET_RPSBLAST_ID = "USUPP_RPS_BLAST";
 const QString BlastPlusSupport::BLASTPLUS_TMP_DIR = "blast_plus";
 
 BlastPlusSupport::BlastPlusSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "blast2", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
@@ -204,20 +201,18 @@ void BlastPlusSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
-        bool isOneOfToolConfigured = false;
-        foreach (QString id, toolList) {
+        for (const QString &id : toolList) {
             if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured = true;
+                break;
             }
         }
         if (!isOneOfToolConfigured) {
@@ -305,16 +300,15 @@ void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
         return;
     }
 
-    bool isBlastResult = false, isShowId = false;
-
     QString name;
     if (!dnaView->getAnnotationsSelection()->getAnnotations().isEmpty()) {
         name = dnaView->getAnnotationsSelection()->getAnnotations().first()->getName();
     }
     selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getAnnotations(), true);
-    isShowId = !selectedId.isEmpty();
+    bool isShowId = !selectedId.isEmpty();
 
-    foreach (const Annotation *annotation, dnaView->getAnnotationsSelection()->getAnnotations()) {
+    bool isBlastResult = false;
+    for (const Annotation *annotation : dnaView->getAnnotationsSelection()->getAnnotations()) {
         if (name != annotation->getName()) {
             name = "";
         }
@@ -338,9 +332,10 @@ void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
 void BlastPlusSupportContext::sl_showDialog() {
     //Check that any of BLAST+ tools and tempory folder path defined
     bool isOneOfToolConfigured = false;
-    foreach (QString id, toolIdList) {
+    for (const QString &id : toolIdList) {
         if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
             isOneOfToolConfigured = true;
+            break;
         }
     }
     if (!isOneOfToolConfigured) {
@@ -354,20 +349,18 @@ void BlastPlusSupportContext::sl_showDialog() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
-        bool isOneOfToolConfigured = false;
-        foreach (QString id, toolIdList) {
+        for (const QString &id : toolIdList) {
             if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured = true;
+                break;
             }
         }
         if (!isOneOfToolConfigured) {
@@ -429,15 +422,13 @@ void BlastPlusSupportContext::sl_fetchSequenceById() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
 

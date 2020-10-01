@@ -1,5 +1,3 @@
-# include (cuda_support.pri)
-
 include( ../../ugene_globals.pri )
 
 use_cuda() {

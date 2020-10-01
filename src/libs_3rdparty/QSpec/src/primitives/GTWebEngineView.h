@@ -22,11 +22,11 @@
 #ifndef GTWEBENGINEVIEW_H
 #define GTWEBENGINEVIEW_H
 
-#include "GTGlobals.h"
-#include "GTWebView.h"
-
 #include <QEventLoop>
 #include <QWebEngineView>
+
+#include "GTGlobals.h"
+#include "GTWebView.h"
 
 namespace HI {
 
@@ -63,6 +63,6 @@ private:
 
 typedef class GTWebEngineView GTWebViewPrivate;
 
-}
+}    // namespace HI
 
-#endif // GTWEBENGINEVIEW_H
+#endif    // GTWEBENGINEVIEW_H

@@ -1,5 +1,3 @@
-# include (QSpec.pri)
-
 include( ../../ugene_globals.pri )
 
 TARGET = QSpec$$D

@@ -43,8 +43,8 @@ const QString SnpEffSupport::ET_SNPEFF = "SnpEff";
 const QString SnpEffSupport::ET_SNPEFF_ID = "USUPP_SNPEFF";
 
 SnpEffSupport::SnpEffSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "snpeff", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

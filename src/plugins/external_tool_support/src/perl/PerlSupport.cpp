@@ -30,8 +30,8 @@ const QString PerlSupport::ET_PERL = "perl";
 const QString PerlSupport::ET_PERL_ID = "USUPP_PERL";
 
 PerlSupport::PerlSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(QStringList(), id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : RunnerTool(QStringList(), id, "perl5", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/perl.png");
         grayIcon = QIcon(":external_tool_support/images/perl_gray.png");
         warnIcon = QIcon(":external_tool_support/images/perl_warn.png");

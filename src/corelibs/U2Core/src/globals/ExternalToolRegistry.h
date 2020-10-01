@@ -53,9 +53,12 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    ExternalTool(QString id, QString name, QString path);
+    ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path);
 
     const QString &getId() const;
+    const QString &getDirName() const {
+        return dirName;
+    }
     const QString &getName() const;
     const QString &getPath() const;
     const QIcon &getIcon() const;
@@ -102,8 +105,12 @@ signals:
     void si_toolValidationStatusChanged(bool isValid);
 
 protected:
-    QString id;    // tool id
-    QString name;    // tool name
+    /** Unique external tool id. */
+    QString id;
+    /** Tool folder name or sub-path in 'tools' directory. */
+    QString dirName;
+    /** Visual name of the tool. */
+    QString name;
     QString path;    // tool path
     QIcon icon;    // valid tool icon
     QIcon grayIcon;    // not set tool icon
@@ -133,8 +140,8 @@ protected:
 class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
-    ExternalToolModule(const QString &id, const QString &name)
-        : ExternalTool(id, name, "") {
+    ExternalToolModule(const QString &id, const QString &dirName, const QString &name)
+        : ExternalTool(id, dirName, name, "") {
         isModuleTool = true;
     }
 };

@@ -21,6 +21,8 @@
 
 #include "MSAEditorConsensusArea.h"
 
+#include <U2Algorithm/MSAConsensusUtils.h>
+
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -43,6 +45,10 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
 }
 
+QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
+    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
+}
+
 void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView * /*view*/, QMenu *menu) {
     buildMenu(menu);
 }
@@ -58,7 +64,8 @@ void MSAEditorConsensusArea::initRenderer() {
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet *al = editor->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != al, "Alphabet is NULL", "");
-    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
+    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" :
+                                                                        "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 

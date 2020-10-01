@@ -1,5 +1,3 @@
-# include (U2Formats.pri)
-
 MODULE_ID=U2Formats
 include( ../../ugene_lib_common.pri )
 

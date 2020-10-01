@@ -10,8 +10,8 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 35.0-dev)
-set(UGENE_VER_MAJOR 35)
+set(UGENE_VERSION 37.0-dev)
+set(UGENE_VER_MAJOR 37)
 set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
@@ -24,7 +24,6 @@ add_definitions(
 
         -DUGENE_USE_BUNDLED_ZLIB
         -DUGENE_USE_BUNDLED_SQLITE
-        -DUGENE_WEB_KIT
 
         -DQT_FATAL_ASSERT
 )
@@ -40,9 +39,26 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
-# Warning levels
+# Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wreorder")
+    string(CONCAT GCC_WARNING_FLAGS
+            " -Wall"
+            " -Werror=maybe-uninitialized"
+            " -Werror=parentheses"
+            " -Werror=return-type"
+            " -Werror=uninitialized"
+            " -Wno-cast-function-type"
+            " -Wno-catch-value"
+            " -Wno-class-memaccess"
+            " -Wno-deprecated-copy"
+            " -Wno-expansion-to-defined"
+            " -Wno-ignored-attributes"
+            " -Wno-implicit-fallthrough"
+            " -Wno-sign-compare"
+            " -Wno-unused-parameter"
+            " -Wno-unused-variable"
+            )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
 endif ()
 
 # 3rd party libs
@@ -53,14 +69,15 @@ add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
 
 # Core libs
-add_subdirectory(src/corelibs/U2Core)
 add_subdirectory(src/corelibs/U2Algorithm)
+add_subdirectory(src/corelibs/U2Core)
+add_subdirectory(src/corelibs/U2Designer)
 add_subdirectory(src/corelibs/U2Formats)
+add_subdirectory(src/corelibs/U2Gui)
 add_subdirectory(src/corelibs/U2Lang)
 add_subdirectory(src/corelibs/U2Private)
-add_subdirectory(src/corelibs/U2Gui)
+add_subdirectory(src/corelibs/U2Script)
 add_subdirectory(src/corelibs/U2Test)
-add_subdirectory(src/corelibs/U2Designer)
 add_subdirectory(src/corelibs/U2View)
 
 # launchers
@@ -68,13 +85,16 @@ add_subdirectory(src/ugeneui)
 add_subdirectory(src/ugenecl)
 
 # local plugins
+add_subdirectory(src/plugins/CoreTests)
+add_subdirectory(src/plugins/GUITestBase)
 add_subdirectory(src/plugins/annotator)
 add_subdirectory(src/plugins/api_tests)
 add_subdirectory(src/plugins/biostruct3d_view)
 add_subdirectory(src/plugins/chroma_view)
 add_subdirectory(src/plugins/circular_view)
-add_subdirectory(src/plugins/CoreTests)
+add_subdirectory(src/plugins/clark_support)
 add_subdirectory(src/plugins/dbi_bam)
+add_subdirectory(src/plugins/diamond_support)
 add_subdirectory(src/plugins/dna_export)
 add_subdirectory(src/plugins/dna_flexibility)
 add_subdirectory(src/plugins/dna_graphpack)
@@ -83,7 +103,7 @@ add_subdirectory(src/plugins/dotplot)
 add_subdirectory(src/plugins/enzymes)
 add_subdirectory(src/plugins/external_tool_support)
 add_subdirectory(src/plugins/genome_aligner)
-add_subdirectory(src/plugins/GUITestBase)
+add_subdirectory(src/plugins/kraken_support)
 add_subdirectory(src/plugins/linkdata_support)
 add_subdirectory(src/plugins/orf_marker)
 add_subdirectory(src/plugins/pcr)

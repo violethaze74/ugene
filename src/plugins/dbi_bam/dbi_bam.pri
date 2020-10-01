@@ -1,5 +1,3 @@
-# include (dbi_bam.pri)
-
 PLUGIN_ID=dbi_bam
 PLUGIN_NAME=BAM file based DBI implementation
 PLUGIN_VENDOR=Unipro

@@ -39,7 +39,7 @@ const QString BedtoolsSupport::GENOMES_DIR_NAME = "genome_lengths";
 const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 
 BedtoolsSupport::BedtoolsSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+    : ExternalTool(id, "bedtools", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

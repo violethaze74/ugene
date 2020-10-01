@@ -21,9 +21,7 @@
 
 #include "ExternalToolSupportPlugin.h"
 
-#include <QCoreApplication>
 #include <QDirIterator>
-#include <QMenu>
 
 #include "samtools/BcfToolsSupport.h"
 #include "samtools/SamToolsExtToolSupport.h"
@@ -35,8 +33,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
@@ -44,19 +40,12 @@
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
 
-#include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
 
-#include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/ADVUtils.h>
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/DnaAssemblyUtils.h>
-#include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 
 #include "ETSProjectViewItemsContoller.h"
@@ -111,7 +100,6 @@
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
-#include "hmmer/HmmerSearchTask.h"
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
@@ -169,8 +157,8 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 /************************************************************************/
 class SearchToolsInPathTask : public Task {
 public:
-    SearchToolsInPathTask(ExternalToolSupportPlugin *_plugin)
-        : Task(ExternalToolSupportPlugin::tr("Search tools in PATH"), TaskFlag_NoRun), plugin(_plugin) {
+    SearchToolsInPathTask(ExternalToolSupportPlugin *plugin)
+        : Task(ExternalToolSupportPlugin::tr("Search tools in PATH"), TaskFlag_NoRun), plugin(plugin) {
     }
 
     void prepare() {
@@ -184,7 +172,7 @@ public:
             paths = pathEnv.split("=").at(1).split(";");
 #endif
 
-            foreach (ExternalTool *curTool, AppContext::getExternalToolRegistry()->getAllEntries()) {
+            for (ExternalTool *curTool : AppContext::getExternalToolRegistry()->getAllEntries()) {
                 // UGENE-1781: Remove python external tool search in PATH
                 // It should be fixed without crutches.
                 if (curTool->getId() == PythonSupport::ET_PYTHON_ID) {
@@ -194,11 +182,11 @@ public:
                 if (!curTool->getPath().isEmpty()) {
                     continue;
                 }
-                foreach (const QString &curPath, paths) {
+                for (const QString &curPath : paths) {
                     QString exePath = curPath + "/" + curTool->getExecutableFileName();
                     QFileInfo fileExe(exePath);
                     if (fileExe.exists() && (curTool->getPath() == "")) {
-                        ExternalToolJustValidateTask *validateTask = new ExternalToolJustValidateTask(curTool->getId(), curTool->getName(), exePath);
+                        auto validateTask = new ExternalToolJustValidateTask(curTool->getId(), curTool->getName(), exePath);
                         connect(validateTask, SIGNAL(si_stateChanged()), plugin, SLOT(sl_validateTaskStateChanged()));
                         addSubTask(validateTask);
                     }
@@ -538,16 +526,14 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     readsFormats << BaseDocumentFormats::FASTA;
     readsFormats << BaseDocumentFormats::FASTQ;
 
-    AppContext::getDnaAssemblyAlgRegistry()->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BowtieTask::taskName, new BowtieTaskFactory(), new BowtieGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
-
-    AppContext::getDnaAssemblyAlgRegistry()->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_ALN, new BwaTaskFactory(), new BwaGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired*/, referenceFormats, readsFormats));
-
-    AppContext::getDnaAssemblyAlgRegistry()->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_SW, new BwaTaskFactory(), new BwaSwGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, false /*Paired*/, referenceFormats, readsFormats));
-
-    AppContext::getDnaAssemblyAlgRegistry()->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_MEM, new BwaTaskFactory(), new BwaMemGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired*/, referenceFormats, readsFormats));
+    DnaAssemblyAlgRegistry *dnaAssemblyRegistry = AppContext::getDnaAssemblyAlgRegistry();
+    dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BowtieTask::taskName, new BowtieTaskFactory(), new BowtieGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
+    dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_ALN, new BwaTaskFactory(), new BwaGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired*/, referenceFormats, readsFormats));
+    dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_SW, new BwaTaskFactory(), new BwaSwGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, false /*Paired*/, referenceFormats, readsFormats));
+    dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_MEM, new BwaTaskFactory(), new BwaMemGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired*/, referenceFormats, readsFormats));
 
     readsFormats << BaseDocumentFormats::RAW_DNA_SEQUENCE;
-    AppContext::getDnaAssemblyAlgRegistry()->registerAlgorithm(new DnaAssemblyAlgorithmEnv(Bowtie2Task::taskName, new Bowtie2TaskFactory(), new Bowtie2GUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
+    dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(Bowtie2Task::taskName, new Bowtie2TaskFactory(), new Bowtie2GUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
 
     QStringList genomeReadsFormats;
     genomeReadsFormats << BaseDocumentFormats::FASTA;
@@ -564,7 +550,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         l->qlist = BowtieTests::createTestFactories();
         l->qlist << Bowtie2Tests::createTestFactories();
 
-        foreach (XMLTestFactory *f, l->qlist) {
+        for (XMLTestFactory *f : l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
             Q_UNUSED(res);
             assert(res);
@@ -578,7 +564,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = BwaTests::createTestFactories();
 
-        foreach (XMLTestFactory *f, l->qlist) {
+        for (XMLTestFactory *f : l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
             Q_UNUSED(res);
             assert(res);
@@ -592,7 +578,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = MrBayesToolTests::createTestFactories();
 
-        foreach (XMLTestFactory *f, l->qlist) {
+        for (XMLTestFactory *f : l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
             Q_UNUSED(res);
             assert(res);
@@ -606,7 +592,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = PhyMLToolTests::createTestFactories();
 
-        foreach (XMLTestFactory *f, l->qlist) {
+        for (XMLTestFactory *f : l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
             Q_UNUSED(res);
             assert(res);
@@ -634,7 +620,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = SpadesTaskTest::createTestFactories();
 
-        foreach (XMLTestFactory *f, l->qlist) {
+        for (XMLTestFactory *f : l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);
             Q_UNUSED(res);
             assert(res);

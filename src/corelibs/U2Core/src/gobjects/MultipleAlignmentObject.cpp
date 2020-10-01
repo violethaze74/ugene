@@ -258,13 +258,13 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
     updateCachedMultipleAlignment();
 }
 
-QList<qint64> MultipleAlignmentObject::getRowIds(U2OpStatus &os) const {
+QList<qint64> MultipleAlignmentObject::getRowIds() const {
     return getMultipleAlignment()->getRowsIds();
 }
 
 void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    if (rowIds == getRowIds(os)) {
+    if (rowIds == getRowIds()) {
         return;
     }
     MaDbiUtils::updateRowsOrder(entityRef, rowIds, os);

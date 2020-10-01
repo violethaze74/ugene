@@ -97,6 +97,8 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
 #    else
     const QString appName = "Unipro UGENE";
 #    endif
+
+#    ifdef USE_FAKE_MENU_ITEM_ON_MAC
     const QString menuName = "Apple";
 
     static const QStringList appSettingsPath = QStringList() << "Settings"
@@ -110,6 +112,7 @@ QStringList fixMenuItemPath(const QStringList &itemPath) {
     if (aboutPath == itemPath) {
         fixedItemPath = QStringList() << menuName << "About " + appName;
     }
+#    endif
 #endif
     return fixedItemPath;
 }
@@ -234,15 +237,14 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
     case GTGlobals::UseMouse: {
         QPoint actionPosition = actionPos(os, menu, action);
         bool isVerticalMenu = cursorPosition.y() < menuCorner.y();    // TODO: assuming here that submenu is always lower then menu
-        QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :  // move by Y first
-                                              QPoint(actionPosition.x(), cursorPosition.y());   // move by X first
+        QPoint firstMoveTo = isVerticalMenu ? QPoint(cursorPosition.x(), actionPosition.y()) :    // move by Y first
+                                              QPoint(actionPosition.x(), cursorPosition.y());    // move by X first
 
         GTMouseDriver::moveTo(firstMoveTo);
         GTGlobals::sleep(200);
 
         GTMouseDriver::moveTo(actionPosition);    // move cursor to action
         GTGlobals::sleep(200);
-
 
 #ifdef Q_OS_WIN
         GTMouseDriver::click();
@@ -270,7 +272,7 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItem"
+#define GT_METHOD_NAME "clickMenuItemPrivate"
 void GTMenu::clickMenuItemPrivate(GUITestOpStatus &os, const QMenu *menu, const QStringList &itemPath, GTGlobals::UseMethod useMethod, bool byText, Qt::MatchFlag matchFlag) {
     GT_CHECK(menu != nullptr, "menu is NULL");
     GT_CHECK(!itemPath.isEmpty(), "itemPath is empty");

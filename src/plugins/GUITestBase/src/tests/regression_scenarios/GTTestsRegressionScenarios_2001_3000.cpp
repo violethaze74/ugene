@@ -1398,9 +1398,9 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2192) {
-    QString samtoolsPath = "samtools-0.1.19/samtools";
+    QString samtoolsPath = "samtools/samtools";
 #ifdef Q_OS_WIN
-    samtoolsPath = "samtools-0.1.19\\samtools";
+    samtoolsPath = "samtools\\samtools";
 #endif
     //    1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -1488,14 +1488,10 @@ GUI_TEST_CLASS_DEFINITION(test_2204) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2225) {
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat", true);
-
-    GTUtilsDialog::waitForDialog(os, filler);
-
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", true));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2259) {
@@ -1604,29 +1600,25 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     origToolDir.cdUp();    // exit from 'bin' folder
 #endif
 
-    GTFile::copyDir(os, origToolDir.absolutePath(), sandBoxDir + "GUITest_regression_scenarios_test_2268/");
+    QString newToolDir = sandBoxDir + GTUtils::genUniqueString("test_2268") + "/";
+    GTFile::copyDir(os, origToolDir.absolutePath(), newToolDir);
 #ifdef Q_OS_LINUX
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/bin/t_coffee");
+    const QFileInfo newToolPath(newToolDir + "bin/t_coffee");
 #elif defined(Q_OS_WIN)
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee.bat");
+    const QFileInfo newToolPath(newToolDir + "t_coffee.bat");
 #else
-    const QFileInfo newToolPath(sandBoxDir + "GUITest_regression_scenarios_test_2268/t_coffee");
+    const QFileInfo newToolPath(newToolDir + "t_coffee");
 #endif
 
     // Hack, it is better to set the tool path via the preferences dialog
     CHECK_SET_ERR(newToolPath.exists(), "The copied T-coffee tool does not exist");
     tCoffee->setPath(newToolPath.absoluteFilePath());
 
-    QDir newToolDir = origToolPath.dir();
-#ifdef Q_OS_LINUX
-    newToolDir.cdUp();    // exit from 'bin' folder
-#endif
-
     // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
-    GTFile::setReadOnly(os, newToolDir.path(), true);
+    GTFile::setReadOnly(os, newToolDir, true);
 
-    // 2. Open "sample/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
+    // 2. Open "_common_data/clustal/align.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Right click on the MSA -> Align -> Align with T-Coffee.
@@ -3831,7 +3823,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle"));
@@ -3853,7 +3845,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW", GTGlobals::UseMouse));
@@ -3861,14 +3853,14 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_2) {
     //    1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Use context menu { Align -> Align with ClustalO }
     //    Expected state: the "Align with Clustal Omega" dialog has appeared
@@ -3880,14 +3872,13 @@ GUI_TEST_CLASS_DEFINITION(test_2581_2) {
     GTUtilsDialog::waitForDialog(os, new ClustalOSupportRunDialogFiller(os));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_3) {
     //    1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     //    2. Use context menu { Align -> Align with MAFFT }
     //    Expected state: the "Align with MAFFT" dialog has appeared
@@ -3900,7 +3891,6 @@ GUI_TEST_CLASS_DEFINITION(test_2581_3) {
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, &parameters));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -3914,7 +3904,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new TCoffeeDailogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with T-Coffee", GTGlobals::UseMouse));
@@ -3922,7 +3912,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
 }
 
@@ -3936,7 +3926,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     GTLogTracer l;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseMouse));
@@ -4183,8 +4173,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Select "tuxedo" sample
     //    3. Set proper input data
-    QString expected = "tophat-2.1.1/tophat -p 94 --output-dir";
-    ;
+    QString expected = "tophat2/tophat -p 94 --output-dir";
 
     GTLogTracer l(expected);
     QMap<QString, QVariant> map;
@@ -4339,9 +4328,9 @@ GUI_TEST_CLASS_DEFINITION(test_2662) {
     GTWidget::click(os, node);
 
 #ifdef Q_OS_WIN
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19\\vcfutils.pl", false);
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools\\vcfutils.pl", false);
 #else
-    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19/vcfutils.pl", false);
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools/vcfutils.pl", false);
 #endif
 }
 
@@ -5237,15 +5226,12 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2853) {
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat");
-
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
                               GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2863) {

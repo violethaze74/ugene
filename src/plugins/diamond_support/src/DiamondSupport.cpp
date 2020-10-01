@@ -27,12 +27,12 @@ const QString DiamondSupport::TOOL_NAME = "DIAMOND";
 const QString DiamondSupport::TOOL_ID = "USUPP_DIAMOND";
 
 DiamondSupport::DiamondSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+    : ExternalTool(id, "diamond", name, "") {
     validationArguments << "--version";
     validMessage = "diamond version ";
     versionRegExp = QRegExp("diamond version (\\d+\\.\\d+\\.\\d+)");
     executableFileName = "diamond";
-    description = tr("In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. "
+    description = tr("DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. "
                      "In UGENE it is integrated as one of the taxonomic classification tool.");
 }
 

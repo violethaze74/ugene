@@ -33,11 +33,11 @@ public:
 
     static void setText(GUITestOpStatus &os, QString text);
 
-    static void setUrls(GUITestOpStatus &os, const QList<QString>& urls);
+    static void setUrls(GUITestOpStatus &os, const QList<QString> &urls);
 
     static void clear(GUITestOpStatus &os);
 };
 
-} //namespace
+}    // namespace HI
 
 #endif

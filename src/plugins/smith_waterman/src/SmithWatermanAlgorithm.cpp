@@ -174,6 +174,10 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     n = pat_n * 2;
     int dirn = (4 + pat_n + 3) >> 2;
     int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn);
+    if (matrix == NULL) {
+        std::bad_alloc e;
+        throw e;
+    }
     char *score, *score1 = (char *)(matrix + n);
     unsigned char *dir, *dir2, *dir1 = (unsigned char *)score1 + pat_n * 0x80;
     memset(matrix, 0, n * sizeof(int));
@@ -318,6 +322,10 @@ void SmithWatermanAlgorithm::calculateMatrixForAnnotationsResult() {
 
     n = pat_n * 3;
     int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80);
+    if (matrix == NULL) {
+        std::bad_alloc e;
+        throw e;
+    }
     char *score, *score1 = (char *)(matrix + n);
     memset(matrix, 0, n * sizeof(int));
 

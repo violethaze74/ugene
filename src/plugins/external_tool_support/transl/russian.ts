@@ -5450,7 +5450,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="778"/>
-        <source>Choose Folder With External Tools Pack</source>
+        <source>Select Folder With External Tools Package</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>

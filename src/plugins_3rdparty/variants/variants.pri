@@ -1,5 +1,3 @@
-# include (variants.pri)
-
 PLUGIN_ID=variants
 PLUGIN_NAME=CallVariants
 PLUGIN_VENDOR=Unipro

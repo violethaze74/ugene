@@ -2,23 +2,23 @@
 #define _HI_GUI_TEST_BASE_H_
 
 #include <QtGui>
+
 #include "core/GUITest.h"
 
 namespace HI {
 
-typedef QMap<QString, HI::GUITest*> GUITestMap;
+typedef QMap<QString, HI::GUITest *> GUITestMap;
 
 class HI_EXPORT GUITestBase {
 public:
-
     virtual ~GUITestBase();
 
     bool registerTest(GUITest *test);
     GUITest *getTest(const QString &suite, const QString &name);
-    GUITest *takeTest(const QString &suite, const QString &name); // removes item from GUITestBase
+    GUITest *takeTest(const QString &suite, const QString &name);    // removes item from GUITestBase
 
     GUITests getTests();
-    GUITests takeTests(); // removes items from GUITestBase
+    GUITests takeTests();    // removes items from GUITestBase
 
     GUITest *findTest(const QString &name);
     bool containsTest(const QString &name);
@@ -32,9 +32,9 @@ private:
     void addTest(GUITest *test);
 
     QString getNextTestName();
-    QString nameUnnamedTest(GUITest* test);
+    QString nameUnnamedTest(GUITest *test);
 };
 
-}
+}    // namespace HI
 
 #endif

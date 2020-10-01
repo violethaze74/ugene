@@ -29,6 +29,7 @@
 #include <QWidget>
 
 #include <U2Core/global.h>
+#include <U2Lang/WorkflowMonitor.h>
 
 namespace U2 {
 
@@ -46,16 +47,23 @@ public:
 class U2DESIGNER_EXPORT DashboardFileButton : public QToolButton {
     Q_OBJECT
 public:
-    DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, bool isFolderMode = false);
+    DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, const WorkflowMonitor *monitor, bool isFolderMode = false);
 
 private slots:
     void sl_openFileClicked();
+    void sl_dashboardDirChanged(const QString &dashboardDir);
 
 private:
     void addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction = false);
 
+    /** List of urls to open. */
     QStringList urlList;
+
+    /** Path to dashboard dir. */
     QFileInfo dashboardDirInfo;
+
+    /** The must process the URL as a folder. */
+    bool isFolderMode;
 };
 
 /** Styled dashboard menu used with file buttons. */

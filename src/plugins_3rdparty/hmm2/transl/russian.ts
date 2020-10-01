@@ -938,11 +938,6 @@ The default is instead to generate sequences with a variety of different lengths
         <translation>Прогресс: %1%</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="90"/>
-        <source>Cell BE optimized</source>
-        <translation>Оптимизирован для Cell BE</translation>
-    </message>
-    <message>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="74"/>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="204"/>
         <source>Search</source>

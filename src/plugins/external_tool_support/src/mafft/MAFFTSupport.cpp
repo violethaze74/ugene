@@ -53,8 +53,8 @@ const QString MAFFTSupport::ET_MAFFT_ID = "USUPP_MAFFT";
 const QString MAFFTSupport::MAFFT_TMP_DIR = "mafft";
 
 MAFFTSupport::MAFFTSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "mafft", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new MAFFTSupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -84,15 +84,15 @@ void MAFFTSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
     if (path.isEmpty()) {
@@ -164,15 +164,15 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
     if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath().isEmpty()) {

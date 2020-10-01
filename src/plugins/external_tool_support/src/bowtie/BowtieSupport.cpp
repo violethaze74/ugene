@@ -32,13 +32,13 @@ const QString BowtieSupport::ET_BOWTIE_BUILD = "Bowtie build indexer";
 const QString BowtieSupport::ET_BOWTIE_BUILD_ID = "USUPP_BOWTIE_BUILD";
 
 BowtieSupport::BowtieSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "bowtie1", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
-    if (ET_BOWTIE == name) {
+    if (name == ET_BOWTIE) {
 #ifdef Q_OS_WIN
         executableFileName = "bowtie.exe";
 #else

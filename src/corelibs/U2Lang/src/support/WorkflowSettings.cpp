@@ -26,7 +26,6 @@
 #include <QDir>
 #include <QSettings>
 #include <QStyle>
-#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineUtils.h>
@@ -162,10 +161,11 @@ void WorkflowSettings::setWorkflowOutputDirectory(const QString &newDir) {
 }
 
 const QString WorkflowSettings::getWorkflowOutputDirectory() {
-    Settings *s = AppContext::getSettings();
-    GUrl url(s->fileName());
-    QString path = s->getValue(WORKFLOW_OUTPUT_PATH, QDir::homePath() + "/workflow_output/").toString();
-    return path;
+    QString defaultWorkflowOutputDir = qgetenv("UGENE_WORKFLOW_OUTPUT_DIR");
+    if (defaultWorkflowOutputDir.isEmpty()) {
+        defaultWorkflowOutputDir = QDir::homePath() + "/workflow_output/";
+    }
+    return AppContext::getSettings()->getValue(WORKFLOW_OUTPUT_PATH, defaultWorkflowOutputDir).toString();
 }
 
 const QString WorkflowSettings::getExternalToolDirectory() {

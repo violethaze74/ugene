@@ -1,4 +1,3 @@
-# include (kraken_support.pri)
 include (../../ugene_globals.pri)
 
 PLUGIN_ID=kraken_support

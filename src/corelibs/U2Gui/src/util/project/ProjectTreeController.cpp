@@ -34,6 +34,8 @@
 #include <U2Core/AddObjectsToDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
@@ -276,17 +278,17 @@ void ProjectTreeController::sl_updateSelection() {
         const QModelIndex originalIndex = getOriginalModelIndex(index);
         if (originalIndex.isValid()) {
             switch (ProjectViewModel::itemType(originalIndex)) {
-            case ProjectViewModel::DOCUMENT:
-                selectedDocs << ProjectViewModel::toDocument(originalIndex);
-                break;
-            case ProjectViewModel::FOLDER:
-                selectedFolders << Folder(*ProjectViewModel::toFolder(originalIndex));
-                break;
-            case ProjectViewModel::OBJECT:
-                selectedObjs << ProjectViewModel::toObject(originalIndex);
-                break;
-            default:
-                FAIL("Unexpected item type", );
+                case ProjectViewModel::DOCUMENT:
+                    selectedDocs << ProjectViewModel::toDocument(originalIndex);
+                    break;
+                case ProjectViewModel::FOLDER:
+                    selectedFolders << Folder(*ProjectViewModel::toFolder(originalIndex));
+                    break;
+                case ProjectViewModel::OBJECT:
+                    selectedObjs << ProjectViewModel::toObject(originalIndex);
+                    break;
+                default:
+                    FAIL("Unexpected item type", );
             }
         }
     }
@@ -427,24 +429,24 @@ void ProjectTreeController::sl_doubleClicked(const QModelIndex &index) {
     CHECK(originalIndex.isValid(), );
 
     switch (ProjectViewModel::itemType(originalIndex)) {
-    case ProjectViewModel::DOCUMENT: {
-        Document *doc = ProjectViewModel::toDocument(originalIndex);
-        if (!doc->isLoaded()) {
-            SAFE_POINT(loadSelectedDocumentsAction->isEnabled(), "Action is not enabled", );
-            loadSelectedDocumentsAction->trigger();
-        } else {    // there are children -> expand
-            tree->setExpanded(originalIndex, false);    // Magic: false
-            emit si_doubleClicked(doc);
+        case ProjectViewModel::DOCUMENT: {
+            Document *doc = ProjectViewModel::toDocument(originalIndex);
+            if (!doc->isLoaded()) {
+                SAFE_POINT(loadSelectedDocumentsAction->isEnabled(), "Action is not enabled", );
+                loadSelectedDocumentsAction->trigger();
+            } else {    // there are children -> expand
+                tree->setExpanded(originalIndex, false);    // Magic: false
+                emit si_doubleClicked(doc);
+            }
+            break;
         }
-        break;
-    }
-    case ProjectViewModel::FOLDER:
-        break;
-    case ProjectViewModel::OBJECT:
-        emit si_doubleClicked(ProjectViewModel::toObject(originalIndex));
-        break;
-    default:
-        FAIL("Unexpected item type", );
+        case ProjectViewModel::FOLDER:
+            break;
+        case ProjectViewModel::OBJECT:
+            emit si_doubleClicked(ProjectViewModel::toObject(originalIndex));
+            break;
+        default:
+            FAIL("Unexpected item type", );
     }
 }
 
@@ -529,6 +531,11 @@ void ProjectTreeController::sl_onUnloadSelectedDocuments() {
     }
 }
 
+static bool isGuiTestMode() {
+    CMDLineRegistry *cmdLine = AppContext::getCMDLineRegistry();
+    return cmdLine && cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST);
+}
+
 void ProjectTreeController::sl_onContextMenuRequested(const QPoint &) {
     QMenu m;
     QAction *separator = m.addSeparator();
@@ -583,9 +590,10 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint &) {
     if (loadSelectedDocumentsAction->isEnabled()) {
         m.addAction(loadSelectedDocumentsAction);
     }
-    if (unloadSelectedDocumentsAction->isEnabled()) {
+
+    // User has no 'unload' action anymore. Keeping it only for tests for a while: until tests are removed or rewritten.
+    if (unloadSelectedDocumentsAction->isEnabled() && isGuiTestMode()) {
         m.addAction(unloadSelectedDocumentsAction);
-        unloadSelectedDocumentsAction->setObjectName(ACTION_PROJECT__UNLOAD_SELECTED);
     }
 
     const QList<QAction *> actions = m.actions();
@@ -634,17 +642,17 @@ void ProjectTreeController::sl_onRename() {
 void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex &index) {
     Document *doc = NULL;
     switch (ProjectViewModel::itemType(index)) {
-    case ProjectViewModel::OBJECT:
-        doc = ProjectViewModel::toObject(index)->getDocument();
-        break;
-    case ProjectViewModel::FOLDER:
-        doc = ProjectViewModel::toFolder(index)->getDocument();
-        break;
-    case ProjectViewModel::DOCUMENT:
-        doc = ProjectViewModel::toDocument(index);
-        break;
-    default:
-        FAIL("Unexpected project view item type", );
+        case ProjectViewModel::OBJECT:
+            doc = ProjectViewModel::toObject(index)->getDocument();
+            break;
+        case ProjectViewModel::FOLDER:
+            doc = ProjectViewModel::toFolder(index)->getDocument();
+            break;
+        case ProjectViewModel::DOCUMENT:
+            doc = ProjectViewModel::toDocument(index);
+            break;
+        default:
+            FAIL("Unexpected project view item type", );
     }
     updater->invalidate(doc);
 
@@ -673,14 +681,14 @@ void ProjectTreeController::sl_onEmptyRecycleBin() {
     for (int i = 0; i < childCount; i++) {
         QModelIndex index = model->index(i, 0, rbIndex);
         switch (ProjectViewModel::itemType(index)) {
-        case ProjectViewModel::OBJECT:
-            removedObjects << ProjectViewModel::toObject(index);
-            break;
-        case ProjectViewModel::FOLDER:
-            removedFolders << *ProjectViewModel::toFolder(index);
-            break;
-        default:
-            FAIL("Unexpected item encountered in Recycle bin!", );
+            case ProjectViewModel::OBJECT:
+                removedObjects << ProjectViewModel::toObject(index);
+                break;
+            case ProjectViewModel::FOLDER:
+                removedFolders << *ProjectViewModel::toFolder(index);
+                break;
+            default:
+                FAIL("Unexpected item encountered in Recycle bin!", );
         }
     }
 
@@ -949,6 +957,7 @@ void ProjectTreeController::setupActions() {
     connect(loadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onLoadSelectedDocuments()));
 
     unloadSelectedDocumentsAction = new QAction(QIcon(":core/images/unload_document.png"), tr("Unload selected document(s)"), this);
+    unloadSelectedDocumentsAction->setObjectName(ACTION_PROJECT__UNLOAD_SELECTED);
     connect(unloadSelectedDocumentsAction, SIGNAL(triggered()), SLOT(sl_onUnloadSelectedDocuments()));
 
     addReadonlyFlagAction = new QAction(tr("Lock document for editing"), this);
