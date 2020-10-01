@@ -1,3 +1,12 @@
+_PATH_SAVED_=$PATH
+
+if [ -f "$UGENE_QMAKE" ]; then
+    UGENE_QMAKE_PATH=$(dirname "$UGENE_QMAKE")
+    UGENE_QMAKE_PATH=$(cd "$UGENE_QMAKE_PATH"; pwd)
+    echo "Add ${UGENE_QMAKE_PATH} to PATH env var"
+    export PATH=${UGENE_QMAKE_PATH}:$PATH
+fi
+
 PRODUCT_NAME="ugeneui"
 PRODUCT_DISPLAY_NAME="Unipro UGENE"
 
@@ -149,6 +158,7 @@ do
 done
 
 echo
+
 echo macdeployqt running...
 macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
@@ -170,3 +180,6 @@ if [ ! "$1" ]; then
     echo pkg-dmg running...
     ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
 fi
+
+echo "Restore PATH env var"
+export PATH=${_PATH_SAVED_}
