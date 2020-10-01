@@ -167,7 +167,7 @@ echo "ls -la $TARGET_EXE_DIR"
 ls -la $TARGET_EXE_DIR
 echo tar czf TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
 tar czf TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
-macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
