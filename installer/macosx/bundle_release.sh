@@ -160,6 +160,7 @@ done
 echo
 
 echo macdeployqt running...
+set -x
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
 echo macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
@@ -169,6 +170,7 @@ echo tar czf TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
 tar czf TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
 macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
+echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 
 cd  $BUILD_DIR 
@@ -190,3 +192,5 @@ fi
 
 echo "Restore PATH env var"
 export PATH=${_PATH_SAVED_}
+
+set +x
