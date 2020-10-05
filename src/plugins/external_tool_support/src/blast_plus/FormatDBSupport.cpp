@@ -52,7 +52,7 @@ const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "UGENE_GPU_MAKE_BLAST_DB"
 const QString FormatDBSupport::FORMATDB_TMP_DIR = "FormatDB";
 
 FormatDBSupport::FormatDBSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "blast2", name, path) {
+    : ExternalTool(id, "blast", name, path) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
