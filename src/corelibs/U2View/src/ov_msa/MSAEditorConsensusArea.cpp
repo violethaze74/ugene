@@ -46,7 +46,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
 }
 
 QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
-    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, 0, 4);
+    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
 }
 
 void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView * /*view*/, QMenu *menu) {
@@ -64,7 +64,8 @@ void MSAEditorConsensusArea::initRenderer() {
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet *al = editor->getMaObject()->getAlphabet();
     SAFE_POINT(NULL != al, "Alphabet is NULL", "");
-    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
+    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" :
+                                                                        "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 

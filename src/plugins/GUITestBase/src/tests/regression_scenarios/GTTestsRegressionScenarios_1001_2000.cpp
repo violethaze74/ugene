@@ -299,22 +299,19 @@ GUI_TEST_CLASS_DEFINITION(test_1013) {
 
 GUI_TEST_CLASS_DEFINITION(test_1015) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 3));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTGlobals::sleep();
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 30, 50));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
@@ -323,13 +320,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_1) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -341,13 +337,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::click(os, GTGlobals::Close);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -363,13 +358,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_3) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -385,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1016) {

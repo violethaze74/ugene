@@ -57,7 +57,7 @@ void McaEditorConsensusArea::buildStaticToolbar(QToolBar *t) {
 }
 
 QString McaEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
-    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, 0, 4, true);
+    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars, true);
 }
 
 void McaEditorConsensusArea::initRenderer() {
