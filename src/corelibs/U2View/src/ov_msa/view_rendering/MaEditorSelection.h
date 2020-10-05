@@ -44,7 +44,7 @@ public:
     QPoint topLeft() const;
     QPoint bottomRight() const;
 
-    /** Returns rect under select. This rect is always value. For the empty selection returns Rect(0, 0, 0, 0); */
+    /** Returns rect under select. This rect is always valid. For the empty selection returns Rect(0, 0, 0, 0); */
     QRect toRect() const;
 
     int x() const;
@@ -53,6 +53,7 @@ public:
     int width() const;
     int height() const;
 
+    int right() const;
     int bottom() const;
 
     U2Region getXRegion() const;
