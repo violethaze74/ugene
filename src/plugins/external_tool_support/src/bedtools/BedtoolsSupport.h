@@ -29,9 +29,8 @@ namespace U2 {
 class BedtoolsSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BedtoolsSupport(const QString &id, const QString &name, const QString &path = "");
+    BedtoolsSupport(const QString &path = "");
 
-    static const QString ET_BEDTOOLS;
     static const QString ET_BEDTOOLS_ID;
     static const QString GENOMES_DATA_NAME;
     static const QString GENOMES_DIR_NAME;

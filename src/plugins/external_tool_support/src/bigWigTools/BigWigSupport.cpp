@@ -31,14 +31,13 @@
 
 namespace U2 {
 
-const QString BigWigSupport::ET_BIGWIG = "bigwig";
 const QString BigWigSupport::ET_BIGWIG_ID = "USUPP_BED_GRAPH_TO_BIG_WIG";
 const QString BigWigSupport::GENOMES_DATA_NAME = "Genome files";
 const QString BigWigSupport::GENOMES_DIR_NAME = "genome_lengths";
 
-BigWigSupport::BigWigSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "bigwig", name, path) {
-    if (AppContext::getMainWindow()) {
+BigWigSupport::BigWigSupport(const QString &path)
+    : ExternalTool(ET_BIGWIG_ID, "bigwig", "bigwig", path) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -46,19 +45,17 @@ BigWigSupport::BigWigSupport(const QString &id, const QString &name, const QStri
 #ifdef Q_OS_WIN
     executableFileName = "bedGraphToBigWig.exe";
 #else
-#    if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     executableFileName = "bedGraphToBigWig";
-#    endif
 #endif
     validMessage = "bedGraphToBigWig";
-    description = tr("<i>bedGraphToBigWig</i>: converts bedGrapth to bigWig.");
+    description = tr("<i>bedGraphToBigWig</i>: convert a bedGraph file to bigWig format.");
 
     versionRegExp = QRegExp("bedGraphToBigWig v (\\d+)");
     validationArguments << "";
     toolKitName = "bedGraphToBigWig";
 
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
-    if (dpr) {
+    if (dpr != nullptr) {
         U2DataPath *dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
