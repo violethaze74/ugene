@@ -36,11 +36,11 @@ MaEditorSelection::MaEditorSelection() {
 }
 
 MaEditorSelection::MaEditorSelection(int left, int top, int width, int height)
-    : MaEditorSelection(QPoint(left, top), QPoint(left + width, top + height)) {
+    : MaEditorSelection(QPoint(left, top), width, height) {
 }
 
 MaEditorSelection::MaEditorSelection(const QPoint &topLeft, int width, int height)
-    : MaEditorSelection(topLeft, topLeft + QPoint(width, height)) {
+    : selArea(topLeft, QSize(width, height)) {
 }
 
 MaEditorSelection::MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight) {

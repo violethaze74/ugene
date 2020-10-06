@@ -35,8 +35,8 @@ class U2VIEW_EXPORT MaEditorSelection {
 public:
     MaEditorSelection();
     MaEditorSelection(int left, int top, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
     MaEditorSelection(const QPoint &topLeft, int width, int height);
+    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
 
     /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
     bool isEmpty() const;
