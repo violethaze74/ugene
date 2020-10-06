@@ -31,12 +31,9 @@ namespace U2 {
 class FormatDBSupport : public ExternalTool {
     Q_OBJECT
 public:
-    FormatDBSupport(const QString &id, const QString &name, const QString &path = "");
+    FormatDBSupport(const QString &path = "");
 
-    static const QString ET_MAKEBLASTDB;
     static const QString ET_MAKEBLASTDB_ID;
-    static const QString ET_GPU_MAKEBLASTDB;
-    static const QString ET_GPU_MAKEBLASTDB_ID;
     static const QString FORMATDB_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();

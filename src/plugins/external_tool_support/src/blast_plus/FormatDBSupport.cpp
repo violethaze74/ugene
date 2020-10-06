@@ -31,12 +31,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/DialogUtils.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
-
 #include <U2View/MSAEditor.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -45,51 +40,30 @@
 
 namespace U2 {
 
-const QString FormatDBSupport::ET_MAKEBLASTDB = "MakeBLASTDB";
 const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
-const QString FormatDBSupport::ET_GPU_MAKEBLASTDB = "GPU-MakeBLASTDB";
-const QString FormatDBSupport::ET_GPU_MAKEBLASTDB_ID = "UGENE_GPU_MAKE_BLAST_DB";
 const QString FormatDBSupport::FORMATDB_TMP_DIR = "FormatDB";
 
-FormatDBSupport::FormatDBSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "blast", name, path) {
+FormatDBSupport::FormatDBSupport(const QString &path)
+    : ExternalTool(ET_MAKEBLASTDB_ID, "blast", "MakeBLASTDB", path) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
         warnIcon = QIcon(":external_tool_support/images/ncbi_warn.png");
     }
-    assert((id == ET_MAKEBLASTDB_ID) || (id == ET_GPU_MAKEBLASTDB_ID));
-    if (id == ET_MAKEBLASTDB_ID) {
 #ifdef Q_OS_WIN
-        executableFileName = "makeblastdb.exe";
+    executableFileName = "makeblastdb.exe";
 #else
 #    if defined(Q_OS_UNIX)
-        executableFileName = "makeblastdb";
+    executableFileName = "makeblastdb";
 #    endif
 #endif
-        validationArguments << "-help";
-        validMessage = "makeblastdb";
-        description = tr("The <i>makeblastdb</i> formats protein or"
-                         " nucleotide source databases before these databases"
-                         " can be searched by other BLAST+ tools.");
-        versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
-        toolKitName = "BLAST+";
-    } else if (id == ET_GPU_MAKEBLASTDB_ID) {
-#ifdef Q_OS_WIN
-        executableFileName = "makeblastdb.exe";
-#else
-#    ifdef Q_OS_UNIX
-        executableFileName = "makeblastdb";
-#    endif
-#endif
-        validationArguments << "-help";
-        validMessage = "-sort_volumes";
-        description = tr("The <i>makeblastdb</i> formats protein or"
-                         " nucleotide source databases before these databases"
-                         " can be searched by other BLAST+ tools.");
-        versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
-        toolKitName = "GPU-BLAST+";
-    }
+    validationArguments << "-help";
+    validMessage = "makeblastdb";
+    description = tr("The <i>makeblastdb</i> formats protein or"
+                     " nucleotide source databases before these databases"
+                     " can be searched by other BLAST+ tools.");
+    versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
+    toolKitName = "BLAST+";
 }
 
 void FormatDBSupport::sl_runWithExtFileSpecify() {
@@ -110,10 +84,8 @@ void FormatDBSupport::sl_runWithExtFileSpecify() {
                 break;
             case QMessageBox::No:
                 return;
-                break;
             default:
                 assert(false);
-                break;
         }
     }
     if (path.isEmpty()) {
@@ -132,7 +104,6 @@ void FormatDBSupport::sl_runWithExtFileSpecify() {
     if (formatDBRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    FormatDBSupportTask *formatDBSupportTask = new FormatDBSupportTask(id, settings);
-    AppContext::getTaskScheduler()->registerTopLevelTask(formatDBSupportTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new FormatDBSupportTask(settings));
 }
 }    // namespace U2

@@ -301,7 +301,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     }
 
     //MakeBLASTDB from BLAST+
-    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport(FormatDBSupport::ET_MAKEBLASTDB_ID, FormatDBSupport::ET_MAKEBLASTDB);
+    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
     //BlastAll
