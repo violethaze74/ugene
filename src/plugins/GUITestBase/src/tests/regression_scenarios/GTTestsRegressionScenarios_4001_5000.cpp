@@ -3622,7 +3622,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
             : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {};
         virtual void run() {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(w != NULL, );
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
@@ -3631,9 +3631,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(buttonBox != NULL, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(button != NULL, );
             GTWidget::click(os, button);
         };
 
@@ -3648,7 +3648,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|24489 shortread24489");
+    GTUtilsProjectTreeView::getItemCenter(os, "shortread24489");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588_1) {
@@ -3674,9 +3674,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(buttonBox != NULL, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(button != NULL, );
             GTWidget::click(os, button);
         }
 
