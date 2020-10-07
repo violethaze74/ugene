@@ -231,11 +231,6 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
                                       MaEditorSequenceArea::boundWithVisibleRange(newSelection.bottomRight()));
     }
 
-    // Ensure cursor is always inside of the selected region.
-    if (!selection.toRect().contains(editor->getCursorPosition())) {
-        editor->setCursorPosition(selection.topLeft());
-    }
-
     QList<int> selectedMaRowsIndexes = getSelectedMaRowIndexes();
     selectedMaRowIds = editor->getMaObject()->convertMaRowIndexesToMaRowIds(selectedMaRowsIndexes);
     selectedColumns = selection.getXRegion();
