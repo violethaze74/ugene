@@ -146,8 +146,7 @@ void ETSProjectViewItemsContoller::sl_runMakeBlastDbOnSelection() {
     if (formatDBRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    FormatDBSupportTask *formatDBSupportTask = new FormatDBSupportTask(toolId, settings);
-    AppContext::getTaskScheduler()->registerTopLevelTask(formatDBSupportTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new FormatDBSupportTask(settings));
 }
 
 }    // namespace U2

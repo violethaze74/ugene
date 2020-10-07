@@ -301,7 +301,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     }
 
     //MakeBLASTDB from BLAST+
-    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport(FormatDBSupport::ET_MAKEBLASTDB_ID, FormatDBSupport::ET_MAKEBLASTDB);
+    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
     //BlastAll
@@ -367,16 +367,14 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(spideySupport);
 
     //bedtools
-    BedtoolsSupport *bedtoolsSupport = new BedtoolsSupport(BedtoolsSupport::ET_BEDTOOLS_ID, BedtoolsSupport::ET_BEDTOOLS);
-    etRegistry->registerEntry(bedtoolsSupport);
+    etRegistry->registerEntry(new BedtoolsSupport());
 
     //cutadapt
     CutadaptSupport *cutadaptSupport = new CutadaptSupport(CutadaptSupport::ET_CUTADAPT_ID, CutadaptSupport::ET_CUTADAPT);
     etRegistry->registerEntry(cutadaptSupport);
 
     //bigwig
-    BigWigSupport *bigwigSupport = new BigWigSupport(BigWigSupport::ET_BIGWIG_ID, BigWigSupport::ET_BIGWIG);
-    etRegistry->registerEntry(bigwigSupport);
+    etRegistry->registerEntry(new BigWigSupport());
 
     // TopHat
     TopHatSupport *tophatTool = new TopHatSupport(TopHatSupport::ET_TOPHAT_ID, TopHatSupport::ET_TOPHAT);

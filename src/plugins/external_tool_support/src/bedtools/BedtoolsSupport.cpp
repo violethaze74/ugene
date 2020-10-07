@@ -24,8 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/ConvertFileTask.h>
 
@@ -33,14 +31,13 @@
 
 namespace U2 {
 
-const QString BedtoolsSupport::ET_BEDTOOLS = "bedtools";
 const QString BedtoolsSupport::ET_BEDTOOLS_ID = "USUPP_BEDTOOLS";
 const QString BedtoolsSupport::GENOMES_DIR_NAME = "genome_lengths";
 const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 
-BedtoolsSupport::BedtoolsSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "bedtools", name, path) {
-    if (AppContext::getMainWindow()) {
+BedtoolsSupport::BedtoolsSupport(const QString &path)
+    : ExternalTool(ET_BEDTOOLS_ID, "bedtools", "bedtools", path) {
+    if (AppContext::getMainWindow() == nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -48,9 +45,7 @@ BedtoolsSupport::BedtoolsSupport(const QString &id, const QString &name, const Q
 #ifdef Q_OS_WIN
     executableFileName = "bedtools.exe";
 #else
-#    if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     executableFileName = "bedtools";
-#    endif
 #endif
     validMessage = "bedtools v";
     description = tr("<i>Bedtools</i>: flexible tools for genome arithmetic and DNA sequence analysis.");
@@ -62,7 +57,7 @@ BedtoolsSupport::BedtoolsSupport(const QString &id, const QString &name, const Q
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
-    if (dpr) {
+    if (dpr != nullptr) {
         U2DataPath *dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }

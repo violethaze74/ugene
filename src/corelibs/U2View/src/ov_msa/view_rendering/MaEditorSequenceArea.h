@@ -337,7 +337,6 @@ protected:
     SelectionModificationHelper::MovableSide movableBorder;
 
     QList<U2MsaGap> ctrlModeGapModel;
-    bool isCtrlPressed;
     qint64 lengthOnMousePress;
 
     QAction *replaceCharacterAction;

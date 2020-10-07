@@ -23,6 +23,12 @@
 
 namespace U2 {
 
+static QRect makeSafeRect(const QPoint &p1, const QPoint &p2) {
+    QPoint topLeft(qMin(p1.x(), p2.x()), qMin(p1.y(), p2.y()));
+    QPoint bottomRight(qMax(p1.x(), p2.x()), qMax(p1.y(), p2.y()));
+    return QRect(topLeft, bottomRight);
+}
+
 /************************************************************************/
 /* MaEditorSelection */
 /************************************************************************/
@@ -30,15 +36,15 @@ MaEditorSelection::MaEditorSelection() {
 }
 
 MaEditorSelection::MaEditorSelection(int left, int top, int width, int height)
-    : selArea(left, top, width, height) {
-}
-
-MaEditorSelection::MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight)
-    : selArea(topLeft, bottomRight) {
+    : MaEditorSelection(QPoint(left, top), width, height) {
 }
 
 MaEditorSelection::MaEditorSelection(const QPoint &topLeft, int width, int height)
     : selArea(topLeft, QSize(width, height)) {
+}
+
+MaEditorSelection::MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight) {
+    selArea = makeSafeRect(topLeft, bottomRight);
 }
 
 bool MaEditorSelection::isEmpty() const {
@@ -71,6 +77,10 @@ int MaEditorSelection::width() const {
 
 int MaEditorSelection::height() const {
     return selArea.height();
+}
+
+int MaEditorSelection::right() const {
+    return selArea.right();
 }
 
 int MaEditorSelection::bottom() const {

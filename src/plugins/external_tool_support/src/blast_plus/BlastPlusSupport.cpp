@@ -77,7 +77,7 @@ const QString BlastPlusSupport::ET_RPSBLAST_ID = "USUPP_RPS_BLAST";
 const QString BlastPlusSupport::BLASTPLUS_TMP_DIR = "blast_plus";
 
 BlastPlusSupport::BlastPlusSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "blast2", name, path) {
+    : ExternalTool(id, "blast", name, path) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
