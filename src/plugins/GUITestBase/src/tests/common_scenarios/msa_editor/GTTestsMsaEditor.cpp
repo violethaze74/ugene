@@ -2312,11 +2312,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028_linux) {
     //    2. Context menu -- "Export as image"
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     //    3. Fill dialog: svg format, output file
     qint64 fileSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/test.svg");
-    CHECK_SET_ERR(fileSize > 7000000 && fileSize < 8000000, "Current size: " + QString().setNum(fileSize));
+    CHECK_SET_ERR(fileSize > 6500000 && fileSize < 7500000, "Current size: " + QString::number(fileSize));
     //    Expected state:  SVG is exported
 }
 
