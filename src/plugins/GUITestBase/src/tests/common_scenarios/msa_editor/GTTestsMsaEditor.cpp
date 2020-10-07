@@ -1843,7 +1843,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: row order changes respectively
     QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
+    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed 1");
 
     // 4. Click & drag on unselected area
     rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
@@ -1860,7 +1860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: whole selected block shifted
     QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
+    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed 2");
 
     // 6. Click on some row in selected block
     GTUtilsMsaEditor::clickSequence(os, 1);
@@ -4245,9 +4245,8 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
-    GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);    // wait for overview rendering to finish.
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));

@@ -259,31 +259,22 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
 }
 
 void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResize) {
-    int leftX = selection.x();
-    int topY = selection.y();
-    int bottomY = selection.y() + selection.height() - 1;
-    int rightX = selection.x() + selection.width() - 1;
-    QPoint baseTopLeft(leftX, topY);
-    QPoint baseBottomRight(rightX, bottomY);
+    QPoint newTopLeft = selection.topLeft() + QPoint(dx, dy);
+    QPoint newBottomRight = selection.bottomRight() + QPoint(dx, dy);
 
-    QPoint newTopLeft = baseTopLeft + QPoint(dx, dy);
-    QPoint newBottomRight = baseBottomRight + QPoint(dx, dy);
-
-    if ((!isInRange(newTopLeft)) || (!isInRange(newBottomRight))) {
+    if (!isInRange(newTopLeft) || !isInRange(newBottomRight)) {
         if (!allowSelectionResize) {
             return;
-        } else {
-            MaEditorSelection newSelection(selection.topLeft(),
-                                           qMin(selection.width(), editor->getAlignmentLen() - newTopLeft.x()),
-                                           qMin(selection.height(), editor->getNumSequences() - newTopLeft.y()));
-            setSelection(newSelection);
         }
+        MaEditorSelection newSelection(selection.topLeft(),
+                                       qMin(selection.width(), editor->getAlignmentLen() - newTopLeft.x()),
+                                       qMin(selection.height(), editor->getNumSequences() - newTopLeft.y()));
+        setSelection(newSelection);
+        return;
     }
 
-    MaEditorSelection newSelection(newTopLeft, selection.width(), selection.height());
-    setSelection(newSelection);
-    const QPoint &cursorPosition = editor->getCursorPosition();
-    editor->setCursorPosition(QPoint(cursorPosition.x() + dx, cursorPosition.y() + dy));
+    editor->setCursorPosition(editor->getCursorPosition() + QPoint(dx, dy));
+    setSelection(MaEditorSelection(newTopLeft, selection.width(), selection.height()));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
