@@ -1,37 +1,79 @@
-## Welcome to GitHub Pages
+# UGENE
 
-You can use the [editor on GitHub](https://github.com/ugeneunipro/ugene/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+## Building UGENE
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Prerequisites
 
-### Markdown
+Make sure the Qt (>= 5.4.2 and <= 5.15) development libraries are installed:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+We highly recommend you to install Qt to any operating system with Qt online-installer. This is the main way for Windows and macOS operating systems, also available  for Linux. To install Qt, download the online-installer from Qt official site (http://www.qt.io/download/). Make sure, that you have installed the following components:
+* Qt Prebuild components
+* QtScript
 
-```markdown
-Syntax highlighted code block
+Other options to install Qt:
+* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev
+* Ubuntu 12.04:
+    * Download and install Qt 5.5.1: www.qt.io/download-open-source/
+    * Set the system variable: export PATH=$PATH:~/Qt5.5.1/5.5/gcc_64/bin
+    * `sudo apt-get install g++ libgl1-mesa-dev libglu1-mesa-dev`
+* Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist gcc-c++ redhat-rpm-config mesa-libGLU-devel`
+* Arch Linux:   `sudo pacman -S qt`available
 
-# Header 1
-## Header 2
-### Header 3
+Also add "path/to/Qt/<component>/bin" to the PATH variable.
 
-- Bulleted
-- List
+### For Windows users:
 
-1. Numbered
-2. List
+To build with devenv (Visual Studio)
 
-**Bold** and _Italic_ and `Code` text
+1. `qmake -r -tp vc ugene.pro`
+2. open ugene.sln from Visual Studio and build or run `devenv.exe ugene.sln /Build` from MSVC command line
 
-[Link](url) and ![Image](src)
-```
+To build with nmake.exe:
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+1. `qmake -r ugene.pro`
+2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
 
-### Jekyll Themes
+Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit. Put these libs to the directory which is avaliable with the PATH variable.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ugeneunipro/ugene/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### For *nix users:
 
-### Support or Contact
+0. installation paths may be set up in ugene_globals.pri
+1. `qmake -r` (Fedora: `qmake-qt5 -r`)
+2. `make -j 4`
+3. `sudo make install`
+4. `ugene -ui`
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+> Note: usually, `make` builds a release version of UGENE.
+   However, on certain platforms default target is debug.
+   To enforce release build use `make release` or `make all`.
+
+Some more information you can see in installer/_common_data/README file.
+
+### Build with CUDA
+
+1. Download and install required software from http://www.nvidia.com/object/cuda_get.html for your OS
+2. Make sure that some system variable are set:
+   ```
+   CUDA_LIB_PATH=/path_where_cuda_installed/lib
+   CUDA_INC_PATH=/path_where_cuda_installed/include
+   PATH=$PATH:/path_where_cuda_installed/bin
+   ```
+
+   for *nix: `LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_LIB_PATH`
+
+3. cd ./src and open ugene_globals.pri, find and set variable UGENE_CUDA_DETECTED = 1
+
+### Build with OpenCL
+
+1. Download and install video driver wich supports OpenCL
+2. Download OpenCL headers from http://www.khronos.org/registry/cl/
+   or find them in video vendor SDK directory.
+3. make sure that you have system variable is set correctly:
+          `OPENCL_INC_PATH=/path_where_open_cl_installed`
+4. cd ./src and open ugene_globals.pri, find and set variable `UGENE_OPENCL_DETECTED = 1`
+
+### Other notes:
+ 2) UGENE is be build for x86_64 arch by default, add CONFIG+=x86 to the qmake command to build 32-bit version of UGENE.
+    E.g. for Windows:
+    `qmake -r -tp vc CONFIG+=x86 ugene.pro`
+    > ATTENTION: 32-bit version is not officially supported since UGENE v. 34.0
