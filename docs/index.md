@@ -1,8 +1,8 @@
-## Project:
- - UGENE
+## Project name:
+    UGENE
 
 ## Repository:
- - https://github.com/ugeneunipro/ugene
+    https://github.com/ugeneunipro/ugene
 
 ## Readme:
- - https://github.com/ugeneunipro/ugene/blob/master/README.md
+    https://github.com/ugeneunipro/ugene/blob/master/README.md
