@@ -450,7 +450,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != NULL) {
         // Do nothing. Expand collapse is processed as a part of MousePress.
     } else if (dragging) {
-        int shift = 0;
+        int shift;
         if (mouseReleaseRow == 0) {
             shift = -selection.startPos;
         } else if (mouseReleaseRow == maxRows - 1) {
@@ -834,8 +834,7 @@ void MaEditorNameList::moveSelectedRegion(int shift) {
         return;
     }
     maObj->moveRowsBlock(firstRowInSelection, numRowsInSelection, shift);
-    const QPoint &cursorPosition = editor->getCursorPosition();
-    editor->setCursorPosition(QPoint(cursorPosition.x(), cursorPosition.y() + shift));
+    editor->setCursorPosition(editor->getCursorPosition() + QPoint(0, shift));
     setSelection(firstRowInSelection + shift, numRowsInSelection);
 }
 

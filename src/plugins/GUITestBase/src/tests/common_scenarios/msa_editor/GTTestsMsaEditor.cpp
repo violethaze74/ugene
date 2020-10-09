@@ -1843,7 +1843,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: row order changes respectively
     QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
+    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed 1");
 
     // 4. Click & drag on unselected area
     rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
@@ -1860,7 +1860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: whole selected block shifted
     QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
+    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed 2");
 
     // 6. Click on some row in selected block
     GTUtilsMsaEditor::clickSequence(os, 1);
@@ -2312,11 +2312,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028_linux) {
     //    2. Context menu -- "Export as image"
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     //    3. Fill dialog: svg format, output file
     qint64 fileSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/test.svg");
-    CHECK_SET_ERR(fileSize > 7000000 && fileSize < 8000000, "Current size: " + QString().setNum(fileSize));
+    CHECK_SET_ERR(fileSize > 6500000 && fileSize < 7500000, "Current size: " + QString::number(fileSize));
     //    Expected state:  SVG is exported
 }
 
@@ -4245,9 +4245,8 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
-    GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);    // wait for overview rendering to finish.
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
