@@ -7,3 +7,18 @@
 <dt>Readme file</dt>
 <dd><a href="https://github.com/ugeneunipro/ugene/blob/master/README.md">https://github.com/ugeneunipro/ugene/blob/master/README.md</a> </dd>
 </dl>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
