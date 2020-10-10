@@ -242,9 +242,9 @@ const int BUF_SZ = 2048;
 const char TERM_SYM = '\0';
 
 static bool getSignificance(const QByteArray &str) {
-    if ("!" == str) {
+    if (str == "!") {
         return true;
-    } else if ("?" == str) {
+    } else if (str == "?") {
         return false;
     }
     throw QString(GTest_UHMM3SearchCompare::tr("Can't parse significance:%1").arg(QString(str)));
@@ -330,10 +330,10 @@ const double COMPARE_PERCENT_BORDER = 0.1;    // 10 percent
 
 template<class T>
 static bool compareNumbers(T f1, T f2) {
-    bool ret = false;
-    if (0 == f1) {
-        ret = 0 == f2 ? true : f2 < COMPARE_PERCENT_BORDER;
-    } else if (0 == f2) {
+    bool ret;
+    if (f1 == 0) {
+        ret = f2 == 0 || f2 < COMPARE_PERCENT_BORDER;
+    } else if (f2 == 0) {
         ret = f1 < COMPARE_PERCENT_BORDER;
     } else {
         ret = (qAbs(f1 - f2)) < COMPARE_PERCENT_BORDER;

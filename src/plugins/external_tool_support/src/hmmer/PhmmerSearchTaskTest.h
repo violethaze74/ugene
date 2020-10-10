@@ -43,7 +43,6 @@ public:
 
     static const QString GAP_OPEN_PROBAB_OPTION_TAG;
     static const QString GAP_EXTEND_PROBAB_OPTION_TAG;
-    static const QString SUBST_MATR_NAME_OPTION_TAG; /* name of registered substitution matrix. if empty - BLOSUM62 is used */
 
     static const QString OUTPUT_DIR_TAG;
 
