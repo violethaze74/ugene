@@ -4,4 +4,4 @@ description: UGENE is free open-source cross-platform bioinformatics software.
 show_downloads: true
 github:
   zip_url: https://github.com/ugeneunipro/ugene/archive/36.0.zip
-  another_url: https://github.com/ugeneunipro/ugene/archive/36.0.tar.gz
+  tar_url: https://github.com/ugeneunipro/ugene/archive/36.0.tar.gz
