@@ -1,0 +1,9 @@
+theme: jekyll-theme-cayman
+title: Welcome to the developer page of UGENE !
+description: UGENE is free open-source cross-platform bioinformatics software.
+show_downloads: true
+
+github:
+  zip_url: https://github.com/ugeneunipro/ugene/archive/36.0.zip
+  tar_url: https://github.com/ugeneunipro/ugene/archive/36.0.tar.gz
+
