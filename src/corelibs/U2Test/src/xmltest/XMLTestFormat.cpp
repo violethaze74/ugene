@@ -68,7 +68,7 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
         err += QString(" line: %1 col: %2").arg(QString::number(line)).arg(QString::number(col));
         return NULL;
     }
-    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST") {
+    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST" && doc.documentElement().tagName() != "multi-test") {
         err = QString("not_a_test_file");
         return NULL;
     }
