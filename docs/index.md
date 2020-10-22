@@ -15,8 +15,7 @@
 
 </dl>
 
-<br/>
-<br/>
+<hr>
 <h2> Donate UGENE </h2>
 <dl>
 <dd>
