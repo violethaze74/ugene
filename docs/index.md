@@ -15,7 +15,7 @@
 
 </dl>
 
-<hr>
+<hr style="color: black;">
 <h2> Donate UGENE </h2>
 <dl>
 <dd>
