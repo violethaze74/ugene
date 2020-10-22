@@ -20,7 +20,7 @@
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" name="hosted_button_id" value="4YFBK5CNVTSPY">
     <input type="hidden" name="lc" value="US">
-    <a style="font-size:20pt;" href="#" onclick="parentNode.submit()">Donate</a>
+    <a style="font-size:26px; font-weight: bold;" href="#" onclick="parentNode.submit()">-- DONATE --</a>
 </form>
 <br/>
 <br/>
