@@ -22,7 +22,7 @@
     <input type="hidden" name="cmd" value="_s-xclick">
     <input type="hidden" name="hosted_button_id" value="4YFBK5CNVTSPY">
     <input type="hidden" name="lc" value="US">
-    <input type="submit" value="Donate">
+    <a href="#" onclick="parentNode.submit()">Donate</a>
 </form>
 <br/>
 <br/>
