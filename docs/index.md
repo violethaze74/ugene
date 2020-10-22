@@ -17,12 +17,14 @@
 
 <h2> Donate UGENE </h2>
 <dl>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post"> 
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="hosted_button_id" value="4YFBK5CNVTSPY">
-    <input type="hidden" name="lc" value="US">
-    <dd><a href="#" onclick="parentNode.submit()"> PayPal donation link </a></dd>
-</form>
+<dd>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> 
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="4YFBK5CNVTSPY">
+        <input type="hidden" name="lc" value="US">
+        <a href="#" onclick="parentNode.submit()"> PayPal donation link </a>
+    </form>
+</dd>
 </dl>
 <br/>
 <br/>
