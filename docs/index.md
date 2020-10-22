@@ -15,14 +15,14 @@
 
 </dl>
 
-<h2 style="text-decoration: underline; font-weight: bold; font-style: italic;"> Donate UGENE </h2>
+<h2> Donate UGENE </h2>
 <dl>
 <dd>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post"> 
         <input type="hidden" name="cmd" value="_s-xclick">
         <input type="hidden" name="hosted_button_id" value="4YFBK5CNVTSPY">
         <input type="hidden" name="lc" value="US">
-        <a style="text-decoration: underline; font-weight: bold; font-style: italic;" href="#" onclick="parentNode.submit()"> PayPal donation link </a>
+        <a style="font-weight: bold; font-style: italic;" href="#" onclick="parentNode.submit()"> PayPal donation link </a>
     </form>
 </dd>
 </dl>
