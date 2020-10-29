@@ -143,10 +143,10 @@ QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
 CreateSubalignmentSettings FormatsMsaClipboardTask::defineSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os) {
     //Create temporal document for the workflow run task
     const AppSettings *appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(NULL != appSettings, os.setError(tr("Invalid applications settings detected")), CreateSubalignmentSettings());
+    SAFE_POINT_EXT(appSettings != NULL, os.setError(tr("Invalid applications settings detected")), CreateSubalignmentSettings());
 
     UserAppsSettings *usersSettings = appSettings->getUserAppsSettings();
-    SAFE_POINT_EXT(NULL != usersSettings, os.setError(tr("Invalid users applications settings detected")), CreateSubalignmentSettings());
+    SAFE_POINT_EXT(usersSettings != NULL, os.setError(tr("Invalid users applications settings detected")), CreateSubalignmentSettings());
     const QString tmpDirPath = usersSettings->getCurrentProcessTemporaryDirPath();
     GUrl path = GUrlUtils::prepareTmpFileLocation(tmpDirPath, "clipboard", "tmp", os);
 
@@ -213,7 +213,7 @@ void RichTextMsaClipboardTask::run() {
             } else if (seq == refSeq || U2MsaRow::INVALID_ROW_ID == refSeq) {
                 highlight = true;
             } else {
-                SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );
+                SAFE_POINT_EXT(row != NULL, setError("MSA row is NULL"), );
                 const char refChar = row->charAt(pos);
                 highlightingScheme->process(refChar, c, color, highlight, pos, seq);
             }
@@ -244,7 +244,7 @@ QList<Task *> SubalignmentToClipboardTask::onSubTaskFinished(Task *subTask) {
     CHECK(subTask == prepareDataTask, result);
     CHECK(!prepareDataTask->getStateInfo().isCoR(), result);
     QString clipboardData = prepareDataTask->getResult();
-    if ("RTF" == formatId) {
+    if (formatId == "RTF") {
         QMimeData *reportRichTextMime = new QMimeData();
         reportRichTextMime->setHtml(clipboardData);
         reportRichTextMime->setText(clipboardData);

@@ -71,41 +71,60 @@ public:
         return seqArea;
     }
 
-    MaEditorNameList *getEditorNameList() {
+    MaEditorNameList *getEditorNameList() const {
         return nameList;
     }
 
-    MaEditorConsensusArea *getConsensusArea() {
+    MaEditorConsensusArea *getConsensusArea() const {
         return consArea;
     }
 
-    MaEditorOverviewArea *getOverviewArea() {
+    MaEditorOverviewArea *getOverviewArea() const {
         return overviewArea;
     }
 
-    MSAEditorOffsetsViewController *getOffsetsViewController() {
+    MSAEditorOffsetsViewController *getOffsetsViewController() const {
         return offsetsView;
     }
 
-    ScrollController *getScrollController();
-    BaseWidthController *getBaseWidthController();
-    RowHeightController *getRowHeightController();
-    DrawHelper *getDrawHelper();
+    ScrollController *getScrollController() const {
+        return scrollController;
+    }
+
+    BaseWidthController *getBaseWidthController() const {
+        return baseWidthController;
+    }
+
+    RowHeightController *getRowHeightController() const {
+        return rowHeightController;
+    }
+
+    DrawHelper *getDrawHelper() const {
+        return drawHelper;
+    }
 
     QAction *getUndoAction() const;
+
     QAction *getRedoAction() const;
 
     QAction *getDelSelectionAction() const {
         return delSelectionAction;
     }
+
     QAction *getCopySelectionAction() const {
         return copySelectionAction;
     }
+
     QAction *getCopyFormattedSelectionAction() const {
         return copyFormattedSelectionAction;
     }
+
     QAction *getPasteAction() const {
         return pasteAction;
+    }
+
+    QAction *getPasteBeforeAction() const {
+        return pasteBeforeAction;
     }
 
     /* Returns if collapsible mode is enabled or not.
@@ -117,9 +136,11 @@ public:
     bool isCollapsibleMode() const {
         return collapsibleMode;
     }
+
     void setCollapsibleMode(bool collapse) {
         collapsibleMode = collapse;
     }
+
     MaCollapseModel *getCollapseModel() const {
         return collapseModel;
     }
@@ -132,7 +153,8 @@ public:
     QWidget *getHeaderWidget() const {
         return seqAreaHeader;
     }
-    MsaUndoRedoFramework *getUndoRedoFramework() {
+
+    MsaUndoRedoFramework *getUndoRedoFramework() const {
         return undoFWK;
     }
 
@@ -189,6 +211,7 @@ protected:
     QAction *copySelectionAction;
     QAction *copyFormattedSelectionAction;
     QAction *pasteAction;
+    QAction *pasteBeforeAction;
 };
 
 }    // namespace U2

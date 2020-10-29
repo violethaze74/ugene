@@ -209,7 +209,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     QList<U2MsaRow> rows;
     rows << row1 << row2;
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // SECOND ALIGNMENT
@@ -243,7 +243,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     QList<U2MsaRow> al2Rows;
     al2Rows << al2Row;
 
-    msaDbi->addRows(msaId2, al2Rows, os);
+    msaDbi->addRows(msaId2, al2Rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // REMOVE THE FIRST ALIGNMENT OBJECT

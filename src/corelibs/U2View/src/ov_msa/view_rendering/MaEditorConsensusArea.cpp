@@ -89,6 +89,7 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
 
     addAction(ui->getCopySelectionAction());
     addAction(ui->getPasteAction());
+    addAction(ui->getPasteBeforeAction());
 
     setObjectName("consArea");
 }

@@ -39,7 +39,15 @@ class U2UseCommonUserModStep;
 class U2CORE_EXPORT AddSequenceObjectsToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<DNASequence> &seqList, bool recheckNewSequenceAlphabetOnMismatch = false);
+    /**
+     * Adds sequences to the alignment starting from the given insertRowIndex: making the first inserted row to have row index = insertRowIndex.
+     * For example insertRowIndex = 0 pre-appends sequences to the alignment.
+     * If insertRowIndex < 0 or insertRowIndex >= row count - appends sequences to the end of the alignment rows.
+     */
+    AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
+                                      const QList<DNASequence> &seqList,
+                                      int insertRowIndex = -1,
+                                      bool recheckNewSequenceAlphabetOnMismatch = false);
 
     virtual void prepare();
     virtual void run();
@@ -53,6 +61,7 @@ protected:
     void processObjectsAndSetResultingAlphabet();
 
     QList<DNASequence> seqList;
+    int insertRowIndex;
     QPointer<MultipleSequenceAlignmentObject> maObj;
 
 protected:
@@ -68,8 +77,8 @@ private:
     MaModificationInfo mi;
 
     /*
-     * If re-check alphabet is true and the alphabet of the new seqeuence is not the same as the alphabet of the alignment
-     * the task will re-test the sequenece data if it fits into the alignment alphabet first and fall-back to the seqeuence alphabet only if it does not.
+     * If re-check alphabet is true and the alphabet of the new sequence is not the same as the alphabet of the alignment
+     * the task will re-test the sequence data if it fits into the alignment alphabet first and fall-back to the seqeuence alphabet only if it does not.
      *
      * Example: paste symbol 'T' to amino alignment: 'T' is detected as Nucleic while it is also valid for Amino!
      */
@@ -86,7 +95,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls);
+    AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex);
 
     virtual void prepare();
     QList<Task *> onSubTaskFinished(Task *subTask);
@@ -101,7 +110,7 @@ private:
 class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenceObjectsToAlignmentTask {
     Q_OBJECT
 public:
-    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, bool recheckNewSequenceAlphabets);
+    AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, int insertRowIndex, bool recheckNewSequenceAlphabets);
 
     virtual void prepare();
 

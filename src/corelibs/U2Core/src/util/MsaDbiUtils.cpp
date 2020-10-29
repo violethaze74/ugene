@@ -185,7 +185,7 @@ QList<qint64> MaDbiUtils::getRowsOrder(const U2EntityRef &meRef, U2OpStatus &os)
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", QList<qint64>());
 
-    return msaDbi->getRowsOrder(meRef.entityId, os);
+    return msaDbi->getOrderedRowIds(meRef.entityId, os);
 }
 
 void MaDbiUtils::updateRowsOrder(const U2EntityRef &meRef, const QList<qint64> &rowsOrder, U2OpStatus &os) {

@@ -240,7 +240,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(NULL != msaDbi, "NULL MSA Dbi during importing an alignment!", QList<U2MsaRow>());
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, QList<U2MsaRow>());
     return rows;
 }

@@ -337,7 +337,7 @@ void GTest_AddSequenceToAlignment::prepare() {
     }
     QStringList urls(env->getVar("COMMON_DATA_DIR") + "/" + seqFileName);
 
-    addSubTask(new AddSequencesFromFilesToAlignmentTask(maobj, urls));
+    addSubTask(new AddSequencesFromFilesToAlignmentTask(maobj, urls, -1));
 }
 
 Task::ReportResult GTest_AddSequenceToAlignment::report() {

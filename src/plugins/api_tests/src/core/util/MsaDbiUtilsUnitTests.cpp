@@ -108,7 +108,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const qint64 rowCount) {
         rows << row;
     }
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, U2EntityRef());
 
     U2EntityRef msaRef(msaDbi->getRootDbi()->getDbiRef(), msaId);
@@ -153,7 +153,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const QStringList &rowsData 
         rows << row;
     }
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, U2EntityRef());
 
     U2EntityRef msaRef(msaDbi->getRootDbi()->getDbiRef(), msaId);
@@ -171,7 +171,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(QList<U2MsaRow> &rows) {
     U2DataId msaId = msaDbi->createMsaObject("", MsaDbiUtilsTestUtils::alignmentName, BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_OP(os, U2EntityRef());
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, U2EntityRef());
 
     U2EntityRef msaRef(msaDbi->getRootDbi()->getDbiRef(), msaId);
@@ -1180,7 +1180,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1207,7 +1207,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1234,7 +1234,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1263,7 +1263,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1310,7 +1310,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1335,7 +1335,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1359,7 +1359,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongId) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;
@@ -1387,7 +1387,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     CHECK_NO_ERROR(os);
 
     U2MsaDbi *msaDbi = MsaDbiUtilsTestUtils::getMsaDbi();
-    QList<qint64> baseRowIds = msaDbi->getRowsOrder(msaRef.entityId, os);
+    QList<qint64> baseRowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowIds;

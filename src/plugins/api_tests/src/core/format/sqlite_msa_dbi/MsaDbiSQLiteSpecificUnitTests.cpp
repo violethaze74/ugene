@@ -542,7 +542,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_noModTrack) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(false, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
 
@@ -582,7 +582,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_undo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows[1];
 
@@ -655,7 +655,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_redo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
 
@@ -789,7 +789,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_noModTrack) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(false, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
 
@@ -835,7 +835,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_undo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows[1];
 
@@ -944,7 +944,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_redo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
 
@@ -1131,7 +1131,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Get current row order
-    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect oreder list length");
 
@@ -1162,7 +1162,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(newOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < newOrder.length(); ++i) {
@@ -1223,7 +1223,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     CHECK_NO_ERROR(os);
 
     // Get current row order
-    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect oreder list length");
 
@@ -1254,7 +1254,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(newOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < newOrder.length(); ++i) {
@@ -1308,7 +1308,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < oldOrder.length(); ++i) {
@@ -1368,7 +1368,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     CHECK_NO_ERROR(os);
 
     // Get current row order
-    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect oreder list length");
 
@@ -1399,7 +1399,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(newOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < newOrder.length(); ++i) {
@@ -1452,7 +1452,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < oldOrder.length(); ++i) {
@@ -1505,7 +1505,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
     CHECK_NO_ERROR(os);
 
     // Verify order
-    newestOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    newestOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(newOrder.length(), newestOrder.length(), "row order length");
     for (int i = 0; i < newOrder.length(); ++i) {
@@ -1583,7 +1583,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
 
     // Prepare value list
     QList<QList<qint64>> rowOrders;
-    rowOrders << sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);    // base value
+    rowOrders << sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);    // base value
     CHECK_NO_ERROR(os);
 
     QList<qint64> rowOrder;
@@ -1633,7 +1633,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     }
 
     // Verify order
-    QList<qint64> finalOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> finalOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(rowOrders[expectedIndex].length(), finalOrder.length(), "row order length");
     for (int i = 0; i < finalOrder.length(); ++i) {
@@ -1683,7 +1683,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowName_noModTrack) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(false, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
 
@@ -1734,7 +1734,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowName_undo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows[1];
 
@@ -1810,7 +1810,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowName_redo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows[1];
 
@@ -1884,7 +1884,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     CHECK_NO_ERROR(os);
 
     // Get row ids
-    QList<qint64> rowIds = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowIds = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
@@ -1995,7 +1995,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_noModTrack) {
     CHECK_EQUAL(3, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(3, rowsOrder.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrder.last(), "last row id");
@@ -2027,7 +2027,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_undo) {
     qint64 oldMsaLength = oldMsaObj.length;
     qint64 oldNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> oldRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> oldRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Add a row
@@ -2070,7 +2070,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_undo) {
     CHECK_EQUAL(3, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(3, rowsOrder.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrder.last(), "last row id");
@@ -2110,7 +2110,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_undo) {
     qint64 msaLengthAfterUndo = msaObjAfterUndo.length;
     qint64 numOfRowsAfterUndo = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rowsOrderAfterUndo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterUndo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(oldMsaLength, msaLengthAfterUndo, "msa length after undo");
     CHECK_EQUAL(oldNumOfRows, numOfRowsAfterUndo, "number of rows after undo");
@@ -2178,7 +2178,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_redo) {
     CHECK_EQUAL(3, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(3, rowsOrder.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrder.last(), "last row id");
@@ -2199,7 +2199,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_undo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2248,7 +2248,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_undo) {
     CHECK_EQUAL(baseNumOfRows + 1, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count() + 1, rowsOrder.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrder.first(), "first row id");
@@ -2283,7 +2283,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_undo) {
     qint64 msaLengthAfterUndo = msaAfterUndo.length;
     qint64 numOfRowsAfterUndo = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rowsOrderAfterUndo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterUndo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseMsa.length, msaLengthAfterUndo, "msa length after undo");
     CHECK_EQUAL(baseNumOfRows, numOfRowsAfterUndo, "number of rows after undo");
@@ -2305,7 +2305,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_redo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2362,7 +2362,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_redo) {
     CHECK_EQUAL(baseNumOfRows + 1, numOfRowsAfterRedo, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count() + 1, rowsOrderAfterRedo.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrderAfterRedo.first(), "first row id");
@@ -2387,7 +2387,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_undo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2426,7 +2426,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_undo) {
     CHECK_EQUAL(baseNumOfRows, numOfRowsAfterRedo, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count(), rowsOrderAfterRedo.count(), "rows order items number");
     CHECK_TRUE(baseRowsOrder == rowsOrderAfterRedo, "other row ids");
@@ -2449,7 +2449,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_redo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2506,7 +2506,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_redo) {
     CHECK_EQUAL(baseNumOfRows + 1, numOfRowsAfterRedo, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count() + 1, rowsOrderAfterRedo.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrderAfterRedo[posInMsa], "new row id");
@@ -2531,7 +2531,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_undo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2570,7 +2570,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_undo) {
     CHECK_EQUAL(baseNumOfRows, numOfRowsAfterRedo, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count(), rowsOrderAfterRedo.count(), "rows order items number");
     CHECK_TRUE(baseRowsOrder == rowsOrderAfterRedo, "other row ids");
@@ -2593,7 +2593,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_redo) {
     U2Msa baseMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 baseNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
-    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare test values
@@ -2650,7 +2650,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_redo) {
     CHECK_EQUAL(baseNumOfRows + 1, numOfRowsAfterRedo, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrderAfterRedo = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(baseRowsOrder.count() + 1, rowsOrderAfterRedo.count(), "rows order items number");
     CHECK_EQUAL(row.rowId, rowsOrderAfterRedo[posInMsa], "new row id");
@@ -2833,7 +2833,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_noModTrack) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(false, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
     CHECK_NO_ERROR(os);
@@ -2872,7 +2872,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_undo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.last();
     U2MsaRow oldRow = sqliteDbi->getMsaDbi()->getRow(msaId, rowId, os);
@@ -2925,7 +2925,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_undo) {
     qint64 undoNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(2, undoNumOfRows, "number of rows after undo");
-    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(rows == undoRowsOrder, "rows ids after undo");
 }
@@ -2935,7 +2935,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRow_redo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     qint64 rowId = rows.first();
     U2MsaRow oldRow = sqliteDbi->getMsaDbi()->getRow(msaId, rowId, os);
@@ -2989,7 +2989,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_noModTrack) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(false, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rows = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rows = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Get current version
@@ -3030,7 +3030,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_undo) {
     CHECK_NO_ERROR(os);
     QList<U2MsaRow> rows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rowsIds = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsIds = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Get current version
@@ -3090,7 +3090,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_undo) {
     qint64 undoNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(2, undoNumOfRows, "number of rows after undo");
-    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(rowsIds == undoRowsOrder, "rows ids after undo");
 }
@@ -3102,7 +3102,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, removeRows_redo) {
     CHECK_NO_ERROR(os);
     QList<U2MsaRow> rows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> rowsIds = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsIds = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Get current version
@@ -3164,7 +3164,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_noModTrack) {
     QList<U2MsaRow> rows;
     rows << row;
 
-    sqliteDbi->getMsaDbi()->addRows(msaId, rows, os);
+    sqliteDbi->getMsaDbi()->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // Verify row
@@ -3187,7 +3187,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_noModTrack) {
     CHECK_EQUAL(3, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(3, rowsOrder.count(), "rows order items number");
     CHECK_EQUAL(rows[0].rowId, rowsOrder.last(), "last row id");
@@ -3208,7 +3208,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> order = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> order = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
 
     // Get current version
     int oldVersion = sqliteDbi->getObjectDbi()->getObjectVersion(msaId, os);
@@ -3222,7 +3222,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo) {
     QList<U2MsaRow> rows;
     rows << row1 << row2;
 
-    sqliteDbi->getMsaDbi()->addRows(msaId, rows, os);
+    sqliteDbi->getMsaDbi()->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
     order << rows[0].rowId << rows[1].rowId;
 
@@ -3255,7 +3255,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo) {
     CHECK_EQUAL(4, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(order == rowsOrder, "row order");
 
@@ -3298,7 +3298,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_undo) {
     qint64 undoNumOfRows = sqliteDbi->getMsaDbi()->getNumOfRows(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(2, undoNumOfRows, "number of rows after undo");
-    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> undoRowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(order.mid(0, 2) == undoRowsOrder, "rows ids after undo");
 }
@@ -3308,7 +3308,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
     SQLiteDbi *sqliteDbi = MsaSQLiteSpecificTestData::getSQLiteDbi();
     U2DataId msaId = MsaSQLiteSpecificTestData::createTestMsa(true, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> order = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> order = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
 
     // Get current version
     int oldVersion = sqliteDbi->getObjectDbi()->getObjectVersion(msaId, os);
@@ -3322,7 +3322,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
     QList<U2MsaRow> rows;
     rows << row1 << row2;
 
-    sqliteDbi->getMsaDbi()->addRows(msaId, rows, os);
+    sqliteDbi->getMsaDbi()->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
     order << rows[0].rowId << rows[1].rowId;
 
@@ -3363,7 +3363,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRows_redo) {
     CHECK_EQUAL(4, numOfRows, "number of rows");
 
     // Verify rows order
-    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> rowsOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(order == rowsOrder, "row order");
 

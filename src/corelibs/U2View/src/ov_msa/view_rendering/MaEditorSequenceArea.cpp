@@ -68,19 +68,19 @@ const QChar MaEditorSequenceArea::emDash = QChar(0x2015);
 MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : editor(ui->getEditor()),
       ui(ui),
-      colorScheme(NULL),
-      highlightingScheme(NULL),
+      colorScheme(nullptr),
+      highlightingScheme(nullptr),
       shBar(hb),
       svBar(vb),
       editModeAnimationTimer(this),
       prevPressedButton(Qt::NoButton),
       maVersionBeforeShifting(-1),
-      replaceCharacterAction(NULL),
-      useDotsAction(NULL),
+      replaceCharacterAction(nullptr),
+      useDotsAction(nullptr),
       changeTracker(editor->getMaObject()->getEntityRef()) {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
     // show rubber band for selection in MSA editor only
-    showRubberBandOnSelection = qobject_cast<MSAEditor *>(editor) != NULL;
+    showRubberBandOnSelection = qobject_cast<MSAEditor *>(editor) != nullptr;
     maMode = ViewMode;
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -169,7 +169,7 @@ int MaEditorSequenceArea::getViewRowCount() const {
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
     MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(model != NULL, tr("Invalid collapsible item model!"), -1);
+    SAFE_POINT(model != nullptr, tr("Invalid collapsible item model!"), -1);
     return model->getMaRowIndexByViewRowIndex(num);
 }
 
@@ -290,7 +290,7 @@ QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const {
 }
 
 void MaEditorSequenceArea::deleteCurrentSelection() {
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
 
     MultipleAlignmentObject *maObj = getEditor()->getMaObject();
@@ -567,7 +567,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 
 bool MaEditorSequenceArea::isAlignmentLocked() const {
     MultipleAlignmentObject *obj = editor->getMaObject();
-    SAFE_POINT(obj != NULL, tr("Alignment object is not available"), true);
+    SAFE_POINT(obj != nullptr, tr("Alignment object is not available"), true);
     return obj->isStateLocked();
 }
 
@@ -603,7 +603,7 @@ QAction *MaEditorSequenceArea::getReplaceCharacterAction() const {
 
 void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
     QAction *a = GUIUtils::findActionByData(QList<QAction *>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, id);
-    if (a != NULL) {
+    if (a != nullptr) {
         a->trigger();
     }
 }
@@ -614,10 +614,10 @@ void MaEditorSequenceArea::sl_changeCopyFormat(const QString &alg) {
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
     QAction *action = qobject_cast<QAction *>(sender());
-    if (NULL == action) {
+    if (action == nullptr) {
         action = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(action != NULL, );
+    CHECK(action != nullptr, );
 
     applyColorScheme(action->data().toString());
 }
@@ -633,7 +633,7 @@ void MaEditorSequenceArea::sl_cancelSelection() {
         exitFromEditCharacterMode();
         return;
     }
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != NULL, "Clear selection", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != nullptr, "Clear selection", editor->getFactoryId());
     MaEditorSelection emptySelection;
     setSelection(emptySelection);
 }
@@ -704,23 +704,23 @@ void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
 
 void MaEditorSequenceArea::sl_setDefaultColorScheme() {
     MsaColorSchemeFactory *defaultFactory = getDefaultColorSchemeFactory();
-    SAFE_POINT(defaultFactory != NULL, L10N::nullPointerError("default color scheme factory"), );
+    SAFE_POINT(defaultFactory != nullptr, L10N::nullPointerError("default color scheme factory"), );
     applyColorScheme(defaultFactory->getId());
 }
 
 void MaEditorSequenceArea::sl_changeHighlightScheme() {
     QAction *a = qobject_cast<QAction *>(sender());
-    if (a == NULL) {
+    if (a == nullptr) {
         a = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(a != NULL, );
+    CHECK(a != nullptr, );
 
     editor->saveHighlightingSettings(highlightingScheme->getFactory()->getId(), highlightingScheme->getSettings());
 
     QString id = a->data().toString();
     MsaHighlightingSchemeFactory *factory = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(id);
-    SAFE_POINT(factory != NULL, L10N::nullPointerError("highlighting scheme"), );
-    if (ui->getEditor()->getMaObject() == NULL) {
+    SAFE_POINT(factory != nullptr, L10N::nullPointerError("highlighting scheme"), );
+    if (ui->getEditor()->getMaObject() == nullptr) {
         return;
     }
 
@@ -811,8 +811,8 @@ void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
         selectedViewIndexesSet << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
     }
-    QList<int> selectedViewIndexes = selectedViewIndexesSet.toList();
-    qSort(selectedViewIndexes.begin(), selectedViewIndexes.end());
+    QList<int> selectedViewIndexes = selectedViewIndexesSet.values();
+    std::sort(selectedViewIndexes.begin(), selectedViewIndexes.end());
     U2Region selectedViewRegion = findLongestRegion(selectedViewIndexes);
     if (selectedViewRegion.length == 0) {
         sl_cancelSelection();
@@ -1172,7 +1172,7 @@ void MaEditorSequenceArea::drawBackground(QPainter &) {
 }
 
 void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
     if (countOfGaps == -1) {
         countOfGaps = selection.width();
@@ -1187,7 +1187,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     cancelShiftTracking();
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
     U2OpStatus2Log os;
@@ -1232,7 +1232,7 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (NULL == maObj || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
 
@@ -1337,10 +1337,10 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
 void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory *hsf) {
     qDeleteAll(highlightingSchemeMenuActions);
     highlightingSchemeMenuActions.clear();
-    SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
+    SAFE_POINT(hsf != nullptr, "Highlight scheme factory is NULL", );
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    QVariantMap settings = highlightingScheme != NULL ? highlightingScheme->getSettings() : QVariantMap();
+    QVariantMap settings = highlightingScheme != nullptr ? highlightingScheme->getSettings() : QVariantMap();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
@@ -1364,9 +1364,9 @@ MsaColorSchemeFactory *MaEditorSequenceArea::getDefaultColorSchemeFactory() cons
         case DNAAlphabet_AMINO:
             return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
         default:
-            FAIL(tr("Unknown alphabet"), NULL);
+            FAIL(tr("Unknown alphabet"), nullptr);
     }
-    return NULL;
+    return nullptr;
 }
 
 MsaHighlightingSchemeFactory *MaEditorSequenceArea::getDefaultHighlightingSchemeFactory() const {
@@ -1401,24 +1401,24 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
     MsaHighlightingSchemeRegistry *hsr = AppContext::getMsaHighlightingSchemeRegistry();
 
     MsaColorSchemeFactory *csf = csr->getSchemeFactoryById(csid);
-    if (csf == NULL) {
+    if (csf == nullptr) {
         csid = getDefaultColorSchemeFactory()->getId();
     }
     MsaHighlightingSchemeFactory *hsf = hsr->getSchemeFactoryById(hsid);
-    if (hsf == NULL) {
+    if (hsf == nullptr) {
         hsid = getDefaultHighlightingSchemeFactory()->getId();
     }
 
-    if (colorScheme != NULL && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+    if (colorScheme != nullptr && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
         csid = colorScheme->getFactory()->getId();
     }
-    if (highlightingScheme != NULL && highlightingScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+    if (highlightingScheme != nullptr && highlightingScheme->getFactory()->isAlphabetTypeSupported(atype)) {
         hsid = highlightingScheme->getFactory()->getId();
     }
 }
 
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
-    CHECK(ui->getEditor()->getMaObject() != NULL, );
+    CHECK(ui->getEditor()->getMaObject() != nullptr, );
 
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(id);
     delete colorScheme;
@@ -1432,7 +1432,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    if (qobject_cast<MSAEditor *>(getEditor()) != NULL) {    // to avoid setting of sanger scheme
+    if (qobject_cast<MSAEditor *>(getEditor()) != nullptr) {    // to avoid setting of sanger scheme
         switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
             case DNAAlphabet_RAW:
                 AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
@@ -1490,13 +1490,13 @@ void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
 
 void MaEditorSequenceArea::replaceChar(char newCharacter) {
     CHECK(maMode == ReplaceCharMode, );
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     if (selection.isEmpty()) {
         return;
     }
     SAFE_POINT(isInRange(selection.topLeft()), "Incorrect selection is detected!", );
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
     if (maObj->getNumRows() == 1 && maObj->getRow(selection.y())->getCoreLength() == 1 && newCharacter == U2Msa::GAP_CHAR) {

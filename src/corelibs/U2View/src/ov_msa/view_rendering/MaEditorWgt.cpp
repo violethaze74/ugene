@@ -35,7 +35,6 @@
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
-#include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/UndoRedoFramework.h>
 
@@ -53,28 +52,29 @@ namespace U2 {
 /************************************************************************/
 MaEditorWgt::MaEditorWgt(MaEditor *editor)
     : editor(editor),
-      seqArea(NULL),
-      nameList(NULL),
-      consArea(NULL),
-      overviewArea(NULL),
-      offsetsView(NULL),
-      statusBar(NULL),
-      nameAreaContainer(NULL),
-      seqAreaHeader(NULL),
-      seqAreaHeaderLayout(NULL),
-      seqAreaLayout(NULL),
-      nameAreaLayout(NULL),
+      seqArea(nullptr),
+      nameList(nullptr),
+      consArea(nullptr),
+      overviewArea(nullptr),
+      offsetsView(nullptr),
+      statusBar(nullptr),
+      nameAreaContainer(nullptr),
+      seqAreaHeader(nullptr),
+      seqAreaHeaderLayout(nullptr),
+      seqAreaLayout(nullptr),
+      nameAreaLayout(nullptr),
       collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       collapsibleMode(false),
       enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
-      rowHeightController(NULL),
+      rowHeightController(nullptr),
       drawHelper(new DrawHelper(this)),
-      delSelectionAction(NULL),
-      copySelectionAction(NULL),
-      copyFormattedSelectionAction(NULL),
-      pasteAction(NULL) {
+      delSelectionAction(nullptr),
+      copySelectionAction(nullptr),
+      copyFormattedSelectionAction(nullptr),
+      pasteAction(nullptr),
+      pasteBeforeAction(nullptr) {
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 
     connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
@@ -84,26 +84,10 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
 QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment alignment, QWidget *heightTarget, bool proxyMouseEventsToNameList) {
     QString labelHtml = QString("<p style=\"margin-right: 5px\">%1</p>").arg(text);
     return new MaLabelWidget(this,
-                             heightTarget == NULL ? seqAreaHeader : heightTarget,
+                             heightTarget == nullptr ? seqAreaHeader : heightTarget,
                              labelHtml,
                              alignment,
                              proxyMouseEventsToNameList);
-}
-
-ScrollController *MaEditorWgt::getScrollController() {
-    return scrollController;
-}
-
-BaseWidthController *MaEditorWgt::getBaseWidthController() {
-    return baseWidthController;
-}
-
-RowHeightController *MaEditorWgt::getRowHeightController() {
-    return rowHeightController;
-}
-
-DrawHelper *MaEditorWgt::getDrawHelper() {
-    return drawHelper;
 }
 
 QAction *MaEditorWgt::getUndoAction() const {
@@ -119,7 +103,7 @@ QAction *MaEditorWgt::getRedoAction() const {
 }
 
 void MaEditorWgt::sl_saveScreenshot() {
-    CHECK(qobject_cast<MSAEditor *>(editor) != NULL, );
+    CHECK(qobject_cast<MSAEditor *>(editor) != nullptr, );
     MSAImageExportController controller(this);
     QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());
@@ -281,6 +265,12 @@ void MaEditorWgt::initActions() {
     pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetShortcut);
     pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text()).arg(pasteAction->shortcut().toString()));
+
+    pasteBeforeAction = new QAction(tr("Paste (before selection)"), this);
+    pasteBeforeAction->setObjectName("paste_before");
+    pasteBeforeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
+    pasteBeforeAction->setShortcutContext(Qt::WidgetShortcut);
+    pasteBeforeAction->setToolTip(QString("%1 (%2)").arg(pasteBeforeAction->text()).arg(pasteAction->shortcut().toString()));
 
     addAction(pasteAction);
 }

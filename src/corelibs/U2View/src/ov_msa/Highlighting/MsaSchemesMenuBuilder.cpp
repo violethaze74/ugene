@@ -31,9 +31,11 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "../view_rendering/MaEditorSequenceArea.h"
+
 namespace U2 {
 
-void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction *> &actions, ColorSchemeType type, DNAAlphabetType alphabet, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction *> &actions, ColorSchemeType type, DNAAlphabetType alphabet, MaEditorSequenceArea *actionsParent) {
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     MsaColorSchemeFactory *noColorsFactory = msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
 
@@ -74,7 +76,7 @@ void MsaSchemesMenuBuilder::createAndFillColorSchemeMenuActions(QList<QAction *>
     }
 }
 
-void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction *> &actions, DNAAlphabetType alphabet, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::createAndFillHighlightingMenuActions(QList<QAction *> &actions, DNAAlphabetType alphabet, MaEditorSequenceArea *actionsParent) {
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
     MsaHighlightingSchemeFactory *nohighlightingFactory = msaHighlightingSchemeRegistry->getEmptySchemeFactory();
 
@@ -112,7 +114,7 @@ void MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(QAction *a, QMenu *co
     }
 }
 
-void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction *> &actions, QList<MsaColorSchemeFactory *> colorFactories, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction *> &actions, QList<MsaColorSchemeFactory *> colorFactories, MaEditorSequenceArea *actionsParent) {
     foreach (MsaColorSchemeFactory *factory, colorFactories) {
         QString name = factory->getName();
         QAction *action = new QAction(name, actionsParent);
@@ -124,7 +126,7 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction *> &actions
     }
 }
 
-void MsaSchemesMenuBuilder::fillHighlightingSchemeMenuActions(QList<QAction *> &actions, const QList<MsaHighlightingSchemeFactory *> &highlightingSchemeFactories, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::fillHighlightingSchemeMenuActions(QList<QAction *> &actions, const QList<MsaHighlightingSchemeFactory *> &highlightingSchemeFactories, MaEditorSequenceArea *actionsParent) {
     foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemeFactories) {
         QString name = factory->getName();
         QAction *action = new QAction(name, actionsParent);
@@ -136,14 +138,14 @@ void MsaSchemesMenuBuilder::fillHighlightingSchemeMenuActions(QList<QAction *> &
     }
 }
 
-void MsaSchemesMenuBuilder::fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory *> &colorSchemesFactories, QList<QAction *> &actions, const QString &alphName, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::fillColorMenuSectionForCurrentAlphabet(QList<MsaColorSchemeFactory *> &colorSchemesFactories, QList<QAction *> &actions, const QString &alphName, MaEditorSequenceArea *actionsParent) {
     if (!colorSchemesFactories.isEmpty()) {
         actions.append(new QAction(SECTION_TOKEN + alphName, actionsParent));
         fillColorSchemeMenuActions(actions, colorSchemesFactories, actionsParent);
     }
 }
 
-void MsaSchemesMenuBuilder::fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString &alphabet, QObject *actionsParent) {
+void MsaSchemesMenuBuilder::fillHighlightingMenuSectionForCurrentAlphabet(QList<MsaHighlightingSchemeFactory *> &highlightSchemesFactories, QList<QAction *> &actions, const QString &alphabet, MaEditorSequenceArea *actionsParent) {
     if (!highlightSchemesFactories.isEmpty()) {
         actions.append(new QAction(SECTION_TOKEN + alphabet, actionsParent));
         fillHighlightingSchemeMenuActions(actions, highlightSchemesFactories, actionsParent);

@@ -150,6 +150,7 @@ private slots:
     void sl_copyCurrentSelection();
     void sl_copyFormattedSelection();
     void sl_paste();
+    void sl_pasteBefore();
     void sl_pasteFinished(Task *pasteTask);
     void sl_addSequencesToAlignmentFinished(Task *task);
     void sl_delCol();
@@ -177,6 +178,7 @@ private slots:
 
 private:
     void initRenderer();
+    void runPasteTask(bool isPasteBefore);
 
     void buildMenu(QMenu *m);
 

@@ -24,7 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -37,9 +36,14 @@ namespace U2 {
 
 const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
-AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<DNASequence> &seqList, bool recheckNewSequenceAlphabetOnMismatch)
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)),
+AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
+                                                                     const QList<DNASequence> &seqList,
+                                                                     int insertRowIndex,
+                                                                     bool recheckNewSequenceAlphabetOnMismatch)
+    // the task must be run in main thread because it updates DBI.
+    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
       seqList(seqList),
+      insertRowIndex(insertRowIndex),
       maObj(obj),
       stateLock(NULL),
       msaAlphabet(maObj->getAlphabet()),
@@ -94,18 +98,18 @@ void AddSequenceObjectsToAlignmentTask::processObjectsAndSetResultingAlphabet() 
     QList<DNASequence> newSeqList;
     foreach (const DNASequence &dnaObj, seqList) {
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, msaAlphabet);
-        if (newAlphabet != NULL) {
-            if (!msaAlphabet->isRaw() && msaAlphabet != newAlphabet && recheckNewSequenceAlphabetOnMismatch) {
-                QList<const DNAAlphabet *> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(dnaObj.constSequence());
-                if (allValidAlphabets.contains(msaAlphabet)) {
-                    newAlphabet = msaAlphabet;
-                }
-            }
-            msaAlphabet = newAlphabet;
-            newSeqList.append(dnaObj);
-        } else {
+        if (newAlphabet == nullptr) {
             errorList << dnaObj.getName();
+            continue;
         }
+        if (!msaAlphabet->isRaw() && msaAlphabet != newAlphabet && recheckNewSequenceAlphabetOnMismatch) {
+            QList<const DNAAlphabet *> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(dnaObj.constSequence());
+            if (allValidAlphabets.contains(msaAlphabet)) {
+                newAlphabet = msaAlphabet;
+            }
+        }
+        msaAlphabet = newAlphabet;
+        newSeqList.append(dnaObj);
     }
     seqList = newSeqList;
 }
@@ -149,7 +153,7 @@ void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 ma
         return;
     }
 
-    dbi->addRows(entityRef.entityId, rows, stateInfo);
+    dbi->addRows(entityRef.entityId, rows, insertRowIndex, stateInfo);
     CHECK_OP(stateInfo, );
 
     mi.rowListChanged = true;
@@ -192,8 +196,8 @@ void AddSequenceObjectsToAlignmentTask::releaseLock() {
     }
 }
 
-AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls)
-    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), false), urlList(urls), loadTask(NULL) {
+AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex)
+    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, false), urlList(urls), loadTask(NULL) {
     connect(maObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_onCancel()));
 }
 
@@ -237,8 +241,11 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
 
 ////////////////////////////////////////////////////////////////////////////////
 //AddSequencesFromDocumentsToAlignmentTask
-AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, bool recheckNewSequenceAlphabets)
-    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), recheckNewSequenceAlphabets), docs(docs) {
+AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
+                                                                                   const QList<Document *> &docs,
+                                                                                   int insertRowIndex,
+                                                                                   bool recheckNewSequenceAlphabets)
+    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, recheckNewSequenceAlphabets), docs(docs) {
 }
 
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {
