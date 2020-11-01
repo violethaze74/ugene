@@ -4928,7 +4928,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(11, 14), GTGlobals::UseMouse);
 
     QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
