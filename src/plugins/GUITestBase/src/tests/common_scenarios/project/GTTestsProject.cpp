@@ -1089,7 +1089,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T1 (UCSC April 2002 chr7:115977709-117855134)", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[8] == "human_T1 (UCSC April 2002 chr7:115977709-117855134)", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0065) {
