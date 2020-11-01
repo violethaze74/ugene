@@ -4609,7 +4609,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
 
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T3", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[10] == "human_T3", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_fake) {
