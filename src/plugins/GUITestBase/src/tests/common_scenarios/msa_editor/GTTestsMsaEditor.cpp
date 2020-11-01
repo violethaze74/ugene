@@ -4506,9 +4506,9 @@ GUI_TEST_CLASS_DEFINITION(test_0079) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-    // The sequence was added to the bottom of the alignment.
+    // The sequence was added to the 8th position of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T1", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[8] == "human_T1", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0080) {
