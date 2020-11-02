@@ -291,19 +291,26 @@ void BowtieAlignTask::LogParser::parseOutput(const QString &partOfLog) {
 
 void BowtieAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
-    QRegExp blockRegExp("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
-    QStringList log = lastPartOfLog;
-    foreach (const QString &buf, log) {
+    QRegExp blockRegExp("# reads with at least one alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
+    QRegExp blockRegExpOld("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
+    for (const QString &buf : lastPartOfLog) {
         if (buf.contains(blockRegExp)) {
             if (blockRegExp.cap(1).toInt() > 0) {
                 hasResults = true;
+                break;
+            }
+        } else if (buf.contains(blockRegExpOld)) {
+            if (blockRegExpOld.cap(1).toInt() > 0) {
+                hasResults = true;
+                break;
             }
         }
     }
 
-    foreach (const QString &buf, log) {
+    for (const QString &buf : lastPartOfLog) {
         if (buf.contains("Out of memory")) {
             setLastError(tr("There is not enough memory on the computer!"));
+            break;
         }
     }
 }

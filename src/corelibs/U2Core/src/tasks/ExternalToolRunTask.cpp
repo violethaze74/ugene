@@ -97,7 +97,7 @@ void ExternalToolRunTask::run() {
     }
 
     helper.reset(new ExternalToolRunTaskHelper(this));
-    if (NULL != listener) {
+    if (listener != NULL) {
         helper->addOutputListener(listener);
     }
 
