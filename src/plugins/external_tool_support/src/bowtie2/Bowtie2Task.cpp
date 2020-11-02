@@ -245,7 +245,7 @@ Bowtie2Task::Bowtie2Task(const DnaAssemblyToRefTaskSettings &settings, bool just
 }
 
 void Bowtie2Task::prepare() {
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         setUpIndexBuilding(indexSuffixes);
         if (!settings.prebuiltIndex) {
             setUpIndexBuilding(largeIndexSuffixes);
@@ -262,7 +262,7 @@ void Bowtie2Task::prepare() {
     if (!settings.prebuiltIndex) {
         QString indexFileName = settings.indexFileName;
         if (indexFileName.isEmpty()) {
-            if (justBuildIndex) {
+            if (isBuildOnlyTask) {
                 indexFileName = settings.refSeqUrl.dirPath() + "/" + settings.refSeqUrl.baseFileName();
             } else {
                 indexFileName = settings.resultFileName.dirPath() + "/" + settings.resultFileName.baseFileName();
@@ -271,7 +271,7 @@ void Bowtie2Task::prepare() {
         buildIndexTask = new Bowtie2BuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName);
         buildIndexTask->addListeners(QList<ExternalToolListener *>() << getListener(0));
     }
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         alignTask = new Bowtie2AlignTask(settings);
         alignTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
     }
@@ -280,7 +280,7 @@ void Bowtie2Task::prepare() {
         addSubTask(unzipTask);
     } else if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);
-    } else if (!justBuildIndex) {
+    } else if (!isBuildOnlyTask) {
         addSubTask(alignTask);
     } else {
         assert(false);
@@ -288,7 +288,7 @@ void Bowtie2Task::prepare() {
 }
 
 Task::ReportResult Bowtie2Task::report() {
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         hasResults = true;
     }
     return ReportResult_Finished;
@@ -300,12 +300,12 @@ QList<Task *> Bowtie2Task::onSubTaskFinished(Task *subTask) {
     if (subTask == unzipTask) {
         if (!settings.prebuiltIndex) {
             result.append(buildIndexTask);
-        } else if (!justBuildIndex) {
+        } else if (!isBuildOnlyTask) {
             result.append(alignTask);
         }
     }
 
-    if ((subTask == buildIndexTask) && !justBuildIndex) {
+    if ((subTask == buildIndexTask) && !isBuildOnlyTask) {
         result.append(alignTask);
     }
     return result;

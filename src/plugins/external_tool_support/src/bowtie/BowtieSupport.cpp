@@ -26,24 +26,26 @@
 namespace U2 {
 
 // BowtieSupport
-const QString BowtieSupport::ET_BOWTIE = "Bowtie aligner";
 const QString BowtieSupport::ET_BOWTIE_ID = "USUPP_BOWTIE";
-const QString BowtieSupport::ET_BOWTIE_BUILD = "Bowtie build indexer";
 const QString BowtieSupport::ET_BOWTIE_BUILD_ID = "USUPP_BOWTIE_BUILD";
 
-BowtieSupport::BowtieSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "bowtie1", name, path) {
+static QString getBowtieToolNameById(const QString &id) {
+    return id == BowtieSupport::ET_BOWTIE_ID ? "Bowtie aligner" : "Bowtie build indexer";
+}
+
+BowtieSupport::BowtieSupport(const QString &id)
+    : ExternalTool(id, "bowtie1", getBowtieToolNameById(id), "") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
-    if (name == ET_BOWTIE) {
+    if (id == ET_BOWTIE_ID) {
 #ifdef Q_OS_WIN
         executableFileName = "bowtie.exe";
 #else
 #    if defined(Q_OS_UNIX)
-        executableFileName = "bowtie";
+        executableFileName = "bowtie-align-s";
 #    endif
 #endif
     } else {
@@ -51,7 +53,7 @@ BowtieSupport::BowtieSupport(const QString &id, const QString &name, const QStri
         executableFileName = "bowtie-build.exe";
 #else
 #    if defined(Q_OS_UNIX)
-        executableFileName = "bowtie-build";
+        executableFileName = "bowtie-build-s";
 #    endif
 #endif
     }

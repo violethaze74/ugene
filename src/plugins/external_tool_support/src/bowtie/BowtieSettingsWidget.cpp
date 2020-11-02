@@ -92,7 +92,6 @@ QMap<QString, QVariant> BowtieSettingsWidget::getDnaAssemblyCustomSettings() con
     settings.insert(BowtieTask::OPTION_BEST, bestCheckBox->isChecked());
     settings.insert(BowtieTask::OPTION_ALL, allCheckBox->isChecked());
     settings.insert(BowtieTask::OPTION_NOMAQROUND, nomaqroundCheckBox->isChecked());
-    settings.insert(BowtieTask::OPTION_COLORSPACE, colorspaceCheckBox->isChecked());
 
     return settings;
 }
@@ -118,7 +117,6 @@ BowtieBuildSettingsWidget::BowtieBuildSettingsWidget(QWidget *parent)
 
 QMap<QString, QVariant> BowtieBuildSettingsWidget::getBuildIndexCustomSettings() {
     QMap<QString, QVariant> settings;
-    settings.insert(BowtieTask::OPTION_COLORSPACE, colorspaceCheckBox->isChecked());
     return settings;
 }
 

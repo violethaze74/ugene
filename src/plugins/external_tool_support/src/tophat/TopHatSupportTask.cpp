@@ -116,9 +116,8 @@ ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
         }
         settings.buildIndexPathAndBasename = indexDir.absolutePath() + "/" + referenceGenome.baseName();
         if (settings.useBowtie1) {
-            bowtieIndexTask = new BowtieBuildIndexTask(referenceGenome.absoluteFilePath(),
-                                                       settings.buildIndexPathAndBasename,
-                                                       false);
+            bowtieIndexTask = new BowtieBuildTask(referenceGenome.absoluteFilePath(),
+                                                  settings.buildIndexPathAndBasename);
         } else {
             bowtieIndexTask = new Bowtie2BuildIndexTask(referenceGenome.absoluteFilePath(),
                                                         settings.buildIndexPathAndBasename);

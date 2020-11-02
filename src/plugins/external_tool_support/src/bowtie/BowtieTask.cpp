@@ -32,16 +32,15 @@
 
 namespace U2 {
 
-// BowtieBuildIndexTask
+// BowtieBuildTask
 
-BowtieBuildIndexTask::BowtieBuildIndexTask(const QString &referencePath, const QString &indexPath, bool colorspace)
-    : ExternalToolSupportTask("Build Bowtie index", TaskFlags_NR_FOSCOE),
+BowtieBuildTask::BowtieBuildTask(const QString &referencePath, const QString &indexPath)
+    : ExternalToolSupportTask("Bowtie build", TaskFlags_NR_FOSCOE),
       referencePath(referencePath),
-      indexPath(indexPath),
-      colorspace(colorspace) {
+      indexPath(indexPath) {
 }
 
-void BowtieBuildIndexTask::prepare() {
+void BowtieBuildTask::prepare() {
     {
         QFileInfo file(referencePath);
         if (!file.exists()) {
@@ -49,24 +48,21 @@ void BowtieBuildIndexTask::prepare() {
             return;
         }
         qint64 memUseMB = file.size() * 3 / 1024 / 1024 + 100;
-        coreLog.trace(QString("bowtie-build:Memory resourse %1").arg(memUseMB));
+        coreLog.trace(QString("bowtie-build:Memory resource %1").arg(memUseMB));
         addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB));
     }
 
     QStringList arguments;
     arguments.append(referencePath);
     arguments.append(indexPath);
-    if (colorspace) {
-        arguments.append("--color");
-    }
 
-    ExternalToolRunTask *task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_BUILD_ID, arguments, new LogParser());
+    auto task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_BUILD_ID, arguments, new LogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
 
 // BowtieBuildIndexTask::LogParser
-BowtieBuildIndexTask::LogParser::LogParser()
+BowtieBuildTask::LogParser::LogParser()
     : stage(PREPARE),
       substage(UNKNOWN),
       bucketSortIteration(0),
@@ -76,18 +72,18 @@ BowtieBuildIndexTask::LogParser::LogParser()
       progress(0) {
 }
 
-void BowtieBuildIndexTask::LogParser::parseOutput(const QString &partOfLog) {
+void BowtieBuildTask::LogParser::parseOutput(const QString &partOfLog) {
     ExternalToolLogParser::parseOutput(partOfLog);
     foreach (const QString &buf, lastPartOfLog) {
         QRegExp blockRegExp("Getting block (\\d+) of (\\d+)");
         QRegExp percentRegexp("(\\d+)%");
         if (buf.contains("Binary sorting into buckets")) {
-            if (BUCKET_SORT != substage) {
+            if (substage != BUCKET_SORT) {
                 bucketSortIteration = 0;
                 substage = BUCKET_SORT;
-                if (PREPARE == stage) {
+                if (stage == PREPARE) {
                     stage = FORWARD_INDEX;
-                } else if (FORWARD_INDEX == stage) {
+                } else if (stage == FORWARD_INDEX) {
                     stage = MIRROR_INDEX;
                 }
             } else {
@@ -101,15 +97,15 @@ void BowtieBuildIndexTask::LogParser::parseOutput(const QString &partOfLog) {
             substageProgress = 30 + blockIndex * 70 / blockCount;
         } else if (buf.contains(percentRegexp)) {
             int percent = percentRegexp.cap(1).toInt();
-            if (BUCKET_SORT == substage) {
+            if (substage == BUCKET_SORT) {
                 substageProgress = (bucketSortIteration * 30 + percent * 30 / 100) / 5;
-            } else if (GET_BLOCKS == substage) {
+            } else if (substage == GET_BLOCKS) {
                 substageProgress = 30 + (blockIndex * 70 + percent * 70 / 100) / blockCount;
             }
         }
-        if (FORWARD_INDEX == stage) {
+        if (stage == FORWARD_INDEX) {
             progress = substageProgress / 2;
-        } else if (MIRROR_INDEX == stage) {
+        } else if (stage == MIRROR_INDEX) {
             progress = 50 + substageProgress / 2;
         } else {
             progress = 0;
@@ -117,28 +113,28 @@ void BowtieBuildIndexTask::LogParser::parseOutput(const QString &partOfLog) {
     }
 }
 
-void BowtieBuildIndexTask::LogParser::parseErrOutput(const QString &partOfLog) {
+void BowtieBuildTask::LogParser::parseErrOutput(const QString &partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
 }
 
-int BowtieBuildIndexTask::LogParser::getProgress() {
+int BowtieBuildTask::LogParser::getProgress() {
     return progress;
 }
 
-// BowtieAssembleTask
+// BowtieAlignTask
 
-BowtieAssembleTask::BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings)
-    : ExternalToolSupportTask("Bowtie reads assembly", TaskFlags_NR_FOSCOE),
-      logParser(NULL),
+BowtieAlignTask::BowtieAlignTask(const DnaAssemblyToRefTaskSettings &settings)
+    : ExternalToolSupportTask("Bowtie align", TaskFlags_NR_FOSCOE),
+      logParser(nullptr),
       settings(settings) {
 }
 
-bool BowtieAssembleTask::hasResult() const {
-    CHECK(NULL != logParser, false);
+bool BowtieAlignTask::hasResult() const {
+    CHECK(logParser != nullptr, false);
     return logParser->hasResult();
 }
 
-void BowtieAssembleTask::prepare() {
+void BowtieAlignTask::prepare() {
     {
         QString indexSuffixes[] = {".1.ebwt", ".2.ebwt", ".3.ebwt", ".4.ebwt", ".rev.1.ebwt", ".rev.2.ebwt"};
 
@@ -173,7 +169,7 @@ void BowtieAssembleTask::prepare() {
     arguments.append(settings.getCustomValue(BowtieTask::OPTION_N_MISMATCHES, 2).toString());
     {
         int vMismatches = settings.getCustomValue(BowtieTask::OPTION_V_MISMATCHES, -1).toInt();
-        if (-1 != vMismatches) {
+        if (vMismatches != -1) {
             arguments.append(QString("-v"));
             arguments.append(QString::number(vMismatches));
         }
@@ -215,9 +211,6 @@ void BowtieAssembleTask::prepare() {
     }
     if (settings.getCustomValue(BowtieTask::OPTION_ALL, false).toBool()) {
         arguments.append("--all");
-    }
-    if (settings.getCustomValue(BowtieTask::OPTION_COLORSPACE, false).toBool()) {
-        arguments.append("-C");
     }
     {
         int threads = settings.getCustomValue(BowtieTask::OPTION_THREADS, 1).toInt();
@@ -282,21 +275,21 @@ void BowtieAssembleTask::prepare() {
     }
     arguments.append(settings.resultFileName.getURLString());
     logParser = new LogParser();
-    ExternalToolRunTask *task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_ID, arguments, logParser, NULL);
+    auto task = new ExternalToolRunTask(BowtieSupport::ET_BOWTIE_ID, arguments, logParser, NULL);
     setListenerForTask(task);
     addSubTask(task);
 }
 
 // BowtieAssembleTask::LogParser
-BowtieAssembleTask::LogParser::LogParser()
+BowtieAlignTask::LogParser::LogParser()
     : hasResults(false) {
 }
 
-void BowtieAssembleTask::LogParser::parseOutput(const QString &partOfLog) {
+void BowtieAlignTask::LogParser::parseOutput(const QString &partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
 }
 
-void BowtieAssembleTask::LogParser::parseErrOutput(const QString &partOfLog) {
+void BowtieAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
     QRegExp blockRegExp("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
     QStringList log = lastPartOfLog;
@@ -315,7 +308,7 @@ void BowtieAssembleTask::LogParser::parseErrOutput(const QString &partOfLog) {
     }
 }
 
-bool BowtieAssembleTask::LogParser::hasResult() const {
+bool BowtieAlignTask::LogParser::hasResult() const {
     return hasResults;
 }
 
@@ -336,7 +329,6 @@ const QString BowtieTask::OPTION_NOMAQROUND = "nomaqround";
 const QString BowtieTask::OPTION_SEED = "seed";
 const QString BowtieTask::OPTION_BEST = "best";
 const QString BowtieTask::OPTION_ALL = "all";
-const QString BowtieTask::OPTION_COLORSPACE = "colorspace";
 const QString BowtieTask::OPTION_THREADS = "threads";
 
 const QStringList BowtieTask::indexSuffixes = QStringList() << ".1.ebwt"
@@ -355,7 +347,7 @@ const QStringList BowtieTask::largeIndexSuffixes = QStringList() << ".1.ebwtl"
 BowtieTask::BowtieTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex)
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSCOE, justBuildIndex),
       buildIndexTask(NULL),
-      assembleTask(NULL),
+      alignTask(NULL),
       unzipTask(NULL) {
 }
 
@@ -367,7 +359,7 @@ void BowtieTask::prepare() {
         settings.refSeqUrl = GUrl(QFileInfo(temp).absoluteFilePath());
     }
 
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         setUpIndexBuilding(indexSuffixes);
         if (!settings.prebuiltIndex) {
             setUpIndexBuilding(largeIndexSuffixes);
@@ -377,34 +369,34 @@ void BowtieTask::prepare() {
     if (!settings.prebuiltIndex) {
         QString indexFileName = settings.indexFileName;
         if (indexFileName.isEmpty()) {
-            if (justBuildIndex) {
+            if (isBuildOnlyTask) {
                 indexFileName = settings.refSeqUrl.dirPath() + "/" + settings.refSeqUrl.baseFileName();
             } else {
                 indexFileName = settings.resultFileName.dirPath() + "/" + settings.resultFileName.baseFileName();
             }
         }
-        buildIndexTask = new BowtieBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings.getCustomValue(BowtieTask::OPTION_COLORSPACE, false).toBool());
+        buildIndexTask = new BowtieBuildTask(settings.refSeqUrl.getURLString(), indexFileName);
         buildIndexTask->addListeners(QList<ExternalToolListener *>() << getListener(0));
     }
-    if (!justBuildIndex) {
-        assembleTask = new BowtieAssembleTask(settings);
-        assembleTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
+    if (!isBuildOnlyTask) {
+        alignTask = new BowtieAlignTask(settings);
+        alignTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
     }
 
-    if (unzipTask != NULL) {
+    if (unzipTask != nullptr) {
         addSubTask(unzipTask);
     } else if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);
-    } else if (!justBuildIndex) {
-        addSubTask(assembleTask);
+    } else if (!isBuildOnlyTask) {
+        addSubTask(alignTask);
     } else {
-        assert(false);
+        Q_ASSERT(false);
     }
 }
 
 Task::ReportResult BowtieTask::report() {
-    if (!justBuildIndex) {
-        hasResults = assembleTask->hasResult();
+    if (!isBuildOnlyTask) {
+        hasResults = alignTask->hasResult();
     }
     return ReportResult_Finished;
 }
@@ -415,13 +407,13 @@ QList<Task *> BowtieTask::onSubTaskFinished(Task *subTask) {
     if (subTask == unzipTask) {
         if (!settings.prebuiltIndex) {
             result.append(buildIndexTask);
-        } else if (!justBuildIndex) {
-            result.append(assembleTask);
+        } else if (!isBuildOnlyTask) {
+            result.append(alignTask);
         }
     }
 
-    if ((subTask == buildIndexTask) && !justBuildIndex) {
-        result.append(assembleTask);
+    if ((subTask == buildIndexTask) && !isBuildOnlyTask) {
+        result.append(alignTask);
     }
     return result;
 }

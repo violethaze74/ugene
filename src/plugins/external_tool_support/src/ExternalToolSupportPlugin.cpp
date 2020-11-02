@@ -324,11 +324,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     CAP3Support *cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
     etRegistry->registerEntry(cap3Tool);
 
-    // Bowtie
-    BowtieSupport *bowtieSupport = new BowtieSupport(BowtieSupport::ET_BOWTIE_ID, BowtieSupport::ET_BOWTIE);
-    etRegistry->registerEntry(bowtieSupport);
-    BowtieSupport *bowtieBuildSupport = new BowtieSupport(BowtieSupport::ET_BOWTIE_BUILD_ID, BowtieSupport::ET_BOWTIE_BUILD);
-    etRegistry->registerEntry(bowtieBuildSupport);
+    // Bowtie 1
+    etRegistry->registerEntry(new BowtieSupport(BowtieSupport::ET_BOWTIE_ID));
+    etRegistry->registerEntry(new BowtieSupport(BowtieSupport::ET_BOWTIE_BUILD_ID));
 
     // Bowtie 2
     Bowtie2Support *bowtie2AlignSupport = new Bowtie2Support(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, Bowtie2Support::ET_BOWTIE2_ALIGN);
