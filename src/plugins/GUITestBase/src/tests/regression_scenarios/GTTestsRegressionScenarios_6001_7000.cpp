@@ -6015,6 +6015,74 @@ GUI_TEST_CLASS_DEFINITION(test_6897_2) {
     CHECK_SET_ERR(names.size() == 21, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
     CHECK_SET_ERR(names[8] == "human_T1", QString("Unexpected name, expected: \"human_T1\", current: %1").arg(names[8]));
 }
+GUI_TEST_CLASS_DEFINITION(test_6898) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select the first sequence in the name list
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Phaneroptera_falcata");
+
+    // Set text to the clipboard ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n"
+    GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
+
+    // Paste the selection with Ctrl+Alt+V
+    GTKeyboardDriver::keyPress(Qt::Key_Alt);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
+
+    // Expected state: the copied sequence is inserted right above the selected sequence
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 19, QString("Unexpected name list size, expected: 19, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[0] == "human_T1", QString("Unexpected name, expected: \"human_T1\", current: %1").arg(names[0]));
+}
+GUI_TEST_CLASS_DEFINITION(test_6898_1) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select the first sequence in the name list
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Phaneroptera_falcata");
+
+    // Set text to the clipboard ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n"
+    GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
+
+    // Press the Esc button
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // Paste the selection with Ctrl+Alt+V
+    GTKeyboardDriver::keyPress(Qt::Key_Alt);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
+
+    // Expected state: the copied sequence is inserted right above the first sequence
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 19, QString("Unexpected name list size, expected: 19, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[0] == "human_T1", QString("Unexpected name, expected: \"human_T1\", current: %1").arg(names[0]));
+}
+GUI_TEST_CLASS_DEFINITION(test_6898_2) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Set text to the clipboard ">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA\r\n>human_T3\r\nACCTGA"
+    GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n"
+                             ">human_T2\r\nACCTGA\r\n"
+                             ">human_T3\r\nACCTGA");
+
+    // Select the 8th sequence
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "Deracantha_deracantoides_EF540");
+
+    // Paste the selection with Ctrl+Alt+V
+    GTKeyboardDriver::keyPress(Qt::Key_Alt);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
+
+    // Expected state: the copied sequences are inserted right above the 8th sequence.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 21, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[7] == "human_T1", QString("Unexpected name, expected: \"human_T1\", current: %1").arg(names[7]));
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
