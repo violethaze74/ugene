@@ -197,12 +197,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, "UGENE-5979");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1003, "too long test");
-    REGISTER_TEST(GUITest_regression_scenarios::test_1189);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1189_1);
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1263, "UGENE-4101");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1499, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1548, "UGENE-4791");
-    REGISTER_TEST(GUITest_regression_scenarios::test_1688);
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1701, "The test stopped passing after http://ugene-teamcity.unipro.ru:8111/ugene-teamcity/viewLog.html?buildId=195968&tab=buildChangesDiv&buildTypeId=UgeneNightlyBuilds_GuiTests_WindowsSuites_GuiTestsSeparateWindows1032bitSuite2 change.");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2894, "proper data needed");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
@@ -510,6 +507,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1184);
     REGISTER_TEST(GUITest_regression_scenarios::test_1186_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1186_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1189);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1189_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1190);
     REGISTER_TEST(GUITest_regression_scenarios::test_1199);
 
@@ -665,7 +664,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
     REGISTER_TEST(GUITest_regression_scenarios::test_1673);
@@ -674,9 +672,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1673_4);
     REGISTER_TEST(GUITest_regression_scenarios::test_1673_5);
     REGISTER_TEST(GUITest_regression_scenarios::test_1677);
-
     REGISTER_TEST(GUITest_regression_scenarios::test_1686);
     REGISTER_TEST(GUITest_regression_scenarios::test_1687);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1688);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_1700);
     REGISTER_TEST(GUITest_regression_scenarios::test_1703);    //, "UGENE-3693"
@@ -1676,6 +1674,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6816);
     REGISTER_TEST(GUITest_regression_scenarios::test_6847);
     REGISTER_TEST(GUITest_regression_scenarios::test_6875);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6897);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6897_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6897_2);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
