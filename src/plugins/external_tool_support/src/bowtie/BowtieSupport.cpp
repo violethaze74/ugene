@@ -42,19 +42,15 @@ BowtieSupport::BowtieSupport(const QString &id)
     }
     if (id == ET_BOWTIE_ID) {
 #ifdef Q_OS_WIN
-        executableFileName = "bowtie.exe";
+        executableFileName = "bowtie-align-s.exe";
 #else
-#    if defined(Q_OS_UNIX)
         executableFileName = "bowtie-align-s";
-#    endif
 #endif
     } else {
 #ifdef Q_OS_WIN
-        executableFileName = "bowtie-build.exe";
+        executableFileName = "bowtie-build-s.exe";
 #else
-#    if defined(Q_OS_UNIX)
         executableFileName = "bowtie-build-s";
-#    endif
 #endif
     }
     validationArguments.append("--version");
