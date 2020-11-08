@@ -244,7 +244,7 @@ void MaEditorWgt::initActions() {
     delSelectionAction->setShortcutContext(Qt::WidgetShortcut);
 #endif
 
-    copySelectionAction = new QAction(tr("Copy selection"), this);
+    copySelectionAction = new QAction(tr("Copy"), this);
     copySelectionAction->setObjectName("copy_selection");
     copySelectionAction->setShortcut(QKeySequence::Copy);
     copySelectionAction->setShortcutContext(Qt::WidgetShortcut);
@@ -252,11 +252,17 @@ void MaEditorWgt::initActions() {
 
     addAction(copySelectionAction);
 
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy formatted"), this);
+    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (preferred format)"), this);
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetShortcut);
     copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text()).arg(copyFormattedSelectionAction->shortcut().toString()));
+
+    copyConsensusAction = new QAction(tr("Copy consensus"), this);
+    copyConsensusAction->setObjectName("Copy consensus");
+
+    copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
+    copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
 
     addAction(copyFormattedSelectionAction);
 

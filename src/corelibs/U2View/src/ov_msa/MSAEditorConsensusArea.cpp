@@ -63,18 +63,13 @@ void MSAEditorConsensusArea::initRenderer() {
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet *al = editor->getMaObject()->getAlphabet();
-    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
+    SAFE_POINT(al != nullptr, "Alphabet is NULL", "");
     const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" :
                                                                         "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 
 void MSAEditorConsensusArea::buildMenu(QMenu *menu) {
-    QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    copyMenu->addAction(copyConsensusAction);
-    copyMenu->addAction(copyConsensusWithGapsAction);
-
     menu->addAction(configureConsensusAction);
 }
 

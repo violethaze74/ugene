@@ -131,8 +131,6 @@ protected:
     MaEditorWgt *ui;
     QFont rulerFont;
     int rulerFontHeight;
-    QAction *copyConsensusAction;
-    QAction *copyConsensusWithGapsAction;
     QAction *configureConsensusAction;
     int curPos;
     bool scribbling;

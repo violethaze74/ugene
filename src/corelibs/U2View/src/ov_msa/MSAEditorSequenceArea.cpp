@@ -55,6 +55,8 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include <U2Formats/FastaFormat.h>
+
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -89,10 +91,10 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     selectionColor = Qt::black;
     editingEnabled = true;
 
-    connect(ui->getCopySelectionAction(), SIGNAL(triggered()), SLOT(sl_copyCurrentSelection()));
+    connect(ui->getCopySelectionAction(), SIGNAL(triggered()), SLOT(sl_copySelection()));
     addAction(ui->getCopySelectionAction());
 
-    connect(ui->getCopyFormattedSelectionAction(), SIGNAL(triggered()), SLOT(sl_copyFormattedSelection()));
+    connect(ui->getCopyFormattedSelectionAction(), SIGNAL(triggered()), SLOT(sl_copySelectionFormatted()));
     addAction(ui->getCopyFormattedSelectionAction());
 
     connect(ui->getPasteAction(), SIGNAL(triggered()), SLOT(sl_paste()));
@@ -280,19 +282,15 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView *, QMenu *m) {
     buildMenu(m);
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != nullptr, "editMenu", );
+    SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
     QList<QAction *> actions;
     actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
             << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
-    QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != nullptr, "copyMenu", );
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
         editMenu->addActions(actions);
-        copyMenu->addAction(ui->getCopySelectionAction());
-        copyMenu->addAction(ui->getCopyFormattedSelectionAction());
     }
 
     m->setObjectName("msa sequence area context menu");
@@ -304,12 +302,12 @@ void MSAEditorSequenceArea::initRenderer() {
 
 void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     QMenu *loadSeqMenu = GUIUtils::findSubMenu(m, MSAE_MENU_LOAD);
-    SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu", );
+    SAFE_POINT(loadSeqMenu != nullptr, "loadSeqMenu is null", );
     loadSeqMenu->addAction(addSeqFromProjectAction);
     loadSeqMenu->addAction(addSeqFromFileAction);
 
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != nullptr, "editMenu", );
+    SAFE_POINT(editMenu != nullptr, "editMenu is null", );
     QList<QAction *> actions;
 
     MsaEditorWgt *msaWgt = getEditor()->getUI();
@@ -322,19 +320,23 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
     QMenu *exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
-    SAFE_POINT(exportMenu != nullptr, "exportMenu", );
+    SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
     exportMenu->addAction(createSubaligniment);
     exportMenu->addAction(saveSequence);
 
     QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != nullptr, "copyMenu", );
+    SAFE_POINT(copyMenu != nullptr, "copyMenu is null", );
     ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
     emit si_copyFormattedChanging(!selection.isEmpty());
     copyMenu->addAction(ui->getCopySelectionAction());
     ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
+    copyMenu->addAction(ui->copyConsensusAction);
+    copyMenu->addAction(ui->copyConsensusWithGapsAction);
+    copyMenu->addSeparator();
     copyMenu->addAction(ui->getPasteAction());
     copyMenu->addAction(ui->getPasteBeforeAction());
+    copyMenu->addSeparator();
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
@@ -539,35 +541,36 @@ void MSAEditorSequenceArea::sl_modelChanged() {
     MaEditorSequenceArea::sl_modelChanged();
 }
 
-void MSAEditorSequenceArea::sl_copyCurrentSelection() {
+void MSAEditorSequenceArea::sl_copySelection() {
+    // Copies selection to the clipboard using FASTA format (the most simple format keeps sequence names).
     CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
-    // TODO: probably better solution would be to export selection???
-
-    assert(isInRange(selection.topLeft()));
-    assert(isInRange(selection.bottomRight()));
+    SAFE_POINT(isInRange(selection.topLeft()), "Selection top-left is not in range!", );
+    SAFE_POINT(isInRange(selection.bottomRight()), "Selection bottom-right is not in range!", );
 
     MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
     MaCollapseModel *collapseModel = ui->getCollapseModel();
     QString selText;
     U2OpStatus2Log os;
     int len = selection.width();
-    for (int viewRow = selection.y(); viewRow <= selection.bottom(); ++viewRow) {    // bottom is inclusive
+    for (int viewRow = selection.y(); viewRow <= selection.bottom() && !os.hasError(); ++viewRow) {    // bottom is inclusive
         int maRow = collapseModel->getMaRowIndexByViewRowIndex(viewRow);
-        QByteArray seqPart = maObj->getMsaRow(maRow)->mid(selection.x(), len, os)->toByteArray(os, len);
-        selText.append(seqPart);
-        if (viewRow != selection.bottom()) {    // do not add line break into the last line
-            selText.append("\n");
-        }
+        const MultipleSequenceAlignmentRow &row = maObj->getMsaRow(maRow);
+        QByteArray seqPart = row->mid(selection.x(), len, os)->toByteArray(os, len);
+        selText.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
+            .append(row.data()->getName())
+            .append('\n')
+            .append(TextUtils::split(seqPart, 80).join("\n"))
+            .append('\n');
     }
     QApplication::clipboard()->setText(selText);
 }
 
-void MSAEditorSequenceArea::sl_copyFormattedSelection() {
+void MSAEditorSequenceArea::sl_copySelectionFormatted() {
     const DocumentFormatId &formatId = getCopyFormattedAlgorithmId();
     QRect rectToCopy = selection.isEmpty() ? QRect(0, 0, editor->getAlignmentLen(), getViewRowCount()) : selection.toRect();
-    Task *clipboardTask = new SubalignmentToClipboardTask(getEditor(), rectToCopy, formatId);
-    AppContext::getTaskScheduler()->registerTopLevelTask(clipboardTask);
+    auto coptTask = new SubalignmentToClipboardTask(getEditor(), rectToCopy, formatId);
+    AppContext::getTaskScheduler()->registerTopLevelTask(coptTask);
 }
 
 void MSAEditorSequenceArea::sl_paste() {

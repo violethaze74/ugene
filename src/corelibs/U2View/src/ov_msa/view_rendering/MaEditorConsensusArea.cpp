@@ -70,13 +70,8 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
 
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 
-    copyConsensusAction = new QAction(tr("Copy consensus"), this);
-    copyConsensusAction->setObjectName("Copy consensus");
-    connect(copyConsensusAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequence()));
-
-    copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
-    copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
-    connect(copyConsensusWithGapsAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequenceWithGaps()));
+    connect(ui->copyConsensusAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequence()));
+    connect(ui->copyConsensusWithGapsAction, SIGNAL(triggered()), SLOT(sl_copyConsensusSequenceWithGaps()));
 
     configureConsensusAction = new QAction(tr("Consensus mode..."), this);
     configureConsensusAction->setObjectName("Consensus mode");

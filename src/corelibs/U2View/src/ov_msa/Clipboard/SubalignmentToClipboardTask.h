@@ -55,7 +55,6 @@ public:
     FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId);
 
     void prepare();
-    void run();
 
 protected:
     QList<Task *> onSubTaskFinished(Task *subTask);

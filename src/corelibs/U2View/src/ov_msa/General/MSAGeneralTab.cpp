@@ -24,6 +24,7 @@
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
@@ -46,7 +47,7 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor *_msa)
 
     ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
     ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
-    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy to clipboard"), copyTypeWidget, true);
+    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy selection"), copyTypeWidget, true);
     ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msa), true);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(alignmentInfo);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(consensusMode);
@@ -99,7 +100,7 @@ void MSAGeneralTab::connectSignals() {
     //out
     connect(this, SIGNAL(si_copyFormatChanged(QString)), msa->getUI()->getSequenceArea(), SLOT(sl_changeCopyFormat(QString)));
 
-    connect(this, SIGNAL(si_copyFormatted()), msa->getUI()->getSequenceArea(), SLOT(sl_copyFormattedSelection()));
+    connect(this, SIGNAL(si_copyFormatted()), msa->getUI()->getSequenceArea(), SLOT(sl_copySelectionFormatted()));
 
     //in
     connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
@@ -119,21 +120,22 @@ void MSAGeneralTab::initializeParameters() {
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    DocumentFormatRegistry *freg = AppContext::getDocumentFormatRegistry();
-    QList<DocumentFormatId> supportedFormats = freg->selectFormats(constr);
+    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+    QList<DocumentFormatId> supportedFormats = formatRegistry->selectFormats(constr);
+    supportedFormats.append(BaseDocumentFormats::PLAIN_TEXT);
 
-    foreach (const DocumentFormatId &fid, supportedFormats) {
-        DocumentFormat *f = freg->getFormatById(fid);
-        copyType->addItem(QIcon(), f->getFormatName(), f->getFormatId());
+    for (const DocumentFormatId &fid : supportedFormats) {
+        DocumentFormat *format = formatRegistry->getFormatById(fid);
+        copyType->addItem(QIcon(), format->getFormatName(), format->getFormatId());
     }
 
-    //RTF
-    copyType->addItem(QIcon(), "Rich text (HTML)", "RTF");
+    copyType->addItem(QIcon(), tr("Rich text (HTML)"), "RTF");
+
+    copyType->model()->sort(0);
 
     QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
-    //in
     connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
 }
 

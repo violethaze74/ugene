@@ -24,20 +24,18 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
+#include <QSet>
 
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
@@ -55,7 +53,7 @@ namespace U2 {
 
 ////////////////////////////////////////////////////////////////////////////////
 PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const U2Region &window, const QStringList &names)
-    : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_FOSE_COSC), window(window), names(names) {
+    : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), window(window), names(names) {
 }
 
 QString PrepareMsaClipboardDataTask::getResult() const {
@@ -65,7 +63,7 @@ QString PrepareMsaClipboardDataTask::getResult() const {
 PrepareMsaClipboardDataTask *MsaClipboardDataTaskFactory::getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
     U2Region window = getWindowBySelection(selection);
     QStringList names = getNamesBySelection(context, selection);
-    if ("RTF" == formatId) {
+    if (formatId == "RTF") {
         return new RichTextMsaClipboardTask(context, window, names);
     } else {
         return new FormatsMsaClipboardTask(context->getMaObject(), window, names, formatId);
@@ -74,7 +72,6 @@ PrepareMsaClipboardDataTask *MsaClipboardDataTaskFactory::getInstance(MSAEditor 
 
 U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selection) {
     return U2Region(selection.x(), selection.width());
-    ;
 }
 
 QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection) {
@@ -92,18 +89,29 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, 
 }
 
 FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId)
-    : PrepareMsaClipboardDataTask(window, names), createSubalignmentTask(NULL), msaObj(msaObj), formatId(formatId) {
+    : PrepareMsaClipboardDataTask(window, names), createSubalignmentTask(nullptr), msaObj(msaObj), formatId(formatId) {
 }
 
 void FormatsMsaClipboardTask::prepare() {
+    if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
+        MultipleSequenceAlignment msa = msaObj->getMsaCopy();
+        msa->crop(window, names.toSet(), stateInfo);
+        CHECK_OP(stateInfo, )
+
+        for (int i = 0; i < msa->getNumRows(); i++) {
+            const MultipleSequenceAlignmentRow &row = msa->getMsaRow(i);
+            if (i > 0) {
+                result.append("\n");
+            }
+            result.append(row->toByteArray(stateInfo, row->getRowLength()));
+        }
+        return;
+    }
     CreateSubalignmentSettings settings = defineSettings(names, window, formatId, stateInfo);
     CHECK_OP(stateInfo, )
 
     createSubalignmentTask = new CreateSubalignmentTask(msaObj, settings);
     addSubTask(createSubalignmentTask);
-}
-
-void FormatsMsaClipboardTask::run() {
 }
 
 #define READ_BUF_SIZE 4096

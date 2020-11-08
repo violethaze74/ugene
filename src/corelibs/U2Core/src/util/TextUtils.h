@@ -126,6 +126,9 @@ public:
     inline static void wrapForCSV(QString &str);
 
     inline static QStringList transposeCSVRows(const QStringList &rows, const QString &delimiter = "\t");
+
+    /** Splits text into chunks of the given length. */
+    static QStringList split(const QString &text, int chunkSize);
 };
 
 template<typename T>

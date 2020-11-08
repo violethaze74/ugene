@@ -203,4 +203,15 @@ qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 bu
     return result;
 }
 
+QStringList TextUtils::split(const QString &text, int chunkSize) {
+    if (text.length() < chunkSize) {
+        return QStringList() << text;
+    }
+    QStringList result;
+    for (int i = 0; i < text.length(); i += chunkSize) {
+        result << text.mid(i, qMin(i + chunkSize, text.length()) - i);
+    }
+    return result;
+}
+
 }    // namespace U2

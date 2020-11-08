@@ -147,8 +147,8 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    void sl_copyCurrentSelection();
-    void sl_copyFormattedSelection();
+    void sl_copySelection();
+    void sl_copySelectionFormatted();
     void sl_paste();
     void sl_pasteBefore();
     void sl_pasteFinished(Task *pasteTask);
