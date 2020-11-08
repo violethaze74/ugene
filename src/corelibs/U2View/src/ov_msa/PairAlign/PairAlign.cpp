@@ -116,8 +116,9 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 }
 
 void PairAlign::initParameters() {
-    if (msa->getSelection().height() == 2) {
-        int selectionPos = msa->getSelection().y();
+    const MaEditorSelection &selection = msa->getSelection();
+    if (selection.height() == 2) {
+        int selectionPos = selection.y();
         qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
         qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();
@@ -145,8 +146,10 @@ void PairAlign::initParameters() {
     canDoAlign = false;
 
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
-    SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", );
+    SAFE_POINT(par != nullptr, "AlignmentAlgorithmsRegistry is NULL.", );
     QStringList algList = par->getAvailableAlgorithmIds(PairwiseAlignment);
+    algorithmListComboBox->setEnabled(algList.length() > 0);
+    CHECK(algList.length() > 0, );
     algorithmListComboBox->addItems(algList);
     if (pairwiseAlignmentWidgetsSettings->algorithmName.isEmpty()) {
         pairwiseAlignmentWidgetsSettings->algorithmName = algList[0];
@@ -160,27 +163,25 @@ void PairAlign::initParameters() {
     }
     sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
-    lblMessage->setStyleSheet(
-        "color: " + Theme::errorColorLabelStr() + ";"
-                                                  "font: bold;"
-                                                  "padding-top: 15px;");
-
+    lblMessage->setStyleSheet("color: " + Theme::errorColorLabelStr() + ";"
+                                                                        "font: bold;"
+                                                                        "padding-top: 15px;");
     sl_alignmentChanged();
 }
 
 void PairAlign::updateWarningMessage(int type) {
     QString text;
     switch (type) {
-    case DuplicateSequenceWarning:
-        text = tr("Please select 2 different sequences to align");
-        break;
-    case BadAlphabetWarning: {
-        QString alphabetName = msa->getMaObject()->getAlphabet()->getName();
-        text = tr("Pairwise alignment is not available for alignments with \"%1\" alphabet.").arg(alphabetName);
-        break;
-    }
-    default:
-        text = tr("Unexpected error");
+        case DuplicateSequenceWarning:
+            text = tr("Please select 2 different sequences to align");
+            break;
+        case BadAlphabetWarning: {
+            QString alphabetName = msa->getMaObject()->getAlphabet()->getName();
+            text = tr("Pairwise alignment is not available for alignments with \"%1\" alphabet.").arg(alphabetName);
+            break;
+        }
+        default:
+            text = tr("Unexpected error");
     }
     lblMessage->setText(text);
 }

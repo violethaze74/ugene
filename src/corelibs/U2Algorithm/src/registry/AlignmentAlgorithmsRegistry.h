@@ -52,8 +52,7 @@ public:
     AlignmentAlgorithmsRegistry(QObject *pOwn = 0);
     ~AlignmentAlgorithmsRegistry();
 
-    bool registerAlgorithm(AlignmentAlgorithm *_alg);
-    AlignmentAlgorithm *unregisterAlgorithm(const QString &id);
+    bool registerAlgorithm(AlignmentAlgorithm *algorithm);
     AlignmentAlgorithm *getAlgorithm(const QString &id) const;
 
     QStringList getAvailableAlgorithmIds(AlignmentAlgorithmType type) const;
