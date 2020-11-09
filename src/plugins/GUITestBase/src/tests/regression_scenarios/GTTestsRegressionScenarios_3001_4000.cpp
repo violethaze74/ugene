@@ -196,7 +196,7 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR("S" == clipboardText, "Alignment is not locked" + clipboardText);
 }
 

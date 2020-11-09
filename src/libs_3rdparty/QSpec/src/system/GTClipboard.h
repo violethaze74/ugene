@@ -28,8 +28,11 @@ namespace HI {
 
 class HI_EXPORT GTClipboard {
 public:
-    // fails if can't get clipboard or clipboard doesn't contain text data
+    /** Returns clipboard text. Fails if can't get clipboard or clipboard doesn't contain text data. */
     static QString text(GUITestOpStatus &os);
+
+    /** Returns line-separated multi-fasta sequences with no names parsed from the GTClipboard::text() . */
+    static QString sequences(GUITestOpStatus &os);
 
     static void setText(GUITestOpStatus &os, QString text);
 

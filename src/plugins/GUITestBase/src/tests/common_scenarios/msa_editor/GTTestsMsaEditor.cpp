@@ -1026,7 +1026,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs\n" + clipboardText);
@@ -1058,12 +1058,11 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
     //Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(11, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString sequencesInClipboard = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
-    CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
+    CHECK_SET_ERR(sequencesInClipboard == expectedMSA, "Clipboard check failed! Expected: '" + expectedMSA + "'\n, got: '" + sequencesInClipboard + "'");
 
     GTGlobals::sleep();
 
@@ -1094,7 +1093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
@@ -1126,7 +1125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequense name is the same as its amino translation
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     const QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, clipboardText);
 }
@@ -1151,7 +1150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequense name the same as it amino translation
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     const QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
 }
@@ -1177,7 +1176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequence name the same as it amino translation
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string are different. Clipboard text: " + clipboardText);
 
@@ -1209,7 +1208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs");
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1226,7 +1225,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1256,7 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs");
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1276,7 +1275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1309,7 +1308,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs" + clipboardText);
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1330,7 +1329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1380,17 +1379,12 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
 
     // Expected state: UGENE not crash
     GTGlobals::sleep(5000);
@@ -1670,7 +1664,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(4000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
 }
 
@@ -1703,7 +1697,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
     GTKeyboardUtils::copy(os);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 }
 
@@ -1733,7 +1727,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTThread::waitForMainThread();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 
     // CHANGES: select item in project tree view and press delete
@@ -1937,7 +1931,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString text = GTClipboard::text(os);
+    QString text = GTClipboard::sequences(os);
     QString expected = "A\nA\nT\nA\nT\nT\nT\nA\nA\nA";
     CHECK_SET_ERR(text == expected, "expected: " + expected + "found: " + text);
 }
@@ -1961,7 +1955,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString initial = GTClipboard::text(os);
+    QString initial = GTClipboard::sequences(os);
     // 4. Click OK
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
@@ -1975,7 +1969,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString final = GTClipboard::text(os);
+    QString final = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(initial == final, "msa area was changed");
 }
@@ -2282,7 +2276,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     //    Expected state: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 2));
     GTKeyboardUtils::copy(os);
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "------", "Expected: ------ Found: " + clipboardText);
 }
 
@@ -2300,7 +2294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     //    Expected stste: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 3));
     GTKeyboardUtils::copy(os);
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
 }
 
@@ -2369,7 +2363,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "---", "Expected: TAGTTTATTAA, Found: " + clipboardText);
     //    3. use MSA area context menu->export->save sequence
     //    Exptcted state: Export sequence dialog appeared
@@ -2407,7 +2401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_1) {    //DIFFERENCE:gaps are trimmed, FASTQ
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence", GTGlobals::UseKey));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TAGTTTATTAA", "Expected: TAGTTTATTAA, Found: " + clipboardText);
     //    3. use MSA area context menu->export->save sequence
     //    Exptcted state: Export sequence dialog appeared
@@ -3400,7 +3394,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
     //    1. Open "_common_data/clustal/3000_sequences.aln"
     //    2. Context menu -- Export as ImageExport
     //    Expected state: export dialog appeared, there is a warning message and Export button is disabled
-    //    3. Select smalle region
+    //    3. Select a small region
     //    Expected state: warning is gone, export is enabled
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3471,7 +3465,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
 }
@@ -3501,7 +3495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("mega"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
@@ -3529,7 +3523,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("CLUSTAL W 2.0 multiple sequence alignment"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
@@ -3553,7 +3547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_3) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("ACCAGGCTTGGCAATGCGTATC"), clipboardText);
 }
@@ -3596,7 +3590,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("<span style=\"font-size:10pt; font-family:Verdana;\">"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
@@ -4127,7 +4121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     //    Check clipboard
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText.startsWith("TaAGttTatTaATtCGagCtGAAtTagG+CAaCCaGGtTat---+TaATT"), "unexpected consensus was exported: " + clipboardText);
 }
 

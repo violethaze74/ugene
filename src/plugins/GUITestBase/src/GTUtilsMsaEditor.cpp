@@ -389,7 +389,7 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
 
-    return GTClipboard::text(os).split('\n');
+    return GTClipboard::sequences(os).split('\n');
 }
 #undef GT_METHOD_NAME
 

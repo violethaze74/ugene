@@ -5762,7 +5762,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    const QString selection1 = GTClipboard::text(os);
+    const QString selection1 = GTClipboard::sequences(os);
 
     // 4. Shift selected region.
     // Expected state : all sequences shifted simultaneously.If group is half - selected, the unselected sequences shifts too.
@@ -6274,7 +6274,7 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(11, 17));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString initialContent = GTClipboard::text(os);
+    const QString initialContent = GTClipboard::sequences(os);
 
     // 2.1. Remove selection
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -6297,7 +6297,7 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(11, 17));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString undoneContent = GTClipboard::text(os);
+    const QString undoneContent = GTClipboard::sequences(os);
     CHECK_SET_ERR(undoneContent == initialContent,
                   "Undo works wrong. Found text is: " + undoneContent);
 }
@@ -6426,7 +6426,7 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
 
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    QString chars = GTClipboard::text(os);
+    QString chars = GTClipboard::sequences(os);
     CHECK_SET_ERR(chars == "TCTATTAA", "Wrong selection: " + QString("Wrong selection : %1").arg(chars));
 }
 
@@ -7387,7 +7387,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
+    QString initAln = GTClipboard::sequences(os);
 
     QString expectedAln("TAAGACTT-C\n"
                         "TAAG-CTTAC");
@@ -7402,7 +7402,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
+    QString changedAln = GTClipboard::sequences(os);
     CHECK_SET_ERR(changedAln == expectedAln, "Unexpected alignment\n" + changedAln);
 
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
@@ -7413,7 +7413,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    changedAln = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(changedAln == initAln, "Undo works wrong\n" + changedAln);
 }
@@ -8242,7 +8242,7 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     // Expected state: the bases in the selected area were replaced accordingly to the chosen variant
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString selectionContent = GTClipboard::text(os);
+    QString selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("AATTATTAGACT" == selectionContent, "MSA changing is failed");
     // 4. Press "Ctrl + Z"
     GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
@@ -8250,7 +8250,7 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     // Expected result: all rows in the selection were restored
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    selectionContent = GTClipboard::text(os);
+    selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("TCAGATTATTAA" == selectionContent, "MSA changing is failed");
 }
 
@@ -8333,7 +8333,7 @@ GUI_TEST_CLASS_DEFINITION(test_1886_2) {
     // 5. Obtain selection
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text(os);
+    const QString selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("--TGAC\n--TGAT\n--AGAC\n--AGAT\n--AGAT\n"
                   "--TGAA\n--CGAT\n--CGAT\n--CGAT" == selectionContent,
                   "MSA changing is failed");

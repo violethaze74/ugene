@@ -4937,13 +4937,13 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
     //Expected state subalignment pasted correctly
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(200);
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }

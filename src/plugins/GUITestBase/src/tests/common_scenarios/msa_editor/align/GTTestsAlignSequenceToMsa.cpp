@@ -70,7 +70,7 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
 
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 

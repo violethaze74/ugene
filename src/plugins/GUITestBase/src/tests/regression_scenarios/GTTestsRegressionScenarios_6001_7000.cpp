@@ -4300,7 +4300,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    const QString selection1 = GTClipboard::text(os);
+    const QString selection1 = GTClipboard::sequences(os);
     GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(9, 5), QPoint(10, 5));
 
     // 4. The same region (but shifted to the right) is selected.
@@ -5399,7 +5399,7 @@ GUI_TEST_CLASS_DEFINITION(test_6730) {
     QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
 }
 
