@@ -3173,9 +3173,9 @@ GUI_TEST_CLASS_DEFINITION(test_2470_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|11 Conocephalus_sp");
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|4 Montana_montana");
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|6 Gampsocleis_sedakovii_EF540828");
+    GTUtilsProjectTreeView::getItemCenter(os, "Conocephalus_sp.");
+    GTUtilsProjectTreeView::getItemCenter(os, "Montana_montana");
+    GTUtilsProjectTreeView::getItemCenter(os, "Gampsocleis_sedakovii_EF540828");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2475) {

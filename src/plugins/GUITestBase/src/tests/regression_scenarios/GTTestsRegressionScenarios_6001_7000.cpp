@@ -5172,6 +5172,7 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
     bool eq = GTFile::equals(os, url);
 
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6707) {

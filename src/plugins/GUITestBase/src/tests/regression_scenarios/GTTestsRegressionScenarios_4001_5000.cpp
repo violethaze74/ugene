@@ -3691,7 +3691,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|24481 shortread24481");
+    GTUtilsProjectTreeView::getItemCenter(os, "shortread24481");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588_2) {
@@ -4912,7 +4912,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy formatted"));
+                                                                              << "Copy (preferred format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 
@@ -4933,7 +4933,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 
@@ -4961,7 +4961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();
 
@@ -4986,7 +4986,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();
 
