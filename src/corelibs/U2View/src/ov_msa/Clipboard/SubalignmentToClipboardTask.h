@@ -39,13 +39,11 @@ namespace U2 {
 class PrepareMsaClipboardDataTask : public Task {
     Q_OBJECT
 public:
-    PrepareMsaClipboardDataTask(const U2Region &window, const QStringList &names);
-    QString getResult() const;
+    PrepareMsaClipboardDataTask(const U2Region &window, const QStringList &names, TaskFlags taskFlags = TaskFlags_NR_FOSE_COSC);
 
-protected:
-    QString result;
-    U2Region window;
-    QStringList names;
+    QString resultText;
+    U2Region columnRegion;
+    QStringList nameList;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,11 +52,11 @@ class FormatsMsaClipboardTask : public PrepareMsaClipboardDataTask {
 public:
     FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId);
 
-    void prepare();
+    void prepare() override;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    CreateSubalignmentSettings defineSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    static CreateSubalignmentSettings createSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os);
 
 private:
     CreateSubalignmentTask *createSubalignmentTask;
@@ -69,7 +67,7 @@ private:
 class RichTextMsaClipboardTask : public PrepareMsaClipboardDataTask {
 public:
     RichTextMsaClipboardTask(MaEditor *context, const U2Region &window, const QStringList &names);
-    void run();
+    void prepare() override;
 
 private:
     MaEditor *context;
@@ -92,7 +90,7 @@ public:
     SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId);
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
     DocumentFormatId formatId;

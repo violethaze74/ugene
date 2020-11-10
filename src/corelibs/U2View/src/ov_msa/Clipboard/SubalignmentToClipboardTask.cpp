@@ -52,12 +52,8 @@
 namespace U2 {
 
 ////////////////////////////////////////////////////////////////////////////////
-PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const U2Region &window, const QStringList &names)
-    : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), window(window), names(names) {
-}
-
-QString PrepareMsaClipboardDataTask::getResult() const {
-    return result;
+PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const U2Region &window, const QStringList &names, TaskFlags taskFlags)
+    : Task(tr("Copy formatted alignment to the clipboard"), taskFlags), columnRegion(window), nameList(names) {
 }
 
 PrepareMsaClipboardDataTask *MsaClipboardDataTaskFactory::getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
@@ -95,19 +91,19 @@ FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject
 void FormatsMsaClipboardTask::prepare() {
     if (formatId == BaseDocumentFormats::PLAIN_TEXT) {
         MultipleSequenceAlignment msa = msaObj->getMsaCopy();
-        msa->crop(window, names.toSet(), stateInfo);
+        msa->crop(columnRegion, nameList.toSet(), stateInfo);
         CHECK_OP(stateInfo, )
 
         for (int i = 0; i < msa->getNumRows(); i++) {
             const MultipleSequenceAlignmentRow &row = msa->getMsaRow(i);
             if (i > 0) {
-                result.append("\n");
+                resultText.append("\n");
             }
-            result.append(row->toByteArray(stateInfo, row->getRowLength()));
+            resultText.append(row->toByteArray(stateInfo, row->getRowLength()));
         }
         return;
     }
-    CreateSubalignmentSettings settings = defineSettings(names, window, formatId, stateInfo);
+    CreateSubalignmentSettings settings = createSettings(nameList, columnRegion, formatId, stateInfo);
     CHECK_OP(stateInfo, )
 
     createSubalignmentTask = new CreateSubalignmentTask(msaObj, settings);
@@ -139,16 +135,16 @@ QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
             bool terminatorFound = false;
             int read = io->readLine(buf.data(), READ_BUF_SIZE, &terminatorFound);
             buf.resize(read);
-            result.append(buf);
+            resultText.append(buf);
             if (terminatorFound) {
-                result.append('\n');
+                resultText.append('\n');
             }
         }
     }
     return res;
 }
 
-CreateSubalignmentSettings FormatsMsaClipboardTask::defineSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os) {
+CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os) {
     //Create temporal document for the workflow run task
     const AppSettings *appSettings = AppContext::getAppSettings();
     SAFE_POINT_EXT(appSettings != NULL, os.setError(tr("Invalid applications settings detected")), CreateSubalignmentSettings());
@@ -165,80 +161,73 @@ RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor *context, const U2Re
     : PrepareMsaClipboardDataTask(window, names), context(context) {
 }
 
-void RichTextMsaClipboardTask::run() {
-    MultipleAlignmentObject *obj = context->getMaObject();
-    const DNAAlphabet *al = obj->getAlphabet();
-    if (!al) {
-        return;
+void RichTextMsaClipboardTask::prepare() {
+    MultipleAlignmentObject *maObject = context->getMaObject();
+    const DNAAlphabet *al = maObject->getAlphabet();
+    CHECK(al != nullptr, );
+
+    Settings *appSettings = AppContext::getSettings();
+    SAFE_POINT(appSettings != nullptr, "RTFMSA entry storing: NULL settings object", );
+
+    MsaColorSchemeRegistry *colorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ?
+                                appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() :
+                                appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+
+    MsaColorSchemeFactory *colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(colorSchemeId);
+    if (colorSchemeFactory == nullptr) {
+        colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(al->getType() == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
     }
-    Settings *s = AppContext::getSettings();
-    SAFE_POINT(NULL != s, "RTFMSA entry storing: NULL settings object", );
+    SAFE_POINT(colorSchemeFactory != nullptr, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
+    QSharedPointer<MsaColorScheme> colorScheme(colorSchemeFactory->create(this, maObject));
 
-    DNAAlphabetType atype = al->getType();
-    MsaColorSchemeRegistry *csr = AppContext::getMsaColorSchemeRegistry();
-    QString csid = atype == DNAAlphabet_AMINO ?
-                       s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() :
-                       s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
-
-    MsaColorSchemeFactory *csf = csr->getSchemeFactoryById(csid);
-    if (csf == NULL) {
-        csf = csr->getSchemeFactoryById(atype == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
-    }
-    SAFE_POINT(csf != NULL, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
-    MsaColorScheme *colorScheme = csf->create(this, obj);
-
-    QString fontFamily = s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
-    int pointSize = s->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
+    QString fontFamily = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
+    int pointSize = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
     MsaHighlightingScheme *highlightingScheme = context->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
-    SAFE_POINT(highlightingScheme != NULL, "RTFMSA entry storing: NULL highlightingScheme object", );
+    SAFE_POINT(highlightingScheme != nullptr, "RTFMSA entry storing: NULL highlightingScheme object", );
 
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    const MultipleAlignment msa = obj->getMultipleAlignment();
+    MultipleAlignment msa = maObject->getMultipleAlignment();
 
     U2OpStatusImpl os;
-    const int refSeq = msa->getRowIndexByRowId(context->getReferenceRowId(), os);
+    qint64 refSeqRowId = context->getReferenceRowId();
+    int refSeqIndex = refSeqRowId != U2MsaRow::INVALID_ROW_ID ? msa->getRowIndexByRowId(refSeqRowId, os) : -1;
 
-    result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
+    resultText.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toUtf8());
     int numRows = msa->getNumRows();
-    for (int seq = 0; seq < numRows; seq++) {
-        QString res;
-        const MultipleAlignmentRow row = msa->getRow(seq);
-        if (!names.contains(row->getName())) {
+    for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
+        MultipleAlignmentRow row = msa->getRow(rowIndex);
+        if (!nameList.contains(row->getName())) {
             continue;
         }
 
-        result.append("<p>");
-        for (int pos = window.startPos; pos < window.endPos(); pos++) {
+        resultText.append("<p>");
+        QString lineText;
+        for (int pos = columnRegion.startPos; pos < columnRegion.endPos(); pos++) {
             char c = row->charAt(pos);
-            bool highlight = false;
-            QColor color = colorScheme->getBackgroundColor(seq, pos, c);
+            bool isHighlightOn = false;
+            QColor color = colorScheme->getBackgroundColor(rowIndex, pos, c);
             if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {    //schemes which applied without reference
-                const char refChar = '\n';
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            } else if (seq == refSeq || U2MsaRow::INVALID_ROW_ID == refSeq) {
-                highlight = true;
+                highlightingScheme->process('\n', c, color, isHighlightOn, pos, rowIndex);
+            } else if (rowIndex == refSeqIndex || refSeqIndex == U2MsaRow::INVALID_ROW_ID) {
+                isHighlightOn = true;
             } else {
-                SAFE_POINT_EXT(row != NULL, setError("MSA row is NULL"), );
-                const char refChar = row->charAt(pos);
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+                char refChar = row->charAt(pos);
+                highlightingScheme->process(refChar, c, color, isHighlightOn, pos, rowIndex);
             }
-
-            if (color.isValid() && highlight) {
-                res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
+            if (color.isValid() && isHighlightOn) {
+                lineText.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
             } else {
-                res.append(QString("%1").arg(c));
+                lineText.append(QString("%1").arg(c));
             }
         }
-
-        result.append(res.toLatin1());
-        result.append("</p>\n");
+        resultText.append(lineText.toUtf8());
+        resultText.append("</p>\n");
     }
-    result.append("</span>");
-
-    delete colorScheme;
+    resultText.append("</span>");
 }
 
 SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId)
@@ -251,7 +240,7 @@ QList<Task *> SubalignmentToClipboardTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
     CHECK(subTask == prepareDataTask, result);
     CHECK(!prepareDataTask->getStateInfo().isCoR(), result);
-    QString clipboardData = prepareDataTask->getResult();
+    QString clipboardData = prepareDataTask->resultText;
     if (formatId == "RTF") {
         QMimeData *reportRichTextMime = new QMimeData();
         reportRichTextMime->setHtml(clipboardData);
