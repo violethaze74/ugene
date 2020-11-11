@@ -412,7 +412,6 @@ void MultipleAlignmentObject::insertGapByRowIndexList(const QList<int> &rowIndex
 
 void MultipleAlignmentObject::insertGapByRowIdList(const QList<qint64> &rowIds, int pos, int nGaps, bool collapseTrailingGaps) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleAlignment &ma = getMultipleAlignment();
     U2OpStatus2Log os;
     MsaDbiUtils::insertGaps(entityRef, rowIds, pos, nGaps, os, collapseTrailingGaps);
     SAFE_POINT_OP(os, );

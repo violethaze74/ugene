@@ -158,9 +158,6 @@ public:
         return undoFWK;
     }
 
-    QAction *copyConsensusAction;
-    QAction *copyConsensusWithGapsAction;
-
 signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool modified = false);

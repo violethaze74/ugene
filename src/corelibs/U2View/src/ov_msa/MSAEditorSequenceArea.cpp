@@ -310,7 +310,8 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
     QList<QAction *> actions;
 
-    MsaEditorWgt *msaWgt = getEditor()->getUI();
+    MSAEditor *editor = getEditor();
+    MsaEditorWgt *msaWgt = editor->getUI();
     QAction *editSequenceNameAction = msaWgt->getEditorNameList()->getEditSequenceNameAction();
     if (getSelection().height() != 1) {
         editSequenceNameAction->setDisabled(true);
@@ -331,8 +332,8 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     copyMenu->addAction(ui->getCopySelectionAction());
     ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
     copyMenu->addAction(ui->getCopyFormattedSelectionAction());
-    copyMenu->addAction(ui->copyConsensusAction);
-    copyMenu->addAction(ui->copyConsensusWithGapsAction);
+    copyMenu->addAction(editor->copyConsensusAction);
+    copyMenu->addAction(editor->copyConsensusWithGapsAction);
     copyMenu->addSeparator();
     copyMenu->addAction(ui->getPasteAction());
     copyMenu->addAction(ui->getPasteBeforeAction());

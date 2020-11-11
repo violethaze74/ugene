@@ -73,15 +73,15 @@ public:
         return MSAE_SETTINGS_ROOT;
     }
 
-    MultipleSequenceAlignmentObject *getMaObject() const {
+    MultipleSequenceAlignmentObject *getMaObject() const override {
         return qobject_cast<MultipleSequenceAlignmentObject *>(maObject);
     }
 
-    virtual void buildStaticToolbar(QToolBar *tb);
+    virtual void buildStaticToolbar(QToolBar *tb) override;
 
-    virtual void buildStaticMenu(QMenu *m);
+    virtual void buildStaticMenu(QMenu *m) override;
 
-    MsaEditorWgt *getUI() const;
+    MsaEditorWgt *getUI() const override;
 
     //Return alignment row that is displayed on target line in MSAEditor
     const MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
@@ -100,7 +100,7 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    void sortSequences(bool isByName, const MultipleAlignment::Order& sortOrder);
+    void sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos);
@@ -122,6 +122,7 @@ protected slots:
     void sl_showCustomSettings();
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
+    void sl_convertBetweenDnaAndRnaAlphabets();
 
 protected:
     QWidget *createWidget();
@@ -148,6 +149,7 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects);
     void alignSequencesFromFilesToAlignment();
 
+public:
     QAction *buildTreeAction;
     QAction *alignAction;
     QAction *alignSequencesToAlignmentAction;
@@ -163,6 +165,10 @@ private:
     QAction *sortByLengthAscendingAction;
     QAction *sortByLengthDescendingAction;
 
+    QAction *convertDnaToRnaAction;
+    QAction *convertRnaToDnaAction;
+
+private:
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager treeManager;
 };

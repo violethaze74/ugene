@@ -112,9 +112,22 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(exportHighlightedAction, SIGNAL(triggered()), this, SLOT(sl_exportHighlighted()));
     exportHighlightedAction->setDisabled(true);
 
+    copyConsensusAction = new QAction(tr("Copy consensus"), this);
+    copyConsensusAction->setObjectName("Copy consensus");
+
+    copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
+    copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
+
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+    connect(maObject,
+            SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
+            SLOT(sl_onAlignmentChanged(const MultipleAlignment &, const MaModificationInfo &)));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
+}
+
+void MaEditor::sl_onAlignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
+    updateActions();
 }
 
 QVariantMap MaEditor::saveState() {
@@ -155,7 +168,7 @@ int MaEditor::getSequenceRowHeight() const {
 }
 
 int MaEditor::getColumnWidth() const {
-    if (0 == cachedColumnWidth) {
+    if (cachedColumnWidth == 0) {
         QFontMetrics fm(font, ui);
         cachedColumnWidth = fm.width('W') * zoomMult;
 
@@ -169,10 +182,9 @@ QVariantMap MaEditor::getHighlightingSettings(const QString &highlightingFactory
     const QVariant v = snp.highlightSchemeSettings.value(highlightingFactoryId);
     if (v.isNull()) {
         return QVariantMap();
-    } else {
-        CHECK(v.type() == QVariant::Map, QVariantMap());
-        return v.toMap();
     }
+    CHECK(v.type() == QVariant::Map, QVariantMap());
+    return v.toMap();
 }
 
 void MaEditor::saveHighlightingSettings(const QString &highlightingFactoryId, const QVariantMap &settingsMap /* = QVariant()*/) {
@@ -180,11 +192,7 @@ void MaEditor::saveHighlightingSettings(const QString &highlightingFactoryId, co
 }
 
 void MaEditor::setReference(qint64 sequenceId) {
-    if (sequenceId == U2MsaRow::INVALID_ROW_ID) {
-        exportHighlightedAction->setDisabled(true);
-    } else {
-        exportHighlightedAction->setEnabled(true);
-    }
+    exportHighlightedAction->setEnabled(sequenceId != U2MsaRow::INVALID_ROW_ID);
     if (snp.seqId != sequenceId) {
         snp.seqId = sequenceId;
         emit si_referenceSeqChanged(sequenceId);

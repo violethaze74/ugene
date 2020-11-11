@@ -22,12 +22,10 @@
 #include "MsaDbiUtils.h"
 
 #include <U2Core/DNASequenceUtils.h>
-#include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
@@ -471,7 +469,7 @@ QList<U2MsaRow> MsaDbiUtils::cutOffLeadingGaps(QList<U2MsaRow> &rows) {
         // If some rows haven't any gaps
         // If some rows first gap's offset isn't zero
         // return
-        if (leadingGapsToRemove == 0 || true == rows[i].gaps.isEmpty() || rows[i].gaps.first().offset != 0) {
+        if (leadingGapsToRemove == 0 || rows[i].gaps.isEmpty() || rows[i].gaps.first().offset != 0) {
             leadingGapsToRemove = 0;
             return QList<U2MsaRow>();
         }
@@ -1042,6 +1040,36 @@ void MsaDbiUtils::replaceCharacterInRow(const U2EntityRef &msaRef, qint64 rowId,
 
     msaDbi->updateRowContent(msaRef.entityId, rowId, seq, row.gaps, os);
     CHECK_OP(os, );
+}
+
+QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, char oldChar, char newChar, U2OpStatus &os) {
+    QList<qint64> modifiedRowIds;
+    if (oldChar == newChar) {
+        return modifiedRowIds;
+    }
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
+    CHECK_OP(os, modifiedRowIds);
+
+    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+
+    qint64 msaLength = msaDbi->getMsaLength(msaRef.entityId, os);
+    QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
+    CHECK_OP(os, modifiedRowIds);
+    QVariantMap updateSequenceHints;
+    for (qint64 rowId : rowIds) {
+        U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
+        CHECK_OP(os, modifiedRowIds);
+        U2Region sequenceRegion(msaRow.gstart, msaRow.gend - msaRow.gstart);
+        QByteArray sequenceData = sequenceDbi->getSequenceData(msaRow.sequenceId, sequenceRegion, os);
+        if (sequenceData.contains(oldChar)) {
+            sequenceData.replace(oldChar, newChar);
+            msaDbi->updateRowContent(msaRef.entityId, rowId, sequenceData, msaRow.gaps, os);
+            CHECK_OP(os, modifiedRowIds);
+            modifiedRowIds << rowId;
+        }
+    }
+    return modifiedRowIds;
 }
 
 QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef &msaRef, const QList<qint64> &rowIds, U2OpStatus &os) {

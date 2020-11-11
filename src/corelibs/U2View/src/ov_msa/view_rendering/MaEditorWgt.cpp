@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -249,7 +250,6 @@ void MaEditorWgt::initActions() {
     copySelectionAction->setShortcut(QKeySequence::Copy);
     copySelectionAction->setShortcutContext(Qt::WidgetShortcut);
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
-
     addAction(copySelectionAction);
 
     copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (preferred format)"), this);
@@ -257,13 +257,6 @@ void MaEditorWgt::initActions() {
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetShortcut);
     copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text()).arg(copyFormattedSelectionAction->shortcut().toString()));
-
-    copyConsensusAction = new QAction(tr("Copy consensus"), this);
-    copyConsensusAction->setObjectName("Copy consensus");
-
-    copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
-    copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
-
     addAction(copyFormattedSelectionAction);
 
     pasteAction = new QAction(tr("Paste"), this);
@@ -277,7 +270,6 @@ void MaEditorWgt::initActions() {
     pasteBeforeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
     pasteBeforeAction->setShortcutContext(Qt::WidgetShortcut);
     pasteBeforeAction->setToolTip(QString("%1 (%2)").arg(pasteBeforeAction->text()).arg(pasteAction->shortcut().toString()));
-
     addAction(pasteAction);
 }
 
