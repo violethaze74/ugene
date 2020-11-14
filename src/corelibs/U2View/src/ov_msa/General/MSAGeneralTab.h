@@ -35,27 +35,24 @@ class MSAEditor;
 class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
     Q_OBJECT
 public:
-    MSAGeneralTab(MSAEditor *_msa);
+    MSAGeneralTab(MSAEditor *msaEditor);
 
 signals:
     void si_algorithmChanged(const QString &algoId);
     void si_thresholdChanged(int val);
-    void si_copyFormatChanged(const QString &formatId);
-    void si_copyFormatted();
 
 public slots:
     void sl_alignmentChanged();
     void sl_copyFormatSelectionChanged(int value);
-    void sl_copyFormatted();
-    void sl_copyFormatStatusChanged(bool enabled);
+    void sl_convertAlphabetButtonClicked();
 
 private:
     void connectSignals();
     void initializeParameters();
     void updateState();
+    void updateConvertAlphabetButtonState();
 
-    MSAEditor *msa;
-    QString curAlphabetId;
+    MSAEditor *msaEditor;
     MsaOpSavableTab savableTab;
 };
 
