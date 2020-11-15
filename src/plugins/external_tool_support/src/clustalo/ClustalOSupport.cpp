@@ -45,12 +45,11 @@
 
 namespace U2 {
 
-const QString ClustalOSupport::ET_CLUSTALO = "ClustalO";
 const QString ClustalOSupport::ET_CLUSTALO_ID = "USUPP_CLUSTALO";
 const QString ClustalOSupport::CLUSTALO_TMP_DIR = "clustalo";
 
-ClustalOSupport::ClustalOSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "clustalo", name, path) {
+ClustalOSupport::ClustalOSupport()
+    : ExternalTool(ClustalOSupport::ET_CLUSTALO_ID, "clustalo", "ClustalO") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new ClustalOSupportContext(this);
         icon = QIcon(":external_tool_support/images/clustalo.png");
@@ -72,7 +71,7 @@ ClustalOSupport::ClustalOSupport(const QString &id, const QString &name, const Q
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify() {
-    //Check that Clustal and tempory folder path defined
+    //Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -122,12 +121,12 @@ ClustalOSupportContext::ClustalOSupportContext(QObject *p)
 }
 
 void ClustalOSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
-    CHECK(msaed->getMaObject() != NULL, );
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
+    CHECK(msaEditor->getMaObject() != NULL, );
 
-    bool objLocked = msaed->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaed->isAlignmentEmpty();
+    bool objLocked = msaEditor->getMaObject()->isStateLocked();
+    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
     AlignMsaAction *alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, view, tr("Align with ClustalO..."), 2000);
     alignAction->setObjectName("Align with ClustalO");
@@ -135,8 +134,8 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalO()));
 }
 
@@ -150,11 +149,11 @@ void ClustalOSupportContext::buildMenu(GObjectView *view, QMenu *m) {
 }
 
 void ClustalOSupportContext::sl_align_with_ClustalO() {
-    //Check that Clustal and tempory folder path defined
+    //Check that Clustal and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(ClustalOSupport::ET_CLUSTALO);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ClustalOSupport::ET_CLUSTALO));
+        msgBox->setWindowTitle("ClustalO");
+        msgBox->setText(tr("Path for ClustalO tool is not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -180,13 +179,12 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
 
     //Call run ClustalO align dialog
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
-    assert(action != NULL);
+    SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor *ed = action->getMsaEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (obj == NULL) {
+    if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
-    assert(!obj->isStateLocked());
 
     ClustalOSupportTaskSettings settings;
     QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());

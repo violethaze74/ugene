@@ -33,12 +33,12 @@ namespace U2 {
 class ClustalWSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClustalWSupport(const QString &id, const QString &name, const QString &path = "");
-    GObjectViewWindowContext *getViewContext() {
+    ClustalWSupport();
+
+    GObjectViewWindowContext *getViewContext() const {
         return viewCtx;
     }
 
-    static const QString ET_CLUSTAL;
     static const QString ET_CLUSTAL_ID;
     static const QString CLUSTAL_TMP_DIR;
 public slots:

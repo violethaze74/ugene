@@ -35,7 +35,7 @@ const QString KrakenSupport::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
 const QString KrakenSupport::GROUP_NAME = "Kraken";
 
 KrakenSupport::KrakenSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "kraken", name, "") {
+    : ExternalTool(id, "kraken", name) {
     toolKitName = GROUP_NAME;
 
     validationArguments << "--version";

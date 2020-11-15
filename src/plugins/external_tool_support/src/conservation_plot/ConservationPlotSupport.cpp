@@ -36,7 +36,7 @@ const QString ConservationPlotSupport::CONSERVATION_DIR_NAME = "phastCons";
 const QString ConservationPlotSupport::CONSERVATION_DATA_NAME = "conservation_data";
 
 ConservationPlotSupport::ConservationPlotSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name, "") {
+    : ExternalTool(id, "cistrome", name) {
     initialize();
 }
 

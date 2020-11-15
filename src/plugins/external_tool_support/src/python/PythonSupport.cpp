@@ -26,10 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/ScriptingToolRegistry.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/MainWindow.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -37,17 +34,13 @@
 
 namespace U2 {
 
-const QString PythonSupport::ET_PYTHON = "python";
 const QString PythonSupport::ET_PYTHON_ID = "USUPP_PYTHON2";
-const QString PythonModuleDjangoSupport::ET_PYTHON_DJANGO = "django";
 const QString PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID = "DJANGO";
-const QString PythonModuleNumpySupport::ET_PYTHON_NUMPY = "numpy";
 const QString PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID = "NUMPY";
-const QString PythonModuleBioSupport::ET_PYTHON_BIO = "Bio";
 const QString PythonModuleBioSupport::ET_PYTHON_BIO_ID = "BIO";
 
-PythonSupport::PythonSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(QStringList(), id, "python2", name, path) {
+PythonSupport::PythonSupport()
+    : RunnerTool(QStringList(), PythonSupport::ET_PYTHON_ID, "python2", "python") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/python.png");
         grayIcon = QIcon(":external_tool_support/images/python_gray.png");
@@ -99,31 +92,27 @@ PythonModuleSupport::PythonModuleSupport(const QString &id, const QString &name)
     muted = true;
 }
 
-PythonModuleDjangoSupport::PythonModuleDjangoSupport(const QString &id, const QString &name)
-    : PythonModuleSupport(id, name) {
-    description += ET_PYTHON_DJANGO + tr(": Python module for the %1 tool").arg(SeqPosSupport::ET_SEQPOS);
+PythonModuleDjangoSupport::PythonModuleDjangoSupport()
+    : PythonModuleSupport(PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID, "django") {
+    description += "django" + tr(": Python module for the %1 tool").arg(SeqPosSupport::ET_SEQPOS);
 
     validationArguments << "import django;print(\"django version: \", django.VERSION);";
     validMessage = "django version:";
     versionRegExp = QRegExp("(\\d+,\\s\\d+,\\s\\d+)");
 }
 
-PythonModuleNumpySupport::PythonModuleNumpySupport(const QString &id, const QString &name)
-    : PythonModuleSupport(id, name) {
-    description += ET_PYTHON_NUMPY + tr(": Python module for the %1 tool").arg(SeqPosSupport::ET_SEQPOS);
+PythonModuleNumpySupport::PythonModuleNumpySupport()
+    : PythonModuleSupport(PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID, "numpy") {
+    description += "numpy" + tr(": Python module for the %1 tool").arg(SeqPosSupport::ET_SEQPOS);
 
     validationArguments << "import numpy;print(\"numpy version: \", numpy.__version__);";
     validMessage = "numpy version:";
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
 }
 
-namespace {
-const QString ET_METAPHLAN = "MetaPhlAn2";
-}
-
-PythonModuleBioSupport::PythonModuleBioSupport(const QString &id, const QString &name)
-    : PythonModuleSupport(id, name) {
-    description += ET_PYTHON_BIO + tr(" (or biopython) is a python module for biological computations.");
+PythonModuleBioSupport::PythonModuleBioSupport()
+    : PythonModuleSupport(PythonModuleBioSupport::ET_PYTHON_BIO_ID, "Bio") {
+    description += "Bio" + tr(" (or biopython) is a python module for biological computations.");
 
     validationArguments << "import Bio;print(\"Bio version: \", Bio.__version__);";
     validMessage = "Bio version:";

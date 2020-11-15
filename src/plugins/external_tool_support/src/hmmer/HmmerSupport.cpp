@@ -56,7 +56,7 @@ const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
 const QString HmmerSupport::PHMMER_TOOL_ID = "USUPP_PHMMER";
 
 HmmerSupport::HmmerSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "hmmer3", name, "") {
+    : ExternalTool(id, "hmmer3", name) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

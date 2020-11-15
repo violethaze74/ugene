@@ -21,18 +21,11 @@
 
 #include "MrBayesTests.h"
 
-#include <QDir>
-
 #include <U2Algorithm/CreatePhyTreeSettings.h>
-#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -120,7 +113,7 @@ void GTest_MrBayes::prepare() {
     assert(obj != NULL);
 
     CreatePhyTreeSettings settings;
-    settings.algorithm = MrBayesSupport::ET_MRBAYES;
+    settings.algorithm = MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY;
     settings.mb_ngen = 1000;
     settings.mrBayesSettingsScript = QString("Begin MrBayes;\n"
                                              "lset Nst=2 rates=gamma ngammacat=4;\n"

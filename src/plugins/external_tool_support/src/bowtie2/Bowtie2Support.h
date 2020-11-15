@@ -29,13 +29,10 @@ namespace U2 {
 class Bowtie2Support : public ExternalTool {
     Q_OBJECT
 public:
-    Bowtie2Support(const QString &id, const QString &name, const QString &path = "");
+    Bowtie2Support(const QString &id);
 
-    static const QString ET_BOWTIE2_ALIGN;
     static const QString ET_BOWTIE2_ALIGN_ID;
-    static const QString ET_BOWTIE2_BUILD;
     static const QString ET_BOWTIE2_BUILD_ID;
-    static const QString ET_BOWTIE2_INSPECT;
     static const QString ET_BOWTIE2_INSPECT_ID;
 };
 

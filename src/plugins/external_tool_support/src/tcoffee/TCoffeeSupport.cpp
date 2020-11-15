@@ -45,12 +45,11 @@
 
 namespace U2 {
 
-const QString TCoffeeSupport::ET_TCOFFEE = "T-Coffee";
 const QString TCoffeeSupport::ET_TCOFFEE_ID = "USUPP_T_COFFEE";
 const QString TCoffeeSupport::TCOFFEE_TMP_DIR = "tcoffee";
 
-TCoffeeSupport::TCoffeeSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "tcoffee", name, path) {
+TCoffeeSupport::TCoffeeSupport()
+    : ExternalTool(TCoffeeSupport::ET_TCOFFEE_ID, "tcoffee", "T-Coffee") {
     if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new TCoffeeSupportContext(this);
         icon = QIcon(":external_tool_support/images/tcoffee.png");
@@ -72,7 +71,7 @@ TCoffeeSupport::TCoffeeSupport(const QString &id, const QString &name, const QSt
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
-    //Check that T-Coffee and tempory folder path defined
+    //Check that T-Coffee and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -107,12 +106,12 @@ TCoffeeSupportContext::TCoffeeSupportContext(QObject *p)
 }
 
 void TCoffeeSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
-    CHECK(msaed->getMaObject() != nullptr, );
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    CHECK(msaEditor->getMaObject() != nullptr, );
 
-    bool objLocked = msaed->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaed->isAlignmentEmpty();
+    bool objLocked = msaEditor->getMaObject()->isStateLocked();
+    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
     AlignMsaAction *alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, view, tr("Align with T-Coffee..."), 2000);
     alignAction->setObjectName("Align with T-Coffee");
@@ -120,8 +119,8 @@ void TCoffeeSupportContext::initViewContext(GObjectView *view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
 }
 
@@ -138,8 +137,8 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     //Check that T-Coffee and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(TCoffeeSupport::ET_TCOFFEE);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(TCoffeeSupport::ET_TCOFFEE));
+        msgBox->setWindowTitle("T-Coffee");
+        msgBox->setText(tr("Path for T-Coffee tool is not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

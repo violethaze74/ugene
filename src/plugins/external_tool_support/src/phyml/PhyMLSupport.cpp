@@ -28,12 +28,12 @@
 #include "PhyMLTests.h"
 namespace U2 {
 
-const QString PhyMLSupport::PHYML("PhyML Maximum Likelihood");
 const QString PhyMLSupport::PHYML_ID("USUPP_PHYML");
 const QString PhyMLSupport::PHYML_TEMP_DIR("phyml");
+const QString PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY("PhyML Maximum Likelihood");
 
-PhyMLSupport::PhyMLSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "phyml", name, "") {
+PhyMLSupport::PhyMLSupport()
+    : ExternalTool(PhyMLSupport::PHYML_ID, "phyml", "PhyML Maximum Likelihood") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -54,7 +54,7 @@ PhyMLSupport::PhyMLSupport(const QString &id, const QString &name)
 
     //register the method
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
-    registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::PHYML);
+    registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////

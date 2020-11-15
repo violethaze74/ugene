@@ -31,7 +31,7 @@ const QString VcfutilsSupport::VCF_UTILS("vcfutils");
 const QString VcfutilsSupport::VCF_UTILS_ID("USUPP_VCFUTILS");
 
 VcfutilsSupport::VcfutilsSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "samtools", name, "") {
+    : ExternalTool(id, "samtools", name) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

@@ -124,7 +124,7 @@ void GTest_NeighborJoin::prepare() {
 	assert( obj != NULL);
 
     CreatePhyTreeSettings settings;
-    settings.algorithm = PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN;
+    settings.algorithm = PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY;
 
     if(bootStrapSeed != -1){
         settings.bootstrap = true;

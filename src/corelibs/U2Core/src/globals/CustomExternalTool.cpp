@@ -24,7 +24,7 @@
 namespace U2 {
 
 CustomExternalTool::CustomExternalTool()
-    : ExternalTool(QString(), QString(), QString(), QString()) {
+    : ExternalTool("", "", "") {
     isCustomTool = true;
 }
 

@@ -27,7 +27,6 @@
 
 namespace U2 {
 
-const QString JavaSupport::ET_JAVA = "java";
 const QString JavaSupport::ET_JAVA_ID = "USUPP_JAVA";
 
 const QString JavaSupport::ARCHITECTURE = "architecture";
@@ -35,8 +34,8 @@ const QString JavaSupport::ARCHITECTURE_X32 = "x32";
 const QString JavaSupport::ARCHITECTURE_X64 = "x64";
 const QStringList JavaSupport::RUN_PARAMETERS = {"-jar"};
 
-JavaSupport::JavaSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(RUN_PARAMETERS, id, "java8", name, path) {
+JavaSupport::JavaSupport()
+    : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, "java8", "java") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -84,9 +83,9 @@ QString JavaSupport::architecture2string(Architecture architecture) {
 }
 
 JavaSupport::Architecture JavaSupport::string2architecture(const QString &string) {
-    if (ARCHITECTURE_X32 == string) {
+    if (string == ARCHITECTURE_X32) {
         return x32;
-    } else if (ARCHITECTURE_X64 == string) {
+    } else if (string == ARCHITECTURE_X64) {
         return x64;
     } else {
         return x32;

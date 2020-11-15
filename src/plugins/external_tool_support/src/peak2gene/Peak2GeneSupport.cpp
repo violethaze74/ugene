@@ -37,7 +37,7 @@ const QString Peak2GeneSupport::TRANSLATIONS_DIR_NAME = "geneIdTranslations";
 const QString Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME = "Entrez ID translations";
 
 Peak2GeneSupport::Peak2GeneSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name, "") {
+    : ExternalTool(id, "cistrome", name) {
     initialize();
 }
 

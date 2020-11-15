@@ -34,7 +34,7 @@ static QString getBowtieToolNameById(const QString &id) {
 }
 
 BowtieSupport::BowtieSupport(const QString &id)
-    : ExternalTool(id, "bowtie1", getBowtieToolNameById(id), "") {
+    : ExternalTool(id, "bowtie1", getBowtieToolNameById(id)) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

@@ -53,7 +53,7 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path);
+    ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path = "");
 
     const QString &getId() const;
     const QString &getDirName() const {
@@ -141,7 +141,7 @@ class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
     ExternalToolModule(const QString &id, const QString &dirName, const QString &name)
-        : ExternalTool(id, dirName, name, "") {
+        : ExternalTool(id, dirName, name) {
         isModuleTool = true;
     }
 };

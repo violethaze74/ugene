@@ -31,7 +31,7 @@ const QString ConductGOSupport::ET_GO_ANALYSIS = "go_analysis";
 const QString ConductGOSupport::ET_GO_ANALYSIS_ID = "USUPP_CONDUCT_GO_ANALYSIS";
 
 ConductGOSupport::ConductGOSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name, "") {
+    : ExternalTool(id, "cistrome", name) {
     initialize();
 }
 

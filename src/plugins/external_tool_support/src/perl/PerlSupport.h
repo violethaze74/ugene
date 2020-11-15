@@ -31,9 +31,8 @@ namespace U2 {
 class PerlSupport : public RunnerTool {
     Q_OBJECT
 public:
-    PerlSupport(const QString &id, const QString &name, const QString &path = "");
+    PerlSupport();
 
-    static const QString ET_PERL;
     static const QString ET_PERL_ID;
 };
 

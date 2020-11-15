@@ -35,11 +35,10 @@ public:
         x32,
         x64
     };
-    JavaSupport(const QString &id, const QString &name, const QString &path = "");
+    JavaSupport();
     void extractAdditionalParameters(const QString &output);
     Architecture getArchitecture() const;
 
-    static const QString ET_JAVA;
     static const QString ET_JAVA_ID;
 
 private:
