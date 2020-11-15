@@ -68,8 +68,6 @@ public:
     const QString &getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString &getExecutableFileName() const;
-    const QStringList &getValidationArguments() const;
-    const QString &getValidMessage() const;
     const QString &getVersion() const;
     const QString &getPredefinedVersion() const;
     const QRegExp &getVersionRegExp() const;
@@ -230,7 +228,7 @@ public:
     ExternalTool *getById(const QString &id) const;
     QString getToolNameById(const QString &id) const;
 
-    bool registerEntry(ExternalTool *t);
+    bool registerEntry(ExternalTool *tool);
     void unregisterEntry(const QString &id);
 
     void setToolkitDescription(const QString &toolkit, const QString &desc) {
@@ -251,19 +249,11 @@ signals:
     void si_toolIsAboutToBeRemoved(const QString &id);
 
 protected:
-    QList<ExternalTool *> registryOrder;
-    QMap<QString, ExternalTool *> registry;
+    QMap<QString, ExternalTool *> toolByLowerCaseIdMap;
     QMap<QString, QString> toolkits;
-    QString temporaryDirectory;
     ExternalToolManager *manager;
 
 };    // ExternalToolRegistry
-
-class U2CORE_EXPORT DefaultExternalToolValidations {
-public:
-    static ExternalToolValidation pythonValidation();
-    static ExternalToolValidation rValidation();
-};
 
 }    // namespace U2
 #endif    // U2_EXTERNAL_TOOL_REGISTRY_H

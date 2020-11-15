@@ -37,7 +37,7 @@ const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
 //ExternalTool
-ExternalTool::ExternalTool(const QString &id, const QString& dirName, const QString &name, const QString &path)
+ExternalTool::ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path)
     : id(id),
       dirName(dirName),
       name(name),
@@ -93,14 +93,6 @@ QStringList ExternalTool::getToolRunnerAdditionalOptions() const {
 
 const QString &ExternalTool::getExecutableFileName() const {
     return executableFileName;
-}
-
-const QStringList &ExternalTool::getValidationArguments() const {
-    return validationArguments;
-}
-
-const QString &ExternalTool::getValidMessage() const {
-    return validMessage;
 }
 
 const QString &ExternalTool::getVersion() const {
@@ -219,13 +211,13 @@ ExternalToolValidationListener::ExternalToolValidationListener(const QString &to
     toolIds << toolId;
 }
 
-ExternalToolValidationListener::ExternalToolValidationListener(const QStringList &_toolIds) {
-    toolIds = _toolIds;
+ExternalToolValidationListener::ExternalToolValidationListener(const QStringList &toolIds)
+    : toolIds(toolIds) {
 }
 
 void ExternalToolValidationListener::sl_validationTaskStateChanged() {
     Task *validationTask = qobject_cast<Task *>(sender());
-    SAFE_POINT(NULL != validationTask, "Unexpected message sender", );
+    SAFE_POINT(validationTask != nullptr, "Unexpected message sender", );
     if (validationTask->isFinished()) {
         emit si_validationComplete();
     }
@@ -234,93 +226,82 @@ void ExternalToolValidationListener::sl_validationTaskStateChanged() {
 ////////////////////////////////////////
 //ExternalToolRegistry
 ExternalToolRegistry::ExternalToolRegistry()
-    : manager(NULL) {
+    : manager(nullptr) {
 }
 
 ExternalToolRegistry::~ExternalToolRegistry() {
-    registryOrder.clear();
-    qDeleteAll(registry.values());
+    qDeleteAll(toolByLowerCaseIdMap.values());
 }
 
 ExternalTool *ExternalToolRegistry::getByName(const QString &name) const {
-    ExternalTool *result = nullptr;
-    foreach (ExternalTool *tool, registry.values()) {
-        CHECK_CONTINUE(tool->getName() == name);
-
-        result = tool;
-        break;
+    for (ExternalTool *tool : toolByLowerCaseIdMap.values()) {
+        if (tool->getName() == name) {
+            return tool;
+        }
     }
-
-    return result;
+    return nullptr;
 }
 
 ExternalTool *ExternalToolRegistry::getById(const QString &id) const {
-    return registry.value(id, NULL);
+    return toolByLowerCaseIdMap.value(id.toLower(), nullptr);
 }
 
 QString ExternalToolRegistry::getToolNameById(const QString &id) const {
-    ExternalTool *et = getById(id);
-    CHECK(nullptr != et, QString());
-
-    return et->getName();
+    ExternalTool *tool = getById(id);
+    CHECK(tool != nullptr, QString());
+    return tool->getName();
 }
 
-namespace {
-bool containsCaseInsensitive(const QList<QString> &values, const QString &value) {
-    bool result = false;
-    foreach (const QString &v, values) {
-        CHECK_CONTINUE(QString::compare(v, value, Qt::CaseInsensitive) == 0);
-        result = true;
-        break;
-    };
-    return result;
-}
-}    // namespace
-
-bool ExternalToolRegistry::registerEntry(ExternalTool *t) {
-    if (containsCaseInsensitive(registry.keys(), t->getId())) {
+bool ExternalToolRegistry::registerEntry(ExternalTool *tool) {
+    const QString &id = tool->getId();
+    QString lowerCaseId = id.toLower();
+    if (toolByLowerCaseIdMap.contains(lowerCaseId)) {
         return false;
-    } else {
-        registryOrder.append(t);
-        registry.insert(t->getId(), t);
-        emit si_toolAdded(t->getId());
-        return true;
     }
+    toolByLowerCaseIdMap.insert(lowerCaseId, tool);
+    emit si_toolAdded(id);
+    return true;
 }
 
 void ExternalToolRegistry::unregisterEntry(const QString &id) {
-    CHECK(registry.contains(id), );
+    QString lowerCaseId = id.toLower();
+    CHECK(toolByLowerCaseIdMap.contains(lowerCaseId), );
     emit si_toolIsAboutToBeRemoved(id);
-    ExternalTool *et = registry.take(id);
-    if (nullptr != et) {
-        int idx = registryOrder.indexOf(et);
-        if (-1 != idx) {
-            registryOrder.removeAt(idx);
-        }
 
+    ExternalTool *et = toolByLowerCaseIdMap.take(lowerCaseId);
+    if (et != nullptr) {
         delete et;
     }
 }
 
 QList<ExternalTool *> ExternalToolRegistry::getAllEntries() const {
-    return registryOrder;
+    return toolByLowerCaseIdMap.values();
 }
 
 QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits() const {
-    QList<QList<ExternalTool *>> res;
-    QList<ExternalTool *> list = registryOrder;
-    while (!list.isEmpty()) {
-        QString name = list.first()->getToolKitName();
-        QList<ExternalTool *> toolKitList;
-        for (int i = 0; i < list.length(); i++) {
-            if (name == list.at(i)->getToolKitName()) {
-                toolKitList.append(list.takeAt(i));
-                i--;
-            }
+    QMap<QString, QList<ExternalTool *>> toolListByToolKitNameMap;
+    for (ExternalTool *tool : toolByLowerCaseIdMap.values()) {
+        QString toolKitName = tool->getToolKitName();
+        if (!toolListByToolKitNameMap.contains(toolKitName)) {
+            toolListByToolKitNameMap.insert(toolKitName, QList<ExternalTool *>() << tool);
+        } else {
+            QList<ExternalTool *> &toolKitTools = toolListByToolKitNameMap[toolKitName];
+            toolKitTools << tool;
         }
-        res.append(toolKitList);
     }
-    return res;
+    // Sort tools inside every toolkit tools list by tool name.
+    QList<QList<ExternalTool *>> sortedResultList;
+    for (QList<ExternalTool *> &toolsList : toolListByToolKitNameMap.values()) {
+        std::sort(toolsList.begin(), toolsList.end(), [](ExternalTool *t1, ExternalTool *t2) {
+            return t1->getName().compare(t2->getName(), Qt::CaseInsensitive) < 0;
+        });
+        sortedResultList << toolsList;
+    }
+    // Sort toolkits in the result list by toolkit name.
+    std::sort(sortedResultList.begin(), sortedResultList.end(), [](QList<ExternalTool *> &t1, QList<ExternalTool *> &t2) {
+        return t1[0]->getToolKitName().compare(t2[0]->getToolKitName(), Qt::CaseInsensitive) < 0;
+    });
+    return sortedResultList;
 }
 
 void ExternalToolRegistry::setManager(ExternalToolManager *_manager) {
@@ -329,30 +310,6 @@ void ExternalToolRegistry::setManager(ExternalToolManager *_manager) {
 
 ExternalToolManager *ExternalToolRegistry::getManager() const {
     return manager;
-}
-
-ExternalToolValidation DefaultExternalToolValidations::pythonValidation() {
-    QString pythonExecutable = "python";
-    QStringList pythonArgs;
-    pythonArgs << "--version";
-    QString pmsg = "Python";
-    StrStrMap perrMsgs;
-    perrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "Python 2 required for this tool. Please install Python or set your PATH variable if you have it installed.");
-
-    ExternalToolValidation pythonValidation("", pythonExecutable, pythonArgs, pmsg, perrMsgs);
-    return pythonValidation;
-}
-
-ExternalToolValidation DefaultExternalToolValidations::rValidation() {
-    QString rExecutable = "Rscript";
-    QStringList rArgs;
-    rArgs << "--version";
-    QString rmsg = "R";
-    StrStrMap rerrMsgs;
-    rerrMsgs.insert(ExternalToolValidation::DEFAULT_DESCR_KEY, "R Script required for this tool. Please install R Script or set your PATH variable if you have it installed.");
-
-    ExternalToolValidation rValidation("", rExecutable, rArgs, rmsg, rerrMsgs);
-    return rValidation;
 }
 
 }    // namespace U2
