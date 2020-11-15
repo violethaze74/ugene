@@ -42,6 +42,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "PosteriorActions.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
+#include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 
 namespace U2 {
 namespace GUITest_posterior_actions {
@@ -94,6 +95,27 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Cancel all tasks
 
     if (AppContext::getProject() != nullptr) {
+#ifdef Q_OS_MAC
+        GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+        GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+        GTGlobals::sleep(100);
+
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
+        GTKeyboardDriver::keyClick(Qt::Key_Delete);
+        GTGlobals::sleep(500);
+        GTUtilsTaskTreeView::waitTaskFinished(os, 1000000);
+        GTGlobals::sleep(5000);
+
+        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
+        GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                    << "Close project");
+        GTKeyboardDriver::keyClick(Qt::Key_Delete);
+        GTGlobals::sleep(500);
+        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+        GTGlobals::sleep(5000);
+
+        GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
+#else
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
@@ -102,17 +124,11 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
-#ifdef Q_OS_MAC
-        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
-        GTGlobals::sleep(5000);
-        GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                    << "Close project");
-#else
         GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-#endif
         GTGlobals::sleep(500);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
+#endif
     }
 
     GTUtilsMdi::closeAllWindows(os);

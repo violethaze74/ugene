@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QDateTime>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
 
@@ -225,11 +226,28 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QDialogButtonBox::Standa
 
 #define GT_METHOD_NAME "clickButtonBox"
 void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialogButtonBox::StandardButton button) {
+#ifdef Q_OS_MAC
+    QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
+    if (mbox != NULL && (button == QDialogButtonBox::Yes || button == QDialogButtonBox::No)) {
+        QMessageBox::StandardButton btn = button == QDialogButtonBox::Yes ? QMessageBox::Yes
+                                                                          : QMessageBox::No;
+        QAbstractButton *pushButton = mbox->button(btn);
+        GT_CHECK(pushButton != NULL, "pushButton is NULL");
+        GTWidget::click(os, pushButton);
+    } else {
+        QDialogButtonBox *box = buttonBox(os, dialog);
+        GT_CHECK(box != NULL, "buttonBox is NULL");
+        QPushButton *pushButton = box->button(button);
+        GT_CHECK(pushButton != NULL, "pushButton is NULL");
+        GTWidget::click(os, pushButton);
+    }
+#else
     QDialogButtonBox *box = buttonBox(os, dialog);
     GT_CHECK(box != NULL, "buttonBox is NULL");
     QPushButton *pushButton = box->button(button);
     GT_CHECK(pushButton != NULL, "pushButton is NULL");
     GTWidget::click(os, pushButton);
+#endif
 }
 #undef GT_METHOD_NAME
 
