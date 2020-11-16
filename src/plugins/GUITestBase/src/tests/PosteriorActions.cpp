@@ -103,15 +103,14 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 1000000);
+        GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
         GTGlobals::sleep(5000);
 
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+        GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
         GTGlobals::sleep(5000);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
