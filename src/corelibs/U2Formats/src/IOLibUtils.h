@@ -22,12 +22,11 @@
 #ifndef _U2_IO_LIB_UTILS_H_
 #define _U2_IO_LIB_UTILS_H_
 
-#include <stdio.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 #define BUFF_SIZE 8196
-#define CHECK_MB 1024 * 1024
 
 class SeekableBuf {
 public:
