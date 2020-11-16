@@ -608,8 +608,8 @@ void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
     }
 }
 
-void MaEditorSequenceArea::sl_changeCopyFormat(const QString &alg) {
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, alg);
+void MaEditorSequenceArea::sl_changeCopyFormat(const QString &formatId) {
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, formatId);
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
