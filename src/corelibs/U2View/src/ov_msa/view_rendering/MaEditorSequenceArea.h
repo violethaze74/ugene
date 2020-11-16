@@ -147,9 +147,9 @@ public slots:
     void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
     void sl_cancelSelection();
+    void sl_changeCopyFormat(const QString &formatId);
 
 protected slots:
-    void sl_changeCopyFormat(const QString &alg);
     void sl_changeColorScheme();
     void sl_fillCurrentSelectionWithGaps();
 

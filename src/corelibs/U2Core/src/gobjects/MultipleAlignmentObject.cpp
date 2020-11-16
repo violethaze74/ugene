@@ -308,29 +308,31 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
 
     MultipleAlignment oldCachedMa = cachedMa->getCopy();
 
+    // Undo-Redo Framework does not provide detailed change info.
+    // In this case or if we do not know which rows are changed we reload the whole object.
+    bool isUnknownChange = mi.type == MaModificationType_Undo || mi.type == MaModificationType_Redo || (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty());
     U2OpStatus2Log os;
-
-    if (mi.alignmentLengthChanged) {
-        qint64 msaLength = MaDbiUtils::getMaLength(entityRef, os);
+    if (isUnknownChange) {
+        loadAlignment(os);    // Reload 'cachedMa'.
         SAFE_POINT_OP(os, );
-        if (msaLength != cachedMa->getLength()) {
-            cachedMa->setLength(msaLength);
+    } else {
+        if (mi.alignmentLengthChanged) {
+            qint64 msaLength = MaDbiUtils::getMaLength(entityRef, os);
+            SAFE_POINT_OP(os, );
+            if (msaLength != cachedMa->getLength()) {
+                cachedMa->setLength(msaLength);
+            }
         }
-    }
 
-    if (mi.alphabetChanged) {
-        U2AlphabetId alphabet = MaDbiUtils::getMaAlphabet(entityRef, os);
-        SAFE_POINT_OP(os, );
-        if (alphabet.id != cachedMa->getAlphabet()->getId() && !alphabet.id.isEmpty()) {
-            const DNAAlphabet *newAlphabet = U2AlphabetUtils::getById(alphabet);
-            cachedMa->setAlphabet(newAlphabet);
+        if (mi.alphabetChanged) {
+            U2AlphabetId alphabet = MaDbiUtils::getMaAlphabet(entityRef, os);
+            SAFE_POINT_OP(os, );
+            if (alphabet.id != cachedMa->getAlphabet()->getId() && !alphabet.id.isEmpty()) {
+                const DNAAlphabet *newAlphabet = U2AlphabetUtils::getById(alphabet);
+                cachedMa->setAlphabet(newAlphabet);
+            }
         }
-    }
 
-    if (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty()) {    // suppose that in this case all the alignment has changed
-        loadAlignment(os);
-        SAFE_POINT_OP(os, );
-    } else {    // only specified rows were changed
         if (!removedRowIds.isEmpty()) {
             foreach (qint64 rowId, removedRowIds) {
                 const int rowIndex = cachedMa->getRowIndexByRowId(rowId, os);

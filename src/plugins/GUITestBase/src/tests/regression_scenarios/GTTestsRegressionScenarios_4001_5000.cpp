@@ -4912,7 +4912,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy (preferred format)"));
+                                                                              << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 

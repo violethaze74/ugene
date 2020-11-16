@@ -39,16 +39,17 @@
 
 namespace U2 {
 
-MSAGeneralTab::MSAGeneralTab(MSAEditor *_msa)
-    : msa(_msa), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName())) {
-    SAFE_POINT(msa != nullptr, "MSA Editor is not defined.", );
+MSAGeneralTab::MSAGeneralTab(MSAEditor *msaEditor)
+    : msaEditor(msaEditor), savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
+    SAFE_POINT(msaEditor != nullptr, "MSA Editor is not defined.", );
 
     setupUi(this);
 
     ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
     ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
-    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy selection"), copyTypeWidget, true);
-    ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msa), true);
+    // Note: use same action name with context menu in MSA-editor.
+    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy (custom format)"), copyTypeWidget, true);
+    ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msaEditor), true);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(alignmentInfo);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(consensusMode);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(copyType);
@@ -57,65 +58,55 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor *_msa)
     initializeParameters();
     connectSignals();
 
-    copyButton->setEnabled(msa->getUI()->getCopyFormattedSelectionAction()->isEnabled());
-
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
-#ifdef Q_OS_MAC
-    copyButton->setToolTip("Cmd+Shift+C");
-#else
-    copyButton->setToolTip("Ctrl+Shift+C");
-#endif
+    updateState();
+}
+
+void MSAGeneralTab::sl_convertAlphabetButtonClicked() {
+    if (msaEditor->convertDnaToRnaAction->isEnabled()) {
+        msaEditor->convertDnaToRnaAction->trigger();
+    } else if (msaEditor->convertRnaToDnaAction->isEnabled()) {
+        msaEditor->convertRnaToDnaAction->trigger();
+    }
 }
 
 void MSAGeneralTab::sl_alignmentChanged() {
-    alignmentAlphabet->setText(msa->getMaObject()->getAlphabet()->getName());
-    alignmentLength->setText(QString::number(msa->getAlignmentLen()));
-    alignmentHeight->setText(QString::number(msa->getNumSequences()));
+    updateState();
 }
 
 void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
-    QString selectedFormatId = copyType->itemData(index).toString();
-    emit si_copyFormatChanged(selectedFormatId);
-}
-
-void MSAGeneralTab::sl_copyFormatted() {
-    emit si_copyFormatted();
-}
-
-void MSAGeneralTab::sl_copyFormatStatusChanged(bool enabled) {
-    copyButton->setEnabled(enabled);
+    QString formatId = copyType->itemData(index).toString();
+    msaEditor->getUI()->getSequenceArea()->sl_changeCopyFormat(formatId);
 }
 
 void MSAGeneralTab::connectSignals() {
+    MSAEditorSequenceArea *sequenceArea = msaEditor->getUI()->getSequenceArea();
+
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
-    connect(copyButton, SIGNAL(clicked()), SLOT(sl_copyFormatted()));
+    connect(copyButton, SIGNAL(clicked()), sequenceArea, SLOT(sl_copySelectionFormatted()));
+    connect(convertAlphabetButton, SIGNAL(clicked()), SLOT(sl_convertAlphabetButtonClicked()));
 
-    // Extern signals
-    connect(msa->getMaObject(),
+    // External signals
+    connect(msaEditor->getMaObject(),
             SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
             SLOT(sl_alignmentChanged()));
-
-    //out
-    connect(this, SIGNAL(si_copyFormatChanged(QString)), msa->getUI()->getSequenceArea(), SLOT(sl_changeCopyFormat(QString)));
-
-    connect(this, SIGNAL(si_copyFormatted()), msa->getUI()->getSequenceArea(), SLOT(sl_copySelectionFormatted()));
-
-    //in
-    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
+    connect(sequenceArea, SIGNAL(si_copyFormattedChanging(bool)), copyButton, SLOT(setEnabled(bool)));
 }
 
 void MSAGeneralTab::initializeParameters() {
     // Alignment info
-    alignmentAlphabet->setText(msa->getMaObject()->getAlphabet()->getName());
-    alignmentLength->setText(QString::number(msa->getAlignmentLen()));
-    alignmentHeight->setText(QString::number(msa->getNumSequences()));
+    alignmentAlphabet->setText(msaEditor->getMaObject()->getAlphabet()->getName());
+    alignmentLength->setText(QString::number(msaEditor->getAlignmentLen()));
+    alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     // Consensus type combobox
-    consensusModeWidget->init(msa->getMaObject(), msa->getUI()->getConsensusArea());
+    consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getUI()->getConsensusArea());
 
     //Copy formatted
+    copyButton->setToolTip(msaEditor->getUI()->getCopyFormattedSelectionAction()->toolTip());
+
     DocumentFormatConstraints constr;
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
@@ -128,21 +119,38 @@ void MSAGeneralTab::initializeParameters() {
         DocumentFormat *format = formatRegistry->getFormatById(fid);
         copyType->addItem(QIcon(), format->getFormatName(), format->getFormatId());
     }
-
     copyType->addItem(QIcon(), tr("Rich text (HTML)"), "RTF");
-
     copyType->model()->sort(0);
 
-    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
+    QString currentCopyFormattedID = msaEditor->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
-
-    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)), SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::updateState() {
-    consensusModeWidget->updateState();
+    alignmentAlphabet->setText(msaEditor->getMaObject()->getAlphabet()->getName());
+    alignmentLength->setText(QString::number(msaEditor->getAlignmentLen()));
+    alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
-    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isEmpty());
+    consensusModeWidget->updateState();
+    copyButton->setEnabled(msaEditor->getUI()->getCopyFormattedSelectionAction()->isEnabled());
+    updateConvertAlphabetButtonState();
+}
+
+void MSAGeneralTab::updateConvertAlphabetButtonState() {
+    bool isDnaToRnaEnabled = msaEditor->convertDnaToRnaAction->isEnabled();
+    bool isRnaToDnaEnabled = msaEditor->convertRnaToDnaAction->isEnabled();
+    convertAlphabetButton->setVisible(isDnaToRnaEnabled || isRnaToDnaEnabled);
+
+    if (isDnaToRnaEnabled) {
+        convertAlphabetButton->setText(tr("RNA"));
+        convertAlphabetButton->setToolTip(tr("Convert DNA alignment to RNA alignment"));
+    } else if (isRnaToDnaEnabled) {
+        convertAlphabetButton->setText(tr("DNA"));
+        convertAlphabetButton->setToolTip(tr("Convert RNA alignment to DNA alignment"));
+    } else {
+        convertAlphabetButton->setText("");
+        convertAlphabetButton->setToolTip("");
+    }
 }
 
 }    // namespace U2

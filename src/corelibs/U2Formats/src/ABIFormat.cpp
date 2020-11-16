@@ -25,7 +25,6 @@
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNAInfo.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
@@ -40,7 +39,6 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include "ABIFormat.h"
-#include "DocumentFormatUtils.h"
 #include "IOLibUtils.h"
 
 /* TRANSLATOR U2::ABIFormat */
@@ -76,13 +74,15 @@ FormatCheckResult ABIFormat::checkRawData(const QByteArray &rawData, const GUrl 
     return hasBinaryBlocks ? FormatDetection_Matched : FormatDetection_NotMatched;
 }
 
+#define MAX_SUPPORTED_ABIF_SIZE 10 * 1024 * 1024
+
 Document *ABIFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     QByteArray readBuff;
     QByteArray block(BUFF_SIZE, 0);
     quint64 len = 0;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
-        CHECK_EXT(readBuff.size() <= CHECK_MB, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
+        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
     }
 
     SeekableBuf sf;
@@ -106,7 +106,7 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     quint64 len = 0;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
-        CHECK_EXT(readBuff.size() <= CHECK_MB, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
+        CHECK_EXT(readBuff.size() <= MAX_SUPPORTED_ABIF_SIZE, os.setError(L10N::errorFileTooLarge(io->getURL())), NULL);
     }
 
     SeekableBuf sf;

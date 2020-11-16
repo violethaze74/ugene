@@ -134,6 +134,7 @@ public:
 
 public slots:
     void sl_setCollapsingMode(bool enabled);
+    void sl_copySelectionFormatted();
 
 protected:
     void focusOutEvent(QFocusEvent *fe);
@@ -148,7 +149,6 @@ private slots:
     void sl_addSeqFromProject();
 
     void sl_copySelection();
-    void sl_copySelectionFormatted();
     void sl_paste();
     void sl_pasteBefore();
     void sl_pasteFinished(Task *pasteTask);

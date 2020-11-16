@@ -27,9 +27,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TextUtils.h>
@@ -39,7 +37,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include "DocumentFormatUtils.h"
 #include "IOLibUtils.h"
 
 /* TRANSLATOR U2::SCFFormat */
@@ -1063,6 +1060,8 @@ void SCFFormat::exportDocumentToSCF(const QString &fileName, const DNAChromatogr
     fclose(fp);
 }
 
+#define MAX_SUPPORTED_SCF_SIZE 2 * 1024 * 1024
+
 bool SCFFormat::loadSCFObjects(IOAdapter *io, DNASequence &dna, DNAChromatogram &cd, U2OpStatus &os) {
     GUrl url = io->getURL();
     QByteArray readBuff;
@@ -1070,7 +1069,7 @@ bool SCFFormat::loadSCFObjects(IOAdapter *io, DNASequence &dna, DNAChromatogram 
     quint64 len = 0;
     while ((len = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
         readBuff.append(QByteArray(block.data(), len));
-        if (readBuff.size() > CHECK_MB) {
+        if (readBuff.size() > MAX_SUPPORTED_SCF_SIZE) {
             os.setError(L10N::errorFileTooLarge(url));
             break;
         }
