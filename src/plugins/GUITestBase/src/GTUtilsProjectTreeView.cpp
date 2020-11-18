@@ -417,6 +417,7 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
 #define GT_METHOD_NAME "filterProject"
 void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus &os, const QString &searchField) {
     openView(os);
+    GTGlobals::sleep(3000);
     QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, searchField);
     GTGlobals::sleep(3000);

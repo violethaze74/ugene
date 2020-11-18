@@ -41,6 +41,12 @@
 
 #define GUI_TEST_TIMEOUT_MILLIS 240000
 
+// Workaround for Mac
+#ifdef Q_OS_MAC
+#undef GUI_TEST_TIMEOUT_MILLIS
+#define GUI_TEST_TIMEOUT_MILLIS 480000
+#endif
+
 #ifdef Q_OS_MAC
 #    define NUMBER_OF_TEST_SUITES 4
 #elif defined(Q_OS_LINUX)
