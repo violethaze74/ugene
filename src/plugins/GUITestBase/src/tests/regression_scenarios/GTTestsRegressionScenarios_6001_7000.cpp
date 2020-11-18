@@ -6114,6 +6114,24 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6901) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Advanced"
+                                                                              << "Convert to RNA alphabet (T->U)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy (custom format)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
+    QString clipboardText = GTClipboard::sequences(os);
+    CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
