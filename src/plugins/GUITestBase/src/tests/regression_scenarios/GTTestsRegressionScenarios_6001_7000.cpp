@@ -6084,6 +6084,73 @@ GUI_TEST_CLASS_DEFINITION(test_6898_2) {
     CHECK_SET_ERR(names.size() == 21, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
     CHECK_SET_ERR(names[7] == "human_T1", QString("Unexpected name, expected: \"human_T1\", current: %1").arg(names[7]));
 }
+GUI_TEST_CLASS_DEFINITION(test_6899) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::selectRows(os, 0, 5);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: the copied sequences are inserted right above the 8th sequence.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 24, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[6] == "Phaneroptera_falcata", QString("Unexpected name, expected: \"Phaneroptera_falcata\", current: %1").arg(names[6]));
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6899_1) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy (custom format)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    QString expectedClipboard = "CTACTAATTCGATTATTAATTCGATTGCTAATTCGATTATTAATCCGGCTATTAATTCGA";
+    QString clipboardText = GTClipboard::sequences(os);
+    CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6901) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Advanced"
+                                                                              << "Convert to RNA alphabet (T->U)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy (custom format)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
+    QString clipboardText = GTClipboard::sequences(os);
+    CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
+GUI_TEST_CLASS_DEFINITION(test_6903) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
+
+    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
+    GTWidget::click(os, toDnaButton);
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy (custom format)"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
+    QString clipboardText = GTClipboard::sequences(os);
+    CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
