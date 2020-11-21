@@ -2082,9 +2082,9 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 
             bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
             if (!isPathOnlyValidation) {
-                //Expected: SPAdes description contains the following string - "Version: 3.13.0"
-                bool hasVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.13.0");
-                if (!hasVersion) {
+                //Expected: SPAdes description contains the following string - "Version: 3.xx.x"
+                bool hasValidVersion = AppSettingsDialogFiller::isToolDescriptionContainsString(os, "SPAdes", "Version: 3.");
+                if (!hasValidVersion) {
                     os.setError("Unexpected SPAdes version");
                 }
             }
