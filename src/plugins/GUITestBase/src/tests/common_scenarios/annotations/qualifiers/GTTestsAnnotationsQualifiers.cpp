@@ -469,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Expected state: a P03334 is loaded and opened.
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(NULL != activeWindow, "Active window is NULL");
-    QString expectedTitle = "P03334 [s] GAG_MSVMO";
+    QString expectedTitle = "GAG_MSVMO [P03334.gb]";
     CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
 
     // Open "test_6_murine.gb" view and click the same qualifier value again.
@@ -477,7 +477,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(NULL != activeWindow, "Active window is NULL");
-    expectedTitle = "test_6_murine [s] NC_001363";
+    expectedTitle = "NC_001363 [test_6_murine.gb]";
     CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
 
     GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "db_xref"), AnnotationsTreeView::COLUMN_VALUE);

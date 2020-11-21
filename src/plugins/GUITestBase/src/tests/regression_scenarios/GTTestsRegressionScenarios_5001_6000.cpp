@@ -515,7 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_5090) {
 
     GTUtilsLog::checkContainsError(os, logTracer, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 
-    GTUtilsMdi::activateWindow(os, "join_complement_ann [s] A_SEQ_1");
+    GTUtilsMdi::activateWindow(os, "A_SEQ_1 [join_complement_ann.gb] ");
 
     const QString simpleAnnRegion = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "just_an_annotation");
     CHECK_SET_ERR("40..50" == simpleAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("40..50").arg(simpleAnnRegion));

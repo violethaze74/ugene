@@ -707,7 +707,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::activateWindow(os, "qulifier_rebuilding [s] human_T1");
+    GTUtilsMdi::activateWindow(os, "qulifier_rebuilding [human_T1.fa]");
 
     checkQualifierRegionsShift(os, 0);
 }
@@ -728,7 +728,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::activateWindow(os, "qulifier_rebuilding [s] human_T1");
+    GTUtilsMdi::activateWindow(os, "qulifier_rebuilding [human_T1.fa]");
 
     checkQualifierRegionsShift(os, 0);
 }

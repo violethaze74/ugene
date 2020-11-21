@@ -955,7 +955,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "start bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "start bookmark");
 
     const int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -968,7 +968,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "middle bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "middle bookmark");
 
     const int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -980,7 +980,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "end bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "end bookmark");
 
     const int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -4331,7 +4331,7 @@ GUI_TEST_CLASS_DEFINITION(test_0073) {
                                                                         << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Expected: view is opened, document is loaded
-    GTUtilsMdi::findWindow(os, "COI [m] COI");
+    GTUtilsMdi::findWindow(os, "COI [COI.aln]");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0074) {

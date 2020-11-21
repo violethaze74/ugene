@@ -5218,7 +5218,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 
     //5) In second sequence view click Remove sequence on the toolbar
     //Expected state: DotPlot closed and UGENE didn't crash
-    GTUtilsMdi::activateWindow(os, "murine [s] NC_001363");
+    GTUtilsMdi::activateWindow(os, "NC_001363 [murine.gb]");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363", GTUtilsMdi::activeWindow(os));
     CHECK_SET_ERR(toolbar != NULL, "Cannot find views_tool_bar_NC_001363");

@@ -2991,7 +2991,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     //    4. Select some sequences in project view and click "Align sequence(s) to this alignment".
     GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     GTUtilsProjectTreeView::click(os, "EAS54_6_R1_2_1_413_324");
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
@@ -5024,7 +5024,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
 
     //    5. Activate the Sequence View for "murine.gb", that was opened on the file opening.
-    const QString murineMdiTitle = "murine [s] NC_001363";
+    const QString murineMdiTitle = "NC_001363 [murine.gb]";
     GTUtilsMdi::activateWindow(os, murineMdiTitle);
     GTGlobals::sleep(500);
 

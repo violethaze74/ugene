@@ -406,7 +406,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, false, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
@@ -415,7 +415,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     //4. Then run this dialog in "Profile mode".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile", GTGlobals::UseMouse));
@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Alignment profile for COI", "Unexpected active window name: " + GTUtilsMdi::activeWindow(os)->windowTitle());
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     //5. Finally, try to save results as *.html and *.csv files.
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::HTML, sandBoxDir + "test_1020.html"));
@@ -895,7 +895,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048) {
     bool vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(!vis, "hint unexpectidly visiable");
 
-    GTUtilsMdi::activateWindow(os, "1 [as] chrM");
+    GTUtilsMdi::activateWindow(os, "chrM [1.ugenedb]");
 
     QWidget *w1 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w1);

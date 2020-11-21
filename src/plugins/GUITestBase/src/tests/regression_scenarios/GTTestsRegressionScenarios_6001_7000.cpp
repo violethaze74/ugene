@@ -5726,7 +5726,7 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
 
     //6. Switch to another view
     GTUtilsMdi::closeActiveWindow(os);
-    GTUtilsMdi::activateWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTUtilsMdi::activateWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //Expected result: the annotation is present in another sequence view too.

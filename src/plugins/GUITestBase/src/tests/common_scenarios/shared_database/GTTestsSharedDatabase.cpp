@@ -2494,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0004) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(40000);
 
-    GTWidget::findWidget(os, "assembly_browser_et0004_assembly.bam [as] et0004_assembly");
+    GTWidget::findWidget(os, "et0004_assembly [assembly_browser_et0004_assembly.bam.ugenedb]");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2543,7 +2543,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0006) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
 
-    GTWidget::findWidget(os, "et0006_text [t] et0006_text");
+    GTWidget::findWidget(os, "et0006_text [et0006_text.txt]");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2591,7 +2591,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
 
-    GTWidget::findWidget(os, "et0008_tree [tr] Tree");
+    GTWidget::findWidget(os, "Tree [et0008_tree.nwk] ");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }

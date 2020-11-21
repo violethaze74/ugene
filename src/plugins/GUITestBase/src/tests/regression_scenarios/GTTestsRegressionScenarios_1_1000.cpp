@@ -1164,7 +1164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTFileDialog::openFile(os, sandBoxDir + "1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::activateWindow(os, "1 [as] chrM");
+    GTUtilsMdi::activateWindow(os, "chrM [1.ugenedb]");
 
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "1.fa")), GTUtilsMdi::activeWindow(os));
 
@@ -3108,7 +3108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0965) {
 
     //2. Create a few sub bookmarks for each view.
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "murine");
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "sars [s] NC_004718"));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_004718 [sars.gb]"));
     GTMouseDriver::doubleClick();
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "sars");
 
