@@ -403,7 +403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/1m.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *w = GTUtilsMdi::findWindow(os, "Multiple alignment [1m.aln]");
+    QWidget *w = GTUtilsMdi::findWindow(os, "Multiple alignment [1m.fa]");
     CHECK_SET_ERR(w != NULL, "Sequence view window title is not 1m [m] Multiple alignment");
 }
 
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMdiSubWindow *fasta = (QMdiSubWindow *)GTUtilsMdi::findWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QMdiSubWindow *fasta = (QMdiSubWindow *)GTUtilsMdi::findWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -586,12 +586,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     QString title1 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace] ", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace]", "unexpected title for doc1: " + title1);
 
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace] ", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 
     //reopening windows z
     while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL) {
@@ -606,14 +606,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTThread::waitForMainThread();
     GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace] ", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace]", "unexpected title for doc1: " + title1);
 
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     GTThread::waitForMainThread();
     GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace] ", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038_1) {
@@ -625,12 +625,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     QString title1 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ace.ugenedb]", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
 
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     QString title2 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ace.ugenedb]", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 
     //reopening windows
     while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL) {
@@ -642,15 +642,13 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
 
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
-    GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ace.ugenedb]", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
 
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
-    GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ace.ugenedb]", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {

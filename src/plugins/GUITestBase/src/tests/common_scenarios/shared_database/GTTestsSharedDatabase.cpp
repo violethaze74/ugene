@@ -1064,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     const QString newFolderPath = parentFolderPath + newFolderName;
     const QString fileDocName = "human_T1.fa";
     const QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
-    const QString fileObjectNameWidget = "[s] human_T1 (UCSC April 2002 chr7:115977709-117855134)";
+    const QString fileObjectNameWidget = "human_T1 (UCSC April 2002 chr7:115977709-117855134) []";
     const QString importedDocFolderPath = newFolderPath + U2ObjectDbi::PATH_SEP + fileDocName;
     const QString importedObjectPath = importedDocFolderPath + U2ObjectDbi::PATH_SEP + fileObjectName;
 
@@ -2494,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0004) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(40000);
 
-    GTWidget::findWidget(os, "et0004_assembly [assembly_browser_et0004_assembly.bam.ugenedb]");
+    GTWidget::findWidget(os, "et0004_assembly [et0004_assembly.bam.ugenedb]");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2591,7 +2591,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
 
-    GTWidget::findWidget(os, "Tree [et0008_tree.nwk] ");
+    GTWidget::findWidget(os, "Tree [et0008_tree.nwk]");
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }

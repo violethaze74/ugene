@@ -469,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Expected state: a P03334 is loaded and opened.
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(NULL != activeWindow, "Active window is NULL");
-    QString expectedTitle = "GAG_MSVMO [P03334.gb]";
+    QString expectedTitle = "GAG_MSVMO [P03334.txt]";
     CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
 
     // Open "test_6_murine.gb" view and click the same qualifier value again.
@@ -477,8 +477,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(NULL != activeWindow, "Active window is NULL");
-    expectedTitle = "NC_001363 [test_6_murine.gb]";
-    CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
+    QString expectedTitle1 = "NC_001363 [test_6_murine.gb]";
+    CHECK_SET_ERR(expectedTitle1 == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle1).arg(activeWindow->windowTitle()));
 
     GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "db_xref"), AnnotationsTreeView::COLUMN_VALUE);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -486,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Expected state: nothing happens, the original view is still active.
     activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(NULL != activeWindow, "Active window is NULL");
-    CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
+    CHECK_SET_ERR(expectedTitle1 == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle1).arg(activeWindow->windowTitle()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
