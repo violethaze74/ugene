@@ -29,7 +29,7 @@ namespace U2 {
 class CEASSupport : public ExternalTool {
     Q_OBJECT
 public:
-    CEASSupport(const QString &id, const QString &name, const QString &path = "");
+    CEASSupport();
 
     static const QString ET_CEAS;
     static const QString ET_CEAS_ID;

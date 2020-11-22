@@ -35,8 +35,8 @@ const QString VcfConsensusSupport::ET_VCF_CONSENSUS = "vcf-consensus";
 const QString VcfConsensusSupport::ET_VCF_CONSENSUS_ID = "USUPP_VCF_CONSENSUS";
 const QString VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR = "vcf-consensus";
 
-VcfConsensusSupport::VcfConsensusSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "vcftools", name, path) {
+VcfConsensusSupport::VcfConsensusSupport()
+    : ExternalTool(VcfConsensusSupport::ET_VCF_CONSENSUS_ID, "vcftools", VcfConsensusSupport::ET_VCF_CONSENSUS) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

@@ -28,11 +28,16 @@ namespace U2 {
 
 class SpadesSupport : public ExternalTool {
     Q_OBJECT
+
 public:
-    SpadesSupport(const QString &id, const QString &name, const QString &path = "");
+    /** Registers SPAdes tool in UGENE. */
+    static void checkIn();
 
     static const QString ET_SPADES;
     static const QString ET_SPADES_ID;
+
+private:
+    SpadesSupport();
 };
 
 }    // namespace U2

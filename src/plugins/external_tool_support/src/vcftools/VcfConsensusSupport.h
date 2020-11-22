@@ -29,7 +29,7 @@ namespace U2 {
 class VcfConsensusSupport : public ExternalTool {
     Q_OBJECT
 public:
-    VcfConsensusSupport(const QString &id, const QString &name, const QString &path = "");
+    VcfConsensusSupport();
 
     static const QString ET_VCF_CONSENSUS;
     static const QString ET_VCF_CONSENSUS_ID;

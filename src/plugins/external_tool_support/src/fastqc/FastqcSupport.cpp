@@ -39,8 +39,8 @@ namespace U2 {
 const QString FastQCSupport::ET_FASTQC = "FastQC";
 const QString FastQCSupport::ET_FASTQC_ID = "USUPP_FASTQC";
 
-FastQCSupport::FastQCSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "fastqc", name, path) {
+FastQCSupport::FastQCSupport()
+    : ExternalTool(FastQCSupport::ET_FASTQC_ID, "fastqc", FastQCSupport::ET_FASTQC) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

@@ -30,8 +30,8 @@ namespace U2 {
 const QString ConductGOSupport::ET_GO_ANALYSIS = "go_analysis";
 const QString ConductGOSupport::ET_GO_ANALYSIS_ID = "USUPP_CONDUCT_GO_ANALYSIS";
 
-ConductGOSupport::ConductGOSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name) {
+ConductGOSupport::ConductGOSupport()
+    : ExternalTool(ConductGOSupport::ET_GO_ANALYSIS_ID, "cistrome", ConductGOSupport::ET_GO_ANALYSIS) {
     initialize();
 }
 

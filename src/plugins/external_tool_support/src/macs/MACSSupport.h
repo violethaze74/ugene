@@ -29,7 +29,7 @@ namespace U2 {
 class MACSSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MACSSupport(const QString &id, const QString &name);
+    MACSSupport();
 
     static const QString ET_MACS;
     static const QString ET_MACS_ID;

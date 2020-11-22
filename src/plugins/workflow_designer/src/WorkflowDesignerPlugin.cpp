@@ -49,7 +49,6 @@
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include "WorkflowDocument.h"
 #include "WorkflowSamples.h"
@@ -61,7 +60,6 @@
 #include "library/IncludedProtoFactoryImpl.h"
 #include "tasks/ReadAssemblyTask.h"
 #include "util/DatasetsCountValidator.h"
-#include "util/SaveSchemaImageUtils.h"
 
 namespace U2 {
 
@@ -70,15 +68,12 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     return plug;
 }
 
-#define PLUGIN_SETTINGS QString("workflowview/")
-
 const QString WorkflowDesignerPlugin::RUN_WORKFLOW = "task";
-const QString WorkflowDesignerPlugin::REMOTE_MACHINE = "task-remote-machine";
 const QString WorkflowDesignerPlugin::PRINT = "print";
 const QString WorkflowDesignerPlugin::CUSTOM_EL_WITH_SCRIPTS_DIR = "custom-element-script-dir";
 const QString WorkflowDesignerPlugin::CUSTOM_EXTERNAL_TOOL_DIR = "custom-element-external-tool-dir";
 const QString WorkflowDesignerPlugin::INCLUDED_ELEMENTS_DIR = "imported-workflow-element-dir";
-const QString WorkflowDesignerPlugin::WORKFLOW_OUTPUT_DIR = "workfow-output-dir";
+const QString WorkflowDesignerPlugin::WORKFLOW_OUTPUT_DIR = "workflow-output-dir";
 
 WorkflowDesignerPlugin::WorkflowDesignerPlugin()
     : Plugin(tr("Workflow Designer"), tr("Workflow Designer allows one to create complex computational workflows.")) {
@@ -141,26 +136,14 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
         connect(AppContext::getTaskScheduler(), SIGNAL(si_ugeneIsReadyToWork()), new TaskStarter(t), SLOT(registerTask()));
     } else {
         if (cmdlineReg->hasParameter(GalaxyConfigTask::GALAXY_CONFIG_OPTION) && consoleMode) {
-            Task *t = nullptr;
             const QString schemePath = cmdlineReg->getParameterValue(GalaxyConfigTask::GALAXY_CONFIG_OPTION);
             const QString ugenePath = cmdlineReg->getParameterValue(GalaxyConfigTask::UGENE_PATH_OPTION);
             const QString galaxyPath = cmdlineReg->getParameterValue(GalaxyConfigTask::GALAXY_PATH_OPTION);
             const QString destinationPath = nullptr;
-            t = new GalaxyConfigTask(schemePath, ugenePath, galaxyPath, destinationPath);
+            Task *t = new GalaxyConfigTask(schemePath, ugenePath, galaxyPath, destinationPath);
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
         }
     }
-}
-
-void WorkflowDesignerPlugin::sl_saveSchemaImageTaskFinished() {
-    ProduceSchemaImageLinkTask *saveImgTask = qobject_cast<ProduceSchemaImageLinkTask *>(sender());
-    assert(saveImgTask != NULL);
-    if (saveImgTask->getState() != Task::State_Finished) {
-        return;
-    }
-
-    QString imgUrl = saveImgTask->getImageLink();
-    fprintf(stdout, "%s", imgUrl.toLocal8Bit().constData());
 }
 
 void WorkflowDesignerPlugin::registerWorkflowTasks() {
@@ -342,9 +325,6 @@ void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction &action)
     view->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
 }
 
-void WorkflowDesignerService::sl_showManagerWindow() {
-}
-
 Task *WorkflowDesignerService::createServiceEnablingTask() {
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples";
 
@@ -359,7 +339,11 @@ void WorkflowDesignerService::initSampleActions() {
 
     SampleAction ngsControl(ToolsMenu::NGS_CONTROL, ToolsMenu::NGS_MENU, "NGS/fastqc.uwl", tr("Reads quality control..."));
     ngsControl.requiredPlugins << externalToolsPlugin;
+
+    // SPAdes is available only on Linux and Mac.
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
+#endif
     ngsDenovo.requiredPlugins << externalToolsPlugin;
     SampleAction ngsScaffold(ToolsMenu::NGS_SCAFFOLD, ToolsMenu::NGS_MENU, "Scenarios/length_filter.uwl", tr("Filter short scaffolds..."));
     ngsScaffold.requiredPlugins << externalToolsPlugin;

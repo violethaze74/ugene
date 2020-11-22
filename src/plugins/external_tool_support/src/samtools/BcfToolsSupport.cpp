@@ -28,8 +28,8 @@ namespace U2 {
 const QString BcfToolsSupport::ET_BCFTOOLS = "BCFtools";
 const QString BcfToolsSupport::ET_BCFTOOLS_ID = "USUPP_BCFTOOLS";
 
-BcfToolsSupport::BcfToolsSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "samtools", name) {
+BcfToolsSupport::BcfToolsSupport()
+    : ExternalTool(BcfToolsSupport::ET_BCFTOOLS_ID, "samtools", BcfToolsSupport::ET_BCFTOOLS) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

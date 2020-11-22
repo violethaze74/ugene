@@ -35,8 +35,8 @@ const QString SeqPosSupport::ET_SEQPOS_ID = "USUPP_SEQPOS";
 const QString SeqPosSupport::ASSEMBLY_DIR_NAME = "genomes";
 const QString SeqPosSupport::ASSEMBLY_DIR = "Assembly dir";
 
-SeqPosSupport::SeqPosSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name) {
+SeqPosSupport::SeqPosSupport()
+    : ExternalTool(SeqPosSupport::ET_SEQPOS_ID, "cistrome", SeqPosSupport::ET_SEQPOS) {
     initialize();
 }
 

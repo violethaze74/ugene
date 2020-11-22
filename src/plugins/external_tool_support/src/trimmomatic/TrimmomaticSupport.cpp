@@ -42,8 +42,8 @@ namespace U2 {
 const QString TrimmomaticSupport::ET_TRIMMOMATIC = "Trimmomatic";
 const QString TrimmomaticSupport::ET_TRIMMOMATIC_ID = "USUPP_TRIMMOMATIC";
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "trimmomatic", name, path) {
+TrimmomaticSupport::TrimmomaticSupport()
+    : ExternalTool(TrimmomaticSupport::ET_TRIMMOMATIC_ID, "trimmomatic", TrimmomaticSupport::ET_TRIMMOMATIC) {
     toolKitName = "Trimmomatic";
     description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
 

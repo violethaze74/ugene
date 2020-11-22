@@ -262,7 +262,7 @@ void ExternalToolManagerImpl::sl_validationTaskStateChanged() {
             QString masterId = toolDependencies.first();
             ExternalTool *masterTool = etRegistry->getById(masterId);
             SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(masterId), );
-            SAFE_POINT(masterTool->getPath() == task->getToolPath(), "Module tool should have the same path as it's master tool", );
+            //SAFE_POINT(masterTool->getPath() == task->getToolPath(), "Module tool should have the same path as it's master tool", );
         }
 
         tool->setVersion(task->getToolVersion());

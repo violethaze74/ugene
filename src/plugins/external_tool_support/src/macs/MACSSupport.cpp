@@ -29,8 +29,8 @@ namespace U2 {
 const QString MACSSupport::ET_MACS = "MACS";
 const QString MACSSupport::ET_MACS_ID = "USUPP_MACS";
 
-MACSSupport::MACSSupport(const QString &id, const QString &name)
-    : ExternalTool(id, "cistrome", name) {
+MACSSupport::MACSSupport()
+    : ExternalTool(MACSSupport::ET_MACS_ID, "cistrome", MACSSupport::ET_MACS) {
     initialize();
 }
 

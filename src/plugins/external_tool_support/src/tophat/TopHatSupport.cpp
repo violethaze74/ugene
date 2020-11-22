@@ -33,8 +33,8 @@ const QString TopHatSupport::ET_TOPHAT = "TopHat";
 const QString TopHatSupport::ET_TOPHAT_ID = "USUPP_TOPHAT";
 const QString TopHatSupport::TOPHAT_TMP_DIR = "tophat";
 
-TopHatSupport::TopHatSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "tophat2", name, path) {
+TopHatSupport::TopHatSupport()
+    : ExternalTool(TopHatSupport::ET_TOPHAT_ID, "tophat2", TopHatSupport::ET_TOPHAT) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

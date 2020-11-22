@@ -30,7 +30,7 @@ class SamToolsExtToolSupport : public ExternalTool {
     Q_OBJECT
 
 public:
-    SamToolsExtToolSupport(const QString &id, const QString &name, const QString &path = "");
+    SamToolsExtToolSupport();
 
     static const QString ET_SAMTOOLS_EXT;
     static const QString ET_SAMTOOLS_EXT_ID;

@@ -20,6 +20,7 @@
  */
 
 #include "ExternalToolSupportPlugin.h"
+#include <spades/SpadesSupport.h>
 
 #include "samtools/BcfToolsSupport.h"
 #include "samtools/SamToolsExtToolSupport.h"
@@ -27,7 +28,6 @@
 
 #include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
-#include <U2Algorithm/GenomeAssemblyRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -118,10 +118,6 @@
 #include "seqpos/SeqPosWorker.h"
 #include "snpeff/SnpEffSupport.h"
 #include "snpeff/SnpEffWorker.h"
-#include "spades/SpadesSettingsWidget.h"
-#include "spades/SpadesSupport.h"
-#include "spades/SpadesTask.h"
-#include "spades/SpadesTaskTest.h"
 #include "spades/SpadesWorker.h"
 #include "spidey/SpideySupport.h"
 #include "spidey/SpideySupportTask.h"
@@ -145,8 +141,7 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    ExternalToolSupportPlugin *plug = new ExternalToolSupportPlugin();
-    return plug;
+    return new ExternalToolSupportPlugin();
 }
 
 ExternalToolSupportPlugin::ExternalToolSupportPlugin()
@@ -275,38 +270,38 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new Bowtie2Support(Bowtie2Support::ET_BOWTIE2_INSPECT_ID));
 
     // BWA
-    etRegistry->registerEntry(new BwaSupport(BwaSupport::ET_BWA_ID, BwaSupport::ET_BWA));
+    etRegistry->registerEntry(new BwaSupport());
 
     // SPAdes
-    etRegistry->registerEntry(new SpadesSupport(SpadesSupport::ET_SPADES_ID, SpadesSupport::ET_SPADES));
+    SpadesSupport::checkIn();
 
     // SAMtools (external tool)
-    etRegistry->registerEntry(new SamToolsExtToolSupport(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, SamToolsExtToolSupport::ET_SAMTOOLS_EXT));
+    etRegistry->registerEntry(new SamToolsExtToolSupport());
 
     // BCFtools (external tool)
-    etRegistry->registerEntry(new BcfToolsSupport(BcfToolsSupport::ET_BCFTOOLS_ID, BcfToolsSupport::ET_BCFTOOLS));
+    etRegistry->registerEntry(new BcfToolsSupport());
 
     // Tabix
-    etRegistry->registerEntry(new TabixSupport(TabixSupport::ET_TABIX_ID, TabixSupport::ET_TABIX));
+    etRegistry->registerEntry(new TabixSupport());
 
     // VcfConsensus
-    etRegistry->registerEntry(new VcfConsensusSupport(VcfConsensusSupport::ET_VCF_CONSENSUS_ID, VcfConsensusSupport::ET_VCF_CONSENSUS));
+    etRegistry->registerEntry(new VcfConsensusSupport());
 
     // Spidey
-    SpideySupport *spideySupport = new SpideySupport(SpideySupport::ET_SPIDEY_ID, SpideySupport::ET_SPIDEY);
+    SpideySupport *spideySupport = new SpideySupport();
     etRegistry->registerEntry(spideySupport);
 
     //bedtools
     etRegistry->registerEntry(new BedtoolsSupport());
 
     //cutadapt
-    etRegistry->registerEntry(new CutadaptSupport(CutadaptSupport::ET_CUTADAPT_ID, CutadaptSupport::ET_CUTADAPT));
+    etRegistry->registerEntry(new CutadaptSupport());
 
     //bigwig
     etRegistry->registerEntry(new BigWigSupport());
 
     // TopHat
-    etRegistry->registerEntry(new TopHatSupport(TopHatSupport::ET_TOPHAT_ID, TopHatSupport::ET_TOPHAT));
+    etRegistry->registerEntry(new TopHatSupport());
 
     // Cufflinks external tools
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_CUFFCOMPARE_ID, CufflinksSupport::ET_CUFFCOMPARE));
@@ -316,34 +311,34 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_GFFREAD_ID, CufflinksSupport::ET_GFFREAD));
 
     // CEAS
-    etRegistry->registerEntry(new CEASSupport(CEASSupport::ET_CEAS_ID, CEASSupport::ET_CEAS));
+    etRegistry->registerEntry(new CEASSupport());
 
     // MACS
-    etRegistry->registerEntry(new MACSSupport(MACSSupport::ET_MACS_ID, MACSSupport::ET_MACS));
+    etRegistry->registerEntry(new MACSSupport());
 
     // peak2gene
-    etRegistry->registerEntry(new Peak2GeneSupport(Peak2GeneSupport::ET_PEAK2GENE_ID, Peak2GeneSupport::ET_PEAK2GENE));
+    etRegistry->registerEntry(new Peak2GeneSupport());
 
     //ConservationPlot
-    etRegistry->registerEntry(new ConservationPlotSupport(ConservationPlotSupport::ET_CONSERVATION_PLOT_ID, ConservationPlotSupport::ET_CONSERVATION_PLOT));
+    etRegistry->registerEntry(new ConservationPlotSupport());
 
     //SeqPos
-    etRegistry->registerEntry(new SeqPosSupport(SeqPosSupport::ET_SEQPOS_ID, SeqPosSupport::ET_SEQPOS));
+    etRegistry->registerEntry(new SeqPosSupport());
 
     //ConductGO
-    etRegistry->registerEntry(new ConductGOSupport(ConductGOSupport::ET_GO_ANALYSIS_ID, ConductGOSupport::ET_GO_ANALYSIS));
+    etRegistry->registerEntry(new ConductGOSupport());
 
     //Vcfutils
-    etRegistry->registerEntry(new VcfutilsSupport(VcfutilsSupport::VCF_UTILS_ID, VcfutilsSupport::VCF_UTILS));
+    etRegistry->registerEntry(new VcfutilsSupport());
 
     //SnpEff
-    etRegistry->registerEntry(new SnpEffSupport(SnpEffSupport::ET_SNPEFF_ID, SnpEffSupport::ET_SNPEFF));
+    etRegistry->registerEntry(new SnpEffSupport());
 
     //FastQC
-    etRegistry->registerEntry(new FastQCSupport(FastQCSupport::ET_FASTQC_ID, FastQCSupport::ET_FASTQC));
+    etRegistry->registerEntry(new FastQCSupport());
 
     // StringTie
-    etRegistry->registerEntry(new StringTieSupport(StringTieSupport::ET_STRINGTIE_ID, StringTieSupport::ET_STRINGTIE));
+    etRegistry->registerEntry(new StringTieSupport());
 
     //HMMER
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL_ID, HmmerSupport::BUILD_TOOL));
@@ -351,7 +346,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL_ID, HmmerSupport::PHMMER_TOOL));
 
     //Trimmomatic
-    etRegistry->registerEntry(new TrimmomaticSupport(TrimmomaticSupport::ET_TRIMMOMATIC_ID, TrimmomaticSupport::ET_TRIMMOMATIC));
+    etRegistry->registerEntry(new TrimmomaticSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
         etRegistry->setToolkitDescription("BLAST", tr("The <i>Basic Local Alignment Search Tool</i> (BLAST) finds regions of local similarity between sequences. "
@@ -445,97 +440,14 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     readsFormats << BaseDocumentFormats::RAW_DNA_SEQUENCE;
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(Bowtie2Task::taskName, new Bowtie2TaskFactory(), new Bowtie2GUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
 
-    QStringList genomeReadsFormats;
-    genomeReadsFormats << BaseDocumentFormats::FASTA;
-    genomeReadsFormats << BaseDocumentFormats::FASTQ;
-
-    AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats));
-
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(NULL != xmlTestFormat);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = BowtieTests::createTestFactories();
-        l->qlist << Bowtie2Tests::createTestFactories();
-
-        for (XMLTestFactory *f : l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(NULL != xmlTestFormat);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = BwaTests::createTestFactories();
-
-        for (XMLTestFactory *f : l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(xmlTestFormat != NULL);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = MrBayesToolTests::createTestFactories();
-
-        for (XMLTestFactory *f : l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(xmlTestFormat != NULL);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = PhyMLToolTests::createTestFactories();
-
-        for (XMLTestFactory *f : l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(xmlTestFormat != NULL);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = HmmerTests::createTestFactories();
-
-        foreach (XMLTestFactory *f, l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
-    {
-        GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        assert(xmlTestFormat != NULL);
-
-        GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
-        l->qlist = SpadesTaskTest::createTestFactories();
-
-        for (XMLTestFactory *f : l->qlist) {
-            bool res = xmlTestFormat->registerTestFactory(f);
-            Q_UNUSED(res);
-            assert(res);
-        }
-    }
+    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    xmlTestFormat->registerTestFactories(BowtieTests::createTestFactories());
+    xmlTestFormat->registerTestFactories(Bowtie2Tests::createTestFactories());
+    xmlTestFormat->registerTestFactories(BwaTests::createTestFactories());
+    xmlTestFormat->registerTestFactories(MrBayesToolTests::createTestFactories());
+    xmlTestFormat->registerTestFactories(PhyMLToolTests::createTestFactories());
+    xmlTestFormat->registerTestFactories(HmmerTests::createTestFactories());
 
     etRegistry->setManager(&validationManager);
     validationManager.start();
@@ -545,8 +457,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     registerWorkers();
 
     if (AppContext::getMainWindow()) {
-        //Add project view service
-        services.push_back(new ExternalToolSupportService());
+        services << new ExternalToolSupportService();    // Add project view service
     }
 }
 
@@ -555,7 +466,7 @@ ExternalToolSupportPlugin::~ExternalToolSupportPlugin() {
 }
 
 void ExternalToolSupportPlugin::registerSettingsController() {
-    if (NULL != AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         AppContext::getAppSettingsGUI()->registerPage(new ExternalToolSupportSettingsPageController());
     }
 }
@@ -589,7 +500,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::SlopbedWorkerFactory::init();
     LocalWorkflow::GenomecovWorkerFactory::init();
     LocalWorkflow::BedGraphToBigWigFactory::init();
-    LocalWorkflow::SpadesWorkerFactory::init();
+
     LocalWorkflow::SnpEffFactory::init();
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();

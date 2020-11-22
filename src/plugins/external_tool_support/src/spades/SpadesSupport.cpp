@@ -22,7 +22,19 @@
 #include "SpadesSupport.h"
 #include <python/PythonSupport.h>
 
+#include <U2Algorithm/GenomeAssemblyRegistry.h>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/GAutoDeleteList.h>
+
+#include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
+
+#include "SpadesWorker.h"
+#include "spades/SpadesSettingsWidget.h"
+#include "spades/SpadesTask.h"
+#include "spades/SpadesTaskTest.h"
 
 namespace U2 {
 
@@ -30,8 +42,8 @@ namespace U2 {
 const QString SpadesSupport::ET_SPADES = "SPAdes";
 const QString SpadesSupport::ET_SPADES_ID = "USUPP_SPADES";
 
-SpadesSupport::SpadesSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "spades", name, path) {
+SpadesSupport::SpadesSupport()
+    : ExternalTool(SpadesSupport::ET_SPADES_ID, "spades", SpadesSupport::ET_SPADES) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -47,6 +59,34 @@ SpadesSupport::SpadesSupport(const QString &id, const QString &name, const QStri
 
     toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
     dependencies << PythonSupport::ET_PYTHON_ID;
+}
+
+/** SPAdes is available only on Linux and Mac. */
+static bool isSupported() {
+#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+    return true;
+#else
+    return false;
+#endif
+}
+
+void SpadesSupport::checkIn() {
+    if (!isSupported()) {
+        return;
+    }
+    AppContext::getExternalToolRegistry()->registerEntry(new SpadesSupport());
+
+    QStringList genomeReadsFormats;
+    genomeReadsFormats << BaseDocumentFormats::FASTA;
+    genomeReadsFormats << BaseDocumentFormats::FASTQ;
+    GenomeAssemblyAlgorithmEnv *spadesAlgorithmEnv = new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(), new SpadesGUIExtensionsFactory(), genomeReadsFormats);
+    AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(spadesAlgorithmEnv);
+
+    LocalWorkflow::SpadesWorkerFactory::init();
+
+    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    xmlTestFormat->registerTestFactories(SpadesTaskTest::createTestFactories());
 }
 
 }    // namespace U2

@@ -35,8 +35,8 @@ const QString CutadaptSupport::ET_CUTADAPT_ID = "USUPP_CUTADAPT";
 const QString CutadaptSupport::ADAPTERS_DIR_NAME = "adapters";
 const QString CutadaptSupport::ADAPTERS_DATA_NAME = "Adapters file";
 
-CutadaptSupport::CutadaptSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, "cutadapt", name, path) {
+CutadaptSupport::CutadaptSupport()
+    : ExternalTool(CutadaptSupport::ET_CUTADAPT_ID, "cutadapt", CutadaptSupport::ET_CUTADAPT) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
