@@ -103,7 +103,6 @@ public:
     static const QString KNOWN_TRANSCRIPT;
     static const QString MAX_MULTIHITS;
     static const QString SEGMENT_LENGTH;
-    static const QString DISCORDANT_PAIR_ALIGNMENTS;
     static const QString FUSION_SEARCH;
     static const QString TRANSCRIPTOME_ONLY;
     static const QString TRANSCRIPTOME_MAX_HITS;
@@ -131,7 +130,6 @@ public:
     virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
 
 private:
-    bool validateBowtie(const Actor *actor, NotificationsList &notificationList) const;
     bool validateSamples(const Actor *actor, NotificationsList &notificationList) const;
 };
 

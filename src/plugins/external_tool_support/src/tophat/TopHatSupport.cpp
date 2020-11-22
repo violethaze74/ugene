@@ -55,7 +55,11 @@ TopHatSupport::TopHatSupport()
     validMessage = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"
                   " in order to identify exon-exon splice junctions. It is built on"
-                  " the ultrafast short read mapping program Bowtie.";
+                  " the ultrafast short read mapping program Bowtie."
+                  "<br><br><b>Note:</b>"
+                  "<br>TopHat is not officially supported today and is not compatible with the latest Bowtie versions."
+                  "<br>The old and compatible versions of Bowtie1 and Bowtie2 must be placed "
+                  "into the 'bowtie1' and 'bowtie2' sub-folders of the TopHat to be used by default.";
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+\\w?)");
     toolKitName = "TopHat";
 
