@@ -343,8 +343,9 @@ void WorkflowDesignerService::initSampleActions() {
     // SPAdes is available only on Linux and Mac.
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
     SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
-#endif
     ngsDenovo.requiredPlugins << externalToolsPlugin;
+    samples->registerAction(ngsDenovo);
+#endif
     SampleAction ngsScaffold(ToolsMenu::NGS_SCAFFOLD, ToolsMenu::NGS_MENU, "Scenarios/length_filter.uwl", tr("Filter short scaffolds..."));
     ngsScaffold.requiredPlugins << externalToolsPlugin;
     SampleAction ngsRawDna(ToolsMenu::NGS_RAW_DNA, ToolsMenu::NGS_MENU, "NGS/raw_dna.uwl", tr("Raw DNA-Seq data processing..."));
@@ -378,7 +379,6 @@ void WorkflowDesignerService::initSampleActions() {
     blastNcbi.requiredPlugins << "remote_blast";
 
     samples->registerAction(ngsControl);
-    samples->registerAction(ngsDenovo);
     samples->registerAction(ngsScaffold);
     samples->registerAction(ngsRawDna);
     samples->registerAction(ngsVariants);
