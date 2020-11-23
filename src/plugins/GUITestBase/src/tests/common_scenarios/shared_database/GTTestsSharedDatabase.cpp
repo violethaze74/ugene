@@ -1064,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     const QString newFolderPath = parentFolderPath + newFolderName;
     const QString fileDocName = "human_T1.fa";
     const QString fileObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
-    const QString fileObjectNameWidget = "human_T1 (UCSC April 2002 chr7:115977709-117855134) []";
+    const QString fileObjectNameWidget = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString importedDocFolderPath = newFolderPath + U2ObjectDbi::PATH_SEP + fileDocName;
     const QString importedObjectPath = importedDocFolderPath + U2ObjectDbi::PATH_SEP + fileObjectName;
 
@@ -1086,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
     GTUtilsProjectTreeView::doubleClickItem(os, importedObjectItemIndex);
-    GTUtilsMdi::checkWindowIsActive(os, " " + fileObjectNameWidget);
+    GTUtilsMdi::checkWindowIsActive(os, fileObjectNameWidget);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
