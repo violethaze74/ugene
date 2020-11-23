@@ -478,6 +478,21 @@ GUI_TEST_CLASS_DEFINITION(test_6043) {
     CHECK_SET_ERR(assemblyExists, "Assembly object is not found in the project view");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6045) {
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select annotation comment and press f2.
+    //Expected state: message box about not allowed editing is appear.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, tr("Editing of \"comment\" annotation is not allowed!")));
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "comment");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+    GTGlobals::sleep();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6047) {
     //1. Open and convert APR file
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, false, sandBoxDir + "test_6047", "MSF"));
