@@ -680,7 +680,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(500);
     //2. Create new bookmark for the file
-    QPoint p = GTUtilsBookmarksTreeView::getItemCenter(os, "COI [tr] Tree");
+    QPoint p = GTUtilsBookmarksTreeView::getItemCenter(os, "Tree [COI]");
     GTMouseDriver::moveTo(p);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);

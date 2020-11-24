@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_3035) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
     QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == " [s] et0001_sequence", QString("unexpected window title:%1").arg(name));
+    CHECK_SET_ERR(name == "et0001_sequence", QString("unexpected window title:%1").arg(name));
 
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_3035.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_3052) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMdi::closeWindow(os, "test_3052 [as] chrM");
+    GTUtilsMdi::closeWindow(os, "chrM [test_3052.ugenedb]");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Append"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, ugenedbFileName));
@@ -345,7 +345,7 @@ GUI_TEST_CLASS_DEFINITION(test_3052_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMdi::closeWindow(os, "test_3052 [as] chrM");
+    GTUtilsMdi::closeWindow(os, "chrM [test_3052.ugenedb]");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Append"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, ugenedbFileName));
@@ -449,7 +449,7 @@ GUI_TEST_CLASS_DEFINITION(test_3074) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI");
+    QWidget *msaView = GTWidget::findWidget(os, "COI.aln");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_3125) {
     CHECK_OP(os, );
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI");
+    QWidget *msaView = GTWidget::findWidget(os, "COI.aln");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
@@ -963,7 +963,7 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     //    4. Click Import;
     //    Expected state: Showed message box with question about overwriting of existing file..
     //    5. Click Replace;
-    GTWidget::findWidget(os, "assembly_browser_chrM.sorted.bam [as] chrM");
+    GTWidget::findWidget(os, "chrM [assembly_browser_chrM.sorted.bam.ugenedb]");
     //    Expected state: Imported file opened in Assembly Viewer without errors.
 }
 
@@ -1952,7 +1952,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     const QString folderName = "view_test_0001";
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString sequenceVisibleName = "NC_001363";
-    const QString sequenceVisibleWidgetName = " [s] NC_001363";
+    const QString sequenceVisibleWidgetName = "NC_001363.gb";
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
@@ -2010,15 +2010,13 @@ GUI_TEST_CLASS_DEFINITION(test_3312) {
     //2. Get any msa object in it.
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/test_3312/COI_3312");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI_3312");
+    QWidget *msaView = GTWidget::findWidget(os, "COI_3312.aln");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     //3. Rename the object.
     //Expected state: object is successfully renamed, there are no errors in the log.
     GTUtilsProjectTreeView::rename(os, "COI_3312", "COI_3312_renamed");
-    GTGlobals::sleep(3000);
     GTUtilsProjectTreeView::rename(os, "COI_3312_renamed", "COI_3312");
-    GTGlobals::sleep(2000);
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
 
@@ -2246,8 +2244,7 @@ GUI_TEST_CLASS_DEFINITION(test_3335) {
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem(os, "Annotations");
-    GTGlobals::sleep(5000);
-    QWidget *relatedSequenceView = GTUtilsMdi::findWindow(os, "human_T1 [s] renamed sequence");
+    QWidget *relatedSequenceView = GTUtilsMdi::findWindow(os, "renamed sequence [human_T1.fa]");
     CHECK_SET_ERR(NULL != relatedSequenceView, "A view for the related sequence was not opened");
 
     GTUtilsLog::check(os, lt);
@@ -4396,7 +4393,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *wgt = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
-    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 
     GTKeyboardDriver::keyClick(Qt::Key_Tab, Qt::ControlModifier);
     GTGlobals::sleep();
@@ -4487,7 +4484,7 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsMdi::closeWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTUtilsMdi::closeWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
     GTUtilsMdi::checkWindowIsActive(os, "Start Page");
@@ -4496,7 +4493,7 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
     GTMouseDriver::dragAndDrop(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"), centerOfWelcomePage);
 
     QWidget *window = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    CHECK_SET_ERR(window->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(window->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3710) {

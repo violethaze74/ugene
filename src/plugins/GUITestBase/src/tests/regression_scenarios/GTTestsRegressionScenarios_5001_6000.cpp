@@ -515,7 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_5090) {
 
     GTUtilsLog::checkContainsError(os, logTracer, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 
-    GTUtilsMdi::activateWindow(os, "A_SEQ_1 [join_complement_ann.gb] ");
+    GTUtilsMdi::activateWindow(os, "A_SEQ_1 [join_complement_ann.gb]");
 
     const QString simpleAnnRegion = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "just_an_annotation");
     CHECK_SET_ERR("40..50" == simpleAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("40..50").arg(simpleAnnRegion));
@@ -948,15 +948,15 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there are two bookmarks: "murine [s] NC_001363" and "murine [s] NC_001363 2".
-    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
-    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb]");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 2 [murine.gb]");
 
     //    3. Rename the annotation table object.
     GTUtilsProjectTreeView::rename(os, "NC_001363 features", "test_5252");
 
     //    Expected state: bookmarks are not renamed.
-    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363");
-    GTUtilsBookmarksTreeView::findItem(os, "murine [s] NC_001363 2");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb]");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 2 [murine.gb]");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5268) {
@@ -1719,7 +1719,7 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view"
-                                                                              << "Add to view: murine [s] NC_001363"));
+                                                                              << "Add to view: NC_001363 [murine.gb]"));
     GTUtilsProjectTreeView::click(os, "NC_004718", Qt::RightButton);
     GTGlobals::sleep();
 

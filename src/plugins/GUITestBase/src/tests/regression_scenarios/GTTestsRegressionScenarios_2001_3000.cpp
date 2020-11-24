@@ -2626,7 +2626,7 @@ GUI_TEST_CLASS_DEFINITION(test_2400) {
     GTUtilsProject::openFile(os, testDir + "_common_data/ace/ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: assembly view for Contig_1 opened with refrence sequence added to it
-    bool ref = GTUtilsAssemblyBrowser::hasReference(os, "2400 [as] 1");
+    bool ref = GTUtilsAssemblyBrowser::hasReference(os, "1 [2400.ugenedb]");
     CHECK_SET_ERR(ref, "no reference")
 }
 
@@ -5757,7 +5757,7 @@ GUI_TEST_CLASS_DEFINITION(test_2924) {
 
     //6. Click the "Zoom in" button several times until it becomes disabled.
     //Expected : UGENE does not crash.
-    QWidget *zoomInButton = GTAction::button(os, "tbZoomIn_human_T1_cutted [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget *zoomInButton = GTAction::button(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [tbZoomIn_human_T1_cutted.fa]");
 
     while (zoomInButton->isEnabled()) {
         GTWidget::click(os, zoomInButton);
@@ -5864,7 +5864,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTAction::button(os, "CircularViewAction"));
-    QWidget *zoomIn = GTAction::button(os, "tbZoomIn_murine [s] NC_001363");
+    QWidget *zoomIn = GTAction::button(os, "NC_001363 [tbZoomIn_murine.gb]");
     CHECK_SET_ERR(zoomIn != NULL, "zoomIn action on CV not found");
 
     QWidget *splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");

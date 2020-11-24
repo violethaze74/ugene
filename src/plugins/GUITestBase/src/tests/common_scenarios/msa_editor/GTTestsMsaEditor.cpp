@@ -3479,10 +3479,8 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     //Expected state: the buffer contatin the sequence in Mega format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
@@ -3493,7 +3491,6 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "copy_formatted"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(3000);
 
     QString clipboardText = GTClipboard::sequences(os);
 

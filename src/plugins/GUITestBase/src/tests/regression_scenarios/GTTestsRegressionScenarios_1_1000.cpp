@@ -3414,7 +3414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_2) {
                                                 << "New document from text...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMdi::findWindow(os, "test_0999_2 [s] test_0999_2");
+    GTUtilsMdi::findWindow(os, "test_0999_2 [test_0999_2.fa]");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1000) {

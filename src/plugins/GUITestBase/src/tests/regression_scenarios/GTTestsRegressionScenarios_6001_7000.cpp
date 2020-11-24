@@ -2419,7 +2419,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfG, 10), QString("color is %1, expected: %2").arg(color).arg(colorOfG));
 
     //5. Edit chrM by add 5 symbols at start
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: regression_6455 [s] chrM"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: chrM [regression_6455.ugenedb]"));
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
     GTUtilsDialog::waitAllFinished(os);
 
@@ -6119,7 +6119,15 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
+    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+
+    GTComboBox::selectItemByText(os, copyType, "Plain text");
+
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
@@ -6138,7 +6146,15 @@ GUI_TEST_CLASS_DEFINITION(test_6901) {
                                                                               << "Convert to RNA alphabet (T->U)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
+    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+
+    GTComboBox::selectItemByText(os, copyType, "Plain text");
+
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
@@ -6157,7 +6173,13 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
     GTWidget::click(os, toDnaButton);
 
+    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
+    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+
+    GTComboBox::selectItemByText(os, copyType, "Plain text");
+
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
+
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);

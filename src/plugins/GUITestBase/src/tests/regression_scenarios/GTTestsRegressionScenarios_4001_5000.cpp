@@ -691,7 +691,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
 
-    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
+    QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]", GTWidget::findWidget(os, "COI_SubWindow [COI.aln]"));
     QWidget *hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
 
@@ -725,7 +725,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     //remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
     GTUtilsMsaEditor::removeRows(os, 14, 14);
 
-    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
+    parent = GTWidget::findWidget(os, "fungal - all [fungal - all.aln]", GTWidget::findWidget(os, "fungal - all_SubWindow [fungal - all.aln]"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
     CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is visible for fungal-all.aln");
@@ -1046,7 +1046,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString activeWindowName = GTUtilsMdi::activeWindow(os)->windowTitle();
-    CHECK_SET_ERR(activeWindowName == "Dataset 1 [s] NC_001363", "Unexpected active window name: " + activeWindowName);
+    CHECK_SET_ERR(activeWindowName == "NC_001363 [Dataset 1.gb]", "Unexpected active window name: " + activeWindowName);
     GTUtilsProjectTreeView::findIndex(os, "NC_001363");
     GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
 }
@@ -5008,7 +5008,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a Sequence View for "sars.gb" is active.
-    const QString sarsMdiTitle = "sars [s] NC_004718";
+    const QString sarsMdiTitle = "NC_004718 [sars.gb]";
     QString activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
 
@@ -5684,7 +5684,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, testDir + "_common_data/scenarios/sandbox/", "90-JRI-07.scf", ExportChromatogramFiller::SCF, false, false, true));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
-    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 [s] 90-JRI-07 sequence 2");
+    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 sequence 2 [90-JRI-07.scf]");
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent);
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());

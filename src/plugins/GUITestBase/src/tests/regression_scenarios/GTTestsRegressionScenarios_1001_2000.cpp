@@ -685,10 +685,10 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList windowsNames;
-    windowsNames << "murine [s] NC_001363"
-                 << "sars [s] NC_004718"
-                 << "CVU55762 [s] CVU55762"
-                 << "PBR322 [s] SYNPBR322";
+    windowsNames << "NC_001363 [murine.gb] "
+                 << "NC_004718 [sars.gb] "
+                 << "CVU55762 [CVU55762.gb] "
+                 << "SYNPBR322 [PBR322.gb] ";
 
     foreach (const QString &window, windowsNames) {
         GTUtilsMdi::closeWindow(os, window);
@@ -698,7 +698,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
 
     foreach (const QString &window, windowsNames) {
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view"
-                                                                                  << "Add to view: NC_014267.1 [s] NC_014267"));
+                                                                                  << "Add to view: NC_014267 [NC_014267.1.gb] "));
         QString seqName = window.right(window.size() - window.indexOf("[s] ") - 4);
         GTUtilsProjectTreeView::click(os, seqName, Qt::RightButton);
         GTGlobals::sleep();
@@ -810,7 +810,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(5000);
 
-    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "test_1038_bam [as] ref_and_others");
+    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "ref_and_others [test_1038_bam.ugenedb] ");
     QSharedPointer<AssemblyModel> model = ui->getModel();
 
     U2OpStatus2Log u2os;
@@ -3124,7 +3124,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
     //Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
     QTabBar *tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar *>("");
     CHECK_SET_ERR(NULL != tabs, "No tab bar");
-    CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040024.1"), "Wrong tab name");
+    CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040025"), "Wrong tab name");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1285) {
@@ -3272,7 +3272,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_1) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    2. Open "COI.aln".
@@ -3280,60 +3280,60 @@ GUI_TEST_CLASS_DEFINITION(test_1300_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    3. Double click to the sequence of "murine.gb" in the project view ([s] NC_001363).
     //    Expected state: the sequence view is shown, the MSA Editor is no  visible.
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    4. Double click to the msa object in the project view ([m] COI).
     //    Expected state: the MSA Editor is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "COI");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    5. Double click to the annotation object of "murine.gb" in the project view ([a] NC_001363 features).
     //    Expected state: the sequence View is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    6. Double click to the COI document name in the project view (COI.aln).
     //    Expected state: the MSA Editor is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    7. Double click to the murine document name in the project view (murine.gb).
     //    Expected state: the sequence view is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "murine.gb");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 }
 
@@ -3345,7 +3345,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    2. Close sequence view with murine.gb.
@@ -3353,7 +3353,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTGlobals::sleep(1000);
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    3. Open "COI.aln".
@@ -3361,10 +3361,10 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    4. Right click to the COI document in the project view, select {Open view->Open new view: alignment editor} from the context menu.
@@ -3373,13 +3373,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
                                                                               << "Open new view: Multiple Alignment Editor"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(msaEditor2IsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    5. Double click to the murine.gb (document, sequence object, annotation object - different tests?) in the project view.
@@ -3388,13 +3388,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "murine.gb");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    5.2 sequence
@@ -3402,13 +3402,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    5.3 sequence
@@ -3416,28 +3416,28 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    6. Double click to the COI in the project view.
     //    Expected state: a popup menu is shown to select a MSA Editor to show. Select the first. There are two MSA Editors (the first one is active) and one sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: COI [m] COI"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: COI [COI.aln]"));
     GTUtilsProjectTreeView::doubleClickItem(os, "COI");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 }
 
@@ -5585,7 +5585,7 @@ GUI_TEST_CLASS_DEFINITION(test_1568) {
     GTWidget::click(os, tree);
     GTGlobals::sleep();
 
-    GTUtilsMdi::closeWindow(os, "COI [m] COI");
+    GTUtilsMdi::closeWindow(os, "COI [COI.aln]");
     GTGlobals::sleep();
 
     GTUtilsDocument::unloadDocument(os, "test_1568.nwk", false);

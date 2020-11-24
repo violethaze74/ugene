@@ -281,10 +281,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: Sequence view has opened
-    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363 []"), "Sequence view hasn't opened");
+    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
 
     // 6. Close sequence view.
-    GTUtilsMdi::closeWindow(os, "NC_001363 []");
+    GTUtilsMdi::closeWindow(os, "NC_001363");
 
     // 7. Call right click menu on the item and select { Open view -> Open new view: Sequence View }
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
@@ -293,7 +293,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected: Sequence view has opened
-    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363 []"), "Sequence view hasn't opened");
+    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
 }
 
 namespace {
