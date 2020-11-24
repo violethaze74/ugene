@@ -204,7 +204,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2894, "proper data needed");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
-    REGISTER_TEST(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_5425, "Rewrite the test");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");

@@ -685,10 +685,10 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList windowsNames;
-    windowsNames << "NC_001363 [murine.gb] "
-                 << "NC_004718 [sars.gb] "
-                 << "CVU55762 [CVU55762.gb] "
-                 << "SYNPBR322 [PBR322.gb] ";
+    windowsNames << "NC_001363 [murine.gb]"
+                 << "NC_004718 [sars.gb]"
+                 << "CVU55762 [CVU55762.gb]"
+                 << "SYNPBR322 [PBR322.gb]";
 
     foreach (const QString &window, windowsNames) {
         GTUtilsMdi::closeWindow(os, window);
@@ -698,7 +698,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
 
     foreach (const QString &window, windowsNames) {
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view"
-                                                                                  << "Add to view: NC_014267 [NC_014267.1.gb] "));
+                                                                                  << "Add to view: NC_014267 [NC_014267.1.gb]"));
         QString seqName = window.right(window.size() - window.indexOf("[s] ") - 4);
         GTUtilsProjectTreeView::click(os, seqName, Qt::RightButton);
         GTGlobals::sleep();

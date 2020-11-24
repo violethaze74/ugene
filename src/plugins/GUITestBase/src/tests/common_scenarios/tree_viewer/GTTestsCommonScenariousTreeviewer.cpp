@@ -678,29 +678,22 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //1. Open Newick file (.NWK)
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
     //2. Create new bookmark for the file
-    QPoint p = GTUtilsBookmarksTreeView::getItemCenter(os, "Tree [COI]");
+    QPoint p = GTUtilsBookmarksTreeView::getItemCenter(os, "Tree [COI.nwk]");
     GTMouseDriver::moveTo(p);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(500);
 
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keySequence("start bookmark");
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTGlobals::sleep(500);
 
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     p = GTUtilsBookmarksTreeView::getItemCenter(os, "start bookmark");
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
 
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "treeView not found");
