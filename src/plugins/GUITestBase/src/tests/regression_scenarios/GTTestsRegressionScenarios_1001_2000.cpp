@@ -1436,7 +1436,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsTaskTreeView::checkTask(os, taskName);
     QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
     CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
-    GTUtilsTaskTreeView::cancelTask(os, taskName);    // Cancel tast because we don't need the result
+    GTUtilsTaskTreeView::cancelTask(os, taskName);    // Cancel task because we don't need the result
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

@@ -5015,54 +5015,37 @@ GUI_TEST_CLASS_DEFINITION(test_2801) {
     //1. Open {_common_data/clustal/100_sequences.aln}.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     //2. Start MAFFT with default values.
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep(5000);
+
     //3. Cancel the align task.
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::checkTask(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
     //Expected state: the task is cancelled, there is no MAFFT processes with its subprocesses (check for the "disttbfast" process)
-    QProcess process;
-    process.setReadChannel(QProcess::StandardOutput);
-    process.setReadChannelMode(QProcess::MergedChannels);
-    process.start("wmic.exe /OUTPUT:STDOUT PROCESS get Caption");
-
-    process.waitForStarted(1000);
-    process.waitForFinished(1000);
-
-    QByteArray list = process.readAll();
-    CHECK_SET_ERR(!list.contains("disttbfast"), "disttbfast is presents in process lise");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2801_1) {
     //1. Open {_common_data/clustal/100_sequences.aln}.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(30000);
+
     //2. Start MAFFT with default values.
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT", GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTGlobals::sleep(20000);
+
     //3. Cancel the align task.
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::checkTask(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
     //Expected state: the task is cancelled, there is no MAFFT processes with its subprocesses (check for the "disttbfast" process)
-    QProcess process;
-    process.setReadChannel(QProcess::StandardOutput);
-    process.setReadChannelMode(QProcess::MergedChannels);
-    process.start("wmic.exe /OUTPUT:STDOUT PROCESS get Caption");
-
-    process.waitForStarted(1000);
-    process.waitForFinished(1000);
-
-    QByteArray list = process.readAll();
-    CHECK_SET_ERR(!list.contains("disttbfast"), "disttbfast is presents in process lise");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2808) {
