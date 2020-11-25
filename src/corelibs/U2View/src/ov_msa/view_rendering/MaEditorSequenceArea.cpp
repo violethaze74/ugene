@@ -1075,8 +1075,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 bool isMoveRightSide = cursorPosition.x() == selectionRect.x() && selectionRect.width() > 1;
                 if (isMoveRightSide) {    // move right side (shrink)
                     setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(-1, 0)));
+                    editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
                 } else {    // move left side (grow)
                     setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(-1, 0), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
                 }
             }
             break;
@@ -1087,8 +1089,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 bool isMoveLeftSide = cursorPosition.x() == selectionRect.right() && selectionRect.width() > 1;
                 if (isMoveLeftSide) {    // move left side (shrink)
                     setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(1, 0), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
                 } else {    // move right side (grow)
                     setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(1, 0)));
+                    editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
                 }
             }
             break;
@@ -1099,8 +1103,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 bool isMoveBottomSide = cursorPosition.y() == selectionRect.y() && selectionRect.height() > 1;
                 if (isMoveBottomSide) {    // move bottom side (shrink)
                     setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, -1)));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
                 } else {    // move top side (grow)
                     setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(0, -1), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
                 }
             }
             break;
@@ -1111,8 +1117,10 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 bool isMoveTopSide = cursorPosition.y() == selectionRect.bottom() && selectionRect.height() > 1;
                 if (isMoveTopSide) {    // move top side (shrink)
                     setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(0, 1), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
                 } else {    // move bottom side (grow)
                     setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, 1)));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
                 }
             }
             break;
