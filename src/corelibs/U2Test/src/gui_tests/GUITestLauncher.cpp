@@ -48,7 +48,7 @@
 #endif
 
 #ifdef Q_OS_MAC
-#    define NUMBER_OF_TEST_SUITES 8
+#    define NUMBER_OF_TEST_SUITES 4
 #elif defined(Q_OS_LINUX)
 #    define NUMBER_OF_TEST_SUITES 5
 #elif defined(Q_OS_WIN)
