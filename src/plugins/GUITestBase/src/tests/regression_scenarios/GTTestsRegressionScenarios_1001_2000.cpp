@@ -7297,8 +7297,8 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CF7.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *pdb1 = GTWidget::findWidget(os, "1-1A5H");
-    QWidget *pdb2 = GTWidget::findWidget(os, "2-1CF7");
+    QWidget *pdb1 = GTWidget::findWidget(os, "1A5H.pdb");
+    QWidget *pdb2 = GTWidget::findWidget(os, "1CF7.pdb");
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
