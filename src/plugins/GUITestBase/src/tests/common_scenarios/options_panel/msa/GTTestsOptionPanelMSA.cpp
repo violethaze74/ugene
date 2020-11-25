@@ -1679,8 +1679,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     CHECK_SET_ERR(showDistancesCheck != NULL, "showDistancesCheck not found");
     QCheckBox *alignLabelsCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "alignLabelsCheck"));
     CHECK_SET_ERR(alignLabelsCheck != NULL, "alignLabelsCheck not found");
-    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI_SubWindow");
-    QWidget *parent2 = GTWidget::findWidget(os, "COI [m] COI", parent);
+    QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]_SubWindow");
+    QWidget *parent2 = GTWidget::findWidget(os, "COI [COI.aln]", parent);
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
 
     QList<QGraphicsSimpleTextItem *> initNames = GTUtilsPhyTree::getVisibleLabels(os, treeView);
