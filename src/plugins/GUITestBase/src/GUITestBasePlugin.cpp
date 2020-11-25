@@ -234,7 +234,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0007, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0008, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0016, "UTI-245");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_3557, "UTI-151");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_3778, "UGENE-5735");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_4113, "UGENE-5810");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Fails to grab OpenGL widget image on Windows");
@@ -1040,6 +1039,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3553);
     REGISTER_TEST(GUITest_regression_scenarios::test_3555);
     REGISTER_TEST(GUITest_regression_scenarios::test_3556);
+    REGISTER_TEST_(GUITest_regression_scenarios::test_3557);
     REGISTER_TEST(GUITest_regression_scenarios::test_3563_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3563_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_3571_1);
