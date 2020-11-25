@@ -5757,7 +5757,7 @@ GUI_TEST_CLASS_DEFINITION(test_2924) {
 
     //6. Click the "Zoom in" button several times until it becomes disabled.
     //Expected : UGENE does not crash.
-    QWidget *zoomInButton = GTAction::button(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [tbZoomIn_human_T1_cutted.fa]");
+    QWidget *zoomInButton = GTAction::button(os, "tbZoomIn_human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1_cutted.fa]");
 
     while (zoomInButton->isEnabled()) {
         GTWidget::click(os, zoomInButton);
@@ -5864,7 +5864,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTAction::button(os, "CircularViewAction"));
-    QWidget *zoomIn = GTAction::button(os, "NC_001363 [tbZoomIn_murine.gb]");
+    QWidget *zoomIn = GTAction::button(os, "tbZoomIn_NC_001363 [murine.gb]");
     CHECK_SET_ERR(zoomIn != NULL, "zoomIn action on CV not found");
 
     QWidget *splitterHandler = GTWidget::findWidget(os, "qt_splithandle_annotated_DNA_scrollarea");
@@ -5881,7 +5881,6 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     GTMouseDriver::moveTo(bottomLeftToolBar);
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(15000);
     QPoint handlePosition = splitterHandler->pos();
 
     QAbstractButton *cvButton = GTAction::button(os, "CircularViewAction");
@@ -5894,14 +5893,12 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
     CHECK_SET_ERR(handle != NULL, "SplitterHadle not found");
 
     GTWidget::click(os, handle);
-    GTGlobals::sleep();
 
     QPoint p = GTMouseDriver::getMousePosition();
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p + QPoint(0, 50));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(15000);
 
     CHECK_SET_ERR(handlePosition == splitterHandler->pos(), QString("Handler was moved: expected: %1, actual: %2").arg(splitter->pos().y()).arg(handlePosition.y()));
 }

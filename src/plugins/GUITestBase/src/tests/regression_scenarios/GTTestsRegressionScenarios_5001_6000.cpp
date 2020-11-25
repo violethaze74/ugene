@@ -949,14 +949,14 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
 
     //    Expected state: there are two bookmarks: "murine [s] NC_001363" and "murine [s] NC_001363 2".
     GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb]");
-    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 2 [murine.gb]");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb] 2");
 
     //    3. Rename the annotation table object.
     GTUtilsProjectTreeView::rename(os, "NC_001363 features", "test_5252");
 
     //    Expected state: bookmarks are not renamed.
     GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb]");
-    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 2 [murine.gb]");
+    GTUtilsBookmarksTreeView::findItem(os, "NC_001363 [murine.gb] 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5268) {

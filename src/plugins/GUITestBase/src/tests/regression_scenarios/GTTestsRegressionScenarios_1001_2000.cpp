@@ -699,7 +699,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     foreach (const QString &window, windowsNames) {
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view"
                                                                                   << "Add to view: NC_014267 [NC_014267.1.gb]"));
-        QString seqName = window.right(window.size() - window.indexOf("[s] ") - 4);
+        QString seqName = window.left(window.indexOf("[") - 1);
         GTUtilsProjectTreeView::click(os, seqName, Qt::RightButton);
         GTGlobals::sleep();
     }
@@ -810,7 +810,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(5000);
 
-    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "ref_and_others [test_1038_bam.ugenedb] ");
+    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "ref_and_others [test_1038_bam]");
     QSharedPointer<AssemblyModel> model = ui->getModel();
 
     U2OpStatus2Log u2os;
@@ -3376,7 +3376,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
+    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln] 2");
     CHECK_SET_ERR(msaEditor2IsVisible, "Msa editor is unexpectedly not visible");
 
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
@@ -3394,7 +3394,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln] 2");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    5.2 sequence

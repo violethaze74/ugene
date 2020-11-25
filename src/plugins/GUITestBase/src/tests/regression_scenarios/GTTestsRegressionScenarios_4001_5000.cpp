@@ -5684,7 +5684,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, testDir + "_common_data/scenarios/sandbox/", "90-JRI-07.scf", ExportChromatogramFiller::SCF, false, false, true));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
-    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 sequence 2 [90-JRI-07.scf]");
+    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 sequence [90-JRI-07.scf] 2");
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent);
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());

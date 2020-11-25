@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_3035) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
     QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == "et0001_sequence", QString("unexpected window title:%1").arg(name));
+    CHECK_SET_ERR(name == "et0001_sequence", QString("unexpected window title: %1 ").arg(name));
 
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_3035.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
@@ -449,7 +449,7 @@ GUI_TEST_CLASS_DEFINITION(test_3074) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, "COI.aln");
+    QWidget *msaView = GTWidget::findWidget(os, "COI");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_3125) {
     CHECK_OP(os, );
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, "COI.aln");
+    QWidget *msaView = GTWidget::findWidget(os, "COI");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
@@ -943,12 +943,10 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     //    Expected state: Showed Import BAM File dialog.
     //    2. Click Import;
     //    Expected state: Imported file opened in Assembly Viewer.
-    GTWidget::findWidget(os, "assembly_browser_chrM.sorted.bam [as] chrM");
+    GTWidget::findWidget(os, "assembly_browser_chrM [chrM.sorted.bam.ugenedb]");
     //    3. Remove this file from project and try to open it again;
     GTUtilsProjectTreeView::click(os, "chrM.sorted.bam.ugenedb");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -958,12 +956,10 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     //    4. Click Import;
     //    Expected state: Showed message box with question about overwriting of existing file..
     //    5. Click Replace;
-    GTWidget::findWidget(os, "chrM [assembly_browser_chrM.sorted.bam.ugenedb]");
+    GTWidget::findWidget(os, "chrM [chrM.sorted.bam.ugenedb]");
     //    Expected state: Imported file opened in Assembly Viewer without errors.
 }
 
@@ -1952,7 +1948,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     const QString folderName = "view_test_0001";
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString sequenceVisibleName = "NC_001363";
-    const QString sequenceVisibleWidgetName = "NC_001363.gb";
+    const QString sequenceVisibleWidgetName = "NC_001363";
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
@@ -1967,8 +1963,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann1", "1.. 20"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "create_annotation_action"));
     GTMenu::showContextMenu(os, seqView);
-    GTGlobals::sleep(500);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
@@ -1982,7 +1977,6 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3308) {
@@ -2010,7 +2004,7 @@ GUI_TEST_CLASS_DEFINITION(test_3312) {
     //2. Get any msa object in it.
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/test_3312/COI_3312");
 
-    QWidget *msaView = GTWidget::findWidget(os, "COI_3312.aln");
+    QWidget *msaView = GTWidget::findWidget(os, "COI_3312");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     //3. Rename the object.
@@ -4409,7 +4403,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
 
     wgt = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
-    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3697) {

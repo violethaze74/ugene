@@ -2419,7 +2419,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfG, 10), QString("color is %1, expected: %2").arg(color).arg(colorOfG));
 
     //5. Edit chrM by add 5 symbols at start
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: chrM [regression_6455.ugenedb]"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: chrM [regression_6455.fa]"));
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
     GTUtilsDialog::waitAllFinished(os);
 
