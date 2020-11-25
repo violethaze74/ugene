@@ -6161,7 +6161,7 @@ GUI_TEST_CLASS_DEFINITION(test_1603) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::closeWindow(os, "COI [m] COI");
+    GTUtilsMdi::closeWindow(os, "COI [COI.aln]");
     QString docName = "1603.nwk";
 
     GTUtilsDocument::unloadDocument(os, docName, false);

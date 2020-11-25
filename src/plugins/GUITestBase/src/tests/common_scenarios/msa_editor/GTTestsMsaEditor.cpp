@@ -762,7 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -776,7 +776,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "middle bookmark");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "end bookmark");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -828,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -842,7 +842,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -854,13 +854,12 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
     //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark");
-    GTGlobals::sleep(500);
 
     int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -874,7 +873,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 3");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -895,7 +893,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -909,7 +907,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "middle bookmark");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -921,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "end bookmark");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -934,14 +932,12 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
     CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
