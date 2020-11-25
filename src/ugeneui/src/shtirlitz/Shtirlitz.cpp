@@ -102,6 +102,7 @@ QList<Task *> Shtirlitz::wakeup() {
     Settings *s = AppContext::getSettings();
     bool allVersionsFirstLaunch = true;
     bool minorVersionFirstLaunch = true;
+    bool bSentSystemReport = false;
     getFirstLaunchInfo(allVersionsFirstLaunch, minorVersionFirstLaunch);
 
     QString allVersionsKey = SETTINGS_NOT_FIRST_LAUNCH;
@@ -137,6 +138,7 @@ QList<Task *> Shtirlitz::wakeup() {
         AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(true);
         coreLog.details(ShtirlitzTask::tr("Shtirlitz is sending the first-time report"));
         result << sendSystemReport();
+        bSentSystemReport = true;
         //Leave a mark that the first-time report was sent
     }
 
@@ -148,7 +150,9 @@ QList<Task *> Shtirlitz::wakeup() {
 
         if (!prevDate.isValid() || daysPassed > DAYS_BETWEEN_REPORTS) {
             coreLog.details(ShtirlitzTask::tr("%1 days passed passed since previous Shtirlitz's report. Shtirlitz is sending the new one."));
-            result << sendSystemReport();
+            if (!bSentSystemReport) {
+                result << sendSystemReport();
+            }
             result << sendCountersReport();
             //and save the new date
             s->setValue(SETTINGS_PREVIOUS_REPORT_DATE, QDate::currentDate());
@@ -333,7 +337,8 @@ void ShtirlitzTask::run() {
 
     // Get actual location of the reports receiver
     //FIXME: error handling
-    QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) + QString(DESTINATION_URL_KEEPER_PAGE)), 10000);
+    QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) +
+                                            QString(DESTINATION_URL_KEEPER_PAGE)), 10000);
     if (reportsPath.isEmpty()) {
         stateInfo.setError(tr("Cannot resolve destination path for statistical reports"));
         return;
