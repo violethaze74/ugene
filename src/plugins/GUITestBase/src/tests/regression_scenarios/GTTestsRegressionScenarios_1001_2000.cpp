@@ -7297,36 +7297,34 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CF7.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *pdb1 = GTWidget::findWidget(os, "1A5H.pdb");
-    QWidget *pdb2 = GTWidget::findWidget(os, "1CF7.pdb");
+    QWidget *sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget* pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
-    GTMenu::showContextMenu(os, pdb2);
+    GTMenu::showContextMenu(os, pdb2Widget);
 
-    GTGlobals::sleep();
-    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2);
+    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget, true);
 
     // Activate PDB 1 and update 3d rendering settings too.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
 
+    sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *pdb1Widget = GTWidget::findWidget(os, "1-1A5H");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
-    GTMenu::showContextMenu(os, pdb1);
-
+    GTMenu::showContextMenu(os, pdb1Widget);
     // Close PDB 1 view.
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Close active view",
                               GTGlobals::UseKey);
 
-    GTGlobals::sleep();
-
     // Check that PDB 2 image was not changed.
-    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2);
-    CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3d images was changed: blank screen?");
+    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget, true);
+    CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3D image is changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1703) {

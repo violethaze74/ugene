@@ -250,28 +250,28 @@ QColor GTWidget::getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &po
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getImage"
-QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
+QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWindow) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
-    class Scenario : public CustomScenario {
+    class GrabImageScenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget, QImage &image)
-            : widget(widget),
-              image(image) {
+        GrabImageScenario(QWidget *widget, QImage &image, bool useGrabWindow)
+            : widget(widget), image(image), useGrabWindow(useGrabWindow) {
         }
 
         void run(GUITestOpStatus &os) {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
-            image = widget->grab(widget->rect()).toImage();
+            QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
+            image = pixmap.toImage();
         }
 
-    private:
         QWidget *widget;
         QImage &image;
+        bool useGrabWindow;
     };
 
     QImage image;
-    GTThread::runInMainThread(os, new Scenario(widget, image));
+    GTThread::runInMainThread(os, new GrabImageScenario(widget, image, useGrabWindow));
     return image;
 }
 #undef GT_METHOD_NAME
