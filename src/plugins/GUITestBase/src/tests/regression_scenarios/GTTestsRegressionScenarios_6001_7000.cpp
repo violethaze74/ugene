@@ -6111,7 +6111,7 @@ GUI_TEST_CLASS_DEFINITION(test_6899) {
     // Expected state: the copied sequences are inserted right above the 8th sequence.
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(names.size() == 24, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
-    CHECK_SET_ERR(names[6] == "Phaneroptera_falcata", QString("Unexpected name, expected: \"Phaneroptera_falcata\", current: %1").arg(names[6]));
+    CHECK_SET_ERR(names[6] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names[6]));
 
 }
 GUI_TEST_CLASS_DEFINITION(test_6899_1) {
