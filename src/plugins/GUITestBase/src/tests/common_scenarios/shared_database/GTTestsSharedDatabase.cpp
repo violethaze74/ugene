@@ -1724,18 +1724,17 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
-    QWidget *seqView = GTWidget::findWidget(os, " " + sequenceVisibleWidgetName);
-    CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
     QTreeWidgetItem *contigGroup = GTUtilsAnnotationsTreeView::findItem(os, contigFeatureName);
-    CHECK_SET_ERR(NULL != contigGroup, "Contig group is NULL");
+    CHECK_SET_ERR(contigGroup != nullptr, "Contig group is NULL");
 
     QTreeWidgetItem *secondContig = contigGroup->child(1);
-    CHECK_SET_ERR(NULL != contigGroup, "Second contig annotation is NULL");
+    CHECK_SET_ERR(contigGroup != nullptr, "Second contig annotation is NULL");
 
-    const QString secondContigRegion = secondContig->text(AnnotationsTreeView::COLUMN_VALUE);
+    QString secondContigRegion = secondContig->text(AnnotationsTreeView::COLUMN_VALUE);
     CHECK_SET_ERR(expectedSecondContigRegion == secondContigRegion, QString("Invalid contig region: expected %1, got %2").arg(expectedSecondContigRegion).arg(secondContigRegion));
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
