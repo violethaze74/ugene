@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>719</width>
-    <height>596</height>
+    <width>604</width>
+    <height>723</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Import to the Database Options</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="lblBaseFolder">
@@ -28,7 +28,23 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
+   <item>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QGroupBox" name="gbFilesAndFolders">
      <property name="title">
       <string>Files and folders options</string>
@@ -90,101 +106,87 @@
         <property name="title">
          <string>Multi-sequence files import policy</string>
         </property>
-        <widget class="QRadioButton" name="rbSeparate">
-         <property name="geometry">
-          <rect>
-           <x>12</x>
-           <y>32</y>
-           <width>228</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Import as separate sequences</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="rbMerge">
-         <property name="geometry">
-          <rect>
-           <x>12</x>
-           <y>61</y>
-           <width>223</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Merge into a single sequence</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="rbMalignment">
-         <property name="geometry">
-          <rect>
-           <x>12</x>
-           <y>124</y>
-           <width>157</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Join into alignment</string>
-         </property>
-        </widget>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>90</y>
-           <width>659</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="sbMerge">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="suffix">
-             <string> bases</string>
-            </property>
-            <property name="maximum">
-             <number>1000000</number>
-            </property>
-            <property name="value">
-             <number>10</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QRadioButton" name="rbSeparate">
+           <property name="text">
+            <string>Import as separate sequences</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbMerge">
+           <property name="text">
+            <string>Merge into a single sequence</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="toolTip">
+              <string>Number of separator symbols (N - for nucleic or X - for amino) between parts.</string>
+             </property>
+             <property name="text">
+              <string>Separator characters between parts</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="sbMerge">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>Number of separator symbols (N - for nucleic or X - for amino) between parts.</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="suffix">
+              <string> </string>
+             </property>
+             <property name="maximum">
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbMalignment">
+           <property name="text">
+            <string>Join into alignment</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
         <zorder>layoutWidget</zorder>
         <zorder>rbSeparate</zorder>
         <zorder>rbMerge</zorder>
         <zorder>rbMalignment</zorder>
+        <zorder>horizontalSpacer</zorder>
        </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>10</height>
-         </size>
-        </property>
-       </spacer>
       </item>
       <item>
        <widget class="QGroupBox" name="gbAcePolicy">
@@ -221,7 +223,23 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QGroupBox" name="gbDocsAndObjects">
      <property name="title">
       <string>Documents and objects options</string>
@@ -236,6 +254,19 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
