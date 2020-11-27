@@ -53,8 +53,8 @@ namespace U2 {
 
 AceImporterTask::AceImporterTask(const GUrl &url, const QVariantMap &settings)
     : DocumentProviderTask(tr("ACE file import: %1").arg(url.fileName()), TaskFlags_NR_FOSE_COSC),
-      convertTask(NULL),
-      loadDocTask(NULL),
+      convertTask(nullptr),
+      loadDocTask(nullptr),
       isSqliteDbTransit(false),
       settings(settings),
       srcUrl(url) {
@@ -64,12 +64,12 @@ AceImporterTask::AceImporterTask(const GUrl &url, const QVariantMap &settings)
 void AceImporterTask::prepare() {
     startTime = GTimer::currentTimeMicros();
 
-    hintedDbiRef = settings.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
-    SAFE_POINT_EXT(hintedDbiRef.isValid(), setError(tr("Dbi ref is invalid")), );
+    dstDbiRef = settings.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
+    SAFE_POINT_EXT(dstDbiRef.isValid(), setError(tr("Dbi ref is invalid")), );
 
-    isSqliteDbTransit = SQLITE_DBI_ID != hintedDbiRef.dbiFactoryId;
+    isSqliteDbTransit = dstDbiRef.dbiFactoryId != SQLITE_DBI_ID;
     if (!isSqliteDbTransit) {
-        localDbiRef = hintedDbiRef;
+        localDbiRef = dstDbiRef;
     } else {
         const QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("assembly_conversion") + QDir::separator();
         QDir().mkpath(tmpDir);
@@ -94,27 +94,23 @@ QList<Task *> AceImporterTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
     CHECK_OP(stateInfo, res);
 
-    if (isSqliteDbTransit && convertTask == subTask) {
+    if (isSqliteDbTransit && subTask == convertTask) {
         initCloneObjectTasks();
         res << cloneTasks;
-    }
-
-    else if (isSqliteDbTransit && cloneTasks.contains(subTask)) {
+    } else if (isSqliteDbTransit && cloneTasks.contains(subTask)) {
         cloneTasks.removeOne(subTask);
         if (cloneTasks.isEmpty()) {
             initLoadDocumentTask();
-            CHECK(NULL != loadDocTask, res);
+            CHECK(loadDocTask != nullptr, res);
             res << loadDocTask;
         }
-    }
-
-    else if (!isSqliteDbTransit && convertTask == subTask) {
+    } else if (!isSqliteDbTransit && subTask == convertTask) {
         initLoadDocumentTask();
-        CHECK(NULL != loadDocTask, res);
+        CHECK(loadDocTask != nullptr, res);
         res << loadDocTask;
     }
 
-    if (loadDocTask == subTask) {
+    if (subTask == loadDocTask) {
         resultDocument = loadDocTask->takeDocument();
     }
 
@@ -129,15 +125,15 @@ Task::ReportResult AceImporterTask::report() {
 
 void AceImporterTask::initCloneObjectTasks() {
     const QMap<U2Sequence, U2Assembly> importedObjects = convertTask->getImportedObjects();
-    foreach (const U2Sequence &reference, importedObjects.keys()) {
-        cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, hintedDbiRef, settings);
+    for (const U2Sequence &reference: importedObjects.keys()) {
+        cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, dstDbiRef, settings);
     }
 }
 
 void AceImporterTask::initLoadDocumentTask() {
     if (settings.value(AceImporter::LOAD_RESULT_DOCUMENT, true).toBool()) {
         loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(convertTask->getDestinationUrl());
-        if (loadDocTask == NULL) {
+        if (loadDocTask == nullptr) {
             setError(tr("Failed to get load task for : %1").arg(convertTask->getDestinationUrl().getURLString()));
         }
     }
@@ -152,7 +148,7 @@ const QString AceImporter::SRC_URL = "source_url";
 
 AceImporter::AceImporter()
     : DocumentImporter(ID, tr("ACE file importer")) {
-    ACEFormat aceFormat(NULL);
+    ACEFormat aceFormat(nullptr);
     extensions << aceFormat.getSupportedDocumentFileExtensions();
     formatIds << aceFormat.getFormatId();
     importerDescription = tr("ACE files importer is used to convert conventional ACE files into UGENE database format."
@@ -162,22 +158,20 @@ AceImporter::AceImporter()
 }
 
 FormatCheckResult AceImporter::checkRawData(const QByteArray &rawData, const GUrl &url) {
-    ACEFormat aceFormat(NULL);
+    ACEFormat aceFormat(nullptr);
     return aceFormat.checkRawData(rawData, url);
 }
 
 DocumentProviderTask *AceImporter::createImportTask(const FormatDetectionResult &res, bool, const QVariantMap &hints) {
     QVariantMap settings;
     settings.insert(SRC_URL, res.url.getURLString());
-
-    AceImporterTask *task = NULL;
     if (hints.contains(DocumentFormat::DBI_REF_HINT)) {
-        QVariant hint = hints.value(DocumentFormat::DBI_REF_HINT);
-        settings.insert(DocumentFormat::DBI_REF_HINT, hint);
+        settings.insert(DocumentFormat::DBI_REF_HINT, hints.value(DocumentFormat::DBI_REF_HINT));
     }
-    task = new AceImporterTask(res.url, settings);
-
-    return task;
+    if (hints.contains(DocumentFormat::DBI_FOLDER_HINT)) {
+        settings.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT));
+    }
+    return new AceImporterTask(res.url, settings);
 }
 
 }    // namespace U2

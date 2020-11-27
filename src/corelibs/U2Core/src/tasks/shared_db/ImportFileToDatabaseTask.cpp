@@ -43,7 +43,7 @@ ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const 
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       options(options),
-      format(NULL) {
+      format(nullptr) {
     GCOUNTER(cvar, tvar, "ImportFileToDatabaseTask");
     CHECK_EXT(QFileInfo(srcUrl).isFile(), setError(tr("It is not a file: ") + srcUrl), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
@@ -51,23 +51,23 @@ ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const 
 
 void ImportFileToDatabaseTask::prepare() {
     DocumentProviderTask *importTask = detectFormat();
-    CHECK_EXT(NULL != format || NULL != importTask, setError(tr("File format is not recognized")), );
+    CHECK_EXT(format != nullptr || importTask != nullptr, setError(tr("File format is not recognized")), );
     CHECK_OP(stateInfo, );
 
     CHECK_OP(stateInfo, );
 
-    if (NULL != importTask) {
+    if (importTask != nullptr) {
         addSubTask(importTask);
     }
 }
 
 void ImportFileToDatabaseTask::run() {
-    CHECK(NULL != format, );
+    CHECK(format != nullptr, );
 
     const QVariantMap hints = prepareHints();
 
     IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(GUrl(srcUrl)));
-    CHECK_EXT(NULL != ioFactory, setError(tr("Unrecognized url: ") + srcUrl), );
+    CHECK_EXT(ioFactory != nullptr, setError(tr("Unrecognized url: ") + srcUrl), );
     CHECK_OP(stateInfo, );
 
     Document *loadedDoc = format->loadDocument(ioFactory, srcUrl, hints, stateInfo);
@@ -75,7 +75,7 @@ void ImportFileToDatabaseTask::run() {
 
     U2OpStatusImpl os;
     Document *restructuredDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDoc, os);
-    if (NULL != restructuredDoc) {
+    if (restructuredDoc != nullptr) {
         restructuredDoc->setDocumentOwnsDbiResources(false);
         loadedDoc->setDocumentOwnsDbiResources(true);
     } else {
@@ -99,10 +99,10 @@ DocumentProviderTask *ImportFileToDatabaseTask::detectFormat() {
     const FormatDetectionResult preferredFormat = getPreferredFormat(formats);
 
     format = preferredFormat.format;
-    CHECK(NULL == format, NULL);
+    CHECK(format == nullptr, nullptr);
 
     DocumentImporter *importer = preferredFormat.importer;
-    CHECK(NULL != importer, NULL);    // do something with unrecognized files here
+    CHECK(importer != nullptr, nullptr);    // do something with unrecognized files here
 
     QVariantMap hints = prepareHints();
     return importer->createImportTask(preferredFormat, false, hints);
@@ -118,15 +118,15 @@ QVariantMap ImportFileToDatabaseTask::prepareHints() const {
     hints[DocumentFormat::DEEP_COPY_OBJECT] = true;
 
     switch (options.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        // do nothing, it is a standard behavior
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        hints[DocumentReadingMode_SequenceMergeGapSize] = options.mergeMultiSequencePolicySeparatorSize;
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            // do nothing, it is a standard behavior
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            hints[DocumentReadingMode_SequenceMergeGapSize] = options.mergeMultiSequencePolicySeparatorSize;
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
+            break;
     };
 
     return hints;
@@ -141,7 +141,6 @@ QString ImportFileToDatabaseTask::getFolderName() const {
             if (QFileInfo(fileName).suffix() == "gz") {
                 fileName = QFileInfo(fileName).completeBaseName();
             }
-
             fileName = QFileInfo(fileName).completeBaseName();
         }
 
@@ -156,17 +155,17 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
     CHECK(!options.preferredFormats.isEmpty(), detectedFormats.first());
 
     QStringList detectedFormatIds;
-    foreach (const FormatDetectionResult &detectedFormat, detectedFormats) {
-        if (NULL != detectedFormat.format) {
+    for (const FormatDetectionResult &detectedFormat : detectedFormats) {
+        if (detectedFormat.format != nullptr) {
             detectedFormatIds << detectedFormat.format->getFormatId();
-        } else if (NULL != detectedFormat.importer) {
+        } else if (detectedFormat.importer != nullptr) {
             detectedFormatIds << detectedFormat.importer->getId();
         } else {
             detectedFormatIds << "";    // to keep the numeration
         }
     }
 
-    foreach (const QString &formatId, options.preferredFormats) {
+    for (const QString &formatId : options.preferredFormats) {
         int i = detectedFormatIds.indexOf(formatId);
         if (i >= 0) {
             return detectedFormats[i];

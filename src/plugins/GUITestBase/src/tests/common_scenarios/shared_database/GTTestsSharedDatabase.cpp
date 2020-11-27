@@ -434,7 +434,6 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
                                                 << "Connect to UGENE shared database...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
 
@@ -1924,29 +1923,29 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
     options.insert(ImportToDatabaseOptions::PREFERRED_FORMATS, QStringList() << "ace-importer");
     GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << testDir + "_common_data/ace/ace_test_2.ace", options);
 
-    const QStringList expectedItems = QStringList() << objectFolderPath
-                                                    << databaseAssemblyFirstObjectPath
-                                                    << databaseAssemblySecondObjectPath
-                                                    << databaseSequenceFirstObjectPath
-                                                    << databaseSequenceSecondObjectPath;
+    QStringList expectedItems = QStringList() << objectFolderPath
+                                              << databaseAssemblyFirstObjectPath
+                                              << databaseAssemblySecondObjectPath
+                                              << databaseSequenceFirstObjectPath
+                                              << databaseSequenceSecondObjectPath;
     GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseDoc, dstFolderPath, expectedItems);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseAssemblyFirstObjectPath);
 
     qint64 lengthFirst = GTUtilsAssemblyBrowser::getLength(os);
     qint64 readsCountFirst = GTUtilsAssemblyBrowser::getReadsCount(os);
-    bool hasReferenceFirst = GTUtilsAssemblyBrowser::hasReference(os, " [as] " + assemblyFirstObjectName);
-    CHECK_SET_ERR(expectedLengthFirst == lengthFirst, QString("The assembly length is incorrect: expect %1, got %2").arg(expectedLengthFirst).arg(lengthFirst));
-    CHECK_SET_ERR(expectedReadsCountFirst == readsCountFirst, QString("The assembly reads count is incorrect: expect %1, got %2").arg(expectedReadsCountFirst).arg(readsCountFirst));
+    bool hasReferenceFirst = GTUtilsAssemblyBrowser::hasReference(os, assemblyFirstObjectName);
+    CHECK_SET_ERR(lengthFirst == expectedLengthFirst, QString("The assembly length is incorrect: expect %1, got %2").arg(expectedLengthFirst).arg(lengthFirst));
+    CHECK_SET_ERR(readsCountFirst == expectedReadsCountFirst, QString("The assembly reads count is incorrect: expect %1, got %2").arg(expectedReadsCountFirst).arg(readsCountFirst));
     CHECK_SET_ERR(hasReferenceFirst, "The assembly reference is not set");
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseAssemblySecondObjectPath);
 
     qint64 lengthSecond = GTUtilsAssemblyBrowser::getLength(os);
     qint64 readsCountSecond = GTUtilsAssemblyBrowser::getReadsCount(os);
-    bool hasReferenceSecond = GTUtilsAssemblyBrowser::hasReference(os, " [as] " + assemblySecondObjectName);
-    CHECK_SET_ERR(expectedLengthSecond == lengthSecond, QString("The assembly length is incorrect: expect %1, got %2").arg(expectedLengthSecond).arg(lengthSecond));
-    CHECK_SET_ERR(expectedReadsCountSecond == readsCountSecond, QString("The assembly reads count is incorrect: expect %1, got %2").arg(expectedReadsCountSecond).arg(readsCountSecond));
+    bool hasReferenceSecond = GTUtilsAssemblyBrowser::hasReference(os, assemblySecondObjectName);
+    CHECK_SET_ERR(lengthSecond == expectedLengthSecond, QString("The assembly length is incorrect: expect %1, got %2").arg(expectedLengthSecond).arg(lengthSecond));
+    CHECK_SET_ERR(readsCountSecond == expectedReadsCountSecond, QString("The assembly reads count is incorrect: expect %1, got %2").arg(expectedReadsCountSecond).arg(readsCountSecond));
     CHECK_SET_ERR(hasReferenceSecond, "The assembly reference is not set");
 
     GTUtilsLog::check(os, lt);
