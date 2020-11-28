@@ -48,7 +48,8 @@ public:
     static void checkValues(GUITestOpStatus &os, QComboBox *comboBox, const QStringList &values);
 
     static void checkValuesPresence(GUITestOpStatus &os, QComboBox *comboBox, const QStringList &values);
-    static void checkCurrentValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedValue);
+    static void checkCurrentValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedText);
+    static void checkCurrentUserDataValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedValue);
 };
 
 }    // namespace HI
