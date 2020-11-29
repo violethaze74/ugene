@@ -138,7 +138,7 @@ private:
     void correctSearchInCombo();
     void setUpTabOrder() const;
     QList<NamePattern> updateNamePatterns();
-    void showCurrentResultAndStopProgress(const int current, const int total);
+    void showCurrentResultAndStopProgress(int current, int total);
     void startProgressAnimation();
     void updatePatternSourceControlsUiState();
     /**
@@ -180,7 +180,7 @@ private:
     void updateAnnotationsWidget();
 
     AnnotatedDNAView *annotatedDnaView;
-    CreateAnnotationWidgetController *annotController;
+    CreateAnnotationWidgetController *createAnnotationController;
     bool annotationModelIsPrepared;
 
     bool isAminoSequenceSelected;
