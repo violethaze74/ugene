@@ -189,13 +189,14 @@ const int FindPatternWidget::REG_EXP_MIN_RESULT_LEN = 1;
 const int FindPatternWidget::REG_EXP_MAX_RESULT_LEN = 1000;
 const int FindPatternWidget::REG_EXP_MAX_RESULT_SINGLE_STEP = 20;
 
-FindPatternWidget::FindPatternWidget(AnnotatedDNAView *_annotatedDnaView)
-    : annotatedDnaView(_annotatedDnaView),
-      iterPos(1),
+FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
+    : annotatedDnaView(annotatedDnaView),
+      trackedSelection(nullptr),
+      currentResultIndex(-1),
       searchTask(nullptr),
       previousMaxResult(-1),
       usePatternNames(false),
-      savableWidget(this, GObjectViewUtils::findViewByName(_annotatedDnaView->getName())) {
+      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
     setupUi(this);
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
@@ -206,7 +207,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *_annotatedDnaView)
 
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getSequenceInFocus();
     progressLabel->setMovie(progressMovie);
-    if (activeContext != 0) {
+    if (activeContext != nullptr) {
         // Initializing the annotation model
         CreateAnnotationModel annotModel;
         annotModel.hideLocation = true;
@@ -240,7 +241,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *_annotatedDnaView)
 
         setFocusProxy(textPattern);
 
-        currentSelection = nullptr;
+        trackedSelection = nullptr;
 
         connect(findPatternEventFilter, SIGNAL(si_enterPressed()), SLOT(sl_onEnterPressed()));
         connect(findPatternEventFilter, SIGNAL(si_shiftEnterPressed()), SLOT(sl_onShiftEnterPressed()));
@@ -251,17 +252,22 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *_annotatedDnaView)
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
     getAnnotationsPushButton->setDisabled(true);
-    showCurrentResultAndStopProgress(0, 0);
+    showCurrentResultAndStopProgress();
     setUpTabOrder();
     previousMaxResult = boxMaxResult->value();
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
-void FindPatternWidget::showCurrentResultAndStopProgress(int current, int total) {
+void FindPatternWidget::showCurrentResultAndStopProgress() const {
     progressMovie->stop();
     progressLabel->hide();
     resultLabel->show();
-    resultLabel->setText(tr("Results: %1/%2").arg(QString::number(current)).arg(QString::number(total)));
+    updateResultLabelText();
+}
+
+void FindPatternWidget::updateResultLabelText() const {
+    QString currentResultText = currentResultIndex == -1 ? "-" : QString::number(currentResultIndex + 1);
+    resultLabel->setText(tr("Results: %1/%2").arg(currentResultText).arg(QString::number(findPatternResults.size())));
 }
 
 void FindPatternWidget::initLayout() {
@@ -331,9 +337,9 @@ void FindPatternWidget::initSeqTranslSelection() {
 }
 
 void FindPatternWidget::initRegionSelection() {
-    boxRegion->addItem(FindPatternWidget::tr("Whole sequence"), RegionSelectionIndex_WholeSequence);
-    boxRegion->addItem(FindPatternWidget::tr("Custom region"), RegionSelectionIndex_CustomRegion);
-    boxRegion->addItem(FindPatternWidget::tr("Selected region"), RegionSelectionIndex_CurrentSelectedRegion);
+    boxRegion->addItem(tr("Whole sequence"), RegionSelectionIndex_WholeSequence);
+    boxRegion->addItem(tr("Custom region"), RegionSelectionIndex_CustomRegion);
+    boxRegion->addItem(tr("Selected region"), RegionSelectionIndex_CurrentSelectedRegion);
 
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getSequenceInFocus();
     SAFE_POINT(activeContext != nullptr, "Internal error: sequence context is NULL during region selection init.", );
@@ -343,7 +349,7 @@ void FindPatternWidget::initRegionSelection() {
     editStart->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editStart));
     editEnd->setValidator(new QIntValidator(1, activeContext->getSequenceLength(), editEnd));
 
-    currentSelection = annotatedDnaView->getSequenceInFocus()->getSequenceSelection();
+    trackedSelection = annotatedDnaView->getSequenceInFocus()->getSequenceSelection();
 
     sl_onRegionOptionChanged(RegionSelectionIndex_WholeSequence);
 }
@@ -414,8 +420,8 @@ void FindPatternWidget::connectSlots() {
     connect(boxAlgorithm, SIGNAL(currentIndexChanged(int)), SLOT(sl_onAlgorithmChanged(int)));
     connect(boxRegion, SIGNAL(currentIndexChanged(int)), SLOT(sl_onRegionOptionChanged(int)));
     connect(textPattern, SIGNAL(textChanged()), SLOT(sl_onSearchPatternChanged()));
-    connect(editStart, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
-    connect(editEnd, SIGNAL(textChanged(QString)), SLOT(sl_onRegionValueEdited()));
+    connect(editStart, SIGNAL(textEdited(QString)), SLOT(sl_onSearchRegionIsChangedByUser()));
+    connect(editEnd, SIGNAL(textEdited(QString)), SLOT(sl_onSearchRegionIsChangedByUser()));
     connect(boxSeqTransl, SIGNAL(currentIndexChanged(int)), SLOT(sl_onSequenceTranslationChanged(int)));
     connect(boxMaxResult, SIGNAL(valueChanged(int)), SLOT(sl_onMaxResultChanged(int)));
 
@@ -465,17 +471,16 @@ void FindPatternWidget::sl_onAlgorithmChanged(int index) {
 }
 
 void FindPatternWidget::sl_onRegionOptionChanged(int index) {
-    if (currentSelection != nullptr) {
-        disconnect(currentSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_onSelectedRegionChanged()));
-    }
-    if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_WholeSequence) {
+    stopTrackingFocusedSequenceSelection();
+    int optionIndex = boxRegion->itemData(index).toInt();
+    if (optionIndex == RegionSelectionIndex_WholeSequence) {
         editStart->hide();
         lblStartEndConnection->hide();
         editEnd->hide();
         regionIsCorrect = true;
         checkState();
         setRegionToWholeSequence();
-    } else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CustomRegion) {
+    } else if (optionIndex == RegionSelectionIndex_CustomRegion) {
         editStart->show();
         lblStartEndConnection->show();
         editEnd->show();
@@ -486,16 +491,16 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index) {
         SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus!", );
         getCompleteSearchRegion(regionIsCorrect, activeContext->getSequenceLength());
         checkState();
-    } else if (boxRegion->itemData(index).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
-        currentSelection = annotatedDnaView->getSequenceInFocus()->getSequenceSelection();
-        connect(currentSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_onSelectedRegionChanged()));
+    } else if (optionIndex == RegionSelectionIndex_CurrentSelectedRegion) {
         editStart->show();
         lblStartEndConnection->show();
         editEnd->show();
-        sl_onSelectedRegionChanged();
+        startTrackingFocusedSequenceSelection();
     }
+    sl_activateNewSearch();
 }
-void FindPatternWidget::sl_onRegionValueEdited() {
+
+void FindPatternWidget::sl_onSearchRegionIsChangedByUser() {
     regionIsCorrect = true;
 
     // The values are not empty
@@ -533,26 +538,26 @@ void FindPatternWidget::sl_onRegionValueEdited() {
 }
 
 void FindPatternWidget::sl_onFocusChanged(ADVSequenceWidget * /* prevWidget */, ADVSequenceWidget * /*currentWidget*/) {
+    stopTrackingFocusedSequenceSelection();
+
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getSequenceInFocus();
-    if (activeContext != 0) {
-        const DNAAlphabet *alphabet = activeContext->getAlphabet();
-        isAminoSequenceSelected = alphabet->isAmino();
-        updateLayout();
+    if (activeContext == nullptr) {
+        return;
+    }
+    const DNAAlphabet *alphabet = activeContext->getAlphabet();
+    isAminoSequenceSelected = alphabet->isAmino();
+    updateLayout();
 
-        // Update region
-        setRegionToWholeSequence();
-        GUIUtils::setWidgetWarning(editStart, false);
-        GUIUtils::setWidgetWarning(editEnd, false);
+    // Update region
+    setRegionToWholeSequence();
+    GUIUtils::setWidgetWarning(editStart, false);
+    GUIUtils::setWidgetWarning(editEnd, false);
 
-        // Update available annotations table objects, etc.
-        updateAnnotationsWidget();
+    // Update available annotations table objects, etc.
+    updateAnnotationsWidget();
 
-        if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
-            disconnect(currentSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_onSelectedRegionChanged()));
-            currentSelection = annotatedDnaView->getSequenceInFocus()->getSequenceSelection();
-            connect(currentSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_onSelectedRegionChanged()));
-            sl_onSelectedRegionChanged();
-        }
+    if (isSearchInSelectionMode()) {
+        startTrackingFocusedSequenceSelection();
     }
 }
 
@@ -1130,26 +1135,31 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
     if (findTask->isFinished() || findTask->isCanceled() || findTask->hasError()) {
         findPatternResults = findTask->getResults();
         if (findPatternResults.isEmpty()) {
-            showCurrentResultAndStopProgress(0, 0);
+            currentResultIndex = -1;
+            showCurrentResultAndStopProgress();
             nextPushButton->setDisabled(true);
             prevPushButton->setDisabled(true);
             getAnnotationsPushButton->setDisabled(true);
         } else {
-            iterPos = 1;
             qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
-            showCurrentResultAndStopProgress(iterPos, findPatternResults.size());
+            bool isSearchInSelection = isSearchInSelectionMode();
+            // In search in selection mode we do not auto-activate the first search result to avoid concurrent selection update with user.
+            currentResultIndex = isSearchInSelection ? -1 : 0;
+            showCurrentResultAndStopProgress();
             nextPushButton->setEnabled(true);
             prevPushButton->setEnabled(true);
             getAnnotationsPushButton->setEnabled(true);
             checkState();
-            correctSearchInCombo();
-            ADVSingleSequenceWidget *seqWdgt = qobject_cast<ADVSingleSequenceWidget *>(annotatedDnaView->getSequenceWidgetInFocus());
-            if (seqWdgt != nullptr) {
-                if (seqWdgt->getDetView() != nullptr && !seqWdgt->getDetView()->isEditMode()) {
+            // Activate the first search result.
+            if (currentResultIndex >= 0) {
+                ADVSingleSequenceWidget *seqWdgt = qobject_cast<ADVSingleSequenceWidget *>(annotatedDnaView->getSequenceWidgetInFocus());
+                if (seqWdgt != nullptr) {
+                    if (seqWdgt->getDetView() != nullptr && !seqWdgt->getDetView()->isEditMode()) {
+                        showCurrentResult();
+                    }
+                } else {
                     showCurrentResult();
                 }
-            } else {
-                showCurrentResult();
             }
         }
         disconnect(this, SLOT(sl_loadPatternTaskStateChanged()));
@@ -1203,14 +1213,19 @@ bool FindPatternWidget::checkPatternRegion(const QString &pattern) {
     return minMatch <= regionLength;
 }
 
-void FindPatternWidget::sl_onSelectedRegionChanged() {
-    if (!currentSelection->getSelectedRegions().isEmpty()) {
-        U2Region firstReg = currentSelection->getSelectedRegions().first();
+void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {
+    SAFE_POINT(trackedSelection != nullptr, "No tracked selection is found!", );
+    const QVector<U2Region> &selectedRegions = trackedSelection->getSelectedRegions();
+    if (isSearchInSelectionMode() && isRegionListInSearchResults(selectedRegions)) {
+        return;    // User browses selection results (clicks Prev/Next) -> do not update the search selection range.
+    }
+    if (!selectedRegions.isEmpty()) {
+        U2Region firstReg = selectedRegions.first();
         editStart->setText(QString::number(firstReg.startPos + 1));
         editEnd->setText(QString::number(firstReg.endPos()));
 
-        if (currentSelection->getSelectedRegions().size() == 2) {
-            U2Region secondReg = currentSelection->getSelectedRegions().last();
+        if (selectedRegions.size() == 2) {
+            U2Region secondReg = selectedRegions.last();
             SAFE_POINT(annotatedDnaView->getSequenceInFocus() != nullptr, tr("Sequence in focus is NULL"), );
             int seqLen = annotatedDnaView->getSequenceInFocus()->getSequenceLength();
             bool circularSelection = (firstReg.startPos == 0 && secondReg.endPos() == seqLen) || (firstReg.endPos() == seqLen && secondReg.startPos == 0);
@@ -1223,13 +1238,14 @@ void FindPatternWidget::sl_onSelectedRegionChanged() {
             }
         }
     } else {
-        SAFE_POINT(annotatedDnaView->getSequenceInFocus() != NULL, "No sequence in focus, with active search tab in options panel", );
+        SAFE_POINT(annotatedDnaView->getSequenceInFocus() != nullptr, "No sequence in focus, with active search tab in options panel", );
         editStart->setText(QString::number(1));
         editEnd->setText(QString::number(annotatedDnaView->getSequenceInFocus()->getSequenceLength()));
     }
     regionIsCorrect = true;
-    boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
     checkState();
+
+    sl_activateNewSearch();
 }
 
 void FindPatternWidget::sl_onAnnotationNameEdited() {
@@ -1353,30 +1369,33 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
 }
 
 void FindPatternWidget::sl_prevButtonClicked() {
-    int resultSize = findPatternResults.size();
-    if (iterPos == 1) {
-        iterPos = resultSize;
+    if (currentResultIndex <= 0) {
+        currentResultIndex = findPatternResults.size() - 1;
     } else {
-        iterPos--;
+        currentResultIndex--;
     }
     showCurrentResult();
 }
 
 void FindPatternWidget::sl_nextButtonClicked() {
-    int resultSize = findPatternResults.size();
-    if (iterPos == resultSize) {
-        iterPos = 1;
+    if (currentResultIndex == findPatternResults.size() - 1) {
+        currentResultIndex = 0;
     } else {
-        iterPos++;
+        currentResultIndex++;
     }
     showCurrentResult();
 }
 
 void FindPatternWidget::showCurrentResult() const {
-    resultLabel->setText(tr("Results: %1/%2").arg(QString::number(iterPos)).arg(QString::number(findPatternResults.size())));
-    CHECK(iterPos <= findPatternResults.size(), );
-    const SharedAnnotationData &findResult = findPatternResults.at(iterPos - 1);
+    updateResultLabelText();
+    CHECK(currentResultIndex < findPatternResults.size(), );
+    if (currentResultIndex == -1) {
+        return;
+    }
+    // Activate the current result.
+    const SharedAnnotationData &findResult = findPatternResults.at(currentResultIndex);
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getSequenceInFocus();
+    CHECK(activeContext != nullptr, );
     const QVector<U2Region> &regions = findResult->getRegions();
     CHECK(!regions.isEmpty(), );
     activeContext->getSequenceSelection()->setSelectedRegions(regions);
@@ -1427,13 +1446,7 @@ void FindPatternWidget::stopCurrentSearchTask() {
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
     getAnnotationsPushButton->setDisabled(true);
-    showCurrentResultAndStopProgress(0, 0);
-}
-
-void FindPatternWidget::correctSearchInCombo() {
-    if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_CurrentSelectedRegion) {
-        boxRegion->setCurrentIndex(boxRegion->findData(RegionSelectionIndex_CustomRegion));
-    }
+    showCurrentResultAndStopProgress();
 }
 
 void FindPatternWidget::setUpTabOrder() const {
@@ -1461,6 +1474,43 @@ void FindPatternWidget::startProgressAnimation() {
     resultLabel->setText(tr("Results:"));
     progressLabel->show();
     progressMovie->start();
+}
+
+void FindPatternWidget::startTrackingFocusedSequenceSelection() {
+    stopTrackingFocusedSequenceSelection();
+    ADVSequenceObjectContext *focusedSequenceContext = annotatedDnaView->getSequenceInFocus();
+    if (focusedSequenceContext != nullptr) {
+        trackedSelection = focusedSequenceContext->getSequenceSelection();
+        connect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
+        sl_syncSearchRegionWithTrackedSelection();
+    }
+}
+
+void FindPatternWidget::stopTrackingFocusedSequenceSelection() {
+    if (trackedSelection != nullptr) {
+        disconnect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
+        trackedSelection = nullptr;
+    }
+}
+
+bool FindPatternWidget::isRegionListInSearchResults(const QVector<U2Region> &regionList) const {
+    for (const U2Region &region : regionList) {
+        bool isFound = false;
+        for (const SharedAnnotationData &result : findPatternResults) {
+            if (result->getRegions().contains(region)) {
+                isFound = true;
+                break;
+            }
+        }
+        if (!isFound) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool FindPatternWidget::isSearchInSelectionMode() const {
+    return boxRegion->currentData().toInt() == RegionSelectionIndex_CurrentSelectedRegion;
 }
 
 }    // namespace U2
