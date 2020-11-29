@@ -3728,31 +3728,24 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     //    Expected state: the region selector widget contains "Selected" region type, region is (1..199950).
     //    Current state: the region selector widget contains "Selected" region type, region is (1..199951).
     GTLogTracer l;
-
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
-    QComboBox *regionComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion"));
-    CHECK_SET_ERR(regionComboBox != NULL, "Region comboBox is NULL");
+    QComboBox *regionComboBox = GTWidget::findExactWidget<QComboBox *>(os, "boxRegion");
     if (!regionComboBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
     GTComboBox::selectItemByText(os, regionComboBox, "Selected region");
 
-    QWidget *renderArea = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(renderArea != NULL, "Render area is NULL");
-    GTWidget::click(os, renderArea);
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    QLineEdit *start = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart"));
-    CHECK_SET_ERR(start != NULL, "Region start lineEdit is NULL");
-    QLineEdit *end = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd"));
-    CHECK_SET_ERR(end != NULL, "Region end lineEdit is NULL");
-    CHECK_SET_ERR(start->text() == "1" && end->text() == "199950", "Selection is wrong!");
-
+    QLineEdit *startEdit = GTWidget::findExactWidget<QLineEdit *>(os, "editStart");
+    QLineEdit *endEdit = GTWidget::findExactWidget<QLineEdit *>(os, "editEnd");
+    CHECK_SET_ERR(startEdit->text() == "1" && endEdit->text() == "199950", "Selection is wrong!");
     GTUtilsLog::check(os, l);
 }
 

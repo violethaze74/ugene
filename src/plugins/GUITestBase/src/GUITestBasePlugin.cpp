@@ -217,7 +217,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1548, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2894, "proper data needed");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3603, "UGENE-3830");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3603);
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_5425, "Rewrite the test");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");
 
