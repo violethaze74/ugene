@@ -5954,7 +5954,30 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     GTUtilsLog::checkContainsError(os, lt, "No sequences detected in the pasted content.");
     GTWidget::click(os, GTAction::button(os, editMode));
 }
+GUI_TEST_CLASS_DEFINITION(test_6860) {
+    // Open COI.aln.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
+    // Select the first column of the alignment.
+
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
+
+    // Press the "Shift" button and do not release it.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+
+    // Click on the 10th column.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 9);
+
+    // Press the right arrow button.
+    GTKeyboardDriver::keyPress(Qt::Key_Right);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Right);
+
+    // Expected state: columns from 1 to 11 are selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 11, 18));
+
+}
 GUI_TEST_CLASS_DEFINITION(test_6875) {
     //1. Open "_common_data/genbank/HQ007052.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/HQ007052.gb");
