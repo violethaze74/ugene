@@ -6651,7 +6651,7 @@ GUI_TEST_CLASS_DEFINITION(test_1661) {
 
     // Expected state : nothing found
     QLabel *resultLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "resultLabel"));
-    CHECK_SET_ERR(resultLabel->text() == "Results: 0/0", "Unexpected find algorithm result count");
+    CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm result count");
 
     // 5. Use settings : Region - Whole sequence.
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Whole sequence");

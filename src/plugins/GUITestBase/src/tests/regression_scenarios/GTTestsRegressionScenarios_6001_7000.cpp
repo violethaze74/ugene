@@ -5629,7 +5629,28 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     QString style1 = editPatterns->styleSheet();
     CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
 }
+GUI_TEST_CLASS_DEFINITION(test_6749_3) {
+    // Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    // Input "AC" pattern to the "Search pattern field"
+    GTUtilsOptionPanelMsa::enterPattern(os, "TTGGAGATGAT");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected result: Results: 1/9
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/9");
+
+    // Enable "Collapsing mode"
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expected result: Results: -/8
+    GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/8");
+
+}
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

@@ -932,13 +932,15 @@ U2Region FindPatternWidget::getCompleteSearchRegion(bool &isRegionCorrect, qint6
         return U2Region(0, maxLen);
     }
     bool ok = false;
-    qint64 value1 = editStart->text().toLongLong(&ok) - 1;
+    QString startText = editStart->text();
+    qint64 value1 = startText.toLongLong(&ok) - 1;
     if (!ok || value1 < 0) {
         isRegionCorrect = false;
         return U2Region();
     }
 
-    int value2 = editEnd->text().toLongLong(&ok);
+    QString endText = editEnd->text();
+    int value2 = endText.toLongLong(&ok);
     if (!ok || value2 <= 0 || value2 > maxLen) {
         isRegionCorrect = false;
         return U2Region();
@@ -1077,8 +1079,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     // Region
     bool regionIsCorrectRef = false;
     U2Region region = getCompleteSearchRegion(regionIsCorrectRef, activeContext->getSequenceLength());
-    SAFE_POINT(regionIsCorrectRef, "Internal error: incorrect search region has been supplied."
-                                   " Skipping the pattern search.", );
+    CHECK(regionIsCorrectRef, );
     settings.searchRegion = region;
 
     // Algorithm settings

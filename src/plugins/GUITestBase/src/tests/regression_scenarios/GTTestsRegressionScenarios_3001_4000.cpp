@@ -4008,47 +4008,40 @@ GUI_TEST_CLASS_DEFINITION(test_3622) {
     GTUtilsOptionPanelSequenceView::enterPattern(os, "ACGT");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "InsDel");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 80);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 90);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Selected region");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     const QString currentRegionType = GTUtilsOptionPanelSequenceView::getRegionType(os);
-    CHECK_SET_ERR("Custom region" == currentRegionType, QString("An unexpected region type: expect '%1', got '%2'").arg("Custom region").arg(currentRegionType));
+    CHECK_SET_ERR("Selected region" == currentRegionType, QString("An unexpected region type: expect '%1', got '%2'").arg("Selected region").arg(currentRegionType));
 
     const QPair<int, int> currentRegion = GTUtilsOptionPanelSequenceView::getRegion(os);
     CHECK_SET_ERR(qMakePair(100, 200) == currentRegion, QString("An unexpected region: expect [%1, %2], got [%3, %4]").arg(100).arg(200).arg(currentRegion.first).arg(currentRegion.second));
 
     GTUtilsOptionPanelSequenceView::setRegion(os, 500, 1000);
-    CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
+    CHECK_SET_ERR(listener.getRegisteredTaskCount() > 0, "The search task wasn't registered");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3623) {
@@ -5282,7 +5275,7 @@ GUI_TEST_CLASS_DEFINITION(test_3817) {
     CHECK_SET_ERR(editStart->isVisible() && editEnd->isVisible(), "Region boundary fields are unexpectedly invisible");
 
     GTComboBox::selectItemByText(os, boxRegion, "Selected region");
-    CHECK_SET_ERR(boxRegion->currentText() == "Custom region", QString("Region type value is unexpected: %1. Expected: Custom region").arg(boxRegion->currentText()));
+    CHECK_SET_ERR(boxRegion->currentText() == "Selected region", QString("Region type value is unexpected: %1. Expected: Selected region").arg(boxRegion->currentText()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3821) {

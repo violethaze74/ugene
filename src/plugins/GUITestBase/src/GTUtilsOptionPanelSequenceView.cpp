@@ -88,7 +88,6 @@ void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus &os, QStri
         GTTextEdit::setText(os, patternEdit, pattern);
     }
 
-    GTGlobals::sleep(3000);
 }
 
 #undef GT_METHOD_NAME
@@ -484,8 +483,6 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus &o
     QPair<int, int> result;
     QLineEdit *leRegionStart = GTWidget::findExactWidget<QLineEdit *>(os, "editStart");
     QLineEdit *leRegionEnd = GTWidget::findExactWidget<QLineEdit *>(os, "editEnd");
-    GT_CHECK_RESULT(NULL != leRegionStart, "Region start line edit is NULL", result);
-    GT_CHECK_RESULT(NULL != leRegionEnd, "Region end line edit is NULL", result);
 
     bool ok = false;
     const int regionStart = leRegionStart->text().toInt(&ok);

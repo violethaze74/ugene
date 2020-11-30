@@ -3384,7 +3384,7 @@ GUI_TEST_CLASS_DEFINITION(test_4515) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::enterPattern(os, "K");
 
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4523) {
