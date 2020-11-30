@@ -159,7 +159,7 @@ Document *GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(HI::GUITestOp
 
 #define GT_METHOD_NAME "disconnectDatabase"
 void GTUtilsSharedDatabaseDocument::disconnectDatabase(HI::GUITestOpStatus &os, Document *databaseDoc) {
-    GT_CHECK(databaseDoc != NULL, "databaseDoc is NULL");
+    GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     disconnectDatabase(os, databaseDoc->getName());
 }
 #undef GT_METHOD_NAME

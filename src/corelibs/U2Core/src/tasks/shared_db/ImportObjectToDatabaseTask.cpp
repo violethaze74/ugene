@@ -53,6 +53,7 @@ void ImportObjectToDatabaseTask::run() {
 
     CHECK_EXT(!object.isNull(), setError(tr("The object has been removed")), );
     dstObject = object->clone(dstDbiRef, stateInfo, hints);
+    dstObject->setModified(false);
     CHECK_OP(stateInfo, );
     dstObject->moveToThread(QCoreApplication::instance()->thread());
 }

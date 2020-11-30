@@ -1094,10 +1094,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     //    Annotations drag'n'drop
     //    1. Connect to the "ugene_gui_test" database.
     //    2. Open "samples/Genbank/murine.gb".
-    //    3. Double click the sequence object "/imp_test_0003/NC_001363" in the database.
-    //    4. Drag'n'drop the annotation object from murine.gb document to the folder "/imp_test_0003".
-    //    Expected: the object is imported.
-    //    5. Drag'n'drop the new annotation object to the sequence view and connect it with the sequence.
+    //    3. Import sequence and annotations objects into a new folder in the database.
+    //    4. Open a sequence for the imported sequence.
+    //    5. Drag'n'drop the imported annotation object to the sequence view and connect it with the sequence.
     //    Expected: the annotations are added to the sequence view.
     //    6. Reconnect to the database.
     //    7. Double click the sequence object "/imp_test_0003/NC_001363" in the database.
@@ -1105,56 +1104,62 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
 
     GTLogTracer lt;
 
-    const QString parentFolderPath = U2ObjectDbi::ROOT_FOLDER;
-    const QString folderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0003");
-    const QString folderPath = parentFolderPath + U2ObjectDbi::PATH_SEP + folderName;
-    const QString fileDocName = "murine.gb";
-    const QString sequenceObjectName = "NC_001363";
-    const QString sequenceWidgetName = "[s] NC_001363";
-    const QString annotationObjectName = "NC_001363 features";
-    const QString annotationTableName = "NC_001363 features [%1]";
-    const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
-    const QString databaseAnnotationObjectPath = folderPath + U2ObjectDbi::PATH_SEP + annotationObjectName;
-
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMdi::closeActiveWindow(os);
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, folderName);
+    // Create a new folder
+    QString folderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0003");
+    GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, folderName);
+
+    QString folderPath = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folderName;
     QModelIndex folderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath);
 
-    QModelIndex databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
 
-    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << fileDocName);
-    QModelIndex fileAnnotationObjectIndex = GTUtilsProjectTreeView::findIndex(os, annotationObjectName, fileDocIndex);
+    // Import sequence and annotation objects into the DB.
+    QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "murine.gb");
 
-    GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
+    QModelIndex fileSequenceObjectIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363", fileDocIndex);
+    GTUtilsProjectTreeView::dragAndDrop(os, fileSequenceObjectIndex, folderItemIndex);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, " " + sequenceWidgetName);
-
+    QModelIndex fileAnnotationObjectIndex = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", fileDocIndex);
     GTUtilsProjectTreeView::dragAndDrop(os, fileAnnotationObjectIndex, folderItemIndex);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QModelIndex databaseAnnotaionObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseAnnotationObjectPath);
 
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-
-    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    GTUtilsProjectTreeView::dragAndDrop(os, databaseAnnotaionObjectItemIndex, annotationTableWidget);
-
-    GTGlobals::sleep(5000);
-    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
-    databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
-    databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, databaseSequenceObjectPath);
-
+    // Open a sequence view for the imported sequence.
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
+    QModelIndex databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363");
     GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+
+    // Link the annotations with the sequence object.
+    QModelIndex databaseAnnotationObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363 features");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::findWidget(os, " " + sequenceWidgetName);
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    GTUtilsProjectTreeView::dragAndDrop(os, databaseAnnotationObjectItemIndex, annotationTableWidget);
+    GTGlobals::sleep();
+
+    // Disconnect and connect to the database again.
+    GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
+
+    databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os, false); // false -> Do not remove TMP folders during connect.
+    databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363");
+
+    // Open sequence object from the DB.
+    GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Check that it has annotations in the view.
     annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, annotationTableName.arg(databaseDoc->getName()));
+    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, QString("NC_001363 features [%1]").arg(databaseDoc->getName()));
     CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
