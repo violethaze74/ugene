@@ -170,7 +170,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
     //3. Click "Delete".
     //Expected: the connection is removed:
     //          1) The connection item disappears.
-    //          2) The database document disappears from the project.
+    //          2) The database document is not removed.
     //          3) There are no errors in the log.
     GTLogTracer lt;
     QString conName = "cm_test_0002: new shared database";
@@ -201,13 +201,14 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
         QList<SharedConnectionsDialogFiller::Action> actions;
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, conName);
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::DELETE, conName);
+        actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
-    CHECK_SET_ERR(!exists, "A database connection unexpectedly is presented in the project view");
+    bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
+    CHECK_SET_ERR(exists, "A database connection is not found in the project view");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }

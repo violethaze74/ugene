@@ -23,11 +23,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
@@ -92,24 +88,24 @@ void checkDocument(HI::GUITestOpStatus &os, const QString &name, bool mustBe) {
 
 void waitForConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
     switch (action.expectedResult) {
-    case SharedConnectionsDialogFiller::Action::OK:
-        break;
-    case SharedConnectionsDialogFiller::Action::WRONG_DATA:
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Unable to connect"));
-        break;
-    case SharedConnectionsDialogFiller::Action::INITIALIZE:
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-        break;
-    case SharedConnectionsDialogFiller::Action::DONT_INITIALIZE:
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-        break;
-    case SharedConnectionsDialogFiller::Action::VERSION:
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "recent version of UGENE"));
-        break;
-    case SharedConnectionsDialogFiller::Action::LOGIN:
-        break;
-    default:
-        os.setError("Unknown expected result");
+        case SharedConnectionsDialogFiller::Action::OK:
+            break;
+        case SharedConnectionsDialogFiller::Action::WRONG_DATA:
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "Unable to connect"));
+            break;
+        case SharedConnectionsDialogFiller::Action::INITIALIZE:
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            break;
+        case SharedConnectionsDialogFiller::Action::DONT_INITIALIZE:
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+            break;
+        case SharedConnectionsDialogFiller::Action::VERSION:
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "recent version of UGENE"));
+            break;
+        case SharedConnectionsDialogFiller::Action::LOGIN:
+            break;
+        default:
+            os.setError("Unknown expected result");
     }
 }
 
@@ -131,7 +127,7 @@ void deleteConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFill
 
     // Check connection item
     QListWidgetItem *item = findConnection(os, list, action.itemName, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == item, "Item is not deleted");
+    CHECK_SET_ERR(item == nullptr, "Item is not deleted");
 
     // Check project view
     checkDocument(os, action.dbName, false);
@@ -167,36 +163,36 @@ void SharedConnectionsDialogFiller::commonScenario() {
     foreach (const Action &action, actions) {
         CHECK_SET_ERR(!connected, "The dialog must be closed but not all actions are processed");
         switch (action.type) {
-        case Action::ADD:
-            GTWidget::click(os, GTWidget::findWidget(os, "pbAdd"));
-            break;
-        case Action::CLICK:
-            clickConnection(os, list, action.itemName);
-            break;
-        case Action::EDIT:
-            GTWidget::click(os, GTWidget::findWidget(os, "pbEdit"));
-            break;
-        case Action::DELETE:
-            deleteConnection(os, action);
-            CHECK_OP(os, );
-            break;
-        case Action::CONNECT:
-            establishConnection(os, action);
-            CHECK_OP(os, );
-            if (action.expectedResult == Action::OK) {
-                connected = true;
-            }
-            break;
-        case Action::DISCONNECT:
-            stopConnection(os, action);
-            CHECK_OP(os, );
-            break;
-        case Action::CLOSE:
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Close);
-            break;
-        default:
-            os.setError("Unknown action type");
-            return;
+            case Action::ADD:
+                GTWidget::click(os, GTWidget::findWidget(os, "pbAdd"));
+                break;
+            case Action::CLICK:
+                clickConnection(os, list, action.itemName);
+                break;
+            case Action::EDIT:
+                GTWidget::click(os, GTWidget::findWidget(os, "pbEdit"));
+                break;
+            case Action::DELETE:
+                deleteConnection(os, action);
+                CHECK_OP(os, );
+                break;
+            case Action::CONNECT:
+                establishConnection(os, action);
+                CHECK_OP(os, );
+                if (action.expectedResult == Action::OK) {
+                    connected = true;
+                }
+                break;
+            case Action::DISCONNECT:
+                stopConnection(os, action);
+                CHECK_OP(os, );
+                break;
+            case Action::CLOSE:
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Close);
+                break;
+            default:
+                os.setError("Unknown action type");
+                return;
         }
         CHECK_OP(os, );
     }
