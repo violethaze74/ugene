@@ -1700,12 +1700,9 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
 
     //    > pattern2
     //    GGCAGAAACC
-    QString pattern = "> pattern1"
-                      "\n"
-                      "TGGGGGCCAATA"
-                      "\n\n"
-                      "> pattern2"
-                      "\n"
+    QString pattern = "> pattern1\n"
+                      "TGGGGGCCAATA\n\n"
+                      "> pattern2\n"
                       "GGCAGAAACC";
     GTUtilsOptionPanelSequenceView::enterPattern(os, pattern, true);
 

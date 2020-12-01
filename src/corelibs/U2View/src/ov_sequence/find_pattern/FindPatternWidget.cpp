@@ -232,9 +232,6 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
         connectSlots();
 
         checkState();
-        if (lblErrorMessage->text().isEmpty()) {
-            showHideMessage(true, PleaseInputAtLeastOneSearchPatternTip);
-        }
 
         FindPatternEventFilter *findPatternEventFilter = new FindPatternEventFilter(this);
         textPattern->installEventFilter(findPatternEventFilter);
@@ -720,6 +717,12 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
     } else {
         lblErrorMessage->setText("");
     }
+    if (messageFlag != PleaseInputAtLeastOneSearchPatternTip) {
+        // Show PleaseInputAtLeastOneSearchPatternTip only if there are no other messages.
+        bool hasNoFlagsOrOnlyTheTip = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
+        bool isShowEmptyPatternHintOn = hasNoFlagsOrOnlyTheTip && textPattern->toPlainText().trimmed().isEmpty();
+        showHideMessage(isShowEmptyPatternHintOn, PleaseInputAtLeastOneSearchPatternTip);
+    }
     bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(PleaseInputAtLeastOneSearchPatternTip));
     if (hasNoErrors) {
         GUIUtils::setWidgetWarning(textPattern, false);
@@ -727,26 +730,24 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged() {
-    static QString patterns = "";
-    if (patterns != textPattern->toPlainText()) {
-        patterns = textPattern->toPlainText();
+    static QString cachedTextPatterns = "";
+    QString currentTextPatterns = textPattern->toPlainText();
+    if (currentTextPatterns == cachedTextPatterns) {
+        return;
+    }
+    cachedTextPatterns = currentTextPatterns;
+    setCorrectPatternsString();
 
-        setCorrectPatternsString();
+    checkState();
 
-        checkState();
-        if (lblErrorMessage->text().isEmpty()) {
-            showHideMessage(patterns.isEmpty(), PleaseInputAtLeastOneSearchPatternTip);
-        }
+    enableDisableMatchSpin();
 
-        enableDisableMatchSpin();
-
-        // Show a warning if the pattern alphabet doesn't match,
-        // but do not block the "Search" button
-        bool noValidationErrors = verifyPatternAlphabet();
-        if (noValidationErrors && patterns != previousPatternString) {
-            previousPatternString = patterns;
-            sl_activateNewSearch(false);
-        }
+    // Show a warning if the pattern alphabet doesn't match,
+    // but do not block the "Search" button
+    bool noValidationErrors = verifyPatternAlphabet();
+    if (noValidationErrors && cachedTextPatterns != previousPatternString) {
+        previousPatternString = cachedTextPatterns;
+        sl_activateNewSearch(false);
     }
 }
 
@@ -760,33 +761,35 @@ void FindPatternWidget::sl_onMaxResultChanged(int newMaxResult) {
 }
 
 void FindPatternWidget::setCorrectPatternsString() {
+    if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
+        return;
+    }
     QTextCursor cursorInTextEdit = textPattern->textCursor();
-
-    if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
-        FastaPatternsWalker walker(textPattern->toPlainText(), cursorInTextEdit.position());
-        // Delete all non-alphabet symbols.
-        while (walker.hasNext()) {
-            QChar character(walker.next());
-            if (walker.isCorrect()) {
-                continue;
-            }
-            if (character.isLetter()) {
-                if (!character.isUpper()) {
-                    walker.setCurrent(character.toUpper().toLatin1());
-                }
-            } else {
-                if (character != '\n') {
-                    walker.removeCurrent();
-                }
-            }
+    QString textPatternByUser = textPattern->toPlainText();
+    FastaPatternsWalker walker(textPatternByUser, cursorInTextEdit.position());
+    // Delete all non-alphabet symbols.
+    while (walker.hasNext()) {
+        QChar character(walker.next());
+        if (walker.isCorrect()) {
+            continue;
         }
-
-        if (textPattern->toPlainText() != walker.getString()) {
-            textPattern->setText(walker.getString());
-            cursorInTextEdit.setPosition(walker.getCursor());
-            textPattern->setTextCursor(cursorInTextEdit);
+        if (character.isLetter()) {
+            if (!character.isUpper()) {
+                walker.setCurrent(character.toUpper().toLatin1());
+            }
+        } else {
+            if (character != '\n') {
+                walker.removeCurrent();
+            }
         }
     }
+    QString textPatternByWalker = walker.getString();
+    if (textPatternByUser != textPatternByWalker) {
+        textPattern->setText(textPatternByWalker);
+        cursorInTextEdit.setPosition(walker.getCursor());
+        textPattern->setTextCursor(cursorInTextEdit);
+    }
+    updateNamePatterns();
 }
 
 void FindPatternWidget::setRegionToWholeSequence() {
