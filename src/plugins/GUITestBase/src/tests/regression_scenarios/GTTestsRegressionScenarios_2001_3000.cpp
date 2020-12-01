@@ -1278,33 +1278,22 @@ GUI_TEST_CLASS_DEFINITION(test_2160) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2165) {
-    GTLogTracer l;
     //1. Open human_t1
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Copy the whole sequence to the clipboard
-    GTWidget::click(os, GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTWidget::click(os, GTWidget::findWidget(os, "select_range_action"));
-    GTGlobals::sleep(500);
-
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     //3. Past the whole sequence to the find pattern field
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
-
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTThread::waitForMainThread();
 
-    //4. Press the "Search" button
-
-    GTGlobals::sleep(500);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //Expected: UGENE finds the sequence or shows a error message
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    GTUtilsNotifications::checkNotificationDialogText(os, "too long");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2188) {

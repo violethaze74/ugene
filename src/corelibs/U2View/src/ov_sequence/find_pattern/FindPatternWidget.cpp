@@ -153,6 +153,46 @@ private:
     }
 };
 
+#define MAX_SUPPORTED_TEXT_EDIT_SEQUENCE_SIZE 10000
+
+/**
+ * Safe version of QTextEdit that does not allow insertions of large texts (sequences) into the edit.
+ * Both QTextEdit and QPlainTextEdit have very bad performance when long lines of text (sequences) are used
+ * and may cause an app freeze.
+ */
+class FindPatternTextEdit : public QTextEdit {
+public:
+    FindPatternTextEdit(QTextEdit *originalEdit) {
+        // Copy all important fields from the original edit. These fields can be set in QtDesigner.
+        setObjectName(originalEdit->objectName());
+        setSizePolicy(originalEdit->sizePolicy());
+        setMinimumSize(originalEdit->minimumSize());
+        setMaximumSize(originalEdit->maximumSize());
+        setFocusPolicy(originalEdit->focusPolicy());
+        setTabChangesFocus(originalEdit->tabChangesFocus());
+        setUndoRedoEnabled(originalEdit->isUndoRedoEnabled());
+    }
+
+protected:
+    /** Returns true if the text edit can safely grow by extraTextSize characters. */
+    bool isSafeToAddExtraTextSize(int extraTextSize) const {
+        return toPlainText().size() + extraTextSize <= MAX_SUPPORTED_TEXT_EDIT_SEQUENCE_SIZE;
+    }
+
+    bool canInsertFromMimeData(const QMimeData *source) const override {
+        return isSafeToAddExtraTextSize(source->text().length()) && QTextEdit::canInsertFromMimeData(source);
+    }
+
+    void insertFromMimeData(const QMimeData *source) override {
+        if (isSafeToAddExtraTextSize(source->text().length())) {
+            QTextEdit::insertFromMimeData(source);
+            return;
+        }
+        QString notificationMessage = FindPatternWidget::tr("The pattern is too long. Use 'Load pattern from file' option.");
+        AppContext::getMainWindow()->addNotification(notificationMessage, Warning_Not);
+    }
+};
+
 FindPatternEventFilter::FindPatternEventFilter(QObject *parent)
     : QObject(parent) {
 }
@@ -198,6 +238,13 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
       usePatternNames(false),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
     setupUi(this);
+
+    // Replace the original text edit with the optimized version.
+    auto findPatternTextEdit = new FindPatternTextEdit(textPattern);
+    verticalLayout->replaceWidget(textPattern, findPatternTextEdit);
+    delete textPattern;
+    textPattern = findPatternTextEdit;
+
     progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setObjectName("progressLabel");
     resultLabel->setObjectName("resultLabel");
