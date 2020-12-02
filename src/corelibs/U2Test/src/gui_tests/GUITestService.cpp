@@ -262,10 +262,17 @@ void GUITestService::runAllGUITests() {
     GUITests tests = AppContext::getGUITestBase()->takeTests();
     SAFE_POINT(!tests.isEmpty(), "", );
 
+    QString runOneTestOnly = qgetenv("UGENE_GUI_TEST_NAME_RUN_ONLY");
     foreach (HI::GUITest *test, tests) {
         SAFE_POINT(test != nullptr, "", );
         QString testName = test->getFullName();
         QString testNameForTeamCity = test->getSuite() + "_" + test->getName();
+
+        if (!runOneTestOnly.isNull() &&
+                !runOneTestOnly.isEmpty() &&
+                runOneTestOnly != testName) {
+            continue;
+        }
 
         if (test->isIgnored()) {
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());

@@ -105,10 +105,6 @@ void GTUtilsWorkflowDesigner::openWorkflowDesigner(HI::GUITestOpStatus &os) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "Workflow Designer...");
-#ifdef Q_OS_MAC
-    // Workaround for Mac - wait some time for workflow desiner
-    GTGlobals::sleep(16000);
-#endif
     checkWorkflowDesignerWindowIsActive(os);
     GTUtilsDialog::removeRunnable(filler);
 }

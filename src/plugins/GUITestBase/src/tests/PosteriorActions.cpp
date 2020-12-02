@@ -31,6 +31,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QGuiApplication>
+#include <QProcess>
 #include <QTreeView>
 
 #include <U2Core/AppContext.h>
@@ -46,6 +47,22 @@
 
 namespace U2 {
 namespace GUITest_posterior_actions {
+
+#ifdef Q_OS_MAC
+void workaroundForMacCGEvents() {
+    QString prog = qgetenv("UGENE_GUI_TEST_MACOS_WORKAROUND_FOR_CGEVENTS");
+    if (!prog.isNull()) {
+        QProcess fakeClock;
+        fakeClock.startDetached(prog,
+                                {"-x", "1000",
+                                 "-y", "0",
+                                 "-w", "80",
+                                 "-h", "40",
+                                 "-d", "4000",
+                                 "-t", "40"});
+    }
+}
+#endif
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     // Release all hold keyboard modifier keys
@@ -72,7 +89,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all popup widgets
     // Close all modal widgets
     // Clear the clipboard
-
+#ifdef Q_OS_MAC
+    workaroundForMacCGEvents();
+#endif
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
         GTWidget::close(os, popupWidget);
@@ -110,7 +129,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
         GTGlobals::sleep(500);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
         GTGlobals::sleep(5000);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);

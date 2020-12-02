@@ -48,8 +48,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
         }
     }
     QPoint globalPoint = widget->mapToGlobal(p);
-    GTMouseDriver::moveTo(globalPoint);
-    GTMouseDriver::click(mouseButton);
+    GTMouseDriver::click(globalPoint, mouseButton);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
@@ -59,15 +58,14 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GT_CHECK(w != NULL, "widget is NULL");
 
     GTWidget::click(os, w);
+    GTGlobals::sleep(200);
 
 #ifdef Q_OS_MAC    // TODO: workaround for MacOS gui tests
-    GTGlobals::sleep(500);
     if (!qobject_cast<QComboBox *>(w) &&
         !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
 #else
-    GTGlobals::sleep(200);
     if (!qobject_cast<QComboBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }

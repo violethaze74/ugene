@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QProcess>
 #include <QPushButton>
 #include <QTimer>
 
@@ -224,10 +225,29 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QDialogButtonBox::Standa
 }
 #undef GT_METHOD_NAME
 
+#ifdef Q_OS_MAC
+#define GT_METHOD_NAME "workaroundForMacCGEvents"
+void GTUtilsDialog::workaroundForMacCGEvents() {
+    QString prog = qgetenv("UGENE_GUI_TEST_MACOS_WORKAROUND_FOR_CGEVENTS");
+    if (!prog.isNull()) {
+        QProcess fakeClock;
+        fakeClock.startDetached(prog,
+                                {"-x", "1000",
+                                 "-y", "0",
+                                 "-w", "80",
+                                 "-h", "40",
+                                 "-d", "4000",
+                                 "-t", "40"});
+    }
+}
+#undef GT_METHOD_NAME
+#endif
+
 #define GT_METHOD_NAME "clickButtonBox"
 void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialogButtonBox::StandardButton button) {
 #ifdef Q_OS_MAC
     QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
+    workaroundForMacCGEvents();
     if (mbox != NULL && (button == QDialogButtonBox::Yes
                          || button == QDialogButtonBox::No
                          || button == QDialogButtonBox::NoToAll)) {

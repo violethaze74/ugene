@@ -121,8 +121,7 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
         pos = mainWindow->menuBar()->actionGeometry(menu).center();
         gPos = mainWindow->menuBar()->mapToGlobal(pos);
 
-        GTMouseDriver::moveTo(gPos);
-        GTMouseDriver::click();
+        GTMouseDriver::click(gPos);
         break;
 
     case GTGlobals::UseKey:
