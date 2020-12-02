@@ -58,7 +58,7 @@ bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
 DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p)
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "49447011");
+    new HelpButton(this, buttonBox, "54362262");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

@@ -44,7 +44,7 @@ namespace U2 {
 DashboardsManagerDialog::DashboardsManagerDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "49447680");
+    new HelpButton(this, buttonBox, "54362933");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 

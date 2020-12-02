@@ -65,7 +65,7 @@ PWMBuildDialogController::PWMBuildDialogController(QWidget *w)
       logoArea(NULL) {
     task = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "49448632");
+    new HelpButton(this, buttonBox, "54363885");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
