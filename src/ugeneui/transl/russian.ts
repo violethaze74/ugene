@@ -450,17 +450,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="851"/>
+        <location filename="../src/Main.cpp" line="871"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="852"/>
+        <location filename="../src/Main.cpp" line="872"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="853"/>
+        <location filename="../src/Main.cpp" line="873"/>
         <source>UGENE distribution: %1</source>
         <translation>Распределение UGENE: %1</translation>
     </message>
@@ -674,7 +674,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="594"/>
+        <location filename="../src/Main.cpp" line="599"/>
         <source>Style not available %1</source>
         <translation>Стиль не доступен: %1</translation>
     </message>
@@ -1229,32 +1229,32 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::MWMenuManagerImpl</name>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="35"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="36"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="36"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="37"/>
         <source>&amp;Actions</source>
         <translation>&amp;Операции</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="37"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="38"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="38"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="39"/>
         <source>&amp;Tools</source>
         <translation>&amp;Инструменты</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="39"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="40"/>
         <source>&amp;Window</source>
         <translation>&amp;Окна</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MenuManager.cpp" line="40"/>
+        <location filename="../src/main_window/MenuManager.cpp" line="41"/>
         <source>&amp;Help</source>
         <translation>&amp;Помощь</translation>
     </message>
@@ -1272,17 +1272,17 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Добавить ярлык на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="388"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="391"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Программа уже в процессе выключения. Закрыть немедленно?</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="389"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="392"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="390"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="393"/>
         <source>Wait</source>
         <translation>Подождать</translation>
     </message>
@@ -1332,34 +1332,34 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Разрешить использование терминала...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="465"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="470"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="478"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="481"/>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="465"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="468"/>
         <source>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</source>
         <translation>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="470"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="473"/>
         <source>Failed to enable terminal usage: not authorized</source>
         <translation>Failed to enable terminal usage: not authorized</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="478"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="481"/>
         <source>Failed to enable terminal usage: authorization failure</source>
         <translation>Failed to enable terminal usage: authorization failure</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="483"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="486"/>
         <source>Installation successful</source>
         <translation>Installation successful</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="483"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="486"/>
         <source>Terminal usage successfully enabled.
 
 Now you can type ugene in command line to start UGENE.</source>
@@ -1368,12 +1368,12 @@ Now you can type ugene in command line to start UGENE.</source>
 Now you can type ugene in command line to start UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="496"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="499"/>
         <source>Can not open %1 file. </source>
         <translation>Невозможно открыть файл %1. </translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="497"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="500"/>
         <source>You can try open it manualy from here: %1 
 or view online documentation.
 
@@ -1958,7 +1958,7 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="361"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="366"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1966,32 +1966,32 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="138"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="139"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Отправляется отчет о системе</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="150"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="152"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="319"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="323"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="338"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="343"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="342"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="347"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="355"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="360"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>
@@ -2331,7 +2331,7 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="535"/>
+        <location filename="../src/Main.cpp" line="541"/>
         <source>UGENE initialization started</source>
         <translation>Инициализация UGENE</translation>
     </message>
@@ -2349,17 +2349,17 @@ Would you like to download and install it?</source>
         <translation>Обновить сейчас</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="182"/>
         <source>Your version:</source>
         <translation>Локальная версия:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="182"/>
         <source>Latest version:</source>
         <translation>Последняя версия:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="182"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="185"/>
         <source>You have the latest version</source>
         <translation>У вас установлена самая последняя версия</translation>
     </message>

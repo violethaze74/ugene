@@ -53,7 +53,7 @@
         <translation>Найдены ошибки в библиотеке: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="111"/>
+        <location filename="../src/util_msa_consensus/MSAConsensusUtils.cpp" line="118"/>
         <source>Gaps:</source>
         <translation>Пробелы:</translation>
     </message>
@@ -586,7 +586,7 @@ For every column selects the most rare symbol in the whole alignment with percen
         <translation>Создание филогенетического дерева</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="54"/>
+        <location filename="../src/phyltree/PhyTreeGeneratorTask.cpp" line="53"/>
         <source>Tree construction algorithm %1 not found</source>
         <translation>Алгоритм %1 построения дерева не найден</translation>
     </message>

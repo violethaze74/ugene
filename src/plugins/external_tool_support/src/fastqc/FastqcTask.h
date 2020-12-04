@@ -34,11 +34,26 @@ public:
     FastQCSetting() {
     }
 
-    QString inputUrl;
-    QString outDir;
-    QString adapters;
-    QString conts;
-    QString fileName;
+    /** Input file url for FastQC. */
+    QString inputFileUrl;
+
+    /** Output dir for the FastQC. Must be created before run. */
+    QString outputDirUrl;
+
+    /**
+     * Specifies a non-default file which contains the list of adapter sequences.
+     * Same as '-a' parameter.
+     */
+    QString adaptersFileUrl;
+
+    /**
+     * A non-default file which contains the list of contaminants.
+     * Same as '-c' parameter.
+     */
+    QString contaminantsFileUrl;
+
+    /** Name of the output file in the outputDir. Optional. If not provided the inputFile base name is used. */
+    QString outputFileNameOverride;
 };
 
 class FastQCTask : public ExternalToolSupportTask {
@@ -46,20 +61,21 @@ class FastQCTask : public ExternalToolSupportTask {
 public:
     FastQCTask(const FastQCSetting &settings);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
-    const QString &getResult() {
-        return resultUrl;
+    const QString &getResult() const {
+        return resultFileUrl;
     }
-    QString getResFileUrl() const;
+
+    QString getTmpResultFileUrl() const;
 
 protected:
     QStringList getParameters(U2OpStatus &os) const;
 
 protected:
     FastQCSetting settings;
-    QString resultUrl;
+    QString resultFileUrl;
 
 private:
     QTemporaryDir temporaryDir;

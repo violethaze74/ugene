@@ -120,12 +120,12 @@
         <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="446"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="448"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="446"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="448"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>

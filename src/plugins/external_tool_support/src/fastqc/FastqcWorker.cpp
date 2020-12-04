@@ -176,71 +176,59 @@ void FastQCWorker::init() {
 
 Task *FastQCWorker::tick() {
     if (inputUrlPort->hasMessage()) {
-        const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        QString url = getUrlAndSetupScriptValues();
+        CHECK(!url.isEmpty(), nullptr);
         QString outFile = getValue<QString>(OUT_FILE);
         FastQCSetting settings;
         if (outFile.isEmpty()) {
-            QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), "", context->workingDir());
-            settings.outDir = outputDir + FastQCWorker::BASE_FASTQC_SUBDIR;
-            QDir outQDir(settings.outDir);
-            if (!outQDir.exists()) {
+            QString outputDirUrl = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), "", context->workingDir());
+            settings.outputDirUrl = outputDirUrl + FastQCWorker::BASE_FASTQC_SUBDIR;
+            QDir outputDir(settings.outputDirUrl);
+            if (!outputDir.exists()) {
                 U2OpStatusImpl os;
-                GUrlUtils::createDirectory(settings.outDir, "_", os);
+                GUrlUtils::createDirectory(settings.outputDirUrl, "_", os);
             }
-            settings.fileName = "";
         } else {
             QFileInfo outFileFi(outFile);
-            settings.outDir = outFileFi.absoluteDir().absolutePath();
-            settings.fileName = outFileFi.fileName();
+            settings.outputDirUrl = outFileFi.absoluteDir().absolutePath();
+            settings.outputFileNameOverride = outFileFi.fileName();
         }
-        settings.inputUrl = url;
-        settings.adapters = getValue<QString>(ADAPTERS);
-        settings.conts = getValue<QString>(CONTAMINANTS);
+        settings.inputFileUrl = url;
+        settings.adaptersFileUrl = getValue<QString>(ADAPTERS);
+        settings.contaminantsFileUrl = getValue<QString>(CONTAMINANTS);
 
-        FastQCTask *t = new FastQCTask(settings);
-        t->addListeners(createLogListeners());
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
-        return t;
+        auto fastQCTask = new FastQCTask(settings);
+        fastQCTask->addListeners(createLogListeners());
+        connect(new TaskSignalMapper(fastQCTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        return fastQCTask;
     }
 
     if (inputUrlPort->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void FastQCWorker::cleanup() {
 }
 
-namespace {
-QString getTargetTaskUrl(Task *task) {
-    FastQCTask *curtask = dynamic_cast<FastQCTask *>(task);
-    if (NULL != curtask) {
-        return curtask->getResult();
-    }
-    return "";
-}
-
-}    // namespace
-
 void FastQCWorker::sl_taskFinished(Task *task) {
-    CHECK(!task->hasError(), );
-    CHECK(!task->isCanceled(), );
+    CHECK(!task->hasError() && !task->isCanceled(), );
 
-    QString url = getTargetTaskUrl(task);
+    FastQCTask *fastQCTask = dynamic_cast<FastQCTask *>(task);
+    QString url = fastQCTask != nullptr ? fastQCTask->getResult() : "";
     CHECK(!url.isEmpty(), );
 
     monitor()->addOutputFile(url, getActorId(), true);
 }
 
-QString FastQCWorker::takeUrl() {
-    const Message inputMessage = getMessageAndSetupScriptValues(inputUrlPort);
+QString FastQCWorker::getUrlAndSetupScriptValues() {
+    Message inputMessage = getMessageAndSetupScriptValues(inputUrlPort);
     if (inputMessage.isEmpty()) {
         return "";
     }
 
-    const QVariantMap data = inputMessage.getData().toMap();
+    QVariantMap data = inputMessage.getData().toMap();
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 

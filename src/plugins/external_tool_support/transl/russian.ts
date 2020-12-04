@@ -2953,17 +2953,17 @@ p, li { white-space: pre-wrap; }
         <translation>извлекает последовательности транскриптов из геномных последовательностей при помощи gffread.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="91"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="89"/>
         <source>Installed</source>
         <translation>Установлено</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="92"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="90"/>
         <source>Not installed</source>
         <translation>Не установлено</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="93"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="91"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download &lt;a href=&quot;http://ugene.net/download-all_html#en_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;tools executables&lt;/span&gt;&lt;/a&gt; and configure the tools paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Скачать &lt;a href=&quot;http://ugene.net/ru/download-all_html#ru_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;инструменты&lt;/span&gt;&lt;/a&gt; и сконфигурировать пути до файлов. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2973,32 +2973,25 @@ p, li { white-space: pre-wrap; }
         <translation>Unexpected value &apos;%1&apos; of the library type</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="816"/>
-        <source>TopHat and Bowtie tool versions are undefined, this may cause some compatibility issues</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="821"/>
         <source>%1 tool&apos;s version is undefined, this may cause some compatibility issues</source>
-        <translation>%1 версия инструмента не определена, это может вызвать некоторые проблемы совместимости</translation>
+        <translation type="vanished">%1 версия инструмента не определена, это может вызвать некоторые проблемы совместимости</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="828"/>
         <source>Bowtie and TopHat tools have incompatible versions. Your TopHat&apos;s version is %1, Bowtie&apos;s one is %2. The following are considered to be compatible: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</source>
-        <translation>Bowtie и TopHat инструменты имеют несовместимые версии. Версия TopHat %1, версия Bowtie %2. Для совместимости необходимо: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</translation>
+        <translation type="vanished">Bowtie и TopHat инструменты имеют несовместимые версии. Версия TopHat %1, версия Bowtie %2. Для совместимости необходимо: Bowtie &lt; &quot;0.12.9&quot; and TopHat &lt;= &quot;2.0.8&quot; or Bowtie &gt;= &quot;0.12.9&quot; and TopHat &gt;= &quot;2.0.8.b&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="865"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="800"/>
         <source>At least two samples are required</source>
         <translation>Необходимо как минимум два примера</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="872"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="807"/>
         <source>Duplicate sample name: </source>
         <translation>Повторяющееся имя примера: </translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="877"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="812"/>
         <source>No datasets in the sample: </source>
         <translation>В примере нет данных: </translation>
     </message>
@@ -3783,23 +3776,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BedtoolsIntersectAnnotationsByEntityTask</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="116"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="118"/>
         <source>Intersect annotations task</source>
         <translation>Intersect annotations task</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="173"/>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="193"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="175"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="198"/>
         <source>Failed to get IOAdapterFactory</source>
         <translation>Failed to get IOAdapterFactory</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="180"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="182"/>
         <source>Result document is NULL</source>
         <translation>Result document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="190"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="184"/>
+        <source>No annotation tables resultDoc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="195"/>
         <source>Failed to get BED format</source>
         <translation>Failed to get BED format</translation>
     </message>
@@ -3807,22 +3805,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BedtoolsIntersectTask</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="65"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="67"/>
         <source>BedtoolsIntersect task</source>
         <translation>BedtoolsIntersect task</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="70"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="72"/>
         <source>No input A URL</source>
         <translation>No input A URL</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="71"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="73"/>
         <source>No input B URL(s)</source>
         <translation>No input B URL(s)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="72"/>
+        <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="74"/>
         <source>Output URL is not set</source>
         <translation>Output URL is not set</translation>
     </message>
@@ -3830,7 +3828,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BedtoolsSupport</name>
     <message>
-        <location filename="../src/bedtools/BedtoolsSupport.cpp" line="56"/>
+        <location filename="../src/bedtools/BedtoolsSupport.cpp" line="51"/>
         <source>&lt;i&gt;Bedtools&lt;/i&gt;: flexible tools for genome arithmetic and DNA sequence analysis.</source>
         <translation>&lt;i&gt;Bedtools&lt;/i&gt;: гибкие инструменты для геномной арифметики и ДНК анализа.</translation>
     </message>
@@ -3838,9 +3836,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BigWigSupport</name>
     <message>
-        <location filename="../src/bigWigTools/BigWigSupport.cpp" line="54"/>
         <source>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: converts bedGrapth to bigWig.</source>
-        <translation>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: конвертирует bedGrapth в bigWig.</translation>
+        <translation type="vanished">&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: конвертирует bedGrapth в bigWig.</translation>
+    </message>
+    <message>
+        <location filename="../src/bigWigTools/BigWigSupport.cpp" line="51"/>
+        <source>&lt;i&gt;bedGraphToBigWig&lt;/i&gt;: convert a bedGraph file to bigWig format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4057,17 +4059,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastDbCmdSupport</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="68"/>
+        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="63"/>
         <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST+ database based on a query.</source>
         <translation>&lt;i&gt;BlastDBCmd&lt;/i&gt; получает белковые или нуклеотидные последовательности из базы данных BLAST+ основанной на запросе.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="80"/>
+        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="75"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="81"/>
+        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="76"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4075,12 +4077,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastPlusSupport</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="199"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="196"/>
         <source>Path for BLAST+ tools not selected.</source>
         <translation>Путь для BLAST+ не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="200"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="197"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4204,43 +4206,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastPlusSupportContext</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="272"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="267"/>
         <source>Fetch sequences by &apos;id&apos;</source>
         <translation>Получить последовательности по &apos;id&apos;</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="282"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="277"/>
         <source>Query with local BLAST+...</source>
         <translation>Поиск с помощью локальной базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="326"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="320"/>
         <source>Fetch sequences from local BLAST database</source>
         <translation>Извлечь последовательность из локальной базы данных BLAST</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="331"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="325"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Извлечь последовательности по &apos;id&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="349"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="344"/>
         <source>Path for BLAST+ tools not selected.</source>
         <translation>Путь для BLAST+ не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="350"/>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="425"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="345"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="418"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="398"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="391"/>
         <source>Sequence object is NULL</source>
         <translation>Sequence object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="424"/>
+        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="417"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
@@ -4397,51 +4399,73 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Bowtie2Support</name>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="58"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="55"/>
         <source>&lt;i&gt;Bowtie 2 aligner&lt;/i&gt; takes a Bowtie 2 index and a set of sequencing read files and outputs a set of alignments.</source>
         <translation>&lt;i&gt;Выравнивание при помощи Bowtie 2 &lt;/i&gt; принимает индексный файл и набор ридов, в качестве результата работы выдает выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="66"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="64"/>
         <source>&lt;i&gt;Bowtie 2 build indexer&lt;/i&gt;  builds a Bowtie index from a set of DNA sequences. It outputs a set of 6 files with suffixes .1.bt2, .2.bt2, .3.bt2, .4.bt2, .rev.1.bt2, and .rev.2.bt2. These files together constitute the index: they are all that is needed to align reads to that reference. The original sequence files are no longer used by &lt;i&gt;Bowtie 2&lt;/i&gt; once the index is built.</source>
         <translation>&lt;i&gt;Построение индекса при помощи Bowtie 2&lt;/i&gt; строит индекс из набора ДНК последовательностей. Результатом работы являются 6 файлов с суффиксами .1.bt2, .2.bt2, .3.bt2, .4.bt2, .rev.1.bt2, и .rev.2.bt2. Эти файлы вместе образуют индекс: они все необходимы для выравнивания ридов на референсную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="79"/>
+        <location filename="../src/bowtie2/Bowtie2Support.cpp" line="78"/>
         <source>&lt;i&gt;Bowtie 2 index inspector&lt;/i&gt; extracts information from a Bowtie index about what kind of index it is and what reference sequence were used to build it.</source>
         <translation>&lt;i&gt;Проверка индекса, построенного Bowtie 2&lt;/i&gt; извлекает информацию из индекса о его типе и какая референсная последовательность была использована для его построения.</translation>
     </message>
 </context>
 <context>
+    <name>U2::BowtieAlignTask</name>
+    <message>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="156"/>
+        <source>Reference index file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished">Reference index file &quot;%1&quot; does not exist</translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="233"/>
+        <source>Unknown short reads format %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="312"/>
+        <source>There is not enough memory on the computer!</source>
+        <translation type="unfinished">There is not enough memory on the computer!</translation>
+    </message>
+</context>
+<context>
     <name>U2::BowtieAssembleTask</name>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="160"/>
         <source>Reference index file &quot;%1&quot; does not exist</source>
-        <translation>Reference index file &quot;%1&quot; does not exist</translation>
+        <translation type="vanished">Reference index file &quot;%1&quot; does not exist</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="240"/>
         <source>Unknown short reads format %1</source>
-        <translation>Unknown short reads format %1</translation>
+        <translation type="vanished">Unknown short reads format %1</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="313"/>
         <source>There is not enough memory on the computer!</source>
-        <translation>There is not enough memory on the computer!</translation>
+        <translation type="vanished">There is not enough memory on the computer!</translation>
     </message>
 </context>
 <context>
     <name>U2::BowtieBuildIndexTask</name>
     <message>
-        <location filename="../src/bowtie/BowtieTask.cpp" line="48"/>
         <source>Reference file &quot;%1&quot; does not exist</source>
-        <translation>Reference file &quot;%1&quot; does not exist</translation>
+        <translation type="vanished">Reference file &quot;%1&quot; does not exist</translation>
+    </message>
+</context>
+<context>
+    <name>U2::BowtieBuildTask</name>
+    <message>
+        <location filename="../src/bowtie/BowtieTask.cpp" line="47"/>
+        <source>Reference file &quot;%1&quot; does not exist</source>
+        <translation type="unfinished">Reference file &quot;%1&quot; does not exist</translation>
     </message>
 </context>
 <context>
     <name>U2::BowtieSupport</name>
     <message>
-        <location filename="../src/bowtie/BowtieSupport.cpp" line="60"/>
+        <location filename="../src/bowtie/BowtieSupport.cpp" line="58"/>
         <source>&lt;i&gt;Bowtie&lt;/i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end).</source>
         <translation>&lt;i&gt;Bowtie&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час.</translation>
     </message>
@@ -4508,7 +4532,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BwaSupport</name>
     <message>
-        <location filename="../src/bwa/BwaSupport.cpp" line="48"/>
+        <location filename="../src/bwa/BwaSupport.cpp" line="46"/>
         <source>&lt;i&gt;Burrows-Wheeler Aligner (BWA)&lt;/i&gt; is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.</source>
         <translation>&lt;i&gt;Burrows-Wheeler Aligner (BWA)&lt;/i&gt; это один из самых популярных программных пакетов для выравнивания коротких последовательностей на референсный геном, например на геном человека.</translation>
     </message>
@@ -4550,32 +4574,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CAP3Support</name>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="70"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="61"/>
         <source>&lt;i&gt;CAP3&lt;/i&gt; is a contig assembly program.                    &lt;br&gt;It allows one to assembly long DNA reads (up to 1000 bp).                    &lt;br&gt;Binaries can be downloaded from http://seq.cs.iastate.edu/cap3.html</source>
         <translation>&lt;i&gt;CAP3&lt;/i&gt;это программа для сборки контигов.                    &lt;br&gt;Она позволяет собирать длинные ДНК риды (более 1000 нуклеотидов).                    &lt;br&gt;Бинарный пакет может быть скачан отсюда http://seq.cs.iastate.edu/cap3.html</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="73"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="64"/>
         <source>&lt;br&gt;&lt;br&gt; Huang, X. and Madan, A.  (1999)</source>
         <translation>&lt;br&gt;&lt;br&gt; Huang, X. and Madan, A.  (1999)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="74"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="65"/>
         <source>&lt;br&gt;CAP3: A DNA Sequence Assembly Program,</source>
         <translation>&lt;br&gt;CAP3: A DNA Sequence Assembly Program,</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="75"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="66"/>
         <source>&lt;br&gt;Genome Research, 9: 868-877.</source>
         <translation>&lt;br&gt;Genome Research, 9: 868-877.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="85"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="76"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3Support.cpp" line="86"/>
+        <location filename="../src/cap3/CAP3Support.cpp" line="77"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4670,17 +4694,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupport</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="72"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="68"/>
         <source>&lt;i&gt;Clustal Omega&lt;/i&gt; is a free sequence alignment software for proteins.</source>
         <translation>&lt;i&gt;Clustal Omega&lt;/i&gt; это свободный инструмент для выравнивания белков.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="82"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="78"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="83"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="79"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4688,17 +4712,21 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupportContext</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="137"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="131"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="162"/>
-        <source>Path for %1 tool not selected.</source>
-        <translation>Путь для %1 не установлен.</translation>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="156"/>
+        <source>Path for ClustalO tool is not selected.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="163"/>
+        <source>Path for %1 tool not selected.</source>
+        <translation type="vanished">Путь для %1 не установлен.</translation>
+    </message>
+    <message>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="157"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4819,17 +4847,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWSupport</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="72"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="68"/>
         <source>&lt;i&gt;ClustalW&lt;/i&gt; is a free sequence alignment software for DNA or proteins.</source>
         <translation>&lt;i&gt;ClustalW&lt;/i&gt;это свободный иснтрумент для выравнивания белков или ДНК последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="82"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="78"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="83"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="79"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -4837,17 +4865,21 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWSupportContext</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="137"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="131"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="162"/>
-        <source>Path for %1 tool not selected.</source>
-        <translation>Путь для %1 не установлен.</translation>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="156"/>
+        <source>Path for ClustalW tool is not selected.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="163"/>
+        <source>Path for %1 tool not selected.</source>
+        <translation type="vanished">Путь для %1 не установлен.</translation>
+    </message>
+    <message>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="157"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -5125,7 +5157,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::CutadaptSupport</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptSupport.cpp" line="48"/>
+        <location filename="../src/cutadapt/CutadaptSupport.cpp" line="47"/>
         <source>&lt;i&gt;cutadapt&lt;/i&gt; removes adapter sequences from high-throughput sequencing data. This is necessary when the reads are longer than the molecule that is sequenced, such as in microRNA data.</source>
         <translation>&lt;i&gt;cutadapt&lt;/i&gt; удаляет последовательности из данных секвенирования с высокой пропускной способностью. Это необходимо, когда риды больше, чем молекулы, которые секвенированы, например, в данных микроРНК.</translation>
     </message>
@@ -5164,7 +5196,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolJustValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="54"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="57"/>
         <source>Tool&apos;s path is empty</source>
         <translation>Tool&apos;s path is empty</translation>
     </message>
@@ -5173,27 +5205,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Tool&apos;s executable isn&apos;t exists</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="61"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="64"/>
         <source>External tool is not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="88"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="91"/>
         <source>Scripting tool registry is NULL</source>
         <translation>Scripting tool registry is NULL</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="90"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="93"/>
         <source>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</source>
         <translation>Scripting tool &apos;%1&apos; isn&apos;t found in the registry</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="139"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="142"/>
         <source>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="171"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="174"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5209,7 +5241,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="391"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="392"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -5222,28 +5254,32 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>&apos;%1&apos; external tool search task</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="47"/>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="128"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="129"/>
         <source>An external tool &apos;%1&apos; isn&apos;t found in the registry</source>
         <translation>An external tool &apos;%1&apos; isn&apos;t found in the registry</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="116"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="117"/>
         <source>Tool pointer is NULL</source>
         <translation>Tool pointer is NULL</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="124"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="48"/>
+        <source>External tool &apos;%1&apos; is not registered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="125"/>
         <source>External tool module hasn&apos;t any dependencies: it hasn&apos;t master tool</source>
         <translation>External tool module hasn&apos;t any dependencies: it hasn&apos;t master tool</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="126"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="127"/>
         <source>External tool registry is NULL</source>
         <translation>External tool registry is NULL</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="132"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="133"/>
         <source>Tool&apos;s executable name is not set</source>
         <translation>Tool&apos;s executable name is not set</translation>
     </message>
@@ -5251,68 +5287,67 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="173"/>
         <source>Search tools in PATH</source>
-        <translation>Search tools in PATH</translation>
+        <translation type="vanished">Search tools in PATH</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="218"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="148"/>
         <source>External tool support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="218"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="148"/>
         <source>Runs other external tools</source>
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="285"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="209"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="293"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="217"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="301"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="225"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="309"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="233"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="459"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="352"/>
         <source>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) finds regions of local similarity between sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families.</source>
         <translation>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) ищет регионы локального сходства между последовательностями. Программа сравнивает нуклеотидные или белковые последовательности в базах данных последовательностей и вычисляет статистическую значимость совпадений. BLAST может использоваться для выявления функциональных и эволюционных взаимосвязей между последовательностями, а также для определения членов семейств гена.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="463"/>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="465"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="356"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="358"/>
         <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
         <translation>&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="467"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="360"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="474"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="367"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="481"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="374"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="489"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="382"/>
         <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
         <translation>&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
@@ -5321,27 +5356,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="492"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="385"/>
         <source>BLAST+ make database...</source>
         <translation>Создание базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="496"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="389"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="520"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="413"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="507"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="400"/>
         <source>BLAST+ search...</source>
         <translation>Поиск с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="511"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="404"/>
         <source>BLAST+ query database...</source>
         <translation>Запрос с помощью BLAST+...</translation>
     </message>
@@ -5363,12 +5398,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="711"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="518"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="711"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="518"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5376,7 +5411,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageController</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="53"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="52"/>
         <source>External Tools</source>
         <translation>Внешние инструменты</translation>
     </message>
@@ -5384,77 +5419,77 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageWidget</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="678"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="657"/>
         <source>Select an external tool to view more information about it.</source>
         <translation>Выберите инструмент, чтобы увидеть дополнительную информацию о нем.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="535"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="515"/>
         <source>No description</source>
         <translation>Нет описания</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="486"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="466"/>
         <source>External tool &apos;%1&apos; cannot be validated as it depends on other tools, some of which are not valid. The list of tools is the following: </source>
         <translation>Инструмент &apos;%1&apos; не может быть проверен, т.к. он зависит от других инструментов, которые не проверены. Это следующие инструменты: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="109"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="107"/>
         <source>Supported tools</source>
         <translation>Поддерживаемые программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="112"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="110"/>
         <source>Custom tools</source>
         <translation>Кастомные инструменты</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="115"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="113"/>
         <source>Additional information</source>
         <translation>Дополнительная информация</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="244"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="231"/>
         <source>Select configuration file to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="265"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="252"/>
         <source>Can&apos;t remove custom external tool config file from the storage folder: %1</source>
         <translation>Can&apos;t remove custom external tool config file from the storage folder: %1</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="514"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="494"/>
         <source>&apos;%1&apos; is %2 module and it is not installed. Install it and restart UGENE or set another %2 with already installed &apos;%1&apos; module.</source>
         <translation>&apos;%1&apos; это %2 модуль и он не установлен. Установите его и перезапустите UGENE или выберите другой %2 с уже установленным модулем &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="544"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="524"/>
         <source>&lt;br&gt;&lt;br&gt;Version: </source>
         <translation>&lt;br&gt;&lt;br&gt;Версия: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="548"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="528"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="553"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="533"/>
         <source>&lt;br&gt;&lt;br&gt;Binary path: </source>
         <translation>&lt;br&gt;&lt;br&gt;Путь: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="723"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="701"/>
         <source>Choose Folder With Executables</source>
         <translation>Выберите папку с исполняемыми файлами</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="778"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="756"/>
         <source>Select Folder With External Tools Package</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="831"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="805"/>
         <source>Not a valid external tools folder</source>
         <translation>Нет подходящей папки внешних инструментов</translation>
     </message>
@@ -5475,7 +5510,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="43"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="46"/>
         <source>%1 validate task</source>
         <translation>%1 validate task</translation>
     </message>
@@ -5483,12 +5518,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="437"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="438"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="442"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="443"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5496,13 +5531,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsSearchTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="137"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="138"/>
         <source>Searching external tools</source>
         <translation>Searching external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="155"/>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="157"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="156"/>
+        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="158"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5510,13 +5545,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="408"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="409"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="426"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="428"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="427"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="429"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5577,8 +5612,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">The &lt;i&gt;formatdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы поиском &lt;i&gt;blastall&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="72"/>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="87"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="62"/>
         <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST+ tools.</source>
         <translation>The &lt;i&gt;makeblastdb&lt;/i&gt; создает белковые или нуклеотидные базы данных до того как эти базы будут использованы другими инструментами BLAST+.</translation>
     </message>
@@ -5587,12 +5621,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Путь для BLAST %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="100"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="74"/>
         <source>Path for BLAST+ %1 tool not selected.</source>
         <translation>Путь для BLAST+ %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="101"/>
+        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="75"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -5638,17 +5672,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FormatDBSupportTask</name>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="56"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="53"/>
         <source>Run NCBI FormatDB task</source>
         <translation>Run NCBI FormatDB task</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="151"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="148"/>
         <source>Cannot create temp folder</source>
         <translation>Cannot create temp folder</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="168"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="165"/>
         <source>Trying to initialize Format DB task second time</source>
         <translation>Trying to initialize Format DB task second time</translation>
     </message>
@@ -5657,48 +5691,48 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Input files paths contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="179"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="167"/>
         <source>Output database path contain space characters.</source>
         <translation>Output database path contain space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="103"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="100"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Создание базы данных BLAST было отменено</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="93"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="90"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="110"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="107"/>
         <source>Blast database has been successfully created</source>
         <translation>База данных BLAST успешно создана</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="111"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="108"/>
         <source>Source sequences: </source>
         <translation>Исходные последовательности: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="119"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="116"/>
         <source>Database file path: %1</source>
         <translation>Путь до базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="121"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="118"/>
         <source>Type: %1</source>
         <translation>Тип: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="123"/>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="129"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="120"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="126"/>
         <source>Formatdb log file path: </source>
         <translation>Formatdb log file path: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="127"/>
+        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="124"/>
         <source>Blast database creation has been failed</source>
         <translation>Создание базы данных BLAST завершилось неудачно</translation>
     </message>
@@ -5816,23 +5850,21 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerAdvContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="328"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="325"/>
         <source>Find HMM signals with HMMER3...</source>
         <translation>Поиск HMM сигналов при помощи HMMER3...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="339"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="352"/>
         <source>Sequences larger 2Gb are not supported on 32-bit architecture.</source>
-        <translation>Последовательности более 2 Gb не поддерживаюся на 32-битных системах.</translation>
+        <translation type="vanished">Последовательности более 2 Gb не поддерживаюся на 32-битных системах.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="344"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="339"/>
         <source>No sequence in focus found</source>
         <translation>No sequence in focus found</translation>
     </message>
@@ -6007,7 +6039,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerMsaEditorContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="286"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="283"/>
         <source>Build HMMER3 profile</source>
         <translation>Построить HMMER3 профиль</translation>
     </message>
@@ -6124,54 +6156,54 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerSupport</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="139"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="166"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="138"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="165"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="139"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="166"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="138"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="165"/>
         <source>Target sequence not selected: no opened annotated dna view</source>
         <translation>Таргетная последовательность не выбрана: невозможно отобразить</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="195"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="194"/>
         <source>&lt;i&gt;HMMER build&lt;/i&gt; constructs HMM profiles from multiple sequence alignments.</source>
         <translation>&lt;i&gt;Построение HMMER профиля&lt;/i&gt; строит HMM профили по множественным выравниваниям.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="199"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="198"/>
         <source>Build HMM3 profile...</source>
         <translation>Построить HMM3 профиль...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="215"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="214"/>
         <source>&lt;i&gt;HMMER search&lt;/i&gt; searches profile(s) against a sequence database.</source>
         <translation>&lt;i&gt;HMMER поиск&lt;/i&gt; ищет профиль(и) по базе данных последоавтельности.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="219"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="218"/>
         <source>Search with HMMER3...</source>
         <translation>Поиск при помощи HMMER3...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="235"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="234"/>
         <source>&lt;i&gt;PHMMER search&lt;/i&gt; searches a protein sequence against a protein database.</source>
         <translation>&lt;i&gt;PHMMER поиск&lt;/i&gt; ищет протеиновые последовательности по протеиновой базе данных.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="239"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="238"/>
         <source>Search with phmmer...</source>
         <translation>Поиск при помощи phmmer...</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="250"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="249"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="251"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="250"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -6195,7 +6227,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::JavaSupport</name>
     <message>
-        <location filename="../src/java/JavaSupport.cpp" line="55"/>
+        <location filename="../src/java/JavaSupport.cpp" line="54"/>
         <source>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 1.7 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</source>
         <translation>Java позволяет разрабатывать приложения Java на компьютерах и серверах &lt;br&gt; &lt;i&gt; (Требуется Java 1.7 или выше) &lt;/i&gt; &lt;br&gt; Java можно свободно скачать на официальном веб-сайте:. HTTPS: / /www.java.com/en/download/</translation>
     </message>
@@ -7254,83 +7286,83 @@ other in a concordant alignment.</source>
 <context>
     <name>U2::LocalWorkflow::BowtieWorker</name>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="117"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="116"/>
         <source>Bowtie index folder</source>
         <translation>Папка для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="117"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="116"/>
         <source>Bowtie index basename</source>
         <translation>Базовое имя для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="137"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="136"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="138"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="137"/>
         <source>When the -n option is specified (which is the default), bowtie determines which alignments                               are valid according to the following policy, which is similar to Maq&apos;s default policy.                               In -v mode, alignments may have no more than V mismatches, where V may be a number from 0                               through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.</source>
         <translation>Когда задана опция -n, bowtie определяет, какие выравнивания
 действительны в соответствии со следующей политикой, которая похожа на политику Maq по умолчанию.
 В -v режиме, выравнивание может иметь не больше чем V несоответствий, где V может быть число от 0. Опция -v является взаимоисключающим с опцией -n.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="144"/>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="148"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="143"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="147"/>
         <source>Mismatches number</source>
         <translation>Число несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="145"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="144"/>
         <source>Mismatches number.</source>
         <translation>Число несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="149"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="148"/>
         <source>Maximum permitted total of quality values at all mismatched read positions throughout the entire alignment,                              not just in the seed. The default is 70. Like Maq, bowtie rounds quality values to the nearest 10 and saturates at 30;                              rounding can be disabled with --nomaqround.</source>
         <translation>Максимальн допустимое общее значение качества всех несогласованных позиций ридов на протяжении всего выравнивания.
 По умолчанию 70.
 Подобно Maq, значения качества близки к 10 и максимальны к значению 30, округление может быть отключено при помощи --nomaqround.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="154"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="153"/>
         <source>Seed length</source>
         <translation>Длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="155"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="154"/>
         <source>The seed length; i.e., the number of bases on the high-quality end of the read to which the                               -n ceiling applies. The lowest permitted setting is 5 and the default is 28. bowtie is faster for larger values of -l.</source>
         <translation>&amp;quot;Длина затравки&amp;quot; т.е., число оснований в высококачественном конце рида, для которого применяется -n.
 Наименьшее допустимое значение 5, по умолчанию 28. Большие значения -l увеличивают скорость.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="161"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="160"/>
         <source>No forward orientation</source>
         <translation>Не прямая ориентация</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="162"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="161"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Если установлена опция --nofw, bowtie  не будет пытаться выровнять прямую цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="165"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="164"/>
         <source>No reverse-complement orientation</source>
         <translation>Не обратно-комплементарная ориентация</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="166"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="165"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Если установлена опция --norc, bowtie не будет пытаться выровнять обратно-комплементарную цепь.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="169"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="168"/>
         <source>Maximum of backtracks</source>
         <translation>Максимальное число отступов</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="170"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="169"/>
         <source>The maximum insert size for valid paired-end alignments. E.g. if -X 100 is specified and a paired-end alignment                               consists of two 20-bp alignments in the proper orientation with a 60-bp gap between them, that alignment is                               considered valid (as long as -I is also satisfied). A 61-bp gap would not be valid in that case.                                If trimming options -3 or -5 are also used, the -X constraint is applied with respect to the untrimmed mates,                               not the trimmed mates. Default: 250.</source>
         <translation>Максимальный размер вставки для выравнивания paired-end.
 Если -X 100 и выравнивание состоит из участков по 20 нуклеотидов и расстоянием между ними в 60 нуклеотидов, 
@@ -7341,12 +7373,12 @@ other in a concordant alignment.</source>
 По умолчанию: 250.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="177"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="176"/>
         <source>Try as hard</source>
         <translation>Упорно пытаться</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="178"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="177"/>
         <source>Try as hard as possible to find valid alignments when they exist, including paired-end alignments.                                This is equivalent to specifying very high values for the --maxbts and --pairtries options. This mode is generally much                                slower than the default settings, but can be useful for certain problems. This mode is slower when (a) the reference is                                very repetitive, (b) the reads are low quality, or (c) not many reads have valid alignments.</source>
         <translation>Пытаться пока это возможно найти подходящее выравнивание, когда они есть, включая paired-end выравнивания.
 Это равносильно очень высоким значениям параметров --maxbts и --pairtries.
@@ -7357,12 +7389,12 @@ other in a concordant alignment.</source>
 или (c) не очень много ридов имеют подходящее выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="184"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="183"/>
         <source>Best hits</source>
         <translation>Лучшие попытки</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="185"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="184"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. Best-first                                search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost.                                Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases.                                If you receive an error message saying that chunk memory has been exhausted in --best mode,                                try adjusting this parameter up to dedicate more memory to the descriptors. Default: 64.</source>
         <translation>Количество мегабайт памяти для данного потока задается для хранения дескрипторов пути в --best режиме.
 Поиск по первому наилучшему совпадению должен отслеживать множество путей одновременно, убедитесь, что расширение пути происходит с наименьшей стоимостью.
@@ -7372,12 +7404,12 @@ Bowtie пытается свести к минимуму воздействие 
 Значение по умолчанию: 64.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="192"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="191"/>
         <source>No Maq rounding</source>
         <translation>Без округления Maq</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="193"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="192"/>
         <source>Maq accepts quality values in the Phred quality scale, but internally rounds values to the nearest 10,              with a maximum of 30. By default, bowtie also rounds this way. --nomaqround prevents this rounding in bowtie.</source>
         <translation>Maq принимает значения качества в масштабе качества Phred,
 но внутренние значения близки к 10,
@@ -7385,22 +7417,22 @@ Bowtie пытается свести к минимуму воздействие 
 По умолчанию, bowtie также вокруг этих значений. --nomaqround препятствует этому округлению в bowtie.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="197"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="196"/>
         <source>Seed</source>
         <translation>Затравка</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="198"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="197"/>
         <source>Use &lt;int&gt; as the seed for pseudo-random number generator.</source>
         <translation>Используйте &lt;int&gt; в качестве затравки для псевдо-случайного генератора.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="201"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="200"/>
         <source>Best alignments</source>
         <translation>Лучшие выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="202"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="201"/>
         <source>Make Bowtie guarantee that reported singleton alignments are best in terms of stratum                              (i.e. number of mismatches, or mismatches in the seed in the case of -n mode) and in terms of                              the quality values at the mismatched position(s). bowtie is somewhat slower when --best is specified.</source>
         <translation>Создать Bowtie гарантию того, что одиночные выравнивания являются &quot;лучшими&quot; в плане слоя
 (т.е. число несовпадений, или несоответствия в затравке в -n режиме)
@@ -7408,32 +7440,32 @@ Bowtie пытается свести к минимуму воздействие 
 bowtie медленнее, когда указан режим --best.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="209"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="208"/>
         <source>All alignments</source>
         <translation>Все выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="210"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="209"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Сообщить о всех допустимых выравниваниях для рида или пары.</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="213"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="212"/>
         <source>Colorspace</source>
         <translation>Цвета</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="214"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="213"/>
         <source>When -C is specified, read sequences are treated as colors. Colors may be encoded either as numbers                               (0=blue, 1=green, 2=orange, 3=red) or as characters A/C/G/T (A=blue, C=green, G=orange, T=red).</source>
         <translation>Когда -С указано, последовательности рассматриваются как цвета. Цвета могут быть закодированы либо как номера (0 = синий, 1 = зеленый, 2 = оранжевый, 3 = красный) или символов A / C / G / T (A = синий, С = зеленый, G = оранжевый, Т = красный).</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="253"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="252"/>
         <source>Map Reads with Bowtie</source>
         <translation>Выравнивание с помощью Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/bowtie/BowtieWorker.cpp" line="254"/>
+        <location filename="../src/bowtie/BowtieWorker.cpp" line="253"/>
         <source>Bowtie is a program for mapping short DNA sequence reads to a long reference sequence. It uses Burrows-Wheeler techniques extended with quality-aware backtracking algorithm that permits mismatches.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
         <translation>Выполняет выравнивание коротких ридов при помощи Bowtie.</translation>
     </message>
@@ -10959,7 +10991,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="124"/>
-        <source>The list of genomes is not available.<byte value="xd"/>
+        <source>The list of genomes is not available.
 Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11837,12 +11869,12 @@ Error is :</source>
 <context>
     <name>U2::LocalWorkflow::TopHatPrompter</name>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="547"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="537"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="550"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="540"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11850,439 +11882,439 @@ Error is :</source>
 <context>
     <name>U2::LocalWorkflow::TopHatWorker</name>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="114"/>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="125"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="112"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="123"/>
         <source>Input reads</source>
         <translation>Входные риды</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="115"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="113"/>
         <source>Input RNA-Seq reads</source>
         <translation>Входные риды RNA-Seq</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="119"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="117"/>
         <source>TopHat output</source>
         <translation>Выходные данные TopHat</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="120"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="118"/>
         <source>Accepted hits, junctions, insertions and deletions</source>
         <translation>Допустимы хиты, переходы, вставки и удаления</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="126"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="124"/>
         <source>TopHat input reads. Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>Входные риды TopHat. Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="131"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="129"/>
         <source>Input reads url</source>
         <translation>Путь для входных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="132"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="130"/>
         <source>TopHat input reads url. When running TopHat with paired-end reads, this should be the *_1 (&quot;left&quot;) set of reads.</source>
         <translation>Путь для входных ридов TopHat.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="136"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="134"/>
         <source>Input paired reads</source>
         <translation>Входные парные риды</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="137"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="135"/>
         <source> Set this slot empty if you want to align reads directly from a file and specify the &quot;Input reads url&quot; slot. Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads. Reads MUST appear in the same order as the *_1 reads.</source>
         <translation>Оставьте этот слот пустым если вы хотите выровнять риды напрямую из файла и укажите слот &quot;Путь для входных ридов&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="144"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="142"/>
         <source>Input paired reads url</source>
         <translation>Путь для входных парных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="145"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="143"/>
         <source>Only used when running TopHat with paired end reads, and contains the *_2 (&quot;right&quot;) set of reads.</source>
         <translation>Используется только когда TopHat запускается для парных ридов, и содержит набор ридов *_2 (&quot;right&quot;).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="150"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="148"/>
         <source>Dataset name</source>
         <translation>Имя набора данных</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="151"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="149"/>
         <source>Use it only when sequences slot(or slots) is specified. Group input reads into chunks for several Tophat runs.
 Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Используйте этот параметр только когда указан слот типа последовательность. Оставьте его пустым если хотите запустить задачу для всех входных ридов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="170"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="168"/>
         <source>Accepted hits</source>
         <translation>Принимаемые хиты</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="169"/>
         <source>Accepted hits found by TopHat</source>
         <translation>Принимаемые хиты найденные TopHat</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="173"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="171"/>
         <source>Sample name</source>
         <translation>Пример имени</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="174"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="172"/>
         <source>Sample name for running Cuffdiff</source>
         <translation>Пример имени для запуска Cuffdiff</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="176"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="174"/>
         <source>Accepted hits url</source>
         <translation>Путь до принимаемых хитов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="177"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="175"/>
         <source>The url to the assembly file with the accepted hits</source>
         <translation>Путь до файла сборки с принимаемыми хитами</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="188"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="186"/>
         <source>Map RNA-Seq Reads with TopHat</source>
         <translation>Поиск сайтов сплайсинга с помощью TopHat</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="189"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="187"/>
         <source>TopHat is a program for mapping RNA-Seq reads to a long reference sequence. It uses Bowtie or Bowtie2 to map the reads and then analyzes the mapping results to identify splice junctions between exons.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS RNA-Seq reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified BAM file, URL to the file is passed to the output port. Several UCSC BED tracks are also produced: junctions, insertions, and deletions.</source>
         <translation>TopHat является быстрым инструментом для определения сплайсинга по данным секвенирования РНК. TopHat выравнивает риды с помощью Bowtie и затем анализирует результаты выравнивания для определения границ экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="200"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="198"/>
         <source>Output folder</source>
         <translation>Выходная папка</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="201"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="199"/>
         <source>The base name of output folder. It could be modified with a suffix.</source>
         <translation>Базовое имя для выходной папки.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="204"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="202"/>
         <source>Samples map</source>
         <translation>Карта образцов</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="205"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="203"/>
         <source>The map which divide all input datasets into samples. Every sample has the unique name.</source>
         <translation>карта, которая разделяет все входные наборы данных на образцы. Каждый образец имеет уникальное название.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="208"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="206"/>
         <source>Reference input type</source>
         <translation>Тип референса</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="209"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="207"/>
         <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
         <translation>Выберите &quot;Последовательность&quot; чтобы ввести референсный геном как файл. &lt;br/&gt;Любой формат файла, который поддерживается UGENE допустим (FASTA, GenBank, и т.д.). &lt;br/&gt;Индекс будет сгенерирован автоматически. &lt;br/&gt;Выберите &quot;Индекс&quot; чтобы ввести уже готовый файл с индексом.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="215"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="213"/>
         <source>Reference genome</source>
         <translation>Референсный геном</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="216"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="214"/>
         <source>Path to indexed reference genome.</source>
         <translation>Путь до индексированного референсного генома.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="219"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="217"/>
         <source>Bowtie index folder</source>
         <translation>Папка для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="220"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="218"/>
         <source>The folder with the Bowtie index for the reference sequence.</source>
         <translation>папка, в которой расположен индекс Bowtie для референсной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="228"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="226"/>
         <source>Bowtie index basename</source>
         <translation>Базовое имя для индекса Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="229"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="227"/>
         <source>The basename of the Bowtie index for the reference sequence.</source>
         <translation>базовое имя для индекса Bowtie для референсной последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="242"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="240"/>
         <source>Mate inner distance</source>
         <translation>Внутренняя дистанция в паре</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="243"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="241"/>
         <source>The expected (mean) inner distance between mate pairs.</source>
         <translation>ожидаемая (средняя) внутренняя дистанция между ридами в паре (mate pair).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="246"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="244"/>
         <source>Mate standard deviation</source>
         <translation>Стандартное отклонение в паре</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="247"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
         <source>The standard deviation for the distribution on inner distances between mate pairs.</source>
         <translation>стандартное отклонение для распределения в внутренних дистанций между ридами в паре (mate pair).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="250"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="248"/>
         <source>Library type</source>
         <translation>Тип библиотеки</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="251"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="249"/>
         <source>Specifies RNA-Seq protocol.</source>
         <translation>задает протокол секвенирования РНК.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="254"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="252"/>
         <source>No novel junctions</source>
         <translation>Не искать новые сайты сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="255"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="253"/>
         <source>Only look for reads across junctions indicated in the supplied GFF or junctions file. This parameter is ignored if &lt;i&gt;Raw junctions&lt;/i&gt; or &lt;i&gt;Known transcript file&lt;/i&gt; is not set.</source>
         <translation>Искать только такие сплайсированные риды, которые соответствуют информации в приложенном файле (GFF или файле с описанием сайтов сплайсинга). Если ни один из этих файлов не указан, параметр будет проигнорирован.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="260"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="258"/>
         <source>Raw junctions</source>
         <translation>Новые сайты сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="261"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="259"/>
         <source>The list of raw junctions.</source>
         <translation>список обнаруженных сайтов сплайсинга.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="264"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="262"/>
         <source>Known transcript file</source>
         <translation>Файл с известными транскриптами</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="265"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="263"/>
         <source>A set of gene model annotations and/or known transcripts.</source>
         <translation>файл с аннотацией моделей генов и/или известными транскриптами.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="268"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="266"/>
         <source>Max multihits</source>
         <translation>Максимальное количество множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="269"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="267"/>
         <source>Instructs TopHat to allow up to this many alignments to the reference for a given read, and suppresses all alignments for reads with more than this many alignments.</source>
         <translation>Tophat не будет анализировать все выравнивания для ридов с большим количеством выравниваний, чем указанный параметр.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="274"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>
         <source>Segment length</source>
         <translation>Длина сегмента</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="275"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="273"/>
         <source>Each read is cut up into segments, each at least this long. These segments are mapped independently.</source>
         <translation>каждый рид разрезается на сегменты указанной длины. Эти сегменты выравниваются независимо.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="287"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="277"/>
         <source>Fusion search</source>
         <translation>Поиск химер</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="288"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="278"/>
         <source>Turn on fusion mapping.</source>
         <translation>искать выравнивание для химерных ридов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="291"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="281"/>
         <source>Transcriptome only</source>
         <translation>Только транскриптом</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="292"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="282"/>
         <source>Only align the reads to the transcriptome and report only those mappings as genomic mappings.</source>
         <translation>выравнивать риды только на транскриптом и выдавать только эти выравнивания при выравнивании на геном.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="296"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="286"/>
         <source>Transcriptome max hits</source>
         <translation>Максимальное число выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="297"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="287"/>
         <source>Maximum number of mappings allowed for a read, when aligned to the transcriptome (any reads found with more than this number of mappings will be discarded).</source>
         <translation>максимальное число выравниваний, разрешенных для рида при выравнивании на транскриптом (риды с большим числом выравниваний будут исключены из дальнейшего анализа).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="292"/>
         <source>Prefilter multihits</source>
         <translation>Предварительный фильтр множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="303"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="293"/>
         <source>When mapping reads on the transcriptome, some repetitive or low complexity reads that would be discarded in the context of the genome may appear to align to the transcript sequences and thus may end up reported as mapped to those genes only. This option directs TopHat to first align the reads to the whole genome in order to determine and exclude such multi-mapped reads (according to the value of the &lt;i&gt;Max multihits&lt;/i&gt; option).</source>
         <translation>при выравнивании ридов на транскриптом, некоторые повторяющиеся риды или риды, содержащие повторы, могут быть выявлены как выровненные, хотя при выравнивании на геном они были бы отброшены. При выборе этой опции TopHat сначала выравнивает риды на весь геном, чтобы определить и исключить риды, которые выравниваются несколько раз (число выравниваний определяется значением опции).</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="312"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
         <source>Min anchor length</source>
         <translation>Минимальная длина якоря</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="313"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="303"/>
         <source>The &lt;i&gt;anchor length&lt;/i&gt;. TopHat will report junctions spanned by reads with at least this many bases on each side of the junction. Note that individual spliced alignments may span a junction with fewer than this many bases on one side. However, every junction involved in spliced alignments is supported by at least one read with this many bases on each side.</source>
         <translation>&lt;i&gt;длина якоря&lt;/i&gt;. TopHat будет указывать в отчете сайты сплайсинга в том случае, если с каждой стороны от стыка прочитано не менее указанного числа нуклеотидов. В отдельных выравниваниях число нуклеотидов может быть меньше, однако для любого указанного в отчете сайта сплайсинга будет существовать хотя бы одно выравнивание с не менее чем указанным числом нуклеотидов с каждой стороны.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="321"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="311"/>
         <source>Splice mismatches</source>
         <translation>Замены около сайтов сплайсинга</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="322"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="312"/>
         <source>The maximum number of mismatches that may appear in the &lt;i&gt;anchor&lt;/i&gt; region of a spliced alignment.</source>
         <translation>максимально допустимое число несоответствий в нуклеотидах около сайтов сплайсинга..</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="326"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="316"/>
         <source>Read mismatches</source>
         <translation>Замены в ридах</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="327"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="317"/>
         <source>Final read alignments having more than these many mismatches are discarded.</source>
         <translation>финальные выравнивания, число несоответствий в которых больше указанного, будут отброшены.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="331"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="321"/>
         <source>Segment mismatches</source>
         <translation>Замены в сегментах</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="332"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="322"/>
         <source>Read segments are mapped independently, allowing up to this many mismatches in each segment alignment.</source>
         <translation>сегменты рида выравниваются независимо, и при этом при выравнивании каждого сегмента допускается указанное максимальное число несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="337"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="327"/>
         <source>Solexa 1.3 quals</source>
         <translation>Качество в шкале Solexa 1.3</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="338"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="328"/>
         <source>As of the Illumina GA pipeline version 1.3, quality scores are encoded in Phred-scaled base-64. Use this option for FASTQ files from pipeline 1.3 or later.</source>
         <translation>в пайплайне Illumina GA версии 1.3 показатели качества кодируются в шкале Phred64. Используйте эту опцию для FASTQ файлов из пайплайна 1.3 или более поздних версии.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="343"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="333"/>
         <source>Bowtie version</source>
         <translation>Версия Bowtie</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="344"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="334"/>
         <source>Specifies which Bowtie version should be used.</source>
         <translation>указывает, какую версию Bowtie необходимо использовать.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="347"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="337"/>
         <source>Bowtie -n mode</source>
         <translation>Режим Bowtie -n</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="338"/>
         <source>TopHat uses &lt;i&gt;-v&lt;/i&gt; in Bowtie for initial read mapping (the default), but with this option, &lt;i&gt;-n&lt;/i&gt; is used instead. Read segments are always mapped using &lt;i&gt;-v&lt;/i&gt; option.</source>
         <translation>по умолчанию TopHat использует -v в Bowtie для выравнивания ридов, но при выборе этой опции будет использован параметр -n. Выравнивание сегментов ридов всегда осуществляется с параметром -v.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="354"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="344"/>
         <source>Bowtie tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="355"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="345"/>
         <source>The path to the Bowtie external tool.</source>
         <translation>Путь до внешнего инструмента Bowtie в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="358"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="348"/>
         <source>SAMtools tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="359"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="349"/>
         <source>The path to the SAMtools tool. Note that the tool is available in the UGENE External Tool Package.</source>
         <translation>Путь до инструмента SAMtools. Обратите внимание, что этот доступен в пакете внешних инструментов UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="363"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="353"/>
         <source>TopHat tool path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="364"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="354"/>
         <source>The path to the TopHat external tool in UGENE.</source>
         <translation>Путь до внешнего инструмента TopHat в UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="367"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="357"/>
         <source>Temporary folder</source>
         <translation>Временная папка</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="368"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="358"/>
         <source>The folder for temporary files.</source>
         <translation>Папка для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="422"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="412"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="423"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="413"/>
         <source>Index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="430"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="420"/>
         <source>Use -n mode</source>
         <translation>Использовать -n моду</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="431"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="421"/>
         <source>Use -v mode</source>
         <translation>Использовать -v моду</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="542"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="532"/>
         <source>Maps RNA-seq reads</source>
         <translation>Выравнивает риды RNA-seq на референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="553"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="543"/>
         <source> and finds splice junctions.</source>
         <translation> и ищет регионы сплайсинга.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="621"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="611"/>
         <source>Incorrect value of the library type parameter for Cufflinks!</source>
         <translation>Incorrect value of the library type parameter for Cufflinks!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="650"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="640"/>
         <source>Unrecognized value of the Bowtie mode option!</source>
         <translation>Unrecognized value of the Bowtie mode option!</translation>
     </message>
@@ -12311,12 +12343,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::LocalWorkflow::TrimmomaticWorker</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="119"/>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="121"/>
         <source>Copy adapters to working folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="150"/>
+        <location filename="../src/trimmomatic/TrimmomaticWorker.cpp" line="152"/>
         <source>Process &quot;Trimmomatic&quot; with one dataset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12409,17 +12441,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MAFFTSupport</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="67"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="64"/>
         <source>&lt;i&gt;MAFFT&lt;/i&gt; is a multiple sequence alignment program for unix-like operating systems. </source>
         <translation>&lt;i&gt;MAFFT&lt;/i&gt;это программа для выравнивания множественных наборов последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="79"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="76"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="80"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="77"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -12427,17 +12459,21 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MAFFTSupportContext</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="134"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="129"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="159"/>
-        <source>Path for %1 tool not selected.</source>
-        <translation>Путь для %1 не установлен.</translation>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="154"/>
+        <source>Path for MAFFT tool not selected.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="160"/>
+        <source>Path for %1 tool not selected.</source>
+        <translation type="vanished">Путь для %1 не установлен.</translation>
+    </message>
+    <message>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="155"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -12643,7 +12679,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::MrBayesSupport</name>
     <message>
-        <location filename="../src/mrbayes/MrBayesSupport.cpp" line="62"/>
+        <location filename="../src/mrbayes/MrBayesSupport.cpp" line="60"/>
         <source>&lt;i&gt;MrBayes&lt;/i&gt; is a program for the Bayesian estimation of phylogeny.Bayesian inference of phylogeny is based upon a quantity called the posterior probability distribution of trees, which is the probability of a tree conditioned on the observations. The conditioning is accomplished using Bayes&apos;s theorem. The posterior probability distribution of trees is impossible to calculate analytically; instead, MrBayes uses a simulation technique called Markov chain Monte Carlo (or MCMC) to approximate the posterior probabilities of trees.</source>
         <translation>&lt;i&gt;MrBayes&lt;/i&gt; это программа для байесовского анализа и выбора модели в широком диапазоне филогенетических и эволюционных моделей. MrBayes использует методы Монте-Карло для оценки распределения параметров модели.</translation>
     </message>
@@ -12682,8 +12718,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PathLineEdit</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="850"/>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="852"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="824"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="826"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -12722,7 +12758,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PerlSupport</name>
     <message>
-        <location filename="../src/perl/PerlSupport.cpp" line="47"/>
+        <location filename="../src/perl/PerlSupport.cpp" line="46"/>
         <source>Perl scripts interpreter</source>
         <translation>Perl scriptsинтерпретатор</translation>
     </message>
@@ -12979,7 +13015,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleBioSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="126"/>
+        <location filename="../src/python/PythonSupport.cpp" line="115"/>
         <source> (or biopython) is a python module for biological computations.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12987,7 +13023,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleDjangoSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="104"/>
+        <location filename="../src/python/PythonSupport.cpp" line="97"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -12995,7 +13031,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleNumpySupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="113"/>
+        <location filename="../src/python/PythonSupport.cpp" line="106"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -13003,7 +13039,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="93"/>
+        <location filename="../src/python/PythonSupport.cpp" line="86"/>
         <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
         <translation>Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
@@ -13011,7 +13047,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="66"/>
+        <location filename="../src/python/PythonSupport.cpp" line="59"/>
         <source>Python scripts interpreter</source>
         <translation>Python интерпретатор</translation>
     </message>
@@ -13019,7 +13055,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleCelegansdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="184"/>
+        <location filename="../src/R/RSupport.cpp" line="166"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13027,7 +13063,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleDrosophila2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="191"/>
+        <location filename="../src/R/RSupport.cpp" line="173"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13035,7 +13071,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleGodbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="142"/>
+        <location filename="../src/R/RSupport.cpp" line="124"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13043,7 +13079,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleGostatsSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="135"/>
+        <location filename="../src/R/RSupport.cpp" line="117"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13051,7 +13087,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133adbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="149"/>
+        <location filename="../src/R/RSupport.cpp" line="131"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13059,7 +13095,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133bdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="156"/>
+        <location filename="../src/R/RSupport.cpp" line="138"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13067,7 +13103,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu133plus2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="163"/>
+        <location filename="../src/R/RSupport.cpp" line="145"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13075,7 +13111,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleHgu95av2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="170"/>
+        <location filename="../src/R/RSupport.cpp" line="152"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13083,7 +13119,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleMouse430a2dbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="177"/>
+        <location filename="../src/R/RSupport.cpp" line="159"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13091,7 +13127,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgceegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="212"/>
+        <location filename="../src/R/RSupport.cpp" line="194"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13099,7 +13135,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgdmegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="219"/>
+        <location filename="../src/R/RSupport.cpp" line="201"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13107,7 +13143,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrghsegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="198"/>
+        <location filename="../src/R/RSupport.cpp" line="180"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13115,7 +13151,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleOrgmmegdbSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="205"/>
+        <location filename="../src/R/RSupport.cpp" line="187"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13123,7 +13159,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleSeqlogoSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="226"/>
+        <location filename="../src/R/RSupport.cpp" line="208"/>
         <source>: Rscript module for the %1 tool</source>
         <translation>: Rscript модуль для инструмента %1</translation>
     </message>
@@ -13131,7 +13167,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RModuleSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="120"/>
+        <location filename="../src/R/RSupport.cpp" line="102"/>
         <source>R module is not installed. Install module or set path to another R scripts interpreter with installed module in the External Tools settings</source>
         <translation>R модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
@@ -13139,7 +13175,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::RSupport</name>
     <message>
-        <location filename="../src/R/RSupport.cpp" line="90"/>
+        <location filename="../src/R/RSupport.cpp" line="72"/>
         <source>Rscript interpreter</source>
         <translation>Rscript интерпретатор</translation>
     </message>
@@ -13299,7 +13335,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpadesSupport</name>
     <message>
-        <location filename="../src/spades/SpadesSupport.cpp" line="43"/>
+        <location filename="../src/spades/SpadesSupport.cpp" line="55"/>
         <source>&lt;i&gt;SPAdes&lt;/i&gt; - St. Petersburg genome assembler - is intended for both standard isolates and single-cell MDA bacteria assemblies. Official site: http://bioinf.spbau.ru/spades</source>
         <translation>&lt;i&gt;SPAdes&lt;/i&gt; - геномный сборщик, разработанный в Санкт-Петербурге. Официальный сайт: http://bioinf.spbau.ru/spades</translation>
     </message>
@@ -13339,22 +13375,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupport</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="74"/>
         <source>&lt;i&gt;Spidey&lt;/i&gt; is mRNA-to-DNA alignment program.                    &lt;br&gt;Binaries can be downloaded from http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</source>
         <translation>&lt;i&gt;Spidey&lt;/i&gt;это программа для выранивания mRNA-to-DNA.                    &lt;br&gt;Программа может быть скачана http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="80"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="76"/>
         <source>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</source>
         <translation>&lt;br&gt;&lt;br&gt; Wheelan SJ, Church DM, Ostell JM.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="81"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="77"/>
         <source>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</source>
         <translation>&lt;br&gt;Spidey: a tool for mRNA-to-genomic alignments</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="82"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="78"/>
         <source>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</source>
         <translation>&lt;br&gt;Genome Res. 2001 Nov;11(11):1952-7.</translation>
     </message>
@@ -13362,17 +13398,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportContext</name>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="115"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="111"/>
         <source>Align sequence to mRNA</source>
         <translation>Выровнять последовательность на мРНК</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="143"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="139"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/spidey/SpideySupport.cpp" line="144"/>
+        <location filename="../src/spidey/SpideySupport.cpp" line="140"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -13412,17 +13448,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TCoffeeSupport</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="71"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="68"/>
         <source>&lt;i&gt;T-Coffee&lt;/i&gt; is a multiple sequence alignment package.</source>
         <translation>&lt;i&gt;T-Coffee&lt;/i&gt; это пакет для множественного выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="81"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="78"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Путь для %1 не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="82"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="79"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -13430,17 +13466,21 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TCoffeeSupportContext</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="136"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="116"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="161"/>
-        <source>Path for %1 tool not selected.</source>
-        <translation>Путь для %1 не установлен.</translation>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="141"/>
+        <source>Path for T-Coffee tool is not selected.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="162"/>
+        <source>Path for %1 tool not selected.</source>
+        <translation type="vanished">Путь для %1 не установлен.</translation>
+    </message>
+    <message>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="142"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -13486,32 +13526,32 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Не удаётся создать папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="183"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="188"/>
         <source>Output file %1 not found</source>
         <translation>Output file %1 not found</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="185"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="190"/>
         <source>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file %3 not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="193"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="198"/>
         <source>Loading output file &apos;%1&apos;</source>
         <translation>Loading output file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="272"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="277"/>
         <source>Failed to apply the result of TCoffee: alignment object is not available!</source>
         <translation>Failed to apply the result of TCoffee: alignment object is not available!</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="277"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="282"/>
         <source>T-Coffee alignment successfully finished</source>
         <translation>T-Coffee alignment successfully finished</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="290"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="295"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Can not remove folder for temporary files.</translation>
     </message>
@@ -13558,7 +13598,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TCoffeeWithExtFileSpecifySupportTask</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="323"/>
+        <location filename="../src/tcoffee/TCoffeeSupportTask.cpp" line="328"/>
         <source>Unrecognized input alignment file format</source>
         <translation>Unrecognized input alignment file format</translation>
     </message>
@@ -13597,32 +13637,32 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TopHatSupportTask</name>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="53"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="52"/>
         <source>Running TopHat task</source>
         <translation>Running TopHat task</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="112"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="111"/>
         <source>Can&apos;t create directory for index files </source>
         <translation>Can&apos;t create directory for index files </translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="183"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="181"/>
         <source>An unexpected error has occurred during preparing the TopHat task!</source>
         <translation>An unexpected error has occurred during preparing the TopHat task!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="184"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="182"/>
         <source>Preparing TopHatSupportTask internal error: unable to get a sequence object!</source>
         <translation>Preparing TopHatSupportTask internal error: unable to get a sequence object!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="312"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="310"/>
         <source>TopHat was not able to map reads to the reference.</source>
         <translation>TopHat was not able to map reads to the reference.</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="336"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="334"/>
         <source>There are no accepted hits in the result</source>
         <translation>There are no accepted hits in the result</translation>
     </message>
@@ -13630,7 +13670,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::TrimmomaticSupport</name>
     <message>
-        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="50"/>
+        <location filename="../src/trimmomatic/TrimmomaticSupport.cpp" line="48"/>
         <source>&lt;i&gt;Trimmomatic&lt;/i&gt; is a flexible read trimming tool for Illumina NGS data.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13828,12 +13868,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Слот не должен быть пустым: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="782"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="773"/>
         <source>Error! One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
         <translation>Ошибка! Один из этих слотов не должен быть пустым: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatWorker.cpp" line="788"/>
+        <location filename="../src/tophat/TopHatWorker.cpp" line="779"/>
         <source>Error! You can not bind one of sequences slots and one of url slots simultaneously</source>
         <translation>Ошибка! Вы не можете связать слот последовательности и слот пути одновременно</translation>
     </message>

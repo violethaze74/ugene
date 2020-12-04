@@ -1280,37 +1280,37 @@
         <translation>Экспортировать с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="91"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="98"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="77"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="84"/>
         <source>Use custom sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="109"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="116"/>
         <source>Save direct strand</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="126"/>
         <source>Save complement strand</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="126"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="133"/>
         <source>Save both strands</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="133"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="140"/>
         <source>Translate to amino alphabet</source>
         <translation>Транслировать</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="143"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="150"/>
         <source>Save all amino frames</source>
         <translation>Сохранить все рамки трансляции</translation>
     </message>
@@ -1335,7 +1335,7 @@
         <translation>Организм:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="279"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="272"/>
         <source>Save as separate sequences</source>
         <translation>Отдельные последовательности</translation>
     </message>
@@ -1345,27 +1345,27 @@
         <translation>Частотное распределение</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="103"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="110"/>
         <source>Convertion options</source>
         <translation>Опции конвертации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="163"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="176"/>
         <source>Use custom translation table</source>
         <translation>Таблица трансляций</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="266"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="259"/>
         <source>Merge options</source>
         <translation>Настройки соединения последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="291"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="284"/>
         <source>Add gap symbols between sequences</source>
         <translation>Добавить пробелы между последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="272"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="265"/>
         <source>Merge sequences</source>
         <translation>Объединить последовательности</translation>
     </message>
