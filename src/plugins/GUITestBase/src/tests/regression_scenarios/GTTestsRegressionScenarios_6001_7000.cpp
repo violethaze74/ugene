@@ -5187,7 +5187,6 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
     bool eq = GTFile::equals(os, url);
 
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6707) {
@@ -5649,7 +5648,6 @@ GUI_TEST_CLASS_DEFINITION(test_6749_3) {
 
     // Expected result: Results: -/8
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/8");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
@@ -5997,7 +5995,6 @@ GUI_TEST_CLASS_DEFINITION(test_6860) {
 
     // Expected state: columns from 1 to 11 are selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 11, 18));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6875) {
     //1. Open "_common_data/genbank/HQ007052.gb" sequence.
@@ -6156,7 +6153,6 @@ GUI_TEST_CLASS_DEFINITION(test_6899) {
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(names.size() == 24, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
     CHECK_SET_ERR(names[6] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names[6]));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     // Open COI.aln
@@ -6231,6 +6227,26 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
     QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6924) {
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            GTUtilsWizard::setParameter(os, "Input file(s)", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    // Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Reads quality control...");
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    // There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
 }    // namespace GUITest_regression_scenarios
 
