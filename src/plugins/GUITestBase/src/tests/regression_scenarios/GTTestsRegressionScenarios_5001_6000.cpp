@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/FontDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -124,6 +125,7 @@
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -1483,53 +1485,148 @@ GUI_TEST_CLASS_DEFINITION(test_5417) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5425) {
-    //1. Open de novo assembly dialog
-    //2. Fill it and run
-    //3. Open dialog again
-    //Expected state: all settings except files with reads was saved from previous run
-    class SpadesDialogSettingsChecker : public SpadesGenomeAssemblyDialogFiller {
+    // Open de novo assembly dialog
+    // Fill it and run
+    // Expected result: no errors
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    class Scenario : public CustomScenario {
+         void run(HI::GUITestOpStatus &os) {
+             QWidget *dialog = QApplication::activeModalWidget();
+             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+             GTGlobals::sleep(500);
+
+             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+             GTGlobals::sleep(500);
+
+             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+             GTGlobals::sleep(500);
+
+             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+
+             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+         }
+     };
+
+    class custom : public CustomScenario {
     public:
-        SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode, QString kmerSizes, int numThreads, int memLimit)
-            : SpadesGenomeAssemblyDialogFiller(os, lib, QStringList(), QStringList(), "", datasetType, runningMode, kmerSizes, numThreads, memLimit) {
-        }
-        virtual void commonScenario() {
+        void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            QComboBox *combo = GTWidget::findExactWidget<QComboBox *>(os, "modeCombo", dialog);
-            CHECK_SET_ERR(combo->currentText() == runningMode, "running mode doesn't match");
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
-            combo = GTWidget::findExactWidget<QComboBox *>(os, "typeCombo", dialog);
-            CHECK_SET_ERR(combo->currentText() == datasetType, "type mode doesn't match");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            //GTUtilsWizard::clickButton
 
-            QLineEdit *lineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "kmerEdit", dialog);
-            CHECK_SET_ERR(lineEdit->text() == kmerSizes, "kmer doesn't match");
+            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
 
-            QSpinBox *spinbox = GTWidget::findExactWidget<QSpinBox *>(os, "memlimitSpin", dialog);
-            CHECK_SET_ERR(spinbox->text() == QString::number(memLimit), "memlimit doesn't match");
+            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton"));
 
-            spinbox = GTWidget::findExactWidget<QSpinBox *>(os, "numThreadsSpinbox", dialog);
-            CHECK_SET_ERR(spinbox->text() == QString::number(numThreads), "threads doesn't match");
-
-            combo = GTWidget::findExactWidget<QComboBox *>(os, "libraryComboBox", dialog);
-            CHECK_SET_ERR(combo->currentText() == library, QString("library doesn't match, expected %1, actual:%2.").arg(library).arg(combo->currentText()));
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList() << testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq", QStringList(), sandBoxDir, "Single Cell", "Error correction only", "aaaaa", 1, 228));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Reads de novo assembly (with SPAdes)...");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", QStringList() << "Illumina SE reads"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina SE Reads De Novo Assembly Wizard", new custom()));
+
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Reads de novo assembly (with SPAdes)...");
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTLogTracer l;
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    //There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
+GUI_TEST_CLASS_DEFINITION(test_5425_1) {
+    // Open de novo assembly dialog
+    // Fill it and run
+    // Expected result: no errors
 
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    class Scenario : public CustomScenario {
+         void run(HI::GUITestOpStatus &os) {
+             QWidget *dialog = QApplication::activeModalWidget();
+             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+             GTGlobals::sleep(500);
+
+             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+             GTGlobals::sleep(500);
+
+             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+             GTGlobals::sleep(500);
+
+             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+
+             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+         }
+     };
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            //GTUtilsWizard::clickButton
+
+            GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton"));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", QStringList() << "Illumina PE reads"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Reads de novo assembly (with SPAdes)...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTLogTracer l;
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    //There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+}
 GUI_TEST_CLASS_DEFINITION(test_5431) {
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
