@@ -196,8 +196,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3276);
     REGISTER_TEST(GUITest_regression_scenarios::test_5425);
     REGISTER_TEST(GUITest_regression_scenarios::test_4209);*/
-    REGISTER_TEST(GUITest_regression_scenarios::test_5425);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5425_1);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_1);
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
     
