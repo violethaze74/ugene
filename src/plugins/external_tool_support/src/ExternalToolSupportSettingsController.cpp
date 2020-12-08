@@ -374,8 +374,9 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState *s)
         }
     }
 
+    QTreeWidgetItem *customToolsRootItem = twCustomTools->invisibleRootItem();
     for (ExternalTool *tool : customToolList) {
-        appendToolItem(rootItem, tool);
+        appendToolItem(customToolsRootItem, tool);
     }
 
     Settings *settings = AppContext::getSettings();
