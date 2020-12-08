@@ -189,13 +189,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001);
     REGISTER_TEST(GUITest_regression_scenarios::test_1003);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1263);
     REGISTER_TEST(GUITest_regression_scenarios::test_1499);
     REGISTER_TEST(GUITest_regression_scenarios::test_1548);
     REGISTER_TEST(GUITest_regression_scenarios::test_2894);
     REGISTER_TEST(GUITest_regression_scenarios::test_3276);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5425);
     REGISTER_TEST(GUITest_regression_scenarios::test_4209);*/
+
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_1);
 
@@ -215,8 +214,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1003, "too long test");
     
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1263, "UGENE-4101");
-
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
@@ -543,6 +540,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1257);
     REGISTER_TEST(GUITest_regression_scenarios::test_1260);
     REGISTER_TEST(GUITest_regression_scenarios::test_1262);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1263);
     REGISTER_TEST(GUITest_regression_scenarios::test_1266);
     REGISTER_TEST(GUITest_regression_scenarios::test_1274);
     REGISTER_TEST(GUITest_regression_scenarios::test_1273);
