@@ -4606,13 +4606,12 @@ GUI_TEST_CLASS_DEFINITION(test_6677) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select the second column
-    GTUtilsMsaEditor::selectColumns(os, 1, 1, GTGlobals::UseMouse);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 1);
 
     // 4. Click collapse triangle:
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
 
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 2, 18));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(1, 0, 1, 18));
 }
 GUI_TEST_CLASS_DEFINITION(test_6677_1) {
     // 1. Open "COI.aln".
@@ -6297,6 +6296,8 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
     public:
         void run(HI::GUITestOpStatus &os) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Custom tools"));
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/workflow/custom tools configs/my_custom_tool.xml"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbImport"));
