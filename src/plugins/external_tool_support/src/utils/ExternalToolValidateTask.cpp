@@ -411,7 +411,7 @@ ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList
                           TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)),
       listener(listener) {
     setMaxParallelSubtasks(5);
-
+#ifdef _DEBUG
     QStringList toolIdList;
     for (const Task *task : tasks) {
         auto validationTask = qobject_cast<const ExternalToolValidateTask *>(task);
@@ -420,8 +420,9 @@ ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList
         }
     }
     if (!toolIdList.isEmpty()) {
-        setTaskName(tr("Validate external tools: %1").arg(toolIdList.join(",")));
+        setTaskName(QString("Validate external tools: %1").arg(toolIdList.join(",")));
     }
+#endif
 }
 
 QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask) {
