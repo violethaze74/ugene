@@ -57,7 +57,7 @@ AppSettingsGUIPageState *ExternalToolSupportSettingsPageController::getSavedStat
 }
 
 void ExternalToolSupportSettingsPageController::saveState(AppSettingsGUIPageState * /*state*/) {
-    ExternalToolSupportSettings::setExternalTools();
+    ExternalToolSupportSettings::saveExternalToolsToAppConfig();
 }
 
 AppSettingsGUIPageWidget *ExternalToolSupportSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
@@ -471,8 +471,8 @@ QString ExternalToolSupportSettingsPageWidget::getToolStateDescription(ExternalT
 
         QStringList invalidDependencies;
         QStringList dependencies = tool->getDependencies();
-        foreach (const QString &masterId, dependencies) {
-            if (ExternalToolManager::Valid != etManager->getToolState(masterId)) {
+        for (const QString &masterId : dependencies) {
+            if (etManager->getToolState(masterId) != ExternalToolManager::Valid) {
                 QString masterName = AppContext::getExternalToolRegistry()->getToolNameById(masterId);
                 if (tool->getId() != masterId && tool->getToolKitName() != masterName) {
                     invalidDependencies << getToolLink(masterName);
@@ -613,11 +613,13 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
             }
 
             ExternalToolManager *etManager = AppContext::getExternalToolRegistry()->getManager();
-            SAFE_POINT(NULL != etManager, "External tool manager is null", );
+            SAFE_POINT(etManager != nullptr, "External tool manager is null", );
 
             ExternalToolValidationListener *listener = new ExternalToolValidationListener(toolId);
             connect(listener, SIGNAL(si_validationComplete()), SLOT(sl_validationComplete()));
-            etManager->validate(toolId, path, listener);
+            StrStrMap pathMap;
+            pathMap[toolId] = path;
+            etManager->validate(QStringList() << toolId, pathMap, listener);
         }
     }
 }
@@ -713,30 +715,29 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolKitPath() {
                 continue;
             }
             QString itemId = item->data(0, Qt::UserRole).toString();
-            if (AppContext::getExternalToolRegistry()->getById(itemId) != nullptr) {
-                if (AppContext::getExternalToolRegistry()->getById(itemId)->getToolKitName() == toolKitName) {
-                    QWidget *itemWid = twIntegratedTools->itemWidget(item, 1);
-                    PathLineEdit *lineEdit = itemWid->findChild<PathLineEdit *>("PathLineEdit");
-                    LimitedDirIterator it(dir);
-                    bool fileNotFound = true;
-                    QString executableFileName = AppContext::getExternalToolRegistry()->getById(itemId)->getExecutableFileName();
-                    while (it.hasNext() && fileNotFound) {
-                        it.next();
-                        QString fpath = it.filePath() + QDir::separator() + executableFileName;
+            ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(itemId);
+            if (tool != nullptr && tool->getToolKitName() == toolKitName) {
+                QWidget *itemWid = twIntegratedTools->itemWidget(item, 1);
+                PathLineEdit *lineEdit = itemWid->findChild<PathLineEdit *>("PathLineEdit");
+                LimitedDirIterator it(dir);
+                bool fileNotFound = true;
+                QString executableFileName = tool->getExecutableFileName();
+                while (it.hasNext() && fileNotFound) {
+                    it.next();
+                    QString fpath = it.filePath() + QDir::separator() + executableFileName;
 
-                        QFileInfo info(fpath);
-                        if (info.exists() && info.isFile()) {
-                            QString path = QDir::toNativeSeparators(fpath);
-                            lineEdit->setText(path);
-                            lineEdit->setModified(false);
-                            externalToolsInfo[itemId].path = path;
-                            QToolButton *clearToolPathButton = itemWid->findChild<QToolButton *>("ClearToolPathButton");
-                            assert(clearToolPathButton);
-                            clearToolPathButton->setEnabled(true);
-                            toolIds << itemId;
-                            toolPaths.insert(itemId, path);
-                            fileNotFound = false;
-                        }
+                    QFileInfo info(fpath);
+                    if (info.exists() && info.isFile()) {
+                        QString path = QDir::toNativeSeparators(fpath);
+                        lineEdit->setText(path);
+                        lineEdit->setModified(false);
+                        externalToolsInfo[itemId].path = path;
+                        QToolButton *clearToolPathButton = itemWid->findChild<QToolButton *>("ClearToolPathButton");
+                        assert(clearToolPathButton);
+                        clearToolPathButton->setEnabled(true);
+                        toolIds << itemId;
+                        toolPaths.insert(itemId, path);
+                        fileNotFound = false;
                     }
                 }
             }

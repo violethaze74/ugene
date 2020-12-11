@@ -43,6 +43,7 @@ ExternalTool::ExternalTool(const QString &id, const QString &dirName, const QStr
       name(name),
       path(path),
       isValidTool(false),
+      isCheckedTool(false),
       toolKitName(name),
       muted(false),
       isModuleTool(false),
@@ -167,9 +168,13 @@ void ExternalTool::setPath(const QString &_path) {
     }
 }
 
-void ExternalTool::setValid(bool _isValid) {
-    isValidTool = _isValid;
+void ExternalTool::setValid(bool isValid) {
+    isValidTool = isValid;
     emit si_toolValidationStatusChanged(isValidTool);
+}
+
+void ExternalTool::setChecked(bool isChecked) {
+    isCheckedTool = isChecked;
 }
 
 void ExternalTool::setVersion(const QString &_version) {
@@ -182,6 +187,10 @@ void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
 
 bool ExternalTool::isValid() const {
     return isValidTool;
+}
+
+bool ExternalTool::isChecked() const {
+    return isCheckedTool;
 }
 
 bool ExternalTool::isMuted() const {
@@ -213,14 +222,6 @@ ExternalToolValidationListener::ExternalToolValidationListener(const QString &to
 
 ExternalToolValidationListener::ExternalToolValidationListener(const QStringList &toolIds)
     : toolIds(toolIds) {
-}
-
-void ExternalToolValidationListener::sl_validationTaskStateChanged() {
-    Task *validationTask = qobject_cast<Task *>(sender());
-    SAFE_POINT(validationTask != nullptr, "Unexpected message sender", );
-    if (validationTask->isFinished()) {
-        emit si_validationComplete();
-    }
 }
 
 ////////////////////////////////////////

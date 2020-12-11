@@ -449,8 +449,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     xmlTestFormat->registerTestFactories(PhyMLToolTests::createTestFactories());
     xmlTestFormat->registerTestFactories(HmmerTests::createTestFactories());
 
-    etRegistry->setManager(&validationManager);
-    validationManager.start();
+    auto externalToolManager = new ExternalToolManagerImpl();
+    externalToolManager->setParent(this);
+    etRegistry->setManager(externalToolManager);
 
     registerSettingsController();
 
@@ -462,7 +463,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 }
 
 ExternalToolSupportPlugin::~ExternalToolSupportPlugin() {
-    ExternalToolSupportSettings::setExternalTools();
+    ExternalToolSupportSettings::saveExternalToolsToAppConfig();
 }
 
 void ExternalToolSupportPlugin::registerSettingsController() {
