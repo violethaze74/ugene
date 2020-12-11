@@ -90,19 +90,18 @@ void ExternalToolSupportSettings::loadExternalToolsFromAppConfig() {
 void ExternalToolSupportSettings::saveExternalToolsToAppConfig() {
     QList<ExternalTool *> externalToolList = AppContext::getExternalToolRegistry()->getAllEntries();
     setNumberExternalTools(externalToolList.length());
-    StrStrMap additionalInfo;
     int numberOfIterations = prevNumberExternalTools <= externalToolList.length() ? externalToolList.length() : prevNumberExternalTools;
     Settings *settings = AppContext::getSettings();
     for (int i = 0; i < numberOfIterations; i++) {
         QString toolIndex = QString::number(i);
         if (i < externalToolList.length()) {
             ExternalTool *tool = externalToolList[i];
-            additionalInfo = tool->getAdditionalInfo();
             settings->setValue(PREFIX_EXTERNAL_TOOL_ID + toolIndex, tool->getId(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, tool->getPath(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_IS_VALID + toolIndex, tool->isValid(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_IS_CHECKED + toolIndex, tool->isChecked(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_VERSION + toolIndex, tool->getVersion(), true);
+            StrStrMap additionalInfo = tool->getAdditionalInfo();
             if (!additionalInfo.isEmpty()) {
                 settings->setValue(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + toolIndex, QVariant::fromValue<StrStrMap>(additionalInfo), true);
             }
@@ -110,6 +109,7 @@ void ExternalToolSupportSettings::saveExternalToolsToAppConfig() {
             settings->remove(PREFIX_EXTERNAL_TOOL_ID + toolIndex);
             settings->remove(PREFIX_EXTERNAL_TOOL_PATH + toolIndex);
             settings->remove(PREFIX_EXTERNAL_TOOL_IS_VALID + toolIndex);
+            settings->remove(PREFIX_EXTERNAL_TOOL_IS_CHECKED + toolIndex);
             settings->remove(PREFIX_EXTERNAL_TOOL_VERSION + toolIndex);
             settings->remove(PREFIX_EXTERNAL_TOOL_ADDITIONAL_INFO + toolIndex);
         }
