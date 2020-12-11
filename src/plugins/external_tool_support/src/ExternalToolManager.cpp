@@ -296,8 +296,8 @@ void ExternalToolManagerImpl::runPendingValidationTasks(const StrStrMap &predefi
         AppContext::getTaskScheduler()->registerTopLevelTask(masterTask);
     } else if (listener != nullptr) {
         listener->validationFinished();
-        checkStartupValidationState();
     }
+    checkStartupValidationState();
 }
 
 }    // namespace U2
