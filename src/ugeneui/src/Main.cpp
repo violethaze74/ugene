@@ -391,7 +391,7 @@ static QString findKey(const QStringList &envList, const QString &key) {
 }
 
 namespace {
-#ifdef Q_OS_MACX
+#ifdef Q_OS_DARWIN
 void fixMacFonts() {
     if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_8) {
         // fix Mac OS X 10.9 (mavericks) font issue
@@ -416,7 +416,7 @@ int main(int argc, char **argv) {
 
     GTIMER(c1, t1, "main()->QApp::exec");
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_DARWIN
     fixMacFonts();
 #endif
 

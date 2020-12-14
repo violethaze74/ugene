@@ -33,7 +33,7 @@
 class QMdiArea;
 class QToolBar;
 
-#if defined(Q_OS_MACX) && !defined(_DEBUG)
+#if defined(Q_OS_DARWIN) && !defined(_DEBUG)
 #    define _INSTALL_TO_PATH_ACTION
 #endif
 
