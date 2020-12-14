@@ -37,10 +37,10 @@ namespace U2 {
 
 XMLTestFactory::~XMLTestFactory() {
 #ifdef TEST_FACTORIES_AUTO_CLEANUP
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    if (tfr != NULL) {
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-        if (xmlTestFormat != NULL) {
+    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    if (testFormatRegistry != nullptr) {
+        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+        if (xmlTestFormat != nullptr) {
             xmlTestFormat->unregisterTestFactory(this);
         }
     }
@@ -49,11 +49,12 @@ XMLTestFactory::~XMLTestFactory() {
 
 XMLTestFormat::XMLTestFormat()
     : GTestFormat("XML") {
-    registerBuiltInFactories();
+    // Register built-in factories.
+    registerTestFactories(XMLTestUtils::createTestFactories());
 }
 
 XMLTestFormat::~XMLTestFormat() {
-    foreach (XMLTestFactory *f, testFactories.values()) {
+    for (XMLTestFactory *f : testFactories.values()) {
         delete f;
     }
 }
@@ -66,11 +67,11 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
     if (!res) {
         err = QString("error_reading_test: ") + err;
         err += QString(" line: %1 col: %2").arg(QString::number(line)).arg(QString::number(col));
-        return NULL;
+        return nullptr;
     }
-    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST") {
+    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST" && doc.documentElement().tagName() != "multi-test") {
         err = QString("not_a_test_file");
-        return NULL;
+        return nullptr;
     }
     QDomElement testEl = doc.documentElement();
     return createTest(name, cp, env, testEl, err);
@@ -78,14 +79,13 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
 
 GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QDomElement &el, QString &err) {
     QString tagName = el.tagName();
-    XMLTestFactory *f = testFactories.value(tagName);
-    if (f == NULL) {
+    XMLTestFactory *factory = testFactories.value(tagName);
+    if (factory == nullptr) {
         err = QString("XMLTestFactory not found '%1'").arg(tagName);
-        return NULL;
+        return nullptr;
     }
     QList<GTest *> subs;
-    GTest *t = f->createTest(this, name, cp, env, subs, el);
-    return t;
+    return factory->createTest(this, name, cp, env, subs, el);
 }
 
 bool XMLTestFormat::registerTestFactory(XMLTestFactory *tf) {
@@ -97,6 +97,14 @@ bool XMLTestFormat::registerTestFactory(XMLTestFactory *tf) {
     return true;
 }
 
+void XMLTestFormat::registerTestFactories(const QList<XMLTestFactory *> &factoryList) {
+    for (XMLTestFactory *factory : factoryList) {
+        bool ok = registerTestFactory(factory);
+        Q_UNUSED(ok);
+        Q_ASSERT(ok);
+    }
+}
+
 bool XMLTestFormat::unregisterTestFactory(XMLTestFactory *tf) {
     const QString &tagName = tf->getTagName();
     if (!testFactories.contains(tagName)) {
@@ -104,17 +112,6 @@ bool XMLTestFormat::unregisterTestFactory(XMLTestFactory *tf) {
     }
     testFactories.remove(tagName);
     return true;
-}
-
-void XMLTestFormat::registerBuiltInFactories() {
-    {    // multitest
-        QList<XMLTestFactory *> fs = XMLTestUtils::createTestFactories();
-        foreach (XMLTestFactory *f, fs) {
-            bool res = registerTestFactory(f);
-            assert(res);
-            Q_UNUSED(res);
-        }
-    }
 }
 
 }    // namespace U2

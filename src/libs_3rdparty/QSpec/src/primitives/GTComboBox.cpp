@@ -59,31 +59,31 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus &os, QComboBox *comboBox, int
             }
 
             switch (method) {
-            case GTGlobals::UseKey:
-            case GTGlobals::UseKeyBoard: {
-                int currentIndex = comboBox->currentIndex() == -1 ? 0 : comboBox->currentIndex();
-                Qt::Key key = index > currentIndex ? Qt::Key_Down : Qt::Key_Up;
-                int pressCount = qAbs(index - currentIndex);
-                for (int i = 0; i < pressCount; i++) {
-                    GTKeyboardDriver::keyClick(key);
-                    GTThread::waitForMainThread();
+                case GTGlobals::UseKey:
+                case GTGlobals::UseKeyBoard: {
+                    int currentIndex = comboBox->currentIndex() == -1 ? 0 : comboBox->currentIndex();
+                    Qt::Key key = index > currentIndex ? Qt::Key_Down : Qt::Key_Up;
+                    int pressCount = qAbs(index - currentIndex);
+                    for (int i = 0; i < pressCount; i++) {
+                        GTKeyboardDriver::keyClick(key);
+                        GTThread::waitForMainThread();
+                    }
+                    break;
                 }
-                break;
-            }
-            case GTGlobals::UseMouse: {
-                QListView *listView = comboBox->findChild<QListView *>();
-                GT_CHECK(listView != nullptr, "list view not found");
-                QModelIndex modelIndex = listView->model()->index(index, 0);
-                GTWidget::scrollToIndex(os, listView, modelIndex);
-                QRect rect = listView->visualRect(modelIndex);
-                QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);    // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
-                QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
-                qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
-                GTMouseDriver::moveTo(itemPointGlobal);
-                break;
-            }
-            default:
-                GT_CHECK(false, "Unexpected method");
+                case GTGlobals::UseMouse: {
+                    QListView *listView = comboBox->findChild<QListView *>();
+                    GT_CHECK(listView != nullptr, "list view not found");
+                    QModelIndex modelIndex = listView->model()->index(index, 0);
+                    GTWidget::scrollToIndex(os, listView, modelIndex);
+                    QRect rect = listView->visualRect(modelIndex);
+                    QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);    // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
+                    QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
+                    qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
+                    GTMouseDriver::moveTo(itemPointGlobal);
+                    break;
+                }
+                default:
+                    GT_CHECK(false, "Unexpected method");
             }
         }
         QComboBox *comboBox;
@@ -197,10 +197,18 @@ void GTComboBox::checkValuesPresence(GUITestOpStatus &os, QComboBox *comboBox, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkCurrentValue"
-void GTComboBox::checkCurrentValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedValue) {
-    Q_UNUSED(os);
+void GTComboBox::checkCurrentValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedText) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
-    GT_CHECK(expectedValue == comboBox->currentText(), QString("An unexpected value: expect '%1', got '%2'").arg(expectedValue).arg(comboBox->currentText()));
+    QString currentText = comboBox->currentText();
+    GT_CHECK(currentText == expectedText, QString("Unexpected value: expected '%1', got '%2'").arg(expectedText).arg(currentText));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkCurrentUserDataValue"
+void GTComboBox::checkCurrentUserDataValue(GUITestOpStatus &os, QComboBox *comboBox, const QString &expectedValue) {
+    GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
+    QString dataValue = comboBox->currentData(Qt::UserRole).toString();
+    GT_CHECK(dataValue == expectedValue, QString("Unexpected user data value: expected '%1', got '%2'").arg(expectedValue).arg(dataValue));
 }
 #undef GT_METHOD_NAME
 

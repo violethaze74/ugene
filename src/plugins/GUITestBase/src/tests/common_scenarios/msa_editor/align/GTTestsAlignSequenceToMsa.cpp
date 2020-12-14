@@ -70,7 +70,7 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
 
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
@@ -87,7 +87,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::click(os, "tub");
-    GTUtilsMdi::activateWindow(os, "3000_sequences [m] 3000_sequences");
+    GTUtilsMdi::activateWindow(os, "3000_sequences [3000_sequences.aln]");
 
     QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
     CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
@@ -118,7 +118,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::click(os, "tub");
-    GTUtilsMdi::activateWindow(os, "3000_sequences [m] 3000_sequences");
+    GTUtilsMdi::activateWindow(os, "3000_sequences [3000_sequences.aln]");
 
     QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
     CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");

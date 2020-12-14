@@ -54,7 +54,12 @@ public:
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
     static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
     static bool hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor);
-    static QImage getImage(GUITestOpStatus &os, QWidget *widget);
+
+    /**
+     * Returns image of the widget using widget->grab() method.
+     * If useGrabWindow is true calls QPixmap::grabWindow method: it allows to capture non-QT (like OpenGL) images.
+     */
+    static QImage getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWindow = false);
 
     static void close(GUITestOpStatus &os, QWidget *widget);
     static void showMaximized(GUITestOpStatus &os, QWidget *widget);

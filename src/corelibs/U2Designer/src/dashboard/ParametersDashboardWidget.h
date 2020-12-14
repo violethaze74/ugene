@@ -76,8 +76,9 @@ public slots:
 
 private:
     QString dashboardDir;
-    QHBoxLayout *layout;
+    const QPointer<const WorkflowMonitor> monitor;
 
+    QHBoxLayout *layout;
     QGridLayout *parametersGridLayout;
     QList<WorkerParametersInfo> workers;
     QList<HoverQLabel *> workerNameLabels;

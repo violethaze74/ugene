@@ -30,10 +30,10 @@
 
 namespace U2 {
 
-class BowtieBuildIndexTask : public ExternalToolSupportTask {
+class BowtieBuildTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BowtieBuildIndexTask(const QString &referencePath, const QString &indexPath, bool colorspace);
+    BowtieBuildTask(const QString &referencePath, const QString &indexPath);
 
     void prepare();
 
@@ -68,13 +68,12 @@ private:
 
     QString referencePath;
     QString indexPath;
-    bool colorspace;
 };
 
-class BowtieAssembleTask : public ExternalToolSupportTask {
+class BowtieAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings);
+    BowtieAlignTask(const DnaAssemblyToRefTaskSettings &settings);
 
     bool hasResult() const;
 
@@ -123,15 +122,14 @@ public:
     static const QString OPTION_SEED;
     static const QString OPTION_BEST;
     static const QString OPTION_ALL;
-    static const QString OPTION_COLORSPACE;
     static const QString OPTION_THREADS;
 
     static const QStringList indexSuffixes;
     static const QStringList largeIndexSuffixes;
 
 private:
-    BowtieBuildIndexTask *buildIndexTask;
-    BowtieAssembleTask *assembleTask;
+    BowtieBuildTask *buildIndexTask;
+    BowtieAlignTask *alignTask;
 
     Task *unzipTask;
     QTemporaryFile temp;

@@ -1263,7 +1263,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Get current row order
-    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> oldOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_NOT_EQUAL(0, oldOrder.length(), "incorrect oreder list length");
 
@@ -1296,7 +1296,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
@@ -1404,7 +1404,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalUndoThenAct
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
@@ -1575,7 +1575,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     CHECK_NO_ERROR(os);
 
     // Get some base data
-    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     U2MsaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
     CHECK_NO_ERROR(os);
@@ -1659,7 +1659,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     CHECK_NO_ERROR(os);
 
     // Get some base data
-    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
+    QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getOrderedRowIds(msaId, os);
     CHECK_NO_ERROR(os);
     U2MsaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
     CHECK_NO_ERROR(os);

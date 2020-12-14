@@ -35,13 +35,13 @@ const QString ConservationPlotSupport::ET_CONSERVATION_PLOT_ID = "USUPP_CONSERVA
 const QString ConservationPlotSupport::CONSERVATION_DIR_NAME = "phastCons";
 const QString ConservationPlotSupport::CONSERVATION_DATA_NAME = "conservation_data";
 
-ConservationPlotSupport::ConservationPlotSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+ConservationPlotSupport::ConservationPlotSupport()
+    : ExternalTool(ConservationPlotSupport::ET_CONSERVATION_PLOT_ID, "cistrome", ConservationPlotSupport::ET_CONSERVATION_PLOT) {
     initialize();
 }
 
 void ConservationPlotSupport::initialize() {
-    if (AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

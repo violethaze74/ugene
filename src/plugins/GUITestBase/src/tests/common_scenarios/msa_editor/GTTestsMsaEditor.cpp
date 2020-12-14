@@ -762,7 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -776,7 +776,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "middle bookmark");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "end bookmark");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -828,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -842,7 +842,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -854,13 +854,12 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Do not rename the new bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
     //     Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark");
-    GTGlobals::sleep(500);
 
     int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -874,7 +873,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
     CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 3");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -895,7 +893,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "start bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
 
     const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -909,7 +907,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTGlobals::sleep(500);
 
     //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "middle bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "middle bookmark");
 
     const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -921,7 +919,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTGlobals::sleep(500);
 
     //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "COI [m] COI", "end bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "end bookmark");
 
     const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
@@ -934,14 +932,12 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
     CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-    GTGlobals::sleep(500);
 
     RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
     LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
@@ -950,58 +946,44 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008_3) {
     // CHANGES: mid and end coordinates changed, another file is used
-    //     1. Open document samples\CLUSTALW\HIV-1.aln
+    // Open document samples\CLUSTALW\HIV-1.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "start bookmark");
+    // Create bookmark. Rename "New bookmark" to "start bookmark"
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "start bookmark");
+    int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     3. Scroll msa to the middle.
+    // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
+    // Create bookmark. Rename "New bookmark" to "middle bookmark"
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "middle bookmark");
+    int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "middle bookmark");
-
-    const int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     5. Scroll msa to the end.
+    // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
+    // Create bookmark. Rename "New bookmark" to "end bookmark"
+    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "end bookmark");
+    int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
-    GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [m] HIV-1", "end bookmark");
-
-    const int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     Expected state: clicking on each bookmark will recall corresponding MSA position
+    // Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
-    GTGlobals::sleep(500);
-
     int pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(startPos == pos, "start bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == startPos, "Wrong start offset! Expected: " + QString::number(startPos) + ", got: " + QString::number(pos));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-    GTGlobals::sleep(500);
-
     pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(midPos == pos, "middle bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == midPos, "Wrong middle offset! Expected: " + QString::number(midPos) + ", got: " + QString::number(pos));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-    GTGlobals::sleep(500);
-
     pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endPos == pos, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == endPos, "Wrong end offset! Expected: " + QString::number(endPos) + ", got: " + QString::number(pos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -1026,7 +1008,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs\n" + clipboardText);
@@ -1058,12 +1040,11 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
     //Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(11, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString sequencesInClipboard = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
-    CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
+    CHECK_SET_ERR(sequencesInClipboard == expectedMSA, "Clipboard check failed! Expected: '" + expectedMSA + "'\n, got: '" + sequencesInClipboard + "'");
 
     GTGlobals::sleep();
 
@@ -1094,7 +1075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
 
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
@@ -1126,7 +1107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequense name is the same as its amino translation
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     const QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, clipboardText);
 }
@@ -1151,7 +1132,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequense name the same as it amino translation
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     const QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string differs");
 }
@@ -1177,7 +1158,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: every sequence name the same as it amino translation
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     QString expectedMSA = "L\nS\nD\nS\nP\nK";
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string are different. Clipboard text: " + clipboardText);
 
@@ -1209,7 +1190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs");
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1226,7 +1207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1256,7 +1237,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs");
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1276,7 +1257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1309,7 +1290,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CAA", "Clipboard string and expected MSA string differs" + clipboardText);
 
     //                 sequence name  changed from L -> L|revcompl
@@ -1330,7 +1311,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep();
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
 
     //                 sequence name changed from L|revcompl ->
@@ -1380,17 +1361,12 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
-    GTGlobals::sleep();
-    GTGlobals::sleep();
 
     // Expected state: UGENE not crash
     GTGlobals::sleep(5000);
@@ -1670,7 +1646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(4000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
 }
 
@@ -1703,7 +1679,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
     GTKeyboardUtils::copy(os);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 }
 
@@ -1733,7 +1709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTThread::waitForMainThread();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 
     // CHANGES: select item in project tree view and press delete
@@ -1843,7 +1819,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: row order changes respectively
     QStringList list2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed");
+    CHECK_SET_ERR(list1 != list2, "Name list wasn't changed 1");
 
     // 4. Click & drag on unselected area
     rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
@@ -1860,7 +1836,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // Expected state: whole selected block shifted
     QStringList list3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed");
+    CHECK_SET_ERR(list2 != list3, "Name list wasn't changed 2");
 
     // 6. Click on some row in selected block
     GTUtilsMsaEditor::clickSequence(os, 1);
@@ -1937,7 +1913,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString text = GTClipboard::text(os);
+    QString text = GTClipboard::sequences(os);
     QString expected = "A\nA\nT\nA\nT\nT\nT\nA\nA\nA";
     CHECK_SET_ERR(text == expected, "expected: " + expected + "found: " + text);
 }
@@ -1961,7 +1937,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString initial = GTClipboard::text(os);
+    QString initial = GTClipboard::sequences(os);
     // 4. Click OK
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
@@ -1975,7 +1951,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(19, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString final = GTClipboard::text(os);
+    QString final = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(initial == final, "msa area was changed");
 }
@@ -2282,7 +2258,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     //    Expected state: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 2));
     GTKeyboardUtils::copy(os);
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "------", "Expected: ------ Found: " + clipboardText);
 }
 
@@ -2300,7 +2276,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     //    Expected stste: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 3));
     GTKeyboardUtils::copy(os);
-    const QString clipboardText = GTClipboard::text(os);
+    const QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
 }
 
@@ -2312,11 +2288,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028_linux) {
     //    2. Context menu -- "Export as image"
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     //    3. Fill dialog: svg format, output file
     qint64 fileSize = GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/test.svg");
-    CHECK_SET_ERR(fileSize > 7000000 && fileSize < 8000000, "Current size: " + QString().setNum(fileSize));
+    CHECK_SET_ERR(fileSize > 6500000 && fileSize < 7500000, "Current size: " + QString::number(fileSize));
     //    Expected state:  SVG is exported
 }
 
@@ -2369,7 +2345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "---", "Expected: TAGTTTATTAA, Found: " + clipboardText);
     //    3. use MSA area context menu->export->save sequence
     //    Exptcted state: Export sequence dialog appeared
@@ -2407,7 +2383,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_1) {    //DIFFERENCE:gaps are trimmed, FASTQ
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence", GTGlobals::UseKey));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "TAGTTTATTAA", "Expected: TAGTTTATTAA, Found: " + clipboardText);
     //    3. use MSA area context menu->export->save sequence
     //    Exptcted state: Export sequence dialog appeared
@@ -3400,7 +3376,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
     //    1. Open "_common_data/clustal/3000_sequences.aln"
     //    2. Context menu -- Export as ImageExport
     //    Expected state: export dialog appeared, there is a warning message and Export button is disabled
-    //    3. Select smalle region
+    //    3. Select a small region
     //    Expected state: warning is gone, export is enabled
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3471,7 +3447,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
 }
@@ -3485,10 +3461,8 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     //Expected state: the buffer contatin the sequence in Mega format
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
     CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
@@ -3499,9 +3473,8 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_COPY << "copy_formatted"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("mega"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
@@ -3529,7 +3502,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_2) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("CLUSTAL W 2.0 multiple sequence alignment"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("TAA"), clipboardText);
@@ -3553,7 +3526,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_3) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("ACCAGGCTTGGCAATGCGTATC"), clipboardText);
 }
@@ -3596,7 +3569,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted"));
     GTGlobals::sleep(3000);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(clipboardText.contains("<span style=\"font-size:10pt; font-family:Verdana;\">"), clipboardText);
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
@@ -4127,7 +4100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
     //    Check clipboard
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText.startsWith("TaAGttTatTaATtCGagCtGAAtTagG+CAaCCaGGtTat---+TaATT"), "unexpected consensus was exported: " + clipboardText);
 }
 
@@ -4245,9 +4218,8 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
-    GTUtilsMsaEditor::checkNoMsaEditorWindowIsOpened(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);    // wait for overview rendering to finish.
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 5));
@@ -4338,7 +4310,7 @@ GUI_TEST_CLASS_DEFINITION(test_0073) {
                                                                         << "action_open_view"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Expected: view is opened, document is loaded
-    GTUtilsMdi::findWindow(os, "COI [m] COI");
+    GTUtilsMdi::findWindow(os, "COI [COI.aln]");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0074) {
@@ -4507,9 +4479,9 @@ GUI_TEST_CLASS_DEFINITION(test_0079) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
-    // The sequence was added to the bottom of the alignment.
+    // The sequence was added to the 8th position of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T1", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[8] == "human_T1", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0080) {
@@ -4534,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
 
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T1", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[8] == "human_T1", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0081) {
@@ -4559,7 +4531,7 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
 
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T2", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[9] == "human_T2", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0082) {
@@ -4584,7 +4556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
 
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T3", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[10] == "human_T3", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0083) {
@@ -4610,7 +4582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
 
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
-    CHECK_SET_ERR(sequencesNameList.last() == "human_T3", "No pasted sequences");
+    CHECK_SET_ERR(sequencesNameList[10] == "human_T3", "No pasted sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_fake) {

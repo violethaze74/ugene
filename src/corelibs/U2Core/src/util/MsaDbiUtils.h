@@ -142,6 +142,12 @@ public:
     static void replaceCharacterInRow(const U2EntityRef &msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus &os);
 
     /**
+     * Replaces a non-gap character in the whole alignment.
+     * Returns list of modified row ids.
+     */
+    static QList<qint64> replaceNonGapCharacter(const U2EntityRef &msaRef, char oldChar, char newChar, U2OpStatus &os);
+
+    /**
      * Keeps only the specified rows in the alignment - 'count' characters from position 'pos'.
      * If a row length is less than 'pos', the sequence and gap model becomes empty.
      * Updates the alignment length.

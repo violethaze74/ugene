@@ -1,5 +1,3 @@
-# include (U2Lang.pri)
-
 MODULE_ID=U2Lang
 include( ../../ugene_lib_common.pri )
 

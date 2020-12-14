@@ -1,4 +1,3 @@
-# include (test_runner.pri)
 include(../../ugene_globals.pri)
 
 QT += testlib

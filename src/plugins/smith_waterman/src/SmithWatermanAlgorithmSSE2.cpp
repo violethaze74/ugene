@@ -19,27 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifdef SW2_BUILD_WITH_SSE2
+#include "SmithWatermanAlgorithmSSE2.h"
+#include <emmintrin.h>
+#include <iostream>
 
-#    include "SmithWatermanAlgorithmSSE2.h"
-#    include <emmintrin.h>
-#    include <iostream>
-
-#    ifdef _MSC_VER
-#        pragma warning(disable : 4799)
-#    endif
+#ifdef _MSC_VER
+#    pragma warning(disable : 4799)
+#endif
 
 extern "C" {
 
 // http://sourceforge.net/p/predef/wiki/Compilers/
 
-#    ifdef _MSC_VER
-#        if UGENE_X86_64
-#            define LAME_MSC
-#        endif
+#ifdef _MSC_VER
+#    if UGENE_X86_64
+#        define LAME_MSC
 #    endif
+#endif
 
-#    if defined(LAME_MSC) || defined(Q_OS_MAC)
+#if defined(LAME_MSC) || defined(Q_OS_MAC)
 inline void xmm_store8(__m64 *m, __m128i x) {
     *(int *)m = _mm_cvtsi128_si32(x);
     *((int *)m + 1) = _mm_cvtsi128_si32(_mm_srli_epi64(x, 32));
@@ -48,14 +46,14 @@ inline void xmm_store8(__m64 *m, __m128i x) {
 inline __m128i xmm_load8(__m64 *m) {
     return _mm_or_si128(_mm_cvtsi32_si128(*(int *)m), _mm_slli_si128(_mm_cvtsi32_si128(*((int *)m + 1)), 4));
 }
-#    else
+#else
 inline void xmm_store8(__m64 *m, __m128i x) {
     *m = _mm_movepi64_pi64(x);
 }
 inline __m128i xmm_load8(__m64 *m) {
     return _mm_movpi64_epi64(*m);
 }
-#    endif
+#endif
 }
 
 using namespace std;
@@ -381,125 +379,125 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     p.refSubseqInterval.startPos = 0;
     p.score = 0;
 
-#    define SW_LOOP(SWA, SWB) \
-        buf = matrix + 5; \
-        score = score1 + src[i - 1] * iter * 8; \
-        xMax = _mm_xor_si128(xMax, xMax); \
-        f4 = _mm_insert_epi16(f4, i, 0); \
-        f4 = _mm_shufflelo_epi16(f4, 0); \
-        f4 = _mm_unpacklo_epi32(f4, f4); \
-        f2 = _mm_slli_si128(_mm_load_si128(SWB + (iter - 1) * 5), 2); \
-        f1 = _mm_slli_si128(_mm_load_si128(SWB + 1 + (iter - 1) * 5), 2); \
-        f1 = _mm_insert_epi16(f1, i - 1, 0); \
-        e1 = _mm_xor_si128(e1, e1); \
-        j = iter; \
-        do { \
-            f2 = _mm_adds_epi16(f2, *((__m128i *)score)); \
-            score += 8; /* subst */ \
-            /* f2 f1 */ \
-            f3 = _mm_xor_si128(f3, f3); \
-            f2 = _mm_max_epi16(f2, f3); \
-            f3 = _mm_cmpeq_epi16(f3, f2); \
-            f3 = _mm_or_si128(_mm_and_si128(f3, f4), _mm_andnot_si128(f3, f1)); \
-            /* f2 f3 */ \
-            xMax = _mm_max_epi16(xMax, f2); \
-            f1 = _mm_cmpeq_epi16(f2, xMax); \
-            xPos = _mm_or_si128(_mm_and_si128(f1, f3), _mm_andnot_si128(f1, xPos)); \
+#define SW_LOOP(SWA, SWB) \
+    buf = matrix + 5; \
+    score = score1 + src[i - 1] * iter * 8; \
+    xMax = _mm_xor_si128(xMax, xMax); \
+    f4 = _mm_insert_epi16(f4, i, 0); \
+    f4 = _mm_shufflelo_epi16(f4, 0); \
+    f4 = _mm_unpacklo_epi32(f4, f4); \
+    f2 = _mm_slli_si128(_mm_load_si128(SWB + (iter - 1) * 5), 2); \
+    f1 = _mm_slli_si128(_mm_load_si128(SWB + 1 + (iter - 1) * 5), 2); \
+    f1 = _mm_insert_epi16(f1, i - 1, 0); \
+    e1 = _mm_xor_si128(e1, e1); \
+    j = iter; \
+    do { \
+        f2 = _mm_adds_epi16(f2, *((__m128i *)score)); \
+        score += 8; /* subst */ \
+        /* f2 f1 */ \
+        f3 = _mm_xor_si128(f3, f3); \
+        f2 = _mm_max_epi16(f2, f3); \
+        f3 = _mm_cmpeq_epi16(f3, f2); \
+        f3 = _mm_or_si128(_mm_and_si128(f3, f4), _mm_andnot_si128(f3, f1)); \
+        /* f2 f3 */ \
+        xMax = _mm_max_epi16(xMax, f2); \
+        f1 = _mm_cmpeq_epi16(f2, xMax); \
+        xPos = _mm_or_si128(_mm_and_si128(f1, f3), _mm_andnot_si128(f1, xPos)); \
 \
-            f1 = _mm_load_si128(buf + 4); \
-            f1 = _mm_max_epi16(f1, f2); \
+        f1 = _mm_load_si128(buf + 4); \
+        f1 = _mm_max_epi16(f1, f2); \
+        f2 = _mm_cmpeq_epi16(f2, f1); \
+        f3 = _mm_or_si128(_mm_and_si128(f3, f2), _mm_andnot_si128(f2, _mm_load_si128(SWB + 1))); \
+        /* f1 f3 */ \
+        f2 = _mm_max_epi16(e1, f1); \
+        f1 = _mm_cmpeq_epi16(f1, f2); \
+        f3 = _mm_or_si128(_mm_and_si128(f3, f1), _mm_andnot_si128(f1, _mm_load_si128(SWA - 5 + 1))); \
+        /* f2 f3 */ \
+        _mm_store_si128(SWA, f2); \
+        _mm_store_si128(SWA + 1, f3); \
+        f2 = _mm_adds_epi16(f2, xOpen); \
+        e1 = _mm_max_epi16(_mm_adds_epi16(e1, xExt), f2); \
+        f1 = _mm_load_si128(buf + 4); \
+        f1 = _mm_max_epi16(_mm_adds_epi16(f1, xExt), f2); \
+        _mm_store_si128(buf + 4, f1); \
+\
+        f2 = _mm_load_si128(SWB); \
+        f1 = _mm_load_si128(SWB + 1); \
+        buf += 5; \
+    } while (--j); \
+\
+    f4 = _mm_slli_si128(_mm_load_si128(SWA - 5 + 1), 2); \
+    buf = matrix + 5; \
+    j = 0; \
+    e1 = _mm_slli_si128(e1, 2); \
+    f2 = _mm_load_si128(SWA); \
+    f3 = _mm_max_epi16(_mm_xor_si128(f3, f3), _mm_adds_epi16(f2, xOpen)); \
+    k = _mm_movemask_epi8(_mm_cmpgt_epi16(e1, f3)); \
+    if (k) \
+        do { \
+            f1 = _mm_max_epi16(e1, f2); \
             f2 = _mm_cmpeq_epi16(f2, f1); \
-            f3 = _mm_or_si128(_mm_and_si128(f3, f2), _mm_andnot_si128(f2, _mm_load_si128(SWB + 1))); \
-            /* f1 f3 */ \
-            f2 = _mm_max_epi16(e1, f1); \
-            f1 = _mm_cmpeq_epi16(f1, f2); \
-            f3 = _mm_or_si128(_mm_and_si128(f3, f1), _mm_andnot_si128(f1, _mm_load_si128(SWA - 5 + 1))); \
-            /* f2 f3 */ \
-            _mm_store_si128(SWA, f2); \
-            _mm_store_si128(SWA + 1, f3); \
-            f2 = _mm_adds_epi16(f2, xOpen); \
-            e1 = _mm_max_epi16(_mm_adds_epi16(e1, xExt), f2); \
-            f1 = _mm_load_si128(buf + 4); \
-            f1 = _mm_max_epi16(_mm_adds_epi16(f1, xExt), f2); \
+            f2 = _mm_or_si128(_mm_and_si128(f2, *(SWA + 1)), _mm_andnot_si128(f2, f4)); \
+            _mm_store_si128(SWA, f1); \
+            _mm_store_si128(SWA + 1, f2); \
+\
+            f1 = _mm_adds_epi16(f1, xOpen); \
+            f1 = _mm_max_epi16(f1, *(buf + 4)); \
             _mm_store_si128(buf + 4, f1); \
 \
-            f2 = _mm_load_si128(SWB); \
-            f1 = _mm_load_si128(SWB + 1); \
+            e1 = _mm_adds_epi16(e1, xExt); \
             buf += 5; \
-        } while (--j); \
-\
-        f4 = _mm_slli_si128(_mm_load_si128(SWA - 5 + 1), 2); \
-        buf = matrix + 5; \
-        j = 0; \
-        e1 = _mm_slli_si128(e1, 2); \
-        f2 = _mm_load_si128(SWA); \
-        f3 = _mm_max_epi16(_mm_xor_si128(f3, f3), _mm_adds_epi16(f2, xOpen)); \
-        k = _mm_movemask_epi8(_mm_cmpgt_epi16(e1, f3)); \
-        if (k) \
-            do { \
-                f1 = _mm_max_epi16(e1, f2); \
-                f2 = _mm_cmpeq_epi16(f2, f1); \
-                f2 = _mm_or_si128(_mm_and_si128(f2, *(SWA + 1)), _mm_andnot_si128(f2, f4)); \
-                _mm_store_si128(SWA, f1); \
-                _mm_store_si128(SWA + 1, f2); \
-\
-                f1 = _mm_adds_epi16(f1, xOpen); \
-                f1 = _mm_max_epi16(f1, *(buf + 4)); \
-                _mm_store_si128(buf + 4, f1); \
-\
-                e1 = _mm_adds_epi16(e1, xExt); \
-                buf += 5; \
-                if (++j >= static_cast<int>(iter)) { \
-                    buf = matrix + 5; \
-                    j = 0; \
-                    e1 = _mm_slli_si128(e1, 2); \
-                    f4 = _mm_slli_si128(f4, 2); \
-                } \
-                f2 = _mm_load_si128(SWA); \
-                f3 = _mm_max_epi16(_mm_xor_si128(f3, f3), _mm_adds_epi16(f2, xOpen)); \
-                k = _mm_movemask_epi8(_mm_cmpgt_epi16(e1, f3)); \
-            } while (k); \
-\
-        max1 = *((short *)(&xMax)); \
-        n = 0; \
-        k = 1; \
-        do { \
-            j = ((short *)(&xMax))[k]; \
-            if (j >= max1) { \
-                max1 = j; \
-                n = k; \
+            if (++j >= static_cast<int>(iter)) { \
+                buf = matrix + 5; \
+                j = 0; \
+                e1 = _mm_slli_si128(e1, 2); \
+                f4 = _mm_slli_si128(f4, 2); \
             } \
-        } while (++k < 8); \
+            f2 = _mm_load_si128(SWA); \
+            f3 = _mm_max_epi16(_mm_xor_si128(f3, f3), _mm_adds_epi16(f2, xOpen)); \
+            k = _mm_movemask_epi8(_mm_cmpgt_epi16(e1, f3)); \
+        } while (k); \
 \
-        if (max1 >= minScore) { \
-            j = ((((short *)(&xPos))[n] - i - 1) | -0x10000) + i + 1; \
-            SW_FILT_MACRO; \
-        }
+    max1 = *((short *)(&xMax)); \
+    n = 0; \
+    k = 1; \
+    do { \
+        j = ((short *)(&xMax))[k]; \
+        if (j >= max1) { \
+            max1 = j; \
+            n = k; \
+        } \
+    } while (++k < 8); \
+\
+    if (max1 >= minScore) { \
+        j = ((((short *)(&xPos))[n] - i - 1) | -0x10000) + i + 1; \
+        SW_FILT_MACRO; \
+    }
 
     // #define SW_FILT
 
-#    ifdef SW_FILT
-#        define SW_FILT_MACRO \
-            if (p.refSubseqInterval.startPos != j) { \
-                if (p.score) { \
-                    pairAlignmentStrings.append(p); \
-                    /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */ \
-                } \
-                p.refSubseqInterval.startPos = j; \
-                p.refSubseqInterval.length = i - j; \
-                p.score = max1; \
-            } else if (p.score < max1) { \
-                p.refSubseqInterval.length = i - j; \
-                p.score = max1; \
-            }
-#    else
-#        define SW_FILT_MACRO \
+#ifdef SW_FILT
+#    define SW_FILT_MACRO \
+        if (p.refSubseqInterval.startPos != j) { \
+            if (p.score) { \
+                pairAlignmentStrings.append(p); \
+                /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */ \
+            } \
             p.refSubseqInterval.startPos = j; \
             p.refSubseqInterval.length = i - j; \
             p.score = max1; \
-            pairAlignmentStrings.append(p); \
-            /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */
-#    endif
+        } else if (p.score < max1) { \
+            p.refSubseqInterval.length = i - j; \
+            p.score = max1; \
+        }
+#else
+#    define SW_FILT_MACRO \
+        p.refSubseqInterval.startPos = j; \
+        p.refSubseqInterval.length = i - j; \
+        p.score = max1; \
+        pairAlignmentStrings.append(p); \
+        /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */
+#endif
 
     i = 1;
     do {
@@ -510,15 +508,15 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
         SW_LOOP(buf + 2, buf);
     } while (++i <= static_cast<int>(src_n));
 
-#    undef SW_LOOP
-#    undef SW_FILT_MACRO
+#undef SW_LOOP
+#undef SW_FILT_MACRO
 
-#    ifdef SW_FILT
+#ifdef SW_FILT
     if (p.score) {
         pairAlignmentStrings.append(p);
         // printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score);
     }
-#    endif
+#endif
     _mm_free(matrix);
 }
 
@@ -809,150 +807,150 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     p.refSubseqInterval.startPos = 0;
     p.score = 0;
 
-#    define SW_LOOP(SWA, SWB) \
-        buf = matrix + 5; \
-        score = score1 + src[i - 1] * iter * 4; \
-        xMax = _mm_xor_si128(xMax, xMax); \
-        f2 = _mm_slli_si128(_mm_load_si128(SWB + (iter - 1) * 5), 4); \
-        f1 = _mm_slli_si128(_mm_load_si128(SWB + 1 + (iter - 1) * 5), 4); \
-        f1 = _mm_or_si128(f1, _mm_cvtsi32_si128(i - 1)); \
-        e1 = _mm_xor_si128(e1, e1); \
-        j = iter; \
-        do { \
-            f2 = _mm_add_epi32(f2, *((__m128i *)score)); \
-            score += 4; /* subst */ \
-            /* f2 f1 */ \
-            f4 = _mm_cvtsi32_si128(i); \
-            f4 = _mm_shuffle_epi32(f4, 0); \
-            f3 = _mm_xor_si128(f3, f3); \
-            f3 = _mm_cmpgt_epi32(f2, f3); \
-            f2 = _mm_and_si128(f2, f3); \
-            f3 = _mm_or_si128(_mm_and_si128(f1, f3), _mm_andnot_si128(f3, f4)); \
-            /* f2 f3 */ \
-            f1 = _mm_cmpgt_epi32(xMax, f2); \
-            xMax = _mm_xor_si128(xMax, f2); \
-            xMax = _mm_and_si128(xMax, f1); \
-            xMax = _mm_xor_si128(xMax, f2); \
-            xPos = _mm_or_si128(_mm_and_si128(xPos, f1), _mm_andnot_si128(f1, f3)); \
-\
-            f1 = _mm_load_si128(buf + 4); \
-            f4 = _mm_cmpgt_epi32(f1, f2); \
-            f1 = _mm_xor_si128(f1, f2); \
-            f1 = _mm_and_si128(f1, f4); \
-            f1 = _mm_xor_si128(f1, f2); \
-            f3 = _mm_or_si128(_mm_and_si128(f4, *(SWB + 1)), _mm_andnot_si128(f4, f3)); \
-            /* f1 f3 */ \
-            f4 = _mm_cmpgt_epi32(e1, f1); \
-            f2 = _mm_xor_si128(e1, f1); \
-            f2 = _mm_and_si128(f2, f4); \
-            f2 = _mm_xor_si128(f2, f1); \
-            f3 = _mm_or_si128(_mm_and_si128(f4, *(SWA - 5 + 1)), _mm_andnot_si128(f4, f3)); \
-            /* f2 f3 */ \
-            _mm_store_si128(SWA, f2); \
-            _mm_store_si128(SWA + 1, f3); \
-            f2 = _mm_add_epi32(f2, xOpen); \
-            e1 = _mm_add_epi32(e1, xExt); \
-            f1 = _mm_cmpgt_epi32(e1, f2); \
-            e1 = _mm_xor_si128(e1, f2); \
-            e1 = _mm_and_si128(e1, f1); \
-            e1 = _mm_xor_si128(e1, f2); \
-            f3 = _mm_load_si128(buf + 4); \
-            f3 = _mm_add_epi32(f3, xExt); \
-            f1 = _mm_cmpgt_epi32(f3, f2); \
-            f3 = _mm_xor_si128(f3, f2); \
-            f3 = _mm_and_si128(f3, f1); \
-            f3 = _mm_xor_si128(f3, f2); \
-            _mm_store_si128(buf + 4, f3); \
-\
-            f2 = _mm_load_si128(SWB); \
-            f1 = _mm_load_si128(SWB + 1); \
-            buf += 5; \
-        } while (--j); \
-\
-        f4 = _mm_slli_si128(_mm_load_si128(SWA - 5 + 1), 4); \
-        buf = matrix + 5; \
-        j = 0; \
-        e1 = _mm_slli_si128(e1, 4); \
-        f2 = _mm_load_si128(SWA); \
-        f1 = _mm_add_epi32(f2, xOpen); \
+#define SW_LOOP(SWA, SWB) \
+    buf = matrix + 5; \
+    score = score1 + src[i - 1] * iter * 4; \
+    xMax = _mm_xor_si128(xMax, xMax); \
+    f2 = _mm_slli_si128(_mm_load_si128(SWB + (iter - 1) * 5), 4); \
+    f1 = _mm_slli_si128(_mm_load_si128(SWB + 1 + (iter - 1) * 5), 4); \
+    f1 = _mm_or_si128(f1, _mm_cvtsi32_si128(i - 1)); \
+    e1 = _mm_xor_si128(e1, e1); \
+    j = iter; \
+    do { \
+        f2 = _mm_add_epi32(f2, *((__m128i *)score)); \
+        score += 4; /* subst */ \
+        /* f2 f1 */ \
+        f4 = _mm_cvtsi32_si128(i); \
+        f4 = _mm_shuffle_epi32(f4, 0); \
         f3 = _mm_xor_si128(f3, f3); \
-        f3 = _mm_cmpgt_epi32(f1, f3); \
-        f1 = _mm_and_si128(f1, f3); \
-        k = _mm_movemask_epi8(_mm_cmpgt_epi32(e1, f1)); \
-        if (k) \
-            do { \
-                f3 = _mm_cmpgt_epi32(e1, f2); \
-                f1 = _mm_xor_si128(e1, f2); \
-                f1 = _mm_and_si128(f1, f3); \
-                f1 = _mm_xor_si128(f1, f2); \
-                f2 = _mm_or_si128(_mm_and_si128(f3, f4), _mm_andnot_si128(f3, *(SWA + 1))); \
-                _mm_store_si128(SWA, f1); \
-                _mm_store_si128(SWA + 1, f2); \
+        f3 = _mm_cmpgt_epi32(f2, f3); \
+        f2 = _mm_and_si128(f2, f3); \
+        f3 = _mm_or_si128(_mm_and_si128(f1, f3), _mm_andnot_si128(f3, f4)); \
+        /* f2 f3 */ \
+        f1 = _mm_cmpgt_epi32(xMax, f2); \
+        xMax = _mm_xor_si128(xMax, f2); \
+        xMax = _mm_and_si128(xMax, f1); \
+        xMax = _mm_xor_si128(xMax, f2); \
+        xPos = _mm_or_si128(_mm_and_si128(xPos, f1), _mm_andnot_si128(f1, f3)); \
 \
-                f1 = _mm_add_epi32(f1, xOpen); \
-                f2 = _mm_load_si128(buf + 4); \
-                f3 = _mm_cmpgt_epi32(f1, f2); \
-                f1 = _mm_xor_si128(f1, f2); \
-                f1 = _mm_and_si128(f1, f3); \
-                f1 = _mm_xor_si128(f1, f2); \
-                _mm_store_si128(buf + 4, f2); \
+        f1 = _mm_load_si128(buf + 4); \
+        f4 = _mm_cmpgt_epi32(f1, f2); \
+        f1 = _mm_xor_si128(f1, f2); \
+        f1 = _mm_and_si128(f1, f4); \
+        f1 = _mm_xor_si128(f1, f2); \
+        f3 = _mm_or_si128(_mm_and_si128(f4, *(SWB + 1)), _mm_andnot_si128(f4, f3)); \
+        /* f1 f3 */ \
+        f4 = _mm_cmpgt_epi32(e1, f1); \
+        f2 = _mm_xor_si128(e1, f1); \
+        f2 = _mm_and_si128(f2, f4); \
+        f2 = _mm_xor_si128(f2, f1); \
+        f3 = _mm_or_si128(_mm_and_si128(f4, *(SWA - 5 + 1)), _mm_andnot_si128(f4, f3)); \
+        /* f2 f3 */ \
+        _mm_store_si128(SWA, f2); \
+        _mm_store_si128(SWA + 1, f3); \
+        f2 = _mm_add_epi32(f2, xOpen); \
+        e1 = _mm_add_epi32(e1, xExt); \
+        f1 = _mm_cmpgt_epi32(e1, f2); \
+        e1 = _mm_xor_si128(e1, f2); \
+        e1 = _mm_and_si128(e1, f1); \
+        e1 = _mm_xor_si128(e1, f2); \
+        f3 = _mm_load_si128(buf + 4); \
+        f3 = _mm_add_epi32(f3, xExt); \
+        f1 = _mm_cmpgt_epi32(f3, f2); \
+        f3 = _mm_xor_si128(f3, f2); \
+        f3 = _mm_and_si128(f3, f1); \
+        f3 = _mm_xor_si128(f3, f2); \
+        _mm_store_si128(buf + 4, f3); \
 \
-                e1 = _mm_add_epi32(e1, xExt); \
-                buf += 5; \
-                if (++j >= static_cast<int>(iter)) { \
-                    buf = matrix + 5; \
-                    j = 0; \
-                    e1 = _mm_slli_si128(e1, 4); \
-                    f4 = _mm_slli_si128(f4, 4); \
-                } \
-                f2 = _mm_load_si128(SWA); \
-                f1 = _mm_add_epi32(f2, xOpen); \
-                f3 = _mm_xor_si128(f3, f3); \
-                f3 = _mm_cmpgt_epi32(f1, f3); \
-                f1 = _mm_and_si128(f1, f3); \
-                k = _mm_movemask_epi8(_mm_cmpgt_epi32(e1, f1)); \
-            } while (k); \
+        f2 = _mm_load_si128(SWB); \
+        f1 = _mm_load_si128(SWB + 1); \
+        buf += 5; \
+    } while (--j); \
 \
-        max1 = *((int *)(&xMax)); \
-        n = 0; \
-        k = 1; \
+    f4 = _mm_slli_si128(_mm_load_si128(SWA - 5 + 1), 4); \
+    buf = matrix + 5; \
+    j = 0; \
+    e1 = _mm_slli_si128(e1, 4); \
+    f2 = _mm_load_si128(SWA); \
+    f1 = _mm_add_epi32(f2, xOpen); \
+    f3 = _mm_xor_si128(f3, f3); \
+    f3 = _mm_cmpgt_epi32(f1, f3); \
+    f1 = _mm_and_si128(f1, f3); \
+    k = _mm_movemask_epi8(_mm_cmpgt_epi32(e1, f1)); \
+    if (k) \
         do { \
-            j = ((int *)(&xMax))[k]; \
-            if (j >= max1) { \
-                max1 = j; \
-                n = k; \
-            } \
-        } while (++k < 4); \
+            f3 = _mm_cmpgt_epi32(e1, f2); \
+            f1 = _mm_xor_si128(e1, f2); \
+            f1 = _mm_and_si128(f1, f3); \
+            f1 = _mm_xor_si128(f1, f2); \
+            f2 = _mm_or_si128(_mm_and_si128(f3, f4), _mm_andnot_si128(f3, *(SWA + 1))); \
+            _mm_store_si128(SWA, f1); \
+            _mm_store_si128(SWA + 1, f2); \
 \
-        if (max1 >= minScore) { \
-            j = ((int *)(&xPos))[n]; \
-            SW_FILT_MACRO; \
-        }
+            f1 = _mm_add_epi32(f1, xOpen); \
+            f2 = _mm_load_si128(buf + 4); \
+            f3 = _mm_cmpgt_epi32(f1, f2); \
+            f1 = _mm_xor_si128(f1, f2); \
+            f1 = _mm_and_si128(f1, f3); \
+            f1 = _mm_xor_si128(f1, f2); \
+            _mm_store_si128(buf + 4, f2); \
+\
+            e1 = _mm_add_epi32(e1, xExt); \
+            buf += 5; \
+            if (++j >= static_cast<int>(iter)) { \
+                buf = matrix + 5; \
+                j = 0; \
+                e1 = _mm_slli_si128(e1, 4); \
+                f4 = _mm_slli_si128(f4, 4); \
+            } \
+            f2 = _mm_load_si128(SWA); \
+            f1 = _mm_add_epi32(f2, xOpen); \
+            f3 = _mm_xor_si128(f3, f3); \
+            f3 = _mm_cmpgt_epi32(f1, f3); \
+            f1 = _mm_and_si128(f1, f3); \
+            k = _mm_movemask_epi8(_mm_cmpgt_epi32(e1, f1)); \
+        } while (k); \
+\
+    max1 = *((int *)(&xMax)); \
+    n = 0; \
+    k = 1; \
+    do { \
+        j = ((int *)(&xMax))[k]; \
+        if (j >= max1) { \
+            max1 = j; \
+            n = k; \
+        } \
+    } while (++k < 4); \
+\
+    if (max1 >= minScore) { \
+        j = ((int *)(&xPos))[n]; \
+        SW_FILT_MACRO; \
+    }
 
     // #define SW_FILT
 
-#    ifdef SW_FILT
-#        define SW_FILT_MACRO \
-            if (p.refSubseqInterval.startPos != j) { \
-                if (p.score) { \
-                    pairAlignmentStrings.append(p); \
-                    /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */ \
-                } \
-                p.refSubseqInterval.startPos = j; \
-                p.refSubseqInterval.length = i - j; \
-                p.score = max1; \
-            } else if (p.score < max1) { \
-                p.refSubseqInterval.length = i - j; \
-                p.score = max1; \
-            }
-#    else
-#        define SW_FILT_MACRO \
+#ifdef SW_FILT
+#    define SW_FILT_MACRO \
+        if (p.refSubseqInterval.startPos != j) { \
+            if (p.score) { \
+                pairAlignmentStrings.append(p); \
+                /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */ \
+            } \
             p.refSubseqInterval.startPos = j; \
             p.refSubseqInterval.length = i - j; \
             p.score = max1; \
-            pairAlignmentStrings.append(p); \
-            /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */
-#    endif
+        } else if (p.score < max1) { \
+            p.refSubseqInterval.length = i - j; \
+            p.score = max1; \
+        }
+#else
+#    define SW_FILT_MACRO \
+        p.refSubseqInterval.startPos = j; \
+        p.refSubseqInterval.length = i - j; \
+        p.score = max1; \
+        pairAlignmentStrings.append(p); \
+        /* printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score); */
+#endif
 
     i = 1;
     do {
@@ -963,15 +961,15 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
         SW_LOOP(buf + 2, buf);
     } while (++i <= static_cast<int>(src_n));
 
-#    undef SW_LOOP
-#    undef SW_FILT_MACRO
+#undef SW_LOOP
+#undef SW_FILT_MACRO
 
-#    ifdef SW_FILT
+#ifdef SW_FILT
     if (p.score) {
         pairAlignmentStrings.append(p);
         // printf("#%i-%i %i\n", (int)p.refSubseqInterval.startPos, (int)p.refSubseqInterval.length, (int)p.score);
     }
-#    endif
+#endif
     _mm_free(matrix);
 }
 
@@ -1193,4 +1191,3 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
 }
 
 }    // namespace U2
-#endif    //SW2_BUILD_WITH_SSE2

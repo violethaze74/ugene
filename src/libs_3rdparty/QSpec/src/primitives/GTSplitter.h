@@ -22,9 +22,9 @@
 #ifndef _HI_GT_SPLITTER_H_
 #define _HI_GT_SPLITTER_H_
 
-#include "GTGlobals.h"
-
 #include <QSplitter>
+
+#include "GTGlobals.h"
 
 namespace HI {
 
@@ -37,6 +37,6 @@ public:
     static void moveHandle(GUITestOpStatus &os, QSplitter *splitter, int pixels, int handleNumber = 0);
 };
 
-}   // namespace HI
+}    // namespace HI
 
-#endif // _HI_GT_SPLITTER_H_
+#endif    // _HI_GT_SPLITTER_H_

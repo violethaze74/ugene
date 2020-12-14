@@ -1,6 +1,4 @@
-# include (primer3.pri)
-
-INCLUDEPATH += src/primer3_core 
+INCLUDEPATH += src/primer3_core
 
 PLUGIN_ID=primer3
 PLUGIN_NAME=Primer3

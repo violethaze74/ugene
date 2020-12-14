@@ -235,46 +235,6 @@ size_t AppResourcePool::getCurrentAppMemory() {
     return -1;
 }
 
-bool AppResourcePool::isSSE2Enabled() {
-    bool answer = false;
-#if defined(Q_OS_WIN)
-    //Using WinAPI call on Windows.
-
-    //Return Value
-    //If the feature is supported, the return value is a nonzero value.
-    //If the feature is not supported, the return value is zero.
-    //
-    //If the HAL does not support detection of the feature,
-    //whether or not the hardware supports the feature, the return value is also zero.
-    //
-    //Windows 2000: This feature is not supported.
-    //
-    //Header:  Winbase.h (include Windows.h)
-    //Library: Kernel32.lib
-    //DLL:     Kernel32.dll
-
-    answer = (bool)IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE);
-#elif defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
-    answer = true;
-#elif defined(__i386__) || defined(__X86__) || defined(_M_IX86)
-    //cpuid instruction:
-    //- takes 0x1 on eax,
-    //- returns standard features flags in edx, bit 26 is SSE2 flag
-    //- clobbers ebx, ecx
-    unsigned int fflags = 0;
-    unsigned int stub = 0;
-    __asm__ __volatile__(
-        "push %%ebx; cpuid; mov %%ebx, %%edi; pop %%ebx"
-        : "=a"(stub),
-          "=D"(stub),
-          "=c"(stub),
-          "=d"(fflags)
-        : "a"(0x1));
-    answer = ((fflags & (1 << 26)) != 0);
-#endif
-    return answer;
-}
-
 void AppResourcePool::registerResource(AppResource *r) {
     SAFE_POINT(NULL != r, "", );
     SAFE_POINT(!resources.contains(r->getResourceId()), QString("Duplicate resource: %1").arg(r->getResourceId()), );

@@ -223,15 +223,15 @@ void EnzymesADVContext::buildMenu(GObjectView *v, QMenu *m) {
     m->insertMenu(exportMenuAction, cloningMenu);
 
     if (!av->getAnnotationsSelection()->getAnnotations().isEmpty()) {
-        Annotation *a = av->getAnnotationsSelection()->getAnnotations().first();
-        const QString annName = a->getName();
-        const QString groupName = a->getGroup()->getName();
-        const int annCount = a->getGroup()->getAnnotations().size();
+        Annotation *firstAnnotation = av->getAnnotationsSelection()->getAnnotations().first();
+        U2FeatureType featureType = firstAnnotation->getType();
+        QString groupName = firstAnnotation->getGroup()->getName();
+        int countOfAnnotationsInGroup = firstAnnotation->getGroup()->getAnnotations().size();
 
-        if (annName == PRIMER_ANNOTATION_NAME && groupName.startsWith(PRIMER_ANNOTATION_GROUP_NAME) && 2 == annCount) {
-            QAction *a = findViewAction(v, CREATE_PCR_PRODUCT_ACTION_NAME);
-            SAFE_POINT(NULL != a, "Invalid menu action", );
-            cloningMenu->addAction(a);
+        if (featureType == U2FeatureTypes::Primer && groupName.startsWith(PRIMER_ANNOTATION_GROUP_NAME) && countOfAnnotationsInGroup == 2) {
+            QAction *createPcrAction = findViewAction(v, CREATE_PCR_PRODUCT_ACTION_NAME);
+            SAFE_POINT(createPcrAction != nullptr, "CREATE_PCR_PRODUCT_ACTION_NAME not found!", );
+            cloningMenu->addAction(createPcrAction);
         }
     }
 }

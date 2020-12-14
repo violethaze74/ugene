@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-
 #include "primitives/GTGroupBox.h"
-#include "primitives/GTWidget.h"
 
 #include <QStyle>
 #include <QStyleOption>
+
+#include "primitives/GTWidget.h"
 
 namespace HI {
 
@@ -40,7 +40,7 @@ bool GTGroupBox::getChecked(GUITestOpStatus &os, QGroupBox *groupBox) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChecked"
-bool GTGroupBox::getChecked(GUITestOpStatus& os, const QString &groupBoxName, QWidget *parent) {
+bool GTGroupBox::getChecked(GUITestOpStatus &os, const QString &groupBoxName, QWidget *parent) {
     return GTGroupBox::getChecked(os, GTWidget::findExactWidget<QGroupBox *>(os, groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
@@ -80,13 +80,13 @@ void GTGroupBox::setChecked(GUITestOpStatus &os, QGroupBox *groupBox, bool check
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTGroupBox::setChecked(GUITestOpStatus& os, const QString &groupBoxName, bool checked, QWidget *parent) {
+void GTGroupBox::setChecked(GUITestOpStatus &os, const QString &groupBoxName, bool checked, QWidget *parent) {
     GTGroupBox::setChecked(os, GTWidget::findExactWidget<QGroupBox *>(os, groupBoxName, parent), checked);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTGroupBox::setChecked(GUITestOpStatus& os, const QString &groupBoxName, QWidget *parent) {
+void GTGroupBox::setChecked(GUITestOpStatus &os, const QString &groupBoxName, QWidget *parent) {
     GTGroupBox::setChecked(os, GTWidget::findExactWidget<QGroupBox *>(os, groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
@@ -98,4 +98,4 @@ QRect GTGroupBox::getCheckBoxRect(QGroupBox *groupBox) {
 
 #undef GT_CLASS_NAME
 
-}   // namespace
+}    // namespace HI

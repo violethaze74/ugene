@@ -29,7 +29,7 @@ namespace U2 {
 class FastQCSupport : public ExternalTool {
     Q_OBJECT
 public:
-    FastQCSupport(const QString &id, const QString &name, const QString &path = "");
+    FastQCSupport();
 
     static ExternalTool *getJava();
 

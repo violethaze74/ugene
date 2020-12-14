@@ -40,7 +40,7 @@ class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
 public:
     McaEditorConsensusArea(McaEditorWgt *ui);
 
-    QString getDefaultAlgorithmId() const {
+    QString getDefaultAlgorithmId() const override {
         return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO;
     }
 
@@ -49,10 +49,11 @@ public:
     }
     void buildStaticToolbar(QToolBar *tb);
 
-private:
-    void initRenderer();
-    bool highlightConsensusChar(int pos);
-    QString getLastUsedAlgoSettingsKey() const;
+protected:
+    QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const override;
+    void initRenderer() override;
+    bool highlightConsensusChar(int pos) override;
+    QString getLastUsedAlgoSettingsKey() const override;
 
 private:
     MaConsensusMismatchController *mismatchController;

@@ -32,9 +32,8 @@ namespace U2 {
 class PythonSupport : public RunnerTool {
     Q_OBJECT
 public:
-    PythonSupport(const QString &id, const QString &name, const QString &path = "");
+    PythonSupport();
 
-    static const QString ET_PYTHON;
     static const QString ET_PYTHON_ID;
 };
 
@@ -47,27 +46,24 @@ public:
 class PythonModuleDjangoSupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleDjangoSupport(const QString &id, const QString &name);
+    PythonModuleDjangoSupport();
 
-    static const QString ET_PYTHON_DJANGO;
     static const QString ET_PYTHON_DJANGO_ID;
 };
 
 class PythonModuleNumpySupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleNumpySupport(const QString &id, const QString &name);
+    PythonModuleNumpySupport();
 
-    static const QString ET_PYTHON_NUMPY;
     static const QString ET_PYTHON_NUMPY_ID;
 };
 
 class PythonModuleBioSupport : public PythonModuleSupport {
     Q_OBJECT
 public:
-    PythonModuleBioSupport(const QString &id, const QString &name);
+    PythonModuleBioSupport();
 
-    static const QString ET_PYTHON_BIO;
     static const QString ET_PYTHON_BIO_ID;
 };
 

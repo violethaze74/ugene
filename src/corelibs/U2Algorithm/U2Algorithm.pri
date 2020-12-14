@@ -1,5 +1,3 @@
-# include (U2Algorithm.pri)
-
 MODULE_ID=U2Algorithm
 include( ../../ugene_lib_common.pri )
 

@@ -21,6 +21,8 @@
 
 #include "MSAConsensusUtils.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <QPair>
 #include <QVector>
 
@@ -55,7 +57,7 @@ void MSAConsensusUtils::updateConsensus(const MultipleAlignment &ma, const QVect
     }
 }
 
-QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, int pos, int minReportPercent, int maxReportChars) {
+QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, int pos, int minReportPercent, int maxReportChars, bool ignoreLeadingTrailingGaps /* = false */) {
     if (ma->getLength() == 0) {
         return QString();
     }
@@ -67,7 +69,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
         return QString();
     }
     int gaps = 0;
-    for (int seq = 0; seq < nSeq; seq++) {
+    for (int seq = 0; seq < ma->getNumRows(); seq++) {
         uchar c = (uchar)ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
@@ -75,9 +77,14 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
             freqs[idx].second = c;
         } else {
             // count gaps
+            if (ignoreLeadingTrailingGaps && ma->isLeadingOrTrailingGap(seq, pos)) {
+                nSeq--;
+                continue;
+            } 
             ++gaps;
         }
     }
+    CHECK(nSeq != 0, QString());
     qSort(freqs);
     double percentK = 100.0 / nSeq;
 

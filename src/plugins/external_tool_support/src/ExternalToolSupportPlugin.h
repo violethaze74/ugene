@@ -39,8 +39,6 @@ public:
 private:
     void registerSettingsController();
     void registerWorkers();
-
-    ExternalToolManagerImpl validationManager;
 };
 
 class ExternalToolSupportService : public Service {

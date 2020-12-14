@@ -1,4 +1,3 @@
-# include (wevote_support.pri)
 include (../../ugene_globals.pri)
 
 PLUGIN_ID=wevote_support

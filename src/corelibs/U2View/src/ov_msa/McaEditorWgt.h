@@ -47,12 +47,12 @@ public:
     QAction *getToggleColumnsAction() const;
 
 protected:
-    void initActions();
-    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar);
-    void initOverviewArea();
-    void initNameList(QScrollBar *nhBar);
-    void initConsensusArea();
-    void initStatusBar();
+    void initActions() override;
+    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
+    void initOverviewArea() override;
+    void initNameList(QScrollBar *nhBar) override;
+    void initConsensusArea() override;
+    void initStatusBar() override;
 
 private:
     McaEditorReferenceArea *refArea;

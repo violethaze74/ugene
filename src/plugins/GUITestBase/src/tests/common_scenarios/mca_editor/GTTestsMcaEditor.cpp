@@ -30,7 +30,6 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTScrollBar.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -60,7 +59,6 @@
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 
 namespace U2 {
 
@@ -101,15 +99,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(output.contains("UGENE_Data"), QString("incorrect output line: do not contain default path: UGENE_Data"));
+            CHECK_SET_ERR(output.contains("sanger_reads_alignment"), QString("incorrect output line: do not contain default path: sanger_reads_alignment"));
+            CHECK_SET_ERR(output.contains(".ugenedb", Qt::CaseInsensitive), QString("incorrect output line: do not contain default path: .ugenedb"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
@@ -191,16 +183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
@@ -503,16 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //2. Select reference  /test/general/_common_data/alphabets/extended_amino_1000.fa
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
@@ -592,16 +566,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
@@ -734,16 +699,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_1000.fa
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
@@ -876,16 +832,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
-
-            //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
-            bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
-            bool checkContainsSecond = output.contains("sanger_reads_alignment");
-            bool checkContainsThird = output.contains("UGENE_Data");
-            bool checkContainsFourth = output.contains("Documents");
-            bool checkContains = checkContainsFirst && checkContainsSecond && checkContainsThird && checkContainsFourth;
-            CHECK_SET_ERR(checkContains, QString("incorrect output line: do not contain default path"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //2. Select reference  .../test/general/_common_data/sanger/reference.gb
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");

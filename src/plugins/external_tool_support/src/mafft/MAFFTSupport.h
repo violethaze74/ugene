@@ -33,12 +33,12 @@ namespace U2 {
 class MAFFTSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MAFFTSupport(const QString &id, const QString &name, const QString &path = "");
-    GObjectViewWindowContext *getViewContext() {
+    MAFFTSupport();
+
+    GObjectViewWindowContext *getViewContext() const{
         return viewCtx;
     }
 
-    static const QString ET_MAFFT;
     static const QString ET_MAFFT_ID;
     static const QString MAFFT_TMP_DIR;
 public slots:

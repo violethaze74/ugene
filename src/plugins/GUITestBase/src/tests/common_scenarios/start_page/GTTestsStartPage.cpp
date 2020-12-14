@@ -88,7 +88,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::click(os, GTWidget::findLabelByText(os, "COI.aln").first());
     //    Expected state: file is opened
     QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == "COI [m] COI", "unexpected window title " + name);
+    CHECK_SET_ERR(name == "COI [COI.aln]", "unexpected window title " + name);
     GTUtilsProjectTreeView::checkItem(os, "COI.aln");
 }
 

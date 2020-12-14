@@ -24,13 +24,16 @@
 #include <QString>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
+
+#ifdef Q_OS_MAC
+#    include <U2Core/AppResources.h>
+#endif
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -116,7 +119,7 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
-    foreach (const ExternalToolValidation &validation, validations) {
+    for (const ExternalToolValidation &validation : validations) {
         if (externalToolProcess != NULL) {
             delete externalToolProcess;
             externalToolProcess = NULL;
@@ -188,9 +191,9 @@ void ExternalToolJustValidateTask::cancelProcess() {
     CmdlineTaskRunner::killProcessTree(externalToolProcess);
 }
 
-void ExternalToolJustValidateTask::setEnvironment(ExternalTool *tool) {
+void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     QStringList additionalPaths;
-    foreach (const QString &toolId, tool->getDependencies()) {
+    for (const QString &toolId : externalTool->getDependencies()) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (NULL != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
@@ -332,7 +335,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
     QList<Task *> subTasks;
     CHECK(!subTask->isCanceled(), subTasks);
 
-    if (searchTask == subTask) {
+    if (subTask == searchTask) {
         CHECK(!searchTask->hasError(), subTasks);
         toolPaths = searchTask->getPaths();
         if (toolPaths.isEmpty()) {
@@ -342,7 +345,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
         } else {
             toolIsFound = true;
             validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
-            if (validateTask->isValidTool()) { // in-place path-only validation. Used in GUI tests.
+            if (validateTask->isValidTool()) {    // in-place path-only validation. Used in GUI tests.
                 isValid = true;
                 toolPath = validateTask->getToolPath();
                 version = validateTask->getToolVersion();
@@ -353,9 +356,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
                 subTasks << validateTask;
             }
         }
-    }
-
-    if (validateTask == subTask) {
+    } else if (subTask == validateTask) {
         if (validateTask->isValidTool()) {
             isValid = true;
             toolPath = validateTask->getToolPath();
@@ -404,11 +405,27 @@ Task::ReportResult ExternalToolSearchAndValidateTask::report() {
     return ReportResult_Finished;
 }
 
-ExternalToolsValidateTask::ExternalToolsValidateTask(const QList<Task *> &_tasks)
-    : SequentialMultiTask(tr("Checking external tools"), _tasks, TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)) {
+ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList<Task *> &tasks, ExternalToolValidationListener *listener)
+    : SequentialMultiTask(tr("Validate external tools"),
+                          tasks,
+                          TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)),
+      listener(listener) {
+    setMaxParallelSubtasks(5);
+#ifdef _DEBUG
+    QStringList toolIdList;
+    for (const Task *task : tasks) {
+        auto validationTask = qobject_cast<const ExternalToolValidateTask *>(task);
+        if (validationTask) {
+            toolIdList << validationTask->getToolId();
+        }
+    }
+    if (!toolIdList.isEmpty()) {
+        setTaskName(QString("Validate external tools: %1").arg(toolIdList.join(",")));
+    }
+#endif
 }
 
-QList<Task *> ExternalToolsValidateTask::onSubTaskFinished(Task *subTask) {
+QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> subTasks;
     ExternalToolValidateTask *validateTask = qobject_cast<ExternalToolValidateTask *>(subTask);
     bool muted = false;
@@ -431,6 +448,18 @@ QList<Task *> ExternalToolsValidateTask::onSubTaskFinished(Task *subTask) {
 
     subTasks = SequentialMultiTask::onSubTaskFinished(subTask);
     return subTasks;
+}
+
+Task::ReportResult ExternalToolsValidationMasterTask::report() {
+    if (listener != nullptr) {
+        for (const QPointer<Task> &subTask : getSubtasks()) {
+            ExternalToolValidateTask *task = qobject_cast<ExternalToolValidateTask *>(subTask.data());
+            SAFE_POINT(task, "Unexpected ExternalToolValidateTask subtask", ReportResult_Finished);
+            listener->setToolState(task->getToolId(), task->isValidTool());
+        }
+        listener->validationFinished();
+    }
+    return ReportResult_Finished;
 }
 
 ExternalToolsInstallTask::ExternalToolsInstallTask(const QList<Task *> &_tasks)

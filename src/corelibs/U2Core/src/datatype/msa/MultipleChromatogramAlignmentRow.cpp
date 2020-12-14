@@ -332,6 +332,10 @@ bool MultipleChromatogramAlignmentRowData::isGap(qint64 position) const {
     return MsaRowUtils::isGap(sequence.length(), gaps, position);
 }
 
+bool MultipleChromatogramAlignmentRowData::isLeadingOrTrailingGap(qint64 position) const {
+    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, position);
+}
+
 int MultipleChromatogramAlignmentRowData::getUngappedPosition(int pos) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
 }

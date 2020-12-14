@@ -31,7 +31,7 @@ namespace U2 {
 class SpideySupport : public ExternalTool {
     Q_OBJECT
 public:
-    SpideySupport(const QString &id, const QString &name, const QString &path = "");
+    SpideySupport();
     GObjectViewWindowContext *getViewContext() {
         return viewCtx;
     }

@@ -37,28 +37,28 @@ public:
     MysqlMsaDbi(MysqlDbi *dbi);
 
     /** Creates all required tables */
-    virtual void initSqlSchema(U2OpStatus &os);
+    void initSqlSchema(U2OpStatus &os) override;
 
     /** Reads Msa objects by id */
-    virtual U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os);
+    U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os) override;
 
     /** Returns the number of rows of the MSA (value cached in Msa table) */
-    virtual qint64 getNumOfRows(const U2DataId &msaId, U2OpStatus &os);
+    qint64 getNumOfRows(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns all rows of a MSA with the specified IDs */
-    virtual QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os);
+    QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns a row with the specified ID */
-    virtual U2MsaRow getRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os);
+    U2MsaRow getRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) override;
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
-    virtual QList<qint64> getRowsOrder(const U2DataId &msaId, U2OpStatus &os);
+    QList<qint64> getOrderedRowIds(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
-    virtual U2AlphabetId getMsaAlphabet(const U2DataId &msaId, U2OpStatus &os);
+    U2AlphabetId getMsaAlphabet(const U2DataId &msaId, U2OpStatus &os) override;
 
     /** Returns length stored in Msa table */
-    virtual qint64 getMsaLength(const U2DataId &msaId, U2OpStatus &os);
+    qint64 getMsaLength(const U2DataId &msaId, U2OpStatus &os) override;
 
     /**
      * Creates a new empty multiple alignment in the database.
@@ -66,38 +66,26 @@ public:
      * The number of rows and the length of the alignment are set to 0.
      * Returns the assigned id.
      */
-    U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os);
-    U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os);
-    U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os);
-    U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os);
+    U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) override;
+    U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) override;
+    U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) override;
+    U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) override;
 
     /**
      * Updates the multiple alignment name.
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void updateMsaName(const U2DataId &msaId, const QString &name, U2OpStatus &os);
+    void updateMsaName(const U2DataId &msaId, const QString &name, U2OpStatus &os) override;
 
     /**
      * Updates the multiple alignment alphabet.
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &alphabet, U2OpStatus &os);
+    void updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &alphabet, U2OpStatus &os) override;
 
-    /**
-     * Creates rows (and gap models for them) in the database.
-     * Enlarges msa length, if 'length' of any of the 'rows' is greater than current msa length.
-     * Recalculates 'length' of the 'rows'.
-     * The rows are appended to the end of the MSA.
-     * Assigns MSA as a parent for all the sequences.
-     * If a row ID equals "-1", sets a valid ID to the passed U2MaRow instances.
-     * Updates the number of rows of the MSA.
-     * Updates the alignment length.
-     * Increments the alignment version.
-     * Tracks modifications, if required.
-     */
-    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStatus &os);
+    void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) override;
 
     /**
      * Creates a new row and gap model records in the database.
@@ -112,7 +100,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os);
+    void addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os) override;
 
     /**
      * Removes rows for the specified alignment and with the specified ids
@@ -122,7 +110,7 @@ public:
      * Updates the alignment length.
      * Tracks modifications, if required.
      */
-    void removeRows(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os);
+    void removeRows(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os) override;
 
     /**
      * Removes a row with the specified ID for the specified alignment.
@@ -132,7 +120,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void removeRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os);
+    void removeRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) override;
 
     /**
      * Removes all rows from the alignment with the specified id.
@@ -147,7 +135,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void updateRowName(const U2DataId &msaId, qint64 rowId, const QString &newName, U2OpStatus &os);
+    void updateRowName(const U2DataId &msaId, qint64 rowId, const QString &newName, U2OpStatus &os) override;
 
     /**
      * Updates sequence data and information about the row.
@@ -155,14 +143,14 @@ public:
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    virtual void updateRowContent(const U2DataId &msaId, qint64 rowId, const QByteArray &seqBytes, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    void updateRowContent(const U2DataId &msaId, qint64 rowId, const QByteArray &seqBytes, const QList<U2MsaGap> &gaps, U2OpStatus &os) override;
 
     /**
      * Removes all previous values and sets a new gap model for a row in a MSA.
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    virtual void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
+    void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os) override;
 
     /** Updates a part of the Msa object info - the length */
     void updateMsaLength(const U2DataId &msaId, qint64 length, U2OpStatus &os);
@@ -172,7 +160,7 @@ public:
      * Be careful, all IDs must exactly match IDs of the MSA!
      * Increments the alignment version.
      */
-    virtual void setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os);
+    void setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os) override;
 
     /** Undo the operation for the MSA. */
     void undo(const U2DataId &msaId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os);
@@ -235,7 +223,7 @@ private:
     void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
     void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
     void addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os);
-    void addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MsaRow> &rows, U2OpStatus &os);
+    void addRowsCore(const U2DataId &msaId, const QList<qint64> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os);
     void removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os);
     void removeRowCore(const U2DataId &msaId, qint64 rowId, bool removeSequence, U2OpStatus &os);
     void removeRowsCore(const U2DataId &msaId, const QList<qint64> &rowIds, bool removeSequence, U2OpStatus &os);

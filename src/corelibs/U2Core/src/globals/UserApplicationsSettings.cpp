@@ -22,14 +22,15 @@
 #include "UserApplicationsSettings.h"
 
 #include <QApplication>
-#include <QDesktopServices>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QProcessEnvironment>
-#include <QSettings>
 #include <QStandardPaths>
 #include <QStyle>
-#include <QStyleFactory>
+
+#ifdef Q_OS_WIN
+#    include <QStyleFactory>
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -192,14 +193,18 @@ void UserAppsSettings::setUserTemporaryDirPath(const QString &newPath) {
     emit si_temporaryPathChanged();
 }
 
+// TODO: merge with getFileStorageDir.
 QString UserAppsSettings::getDefaultDataDirPath() const {
-    QString dirpath;
-    dirpath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + "UGENE_Data").toString();
-    QDir d(dirpath);
-    if (!d.exists(dirpath)) {
-        d.mkpath(dirpath);
+    QString defaultDataDirPath = qgetenv("UGENE_SAVE_DATA_DIR");
+    if (defaultDataDirPath.isEmpty()) {
+        defaultDataDirPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + "UGENE_Data";
     }
-    return dirpath;
+    QString dataDirPath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, defaultDataDirPath).toString();
+    QDir dir(dataDirPath);
+    if (!dir.exists(dataDirPath)) {
+        dir.mkpath(dataDirPath);
+    }
+    return dataDirPath;
 }
 
 void UserAppsSettings::setDefaultDataDirPath(const QString &newPath) {
@@ -250,7 +255,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
     // create sub dir
     int idx = 0;
     QString result;
-    bool created = false;
+    bool created;
     do {
         result = baseDirName + "_" + QByteArray::number(idx);
         created = baseDir.mkdir(result);
@@ -266,7 +271,11 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
 }
 
 QString UserAppsSettings::getFileStorageDir() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + FILE_STORAGE_DIR, QDir::homePath() + "/.UGENE_files").toString();
+    QString defaultSaveFilesDir = qgetenv("UGENE_SAVE_FILES_DIR");
+    if (defaultSaveFilesDir.isEmpty()) {
+        defaultSaveFilesDir = QDir::homePath() + "/.UGENE_files";
+    }
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + FILE_STORAGE_DIR, defaultSaveFilesDir).toString();
 }
 
 void UserAppsSettings::setFileStorageDir(const QString &newPath) {

@@ -64,7 +64,7 @@ ExternalToolRunTask::ExternalToolRunTask(const QString &_toolId, const QStringLi
 
     toolName = AppContext::getExternalToolRegistry()->getToolNameById(toolId);
     coreLog.trace("Creating run task for: " + toolName);
-    if (NULL != logParser) {
+    if (logParser != nullptr) {
         logParser->setParent(this);
     }
 }
@@ -97,7 +97,7 @@ void ExternalToolRunTask::run() {
     }
 
     helper.reset(new ExternalToolRunTaskHelper(this));
-    if (NULL != listener) {
+    if (listener != NULL) {
         helper->addOutputListener(listener);
     }
 

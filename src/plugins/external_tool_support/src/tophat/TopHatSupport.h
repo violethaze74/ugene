@@ -29,7 +29,7 @@ namespace U2 {
 class TopHatSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TopHatSupport(const QString &id, const QString &name, const QString &path = "");
+    TopHatSupport();
 
     static const QString ET_TOPHAT;
     static const QString ET_TOPHAT_ID;

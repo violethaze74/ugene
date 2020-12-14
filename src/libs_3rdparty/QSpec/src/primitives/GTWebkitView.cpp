@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTWebkitView.h"
+
 #include <QDebug>
 #include <QWebFrame>
 
-#include "GTWebkitView.h"
 #include "core/MainThreadRunnable.h"
 #include "utils/GTThread.h"
 
@@ -34,15 +35,16 @@ namespace HI {
 QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options) {
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWebView *view, const QString &selector, const GTGlobals::FindOptions &options, QList<HIWebElement> &webElements) :
-            view(view),
-            selector(selector),
-            options(options),
-            webElements(webElements) {}
+        Scenario(QWebView *view, const QString &selector, const GTGlobals::FindOptions &options, QList<HIWebElement> &webElements)
+            : view(view),
+              selector(selector),
+              options(options),
+              webElements(webElements) {
+        }
 
         void run(GUITestOpStatus &os) {
             Q_UNUSED(os);
-            QWebFrame* frame = view->page()->mainFrame();
+            QWebFrame *frame = view->page()->mainFrame();
             foreach (const QWebElement &el, frame->findAllElements(selector)) {
                 webElements << toHiWebElement(el);
             }
@@ -62,8 +64,8 @@ QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QW
     QList<HIWebElement> filteredElements;
     if (options.searchInHidden) {
         filteredElements = webElements;
-    } else{
-        foreach(const HIWebElement & element, webElements) {
+    } else {
+        foreach (const HIWebElement &element, webElements) {
             if (element.isVisible()) {
                 filteredElements << element;
             }
@@ -91,4 +93,4 @@ HIWebElement GTWebkitView::toHiWebElement(const QWebElement &element) {
 
 #undef GT_CLASS_NAME
 
-}
+}    // namespace HI

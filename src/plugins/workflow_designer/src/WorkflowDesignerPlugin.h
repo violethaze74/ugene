@@ -39,7 +39,6 @@ class WorkflowDesignerPlugin : public Plugin {
     Q_OBJECT
 public:
     static const QString RUN_WORKFLOW;
-    static const QString REMOTE_MACHINE;
     static const QString PRINT;
     static const QString CUSTOM_EL_WITH_SCRIPTS_DIR;
     static const QString CUSTOM_EXTERNAL_TOOL_DIR;
@@ -56,7 +55,6 @@ private:
     void processCMDLineOptions();
 
 private slots:
-    void sl_saveSchemaImageTaskFinished();
     void sl_initWorkers();
 };
 
@@ -78,7 +76,6 @@ public slots:
     void sl_sampleActionClicked(const SampleAction &action);
 
 private slots:
-    void sl_showManagerWindow();
     void sl_startWorkflowPlugin();
 
 private:

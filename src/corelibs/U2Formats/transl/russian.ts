@@ -110,12 +110,12 @@
 <context>
     <name>U2::ABIFormat</name>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="54"/>
+        <location filename="../src/ABIFormat.cpp" line="52"/>
         <source>ABIF</source>
         <translation>ABIF</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="55"/>
+        <location filename="../src/ABIFormat.cpp" line="53"/>
         <source>A chromatogram file format</source>
         <translation>Формат типа хромотограмма</translation>
     </message>
@@ -322,12 +322,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="154"/>
+        <location filename="../src/ace/AceImporter.cpp" line="150"/>
         <source>ACE file importer</source>
         <translation>Импорт ACE файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="158"/>
+        <location filename="../src/ace/AceImporter.cpp" line="154"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>Импорт ACE файлов используется для преобразования обычных ACE файлов в формат базы данных UGENE. Преобразовав ACE файл в формат UGENE DB вы получите быстрый и эффективный интерфейс к вашим данным с возможностью изменять содержимое файла</translation>
     </message>
@@ -350,7 +350,7 @@
         <translation>Невозможно создать временную базу данных</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="141"/>
+        <location filename="../src/ace/AceImporter.cpp" line="137"/>
         <source>Failed to get load task for : %1</source>
         <translation>Не удалось получить загрузку задачи для: %1</translation>
     </message>
@@ -2191,22 +2191,22 @@
 <context>
     <name>U2::SCFFormat</name>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="51"/>
+        <location filename="../src/SCFFormat.cpp" line="48"/>
         <source>SCF</source>
         <translation>SCF</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="52"/>
+        <location filename="../src/SCFFormat.cpp" line="49"/>
         <source>It is Standard Chromatogram Format</source>
         <translation>Это стандартный формат хроматограмм</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="70"/>
+        <location filename="../src/SCFFormat.cpp" line="67"/>
         <source>Failed to parse SCF file: %1</source>
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1239"/>
+        <location filename="../src/SCFFormat.cpp" line="1238"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Невозможно загрузить последовательность из SCF файла %1</translation>
     </message>
@@ -2526,88 +2526,88 @@
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="111"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="127"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="226"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="645"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="390"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="648"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="391"/>
         <source>Msa object not found</source>
         <translation>Объект msa не найден</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="187"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="821"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="861"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="824"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="864"/>
         <source>Msa row not found</source>
         <translation>Столбец msa не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="606"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="631"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="609"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="634"/>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1141"/>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1150"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="696"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="699"/>
         <source>Invalid row position: %1</source>
         <translation>Неправильное расположение столбца: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1070"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1201"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1071"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1202"/>
         <source>An error occurred during updating an alignment alphabet</source>
         <translation>Возникла ошибка во время обновления алфавита выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1088"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1216"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1089"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1217"/>
         <source>An error occurred during reverting adding of rows</source>
         <translation>Возникла ошибка во время отмены добавления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1106"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1107"/>
         <source>An error occurred during reverting addition of a row</source>
         <translation>Возникла ошибка во время отмены добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1119"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1236"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1120"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1237"/>
         <source>An error occurred during reverting removing of rows</source>
         <translation>Возникла ошибка во время отмены удаления столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1132"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1251"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1133"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1252"/>
         <source>An error occurred during reverting removing of a row</source>
         <translation>Возникла ошибка во время отмены удаления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1146"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1262"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1147"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1263"/>
         <source>An error occurred during updating an alignment gaps</source>
         <translation>Возникла ошибка во время обновления пробелов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1159"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1272"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1160"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1273"/>
         <source>An error occurred during updating an alignment row order</source>
         <translation>Возникла ошибка во время обновления порядка столбцов</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1173"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1282"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1174"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1283"/>
         <source>An error occurred during updating a row info</source>
         <translation>Возникла ошибка во время обновления информации о столбце</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1188"/>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1297"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1323"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1333"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1189"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1298"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1324"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="1334"/>
         <source>An error occurred during updating an msa length</source>
         <translation>An error occurred during updating an msa length</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1226"/>
+        <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="1227"/>
         <source>An error occurred during addition of a row</source>
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
@@ -2852,16 +2852,16 @@
         <translation>An object single modification step not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="542"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="557"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="749"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="543"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="558"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="750"/>
         <source>Msa object not found!</source>
         <translation>Msa object not found!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="640"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="808"/>
-        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="845"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="641"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="809"/>
+        <location filename="../src/sqlite_dbi/SQLiteMsaDbi.cpp" line="846"/>
         <source>Msa row not found!</source>
         <translation>Msa row not found!</translation>
     </message>

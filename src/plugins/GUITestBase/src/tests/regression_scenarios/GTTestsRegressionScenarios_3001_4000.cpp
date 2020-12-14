@@ -196,7 +196,7 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR("S" == clipboardText, "Alignment is not locked" + clipboardText);
 }
 
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_3035) {
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
     QString name = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(name == " [s] et0001_sequence", QString("unexpected window title:%1").arg(name));
+    CHECK_SET_ERR(name == "et0001_sequence", QString("unexpected window title: %1 ").arg(name));
 
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_3035.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_3052) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMdi::closeWindow(os, "test_3052 [as] chrM");
+    GTUtilsMdi::closeWindow(os, "chrM [test_3052.ugenedb]");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Append"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, ugenedbFileName));
@@ -345,7 +345,7 @@ GUI_TEST_CLASS_DEFINITION(test_3052_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMdi::closeWindow(os, "test_3052 [as] chrM");
+    GTUtilsMdi::closeWindow(os, "chrM [test_3052.ugenedb]");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Append"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, ugenedbFileName));
@@ -449,7 +449,7 @@ GUI_TEST_CLASS_DEFINITION(test_3074) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI");
+    QWidget *msaView = GTWidget::findWidget(os, "COI");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_3125) {
     CHECK_OP(os, );
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/view_test_0002/COI");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI");
+    QWidget *msaView = GTWidget::findWidget(os, "COI");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
@@ -943,12 +943,10 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     //    Expected state: Showed Import BAM File dialog.
     //    2. Click Import;
     //    Expected state: Imported file opened in Assembly Viewer.
-    GTWidget::findWidget(os, "assembly_browser_chrM.sorted.bam [as] chrM");
+    GTWidget::findWidget(os, "assembly_browser_chrM [chrM.sorted.bam.ugenedb]");
     //    3. Remove this file from project and try to open it again;
     GTUtilsProjectTreeView::click(os, "chrM.sorted.bam.ugenedb");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -958,12 +956,10 @@ GUI_TEST_CLASS_DEFINITION(test_3143) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     //    4. Click Import;
     //    Expected state: Showed message box with question about overwriting of existing file..
     //    5. Click Replace;
-    GTWidget::findWidget(os, "assembly_browser_chrM.sorted.bam [as] chrM");
+    GTWidget::findWidget(os, "chrM [chrM.sorted.bam.ugenedb]");
     //    Expected state: Imported file opened in Assembly Viewer without errors.
 }
 
@@ -1704,12 +1700,9 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
 
     //    > pattern2
     //    GGCAGAAACC
-    QString pattern = "> pattern1"
-                      "\n"
-                      "TGGGGGCCAATA"
-                      "\n\n"
-                      "> pattern2"
-                      "\n"
+    QString pattern = "> pattern1\n"
+                      "TGGGGGCCAATA\n\n"
+                      "> pattern2\n"
                       "GGCAGAAACC";
     GTUtilsOptionPanelSequenceView::enterPattern(os, pattern, true);
 
@@ -1952,7 +1945,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     const QString folderName = "view_test_0001";
     const QString folderPath = U2ObjectDbi::PATH_SEP + folderName;
     const QString sequenceVisibleName = "NC_001363";
-    const QString sequenceVisibleWidgetName = " [s] NC_001363";
+    const QString sequenceVisibleWidgetName = "NC_001363";
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
@@ -1967,8 +1960,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann1", "1.. 20"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "create_annotation_action"));
     GTMenu::showContextMenu(os, seqView);
-    GTGlobals::sleep(500);
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
@@ -1982,7 +1974,6 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3308) {
@@ -2010,15 +2001,13 @@ GUI_TEST_CLASS_DEFINITION(test_3312) {
     //2. Get any msa object in it.
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, "/test_3312/COI_3312");
 
-    QWidget *msaView = GTWidget::findWidget(os, " [m] COI_3312");
+    QWidget *msaView = GTWidget::findWidget(os, "COI_3312");
     CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
 
     //3. Rename the object.
     //Expected state: object is successfully renamed, there are no errors in the log.
     GTUtilsProjectTreeView::rename(os, "COI_3312", "COI_3312_renamed");
-    GTGlobals::sleep(3000);
     GTUtilsProjectTreeView::rename(os, "COI_3312_renamed", "COI_3312");
-    GTGlobals::sleep(2000);
 
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
 
@@ -2246,8 +2235,7 @@ GUI_TEST_CLASS_DEFINITION(test_3335) {
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem(os, "Annotations");
-    GTGlobals::sleep(5000);
-    QWidget *relatedSequenceView = GTUtilsMdi::findWindow(os, "human_T1 [s] renamed sequence");
+    QWidget *relatedSequenceView = GTUtilsMdi::findWindow(os, "renamed sequence [human_T1.fa]");
     CHECK_SET_ERR(NULL != relatedSequenceView, "A view for the related sequence was not opened");
 
     GTUtilsLog::check(os, lt);
@@ -3737,31 +3725,24 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     //    Expected state: the region selector widget contains "Selected" region type, region is (1..199950).
     //    Current state: the region selector widget contains "Selected" region type, region is (1..199951).
     GTLogTracer l;
-
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
-    QComboBox *regionComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion"));
-    CHECK_SET_ERR(regionComboBox != NULL, "Region comboBox is NULL");
+    QComboBox *regionComboBox = GTWidget::findExactWidget<QComboBox *>(os, "boxRegion");
     if (!regionComboBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
     GTComboBox::selectItemByText(os, regionComboBox, "Selected region");
 
-    QWidget *renderArea = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(renderArea != NULL, "Render area is NULL");
-    GTWidget::click(os, renderArea);
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    QLineEdit *start = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart"));
-    CHECK_SET_ERR(start != NULL, "Region start lineEdit is NULL");
-    QLineEdit *end = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd"));
-    CHECK_SET_ERR(end != NULL, "Region end lineEdit is NULL");
-    CHECK_SET_ERR(start->text() == "1" && end->text() == "199950", "Selection is wrong!");
-
+    QLineEdit *startEdit = GTWidget::findExactWidget<QLineEdit *>(os, "editStart");
+    QLineEdit *endEdit = GTWidget::findExactWidget<QLineEdit *>(os, "editEnd");
+    CHECK_SET_ERR(startEdit->text() == "1" && endEdit->text() == "199950", "Selection is wrong!");
     GTUtilsLog::check(os, l);
 }
 
@@ -4024,47 +4005,40 @@ GUI_TEST_CLASS_DEFINITION(test_3622) {
     GTUtilsOptionPanelSequenceView::enterPattern(os, "ACGT");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "InsDel");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 80);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 90);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(os);
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Selected region");
     CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
     listener.reset();
-    GTGlobals::sleep(200);
 
     const QString currentRegionType = GTUtilsOptionPanelSequenceView::getRegionType(os);
-    CHECK_SET_ERR("Custom region" == currentRegionType, QString("An unexpected region type: expect '%1', got '%2'").arg("Custom region").arg(currentRegionType));
+    CHECK_SET_ERR("Selected region" == currentRegionType, QString("An unexpected region type: expect '%1', got '%2'").arg("Selected region").arg(currentRegionType));
 
     const QPair<int, int> currentRegion = GTUtilsOptionPanelSequenceView::getRegion(os);
     CHECK_SET_ERR(qMakePair(100, 200) == currentRegion, QString("An unexpected region: expect [%1, %2], got [%3, %4]").arg(100).arg(200).arg(currentRegion.first).arg(currentRegion.second));
 
     GTUtilsOptionPanelSequenceView::setRegion(os, 500, 1000);
-    CHECK_SET_ERR(0 < listener.getRegisteredTaskCount(), "The search task wasn't registered");
+    CHECK_SET_ERR(listener.getRegisteredTaskCount() > 0, "The search task wasn't registered");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3623) {
@@ -4396,7 +4370,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *wgt = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
-    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 
     GTKeyboardDriver::keyClick(Qt::Key_Tab, Qt::ControlModifier);
     GTGlobals::sleep();
@@ -4412,7 +4386,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
 
     wgt = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(wgt != NULL, "ActiveWindow is NULL");
-    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3697) {
@@ -4487,7 +4461,7 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTUtilsMdi::closeWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTUtilsMdi::closeWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
     GTUtilsMdi::checkWindowIsActive(os, "Start Page");
@@ -4496,7 +4470,7 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
     GTMouseDriver::dragAndDrop(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"), centerOfWelcomePage);
 
     QWidget *window = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    CHECK_SET_ERR(window->windowTitle() == "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)", "human_T1.fa should be opened!");
+    CHECK_SET_ERR(window->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3710) {
@@ -5298,7 +5272,7 @@ GUI_TEST_CLASS_DEFINITION(test_3817) {
     CHECK_SET_ERR(editStart->isVisible() && editEnd->isVisible(), "Region boundary fields are unexpectedly invisible");
 
     GTComboBox::selectItemByText(os, boxRegion, "Selected region");
-    CHECK_SET_ERR(boxRegion->currentText() == "Custom region", QString("Region type value is unexpected: %1. Expected: Custom region").arg(boxRegion->currentText()));
+    CHECK_SET_ERR(boxRegion->currentText() == "Selected region", QString("Region type value is unexpected: %1. Expected: Selected region").arg(boxRegion->currentText()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3821) {

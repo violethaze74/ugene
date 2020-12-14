@@ -57,6 +57,9 @@
 #include <QTableView>
 #include <QTextStream>
 
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
@@ -691,7 +694,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     CHECK_SET_ERR(vSeqScroll != NULL, "No scroll bar at the bottom of sequence area");
     CHECK_SET_ERR(!vSeqScroll->isVisible(), "Scroll bar at the rigth side of sequence area is visible");
 
-    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
+    QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]", GTWidget::findWidget(os, "COI [COI.aln]_SubWindow"));
     QWidget *hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
 
@@ -725,7 +728,7 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     //remove  longest sequence "MGLR3_Magnaporthe_grisea_AF314" for test stability
     GTUtilsMsaEditor::removeRows(os, 14, 14);
 
-    parent = GTWidget::findWidget(os, "fungal - all [m] fungal - all", GTWidget::findWidget(os, "fungal - all [m] fungal - all_SubWindow"));
+    parent = GTWidget::findWidget(os, "fungal - all [fungal - all.aln]", GTWidget::findWidget(os, "fungal - all [fungal - all.aln]_SubWindow"));
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll", parent);
     CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
     CHECK_SET_ERR(!hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is visible for fungal-all.aln");
@@ -752,24 +755,23 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4087) {
-    // 1. Open murine.gb
-    // 2. Open Find Pattern tab
-    // 3. Input pattern
-    // 4. Click Next a few times
-    // Expected state: the results are selected one by one from left to right, no random selection
+    // Enter "U" to the pattern field.
+    // Check "Load patterns from file" option.
+    // Expected state: there are no warnings, a search task is not started.
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::enterPattern(os, "U");
-    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
-    GTGlobals::sleep(200);
-
     QLabel *label = dynamic_cast<QLabel *>(GTWidget::findWidget(os, "lblErrorMessage"));
-
     CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
-    CHECK_SET_ERR(label->text().contains("Info"), "Warning is not shown 2");
-    CHECK_SET_ERR(!label->text().contains("Warning"), "Warning is shown");
+    CHECK_SET_ERR(label->text().contains("Warning"), "Warning is not shown 2");
+
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+
+    if (label->isVisible()) {
+        CHECK_SET_ERR(!label->text().contains("Warning"), "Warning is shown");
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4091) {
@@ -1046,7 +1048,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString activeWindowName = GTUtilsMdi::activeWindow(os)->windowTitle();
-    CHECK_SET_ERR(activeWindowName == "Dataset 1 [s] NC_001363", "Unexpected active window name: " + activeWindowName);
+    CHECK_SET_ERR(activeWindowName == "NC_001363 [Dataset 1.gb]", "Unexpected active window name: " + activeWindowName);
     GTUtilsProjectTreeView::findIndex(os, "NC_001363");
     GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
 }
@@ -2991,7 +2993,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     //    4. Select some sequences in project view and click "Align sequence(s) to this alignment".
     GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     GTUtilsProjectTreeView::click(os, "EAS54_6_R1_2_1_413_324");
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
@@ -3381,7 +3383,7 @@ GUI_TEST_CLASS_DEFINITION(test_4515) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::enterPattern(os, "K");
 
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4523) {
@@ -3622,7 +3624,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
             : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {};
         virtual void run() {
             QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
+            CHECK(w != NULL, );
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
@@ -3631,9 +3633,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(buttonBox != NULL, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(button != NULL, );
             GTWidget::click(os, button);
         };
 
@@ -3648,7 +3650,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|24489 shortread24489");
+    GTUtilsProjectTreeView::getItemCenter(os, "shortread24489");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588_1) {
@@ -3674,9 +3676,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
 
             QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(NULL != buttonBox, );
+            CHECK(buttonBox != NULL, );
             QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(NULL != button, );
+            CHECK(button != NULL, );
             GTWidget::click(os, button);
         }
 
@@ -3691,7 +3693,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::getItemCenter(os, "gnl|BL_ORD_ID|24481 shortread24481");
+    GTUtilsProjectTreeView::getItemCenter(os, "shortread24481");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4588_2) {
@@ -4667,19 +4669,18 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+    GTComboBox::checkCurrentUserDataValue(os, colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
-    GTGlobals::sleep(500);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentUserDataValue(os, colorScheme, MsaColorScheme::UGENE_NUCL);
+    GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4719_2) {
@@ -4690,7 +4691,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/amino_ext.fa".
+    //    3. Click "Align sequence(s) to this alignment" and select "_common_data/fasta/fa1.fa" (base DNA alphabet).
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/fa1.fa"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4698,19 +4699,18 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     //    Expected state: "UGENE" color scheme is selected, "UGENE" highlight scheme is selected
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+    GTComboBox::checkCurrentUserDataValue(os, colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
-    GTGlobals::sleep(500);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: "UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentUserDataValue(os, colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4719_3) {
@@ -4729,7 +4729,6 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
 
     //    4. Undo changes
     GTUtilsMsaEditor::undo(os);
-    GTGlobals::sleep(500);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Open/close highlighting option panel tab
@@ -4739,8 +4738,8 @@ GUI_TEST_CLASS_DEFINITION(test_4719_3) {
     QComboBox *colorScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
 
-    GTComboBox::checkCurrentValue(os, colorScheme, "UGENE");
-    GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting");
+    GTComboBox::checkCurrentUserDataValue(os, colorScheme, MsaColorScheme::UGENE_AMINO);
+    GTComboBox::checkCurrentUserDataValue(os, highlightingScheme, MsaHighlightingScheme::EMPTY);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4728) {
@@ -4912,7 +4911,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy formatted"));
+                                                                              << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 
@@ -4928,22 +4927,22 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 18), QPoint(11, 27), GTGlobals::UseMouse);
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(11, 14), GTGlobals::UseMouse);
 
     QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep(500);
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
     //Expected state subalignment pasted correctly
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(200);
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
@@ -4961,7 +4960,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();
 
@@ -4986,7 +4985,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy selection"));
+                                                                              << "Copy"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
     GTGlobals::sleep();
 
@@ -5008,7 +5007,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: a Sequence View for "sars.gb" is active.
-    const QString sarsMdiTitle = "sars [s] NC_004718";
+    const QString sarsMdiTitle = "NC_004718 [sars.gb]";
     QString activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
 
@@ -5024,7 +5023,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
 
     //    5. Activate the Sequence View for "murine.gb", that was opened on the file opening.
-    const QString murineMdiTitle = "murine [s] NC_001363";
+    const QString murineMdiTitle = "NC_001363 [murine.gb]";
     GTUtilsMdi::activateWindow(os, murineMdiTitle);
     GTGlobals::sleep(500);
 
@@ -5684,7 +5683,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, testDir + "_common_data/scenarios/sandbox/", "90-JRI-07.scf", ExportChromatogramFiller::SCF, false, false, true));
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(5000);
-    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 [s] 90-JRI-07 sequence 2");
+    QWidget *parent = GTWidget::findWidget(os, "90-JRI-07 sequence [90-JRI-07.scf] 2");
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent);
     CHECK_OP(os, );
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());

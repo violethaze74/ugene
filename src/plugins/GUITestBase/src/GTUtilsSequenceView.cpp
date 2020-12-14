@@ -327,7 +327,7 @@ ADVSingleSequenceWidget *GTUtilsSequenceView::getSeqWidgetByNumber(HI::GUITestOp
     ADVSingleSequenceWidget *seqWidget = qobject_cast<ADVSingleSequenceWidget *>(widget);
 
     if (options.failIfNotFound) {
-        GT_CHECK_RESULT(NULL != widget, QString("Sequence widget %1 was not found!").arg(number), NULL);
+        GT_CHECK_RESULT(widget != nullptr, QString("Sequence widget %1 was not found!").arg(number), NULL);
     }
 
     return seqWidget;

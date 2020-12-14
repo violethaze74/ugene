@@ -39,9 +39,9 @@ namespace U2 {
 const QString FastQCSupport::ET_FASTQC = "FastQC";
 const QString FastQCSupport::ET_FASTQC_ID = "USUPP_FASTQC";
 
-FastQCSupport::FastQCSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+FastQCSupport::FastQCSupport()
+    : ExternalTool(FastQCSupport::ET_FASTQC_ID, "fastqc", FastQCSupport::ET_FASTQC) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -60,14 +60,14 @@ FastQCSupport::FastQCSupport(const QString &id, const QString &name, const QStri
     dependencies << PerlSupport::ET_PERL_ID;
 
     ExternalTool *java = getJava();
-    CHECK(NULL != java, );
+    CHECK(java != nullptr, );
     connect(java, SIGNAL(si_pathChanged()), SLOT(sl_javaPathChanged()));
     sl_javaPathChanged();
 }
 
 void FastQCSupport::sl_javaPathChanged() {
     ExternalTool *java = getJava();
-    CHECK(NULL != java, );
+    CHECK(java != nullptr, );
 
     validationArguments.clear();
     validationArguments << "-v";
@@ -77,9 +77,11 @@ void FastQCSupport::sl_javaPathChanged() {
 
 ExternalTool *FastQCSupport::getJava() {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(NULL != registry, L10N::nullPointerError("External tool registry"), NULL);
+    SAFE_POINT(registry != nullptr, L10N::nullPointerError("External tool registry"), NULL);
+
     ExternalTool *java = registry->getById(JavaSupport::ET_JAVA_ID);
-    SAFE_POINT(NULL != java, L10N::nullPointerError("Java tool"), NULL);
+    SAFE_POINT(java != nullptr, L10N::nullPointerError("Java tool"), NULL);
+
     return java;
 }
 

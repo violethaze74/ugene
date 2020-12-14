@@ -29,7 +29,7 @@ namespace U2 {
 class BcfToolsSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BcfToolsSupport(const QString &id, const QString &name);
+    BcfToolsSupport();
 
     static const QString ET_BCFTOOLS;
     static const QString ET_BCFTOOLS_ID;

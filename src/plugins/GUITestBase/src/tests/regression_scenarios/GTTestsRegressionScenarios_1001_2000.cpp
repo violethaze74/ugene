@@ -299,22 +299,19 @@ GUI_TEST_CLASS_DEFINITION(test_1013) {
 
 GUI_TEST_CLASS_DEFINITION(test_1015) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 3));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTGlobals::sleep();
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 30, 50));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
@@ -323,13 +320,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_1) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -341,13 +337,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::click(os, GTGlobals::Close);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_3) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -363,13 +358,12 @@ GUI_TEST_CLASS_DEFINITION(test_1015_3) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 50, true));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -385,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTGlobals::sleep(5000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1016) {
@@ -412,7 +406,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, false, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseMouse));
@@ -421,7 +415,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Distance matrix for COI", "Unexpected active window name");
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     //4. Then run this dialog in "Profile mode".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile", GTGlobals::UseMouse));
@@ -432,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Alignment profile for COI", "Unexpected active window name: " + GTUtilsMdi::activeWindow(os)->windowTitle());
 
-    GTUtilsMdi::activateWindow(os, "COI [m] COI");
+    GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
 
     //5. Finally, try to save results as *.html and *.csv files.
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::HTML, sandBoxDir + "test_1020.html"));
@@ -691,10 +685,10 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList windowsNames;
-    windowsNames << "murine [s] NC_001363"
-                 << "sars [s] NC_004718"
-                 << "CVU55762 [s] CVU55762"
-                 << "PBR322 [s] SYNPBR322";
+    windowsNames << "NC_001363 [murine.gb]"
+                 << "NC_004718 [sars.gb]"
+                 << "CVU55762 [CVU55762.gb]"
+                 << "SYNPBR322 [PBR322.gb]";
 
     foreach (const QString &window, windowsNames) {
         GTUtilsMdi::closeWindow(os, window);
@@ -704,8 +698,8 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
 
     foreach (const QString &window, windowsNames) {
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Add to view"
-                                                                                  << "Add to view: NC_014267.1 [s] NC_014267"));
-        QString seqName = window.right(window.size() - window.indexOf("[s] ") - 4);
+                                                                                  << "Add to view: NC_014267 [NC_014267.1.gb]"));
+        QString seqName = window.left(window.indexOf("[") - 1);
         GTUtilsProjectTreeView::click(os, seqName, Qt::RightButton);
         GTGlobals::sleep();
     }
@@ -816,7 +810,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(5000);
 
-    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "test_1038_bam [as] ref_and_others");
+    AssemblyBrowserUi *ui = GTUtilsAssemblyBrowser::getView(os, "ref_and_others [test_1038_bam]");
     QSharedPointer<AssemblyModel> model = ui->getModel();
 
     U2OpStatus2Log u2os;
@@ -901,7 +895,7 @@ GUI_TEST_CLASS_DEFINITION(test_1048) {
     bool vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(!vis, "hint unexpectidly visiable");
 
-    GTUtilsMdi::activateWindow(os, "1 [as] chrM");
+    GTUtilsMdi::activateWindow(os, "chrM [1.ugenedb]");
 
     QWidget *w1 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w1);
@@ -1442,7 +1436,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsTaskTreeView::checkTask(os, taskName);
     QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
     CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
-    GTUtilsTaskTreeView::cancelTask(os, taskName);    // Cancel tast because we don't need the result
+    GTUtilsTaskTreeView::cancelTask(os, taskName);    // Cancel task because we don't need the result
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -3041,20 +3035,23 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1263) {
-    //    1. Open "human_T1"
+    // Open "human_T1"
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Use tool button "Primers3"
+
+    // Use tool button "Primers3"
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
     GTWidget::click(os, GTWidget::findWidget(os, "primer3_action_widget"));
-    //    3. Press button "Pick Primers"
+
+    // Press button "Pick Primers"
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    4. Select pair of primers
-    //GTUtilsAnnotationsTreeView::selectItems(os, QStringList()<<"top_primers"<<"top_primers");
+
+    // Select pair of primers
     QTreeWidgetItem *parent = GTUtilsAnnotationsTreeView::findItem(os, "pair 1  (0, 2)");
     QTreeWidgetItem *first = parent->child(0);
     QTreeWidgetItem *second = parent->child(1);
-    //    5. Use context menu {Cloning->Create PCR product}
+
+    // Use context menu {Cloning->Create PCR product}
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, first));
     GTMouseDriver::click();
@@ -3065,9 +3062,11 @@ GUI_TEST_CLASS_DEFINITION(test_1263) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Cloning"
                                                                         << "Create PCR product"));
     GTMouseDriver::click(Qt::RightButton);
-    //    6. Press 'Ok'
-    //TODO: complete after UGENE-4101 is fixed
-    //    Excepted state: PCR product has been created
+    // Press 'Ok'
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    // Excepted state: PCR product has been created
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)") != NULL, "Item Fragment (185965-186160) not found in tree widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1266) {
@@ -3130,7 +3129,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
     //Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
     QTabBar *tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar *>("");
     CHECK_SET_ERR(NULL != tabs, "No tab bar");
-    CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040024.1"), "Wrong tab name");
+    CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040025"), "Wrong tab name");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1285) {
@@ -3278,7 +3277,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_1) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    2. Open "COI.aln".
@@ -3286,60 +3285,60 @@ GUI_TEST_CLASS_DEFINITION(test_1300_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    3. Double click to the sequence of "murine.gb" in the project view ([s] NC_001363).
     //    Expected state: the sequence view is shown, the MSA Editor is no  visible.
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    4. Double click to the msa object in the project view ([m] COI).
     //    Expected state: the MSA Editor is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "COI");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    5. Double click to the annotation object of "murine.gb" in the project view ([a] NC_001363 features).
     //    Expected state: the sequence View is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    6. Double click to the COI document name in the project view (COI.aln).
     //    Expected state: the MSA Editor is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    7. Double click to the murine document name in the project view (murine.gb).
     //    Expected state: the sequence view is shown.
     GTUtilsProjectTreeView::doubleClickItem(os, "murine.gb");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 }
 
@@ -3351,7 +3350,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    bool sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
     //    2. Close sequence view with murine.gb.
@@ -3359,7 +3358,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTGlobals::sleep(1000);
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    3. Open "COI.aln".
@@ -3367,10 +3366,10 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    bool msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    4. Right click to the COI document in the project view, select {Open view->Open new view: alignment editor} from the context menu.
@@ -3379,13 +3378,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
                                                                               << "Open new view: Multiple Alignment Editor"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    bool msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln] 2");
     CHECK_SET_ERR(msaEditor2IsVisible, "Msa editor is unexpectedly not visible");
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
     //    5. Double click to the murine.gb (document, sequence object, annotation object - different tests?) in the project view.
@@ -3394,13 +3393,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "murine.gb");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln] 2");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    5.2 sequence
@@ -3408,13 +3407,13 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    5.3 sequence
@@ -3422,28 +3421,28 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(!msaEditorIsVisible, "Msa editor is unexpectedly visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 
     //    6. Double click to the COI in the project view.
     //    Expected state: a popup menu is shown to select a MSA Editor to show. Select the first. There are two MSA Editors (the first one is active) and one sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: COI [m] COI"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: COI [COI.aln]"));
     GTUtilsProjectTreeView::doubleClickItem(os, "COI");
     GTThread::waitForMainThread();
 
-    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
+    sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "NC_001363 [murine.gb]");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
 
-    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
+    msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [COI.aln]");
     CHECK_SET_ERR(msaEditorIsVisible, "Msa editor is unexpectedly not visible");
 
-    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI 2");
+    msaEditor2IsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI 2 [COI.aln]");
     CHECK_SET_ERR(!msaEditor2IsVisible, "Msa editor is unexpectedly visible");
 }
 
@@ -3807,7 +3806,7 @@ GUI_TEST_CLASS_DEFINITION(test_1347) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "AAGA", QString("unexpected clipboard text: %1").arg(clipboardText));
 }
 
@@ -5591,7 +5590,7 @@ GUI_TEST_CLASS_DEFINITION(test_1568) {
     GTWidget::click(os, tree);
     GTGlobals::sleep();
 
-    GTUtilsMdi::closeWindow(os, "COI [m] COI");
+    GTUtilsMdi::closeWindow(os, "COI [COI.aln]");
     GTGlobals::sleep();
 
     GTUtilsDocument::unloadDocument(os, "test_1568.nwk", false);
@@ -5669,7 +5668,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     //    Expected state: gap was inserted in every sequence of this group.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(0, 12));
     GTKeyboardUtils::copy(os);
-    QString clipboardText = GTClipboard::text(os);
+    QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "-\nT\nT", "Unexpected selection: " + clipboardText);
 
     //    3.2 Select some region of the grouped sequences in the Sequence area and drag this selection to the right.
@@ -5679,7 +5678,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     //    Expected state: all sequences in the group are changed simultaneously.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 10), QPoint(2, 12));
     GTKeyboardUtils::copy(os);
-    clipboardText = GTClipboard::text(os);
+    clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == "T\n-\nA", "Unexpected selection 2: " + clipboardText);
 }
 
@@ -5768,7 +5767,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    const QString selection1 = GTClipboard::text(os);
+    const QString selection1 = GTClipboard::sequences(os);
 
     // 4. Shift selected region.
     // Expected state : all sequences shifted simultaneously.If group is half - selected, the unselected sequences shifts too.
@@ -6167,7 +6166,7 @@ GUI_TEST_CLASS_DEFINITION(test_1603) {
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsMdi::closeWindow(os, "COI [m] COI");
+    GTUtilsMdi::closeWindow(os, "COI [COI.aln]");
     QString docName = "1603.nwk";
 
     GTUtilsDocument::unloadDocument(os, docName, false);
@@ -6280,7 +6279,7 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(11, 17));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString initialContent = GTClipboard::text(os);
+    const QString initialContent = GTClipboard::sequences(os);
 
     // 2.1. Remove selection
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -6303,7 +6302,7 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(11, 17));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString undoneContent = GTClipboard::text(os);
+    const QString undoneContent = GTClipboard::sequences(os);
     CHECK_SET_ERR(undoneContent == initialContent,
                   "Undo works wrong. Found text is: " + undoneContent);
 }
@@ -6432,7 +6431,7 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
 
     //Expected state: all sequences of each selected column are selected
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    QString chars = GTClipboard::text(os);
+    QString chars = GTClipboard::sequences(os);
     CHECK_SET_ERR(chars == "TCTATTAA", "Wrong selection: " + QString("Wrong selection : %1").arg(chars));
 }
 
@@ -6657,7 +6656,7 @@ GUI_TEST_CLASS_DEFINITION(test_1661) {
 
     // Expected state : nothing found
     QLabel *resultLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "resultLabel"));
-    CHECK_SET_ERR(resultLabel->text() == "Results: 0/0", "Unexpected find algorithm result count");
+    CHECK_SET_ERR(resultLabel->text() == "Results: -/0", "Unexpected find algorithm result count");
 
     // 5. Use settings : Region - Whole sequence.
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Whole sequence");
@@ -7303,36 +7302,34 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CF7.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *pdb1 = GTWidget::findWidget(os, "1-1A5H");
-    QWidget *pdb2 = GTWidget::findWidget(os, "2-1CF7");
+    QWidget *sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget* pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
-    GTMenu::showContextMenu(os, pdb2);
+    GTMenu::showContextMenu(os, pdb2Widget);
 
-    GTGlobals::sleep();
-    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2);
+    QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget, true);
 
     // Activate PDB 1 and update 3d rendering settings too.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
 
+    sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *pdb1Widget = GTWidget::findWidget(os, "1-1A5H");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"
                                                                         << "Ball-and-Stick"));
-    GTMenu::showContextMenu(os, pdb1);
-
+    GTMenu::showContextMenu(os, pdb1Widget);
     // Close PDB 1 view.
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Close active view",
                               GTGlobals::UseKey);
 
-    GTGlobals::sleep();
-
     // Check that PDB 2 image was not changed.
-    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2);
-    CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3d images was changed: blank screen?");
+    QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget, true);
+    CHECK_SET_ERR(pdb2ImageBefore == pdb2ImageAfter, "PDB2 3D image is changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1703) {
@@ -7393,7 +7390,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString initAln = GTClipboard::text(os);
+    QString initAln = GTClipboard::sequences(os);
 
     QString expectedAln("TAAGACTT-C\n"
                         "TAAG-CTTAC");
@@ -7408,7 +7405,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString changedAln = GTClipboard::text(os);
+    QString changedAln = GTClipboard::sequences(os);
     CHECK_SET_ERR(changedAln == expectedAln, "Unexpected alignment\n" + changedAln);
 
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
@@ -7419,7 +7416,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    changedAln = GTClipboard::text(os);
+    changedAln = GTClipboard::sequences(os);
 
     CHECK_SET_ERR(changedAln == initAln, "Undo works wrong\n" + changedAln);
 }
@@ -8248,7 +8245,7 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     // Expected state: the bases in the selected area were replaced accordingly to the chosen variant
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString selectionContent = GTClipboard::text(os);
+    QString selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("AATTATTAGACT" == selectionContent, "MSA changing is failed");
     // 4. Press "Ctrl + Z"
     GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
@@ -8256,7 +8253,7 @@ GUI_TEST_CLASS_DEFINITION(test_1883) {
     // Expected result: all rows in the selection were restored
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    selectionContent = GTClipboard::text(os);
+    selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("TCAGATTATTAA" == selectionContent, "MSA changing is failed");
 }
 
@@ -8339,7 +8336,7 @@ GUI_TEST_CLASS_DEFINITION(test_1886_2) {
     // 5. Obtain selection
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::text(os);
+    const QString selectionContent = GTClipboard::sequences(os);
     CHECK_SET_ERR("--TGAC\n--TGAT\n--AGAC\n--AGAT\n--AGAT\n"
                   "--TGAA\n--CGAT\n--CGAT\n--CGAT" == selectionContent,
                   "MSA changing is failed");

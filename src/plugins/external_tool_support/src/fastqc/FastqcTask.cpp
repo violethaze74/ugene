@@ -112,98 +112,98 @@ bool FastQCParser::isMultiLineError(const QString &err) {
 //////////////////////////////////////////////////////////////////////////
 //FastQCTask
 FastQCTask::FastQCTask(const FastQCSetting &settings)
-    : ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText), settings(settings), temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/") {
+    : ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputFileUrl), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
+      settings(settings),
+      temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/") {
 }
 
 void FastQCTask::prepare() {
-    if (settings.inputUrl.isEmpty()) {
+    if (settings.inputFileUrl.isEmpty()) {
         setError(tr("No input URL"));
         return;
     }
 
-    if (QFileInfo(settings.inputUrl).size() == 0) {
-        setError(tr("The input file '%1' is empty.").arg(settings.inputUrl));
+    if (QFileInfo(settings.inputFileUrl).size() == 0) {
+        setError(tr("The input file '%1' is empty.").arg(settings.inputFileUrl));
         return;
     }
 
-    const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
-    if (!outDir.exists()) {
-        setError(tr("Folder does not exist: %1").arg(outDir.absolutePath()));
+    QDir outputDir = QFileInfo(settings.outputDirUrl).absoluteDir();
+    if (!outputDir.exists()) {
+        setError(tr("Folder does not exist: %1").arg(outputDir.absolutePath()));
         return;
     }
 
-    const QStringList args = getParameters(stateInfo);
+    QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
-    ExternalToolRunTask *etTask = new ExternalToolRunTask(FastQCSupport::ET_FASTQC_ID, args, new FastQCParser(settings.inputUrl), temporaryDir.path());
-    setListenerForTask(etTask);
-    addSubTask(etTask);
+    auto externalToolTask = new ExternalToolRunTask(FastQCSupport::ET_FASTQC_ID, args, new FastQCParser(settings.inputFileUrl), temporaryDir.path());
+    setListenerForTask(externalToolTask);
+    addSubTask(externalToolTask);
 }
 
 void FastQCTask::run() {
     CHECK_OP(stateInfo, );
 
-    QString resFileUrl = getResFileUrl();
-    const QFileInfo resFile(resFileUrl);
-    if (!resFile.exists()) {
-        setError(tr("Result file does not exist: %1. See the log for details.").arg(resFile.absoluteFilePath()));
+    QString tmpResultFileUrl = getTmpResultFileUrl();
+    QFileInfo tmpResultFileInfo(tmpResultFileUrl);
+    if (!tmpResultFileInfo.exists()) {
+        setError(tr("Result file does not exist: %1. See the log for details.").arg(tmpResultFileInfo.absoluteFilePath()));
         return;
     }
-    if (!settings.fileName.isEmpty()) {
-        QFileInfo fi(settings.fileName);
-        resultUrl = GUrlUtils::rollFileName(settings.outDir + QDir::separator() + fi.baseName() + ".html", "_");
+    if (!settings.outputFileNameOverride.isEmpty()) {
+        QFileInfo overrideFileInfo(settings.outputFileNameOverride);
+        resultFileUrl = GUrlUtils::rollFileName(settings.outputDirUrl + QDir::separator() + overrideFileInfo.baseName() + ".html", "_");
     } else {
-        QFileInfo fi(settings.inputUrl);
-        resultUrl = GUrlUtils::rollFileName(settings.outDir + QDir::separator() + fi.baseName() + "_fastqc.html", "_");
+        QFileInfo inputFileInfo(settings.inputFileUrl);
+        resultFileUrl = GUrlUtils::rollFileName(settings.outputDirUrl + QDir::separator() + inputFileInfo.baseName() + "_fastqc.html", "_");
     }
-    QFile result(resFileUrl);
-    if (!result.rename(resultUrl)) {
-        setError(tr("Unable to move result file from temporary directory to desired location: %1.").arg(resultUrl));
+    QFile tmpResultFile(tmpResultFileUrl);
+    if (!tmpResultFile.rename(resultFileUrl)) {
+        setError(tr("Unable to move result file from temporary directory to desired location: %1.").arg(resultFileUrl));
     }
 }
 
-QString FastQCTask::getResFileUrl() const {
-    QString res;
-
-    QFileInfo fi(settings.inputUrl);
-    QString name = fi.fileName();
-    //taken from FastQC source "OfflineRunner.java"
-    //.replaceAll("\\.gz$","").replaceAll("\\.bz2$","").replaceAll("\\.txt$","").replaceAll("\\.fastq$", "").replaceAll("\\.fq$", "").replaceAll("\\.csfastq$", "").replaceAll("\\.sam$", "").replaceAll("\\.bam$", "")+"_fastqc.html");
-    name.replace(QRegExp(".gz$"), "")
-        .replace(QRegExp(".bz2$"), "")
-        .replace(QRegExp(".txt$"), "")
-        .replace(QRegExp(".fastq$"), "")
-        .replace(QRegExp(".csfastq$"), "")
-        .replace(QRegExp(".sam$"), "")
-        .replace(QRegExp(".bam$"), "");
-    name += "_fastqc.html";
-
-    res = temporaryDir.path() + QDir::separator() + name;
-    return res;
+QString FastQCTask::getTmpResultFileUrl() const {
+    // FastQC source "OfflineRunner.java":
+    //  String fileName = file.getFile().getName().replaceAll("stdin:","").replaceAll("\\.gz$","").replaceAll("\\.bz2$","")
+    //   .replaceAll("\\.txt$","").replaceAll("\\.fastq$", "").replaceAll("\\.fq$", "").replaceAll("\\.csfastq$", "")
+    //   .replaceAll("\\.sam$", "").replaceAll("\\.bam$", "")+"_fastqc.html";
+    QFileInfo inputFileInfo(settings.inputFileUrl);
+    QString resultFileName = inputFileInfo.fileName()
+                                 .replace(QRegExp(".gz$"), "")
+                                 .replace(QRegExp(".bz2$"), "")
+                                 .replace(QRegExp(".txt$"), "")
+                                 .replace(QRegExp(".fastq$"), "")
+                                 .replace(QRegExp(".fq$"), "")
+                                 .replace(QRegExp(".csfastq$"), "")
+                                 .replace(QRegExp(".sam$"), "")
+                                 .replace(QRegExp(".bam$"), "") +
+                             "_fastqc.html";
+    return temporaryDir.path() + QDir::separator() + resultFileName;
 }
 
-QStringList FastQCTask::getParameters(U2OpStatus & /*os*/) const {
+QStringList FastQCTask::getParameters(U2OpStatus &os) const {
     QStringList res;
 
     res << QString("-o");
     res << temporaryDir.path();
 
-    if (!settings.conts.isEmpty()) {
+    if (!settings.contaminantsFileUrl.isEmpty()) {
         res << QString("-c");
-        res << settings.conts;
+        res << settings.contaminantsFileUrl;
     }
 
-    if (!settings.adapters.isEmpty()) {
+    if (!settings.adaptersFileUrl.isEmpty()) {
         res << QString("-a");
-        res << settings.adapters;
+        res << settings.adaptersFileUrl;
     }
 
     ExternalTool *java = FastQCSupport::getJava();
-    CHECK(NULL != java, res);
+    CHECK_EXT(java != nullptr, os.setError(tr("Java external tool is not found")), res);
+
     res << QString("-java");
     res << java->getPath();
-
-    res << settings.inputUrl;
-
+    res << settings.inputFileUrl;
     return res;
 }
 

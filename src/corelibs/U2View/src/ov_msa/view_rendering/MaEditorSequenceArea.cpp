@@ -68,19 +68,19 @@ const QChar MaEditorSequenceArea::emDash = QChar(0x2015);
 MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
     : editor(ui->getEditor()),
       ui(ui),
-      colorScheme(NULL),
-      highlightingScheme(NULL),
+      colorScheme(nullptr),
+      highlightingScheme(nullptr),
       shBar(hb),
       svBar(vb),
       editModeAnimationTimer(this),
       prevPressedButton(Qt::NoButton),
       maVersionBeforeShifting(-1),
-      replaceCharacterAction(NULL),
-      useDotsAction(NULL),
+      replaceCharacterAction(nullptr),
+      useDotsAction(nullptr),
       changeTracker(editor->getMaObject()->getEntityRef()) {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
     // show rubber band for selection in MSA editor only
-    showRubberBandOnSelection = qobject_cast<MSAEditor *>(editor) != NULL;
+    showRubberBandOnSelection = qobject_cast<MSAEditor *>(editor) != nullptr;
     maMode = ViewMode;
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -89,7 +89,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     shifting = false;
     editingEnabled = false;
     movableBorder = SelectionModificationHelper::NoMovableBorder;
-    isCtrlPressed = false;
     lengthOnMousePress = editor->getMaObject()->getLength();
 
     cachedView = new QPixmap();
@@ -170,7 +169,7 @@ int MaEditorSequenceArea::getViewRowCount() const {
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
     MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(model != NULL, tr("Invalid collapsible item model!"), -1);
+    SAFE_POINT(model != nullptr, tr("Invalid collapsible item model!"), -1);
     return model->getMaRowIndexByViewRowIndex(num);
 }
 
@@ -255,31 +254,22 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
 }
 
 void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResize) {
-    int leftX = selection.x();
-    int topY = selection.y();
-    int bottomY = selection.y() + selection.height() - 1;
-    int rightX = selection.x() + selection.width() - 1;
-    QPoint baseTopLeft(leftX, topY);
-    QPoint baseBottomRight(rightX, bottomY);
+    QPoint newTopLeft = selection.topLeft() + QPoint(dx, dy);
+    QPoint newBottomRight = selection.bottomRight() + QPoint(dx, dy);
 
-    QPoint newTopLeft = baseTopLeft + QPoint(dx, dy);
-    QPoint newBottomRight = baseBottomRight + QPoint(dx, dy);
-
-    if ((!isInRange(newTopLeft)) || (!isInRange(newBottomRight))) {
+    if (!isInRange(newTopLeft) || !isInRange(newBottomRight)) {
         if (!allowSelectionResize) {
             return;
-        } else {
-            MaEditorSelection newSelection(selection.topLeft(),
-                                           qMin(selection.width(), editor->getAlignmentLen() - newTopLeft.x()),
-                                           qMin(selection.height(), editor->getNumSequences() - newTopLeft.y()));
-            setSelection(newSelection);
         }
+        MaEditorSelection newSelection(selection.topLeft(),
+                                       qMin(selection.width(), editor->getAlignmentLen() - newTopLeft.x()),
+                                       qMin(selection.height(), editor->getNumSequences() - newTopLeft.y()));
+        setSelection(newSelection);
+        return;
     }
 
-    MaEditorSelection newSelection(newTopLeft, selection.width(), selection.height());
-    setSelection(newSelection);
-    const QPoint &cursorPosition = editor->getCursorPosition();
-    editor->setCursorPosition(QPoint(cursorPosition.x() + dx, cursorPosition.y() + dy));
+    editor->setCursorPosition(editor->getCursorPosition() + QPoint(dx, dy));
+    setSelection(MaEditorSelection(newTopLeft, selection.width(), selection.height()));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
@@ -300,7 +290,7 @@ QString MaEditorSequenceArea::getCopyFormattedAlgorithmId() const {
 }
 
 void MaEditorSequenceArea::deleteCurrentSelection() {
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
 
     MultipleAlignmentObject *maObj = getEditor()->getMaObject();
@@ -393,6 +383,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
     const int height = selectedMaRows.size();
     const int y = getTopSelectedMaRow();
     int x = selection.x();
+    bool isCtrlPressed = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (isCtrlPressed) {
         if (shift > 0) {
             QList<U2MsaGap> gapModelToRemove = findRemovableGapColumns(shift);
@@ -576,7 +567,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 
 bool MaEditorSequenceArea::isAlignmentLocked() const {
     MultipleAlignmentObject *obj = editor->getMaObject();
-    SAFE_POINT(obj != NULL, tr("Alignment object is not available"), true);
+    SAFE_POINT(obj != nullptr, tr("Alignment object is not available"), true);
     return obj->isStateLocked();
 }
 
@@ -612,21 +603,21 @@ QAction *MaEditorSequenceArea::getReplaceCharacterAction() const {
 
 void MaEditorSequenceArea::sl_changeColorSchemeOutside(const QString &id) {
     QAction *a = GUIUtils::findActionByData(QList<QAction *>() << colorSchemeMenuActions << customColorSchemeMenuActions << highlightingSchemeMenuActions, id);
-    if (a != NULL) {
+    if (a != nullptr) {
         a->trigger();
     }
 }
 
-void MaEditorSequenceArea::sl_changeCopyFormat(const QString &alg) {
-    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, alg);
+void MaEditorSequenceArea::sl_changeCopyFormat(const QString &formatId) {
+    AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, formatId);
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
     QAction *action = qobject_cast<QAction *>(sender());
-    if (NULL == action) {
+    if (action == nullptr) {
         action = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(action != NULL, );
+    CHECK(action != nullptr, );
 
     applyColorScheme(action->data().toString());
 }
@@ -642,7 +633,7 @@ void MaEditorSequenceArea::sl_cancelSelection() {
         exitFromEditCharacterMode();
         return;
     }
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != NULL, "Clear selection", editor->getFactoryId());
+    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != nullptr, "Clear selection", editor->getFactoryId());
     MaEditorSelection emptySelection;
     setSelection(emptySelection);
 }
@@ -713,23 +704,23 @@ void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
 
 void MaEditorSequenceArea::sl_setDefaultColorScheme() {
     MsaColorSchemeFactory *defaultFactory = getDefaultColorSchemeFactory();
-    SAFE_POINT(defaultFactory != NULL, L10N::nullPointerError("default color scheme factory"), );
+    SAFE_POINT(defaultFactory != nullptr, L10N::nullPointerError("default color scheme factory"), );
     applyColorScheme(defaultFactory->getId());
 }
 
 void MaEditorSequenceArea::sl_changeHighlightScheme() {
     QAction *a = qobject_cast<QAction *>(sender());
-    if (a == NULL) {
+    if (a == nullptr) {
         a = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(a != NULL, );
+    CHECK(a != nullptr, );
 
     editor->saveHighlightingSettings(highlightingScheme->getFactory()->getId(), highlightingScheme->getSettings());
 
     QString id = a->data().toString();
     MsaHighlightingSchemeFactory *factory = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(id);
-    SAFE_POINT(factory != NULL, L10N::nullPointerError("highlighting scheme"), );
-    if (ui->getEditor()->getMaObject() == NULL) {
+    SAFE_POINT(factory != nullptr, L10N::nullPointerError("highlighting scheme"), );
+    if (ui->getEditor()->getMaObject() == nullptr) {
         return;
     }
 
@@ -820,8 +811,8 @@ void MaEditorSequenceArea::restoreViewSelectionFromMaSelection() {
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
         selectedViewIndexesSet << collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
     }
-    QList<int> selectedViewIndexes = selectedViewIndexesSet.toList();
-    qSort(selectedViewIndexes.begin(), selectedViewIndexes.end());
+    QList<int> selectedViewIndexes = selectedViewIndexesSet.values();
+    std::sort(selectedViewIndexes.begin(), selectedViewIndexes.end());
     U2Region selectedViewRegion = findLongestRegion(selectedViewIndexes);
     if (selectedViewRegion.length == 0) {
         sl_cancelSelection();
@@ -884,25 +875,21 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
     mousePressViewPos = ui->getScrollController()->getViewPosByScreenPoint(mousePressEventPoint);
 
     if ((e->button() == Qt::LeftButton)) {
-        if (Qt::ShiftModifier == e->modifiers()) {
+        if (e->modifiers() == Qt::ShiftModifier) {
             QWidget::mousePressEvent(e);
             return;
         }
 
-        Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
-        isCtrlPressed = km.testFlag(Qt::ControlModifier);
         lengthOnMousePress = editor->getMaObject()->getLength();
-
-        QPoint cursorPos = boundWithVisibleRange(mousePressViewPos);
-        editor->setCursorPosition(cursorPos);
+        editor->setCursorPosition(boundWithVisibleRange(mousePressViewPos));
 
         Qt::CursorShape shape = cursor().shape();
         if (shape != Qt::ArrowCursor) {
             QPoint pos = e->pos();
             changeTracker.finishTracking();
             QPoint globalMousePosition = ui->getScrollController()->getGlobalMousePosition(pos);
-            const double baseWidth = ui->getBaseWidthController()->getBaseWidth();
-            const double baseHeight = ui->getRowHeightController()->getSingleRowHeight();
+            double baseWidth = ui->getBaseWidthController()->getBaseWidth();
+            double baseHeight = ui->getRowHeightController()->getSingleRowHeight();
             movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selection.toRect(), QSize(baseWidth, baseHeight));
             moveBorder(pos);
         }
@@ -911,12 +898,13 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
     QWidget::mousePressEvent(e);
 }
 
-void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
+void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *event) {
     rubberBand->hide();
-    QPoint releasePos = ui->getScrollController()->getViewPosByScreenPoint(e->pos());
+    QPoint releasePos = ui->getScrollController()->getViewPosByScreenPoint(event->pos());
     bool isClick = !selecting && releasePos == mousePressViewPos;
     bool isSelectionResize = movableBorder != SelectionModificationHelper::NoMovableBorder;
-    bool isShiftPressed = e->modifiers() == Qt::ShiftModifier;
+    bool isShiftPressed = event->modifiers().testFlag(Qt::ShiftModifier);
+    bool isCtrlPressed = event->modifiers().testFlag(Qt::ControlModifier);
     if (shifting) {
         changeTracker.finishTracking();
         editor->getMaObject()->releaseState();
@@ -933,7 +921,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
         QPoint bottomRight = boundWithVisibleRange(QPoint(left + width - 1, top + height - 1));
         ui->getScrollController()->scrollToPoint(releasePos, size());
         setSelection(MaEditorSelection(topLeft, bottomRight));
-    } else if (isClick && e->button() == Qt::LeftButton) {
+    } else if (isClick && event->button() == Qt::LeftButton) {
         if (isInRange(releasePos)) {
             setSelection(MaEditorSelection(releasePos, releasePos));
         } else {
@@ -956,7 +944,7 @@ void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 
     ui->getScrollController()->stopSmoothScrolling();
 
-    QWidget::mouseReleaseEvent(e);
+    QWidget::mouseReleaseEvent(event);
 }
 
 void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent *event) {
@@ -1058,202 +1046,124 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
         return;
     }
 
-    bool enlargeSelection = qobject_cast<MSAEditor *>(getEditor()) != NULL;
-
-    bool shift = e->modifiers().testFlag(Qt::ShiftModifier);
-    const bool ctrl = e->modifiers().testFlag(Qt::ControlModifier);
+    bool isMsaEditor = qobject_cast<MSAEditor *>(getEditor()) != nullptr;
+    bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
+    bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
 #ifdef Q_OS_MAC
     // In one case it is better to use a Command key as modifier,
     // in another - a Control key. genuineCtrl - Control key on Mac OS X.
-    const bool genuineCtrl = e->modifiers().testFlag(Qt::MetaModifier);
+    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::MetaModifier);
 #else
-    const bool genuineCtrl = ctrl;
+    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
 #endif
-    static QPoint selectionStart(0, 0);
-    static QPoint selectionEnd(0, 0);
 
-    if (ctrl && (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)) {
-        //remap to page_up/page_down
-        shift = key == Qt::Key_Up || key == Qt::Key_Down;
+    // Arrow keys with control work as page-up/page-down.
+    if (isCtrlPressed && (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)) {
         key = (key == Qt::Key_Up || key == Qt::Key_Left) ? Qt::Key_PageUp : Qt::Key_PageDown;
     }
-    //part of these keys are assigned to actions -> so them never passed to keyPressEvent (action handling has higher priority)
-    int endX, endY;
+    QPoint cursorPosition = editor->getCursorPosition();
+    // Use cursor position for empty selection when arrow keys are used.
+    QRect selectionRect = selection.isEmpty() ? QRect(cursorPosition, cursorPosition) : selection.toRect();
     switch (key) {
-    case Qt::Key_Escape:
-        sl_cancelSelection();
-        break;
-    case Qt::Key_Left:
-        if (!shift || !enlargeSelection) {
-            moveSelection(-1, 0);
+        case Qt::Key_Escape:
+            sl_cancelSelection();
             break;
-        }
-        if (selectionEnd.x() < 1) {
-            break;
-        }
-        selectionEnd.setX(selectionEnd.x() - 1);
-        endX = selectionEnd.x();
-        if (isPosInRange(endX)) {
-            if (endX != -1) {
-                int firstColumn = qMin(selectionStart.x(), endX);
-                int selectionWidth = qAbs(endX - selectionStart.x()) + 1;
-                int startSeq = selection.y();
-                int height = selection.height();
-                if (selection.isEmpty()) {
-                    startSeq = editor->getCursorPosition().y();
-                    height = 1;
+        case Qt::Key_Left:
+            if (!isShiftPressed || !isMsaEditor) {
+                moveSelection(-1, 0);
+            } else {
+                bool isMoveRightSide = cursorPosition.x() == selectionRect.x() && selectionRect.width() > 1;
+                if (isMoveRightSide) {    // move right side (shrink)
+                    setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(-1, 0)));
+                    editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
+                } else {    // move left side (grow)
+                    setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(-1, 0), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
                 }
-                MaEditorSelection _selection(firstColumn, startSeq, selectionWidth, height);
-                setSelection(_selection);
-                ui->getScrollController()->scrollToBase(endX, width());
             }
-        }
-        break;
-    case Qt::Key_Right:
-        if (!shift || !enlargeSelection) {
-            moveSelection(1, 0);
             break;
-        }
-        if (selectionEnd.x() >= (editor->getAlignmentLen() - 1)) {
-            break;
-        }
-
-        selectionEnd.setX(selectionEnd.x() + 1);
-        endX = selectionEnd.x();
-        if (isPosInRange(endX)) {
-            if (endX != -1) {
-                int firstColumn = qMin(selectionStart.x(), endX);
-                int selectionWidth = qAbs(endX - selectionStart.x()) + 1;
-                int startSeq = selection.y();
-                int height = selection.height();
-                if (selection.isEmpty()) {
-                    startSeq = editor->getCursorPosition().y();
-                    height = 1;
+        case Qt::Key_Right:
+            if (!isShiftPressed || !isMsaEditor) {
+                moveSelection(1, 0);
+            } else {
+                bool isMoveLeftSide = cursorPosition.x() == selectionRect.right() && selectionRect.width() > 1;
+                if (isMoveLeftSide) {    // move left side (shrink)
+                    setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(1, 0), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(selectionRect.right(), cursorPosition.y()));
+                } else {    // move right side (grow)
+                    setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(1, 0)));
+                    editor->setCursorPosition(QPoint(selectionRect.left(), cursorPosition.y()));
                 }
-                MaEditorSelection _selection(firstColumn, startSeq, selectionWidth, height);
-                setSelection(_selection);
-                ui->getScrollController()->scrollToBase(endX, width());
             }
-        }
-        break;
-    case Qt::Key_Up:
-        if (!shift || !enlargeSelection) {
-            moveSelection(0, -1);
             break;
-        }
-        if (selectionEnd.y() < 1) {
-            break;
-        }
-        selectionEnd.setY(selectionEnd.y() - 1);
-        endY = selectionEnd.y();
-        if (isSeqInRange(endY)) {
-            if (endY != -1) {
-                int startSeq = qMin(selectionStart.y(), endY);
-                int height = qAbs(endY - selectionStart.y()) + 1;
-                int firstColumn = selection.x();
-                int width = selection.width();
-                if (selection.isEmpty()) {
-                    firstColumn = editor->getCursorPosition().x();
-                    width = 1;
+        case Qt::Key_Up:
+            if (!isShiftPressed || !isMsaEditor) {
+                moveSelection(0, -1);
+            } else {
+                bool isMoveBottomSide = cursorPosition.y() == selectionRect.y() && selectionRect.height() > 1;
+                if (isMoveBottomSide) {    // move bottom side (shrink)
+                    setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, -1)));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
+                } else {    // move top side (grow)
+                    setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(0, -1), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
                 }
-                MaEditorSelection _selection(firstColumn, startSeq, width, height);
-                setSelection(_selection);
-                ui->getScrollController()->scrollToViewRow(endY, this->height());
             }
-        }
-        break;
-    case Qt::Key_Down:
-        if (!shift || !enlargeSelection) {
-            moveSelection(0, 1);
             break;
-        }
-        if (selectionEnd.y() >= (ui->getCollapseModel()->getViewRowCount() - 1)) {
-            break;
-        }
-        selectionEnd.setY(selectionEnd.y() + 1);
-        endY = selectionEnd.y();
-        if (isSeqInRange(endY)) {
-            if (endY != -1) {
-                int startSeq = qMin(selectionStart.y(), endY);
-                int height = qAbs(endY - selectionStart.y()) + 1;
-                int firstColumn = selection.x();
-                int width = selection.width();
-                if (selection.isEmpty()) {
-                    firstColumn = editor->getCursorPosition().x();
-                    width = 1;
+        case Qt::Key_Down:
+            if (!isShiftPressed || !isMsaEditor) {
+                moveSelection(0, 1);
+            } else {
+                bool isMoveTopSide = cursorPosition.y() == selectionRect.bottom() && selectionRect.height() > 1;
+                if (isMoveTopSide) {    // move top side (shrink)
+                    setSelection(MaEditorSelection(selectionRect.topLeft() + QPoint(0, 1), selectionRect.bottomRight()));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.bottom()));
+                } else {    // move bottom side (grow)
+                    setSelection(MaEditorSelection(selectionRect.topLeft(), selectionRect.bottomRight() + QPoint(0, 1)));
+                    editor->setCursorPosition(QPoint(cursorPosition.x(), selectionRect.top()));
                 }
-                MaEditorSelection _selection(firstColumn, startSeq, width, height);
-                setSelection(_selection);
-                ui->getScrollController()->scrollToViewRow(endY, this->height());
             }
-        }
-        break;
-    case Qt::Key_Delete:
-        if (!isAlignmentLocked() && !shift) {
-            emit si_startMaChanging();
-            deleteCurrentSelection();
-        }
-        break;
-    case Qt::Key_Home:
-        if (shift) {
-            // vertical scrolling
-            ui->getScrollController()->scrollToEnd(ScrollController::Up);
-            editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), 0));
-        } else {
-            // horizontal scrolling
-            ui->getScrollController()->scrollToEnd(ScrollController::Left);
-            editor->setCursorPosition(QPoint(0, editor->getCursorPosition().y()));
-        }
-        break;
-    case Qt::Key_End:
-        if (shift) {
-            // vertical scrolling
-            ui->getScrollController()->scrollToEnd(ScrollController::Down);
-            editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
-        } else {
-            // horizontal scrolling
-            ui->getScrollController()->scrollToEnd(ScrollController::Right);
-            editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
-        }
-        break;
-    case Qt::Key_PageUp:
-        if (shift) {
-            // vertical scrolling
-            ui->getScrollController()->scrollPage(ScrollController::Up);
-        } else {
-            // horizontal scrolling
-            ui->getScrollController()->scrollPage(ScrollController::Left);
-        }
-        break;
-    case Qt::Key_PageDown:
-        if (shift) {
-            // vertical scrolling
-            ui->getScrollController()->scrollPage(ScrollController::Down);
-        } else {
-            // horizontal scrolling
-            ui->getScrollController()->scrollPage(ScrollController::Right);
-        }
-        break;
-    case Qt::Key_Backspace:
-        removeGapsPrecedingSelection(genuineCtrl ? 1 : -1);
-        break;
-    case Qt::Key_Insert:
-    case Qt::Key_Space:
-        // We can't use Command+Space on Mac OS X - it is reserved
-        if (!isAlignmentLocked()) {
-            emit si_startMaChanging();
-            insertGapsBeforeSelection(genuineCtrl ? 1 : -1);
-        }
-        break;
-    case Qt::Key_Shift:
-        if (!selection.isEmpty()) {
-            selectionStart = selection.topLeft();
-            selectionEnd = selection.bottomRight();
-        } else {
-            selectionStart = editor->getCursorPosition();
-            selectionEnd = editor->getCursorPosition();
-        }
-        break;
+            break;
+        case Qt::Key_Delete:
+            if (!isAlignmentLocked() && !isShiftPressed) {
+                emit si_startMaChanging();
+                deleteCurrentSelection();
+            }
+            break;
+        case Qt::Key_Home:
+            if (isShiftPressed) {
+                ui->getScrollController()->scrollToEnd(ScrollController::Up);
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), 0));
+            } else {
+                ui->getScrollController()->scrollToEnd(ScrollController::Left);
+                editor->setCursorPosition(QPoint(0, editor->getCursorPosition().y()));
+            }
+            break;
+        case Qt::Key_End:
+            if (isShiftPressed) {
+                ui->getScrollController()->scrollToEnd(ScrollController::Down);
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
+            } else {
+                ui->getScrollController()->scrollToEnd(ScrollController::Right);
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
+            }
+            break;
+        case Qt::Key_PageUp:
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
+            break;
+        case Qt::Key_PageDown:
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
+            break;
+        case Qt::Key_Backspace:
+            removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);
+            break;
+        case Qt::Key_Insert:
+        case Qt::Key_Space:
+            if (!isAlignmentLocked()) {
+                emit si_startMaChanging();
+                insertGapsBeforeSelection(isGenuineCtrlPressed ? 1 : -1);
+            }
+            break;
     }
     QWidget::keyPressEvent(e);
 }
@@ -1270,7 +1180,7 @@ void MaEditorSequenceArea::drawBackground(QPainter &) {
 }
 
 void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
     if (countOfGaps == -1) {
         countOfGaps = selection.width();
@@ -1285,7 +1195,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     cancelShiftTracking();
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
     U2OpStatus2Log os;
@@ -1330,7 +1240,7 @@ void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (NULL == maObj || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
 
@@ -1435,10 +1345,10 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
 void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory *hsf) {
     qDeleteAll(highlightingSchemeMenuActions);
     highlightingSchemeMenuActions.clear();
-    SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
+    SAFE_POINT(hsf != nullptr, "Highlight scheme factory is NULL", );
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    QVariantMap settings = highlightingScheme != NULL ? highlightingScheme->getSettings() : QVariantMap();
+    QVariantMap settings = highlightingScheme != nullptr ? highlightingScheme->getSettings() : QVariantMap();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
@@ -1455,16 +1365,16 @@ MsaColorSchemeFactory *MaEditorSequenceArea::getDefaultColorSchemeFactory() cons
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
 
     switch (editor->getMaObject()->getAlphabet()->getType()) {
-    case DNAAlphabet_RAW:
-        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
-    case DNAAlphabet_NUCL:
-        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_NUCL);
-    case DNAAlphabet_AMINO:
-        return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
-    default:
-        FAIL(tr("Unknown alphabet"), NULL);
+        case DNAAlphabet_RAW:
+            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::EMPTY);
+        case DNAAlphabet_NUCL:
+            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_NUCL);
+        case DNAAlphabet_AMINO:
+            return msaColorSchemeRegistry->getSchemeFactoryById(MsaColorScheme::UGENE_AMINO);
+        default:
+            FAIL(tr("Unknown alphabet"), nullptr);
     }
-    return NULL;
+    return nullptr;
 }
 
 MsaHighlightingSchemeFactory *MaEditorSequenceArea::getDefaultHighlightingSchemeFactory() const {
@@ -1477,46 +1387,46 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
     DNAAlphabetType atype = getEditor()->getMaObject()->getAlphabet()->getType();
     Settings *s = AppContext::getSettings();
     switch (atype) {
-    case DNAAlphabet_RAW:
-        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();
-        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, MsaHighlightingScheme::EMPTY).toString();
-        break;
-    case DNAAlphabet_NUCL:
-        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
-        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY).toString();
-        break;
-    case DNAAlphabet_AMINO:
-        csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString();
-        hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, MsaHighlightingScheme::EMPTY).toString();
-        break;
-    default:
-        csid = "";
-        hsid = "";
-        break;
+        case DNAAlphabet_RAW:
+            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY).toString();
+            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_RAW, MsaHighlightingScheme::EMPTY).toString();
+            break;
+        case DNAAlphabet_NUCL:
+            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY).toString();
+            break;
+        case DNAAlphabet_AMINO:
+            csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString();
+            hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_AMINO, MsaHighlightingScheme::EMPTY).toString();
+            break;
+        default:
+            csid = "";
+            hsid = "";
+            break;
     }
 
     MsaColorSchemeRegistry *csr = AppContext::getMsaColorSchemeRegistry();
     MsaHighlightingSchemeRegistry *hsr = AppContext::getMsaHighlightingSchemeRegistry();
 
     MsaColorSchemeFactory *csf = csr->getSchemeFactoryById(csid);
-    if (csf == NULL) {
+    if (csf == nullptr) {
         csid = getDefaultColorSchemeFactory()->getId();
     }
     MsaHighlightingSchemeFactory *hsf = hsr->getSchemeFactoryById(hsid);
-    if (hsf == NULL) {
+    if (hsf == nullptr) {
         hsid = getDefaultHighlightingSchemeFactory()->getId();
     }
 
-    if (colorScheme != NULL && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+    if (colorScheme != nullptr && colorScheme->getFactory()->isAlphabetTypeSupported(atype)) {
         csid = colorScheme->getFactory()->getId();
     }
-    if (highlightingScheme != NULL && highlightingScheme->getFactory()->isAlphabetTypeSupported(atype)) {
+    if (highlightingScheme != nullptr && highlightingScheme->getFactory()->isAlphabetTypeSupported(atype)) {
         hsid = highlightingScheme->getFactory()->getId();
     }
 }
 
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
-    CHECK(ui->getEditor()->getMaObject() != NULL, );
+    CHECK(ui->getEditor()->getMaObject() != nullptr, );
 
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(id);
     delete colorScheme;
@@ -1530,20 +1440,20 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
         action->setChecked(action->data() == id);
     }
 
-    if (qobject_cast<MSAEditor *>(getEditor()) != NULL) {    // to avoid setting of sanger scheme
+    if (qobject_cast<MSAEditor *>(getEditor()) != nullptr) {    // to avoid setting of sanger scheme
         switch (ui->getEditor()->getMaObject()->getAlphabet()->getType()) {
-        case DNAAlphabet_RAW:
-            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
-            break;
-        case DNAAlphabet_NUCL:
-            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
-            break;
-        case DNAAlphabet_AMINO:
-            AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
-            break;
-        default:
-            FAIL(tr("Unknown alphabet"), );
-            break;
+            case DNAAlphabet_RAW:
+                AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, id);
+                break;
+            case DNAAlphabet_NUCL:
+                AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_NUCL, id);
+                break;
+            case DNAAlphabet_AMINO:
+                AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COLOR_AMINO, id);
+                break;
+            default:
+                FAIL(tr("Unknown alphabet"), );
+                break;
         }
     }
 
@@ -1574,27 +1484,27 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
 
 void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
     switch (maMode) {
-    case ReplaceCharMode:
-        replaceChar(newCharacter);
-        break;
-    case InsertCharMode:
-        insertChar(newCharacter);
-    case ViewMode:
-    default:
-        // do nothing
-        ;
+        case ReplaceCharMode:
+            replaceChar(newCharacter);
+            break;
+        case InsertCharMode:
+            insertChar(newCharacter);
+        case ViewMode:
+        default:
+            // do nothing
+            ;
     }
 }
 
 void MaEditorSequenceArea::replaceChar(char newCharacter) {
     CHECK(maMode == ReplaceCharMode, );
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     if (selection.isEmpty()) {
         return;
     }
     SAFE_POINT(isInRange(selection.topLeft()), "Incorrect selection is detected!", );
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
+    if (maObj == nullptr || maObj->isStateLocked()) {
         return;
     }
     if (maObj->getNumRows() == 1 && maObj->getRow(selection.y())->getCoreLength() == 1 && newCharacter == U2Msa::GAP_CHAR) {

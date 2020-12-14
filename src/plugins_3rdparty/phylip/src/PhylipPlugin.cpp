@@ -19,49 +19,48 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDialog>
-#include <QMenu>
+#include "PhylipPlugin.h"
+
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/TaskStarter.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Test/XMLTestFormat.h>
-#include <U2Test/GTestFrameworkComponents.h>
-#include "PhylipPluginTests.h"
-#include "PhylipCmdlineTask.h"
-#include "PhylipTask.h"
-#include "NeighborJoinAdapter.h"
 
-#include "PhylipPlugin.h"
+#include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
+
+#include "NeighborJoinAdapter.h"
+#include "PhylipCmdlineTask.h"
+#include "PhylipPluginTests.h"
+#include "PhylipTask.h"
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     PhylipPlugin *plug = new PhylipPlugin();
     return plug;
 }
 
-const QString PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN("PHYLIP Neighbor Joining");
+const QString PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY("PHYLIP Neighbor Joining");
 
-PhylipPlugin::PhylipPlugin() 
-: Plugin(tr("PHYLIP"), tr("PHYLIP (the PHYLogeny Inference Package) is a package of programs for inferring phylogenies (evolutionary trees)."
-         " Original version at: http://evolution.genetics.washington.edu/phylip.html"))
-{
+PhylipPlugin::PhylipPlugin()
+    : Plugin(tr("PHYLIP"), tr("PHYLIP (the PHYLogeny Inference Package) is a package of programs for inferring phylogenies (evolutionary trees)."
+                              " Original version at: http://evolution.genetics.washington.edu/phylip.html")) {
+    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
+    registry->registerPhyTreeGenerator(new NeighborJoinAdapter(), PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY);
 
-    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
-    registry->registerPhyTreeGenerator(new NeighborJoinAdapter(), PHYLIP_NEIGHBOUR_JOIN);
+    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    assert(xmlTestFormat != NULL);
 
-    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=NULL);
-
-    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = PhylipPluginTests::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) { 
+    foreach (XMLTestFactory *f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -71,39 +70,39 @@ PhylipPlugin::PhylipPlugin()
 }
 
 namespace {
-    CreatePhyTreeSettings fetchSettings() {
-        CreatePhyTreeSettings settings;
-        CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::MATRIX_ARG)) {
-            settings.matrixId = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MATRIX_ARG);
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::GAMMA_ARG)) {
-            settings.useGammaDistributionRates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::GAMMA_ARG).toInt();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::ALPHA_ARG)) {
-            settings.alphaFactor = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::ALPHA_ARG).toDouble();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::TT_RATIO_ARG)) {
-            settings.ttRatio = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::TT_RATIO_ARG).toDouble();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::BOOTSTRAP_ARG)) {
-            settings.bootstrap = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::BOOTSTRAP_ARG).toInt();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::REPLICATES_ARG)) {
-            settings.replicates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::REPLICATES_ARG).toInt();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::SEED_ARG)) {
-            settings.seed = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::SEED_ARG).toInt();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::FRACTION_ARG)) {
-            settings.fraction = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::FRACTION_ARG).toDouble();
-        }
-        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::CONSENSUS_ARG)) {
-            settings.consensusID = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::CONSENSUS_ARG);
-        }
-        return settings;
+CreatePhyTreeSettings fetchSettings() {
+    CreatePhyTreeSettings settings;
+    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::MATRIX_ARG)) {
+        settings.matrixId = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MATRIX_ARG);
     }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::GAMMA_ARG)) {
+        settings.useGammaDistributionRates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::GAMMA_ARG).toInt();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::ALPHA_ARG)) {
+        settings.alphaFactor = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::ALPHA_ARG).toDouble();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::TT_RATIO_ARG)) {
+        settings.ttRatio = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::TT_RATIO_ARG).toDouble();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::BOOTSTRAP_ARG)) {
+        settings.bootstrap = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::BOOTSTRAP_ARG).toInt();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::REPLICATES_ARG)) {
+        settings.replicates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::REPLICATES_ARG).toInt();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::SEED_ARG)) {
+        settings.seed = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::SEED_ARG).toInt();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::FRACTION_ARG)) {
+        settings.fraction = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::FRACTION_ARG).toDouble();
+    }
+    if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::CONSENSUS_ARG)) {
+        settings.consensusID = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::CONSENSUS_ARG);
+    }
+    return settings;
 }
+}    // namespace
 
 void PhylipPlugin::processCmdlineOptions() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
@@ -129,4 +128,4 @@ void PhylipPlugin::processCmdlineOptions() {
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
 }
 
-}//namespace
+}    // namespace U2

@@ -136,7 +136,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
     QList<U2MsaRow> rows;
     rows << row1 << row2;
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // Get the number of rows
@@ -222,7 +222,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     QList<U2MsaRow> rows;
     rows << row1 << row2 << row3;
 
-    msaDbi->addRows(msaId, rows, os);
+    msaDbi->addRows(msaId, rows, -1, os);
     CHECK_NO_ERROR(os);
 
     // Remove the rows

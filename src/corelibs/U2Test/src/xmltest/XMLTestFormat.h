@@ -59,10 +59,12 @@ public:
 
     virtual bool registerTestFactory(XMLTestFactory *tf);
 
+    /** Registers all factories from the list. Asserts that there are no duplicates in the registry as the result. */
+    void registerTestFactories(const QList<XMLTestFactory *> &factoryList);
+
     virtual bool unregisterTestFactory(XMLTestFactory *tf);
 
 private:
-    void registerBuiltInFactories();
     QMap<QString, XMLTestFactory *> testFactories;
 };
 

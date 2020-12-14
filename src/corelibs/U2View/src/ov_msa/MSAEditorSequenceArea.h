@@ -66,26 +66,26 @@ public:
 
     ModificationType operator+(const ModificationType &another) {
         switch (type + another.type) {
-        case NoType + NoType:
-            return ModificationType(NoType);
-        case NoType + Reverse:
-            return ModificationType(Reverse);
-        case NoType + Complement:
-            return ModificationType(Complement);
-        case NoType + ReverseComplement:
-            return ModificationType(ReverseComplement);
-        case Reverse + Reverse:
-            return ModificationType(NoType);
-        case Reverse + Complement:
-            return ModificationType(ReverseComplement);
-        case Reverse + ReverseComplement:
-            return ModificationType(Complement);
-        case Complement + Complement:
-            return ModificationType(NoType);
-        case Complement + ReverseComplement:
-            return ModificationType(Reverse);
-        case ReverseComplement + ReverseComplement:
-            return ModificationType(NoType);
+            case NoType + NoType:
+                return ModificationType(NoType);
+            case NoType + Reverse:
+                return ModificationType(Reverse);
+            case NoType + Complement:
+                return ModificationType(Complement);
+            case NoType + ReverseComplement:
+                return ModificationType(ReverseComplement);
+            case Reverse + Reverse:
+                return ModificationType(NoType);
+            case Reverse + Complement:
+                return ModificationType(ReverseComplement);
+            case Reverse + ReverseComplement:
+                return ModificationType(Complement);
+            case Complement + Complement:
+                return ModificationType(NoType);
+            case Complement + ReverseComplement:
+                return ModificationType(Reverse);
+            case ReverseComplement + ReverseComplement:
+                return ModificationType(NoType);
         }
         return ModificationType(NoType);
     }
@@ -134,6 +134,7 @@ public:
 
 public slots:
     void sl_setCollapsingMode(bool enabled);
+    void sl_copySelectionFormatted();
 
 protected:
     void focusOutEvent(QFocusEvent *fe);
@@ -147,10 +148,13 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    void sl_copyCurrentSelection();
-    void sl_copyFormattedSelection();
+    void sl_copySelection();
     void sl_paste();
-    void sl_pasteFinished(Task *pasteTask);
+    void sl_pasteBefore();
+
+    /** Takes data from the pasteTask and runs AddSequencesFromDocumentsToAlignmentTask. */
+    void sl_pasteTaskFinished(Task *pasteTask);
+
     void sl_addSequencesToAlignmentFinished(Task *task);
     void sl_delCol();
     void sl_goto();
@@ -177,6 +181,7 @@ private slots:
 
 private:
     void initRenderer();
+    void runPasteTask(bool isPasteBefore);
 
     void buildMenu(QMenu *m);
 

@@ -22,9 +22,9 @@
 #include "primitives/GTWidget.h"
 
 #include <QApplication>
-#include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QDoubleSpinBox>
 #include <QGuiApplication>
 #include <QLineEdit>
 #include <QStyle>
@@ -48,8 +48,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
         }
     }
     QPoint globalPoint = widget->mapToGlobal(p);
-    GTMouseDriver::moveTo(globalPoint);
-    GTMouseDriver::click(mouseButton);
+    GTMouseDriver::click(globalPoint, mouseButton);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
@@ -61,9 +60,9 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
 
-#ifdef Q_OS_MAC // TODO: workaround for MacOS gui tests
+#ifdef Q_OS_MAC    // TODO: workaround for MacOS gui tests
     if (!qobject_cast<QComboBox *>(w) &&
-            !qobject_cast<QDoubleSpinBox *>(w)) {
+        !qobject_cast<QDoubleSpinBox *>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
 #else
@@ -81,7 +80,7 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (parentWidget == nullptr) {
             QList<QWidget *> allWidgetList;
-            for(QWidget *parent: GTMainWindow::getMainWindowsAsWidget(os)) {
+            for (QWidget *parent : GTMainWindow::getMainWindowsAsWidget(os)) {
                 allWidgetList << parent->findChildren<QWidget *>(widgetName);
             }
             int nMatches = allWidgetList.count();
@@ -249,28 +248,28 @@ QColor GTWidget::getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &po
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getImage"
-QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget) {
+QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWindow) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
-    class Scenario : public CustomScenario {
+    class GrabImageScenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget, QImage &image)
-            : widget(widget),
-              image(image) {
+        GrabImageScenario(QWidget *widget, QImage &image, bool useGrabWindow)
+            : widget(widget), image(image), useGrabWindow(useGrabWindow) {
         }
 
         void run(GUITestOpStatus &os) {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
-            image = widget->grab(widget->rect()).toImage();
+            QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
+            image = pixmap.toImage();
         }
 
-    private:
         QWidget *widget;
         QImage &image;
+        bool useGrabWindow;
     };
 
     QImage image;
-    GTThread::runInMainThread(os, new Scenario(widget, image));
+    GTThread::runInMainThread(os, new GrabImageScenario(widget, image, useGrabWindow));
     return image;
 }
 #undef GT_METHOD_NAME

@@ -33,9 +33,9 @@ const QString TopHatSupport::ET_TOPHAT = "TopHat";
 const QString TopHatSupport::ET_TOPHAT_ID = "USUPP_TOPHAT";
 const QString TopHatSupport::TOPHAT_TMP_DIR = "tophat";
 
-TopHatSupport::TopHatSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+TopHatSupport::TopHatSupport()
+    : ExternalTool(TopHatSupport::ET_TOPHAT_ID, "tophat2", TopHatSupport::ET_TOPHAT) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -55,7 +55,11 @@ TopHatSupport::TopHatSupport(const QString &id, const QString &name, const QStri
     validMessage = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"
                   " in order to identify exon-exon splice junctions. It is built on"
-                  " the ultrafast short read mapping program Bowtie.";
+                  " the ultrafast short read mapping program Bowtie."
+                  "<br><br><b>Note:</b>"
+                  "<br>TopHat is not officially supported today and is not compatible with the latest Bowtie versions."
+                  "<br>The old and compatible versions of Bowtie1 and Bowtie2 must be placed "
+                  "into the 'bowtie1' and 'bowtie2' sub-folders of the TopHat to be used by default.";
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+\\w?)");
     toolKitName = "TopHat";
 

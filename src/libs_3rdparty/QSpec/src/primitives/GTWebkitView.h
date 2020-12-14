@@ -22,11 +22,11 @@
 #ifndef GTWEBKITVIEW_H
 #define GTWEBKITVIEW_H
 
+#include <QWebElement>
+#include <QWebView>
+
 #include "GTGlobals.h"
 #include "GTWebView.h"
-
-#include <QWebView>
-#include <QWebElement>
 
 namespace HI {
 
@@ -40,6 +40,6 @@ private:
 
 typedef class GTWebkitView GTWebViewPrivate;
 
-}
+}    // namespace HI
 
-#endif // GTWEBKITVIEW_H
+#endif    // GTWEBKITVIEW_H

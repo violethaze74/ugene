@@ -222,6 +222,37 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     }
 }
 
+void MultipleSequenceAlignmentObject::replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    SAFE_POINT(oldChar != U2Msa::GAP_CHAR && newChar != U2Msa::GAP_CHAR, "Gap characters replacement is not supported", );
+    if (oldChar == newChar) {
+        return;
+    }
+
+    U2OpStatus2Log os;
+    QList<qint64> modifiedRowIds = MsaDbiUtils::replaceNonGapCharacter(entityRef, oldChar, newChar, os);
+    CHECK_OP(os, );
+    if (modifiedRowIds.isEmpty()) {
+        return;
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds = modifiedRowIds;
+
+    if (newAlphabet != nullptr && newAlphabet != getAlphabet()) {
+        MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+        SAFE_POINT_OP(os, );
+        mi.alphabetChanged = true;
+    }
+    if (!mi.alphabetChanged && mi.modifiedRowIds.isEmpty()) {
+        return;    // Nothing changed.
+    }
+    updateCachedMultipleAlignment(mi);
+}
+
 void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount) {
     const QList<U2Region> regionsToDelete = MSAUtils::getColumnsWithGaps(getGapModel(), getLength(), requiredGapsCount);
     CHECK(!regionsToDelete.isEmpty(), );

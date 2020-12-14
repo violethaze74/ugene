@@ -764,7 +764,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget2), "No CV opened");
     GTGlobals::sleep();
 
-    QWidget *parent = GTWidget::findWidget(os, "NC_014267.1 [s] NC_014267");
+    QWidget *parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS", parent));
     QWidget *openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
     CHECK_SET_ERR(openCvWidget2 != NULL, "No hint widget");

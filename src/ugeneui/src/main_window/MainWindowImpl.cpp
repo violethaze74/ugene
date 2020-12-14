@@ -20,7 +20,7 @@
  */
 
 #include <qglobal.h>
-#ifdef Q_OS_MACX
+#ifdef Q_OS_DARWIN
 #    include <Security/Authorization.h>
 #    include <errno.h>
 #    include <unistd.h>

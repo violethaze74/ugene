@@ -29,7 +29,7 @@ namespace U2 {
 class Peak2GeneSupport : public ExternalTool {
     Q_OBJECT
 public:
-    Peak2GeneSupport(const QString &id, const QString &name);
+    Peak2GeneSupport();
 
     static const QString ET_PEAK2GENE;
     static const QString ET_PEAK2GENE_ID;

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * MA 02110-1301, USA.wo
  */
 
 #ifndef _U2_BOWTIE_SUPPORT_H_
@@ -29,10 +29,8 @@ namespace U2 {
 class BowtieSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BowtieSupport(const QString &id, const QString &name, const QString &path = "");
+    BowtieSupport(const QString &id);
 
-    static const QString ET_BOWTIE;
-    static const QString ET_BOWTIE_BUILD;
     static const QString ET_BOWTIE_BUILD_ID;
     static const QString ET_BOWTIE_ID;
 };

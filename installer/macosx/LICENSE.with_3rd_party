@@ -408,17 +408,6 @@ The Files in src/plugins_3rdparty/hmm2
                                                 
     See /usr/share/common-licenses/GPL for the complete text of the GPL
 
-Note:
-The Files in src/plugins_3rdparty/uhmmer/src/u_spu and 
-             src/plugins_3rdparty/uhmmer/src/uhmmsearch_cell.cpp
-    are modified sources from the HMMER-Cell project 
-    (ftp://selab.janelia.org/pub/software/hmmer/contrib-2.3.2/HMMerCell_src_02272008.tar.gz)
-    
-    Original Copyright: 2008, International Business Machines Corporation
-    Authors: Kursad Albayraktaroglu, Jizhu Lu
-
-    This files are released under the terms of GPL (v2 or any later version).
-
 
 The Files in src/plugins_3rdparty/umuscle/src/muscle
     are PUBLIC DOMAIN (see http://www.drive5.com/muscle/license.htm)

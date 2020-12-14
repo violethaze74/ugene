@@ -34,10 +34,10 @@ namespace U2 {
 class MrBayesSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MrBayesSupport(const QString &id, const QString &name, const QString &path = "");
+    MrBayesSupport();
 
-    static const QString ET_MRBAYES;
     static const QString ET_MRBAYES_ID;
+    static const QString ET_MRBAYES_ALGORITHM_NAME_AND_KEY;
     static const QString MRBAYES_TMP_DIR;
 };
 

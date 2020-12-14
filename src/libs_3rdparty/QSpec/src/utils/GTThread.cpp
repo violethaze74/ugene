@@ -20,9 +20,9 @@
  */
 
 #include <core/MainThreadRunnable.h>
-#include "core/MainThreadTimer.h"
 
 #include "GTGlobals.h"
+#include "core/MainThreadTimer.h"
 #include "utils/GTThread.h"
 
 namespace HI {
@@ -30,11 +30,10 @@ namespace HI {
 #define GT_CLASS_NAME "ThreadWaiter"
 const qint64 TIMER_INTERVAL = 100;
 
-ThreadWaiter::ThreadWaiter() :
-    //os(os),
-    startValue(0),
-    endValue(0)
-{
+ThreadWaiter::ThreadWaiter()
+    :    //os(os),
+      startValue(0),
+      endValue(0) {
 }
 
 #define GT_METHOD_NAME "wait"
@@ -69,4 +68,4 @@ void GTThread::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
 
 #undef GT_CLASS_NAME
 
-}   // namespace
+}    // namespace HI

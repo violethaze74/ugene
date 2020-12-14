@@ -181,7 +181,6 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             float leX = qToLittleEndian<float>(num.toFloat());
             aux.value.append((char*)&leX, 4);
         } else if (aux.type == 'Z' || aux.type == 'H') {
-            int size = 1 + (str.length() - 5) + 1;
             if (aux.type == 'H') { // check whether the hex string is valid
                 if ((str.length() - 5) % 2 == 1) {
                     coreLog.error("Samtools: length of the hex string not even.");
@@ -197,7 +196,6 @@ QList<U2AuxData> SamtoolsAdapter::samString2aux(const QByteArray &auxString) {
             }
             aux.value = str.mid(5);
         } else if (aux.type == 'B') {
-            int32_t k = 0;
             if (str.length() < 8) {
                 coreLog.error("Samtools: too few values in aux type B.");
                 continue;
@@ -264,44 +262,6 @@ QList<U2AuxData> SamtoolsAdapter::string2aux(const QByteArray &auxString) {
         result << aux;
     }
     return result;
-}
-
-static bool check_seq2samtools(const bam1_t &b, QByteArray seq, U2OpStatus &os) {
-    if(b.core.l_qseq != seq.length()) {
-        os.setError(QString("Internal SamtoolsAdapter seq check failed: expected length %1, got %2").arg(seq.length()).arg(b.core.l_qseq));
-        return false;
-    }
-    for(int i = 0; i < b.core.l_qseq; ++i) {
-        char expected = seq[i];
-        char actual = bam_nt16_rev_table[bam1_seqi(bam1_seq(&b), i)];
-        if(expected != actual) {
-            os.setError(QString("Internal SamtoolsAdapter seq check failed: expected %1, got %2 at pos %3").arg(expected).arg(actual).arg(i));
-            return false;
-        }
-    }
-    return true;
-}
-
-static bool check_qual(const bam1_t &b, QByteArray qual, U2OpStatus &os) {
-    if(b.core.l_qseq != qual.length()) {
-        os.setError(QString("Internal SamtoolsAdapter qual check failed: expected length %1, got %2").arg(qual.length()).arg(b.core.l_qseq));
-        return false;
-    }
-    uint8_t * bQual = bam1_qual(&b);
-    int lastBQualOffset = &bQual[b.core.l_qseq-1] - b.data;
-    if(lastBQualOffset > b.data_len) {
-        os.setError(QString("Internal SamtoolsAdapter qual check failed: quality out of bounds: data_len is %1, but last qual offset is %2").arg(b.data_len).arg(lastBQualOffset));
-        return false;
-    }
-    for(int i = 0; i < b.core.l_qseq; ++i) {
-        uint8_t expected = qual[i];
-        uint8_t actual = bQual[i];
-        if(expected != actual) {
-            os.setError(QString("Internal SamtoolsAdapter qual check failed: expected %1, got %2 at pos %3").arg(expected).arg(actual).arg(i));
-            return false;
-        }
-    }
-    return true;
 }
 
 typedef quint8 *data_ptr;
@@ -419,13 +379,6 @@ void SamtoolsAdapter::read2samtools(const U2AssemblyRead &r, U2OpStatus &os, bam
     resRead.data = data;
 
     CHECK_OP(os,);
-
-    // TODO: remove checks, make tests
-    //CHECK_EXT(cigar2samtools(r->cigar, os).size() == 4*r->cigar.size(), os.setError("Internal SamtoolsAdapter cigar length check failed"),);
-    //check_seq2samtools(resRead, r->readSequence, os);
-    //CHECK_OP(os,);
-    //check_qual(resRead, quality, os);
-    //CHECK_OP(os,);
 }
 
 static bool startPosLessThan(const bam1_t &a, const bam1_t &b) {
@@ -457,9 +410,9 @@ int ReadsContext::getReadAssemblyNum() const {
 }
 
 int ReadsContext::getAssemblyNum(const QString &assemblyName) const {
-    if ("=" == assemblyName) {
+    if (assemblyName == "=") {
         return getReadAssemblyNum();
-    } else if ("*" == assemblyName) {
+    } else if (assemblyName == "*") {
         return -1;
     }
     return assemblyNumMap.value(assemblyName, -1);

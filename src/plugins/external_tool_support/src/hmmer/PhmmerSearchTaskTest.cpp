@@ -40,7 +40,6 @@ const QString GTest_UHMM3Phmmer::DB_FILENAME_TAG = "db";
 
 const QString GTest_UHMM3Phmmer::GAP_OPEN_PROBAB_OPTION_TAG = "popen";
 const QString GTest_UHMM3Phmmer::GAP_EXTEND_PROBAB_OPTION_TAG = "pextend";
-const QString GTest_UHMM3Phmmer::SUBST_MATR_NAME_OPTION_TAG = "substMatr";
 
 const QString GTest_UHMM3Phmmer::OUTPUT_DIR_TAG = "outputDir";
 
@@ -117,23 +116,6 @@ static void setDoubleOption(double &num, const QDomElement &el, const QString &o
     num = ret;
 }
 
-// An unused function. Commneted to suppress the warning
-//static void setUseBitCutoffsOption(int& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
-//    if (si.hasError()) {
-//        return;
-//    }
-//    QString str = el.attribute(opName).toLower();
-//    if ("ga" == str) {
-//        ret = HmmerSearchSettings::p7H_GA;
-//    } else if ("nc" == str) {
-//        ret = HmmerSearchSettings::p7H_NC;
-//    } else if ("tc" == str) {
-//        ret = HmmerSearchSettings::p7H_TC;
-//    } else if (!str.isEmpty()) {
-//        si.setError(QString("unrecognized_value_in %1 option").arg(opName));
-//    }
-//}
-
 static void setBooleanOption(bool &ret, const QDomElement &el, const QString &opName, TaskStateInfo &si) {
     if (si.hasError()) {
         return;
@@ -174,6 +156,12 @@ void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings &settings, co
     setDoubleOption(settings.domE, el, GTest_UHMM3Search::DOM_E_OPTION_TAG, si);
     setDoubleOption(settings.domT, el, GTest_UHMM3Search::DOM_T_OPTION_TAG, si);
     setDoubleOption(settings.domZ, el, GTest_UHMM3Search::DOM_Z_OPTION_TAG, si);
+
+    setDoubleOption(settings.eft, el, "Eft", si);
+    setIntegerOption(settings.efl, el, "EfL", si);
+    setIntegerOption(settings.efn, el, "EfN", si);
+    setIntegerOption(settings.evl, el, "EvL", si);
+    setIntegerOption(settings.evn, el, "EvN", si);
 
     setBooleanOption(settings.doMax, el, GTest_UHMM3Search::MAX_OPTION_TAG, si);
     setBooleanOption(settings.noBiasFilter, el, GTest_UHMM3Search::NOBIAS_OPTION_TAG, si);

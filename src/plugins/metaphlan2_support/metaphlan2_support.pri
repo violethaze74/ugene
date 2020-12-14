@@ -1,4 +1,3 @@
-# include (metaphlan2_support.pri)
 include (../../ugene_globals.pri)
 
 PLUGIN_ID=metaphlan2_support

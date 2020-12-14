@@ -35,13 +35,13 @@ const QString CEASSupport::ET_CEAS_ID = "USUPP_CEAS";
 const QString CEASSupport::REFGENE_DIR_NAME = "refGene";
 const QString CEASSupport::REF_GENES_DATA_NAME = "Gene annotation table";
 
-CEASSupport::CEASSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
+CEASSupport::CEASSupport()
+    : ExternalTool(CEASSupport::ET_CEAS_ID, "cistrome", CEASSupport::ET_CEAS) {
     initialize();
 }
 
 void CEASSupport::initialize() {
-    if (AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

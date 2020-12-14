@@ -45,7 +45,7 @@ ExportChromatogramDialog::ExportChromatogramDialog(QWidget *p, const GUrl &fileU
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "49447284");
+    new HelpButton(this, buttonBox, "54362535");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

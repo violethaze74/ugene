@@ -34,10 +34,10 @@ namespace U2 {
 class PhyMLSupport : public ExternalTool {
     Q_OBJECT
 public:
-    PhyMLSupport(const QString &id, const QString &name);
+    PhyMLSupport();
 
-    static const QString PHYML;
     static const QString PHYML_ID;
+    static const QString ET_PHYML_ALGORITHM_NAME_AND_KEY;
     static const QString PHYML_TEMP_DIR;
 };
 

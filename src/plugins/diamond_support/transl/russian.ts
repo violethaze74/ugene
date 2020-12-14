@@ -84,7 +84,7 @@
 <context>
     <name>U2::DiamondSupport</name>
     <message>
-        <source>In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. In UGENE it is integrated as one of the taxonomic classification tool.</source>
+        <source>DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. In UGENE it is integrated as one of the taxonomic classification tool.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -29,7 +29,7 @@ namespace U2 {
 class TrimmomaticSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TrimmomaticSupport(const QString &id, const QString &name, const QString &path = "");
+    TrimmomaticSupport();
     ~TrimmomaticSupport();
 
     static const QString ET_TRIMMOMATIC;

@@ -30,13 +30,13 @@ namespace U2 {
 const QString ConductGOSupport::ET_GO_ANALYSIS = "go_analysis";
 const QString ConductGOSupport::ET_GO_ANALYSIS_ID = "USUPP_CONDUCT_GO_ANALYSIS";
 
-ConductGOSupport::ConductGOSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+ConductGOSupport::ConductGOSupport()
+    : ExternalTool(ConductGOSupport::ET_GO_ANALYSIS_ID, "cistrome", ConductGOSupport::ET_GO_ANALYSIS) {
     initialize();
 }
 
 void ConductGOSupport::initialize() {
-    if (AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

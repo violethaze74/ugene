@@ -30,9 +30,9 @@ namespace U2 {
 const QString TabixSupport::ET_TABIX = "Tabix";
 const QString TabixSupport::ET_TABIX_ID = "USUPP_TABIX";
 
-TabixSupport::TabixSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow() != NULL) {
+TabixSupport::TabixSupport()
+    : ExternalTool(TabixSupport::ET_TABIX_ID, "samtools", TabixSupport::ET_TABIX) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

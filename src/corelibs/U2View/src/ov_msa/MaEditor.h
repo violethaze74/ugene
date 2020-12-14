@@ -60,6 +60,8 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 class MaEditorSelection;
+class MultipleAlignment;
+class MaModificationInfo;
 
 class SNPSettings {
 public:
@@ -188,6 +190,7 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
+    void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
 private slots:
     void sl_resetColumnWidthCache();
@@ -226,6 +229,7 @@ protected:
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
     QPoint cursorPosition;
 
+public:
     QAction *saveAlignmentAction;
     QAction *saveAlignmentAsAction;
     QAction *zoomInAction;
@@ -237,6 +241,8 @@ protected:
     QAction *saveScreenshotAction;
     QAction *exportHighlightedAction;
     QAction *clearSelectionAction;
+    QAction *copyConsensusAction;
+    QAction *copyConsensusWithGapsAction;
 };
 
 }    // namespace U2

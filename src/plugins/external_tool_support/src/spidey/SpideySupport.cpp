@@ -30,16 +30,12 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/CreateAnnotationDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
@@ -59,9 +55,9 @@ const QString SpideySupport::ET_SPIDEY = "Spidey";
 const QString SpideySupport::ET_SPIDEY_ID = "USUPP_SPIDEY";
 const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
 
-SpideySupport::SpideySupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+SpideySupport::SpideySupport()
+    : ExternalTool(SpideySupport::ET_SPIDEY_ID, "spidey", SpideySupport::ET_SPIDEY) {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new SpideySupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");

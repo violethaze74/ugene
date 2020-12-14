@@ -202,7 +202,7 @@ U2MsaRow MysqlMsaDbi::getRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os
     return res;
 }
 
-QList<qint64> MysqlMsaDbi::getRowsOrder(const U2DataId &msaId, U2OpStatus &os) {
+QList<qint64> MysqlMsaDbi::getOrderedRowIds(const U2DataId &msaId, U2OpStatus &os) {
     QList<qint64> res;
 
     static const QString queryString = "SELECT rowId FROM MsaRow WHERE msa = :msa ORDER BY pos";
@@ -300,7 +300,8 @@ void MysqlMsaDbi::updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &a
     updateAction.complete(os);
 }
 
-void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStatus &os) {
+//TODO: a lof of code-duplication with SQLITE version!
+void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -312,17 +313,19 @@ void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStat
     qint64 numOfRows = getNumOfRows(msaId, os);
     CHECK_OP(os, );
 
-    QList<qint64> posInMsa;
+    qint64 insertStartIndex = insertRowIndex < 0 || insertRowIndex >= numOfRows ? numOfRows : insertRowIndex;
+    QList<qint64> insertRowIndexes;
     for (int i = 0; i < rows.count(); i++) {
-        posInMsa << i + numOfRows;
+        insertRowIndexes << i + insertStartIndex;
     }
+
 
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
-        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
+    if (trackMod == TrackOnUpdate) {
+        modDetails = U2DbiPackUtils::packRows(insertRowIndexes, rows);
     }
 
-    addRowsCore(msaId, posInMsa, rows, os);
+    addRowsCore(msaId, insertRowIndexes, rows, os);
     CHECK_OP(os, );
 
     // Update msa length
@@ -336,7 +339,7 @@ void MysqlMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStat
     }
 
     // Update track mod type for child sequence object
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         foreach (const U2MsaRow &row, rows) {
             dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
             CHECK_OP(os, );
@@ -562,7 +565,7 @@ void MysqlMsaDbi::setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &ro
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        QList<qint64> oldOrder = getRowsOrder(msaId, os);
+        QList<qint64> oldOrder = getOrderedRowIds(msaId, os);
         CHECK_OP(os, );
         modDetails = U2DbiPackUtils::packRowOrderDetails(oldOrder, rowIds);
     }
@@ -931,7 +934,7 @@ void MysqlMsaDbi::addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &r
     if (-1 == posInMsa) {
         posInMsa = numOfRows;
     } else {
-        rowsOrder = getRowsOrder(msaId, os);
+        rowsOrder = getOrderedRowIds(msaId, os);
         CHECK_OP(os, );
         SAFE_POINT(rowsOrder.count() == numOfRows, "Incorrect number of rows", );
     }
@@ -950,36 +953,34 @@ void MysqlMsaDbi::addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &r
     addRowSubcore(msaId, numOfRows + 1, rowsOrder, os);
 }
 
-void MysqlMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MsaRow> &rows, U2OpStatus &os) {
+void MysqlMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
     qint64 numOfRows = getNumOfRows(msaId, os);
     CHECK_OP(os, );
 
-    QList<qint64> rowsOrder = getRowsOrder(msaId, os);
+    QList<qint64> orderedRowIds = getOrderedRowIds(msaId, os);
     CHECK_OP(os, );
-    SAFE_POINT(rowsOrder.count() == numOfRows, "Incorrect number of rows", );
+    SAFE_POINT(orderedRowIds.count() == numOfRows, "Incorrect number of rows", );
 
     // Add new rows
-    QList<qint64>::ConstIterator pi = posInMsa.begin();
-    QList<U2MsaRow>::Iterator ri = rows.begin();
-    for (; ri != rows.end(); ri++, pi++) {
-        qint64 pos = *pi;
-        if (-1 == pos) {
-            pos = numOfRows;
+    QList<qint64>::ConstIterator insertIndexIt = insertRowIndexes.begin();
+    QList<U2MsaRow>::Iterator rowIt = rows.begin();
+    for (; rowIt != rows.end(); rowIt++, insertIndexIt++) {
+        qint64 insertRowIndex = *insertIndexIt;
+        if (insertRowIndex < 0 || insertRowIndex > numOfRows) {
+            insertRowIndex = numOfRows;
         }
-        SAFE_POINT(0 <= pos && pos <= numOfRows, "Incorrect input position", );
-
-        addMsaRowAndGaps(msaId, pos, *ri, os);
+        addMsaRowAndGaps(msaId, insertRowIndex, *rowIt, os);
         CHECK_OP(os, );
 
-        ri->length = calculateRowLength(ri->gend - ri->gstart, ri->gaps);
+        rowIt->length = calculateRowLength(rowIt->gend - rowIt->gstart, rowIt->gaps);
         numOfRows++;
-        rowsOrder.insert(pos, ri->rowId);
+        orderedRowIds.insert(insertRowIndex, rowIt->rowId);
     }
 
-    addRowSubcore(msaId, numOfRows, rowsOrder, os);
+    addRowSubcore(msaId, numOfRows, orderedRowIds, os);
 }
 
 void MysqlMsaDbi::removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os) {

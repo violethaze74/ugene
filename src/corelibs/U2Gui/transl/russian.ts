@@ -934,87 +934,96 @@
         <translation>Назначение:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="34"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="50"/>
         <source>Files and folders options</source>
         <translation>Параметры файлов и папок</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="40"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="56"/>
         <source>Process directories recursively</source>
         <translation>Обработать директории рекурсивно</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="47"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="63"/>
         <source>Keep folders structure</source>
         <translation>Сохранить структуру папок</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="54"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="70"/>
         <source>Create a subfolder for the top level folder</source>
         <translation>Создать подпапку для папки верхнего уровня</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="61"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="77"/>
         <source>Create a subfolder for each file</source>
         <translation>Создать подпапку для каждого файла</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="68"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="84"/>
         <source>Import unrecognized files</source>
         <translation>Импортировать неизвестные файлы</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="91"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="107"/>
         <source>Multi-sequence files import policy</source>
         <translation>Параметры импорта файлов, содержащих несколько последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="103"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="113"/>
         <source>Import as separate sequences</source>
         <translation>Импортировать как отдельные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="119"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="123"/>
         <source>Merge into a single sequence</source>
         <translation>Соединить в одну последовательность</translation>
     </message>
     <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
-        <source> bases</source>
-        <translation> символов</translation>
+        <source>Number of separator symbols (N - for nucleic or X - for amino) between parts.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="135"/>
+        <source>Separator characters between parts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> bases</source>
+        <translation type="vanished"> символов</translation>
+    </message>
+    <message>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="179"/>
         <source>Join into alignment</source>
         <translation>Соедить в выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="148"/>
         <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
-        <translation>Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
+        <translation type="vanished">Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="192"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="194"/>
         <source>Import ACE files as</source>
         <translation>Импортировать ACE файлы как</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="198"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="200"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="211"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="213"/>
         <source>Short reads assembly</source>
         <translation>Сборка коротких ридов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="227"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="245"/>
         <source>Documents and objects options</source>
         <translation>Настройки документов и объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="233"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="251"/>
         <source>Create a subfolder for each document</source>
         <translation>Создать подпапку для каждого документа</translation>
     </message>
@@ -1159,24 +1168,24 @@ Remove it from the project first.</source>
         <translation>Error! No object DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1082"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1091"/>
         <source>Confirm Deletion</source>
         <translation>Подтверждение удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1083"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1092"/>
         <source>Are you sure you want to delete items in Recycle Bin?
 The items cannot be recovered once deleted.</source>
         <translation>Вы уверены, что хотите удалить элементы в корзину?
 Элементы не могут быть восстановлены после удаления.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1098"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1107"/>
         <source>Unable to Remove</source>
         <translation>Невозможно удалить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1098"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1107"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
     </message>
@@ -2228,12 +2237,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GObjectView</name>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="115"/>
+        <location filename="../src/ObjectViewModel.cpp" line="126"/>
+        <source>Can&apos;t add object: %1 to the closing view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ObjectViewModel.cpp" line="129"/>
         <source>Object is already added to view %1!</source>
         <translation>Объект уже добавлен в окно &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="129"/>
+        <location filename="../src/ObjectViewModel.cpp" line="143"/>
         <source>Can&apos;t add object: %1</source>
         <translation>Не удалось добавить объект: %1</translation>
     </message>
@@ -2773,103 +2787,103 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="542"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="549"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="319"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="321"/>
         <source>Import to the database...</source>
         <translation>Импортировать в базу данных...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="319"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="321"/>
         <source>Import to the folder...</source>
         <translation>Импортировать в папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="723"/>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="757"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="731"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="765"/>
         <source>Unable to Restore</source>
         <translation>Невозможно восстановить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="723"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="731"/>
         <source>UGENE is unable to restore some object from Recycle Bin because its original location does not exist. You can still restore the objects by dragging them with mouse from Recycle Bin.</source>
         <translation>UGENE не может восстановить некоторые объекты из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить объекты путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="757"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="765"/>
         <source>UGENE is unable to restore some folder from Recycle Bin because its original location does not exist. You can still restore the folders by dragging them with mouse from Recycle Bin.</source>
         <translation>UGENE не может восстановить некоторые папки из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить папки путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="824"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="832"/>
         <source>Select a database to import anything</source>
         <translation>Выберите базу данных для того, чтобы что-то импортировать</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="865"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="873"/>
         <source>No object to add to view</source>
         <translation>Нет объектов для добавления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="871"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="879"/>
         <source>No object to remove from view</source>
         <translation>Нет объектов для удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="934"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="942"/>
         <source>Add object to document...</source>
         <translation>Добавить объект в документ...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="939"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="947"/>
         <source>Import...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="944"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="952"/>
         <source>Load selected document(s)</source>
         <translation>Загрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="951"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="959"/>
         <source>Unload selected document(s)</source>
         <translation>Выгрузить выбранный документ(ы)</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="969"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="978"/>
         <source>Remove selected items</source>
         <translation>Удалить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="975"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="984"/>
         <source>Add folder...</source>
         <translation>Добавить папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="980"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="989"/>
         <source>Restore selected items</source>
         <translation>Восстановить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="984"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="993"/>
         <source>Empty recycle bin</source>
         <translation>Очистить корзину</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="962"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="971"/>
         <source>Rename...</source>
         <translation>Переименовать...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="954"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="963"/>
         <source>Lock document for editing</source>
         <translation>Заблокировать внесение изменений</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="958"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="967"/>
         <source>Unlock document for editing</source>
         <translation>Снять блокировку изменений</translation>
     </message>

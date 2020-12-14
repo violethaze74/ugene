@@ -49,8 +49,7 @@ void PhyTreeGeneratorLauncherTask::prepare() {
     QString algId = settings.algorithm;
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
     PhyTreeGenerator *generator = registry->getGenerator(algId);
-    assert(generator != NULL);
-    if (generator == NULL) {
+    if (generator == nullptr) {
         stateInfo.setError(PhyTreeGeneratorLauncherTask::tr("Tree construction algorithm %1 not found").arg(algId));
     } else {
         const QStringList &rowsOrder = settings.rowsOrder;

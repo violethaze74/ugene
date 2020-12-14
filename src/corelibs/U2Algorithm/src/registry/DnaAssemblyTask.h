@@ -108,7 +108,7 @@ protected:
     void setUpIndexBuilding(const QStringList &indexExtensions);
 
     DnaAssemblyToRefTaskSettings settings;
-    bool justBuildIndex;
+    bool isBuildOnlyTask;
     bool hasResults;
 };
 

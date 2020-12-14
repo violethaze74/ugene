@@ -17,12 +17,12 @@
 <context>
     <name>CmdlineBasedWorkerValidator</name>
     <message>
-        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="39"/>
+        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="40"/>
         <source>The element specifies a nonexistent path to an external tool executable.</source>
         <translation>Этот элемент задаёт несуществующий путь до внешнего инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="42"/>
+        <location filename="../src/library/CmdlineBasedWorkerValidator.cpp" line="43"/>
         <source>The element should specify an executable file.</source>
         <translation>Этот элемент должен задавать запускаемый файл.</translation>
     </message>
@@ -5806,68 +5806,68 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowDesignerPlugin</name>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="84"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="79"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер вычислительных схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="84"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="79"/>
         <source>Workflow Designer allows one to create complex computational workflows.</source>
         <translation>Дизайнер вычислительных схем позволяет создавать и переиспользовать многоэтапные алгоритмы обработки данных.
 Алгоритмы создаются в виде визуальных диаграмм потоков данных, не требуя навыков программирования или знания языков программирования.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="182"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="165"/>
         <source>Runs the specified task.</source>
         <translation>Выполняет указанную задачу.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="183"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="166"/>
         <source>Runs the specified task. A path to a user-defined UGENE workflow be used as a task name.</source>
         <translation>Запускает указанную задачу. Путь до пользовательской UGENE схемы будет использован для имени задачи.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="185"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="168"/>
         <source>&lt;task_name&gt; [&lt;task_parameter&gt;=value ...]</source>
         <translation>&lt;task_name&gt; [&lt;task_parameter&gt;=value ...]</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="191"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="174"/>
         <source>Prints the content of the specified slot.</source>
         <translation>Печатает содержимое указанного слота.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="192"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="175"/>
         <source>Prints the content of the specified slot. The incoming/outcoming content of specified slot is printed to the standard output.</source>
         <translation>Печатает содержимое указанного слота. Входное/выходное содержимое указанного слота печатается стандартно.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="194"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="177"/>
         <source>&lt;actor_name&gt;.&lt;port_name&gt;.&lt;slot_name&gt;</source>
         <translation>&lt;actor_name&gt;.&lt;port_name&gt;.&lt;slot_name&gt;</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="199"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="182"/>
         <source>Creates new Galaxy tool config.</source>
         <translation>Создает новую конфигурацию Galaxy-инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="200"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="183"/>
         <source>Creates new Galaxy tool config from existing workflow. Paths to UGENE and Galaxy can be set</source>
         <translation>Создает новую конфигурацию для инструмента Galaxy из существующей схемы. Пути для UGENE и Galaxy могут быть установлены</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="202"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="185"/>
         <source>&lt;uwl-file&gt; [--ugene-path=value] [--galaxy-path=value]</source>
         <translation>&lt;uwl-file&gt; [--ugene-path=value] [--galaxy-path=value]</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="226"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="209"/>
         <source>Close Designer</source>
         <translation>Закрытие дизайнера схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="237"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="220"/>
         <source>Close Designer canceled</source>
         <translation>Закрытие дизайнера схем отменено</translation>
     </message>
@@ -5875,97 +5875,97 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowDesignerService</name>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="246"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="229"/>
         <source>Workflow Designer</source>
         <translation>Дизайнер вычислительных схем</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="284"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="267"/>
         <source>Workflow Designer...</source>
         <translation>Дизайнер вычислительных схем...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="294"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="277"/>
         <source>New workflow...</source>
         <translation>Новая схема...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="325"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="308"/>
         <source>Can not open Workflow Designer. Please, try to reload UGENE.</source>
         <translation>Невозможно открыть дизайнер вычислительных схем. Попробуйте перезагрузить UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="366"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="351"/>
         <source>Raw DNA-Seq data processing...</source>
         <translation>Обработка сырых данных секвенирования ДНК...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="368"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="353"/>
         <source>Variant calling...</source>
         <translation>Поиск вариаций...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="370"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="355"/>
         <source>Annotate variants and predict effects...</source>
         <translation>Аннотация вариаций и предсказание эффекта...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="372"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="357"/>
         <source>Raw RNA-Seq data processing...</source>
         <translation>Обработка сырых данных секвенирования РНК...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="374"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="359"/>
         <source>RNA-Seq data analysis...</source>
         <translation>Анализ данных секвенирования РНК...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="376"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="361"/>
         <source>Extract transcript sequences...</source>
         <translation>Извлечение последовательности транскриптов...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="378"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="363"/>
         <source>Raw ChIP-Seq data processing...</source>
         <translation>Обработка сырых данных ChIP-Seq...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="380"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="365"/>
         <source>ChIP-Seq data analysis...</source>
         <translation>Анализ данных ChIP-Seq...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="382"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="367"/>
         <source>Metagenomics classification...</source>
         <translation>Метагеномная классификация...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="388"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="373"/>
         <source>Extract coverage from assemblies...</source>
         <translation>Расчет покрытия по сборке...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="390"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="375"/>
         <source>Extract consensus from assemblies...</source>
         <translation>Извлечение консенсуса из сборки...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="393"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="378"/>
         <source>Remote NCBI BLAST...</source>
         <translation>Удаленный поиск с помощью NCBI BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="360"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="340"/>
         <source>Reads quality control...</source>
         <translation>Контроль качества коротких прочтений...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="362"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="345"/>
         <source>Reads de novo assembly (with SPAdes)...</source>
         <translation>Чтение de novo сборки (при помощи SPAdes)...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowDesignerPlugin.cpp" line="364"/>
+        <location filename="../src/WorkflowDesignerPlugin.cpp" line="349"/>
         <source>Filter short scaffolds...</source>
         <translation>Фильтровать короткие каркасы...</translation>
     </message>

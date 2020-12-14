@@ -23,7 +23,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -71,7 +70,6 @@ const QString TopHatWorkerFactory::RAW_JUNCTIONS("raw-junctions");
 const QString TopHatWorkerFactory::KNOWN_TRANSCRIPT("known-transcript");
 const QString TopHatWorkerFactory::MAX_MULTIHITS("max-multihits");
 const QString TopHatWorkerFactory::SEGMENT_LENGTH("segment-length");
-const QString TopHatWorkerFactory::DISCORDANT_PAIR_ALIGNMENTS("discordant-pair-alignments");
 const QString TopHatWorkerFactory::FUSION_SEARCH("fusion-search");
 const QString TopHatWorkerFactory::TRANSCRIPTOME_ONLY("transcriptome-only");
 const QString TopHatWorkerFactory::TRANSCRIPTOME_MAX_HITS("transcriptome-max-hits");
@@ -274,14 +272,6 @@ void TopHatWorkerFactory::init() {
                              TopHatWorker::tr("Segment length"),
                              TopHatWorker::tr("Each read is cut up into segments, each at least this long."
                                               " These segments are mapped independently."));
-
-    // Commented as it seems there is no "--report-discordant-pair-alignment"
-    // in the latest TopHat version (not mentioned in the manual)
-    //
-    // Descriptor discordantPairAlignments(DISCORDANT_PAIR_ALIGNMENTS,
-    //    TopHatWorker::tr("Report discordant pair alignments"),
-    //    TopHatWorker::tr("This option will allow mate pairs to map to different"
-    //    " chromosomes, distant places on the same chromosome, or on the same strand."));
 
     Descriptor fusionSearch(FUSION_SEARCH,
                             TopHatWorker::tr("Fusion search"),
@@ -640,26 +630,27 @@ void TopHatWorker::initSettings() {
 
     int bowtieModeVal = getValue<int>(TopHatWorkerFactory::BOWTIE_N_MODE);
     switch (bowtieModeVal) {
-    case vMode:
-        settings.bowtieMode = vMode;
-        break;
-    case nMode:
-        settings.bowtieMode = nMode;
-        break;
-    default:
-        algoLog.error(tr("Unrecognized value of the Bowtie mode option!"));
-        settingsAreCorrect = false;
+        case vMode:
+            settings.bowtieMode = vMode;
+            break;
+        case nMode:
+            settings.bowtieMode = nMode;
+            break;
+        default:
+            algoLog.error(tr("Unrecognized value of the Bowtie mode option!"));
+            settingsAreCorrect = false;
     }
 
     // Set version (Bowtie1 or Bowtie2) and the path to the corresponding external tool
     int bowtieVersionVal = getValue<int>(TopHatWorkerFactory::BOWTIE_VERSION);
     QString bowtieExtToolPath = getValue<QString>(TopHatWorkerFactory::BOWTIE_TOOL_PATH);
-    if (0 != bowtieVersionVal) {
-        settings.useBowtie1 = true;
-        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(BowtieSupport::ET_BOWTIE_ID, bowtieExtToolPath);
-    } else {
-        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, bowtieExtToolPath);
-    }
+    // Use embedded old versions of bowtie tool if 'default' is selected.
+    bool isDefaultPath = bowtieExtToolPath == "default";
+    QString topHatPath = WorkflowUtils::updateExternalToolPath(TopHatSupport::ET_TOPHAT_ID, "default");
+    QString topHatDir = QFileInfo(topHatPath).dir().absolutePath();
+    settings.useBowtie1 = bowtieVersionVal != 0;
+    settings.bowtiePath = isDefaultPath ? topHatDir + "/bowtie" + (settings.useBowtie1 ? "1" : "2") + "/bowtie"
+                                        : bowtieExtToolPath;
 
     QString samtools = getValue<QString>(TopHatWorkerFactory::SAMTOOLS_TOOL_PATH);
     settings.samtoolsPath = WorkflowUtils::updateExternalToolPath(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, samtools);
@@ -793,62 +784,6 @@ bool InputSlotsValidator::validate(const IntegralBusPort *port, NotificationsLis
     return true;
 }
 
-bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList &notificationList) const {
-    Attribute *attr = actor->getParameter(TopHatWorkerFactory::BOWTIE_TOOL_PATH);
-    SAFE_POINT(attr != nullptr, "Bowtie tool path is not defined", false);
-
-    ExternalTool *bowTieTool = nullptr;
-    {
-        int version = getValue<int>(actor, TopHatWorkerFactory::BOWTIE_VERSION);
-        if (version == 1) {
-            bowTieTool = AppContext::getExternalToolRegistry()->getById(BowtieSupport::ET_BOWTIE_ID);
-            SAFE_POINT(bowTieTool != nullptr, "Bowtie tool is not found", false);
-            ExternalTool *topHatTool = AppContext::getExternalToolRegistry()->getById(TopHatSupport::ET_TOPHAT_ID);
-            SAFE_POINT(topHatTool != nullptr, "TopHat tool is not found", false);
-
-            Version bowtieVersion = Version::parseVersion(bowTieTool->getVersion());
-            Version topHatVersion = Version::parseVersion(topHatTool->getVersion());
-
-            if (topHatVersion.text.isEmpty() || bowtieVersion.text.isEmpty()) {
-                bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
-                if (!isPathOnlyValidation) {    // PathOnlyValidation is used in nightly tests.
-                    if (topHatVersion.text.isEmpty() && bowtieVersion.text.isEmpty()) {
-                        QString message = QObject::tr("TopHat and Bowtie tool versions are undefined, this may cause some compatibility issues");
-                        WorkflowNotification warning(message, actor->getLabel(), WorkflowNotification::U2_WARNING);
-                        notificationList << warning;
-                    } else {
-                        QString toolName = topHatVersion.text.isEmpty() ? "TopHat" : "Bowtie";
-                        QString message = QObject::tr("%1 tool's version is undefined, this may cause some compatibility issues").arg(toolName);
-                        WorkflowNotification warning(message, actor->getLabel(), WorkflowNotification::U2_WARNING);
-                        notificationList << warning;
-                    }
-                }
-                return true;
-            } else if (!(Version::parseVersion("0.12.9") > bowtieVersion && Version::parseVersion("2.0.8") >= topHatVersion) && !(Version::parseVersion("0.12.9") <= bowtieVersion && Version::parseVersion("2.0.8b") <= topHatVersion)) {
-                QString message = QObject::tr("Bowtie and TopHat tools have incompatible "
-                                              "versions. Your TopHat's version is %1, Bowtie's one is %2. The following are "
-                                              "considered to be compatible: Bowtie < \"0.12.9\" and TopHat <= \"2.0.8\" or "
-                                              "Bowtie >= \"0.12.9\" and TopHat >= \"2.0.8.b\"")
-                                      .arg(topHatVersion.text,
-                                           bowtieVersion.text);
-
-                WorkflowNotification error(message, actor->getLabel());
-                notificationList << error;
-                return false;
-            }
-        } else {
-            bowTieTool = AppContext::getExternalToolRegistry()->getById(Bowtie2Support::ET_BOWTIE2_ALIGN_ID);
-        }
-        SAFE_POINT(bowTieTool != nullptr, "Bowtie tool is not found", false);
-    }
-
-    bool valid = attr->isDefaultValue() ? !bowTieTool->getPath().isEmpty() : !attr->isEmpty();
-    if (!valid) {
-        notificationList << WorkflowUtils::externalToolError(bowTieTool->getName());
-    }
-    return valid;
-}
-
 bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList &notificationList) const {
     bool valid = true;
     Attribute *samplesAttr = actor->getParameter(TopHatWorkerFactory::SAMPLES_MAP);
@@ -882,8 +817,7 @@ bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList
 }
 
 bool BowtieToolsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
-    bool valid = validateBowtie(actor, notificationList);
-    return valid && validateSamples(actor, notificationList);
+    return validateSamples(actor, notificationList);
 }
 
 /************************************************************************/

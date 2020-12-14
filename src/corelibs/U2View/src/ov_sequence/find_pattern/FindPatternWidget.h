@@ -90,7 +90,7 @@ public:
 private slots:
     void sl_onAlgorithmChanged(int);
     void sl_onRegionOptionChanged(int);
-    void sl_onRegionValueEdited();
+    void sl_onSearchRegionIsChangedByUser();
     void sl_onSequenceTranslationChanged(int);
     void sl_onSearchPatternChanged();
     void sl_onMaxResultChanged(int);
@@ -106,7 +106,8 @@ private slots:
     /** A sequence part was added, removed or replaced */
     void sl_onSequenceModified();
 
-    void sl_onSelectedRegionChanged();
+    /** Reacts to selection change in CurrentSelectionRegion mode: synchronizes line-edits and starts a new search if needed. */
+    void sl_syncSearchRegionWithTrackedSelection();
 
     void sl_onAnnotationNameEdited();
 
@@ -135,12 +136,18 @@ private:
     void showCurrentResult() const;
     bool isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const;
     void stopCurrentSearchTask();
-    void correctSearchInCombo();
     void setUpTabOrder() const;
     QList<NamePattern> updateNamePatterns();
-    void showCurrentResultAndStopProgress(const int current, const int total);
+
+    /** Stops progress movie and update current & total result labels. */
+    void showCurrentResultAndStopProgress() const;
+
     void startProgressAnimation();
     void updatePatternSourceControlsUiState();
+
+    /** Updates result label text based on the current currentResultIndex and findPatternResults size. */
+    void updateResultLabelText() const;
+
     /**
      * Enables or disables the Search button depending on
      * the Pattern field value (it should be not empty and not too long)
@@ -179,8 +186,26 @@ private:
 
     void updateAnnotationsWidget();
 
+    /**
+     * Starts tracking selection for the sequence in focus.
+     * Stops tracking any old tracked sequence selection.
+     * Does not subscribe (sets trackedSelection to nullptr) if there is no focused sequence.
+     */
+    void startTrackingFocusedSequenceSelection();
+
+    /**
+     * Stops tracking focused sequence selection and sets tracked selection to nullptr.
+     */
+    void stopTrackingFocusedSequenceSelection();
+
+    /** Returns true if the all regions from the list can be found in the current search result. */
+    bool isRegionListInSearchResults(const QVector<U2Region> &regionList) const;
+
+    /** Returns true if current search mode is CurrentSelectionRegion. */
+    bool isSearchInSelectionMode() const;
+
     AnnotatedDNAView *annotatedDnaView;
-    CreateAnnotationWidgetController *annotController;
+    CreateAnnotationWidgetController *createAnnotationController;
     bool annotationModelIsPrepared;
 
     bool isAminoSequenceSelected;
@@ -206,7 +231,11 @@ private:
 
     QWidget *annotationsWidget;
 
-    DNASequenceSelection *currentSelection;
+    /**
+     * Currently tracked selection.
+     * Not null only if the current region mode is CurrentSelectionRegion and is equal to selection of the currently focused sequence.
+     */
+    DNASequenceSelection *trackedSelection;
 
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
@@ -216,7 +245,8 @@ private:
     static const int REG_EXP_MAX_RESULT_SINGLE_STEP;
 
     QList<SharedAnnotationData> findPatternResults;
-    int iterPos;
+    /** Index of the currently selected search result. A special value '-1' means that no result is selected. */
+    int currentResultIndex;
     Task *searchTask;
     QString previousPatternString;
     int previousMaxResult;

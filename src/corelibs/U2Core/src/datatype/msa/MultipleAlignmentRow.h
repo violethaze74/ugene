@@ -120,6 +120,7 @@ public:
 
     virtual char charAt(qint64 position) const = 0;
     virtual bool isGap(qint64 position) const = 0;
+    virtual bool isLeadingOrTrailingGap(qint64 position) const = 0;
 
     virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 

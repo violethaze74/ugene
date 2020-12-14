@@ -36,13 +36,13 @@ const QString Peak2GeneSupport::REF_GENES_DATA_NAME = "Gene annotation table";
 const QString Peak2GeneSupport::TRANSLATIONS_DIR_NAME = "geneIdTranslations";
 const QString Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME = "Entrez ID translations";
 
-Peak2GeneSupport::Peak2GeneSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
+Peak2GeneSupport::Peak2GeneSupport()
+    : ExternalTool(Peak2GeneSupport::ET_PEAK2GENE_ID, "cistrome", Peak2GeneSupport::ET_PEAK2GENE) {
     initialize();
 }
 
 void Peak2GeneSupport::initialize() {
-    if (AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

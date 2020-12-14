@@ -1,4 +1,3 @@
-# include (clark_support.pri)
 include (../../ugene_version.pri)
 include (../../ugene_globals.pri)
 

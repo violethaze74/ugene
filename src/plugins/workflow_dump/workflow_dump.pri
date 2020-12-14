@@ -1,5 +1,3 @@
-# include (workflow_dump.pri)
-
 PLUGIN_ID=workflow_dump
 PLUGIN_NAME=Workflow Dump
 PLUGIN_VENDOR=Unipro

@@ -10,6 +10,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/qt/EscapeClicker.h \
 #   Runnables / UGENE
 #   Runnables / UGENE / ugeneui
+            src/runnables/ugene/ugeneui/AnyDialogFiller.h \
             src/runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h \
             src/runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h \
             src/runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h \
@@ -278,6 +279,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/qt/EscapeClicker.cpp \
 #   Runnables / UGENE
 #   Runnables / UGENE / ugeneui
+            src/runnables/ugene/ugeneui/AnyDialogFiller.cpp \
             src/runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.cpp \
             src/runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.cpp \
             src/runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.cpp \

@@ -125,7 +125,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
     if (worker.files.isEmpty()) {
         addTableCell(tableGridLayout, worker.name, "", workerIndex + 1, 0, isLastRow, false);
     } else if (worker.files.length() == 1 || worker.files.length() >= MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON) {
-        auto button = new DashboardFileButton(worker.files, dashboardDir);
+        auto button = new DashboardFileButton(worker.files, dashboardDir, monitor);
         addTableCell(tableGridLayout, worker.name, button, workerIndex + 1, 0, isLastRow, false);
     } else {
         auto cellWidget = new QWidget();
@@ -133,7 +133,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
         cellWidgetLayout->setContentsMargins(0, 0, 0, 0);
         cellWidget->setLayout(cellWidgetLayout);
         for (auto url : worker.files) {
-            cellWidgetLayout->addWidget(new DashboardFileButton(QStringList() << url, dashboardDir));
+            cellWidgetLayout->addWidget(new DashboardFileButton(QStringList() << url, dashboardDir, monitor));
         }
         addTableCell(tableGridLayout, worker.name, cellWidget, workerIndex + 1, 0, isLastRow, false);
     }

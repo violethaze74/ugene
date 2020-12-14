@@ -32,7 +32,7 @@ namespace U2 {
 class PhylipPlugin : public Plugin {
 	Q_OBJECT
 public:
-    static const QString PHYLIP_NEIGHBOUR_JOIN;
+    static const QString PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY;
     PhylipPlugin();
 private:
     void processCmdlineOptions();

@@ -24,7 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "python/PythonSupport.h"
@@ -36,9 +35,9 @@ const QString CutadaptSupport::ET_CUTADAPT_ID = "USUPP_CUTADAPT";
 const QString CutadaptSupport::ADAPTERS_DIR_NAME = "adapters";
 const QString CutadaptSupport::ADAPTERS_DATA_NAME = "Adapters file";
 
-CutadaptSupport::CutadaptSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+CutadaptSupport::CutadaptSupport()
+    : ExternalTool(CutadaptSupport::ET_CUTADAPT_ID, "cutadapt", CutadaptSupport::ET_CUTADAPT) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

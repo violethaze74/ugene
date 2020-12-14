@@ -64,7 +64,7 @@ private slots:
 private:
     void updateNotificationRow(int workerIndex);
 
-    const WorkflowMonitor *monitor;
+    const QPointer<const WorkflowMonitor> monitor;
     QWidget *dashboardWidget;
     QGridLayout *tableGridLayout;
     QList<NotificationsDashboardInfo> notificationList;

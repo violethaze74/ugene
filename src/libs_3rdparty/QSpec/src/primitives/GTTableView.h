@@ -21,12 +21,12 @@
 #ifndef GTTABLEVIEW_H
 #define GTTABLEVIEW_H
 
-#include "GTGlobals.h"
-
 #include <QPoint>
 #include <QTableView>
 
-namespace HI{
+#include "GTGlobals.h"
+
+namespace HI {
 
 class HI_EXPORT GTTableView {
 public:
@@ -38,8 +38,8 @@ public:
 
     static QString data(GUITestOpStatus &os, QTableView *table, int row, int column);
 
-    static void scrollTo(GUITestOpStatus &os, QTableView *table, const QModelIndex& index);
+    static void scrollTo(GUITestOpStatus &os, QTableView *table, const QModelIndex &index);
 };
 
-}
-#endif // GTTABLEVIEW_H
+}    // namespace HI
+#endif    // GTTABLEVIEW_H

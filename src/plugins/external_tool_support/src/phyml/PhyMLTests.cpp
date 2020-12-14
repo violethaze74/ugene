@@ -157,14 +157,14 @@ void GTest_PhyML::prepare() {
     }
     assert(obj != NULL);
 
-    settings.algorithm = PhyMLSupport::PHYML;
+    settings.algorithm = PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY;
 
     task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
     addSubTask(task);
 }
 
 Task::ReportResult GTest_PhyML::report() {
-    if (NULL == task) {
+    if (task == nullptr) {
         if (!stateInfo.hasError()) {
             stateInfo.setError("PhyTreeGeneratorLauncherTask is not created");
         }

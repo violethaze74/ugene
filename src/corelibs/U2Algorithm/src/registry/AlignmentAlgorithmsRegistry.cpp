@@ -40,28 +40,19 @@ AlignmentAlgorithmsRegistry::~AlignmentAlgorithmsRegistry() {
     qDeleteAll(algorithms.values());
 }
 
-bool AlignmentAlgorithmsRegistry::registerAlgorithm(AlignmentAlgorithm *alg) {
+bool AlignmentAlgorithmsRegistry::registerAlgorithm(AlignmentAlgorithm *algorithm) {
     QMutexLocker locker(&mutex);
 
-    if (algorithms.contains(alg->getId())) {
+    if (algorithms.contains(algorithm->getId())) {
         return false;
     }
-    algorithms.insert(alg->getId(), alg);
+    algorithms.insert(algorithm->getId(), algorithm);
     return true;
-}
-
-AlignmentAlgorithm *AlignmentAlgorithmsRegistry::unregisterAlgorithm(const QString &id) {
-    QMutexLocker locker(&mutex);
-
-    if (!algorithms.contains(id)) {
-        return NULL;
-    }
-    return algorithms.take(id);
 }
 
 AlignmentAlgorithm *AlignmentAlgorithmsRegistry::getAlgorithm(const QString &id) const {
     QMutexLocker locker(&mutex);
-    return algorithms.value(id, NULL);
+    return algorithms.value(id, nullptr);
 }
 
 QStringList AlignmentAlgorithmsRegistry::getAvailableAlgorithmIds(AlignmentAlgorithmType type) const {

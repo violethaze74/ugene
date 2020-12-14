@@ -53,9 +53,14 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    ExternalTool(QString id, QString name, QString path);
+    ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path = "");
 
     const QString &getId() const;
+
+    const QString &getDirName() const {
+        return dirName;
+    }
+
     const QString &getName() const;
     const QString &getPath() const;
     const QIcon &getIcon() const;
@@ -65,8 +70,6 @@ public:
     const QString &getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
     const QString &getExecutableFileName() const;
-    const QStringList &getValidationArguments() const;
-    const QString &getValidMessage() const;
     const QString &getVersion() const;
     const QString &getPredefinedVersion() const;
     const QRegExp &getVersionRegExp() const;
@@ -87,11 +90,13 @@ public:
     bool hasAdditionalErrorMessage() const;
 
     void setPath(const QString &_path);
-    void setValid(bool _isValid);
+    void setValid(bool isValid);
+    void setChecked(bool isChecked);
     void setVersion(const QString &_version);
     void setAdditionalInfo(const StrStrMap &additionalInfo);
 
     bool isValid() const;
+    bool isChecked() const;
     bool isMuted() const;
     bool isModule() const;
     bool isCustom() const;
@@ -102,8 +107,12 @@ signals:
     void si_toolValidationStatusChanged(bool isValid);
 
 protected:
-    QString id;    // tool id
-    QString name;    // tool name
+    /** Unique external tool id. */
+    QString id;
+    /** Tool folder name or sub-path in 'tools' directory. */
+    QString dirName;
+    /** Visual name of the tool. */
+    QString name;
     QString path;    // tool path
     QIcon icon;    // valid tool icon
     QIcon grayIcon;    // not set tool icon
@@ -117,6 +126,10 @@ protected:
     QString predefinedVersion;    // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
     QRegExp versionRegExp;    // RegExp to get the version from the validation run output
     bool isValidTool;    // tool state
+
+    /** If true the tool was already checked/validated by UGENE. */
+    bool isCheckedTool;
+
     QString toolKitName;    // toolkit which includes the tool
     StrStrMap errorDescriptions;    // error messages for the tool's standard errors
     StrStrMap additionalInfo;    // any additional info, it is specific for the extenal tool
@@ -133,8 +146,8 @@ protected:
 class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
-    ExternalToolModule(const QString &id, const QString &name)
-        : ExternalTool(id, name, "") {
+    ExternalToolModule(const QString &id, const QString &dirName, const QString &name)
+        : ExternalTool(id, dirName, name) {
         isModuleTool = true;
     }
 };
@@ -156,15 +169,13 @@ public:
     void setToolState(const QString &toolId, bool isValid) {
         toolStates.insert(toolId, isValid);
     }
+
     bool getToolState(const QString &toolId) const {
         return toolStates.value(toolId, false);
     }
 
 signals:
     void si_validationComplete();
-
-public slots:
-    void sl_validationTaskStateChanged();
 
 private:
     QStringList toolIds;
@@ -175,13 +186,20 @@ class U2CORE_EXPORT ExternalToolManager : public QObject {
     Q_OBJECT
 public:
     enum ExternalToolState {
-        NotDefined,
-        NotValid,
-        Valid,
+        /** The initial tool state on UGENE startup or a new tool addition: not checked/processed by UGENE. */
+        Unprocessed,
+
+        /** Tool validation task or tool search task is in progress. */
         ValidationIsInProcess,
-        SearchingIsInProcess,
+
+        /** The tool was checked and is valid and is ready to be used. */
+        Valid,
+
+        /** The tool was checked and is invalid. */
+        NotValid,
+
+        /** The tool is not valid because of the missing/not-valid dependency. */
         NotValidByDependency,
-        NotValidByCyclicDependency
     };
 
     ExternalToolManager() {
@@ -189,26 +207,18 @@ public:
     virtual ~ExternalToolManager() {
     }
 
-    virtual void start() = 0;
-    virtual void stop() = 0;
-
-    virtual void check(const QString &toolName, const QString &toolPath, ExternalToolValidationListener *listener) = 0;
-    virtual void check(const QStringList &toolNames, const StrStrMap &toolPaths, ExternalToolValidationListener *listener) = 0;
-
-    virtual void validate(const QString &toolName, ExternalToolValidationListener *listener = nullptr) = 0;
-    virtual void validate(const QString &toolName, const QString &path, ExternalToolValidationListener *listener = nullptr) = 0;
-    virtual void validate(const QStringList &toolNames, ExternalToolValidationListener *listener = nullptr) = 0;
     virtual void validate(const QStringList &toolNames, const StrStrMap &toolPaths, ExternalToolValidationListener *listener = nullptr) = 0;
 
     virtual bool isValid(const QString &toolName) const = 0;
 
     /** Returns true if all startup checks are finished. */
-    virtual bool isStartupCheckFinished() const = 0;
+    virtual bool isInStartupValidationMode() const = 0;
 
     virtual ExternalToolState getToolState(const QString &toolName) const = 0;
 
 signals:
-    void si_startupChecksFinish();
+    /** Emitted when startup validation of external tools is finished. */
+    void si_startupValidationFinished();
 };
 
 //this register keeps order of items added
@@ -223,7 +233,7 @@ public:
     ExternalTool *getById(const QString &id) const;
     QString getToolNameById(const QString &id) const;
 
-    bool registerEntry(ExternalTool *t);
+    bool registerEntry(ExternalTool *tool);
     void unregisterEntry(const QString &id);
 
     void setToolkitDescription(const QString &toolkit, const QString &desc) {
@@ -244,19 +254,11 @@ signals:
     void si_toolIsAboutToBeRemoved(const QString &id);
 
 protected:
-    QList<ExternalTool *> registryOrder;
-    QMap<QString, ExternalTool *> registry;
+    QMap<QString, ExternalTool *> toolByLowerCaseIdMap;
     QMap<QString, QString> toolkits;
-    QString temporaryDirectory;
     ExternalToolManager *manager;
 
 };    // ExternalToolRegistry
-
-class U2CORE_EXPORT DefaultExternalToolValidations {
-public:
-    static ExternalToolValidation pythonValidation();
-    static ExternalToolValidation rValidation();
-};
 
 }    // namespace U2
 #endif    // U2_EXTERNAL_TOOL_REGISTRY_H

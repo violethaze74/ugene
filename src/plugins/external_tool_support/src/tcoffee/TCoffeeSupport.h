@@ -33,12 +33,12 @@ namespace U2 {
 class TCoffeeSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TCoffeeSupport(const QString &id, const QString &name, const QString &path = "");
-    GObjectViewWindowContext *getViewContext() {
+    TCoffeeSupport();
+
+    GObjectViewWindowContext *getViewContext() const {
         return viewCtx;
     }
 
-    static const QString ET_TCOFFEE;
     static const QString ET_TCOFFEE_ID;
     static const QString TCOFFEE_TMP_DIR;
 public slots:

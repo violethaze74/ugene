@@ -70,7 +70,7 @@ public:
     static void openPopupMenuOnSequenceViewArea(HI::GUITestOpStatus &os, int number = 0);
 
     /**
-     * Returns currenly opened PanView or DetView widget.
+     * Returns currently opened PanView or DetView widget.
      * This method is useful to trigger mouse events over a sequence safely with no chance of hitting scrollbars, etc...
      */
     static QWidget *getPanOrDetView(HI::GUITestOpStatus &os, int number = 0);

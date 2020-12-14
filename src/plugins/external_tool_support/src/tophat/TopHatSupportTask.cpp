@@ -32,7 +32,6 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -116,9 +115,8 @@ ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
         }
         settings.buildIndexPathAndBasename = indexDir.absolutePath() + "/" + referenceGenome.baseName();
         if (settings.useBowtie1) {
-            bowtieIndexTask = new BowtieBuildIndexTask(referenceGenome.absoluteFilePath(),
-                                                       settings.buildIndexPathAndBasename,
-                                                       false);
+            bowtieIndexTask = new BowtieBuildTask(referenceGenome.absoluteFilePath(),
+                                                  settings.buildIndexPathAndBasename);
         } else {
             bowtieIndexTask = new Bowtie2BuildIndexTask(referenceGenome.absoluteFilePath(),
                                                         settings.buildIndexPathAndBasename);

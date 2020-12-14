@@ -31,21 +31,19 @@
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include "MrBayesDialogWidget.h"
 #include "MrBayesTask.h"
-#include "MrBayesTests.h"
 
 namespace U2 {
 
-const QString MrBayesSupport::ET_MRBAYES = "MrBayes";
 const QString MrBayesSupport::ET_MRBAYES_ID = "USUPP_MRBAYES";
+const QString MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY = "MrBayes";
 const QString MrBayesSupport::MRBAYES_TMP_DIR = "mrbayes";
 
-MrBayesSupport::MrBayesSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+MrBayesSupport::MrBayesSupport()
+    : ExternalTool(MrBayesSupport::ET_MRBAYES_ID, "mrbayes", "MrBayes") {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/mrbayes.png");
         grayIcon = QIcon(":external_tool_support/images/mrbayes_gray.png");
         warnIcon = QIcon(":external_tool_support/images/mrbayes_warn.png");
@@ -57,7 +55,7 @@ MrBayesSupport::MrBayesSupport(const QString &id, const QString &name, const QSt
     executableFileName = "mb";
 #endif
 
-    validationArguments << "";    // anyting to get info and exit with error
+    validationArguments << "";    // anything to get info and exit with error
     validMessage = "MrBayes";
     description = tr("<i>MrBayes</i> is a program for the Bayesian estimation of phylogeny."
                      "Bayesian inference of phylogeny is based upon a quantity called the posterior "
@@ -71,7 +69,7 @@ MrBayesSupport::MrBayesSupport(const QString &id, const QString &name, const QSt
 
     //register the method
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
-    registry->registerPhyTreeGenerator(new MrBayesAdapter(), ET_MRBAYES);
+    registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////

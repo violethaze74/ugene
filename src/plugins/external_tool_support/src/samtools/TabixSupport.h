@@ -29,7 +29,7 @@ namespace U2 {
 class TabixSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TabixSupport(const QString &id, const QString &name, const QString &path = "");
+    TabixSupport();
 
     static const QString ET_TABIX;
     static const QString ET_TABIX_ID;

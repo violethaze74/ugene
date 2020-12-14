@@ -173,7 +173,12 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         }
         arguments << "-outfile" << outputUrl;
         arguments << "-newtree" << outputDNDUrl;
-        tCoffeeTask = new ExternalToolRunTask(TCoffeeSupport::ET_TCOFFEE_ID, arguments, new TCoffeeLogParser(), "", QStringList(), "t_coffee.orig.exe");
+        tCoffeeTask = new ExternalToolRunTask(TCoffeeSupport::ET_TCOFFEE_ID, arguments, new TCoffeeLogParser());
+#ifdef Q_OS_WIN
+        QMap<QString, QString> env;
+        env["LOCKDIR_4_TCOFFEE"] = QFileInfo(url).absolutePath();
+        tCoffeeTask->setAdditionalEnvVariables(env);
+#endif
         setListenerForTask(tCoffeeTask);
         tCoffeeTask->setSubtaskProgressWeight(95);
         res.append(tCoffeeTask);

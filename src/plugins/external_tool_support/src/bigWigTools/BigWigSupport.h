@@ -29,9 +29,8 @@ namespace U2 {
 class BigWigSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BigWigSupport(const QString &id, const QString &name, const QString &path = "");
+    BigWigSupport(const QString &path = "");
 
-    static const QString ET_BIGWIG;
     static const QString ET_BIGWIG_ID;
     static const QString GENOMES_DATA_NAME;
     static const QString GENOMES_DIR_NAME;

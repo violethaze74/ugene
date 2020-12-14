@@ -68,7 +68,7 @@ public:
 ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "49448424");
+    new HelpButton(this, buttonBox, "54363677");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

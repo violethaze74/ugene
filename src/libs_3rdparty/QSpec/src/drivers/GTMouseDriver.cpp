@@ -35,6 +35,17 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     return true;
 }
 
+#ifndef Q_OS_MAC
+bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
+    DRIVER_CHECK(moveTo(p), "Mouse move was failed");
+    DRIVER_CHECK(press(button), "Button could not be pressed");
+    DRIVER_CHECK(release(button), "Button could not be released");
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(100);    // Adding extra sleep to avoid occasional doubleclicks
+    return true;
+}
+#endif
+
 namespace {
 
 bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {

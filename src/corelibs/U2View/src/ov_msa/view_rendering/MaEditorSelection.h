@@ -35,8 +35,8 @@ class U2VIEW_EXPORT MaEditorSelection {
 public:
     MaEditorSelection();
     MaEditorSelection(int left, int top, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
     MaEditorSelection(const QPoint &topLeft, int width, int height);
+    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
 
     /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
     bool isEmpty() const;
@@ -44,7 +44,7 @@ public:
     QPoint topLeft() const;
     QPoint bottomRight() const;
 
-    /** Returns rect under select. This rect is always value. For the empty selection returns Rect(0, 0, 0, 0); */
+    /** Returns rect under select. This rect is always valid. For the empty selection returns Rect(0, 0, 0, 0); */
     QRect toRect() const;
 
     int x() const;
@@ -53,6 +53,7 @@ public:
     int width() const;
     int height() const;
 
+    int right() const;
     int bottom() const;
 
     U2Region getXRegion() const;

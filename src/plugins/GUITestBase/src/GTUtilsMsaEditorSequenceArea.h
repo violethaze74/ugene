@@ -61,7 +61,7 @@ public:
 
     static void moveTo(GUITestOpStatus &os, const QPoint &p);
 
-    // selects area in MSA coordinats, if some p coordinate less than 0, it becomes max valid coordinate
+    // selects area in MSA coordinates, if some p coordinate less than 0, it becomes max valid coordinate
     // zero-based position
     static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus &os);

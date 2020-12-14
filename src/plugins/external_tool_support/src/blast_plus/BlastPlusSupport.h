@@ -37,7 +37,6 @@ public:
     static const QString ET_BLASTN_ID;
     static const QString ET_BLASTP;
     static const QString ET_BLASTP_ID;
-    static const QString ET_GPU_BLASTP;
     static const QString ET_GPU_BLASTP_ID;
     static const QString ET_BLASTX;
     static const QString ET_BLASTX_ID;

@@ -41,21 +41,21 @@ class ExternalToolSearchTask : public Task {
 public:
     ExternalToolSearchTask(const QString &toolId);
 
-    virtual void run();
-    QString getToolId() const {
+    void run() override;
+
+    const QString& getToolId() const {
         return toolId;
     }
-    QStringList getPaths() const {
+
+    const QStringList& getPaths() const {
         return toolPaths;
     }
 
 private:
-    QString getExeName(ExternalTool *tool);
+    QString getExecutableFileName(ExternalTool *tool);
 
     QString toolId;
     QStringList toolPaths;
-
-    static const QString TOOLS;
 };
 
 class ExternalToolsSearchTask : public SequentialMultiTask {

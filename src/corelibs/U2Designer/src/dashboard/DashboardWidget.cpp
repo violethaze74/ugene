@@ -213,7 +213,7 @@ void DashboardPopupMenu::showEvent(QShowEvent *event) {
 
 #define FILE_URL_KEY "file-url"
 
-DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, bool isFolderMode)
+DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, const WorkflowMonitor *monitor, bool isFolderMode)
     : urlList(urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
     setObjectName("DashboardFileButton");
     QString buttonText = urlList.size() != 1 ? tr("%1 file(s)").arg(urlList.size()) : QFileInfo(urlList[0]).fileName();
@@ -238,6 +238,9 @@ DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QStri
                   "}");
 
     connect(this, SIGNAL(clicked()), SLOT(sl_openFileClicked()));
+    if (monitor != nullptr) {
+        connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_dashboardDirChanged(const QString &)));
+    }
     if (urlList.size() == 1) {
         QString url = urlList[0];
         if (isFolderMode) {
@@ -303,6 +306,10 @@ static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo &d
         fileInfoPathTokens.removeFirst();
     }
     return fileInfo;
+}
+
+void DashboardFileButton::sl_dashboardDirChanged(const QString &dashboardDir) {
+    dashboardDirInfo = QFileInfo(dashboardDir);
 }
 
 void DashboardFileButton::sl_openFileClicked() {

@@ -33,6 +33,7 @@ class ExternalTool;
 class ExternalToolLogParser;
 class ExternalToolValidation;
 class ExternalToolSearchTask;
+class ExternalToolValidationListener;
 
 class ExternalToolValidateTask : public Task {
     Q_OBJECT
@@ -43,19 +44,19 @@ public:
 
     virtual Task::ReportResult report() = 0;
 
-    bool isValidTool() {
+    bool isValidTool() const {
         return isValid;
     }
-    QString getToolId() {
+    const QString &getToolId() const {
         return toolId;
     }
-    QString getToolName() {
+    const QString &getToolName() const {
         return toolName;
     }
-    QString getToolPath() {
+    const QString &getToolPath() const {
         return toolPath;
     }
-    QString getToolVersion() {
+    const QString &getToolVersion() const {
         return version;
     }
 
@@ -80,7 +81,7 @@ public:
     void cancelProcess();
 
 private:
-    void setEnvironment(ExternalTool *tool);
+    void setEnvironment(ExternalTool *externalTool);
     bool parseLog(const ExternalToolValidation &validation);
     void checkVersion(const QString &partOfLog);
     void checkArchitecture(const QString &toolPath);
@@ -108,9 +109,9 @@ class ExternalToolSearchAndValidateTask : public ExternalToolValidateTask {
 public:
     ExternalToolSearchAndValidateTask(const QString &toolId, const QString &toolName);
 
-    void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
-    virtual Task::ReportResult report();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    Task::ReportResult report() override;
 
 private:
     QStringList toolPaths;
@@ -120,12 +121,17 @@ private:
     ExternalToolJustValidateTask *validateTask;
 };
 
-class ExternalToolsValidateTask : public SequentialMultiTask {
+class ExternalToolsValidationMasterTask : public SequentialMultiTask {
     Q_OBJECT
 public:
-    ExternalToolsValidateTask(const QList<Task *> &_tasks);
+    ExternalToolsValidationMasterTask(const QList<Task *> &tasks, ExternalToolValidationListener *listener);
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
+    ReportResult report() override;
+
+private:
+    ExternalToolValidationListener *listener;
 };
 
 class ExternalToolsInstallTask : public SequentialMultiTask {
@@ -133,7 +139,7 @@ class ExternalToolsInstallTask : public SequentialMultiTask {
 public:
     ExternalToolsInstallTask(const QList<Task *> &_tasks);
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 };
 
 }    // namespace U2

@@ -600,7 +600,7 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildInd
 }
 
 void BwaTask::prepare() {
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         setUpIndexBuilding(indexSuffixes);
     }
     QString indexFileName = settings.indexFileName;
@@ -623,7 +623,7 @@ void BwaTask::prepare() {
         }
     }
 
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         if (settings.getCustomValue(OPTION_SW_ALIGNMENT, false) == true) {
             if (settings.shortReadSets.size() > 1) {
                 setError(tr("Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file."));
@@ -647,7 +647,7 @@ void BwaTask::prepare() {
 
     if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);
-    } else if (!justBuildIndex) {
+    } else if (!isBuildOnlyTask) {
         addSubTask(alignTask);
     } else {
         assert(false);
@@ -655,7 +655,7 @@ void BwaTask::prepare() {
 }
 
 Task::ReportResult BwaTask::report() {
-    if (!justBuildIndex) {
+    if (!isBuildOnlyTask) {
         hasResults = true;
     }
     return ReportResult_Finished;
@@ -663,7 +663,7 @@ Task::ReportResult BwaTask::report() {
 
 QList<Task *> BwaTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    if ((subTask == buildIndexTask) && !justBuildIndex) {
+    if ((subTask == buildIndexTask) && !isBuildOnlyTask) {
         result.append(alignTask);
     }
     return result;

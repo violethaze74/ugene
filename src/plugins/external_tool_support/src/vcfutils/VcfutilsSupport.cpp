@@ -30,9 +30,9 @@ namespace U2 {
 const QString VcfutilsSupport::VCF_UTILS("vcfutils");
 const QString VcfutilsSupport::VCF_UTILS_ID("USUPP_VCFUTILS");
 
-VcfutilsSupport::VcfutilsSupport(const QString &id, const QString &name)
-    : ExternalTool(id, name, "") {
-    if (AppContext::getMainWindow()) {
+VcfutilsSupport::VcfutilsSupport()
+    : ExternalTool(VcfutilsSupport::VCF_UTILS_ID, "samtools", VcfutilsSupport::VCF_UTILS) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");

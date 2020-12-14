@@ -198,7 +198,7 @@ void SQLiteMsaDbi::addMsaRowAndGaps(const U2DataId &msaId, qint64 posInMsa, U2Ms
     dbi->getSQLiteObjectDbi()->setParent(msaId, row.sequenceId, os);
 }
 
-void SQLiteMsaDbi::addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os) {
+void SQLiteMsaDbi::addRow(const U2DataId &msaId, qint64 insertRowIndex, U2MsaRow &row, U2OpStatus &os) {
     SQLiteModificationAction updateAction(dbi, msaId);
     U2TrackModType trackMod = updateAction.prepare(os);
     CHECK_OP(os, );
@@ -206,20 +206,20 @@ void SQLiteMsaDbi::addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row,
     row.rowId = getMaximumRowId(msaId, os) + 1;
     CHECK_OP(os, );
 
-    // TODO: allow core mothod to change posInMsa value to store the correct value on tracking
-    addRowCore(msaId, posInMsa, row, os);
+    // TODO: allow core method to change insertRowIndex value to store the correct value on tracking
+    addRowCore(msaId, insertRowIndex, row, os);
     CHECK_OP(os, );
 
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
-        modDetails = U2DbiPackUtils::packRow(posInMsa, row);
+    if (trackMod == TrackOnUpdate) {
+        modDetails = U2DbiPackUtils::packRow(insertRowIndex, row);
     }
     if (row.length > getMsaLength(msaId, os)) {
         updateMsaLength(updateAction, msaId, row.length, os);
     }
 
     // Update track mod type for child sequence object
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
         CHECK_OP(os, );
     }
@@ -232,7 +232,7 @@ void SQLiteMsaDbi::addRow(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row,
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStatus &os) {
+void SQLiteMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
     SQLiteModificationAction updateAction(dbi, msaId);
@@ -243,9 +243,10 @@ void SQLiteMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpSta
     qint64 numOfRows = getNumOfRows(msaId, os);
     CHECK_OP(os, );
 
-    QList<qint64> posInMsa;
+    qint64 insertStartIndex = insertRowIndex < 0 || insertRowIndex >= numOfRows ? numOfRows : insertRowIndex;
+    QList<qint64> insertRowIndexes;
     for (int i = 0; i < rows.count(); i++) {
-        posInMsa << i + numOfRows;
+        insertRowIndexes << i + insertStartIndex;
     }
 
     qint64 maxRowId = getMaximumRowId(msaId, os);
@@ -254,11 +255,11 @@ void SQLiteMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpSta
     }
 
     QByteArray modDetails;
-    if (TrackOnUpdate == trackMod) {
-        modDetails = U2DbiPackUtils::packRows(posInMsa, rows);
+    if (trackMod == TrackOnUpdate) {
+        modDetails = U2DbiPackUtils::packRows(insertRowIndexes, rows);
     }
 
-    addRowsCore(msaId, posInMsa, rows, os);
+    addRowsCore(msaId, insertRowIndexes, rows, os);
     CHECK_OP(os, );
 
     // Update msa length
@@ -273,7 +274,7 @@ void SQLiteMsaDbi::addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpSta
     }
 
     // Update track mod type for child sequence object
-    if (TrackOnUpdate == trackMod) {
+    if (trackMod == TrackOnUpdate) {
         foreach (const U2MsaRow &row, rows) {
             dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
             CHECK_OP(os, );
@@ -367,7 +368,7 @@ void SQLiteMsaDbi::updateRowInfo(SQLiteModificationAction &updateAction, const U
     SAFE_POINT_OP(os, );
 }
 
-QList<qint64> SQLiteMsaDbi::getRowsOrder(const U2DataId &msaId, U2OpStatus &os) {
+QList<qint64> SQLiteMsaDbi::getOrderedRowIds(const U2DataId &msaId, U2OpStatus &os) {
     QList<qint64> res;
     SQLiteReadQuery q("SELECT rowId FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
     q.bindDataId(1, msaId);
@@ -402,7 +403,7 @@ void SQLiteMsaDbi::setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &r
 
     QByteArray modDetails;
     if (trackMod == TrackOnUpdate) {
-        QList<qint64> oldOrder = getRowsOrder(msaId, os);
+        QList<qint64> oldOrder = getOrderedRowIds(msaId, os);
         CHECK_OP(os, );
         modDetails = U2DbiPackUtils::packRowOrderDetails(oldOrder, rowIds);
     }
@@ -972,7 +973,7 @@ void SQLiteMsaDbi::addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const 
     updateNumOfRows(msaId, numOfRows, os);
 }
 
-void SQLiteMsaDbi::addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &row, U2OpStatus &os) {
+void SQLiteMsaDbi::addRowCore(const U2DataId &msaId, qint64 insertRowIndex, U2MsaRow &row, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -980,55 +981,55 @@ void SQLiteMsaDbi::addRowCore(const U2DataId &msaId, qint64 posInMsa, U2MsaRow &
     qint64 numOfRows = getNumOfRows(msaId, os);
     CHECK_OP(os, );
 
-    QList<qint64> rowsOrder;
-    if (-1 == posInMsa) {
-        posInMsa = numOfRows;
+    QList<qint64> orderedRowIds;
+    if (insertRowIndex == -1) {
+        insertRowIndex = numOfRows;
     } else {
-        rowsOrder = getRowsOrder(msaId, os);
+        orderedRowIds = getOrderedRowIds(msaId, os);
         CHECK_OP(os, );
-        SAFE_POINT(rowsOrder.count() == numOfRows, "Incorrect number of rows!", );
+        SAFE_POINT(orderedRowIds.count() == numOfRows, "Incorrect number of rows!", );
     }
-    SAFE_POINT(posInMsa >= 0 && posInMsa <= numOfRows, "Incorrect input position!", );
+    SAFE_POINT(insertRowIndex >= 0 && insertRowIndex <= numOfRows, "Incorrect input position!", );
 
     // Create the row
-    addMsaRowAndGaps(msaId, posInMsa, row, os);
+    addMsaRowAndGaps(msaId, insertRowIndex, row, os);
     CHECK_OP(os, );
 
     // Update the alignment length
     row.length = calculateRowLength(row.gend - row.gstart, row.gaps);
-    if (posInMsa != numOfRows) {
-        rowsOrder.insert(posInMsa, row.rowId);
+    if (insertRowIndex != numOfRows) {
+        orderedRowIds.insert(insertRowIndex, row.rowId);
     }
-    addRowSubcore(msaId, numOfRows + 1, rowsOrder, os);
+    addRowSubcore(msaId, numOfRows + 1, orderedRowIds, os);
 }
 
-void SQLiteMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MsaRow> &rows, U2OpStatus &os) {
+void SQLiteMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &insertRowIndexes, QList<U2MsaRow> &rows, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
     qint64 numOfRows = getNumOfRows(msaId, os);
     CHECK_OP(os, );
 
-    QList<qint64> rowsOrder = getRowsOrder(msaId, os);
+    QList<qint64> orderedRowIds = getOrderedRowIds(msaId, os);
     CHECK_OP(os, );
-    SAFE_POINT(rowsOrder.count() == numOfRows, "Incorrect number of rows!", );
+    SAFE_POINT(orderedRowIds.count() == numOfRows, "Incorrect number of rows!", );
 
     // Add new rows
-    QList<qint64>::ConstIterator pi = posInMsa.begin();
-    QList<U2MsaRow>::Iterator ri = rows.begin();
-    for (; ri != rows.end(); ri++, pi++) {
-        qint64 pos = *pi;
-        if (-1 == pos) {
-            pos = numOfRows;
+    QList<qint64>::ConstIterator insertIndexIt = insertRowIndexes.begin();
+    QList<U2MsaRow>::Iterator rowIt = rows.begin();
+    for (; rowIt != rows.end(); rowIt++, insertIndexIt++) {
+        qint64 insertRowIndex = *insertIndexIt;
+        if (insertRowIndex < 0 || insertRowIndex > numOfRows) {
+            insertRowIndex = numOfRows;
         }
-        SAFE_POINT(pos >= 0 && pos <= numOfRows, "Incorrect input position!", );
-        addMsaRowAndGaps(msaId, pos, *ri, os);
+        addMsaRowAndGaps(msaId, insertRowIndex, *rowIt, os);
         CHECK_OP(os, );
-        ri->length = calculateRowLength(ri->gend - ri->gstart, ri->gaps);
+
+        rowIt->length = calculateRowLength(rowIt->gend - rowIt->gstart, rowIt->gaps);
         numOfRows++;
-        rowsOrder.insert(pos, ri->rowId);
+        orderedRowIds.insert(insertRowIndex, rowIt->rowId);
     }
 
-    addRowSubcore(msaId, numOfRows, rowsOrder, os);
+    addRowSubcore(msaId, numOfRows, orderedRowIds, os);
 }
 
 void SQLiteMsaDbi::removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os) {

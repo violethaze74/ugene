@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTWebEngineView.h"
+
 #include <QDebug>
 
-#include "GTWebEngineView.h"
 #include "core/MainThreadRunnable.h"
 #include "utils/GTThread.h"
 
@@ -62,7 +63,7 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
               elements(elements) {
         }
 
-        void run(GUITestOpStatus& os) {
+        void run(GUITestOpStatus &os) {
             Q_UNUSED(os);
 
             const QString code = QString("var elements = document.querySelectorAll('%1');"
@@ -84,7 +85,7 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
                                          "        result[i]['%10'][attribute.name] = attribute.value;"
                                          "    }"
                                          "    result[i]['%11'] = (elements[i].offsetParent !== null);"
-                                         "}" 
+                                         "}"
                                          "result;")
                                      .arg(selector)
                                      .arg(X)
@@ -122,7 +123,7 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
     if (options.searchInHidden) {
         filteredElements = elements;
     } else {
-        foreach(const HIWebElement &element, elements) {
+        foreach (const HIWebElement &element, elements) {
             if (element.isVisible()) {
                 filteredElements << element;
             }
@@ -154,4 +155,4 @@ HIWebElement GTWebEngineView::toHiWebElement(const QMap<QString, QVariant> &map)
 
 #undef GT_CLASS_NAME
 
-}
+}    // namespace HI

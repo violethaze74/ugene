@@ -26,12 +26,11 @@
 
 namespace U2 {
 
-const QString PerlSupport::ET_PERL = "perl";
 const QString PerlSupport::ET_PERL_ID = "USUPP_PERL";
 
-PerlSupport::PerlSupport(const QString &id, const QString &name, const QString &path)
-    : RunnerTool(QStringList(), id, name, path) {
-    if (AppContext::getMainWindow()) {
+PerlSupport::PerlSupport()
+    : RunnerTool(QStringList(), PerlSupport::ET_PERL_ID, "perl5", "perl") {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/perl.png");
         grayIcon = QIcon(":external_tool_support/images/perl_gray.png");
         warnIcon = QIcon(":external_tool_support/images/perl_warn.png");

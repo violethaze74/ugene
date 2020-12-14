@@ -85,7 +85,6 @@ QVariantMap BowtieWorker::getCustomParameters() const {
     customSettings.insert(BowtieTask::OPTION_BEST, getValue<bool>(BEST));
     customSettings.insert(BowtieTask::OPTION_ALL, getValue<bool>(ALL));
     customSettings.insert(BowtieTask::OPTION_NOMAQROUND, getValue<bool>(NOMAQROUND));
-    customSettings.insert(BowtieTask::OPTION_COLORSPACE, getValue<bool>(COLORSPACE));
     customSettings.insert(BowtieTask::OPTION_THREADS, 4);
 
     return customSettings;

@@ -63,8 +63,6 @@ public:
 
     QSharedPointer<MSAEditorConsensusCache> getConsensusCache();
 
-    U2Region getRullerLineYRange() const;
-
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory *algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
 
@@ -87,6 +85,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
 
+    virtual QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const = 0;
+
 signals:
     void si_consensusAlgorithmChanged(const QString &algoId);
     void si_consensusThresholdChanged(int value);
@@ -99,7 +99,6 @@ protected slots:
     void sl_changeConsensusAlgorithm(const QString &algoId);
     void sl_changeConsensusThreshold(int val);
     void sl_onConsensusThresholdChanged(int newValue);
-    void sl_visibleAreaChanged();
 
     void sl_copyConsensusSequence();
     void sl_copyConsensusSequenceWithGaps();
@@ -120,7 +119,8 @@ protected:
     virtual void initRenderer() = 0;
     virtual bool highlightConsensusChar(int pos);
 
-    void updateSelection(int newPos);
+    /** Grows current MA selection up to the given x position. Uses current MA editor cursor position as the base for growing. */
+    void growSelectionUpTo(int xPos);
 
     MSAConsensusAlgorithmFactory *getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
@@ -128,12 +128,8 @@ protected:
     MaEditor *editor;
     MaEditorWgt *ui;
     QFont rulerFont;
-    int rulerFontHeight;
-    QAction *copyConsensusAction;
-    QAction *copyConsensusWithGapsAction;
     QAction *configureConsensusAction;
     int curPos;
-    bool scribbling;
     bool selecting;
 
     MaEditorConsensusAreaSettings consensusSettings;

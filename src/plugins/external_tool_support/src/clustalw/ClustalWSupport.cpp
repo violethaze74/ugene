@@ -32,10 +32,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include <U2Gui/AppSettingsGUI.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
@@ -48,13 +45,12 @@
 
 namespace U2 {
 
-const QString ClustalWSupport::ET_CLUSTAL = "ClustalW";
 const QString ClustalWSupport::ET_CLUSTAL_ID = "USUPP_CLUSTALW";
 const QString ClustalWSupport::CLUSTAL_TMP_DIR = "clustal";
 
-ClustalWSupport::ClustalWSupport(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+ClustalWSupport::ClustalWSupport()
+    : ExternalTool(ClustalWSupport::ET_CLUSTAL_ID, "clustalw", "ClustalW") {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = new ClustalWSupportContext(this);
         icon = QIcon(":external_tool_support/images/clustalx.png");
         grayIcon = QIcon(":external_tool_support/images/clustalx_gray.png");
@@ -75,7 +71,7 @@ ClustalWSupport::ClustalWSupport(const QString &id, const QString &name, const Q
 }
 
 void ClustalWSupport::sl_runWithExtFileSpecify() {
-    //Check that Clustal and tempory folder path defined
+    //Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -87,15 +83,13 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
     if (path.isEmpty()) {
@@ -127,12 +121,12 @@ ClustalWSupportContext::ClustalWSupportContext(QObject *p)
 }
 
 void ClustalWSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
-    CHECK(msaed->getMaObject() != NULL, );
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
+    CHECK(msaEditor->getMaObject() != NULL, );
 
-    bool objLocked = msaed->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaed->isAlignmentEmpty();
+    bool objLocked = msaEditor->getMaObject()->isStateLocked();
+    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
     AlignMsaAction *alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, view, tr("Align with ClustalW..."), 2000);
     alignAction->setObjectName("Align with ClustalW");
@@ -140,8 +134,8 @@ void ClustalWSupportContext::initViewContext(GObjectView *view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalW()));
 }
 
@@ -155,11 +149,11 @@ void ClustalWSupportContext::buildMenu(GObjectView *view, QMenu *m) {
 }
 
 void ClustalWSupportContext::sl_align_with_ClustalW() {
-    //Check that Clustal and tempory folder path defined
+    //Check that Clustal and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(ClustalWSupport::ET_CLUSTAL);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ClustalWSupport::ET_CLUSTAL));
+        msgBox->setWindowTitle("ClustalW");
+        msgBox->setText(tr("Path for ClustalW tool is not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -167,15 +161,13 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
     if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()) {
@@ -187,13 +179,12 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
 
     //Call run ClustalW align dialog
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
-    assert(action != NULL);
-    MSAEditor *ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (obj == NULL) {
+    SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
+    MSAEditor *msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
+    if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
-    assert(!obj->isStateLocked());
 
     ClustalWSupportTaskSettings settings;
     QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
@@ -209,7 +200,7 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 
     // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    msaEditor->resetCollapsibleModel();
 }
 
 }    // namespace U2

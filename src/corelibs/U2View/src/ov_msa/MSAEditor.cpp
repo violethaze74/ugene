@@ -30,6 +30,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -46,12 +47,11 @@
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "General/MSAGeneralTabFactory.h"
 #include "Highlighting/MsaSchemesMenuBuilder.h"
 #include "MSAEditorOffsetsView.h"
+#include "MSAEditorSequenceArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
-#include "MSAEditorSequenceArea.h"
 #include "MaEditorTasks.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
@@ -102,11 +102,41 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     realignSomeSequenceAction->setObjectName("Realign sequence(s) to other sequences");
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
-    if (maObject->getAlphabet() != NULL) {
+    if (maObject->getAlphabet() != nullptr) {
         pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", maObject->getAlphabet()->getId());
     }
 
+    convertDnaToRnaAction = new QAction(tr("Convert to RNA alphabet (T->U)"), this);
+    convertDnaToRnaAction->setObjectName("convertDnaToRnaAction");
+    convertDnaToRnaAction->setToolTip(tr("Convert alignment from DNA to RNA alphabet: replace T with U"));
+    connect(convertDnaToRnaAction, SIGNAL(triggered()), SLOT(sl_convertBetweenDnaAndRnaAlphabets()));
+
+    convertRnaToDnaAction = new QAction(tr("Convert to DNA alphabet (U->T)"), this);
+    convertRnaToDnaAction->setObjectName("convertRnaToDnaAction");
+    convertRnaToDnaAction->setToolTip(tr("Convert alignment from RNA to DNA alphabet: replace U with T"));
+    connect(convertRnaToDnaAction, SIGNAL(triggered()), SLOT(sl_convertBetweenDnaAndRnaAlphabets()));
+
     updateActions();
+}
+
+void MSAEditor::updateActions() {
+    MaEditor::updateActions();
+    bool isReadOnly = maObject->isStateLocked();
+
+    sortByNameAscendingAction->setEnabled(!isReadOnly);
+    sortByNameDescendingAction->setEnabled(!isReadOnly);
+    sortByLengthAscendingAction->setEnabled(!isReadOnly);
+    sortByLengthDescendingAction->setEnabled(!isReadOnly);
+
+    if (alignSequencesToAlignmentAction != nullptr) {
+        alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
+    }
+    buildTreeAction->setEnabled(!isReadOnly && !this->isAlignmentEmpty());
+    sl_updateRealignAction();
+
+    auto alphabetId = maObject->getAlphabet()->getId();
+    convertDnaToRnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    convertRnaToDnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
 }
 
 void MSAEditor::sl_buildTree() {
@@ -128,7 +158,7 @@ void MSAEditor::onObjectRenamed(GObject *, const QString &) {
 }
 
 bool MSAEditor::onCloseEvent() {
-    if (ui->getOverviewArea() != NULL) {
+    if (ui->getOverviewArea() != nullptr) {
         ui->getOverviewArea()->cancelRendering();
     }
     return true;
@@ -295,8 +325,14 @@ void MSAEditor::addTreeMenu(QMenu *m) {
 }
 
 void MSAEditor::addAdvancedMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Advanced"));
-    em->menuAction()->setObjectName(MSAE_MENU_ADVANCED);
+    QMenu *menu = m->addMenu(tr("Advanced"));
+    menu->menuAction()->setObjectName(MSAE_MENU_ADVANCED);
+
+    if (convertDnaToRnaAction->isEnabled()) {
+        menu->addAction(convertDnaToRnaAction);
+    } else if (convertRnaToDnaAction->isEnabled()) {
+        menu->addAction(convertRnaToDnaAction);
+    }
 }
 
 void MSAEditor::addStatisticsMenu(QMenu *m) {
@@ -421,22 +457,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     m.exec(QCursor::pos());
 }
 
-void MSAEditor::updateActions() {
-    MaEditor::updateActions();
-    bool isReadOnly = maObject->isStateLocked();
-
-    sortByNameAscendingAction->setEnabled(!isReadOnly);
-    sortByNameDescendingAction->setEnabled(!isReadOnly);
-    sortByLengthAscendingAction->setEnabled(!isReadOnly);
-    sortByLengthDescendingAction->setEnabled(!isReadOnly);
-
-    if (alignSequencesToAlignmentAction != nullptr) {
-        alignSequencesToAlignmentAction->setEnabled(!isReadOnly);
-    }
-    buildTreeAction->setEnabled(!isReadOnly && !this->isAlignmentEmpty());
-    sl_updateRealignAction();
-}
-
 void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
     if (!maObject->isStateLocked()) {
         maObject->sortRowsByList(order);
@@ -542,7 +562,7 @@ void MSAEditor::sl_align() {
     GUIUtils::disableEmptySubmenus(&m);
 
     mm = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(mm != NULL, "mm", );
+    SAFE_POINT(mm != nullptr, "mm", );
 
     mm->exec(QCursor::pos());
 }
@@ -554,10 +574,10 @@ void MSAEditor::sl_addToAlignment() {
     }
 
     ProjectView *pv = AppContext::getProjectView();
-    SAFE_POINT(pv != NULL, "Project view is null", );
+    SAFE_POINT(pv != nullptr, "Project view is null", );
 
     const GObjectSelection *selection = pv->getGObjectSelection();
-    SAFE_POINT(selection != NULL, "GObjectSelection is null", );
+    SAFE_POINT(selection != nullptr, "GObjectSelection is null", );
 
     QList<GObject *> objects = selection->getSelectedObjects();
     bool selectFromProject = !objects.isEmpty();
@@ -577,8 +597,8 @@ void MSAEditor::sl_addToAlignment() {
 
 void MSAEditor::sl_searchInSequences() {
     auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != NULL, "Internal error: options panel is NULL"
-                                     " when search in sequences was initiated!", );
+    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
+                                        " when search in sequences was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences();
     optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
@@ -732,4 +752,23 @@ void MSAEditor::sl_sortSequencesByLength() {
     sortSequences(false, order);
 }
 
+void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
+    bool isReadOnly = maObject->isStateLocked();
+    CHECK(!isReadOnly, );
+    auto alphabetId = maObject->getAlphabet()->getId();
+    bool isDnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
+    bool isRnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT();
+    CHECK(isDnaAlphabet || isRnaAlphabet, );
+
+    auto msaObject = getMaObject();
+    auto alphabetRegistry = AppContext::getDNAAlphabetRegistry();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
+    auto resultAlphabet = alphabetRegistry->findById(isDnaAlphabet ? BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    char fromChar = isDnaAlphabet ? 'T' : 'U';
+    char toChar = isDnaAlphabet ? 'U' : 'T';
+    msaObject->replaceAllCharacters(fromChar, toChar, resultAlphabet);
+}
+
 }    // namespace U2
+// namespace U2

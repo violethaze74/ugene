@@ -29,7 +29,7 @@ namespace U2 {
 class SeqPosSupport : public ExternalTool {
     Q_OBJECT
 public:
-    SeqPosSupport(const QString &id, const QString &name);
+    SeqPosSupport();
 
     static const QString ET_SEQPOS;
     static const QString ET_SEQPOS_ID;

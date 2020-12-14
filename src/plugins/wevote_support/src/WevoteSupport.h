@@ -32,7 +32,6 @@ public:
     WevoteSupport();
 
     static const QString TOOL_ID;
-    static const QString TOOL_NAME;
 };
 
 }    // namespace U2

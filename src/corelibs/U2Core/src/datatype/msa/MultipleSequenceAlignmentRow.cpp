@@ -311,6 +311,10 @@ bool MultipleSequenceAlignmentRowData::isGap(qint64 pos) const {
     return MsaRowUtils::isGap(sequence.length(), gaps, pos);
 }
 
+bool MultipleSequenceAlignmentRowData::isLeadingOrTrailingGap(qint64 pos) const {
+    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, pos);
+}
+
 qint64 MultipleSequenceAlignmentRowData::getBaseCount(qint64 before) const {
     const int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
     const int trimmedRowPos = before < rowLength ? before : rowLength;

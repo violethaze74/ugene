@@ -283,8 +283,6 @@ public:
 
     static size_t getCurrentAppMemory();
 
-    static bool isSSE2Enabled();
-
     void registerResource(AppResource *r);
     void unregisterResource(int id);
 

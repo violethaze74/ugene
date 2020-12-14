@@ -1,5 +1,3 @@
-# include (umuscle.pri)
-
 PLUGIN_ID=phylip
 PLUGIN_NAME=Phylip
 PLUGIN_VENDOR=Unipro

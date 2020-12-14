@@ -247,6 +247,10 @@ bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos) const {
     return getRow(rowNumber)->isGap(pos);
 }
 
+bool MultipleAlignmentData::isLeadingOrTrailingGap(int rowNumber, qint64 pos) const {
+    return getRow(rowNumber)->isLeadingOrTrailingGap(pos);
+}
+
 QStringList MultipleAlignmentData::getRowNames() const {
     QStringList rowNames;
     foreach (const MultipleAlignmentRow &row, rows) {

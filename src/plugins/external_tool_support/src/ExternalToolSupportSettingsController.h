@@ -37,11 +37,12 @@ class ShowHideSubgroupWidget;
 #define ExternalToolSupportSettingsPageId QString("ets")
 struct ExternalToolInfo {
     QString id;
+    QString dirName;
     QString name;
     QString path;
     QString description;
     QString version;
-    bool valid;
+    bool isValid;
     bool isModule;
 };
 
@@ -82,10 +83,9 @@ public:
 
 private:
     QWidget *createPathEditor(QWidget *parent, const QString &path) const;
-    QTreeWidgetItem *findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName);
     QTreeWidgetItem *createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon);
-    QTreeWidgetItem *insertChild(QTreeWidgetItem *rootItem, const QString &id, int pos, bool isModule = false);
-    static ExternalTool *isMasterWithModules(const QList<ExternalTool *> &toolsList);
+    /** Appends tool tree item to the tree and registers the tool in 'externalToolsItems' map. */
+    QTreeWidgetItem *appendToolItem(QTreeWidgetItem *rootItem, const ExternalTool *tool, bool isModule = false);
     void setToolState(ExternalTool *tool);
     QString getToolStateDescription(ExternalTool *tool) const;
     void resetDescription();

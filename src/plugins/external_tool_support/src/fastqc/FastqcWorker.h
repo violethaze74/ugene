@@ -48,9 +48,10 @@ class FastQCWorker : public BaseWorker {
     Q_OBJECT
 public:
     FastQCWorker(Actor *a);
-    void init();
-    Task *tick();
-    void cleanup();
+
+    void init() override;
+    Task *tick() override;
+    void cleanup() override;
 
     static const QString BASE_FASTQC_SUBDIR;
 
@@ -69,7 +70,7 @@ public slots:
     void sl_taskFinished(Task *task);
 
 private:
-    QString takeUrl();
+    QString getUrlAndSetupScriptValues();
 };    //FastQCWorker
 
 class FastQCFactory : public DomainFactory {

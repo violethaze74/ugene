@@ -51,7 +51,7 @@ public:
     virtual U2MsaRow getRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) = 0;
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
-    virtual QList<qint64> getRowsOrder(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual QList<qint64> getOrderedRowIds(const U2DataId &msaId, U2OpStatus &os) = 0;
 
     /** Return the MSA alphabet */
     virtual U2AlphabetId getMsaAlphabet(const U2DataId &msaId, U2OpStatus &os) = 0;
@@ -83,8 +83,23 @@ public:
     /**
      * Adds rows to the MSA
      * Requires: U2DbiFeature_WriteMsa feature support
+     *
+     * Inserts rows at the given insertRowIndex, so the first inserted row will have rowIndex === insertRowIndex.
+     * For example with insertRowIndex = 0 rows will be pre-appended to the MSA.
+     * If insertRowIndex < 0 || insertRowIndex >= MSA.length - appends rows to the end of the MSA.
+     *
+     * Details:
+     * Creates rows (and gap models for them) in the database.
+     * Enlarges msa length, if 'length' of any of the 'rows' is greater than current msa length.
+     * Recalculates 'length' of the 'rows'.
+     * Assigns MSA as a parent for all the sequences.
+     * If a row ID equals "-1", sets a valid ID to the passed U2MaRow instances.
+     * Updates the number of rows of the MSA.
+     * Updates the alignment length.
+     * Increments the alignment version.
+     * Tracks modifications, if required.
      */
-    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, U2OpStatus &os) = 0;
+    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, qint64 insertRowIndex, U2OpStatus &os) = 0;
 
     /**
      * Adds a row to the MSA

@@ -26,19 +26,10 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/AppSettingsGUI.h>
-#include <U2Gui/DialogUtils.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
-
-#include <U2View/MSAEditor.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "CAP3SupportDialog.h"
 #include "CAP3SupportTask.h"
@@ -52,8 +43,8 @@ const QString CAP3Support::ET_CAP3_ID = "USUPP_CAP3";
 const QString CAP3Support::CAP3_TMP_DIR = "cap3";
 
 CAP3Support::CAP3Support(const QString &id, const QString &name, const QString &path)
-    : ExternalTool(id, name, path) {
-    if (AppContext::getMainWindow()) {
+    : ExternalTool(id, "cap3", name, path) {
+    if (AppContext::getMainWindow() != nullptr) {
         viewCtx = NULL;    //new CAP3SupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
@@ -90,15 +81,13 @@ void CAP3Support::sl_runWithExtFileSpecify() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
         }
     }
     if (path.isEmpty()) {
