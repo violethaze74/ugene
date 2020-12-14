@@ -946,58 +946,44 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008_3) {
     // CHANGES: mid and end coordinates changed, another file is used
-    //     1. Open document samples\CLUSTALW\HIV-1.aln
+    // Open document samples\CLUSTALW\HIV-1.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
+    // Create bookmark. Rename "New bookmark" to "start bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "start bookmark");
+    int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     3. Scroll msa to the middle.
+    // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
+    // Create bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "middle bookmark");
+    int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     5. Scroll msa to the end.
+    // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
+    // Create bookmark. Rename "New bookmark" to "end bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "end bookmark");
+    int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     Expected state: clicking on each bookmark will recall corresponding MSA position
+    // Expected state: clicking on each bookmark will recall corresponding MSA position
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
-    GTGlobals::sleep(500);
-
     int pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(startPos == pos, "start bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == startPos, "Wrong start offset! Expected: " + QString::number(startPos) + ", got: " + QString::number(pos));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-    GTGlobals::sleep(500);
-
     pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(midPos == pos, "middle bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == midPos, "Wrong middle offset! Expected: " + QString::number(midPos) + ", got: " + QString::number(pos));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-    GTGlobals::sleep(500);
-
     pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endPos == pos, "end bookmark offsets aren't equal to the expected");
+    CHECK_SET_ERR(pos == endPos, "Wrong end offset! Expected: " + QString::number(endPos) + ", got: " + QString::number(pos));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {

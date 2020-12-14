@@ -41,11 +41,13 @@ class ExternalToolSearchTask : public Task {
 public:
     ExternalToolSearchTask(const QString &toolId);
 
-    virtual void run();
-    QString getToolId() const {
+    void run() override;
+
+    const QString& getToolId() const {
         return toolId;
     }
-    QStringList getPaths() const {
+
+    const QStringList& getPaths() const {
         return toolPaths;
     }
 

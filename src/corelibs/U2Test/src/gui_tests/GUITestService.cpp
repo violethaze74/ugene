@@ -75,37 +75,37 @@ void GUITestService::sl_serviceRegistered() {
     const LaunchOptions launchedFor = getLaunchOptions(AppContext::getCMDLineRegistry());
 
     switch (launchedFor) {
-    case RUN_ONE_TEST:
-        QTimer::singleShot(1000, this, SLOT(runGUITest()));
-        break;
+        case RUN_ONE_TEST:
+            QTimer::singleShot(1000, this, SLOT(runGUITest()));
+            break;
 
-    case RUN_ALL_TESTS:
-        registerAllTestsTask();
-        break;
+        case RUN_ALL_TESTS:
+            registerAllTestsTask();
+            break;
 
-    case RUN_TEST_SUITE:
-        registerTestSuiteTask();
-        break;
+        case RUN_TEST_SUITE:
+            registerTestSuiteTask();
+            break;
 
-    case RUN_ALL_TESTS_BATCH:
-        QTimer::singleShot(1000, this, SLOT(runAllGUITests()));
-        break;
+        case RUN_ALL_TESTS_BATCH:
+            QTimer::singleShot(1000, this, SLOT(runAllGUITests()));
+            break;
 
-    case RUN_CRAZY_USER_MODE:
-        QTimer::singleShot(1000, this, SLOT(runGUICrazyUserTest()));
-        break;
+        case RUN_CRAZY_USER_MODE:
+            QTimer::singleShot(1000, this, SLOT(runGUICrazyUserTest()));
+            break;
 
-    case CREATE_GUI_TEST:
-        new GUITestingWindow();
-        break;
+        case CREATE_GUI_TEST:
+            new GUITestingWindow();
+            break;
 
-    case RUN_ALL_TESTS_NO_IGNORED:
-        registerAllTestsTaskNoIgnored();
-        break;
+        case RUN_ALL_TESTS_NO_IGNORED:
+            registerAllTestsTaskNoIgnored();
+            break;
 
-    case NONE:
-    default:
-        break;
+        case NONE:
+        default:
+            break;
     }
 }
 
@@ -199,16 +199,12 @@ Task *GUITestService::createTestSuiteLauncherTask() const {
     }
     if (!ok) {
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = !useSameIni ?
-                         new GUITestLauncher(pathToSuite) :
-                         new GUITestLauncher(pathToSuite, false, iniTemplate);
+        Task *task = !useSameIni ? new GUITestLauncher(pathToSuite) : new GUITestLauncher(pathToSuite, false, iniTemplate);
         Q_ASSERT(task);
         return task;
     }
 
-    Task *task = !useSameIni ?
-                     new GUITestLauncher(suiteNumber) :
-                     new GUITestLauncher(suiteNumber, false, iniTemplate);
+    Task *task = !useSameIni ? new GUITestLauncher(suiteNumber) : new GUITestLauncher(suiteNumber, false, iniTemplate);
     Q_ASSERT(task);
 
     return task;
@@ -246,10 +242,10 @@ GUITests GUITestService::postActions() {
 
 void GUITestService::sl_allStartUpPluginsLoaded() {
     auto externalToolsManager = AppContext::getExternalToolRegistry()->getManager();
-    if (externalToolsManager == nullptr || externalToolsManager->isStartupCheckFinished()) {
-        sl_registerService();
-    } else if (!connect(externalToolsManager, SIGNAL(si_startupChecksFinish()), SLOT(sl_registerService()))) {
-        coreLog.error(tr("Can't connect external tool manager signal"));
+    if (externalToolsManager != nullptr && externalToolsManager->isInStartupValidationMode()) {
+        // Wait until startup validation is finished.
+        connect(externalToolsManager, SIGNAL(si_startupValidationFinished()), SLOT(sl_registerService()));
+    } else {
         sl_registerService();
     }
 }
@@ -269,8 +265,8 @@ void GUITestService::runAllGUITests() {
         QString testNameForTeamCity = test->getSuite() + "_" + test->getName();
 
         if (!runOneTestOnly.isNull() &&
-                !runOneTestOnly.isEmpty() &&
-                runOneTestOnly != testName) {
+            !runOneTestOnly.isEmpty() &&
+            runOneTestOnly != testName) {
             continue;
         }
 

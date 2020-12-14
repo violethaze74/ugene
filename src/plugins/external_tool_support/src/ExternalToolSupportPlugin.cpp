@@ -146,6 +146,9 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 
 ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     : Plugin(tr("External tool support"), tr("Runs other external tools")) {
+    // External tools serialize additional tool info into QSettings and using StrStrMap type.
+    qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
+
     //External tools registry keeps order of items added
     //it is important because there might be dependencies
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
@@ -449,8 +452,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     xmlTestFormat->registerTestFactories(PhyMLToolTests::createTestFactories());
     xmlTestFormat->registerTestFactories(HmmerTests::createTestFactories());
 
-    etRegistry->setManager(&validationManager);
-    validationManager.start();
+    auto externalToolManager = new ExternalToolManagerImpl();
+    externalToolManager->setParent(this);
+    etRegistry->setManager(externalToolManager);
 
     registerSettingsController();
 
@@ -462,7 +466,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 }
 
 ExternalToolSupportPlugin::~ExternalToolSupportPlugin() {
-    ExternalToolSupportSettings::setExternalTools();
+    ExternalToolSupportSettings::saveExternalToolsToAppConfig();
 }
 
 void ExternalToolSupportPlugin::registerSettingsController() {

@@ -1085,7 +1085,7 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="322"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="325"/>
         <source>Restriction Sites</source>
         <translation>Сайты рестрикции</translation>
     </message>
@@ -1142,12 +1142,12 @@ To start ligation create a project or open an existing.</source>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="136"/>
-        <location filename="../src/FindEnzymesTask.cpp" line="263"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="266"/>
         <source>Number of results exceed %1, stopping</source>
         <translation>Кол-во результатов превысило %1, задача остановлена</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="213"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="216"/>
         <source>Found %1 restriction sites</source>
         <translation>Найдено %1 сайтов рестрикции</translation>
     </message>
@@ -1178,32 +1178,32 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindSingleEnzymeTask</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="227"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="230"/>
         <source>Find enzyme &apos;%1&apos;</source>
         <translation>Поиск энзима &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="236"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="239"/>
         <source>Alphabet is not nucleic.</source>
         <translation>Алфавит не является нуклеотидным.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="253"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="256"/>
         <source>Find enzyme &apos;%1&apos; parallel</source>
         <translation>Параллельный поиск энзима &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="280"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="283"/>
         <source>No enzyme alphabet</source>
         <translation>Нет алфавита</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="282"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="285"/>
         <source>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</source>
         <translation>Ненуклеотидный алфавит: %1, энзим %2 игнорируется..</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="287"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="290"/>
         <source>Failed to get sequence alphabet</source>
         <translation>Невозможно получить алфавит последовательности</translation>
     </message>

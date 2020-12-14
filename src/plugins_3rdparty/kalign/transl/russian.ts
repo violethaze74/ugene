@@ -92,7 +92,7 @@
 <context>
     <name>U2::KalignAdapter</name>
     <message>
-        <location filename="../src/KalignAdapter.cpp" line="54"/>
+        <location filename="../src/KalignAdapter.cpp" line="52"/>
         <source>Internal Kalign error: %1</source>
         <translation>Внутренняя ошибка Kalign: %1</translation>
     </message>
@@ -152,12 +152,12 @@
 <context>
     <name>U2::KalignGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="257"/>
+        <location filename="../src/KalignTask.cpp" line="251"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>Workflow wrapper &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="267"/>
+        <location filename="../src/KalignTask.cpp" line="261"/>
         <source>KAlign align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -165,7 +165,7 @@
 <context>
     <name>U2::KalignGObjectTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="146"/>
+        <location filename="../src/KalignTask.cpp" line="144"/>
         <source>KALIGN align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -199,7 +199,7 @@
 <context>
     <name>U2::KalignTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="67"/>
+        <location filename="../src/KalignTask.cpp" line="68"/>
         <source>KALIGN alignment</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
@@ -214,7 +214,7 @@
         <translation>Kalign alignment started</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="95"/>
+        <location filename="../src/KalignTask.cpp" line="97"/>
         <source>Kalign alignment successfully finished</source>
         <translation>Kalign alignment successfully finished</translation>
     </message>

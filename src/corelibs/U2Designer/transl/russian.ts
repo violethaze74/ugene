@@ -807,17 +807,17 @@ bowtie index file</source>
         <translation>%1 файл(ов)</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="267"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="270"/>
         <source>Open file with UGENE</source>
         <translation>Открыть в UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="273"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="276"/>
         <source>Open folder with the file</source>
         <translation>Открыть папку содержащую файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="278"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="281"/>
         <source>Open file by OS</source>
         <translation>Открыть файл при помощи операционной системы</translation>
     </message>
@@ -844,7 +844,7 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="326"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="333"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>

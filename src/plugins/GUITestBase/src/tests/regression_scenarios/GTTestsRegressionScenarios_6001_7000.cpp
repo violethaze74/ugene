@@ -4606,13 +4606,12 @@ GUI_TEST_CLASS_DEFINITION(test_6677) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select the second column
-    GTUtilsMsaEditor::selectColumns(os, 1, 1, GTGlobals::UseMouse);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 1);
 
     // 4. Click collapse triangle:
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Mecopoda_elongata__Ishigaki__J");
 
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 2, 18));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(1, 0, 1, 18));
 }
 GUI_TEST_CLASS_DEFINITION(test_6677_1) {
     // 1. Open "COI.aln".
@@ -5187,7 +5186,6 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
     bool eq = GTFile::equals(os, url);
 
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6707) {
@@ -5649,7 +5647,6 @@ GUI_TEST_CLASS_DEFINITION(test_6749_3) {
 
     // Expected result: Results: -/8
     GTUtilsOptionPanelMsa::checkResultsText(os, "Results: -/8");
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6750) {
     // 1. Open "COI.aln".
@@ -5997,7 +5994,6 @@ GUI_TEST_CLASS_DEFINITION(test_6860) {
 
     // Expected state: columns from 1 to 11 are selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 11, 18));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6875) {
     //1. Open "_common_data/genbank/HQ007052.gb" sequence.
@@ -6156,7 +6152,6 @@ GUI_TEST_CLASS_DEFINITION(test_6899) {
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(names.size() == 24, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
     CHECK_SET_ERR(names[6] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names[6]));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     // Open COI.aln
@@ -6231,6 +6226,131 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
     QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
+}
+GUI_TEST_CLASS_DEFINITION(test_6916) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::selectRows(os, 0, 5);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: the copied sequences have original names + _1.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 24, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[6] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names[6]));
+    CHECK_SET_ERR(names[7] == "Isophya_altaica_EF540820_1", QString("Unexpected name, expected: \"Isophya_altaica_EF540820_1\", current: %1").arg(names[7]));
+    CHECK_SET_ERR(names[8] == "Bicolorana_bicolor_EF540830_1", QString("Unexpected name, expected: \"Bicolorana_bicolor_EF540830_1\", current: %1").arg(names[8]));
+    CHECK_SET_ERR(names[9] == "Roeseliana_roeseli_1", QString("Unexpected name, expected: \"Roeseliana_roeseli_1\", current: %1").arg(names[9]));
+    CHECK_SET_ERR(names[10] == "Montana_montana_1", QString("Unexpected name, expected: \"Montana_montana_1\", current: %1").arg(names[10]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6916_1) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Add sequence from file
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_LOAD_SEQ"
+                                                                        << "Sequence from file"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+
+    // Add the same sequence one more time
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_LOAD_SEQ"
+                                                                        << "Sequence from file"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+
+    // Expected state: two sequences have been added to the end of alignment, one of them has _1 suffix
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 20, QString("Unexpected name list size, expected: 21, current: %1").arg(names.size()));
+
+    CHECK_SET_ERR(names[18] == "NC_001363", QString("Unexpected name, expected: \"NC_001363\", current: %1").arg(names[18]));
+    CHECK_SET_ERR(names[19] == "NC_001363_1", QString("Unexpected name, expected: \"NC_001363_1\", current: %1").arg(names[19]));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6924) {
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            GTUtilsWizard::setParameter(os, "Input file(s)", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    // Open "Tools" -> "NGS data analysis" -> "Reads quality control..." workflow
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Reads quality control...");
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    // There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6926) {
+    class AddCustomToolScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Custom tools"));
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/workflow/custom tools configs/my_custom_tool.xml"));
+            GTWidget::click(os, GTWidget::findWidget(os, "pbImport"));
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+
+    class CheckCustomToolScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "twCustomTools");
+            QStringList itemNames = GTTreeWidget::getItemNames(os, treeWidget);
+            CHECK_SET_ERR(itemNames.length() == 1, "Expected to have 1 item in the tree, got: " + QString::number(itemNames.length()));
+            CHECK_SET_ERR(itemNames.first() == "My custom tool", "Expected to find 'My custom tool' in the list, got: " + itemNames.first());
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new AddCustomToolScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    GTUtilsDialog::waitAllFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckCustomToolScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    GTUtilsDialog::waitAllFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6927) {
+    // Open COI.aln.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select the first column of the alignment.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
+
+    // Press the right arrow button 9 times. The 10th column should now be selected.
+    for (int i = 0; i < 9; i++) {
+        GTKeyboardDriver::keyClick(Qt::Key_Right);
+    }
+    // Press the "Shift" button and do not release it.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    // Click on the 10th column.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 19);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    // Expected state: columns from 10 to 20 are selected.
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 0, 11, 18));
 }
 }    // namespace GUITest_regression_scenarios
 

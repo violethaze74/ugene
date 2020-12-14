@@ -405,11 +405,27 @@ Task::ReportResult ExternalToolSearchAndValidateTask::report() {
     return ReportResult_Finished;
 }
 
-ExternalToolsValidateTask::ExternalToolsValidateTask(const QList<Task *> &_tasks)
-    : SequentialMultiTask(tr("Checking external tools"), _tasks, TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)) {
+ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList<Task *> &tasks, ExternalToolValidationListener *listener)
+    : SequentialMultiTask(tr("Validate external tools"),
+                          tasks,
+                          TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)),
+      listener(listener) {
+    setMaxParallelSubtasks(5);
+#ifdef _DEBUG
+    QStringList toolIdList;
+    for (const Task *task : tasks) {
+        auto validationTask = qobject_cast<const ExternalToolValidateTask *>(task);
+        if (validationTask) {
+            toolIdList << validationTask->getToolId();
+        }
+    }
+    if (!toolIdList.isEmpty()) {
+        setTaskName(QString("Validate external tools: %1").arg(toolIdList.join(",")));
+    }
+#endif
 }
 
-QList<Task *> ExternalToolsValidateTask::onSubTaskFinished(Task *subTask) {
+QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> subTasks;
     ExternalToolValidateTask *validateTask = qobject_cast<ExternalToolValidateTask *>(subTask);
     bool muted = false;
@@ -432,6 +448,18 @@ QList<Task *> ExternalToolsValidateTask::onSubTaskFinished(Task *subTask) {
 
     subTasks = SequentialMultiTask::onSubTaskFinished(subTask);
     return subTasks;
+}
+
+Task::ReportResult ExternalToolsValidationMasterTask::report() {
+    if (listener != nullptr) {
+        for (const QPointer<Task> &subTask : getSubtasks()) {
+            ExternalToolValidateTask *task = qobject_cast<ExternalToolValidateTask *>(subTask.data());
+            SAFE_POINT(task, "Unexpected ExternalToolValidateTask subtask", ReportResult_Finished);
+            listener->setToolState(task->getToolId(), task->isValidTool());
+        }
+        listener->validationFinished();
+    }
+    return ReportResult_Finished;
 }
 
 ExternalToolsInstallTask::ExternalToolsInstallTask(const QList<Task *> &_tasks)

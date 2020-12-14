@@ -47,7 +47,15 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
 }
 
 #define SITE_URL QString("ugene.net")
+#ifdef Q_OS_WIN
+#define PAGE_NAME QString("/current_version_win.html")
+#elif defined(Q_OS_DARWIN)
+#define PAGE_NAME QString("/current_version_mac.html")
+#elif defined(Q_OS_LINUX)
+#define PAGE_NAME QString("/current_version_linux.html")
+#else
 #define PAGE_NAME QString("/current_version.html")
+#endif
 
 void CheckUpdatesTask::run() {
     stateInfo.setDescription(tr("Connecting to updates server"));

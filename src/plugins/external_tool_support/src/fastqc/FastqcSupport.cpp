@@ -60,14 +60,14 @@ FastQCSupport::FastQCSupport()
     dependencies << PerlSupport::ET_PERL_ID;
 
     ExternalTool *java = getJava();
-    CHECK(NULL != java, );
+    CHECK(java != nullptr, );
     connect(java, SIGNAL(si_pathChanged()), SLOT(sl_javaPathChanged()));
     sl_javaPathChanged();
 }
 
 void FastQCSupport::sl_javaPathChanged() {
     ExternalTool *java = getJava();
-    CHECK(NULL != java, );
+    CHECK(java != nullptr, );
 
     validationArguments.clear();
     validationArguments << "-v";

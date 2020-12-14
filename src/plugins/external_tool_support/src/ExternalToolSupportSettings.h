@@ -48,8 +48,8 @@ public:
     static int getNumberExternalTools();
     static void setNumberExternalTools(int value);
 
-    static void loadExternalTools();
-    static void setExternalTools();
+    static void loadExternalToolsFromAppConfig();
+    static void saveExternalToolsToAppConfig();
 
     static void checkTemporaryDir(U2OpStatus &os);
 
