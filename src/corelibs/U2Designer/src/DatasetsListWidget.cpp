@@ -166,7 +166,7 @@ DatasetsTabWidget::DatasetsTabWidget(QWidget *parent)
     setTabsClosable(true);
     tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(tabBar(), SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_contextMenu(const QPoint &)));
-#ifdef Q_OS_MACX
+#ifdef Q_OS_DARWIN
     QString style = "QTabWidget::pane {"
                     "border-top: 1px solid #9B9B9B;"
                     "}"
