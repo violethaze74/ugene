@@ -50,11 +50,6 @@ void MsaEditorNameList::buildMenu(QMenu *menu) {
     CHECK(qobject_cast<MSAEditor *>(editor) != NULL, );
     CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
 
-    QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
-    copyMenu->addAction(copyCurrentSequenceAction);
-
-    copyCurrentSequenceAction->setDisabled(getSelectedMaRow() == -1);
     editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);
 }
 

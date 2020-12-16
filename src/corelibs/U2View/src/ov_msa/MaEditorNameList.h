@@ -165,9 +165,13 @@ protected:
     GroupColorSchema groupColors;
 
     QRubberBand *rubberBand;
+
+public:
     QAction *editSequenceNameAction;
     QAction *copyCurrentSequenceAction;
     QAction *removeSequenceAction;
+
+protected:
     QPixmap *cachedView;
 
     MsaEditorUserModStepController *changeTracker;

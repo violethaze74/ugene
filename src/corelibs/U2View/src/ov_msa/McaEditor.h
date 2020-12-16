@@ -86,8 +86,8 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget *createWidget();
-    void initActions();
+    QWidget *createWidget() override;
+    void initActions() override;
 
     QAction *showChromatogramsAction;
     QAction *showGeneralTabAction;
@@ -97,11 +97,10 @@ protected:
 
     SequenceObjectContext *referenceCtx;
 
-private:
+    void addEditMenu(QMenu *menu) override;
     void addAlignmentMenu(QMenu *menu);
     void addAppearanceMenu(QMenu *menu);
     void addNavigationMenu(QMenu *menu);
-    void addEditMenu(QMenu *menu);
 };
 
 }    // namespace U2

@@ -107,27 +107,7 @@ public:
 
     QAction *getRedoAction() const;
 
-    QAction *getDelSelectionAction() const {
-        return delSelectionAction;
-    }
-
-    QAction *getCopySelectionAction() const {
-        return copySelectionAction;
-    }
-
-    QAction *getCopyFormattedSelectionAction() const {
-        return copyFormattedSelectionAction;
-    }
-
-    QAction *getPasteAction() const {
-        return pasteAction;
-    }
-
-    QAction *getPasteBeforeAction() const {
-        return pasteBeforeAction;
-    }
-
-    /* Returns if collapsible mode is enabled or not.
+        /* Returns if collapsible mode is enabled or not.
      *
      * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
      * but have different features: in the collapsible mode the model can contains group of multiple sequences
@@ -207,11 +187,13 @@ protected:
     RowHeightController *rowHeightController;
     DrawHelper *drawHelper;
 
+public:
     QAction *delSelectionAction;
     QAction *copySelectionAction;
     QAction *copyFormattedSelectionAction;
     QAction *pasteAction;
     QAction *pasteBeforeAction;
+    QAction *cutSelectionAction;
 };
 
 }    // namespace U2

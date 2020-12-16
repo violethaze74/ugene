@@ -125,13 +125,13 @@ protected slots:
     void sl_convertBetweenDnaAndRnaAlphabets();
 
 protected:
-    QWidget *createWidget();
-    bool eventFilter(QObject *o, QEvent *e);
-    virtual bool onObjectRemoved(GObject *obj);
-    virtual void onObjectRenamed(GObject *obj, const QString &oldName);
-    virtual bool onCloseEvent();
+    QWidget *createWidget() override;
+    bool eventFilter(QObject *o, QEvent *e) override;
+    bool onObjectRemoved(GObject *obj) override;
+    void onObjectRenamed(GObject *obj, const QString &oldName) override;
+    bool onCloseEvent() override;
 
-private:
+    void addCopyPasteMenu(QMenu* m) override;
     void addEditMenu(QMenu *m) override;
     void addSortMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;

@@ -401,7 +401,7 @@ void MaEditor::updateResizeMode() {
     }
 }
 
-void MaEditor::addCopyMenu(QMenu *m) {
+void MaEditor::addCopyPasteMenu(QMenu *m) {
     QMenu *cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }

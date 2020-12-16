@@ -105,7 +105,7 @@ void MSAGeneralTab::initializeParameters() {
     consensusModeWidget->init(msaEditor->getMaObject(), msaEditor->getUI()->getConsensusArea());
 
     //Copy formatted
-    copyButton->setToolTip(msaEditor->getUI()->getCopyFormattedSelectionAction()->toolTip());
+    copyButton->setToolTip(msaEditor->getUI()->copyFormattedSelectionAction->toolTip());
 
     DocumentFormatConstraints constr;
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
@@ -132,7 +132,7 @@ void MSAGeneralTab::updateState() {
     alignmentHeight->setText(QString::number(msaEditor->getNumSequences()));
 
     consensusModeWidget->updateState();
-    copyButton->setEnabled(msaEditor->getUI()->getCopyFormattedSelectionAction()->isEnabled());
+    copyButton->setEnabled(msaEditor->getUI()->copyFormattedSelectionAction->isEnabled());
     updateConvertAlphabetButtonState();
 }
 

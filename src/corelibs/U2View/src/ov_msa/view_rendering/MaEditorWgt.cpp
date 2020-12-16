@@ -75,7 +75,8 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
       pasteAction(nullptr),
-      pasteBeforeAction(nullptr) {
+      pasteBeforeAction(nullptr),
+      cutSelectionAction(nullptr) {
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 
     connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
@@ -271,6 +272,13 @@ void MaEditorWgt::initActions() {
     pasteBeforeAction->setShortcutContext(Qt::WidgetShortcut);
     pasteBeforeAction->setToolTip(QString("%1 (%2)").arg(pasteBeforeAction->text()).arg(pasteAction->shortcut().toString()));
     addAction(pasteAction);
+
+    cutSelectionAction = new QAction(tr("Cut"), this);
+    cutSelectionAction->setObjectName("cut_selection");
+    cutSelectionAction->setShortcut(QKeySequence::Cut);
+    cutSelectionAction->setShortcutContext(Qt::WidgetShortcut);
+    cutSelectionAction->setToolTip(QString("%1 (%2)").arg(cutSelectionAction->text()).arg(cutSelectionAction->shortcut().toString()));
+    addAction(cutSelectionAction);
 }
 
 void MaEditorWgt::sl_countUndo() {

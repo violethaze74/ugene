@@ -77,9 +77,9 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    addAction(ui->getCopySelectionAction());
-    addAction(ui->getPasteAction());
-    addAction(ui->getPasteBeforeAction());
+    addAction(ui->copySelectionAction);
+    addAction(ui->pasteAction);
+    addAction(ui->pasteBeforeAction);
 
     setObjectName("consArea");
 }

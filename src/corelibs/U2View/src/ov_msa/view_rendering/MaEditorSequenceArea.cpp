@@ -245,10 +245,12 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
     update();
 
     //TODO: the code below can be moved to the sl_updateActions().
-    bool selectionExists = !selection.isEmpty();
-    ui->getCopySelectionAction()->setEnabled(selectionExists);
-    ui->getCopyFormattedSelectionAction()->setEnabled(selectionExists);
-    emit si_copyFormattedChanging(selectionExists);
+    bool isReadOnly = editor->getMaObject()->isStateLocked();
+    bool hasSelection = !selection.isEmpty();
+    ui->copySelectionAction->setEnabled(hasSelection);
+    ui->copyFormattedSelectionAction->setEnabled(hasSelection);
+    emit si_copyFormattedChanging(hasSelection);
+    ui->cutSelectionAction->setEnabled(hasSelection && !isReadOnly);
 
     sl_updateActions();
 }

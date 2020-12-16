@@ -561,9 +561,9 @@ void MaEditorNameList::sl_updateActions() {
     if (maObj) {
         removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
         editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
-        addAction(ui->getCopySelectionAction());
-        addAction(ui->getPasteAction());
-        addAction(ui->getPasteBeforeAction());
+        addAction(ui->copySelectionAction);
+        addAction(ui->pasteAction);
+        addAction(ui->pasteBeforeAction);
     }
 }
 

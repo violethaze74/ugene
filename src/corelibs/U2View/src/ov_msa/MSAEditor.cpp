@@ -174,7 +174,7 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar *tb) {
-    tb->addAction(ui->getCopyFormattedSelectionAction());
+    tb->addAction(ui->copyFormattedSelectionAction);
 
     tb->addAction(saveAlignmentAction);
     tb->addAction(saveAlignmentAsAction);
@@ -203,7 +203,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addLoadMenu(m);
 
-    addCopyMenu(m);
+    addCopyPasteMenu(m);
     addEditMenu(m);
     addSortMenu(m);
 
@@ -218,6 +218,42 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
     GObjectView::buildStaticMenu(m);
 
     GUIUtils::disableEmptySubmenus(m);
+}
+
+void MSAEditor::addCopyPasteMenu(QMenu *m) {
+    MaEditor::addCopyPasteMenu(m);
+
+    QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
+    SAFE_POINT(copyMenu != nullptr, "copyMenu is null", );
+
+    const MaEditorSelection &selection = getSelection();
+    ui->copySelectionAction->setDisabled(selection.isEmpty());
+
+    //TODO:? move the signal emit point to a correct location.
+    auto sequenceArea = qobject_cast<MSAEditorSequenceArea *>(ui->getSequenceArea());
+    SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
+    emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
+
+    copyMenu->addAction(ui->copySelectionAction);
+    ui->copyFormattedSelectionAction->setDisabled(selection.isEmpty());
+    copyMenu->addAction(ui->copyFormattedSelectionAction);
+    copyMenu->addAction(copyConsensusAction);
+    copyMenu->addAction(copyConsensusWithGapsAction);
+    copyMenu->addSeparator();
+    copyMenu->addAction(ui->pasteAction);
+    copyMenu->addAction(ui->pasteBeforeAction);
+    copyMenu->addSeparator();
+    copyMenu->addAction(ui->cutSelectionAction);
+
+    auto nameList = qobject_cast<MaEditorNameList *>(ui->getEditorNameList());
+    SAFE_POINT(nameList != nullptr, "nameList is null", );
+    copyMenu->addSeparator();
+
+    copyMenu->addAction(nameList->copyCurrentSequenceAction);
+
+    //TODO: trigger action update on selection change, not in the menu activation code!
+    int selectedMaRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selection.y());
+    nameList->copyCurrentSequenceAction->setDisabled(selectedMaRowIndex == -1);
 }
 
 void MSAEditor::addEditMenu(QMenu *m) {
@@ -427,7 +463,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addAppearanceMenu(&m);
     addNavigationMenu(&m);
     addLoadMenu(&m);
-    addCopyMenu(&m);
+    addCopyPasteMenu(&m);
     addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();
@@ -546,7 +582,7 @@ void MSAEditor::sl_align() {
     QMenu m, *mm;
 
     addLoadMenu(&m);
-    addCopyMenu(&m);
+    addCopyPasteMenu(&m);
     addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();

@@ -315,7 +315,7 @@ void McaEditor::addEditMenu(QMenu *menu) {
 
     editMenu->addAction(sequenceArea->getInsertAction());
     editMenu->addAction(sequenceArea->getReplaceCharacterAction());
-    editMenu->addAction(ui->getDelSelectionAction());
+    editMenu->addAction(ui->delSelectionAction);
     editMenu->addSeparator();
 
     editMenu->addAction(sequenceArea->getInsertGapAction());

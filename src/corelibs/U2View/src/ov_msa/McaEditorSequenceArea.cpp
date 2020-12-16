@@ -342,7 +342,7 @@ void McaEditorSequenceArea::sl_updateActions() {
     const bool isSingleSymbolSelected = (selection.width() == 1 && selection.height() == 1);
     const bool hasGapBeforeSelection = (!selection.isEmpty() && selection.x() > 0 && maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
 
-    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
+    ui->delSelectionAction->setEnabled(canEditSelectedArea);
     updateTrimActions(canEditSelectedArea);
     insertAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);
     replaceCharacterAction->setEnabled(canEditSelectedArea && isSingleSymbolSelected && !isEditing);

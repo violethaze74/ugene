@@ -202,7 +202,7 @@ protected:
     virtual void initFont();
     void updateResizeMode();
 
-    void addCopyMenu(QMenu *m);
+    virtual void addCopyPasteMenu(QMenu *m);
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);

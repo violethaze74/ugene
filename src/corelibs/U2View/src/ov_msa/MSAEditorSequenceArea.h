@@ -151,6 +151,7 @@ private slots:
     void sl_copySelection();
     void sl_paste();
     void sl_pasteBefore();
+    void sl_cutSelection();
 
     /** Takes data from the pasteTask and runs AddSequencesFromDocumentsToAlignmentTask. */
     void sl_pasteTaskFinished(Task *pasteTask);

@@ -91,17 +91,20 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     selectionColor = Qt::black;
     editingEnabled = true;
 
-    connect(ui->getCopySelectionAction(), SIGNAL(triggered()), SLOT(sl_copySelection()));
-    addAction(ui->getCopySelectionAction());
+    connect(ui->copySelectionAction, SIGNAL(triggered()), SLOT(sl_copySelection()));
+    addAction(ui->copySelectionAction);
 
-    connect(ui->getCopyFormattedSelectionAction(), SIGNAL(triggered()), SLOT(sl_copySelectionFormatted()));
-    addAction(ui->getCopyFormattedSelectionAction());
+    connect(ui->copyFormattedSelectionAction, SIGNAL(triggered()), SLOT(sl_copySelectionFormatted()));
+    addAction(ui->copyFormattedSelectionAction);
 
-    connect(ui->getPasteAction(), SIGNAL(triggered()), SLOT(sl_paste()));
-    addAction(ui->getPasteAction());
+    connect(ui->pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));
+    addAction(ui->pasteAction);
 
-    connect(ui->getPasteBeforeAction(), SIGNAL(triggered()), SLOT(sl_pasteBefore()));
-    addAction(ui->getPasteBeforeAction());
+    connect(ui->pasteBeforeAction, SIGNAL(triggered()), SLOT(sl_pasteBefore()));
+    addAction(ui->pasteBeforeAction);
+
+    connect(ui->cutSelectionAction, SIGNAL(triggered()), SLOT(sl_cutSelection()));
+    addAction(ui->cutSelectionAction);
 
     delColAction = new QAction(QIcon(":core/images/msaed_remove_columns_with_gaps.png"), tr("Remove columns of gaps..."), this);
     delColAction->setObjectName("remove_columns_of_gaps");
@@ -288,7 +291,7 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView *, QMenu *m) {
     actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
             << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
-    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
+    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
         editMenu->addActions(actions);
     }
@@ -318,26 +321,12 @@ void MSAEditorSequenceArea::buildMenu(QMenu *m) {
     }
     actions << editSequenceNameAction << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
     editMenu->insertActions(editMenu->isEmpty() ? nullptr : editMenu->actions().first(), actions);
-    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
+    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
 
     QMenu *exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
     exportMenu->addAction(createSubaligniment);
     exportMenu->addAction(saveSequence);
-
-    QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
-    SAFE_POINT(copyMenu != nullptr, "copyMenu is null", );
-    ui->getCopySelectionAction()->setDisabled(selection.isEmpty());
-    emit si_copyFormattedChanging(!selection.isEmpty());
-    copyMenu->addAction(ui->getCopySelectionAction());
-    ui->getCopyFormattedSelectionAction()->setDisabled(selection.isEmpty());
-    copyMenu->addAction(ui->getCopyFormattedSelectionAction());
-    copyMenu->addAction(editor->copyConsensusAction);
-    copyMenu->addAction(editor->copyConsensusWithGapsAction);
-    copyMenu->addSeparator();
-    copyMenu->addAction(ui->getPasteAction());
-    copyMenu->addAction(ui->getPasteBeforeAction());
-    copyMenu->addSeparator();
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
@@ -379,9 +368,9 @@ void MSAEditorSequenceArea::sl_updateActions() {
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
-    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
-    ui->getPasteAction()->setEnabled(!readOnly);
-    ui->getPasteBeforeAction()->setEnabled(!readOnly);
+    ui->delSelectionAction->setEnabled(canEditSelectedArea);
+    ui->pasteAction->setEnabled(!readOnly);
+    ui->pasteBeforeAction->setEnabled(!readOnly);
 
     fillWithGapsinsSymAction->setEnabled(canEditSelectedArea && !isEditing);
     bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
@@ -630,6 +619,12 @@ void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task *task) {
         CHECK(notificationStack != nullptr, );
         notificationStack->addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
     }
+}
+
+void MSAEditorSequenceArea::sl_cutSelection() {
+    CHECK(!selection.isEmpty(), );
+    sl_copySelection();
+    sl_delCurrentSelection();
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromFile() {
