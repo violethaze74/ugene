@@ -68,7 +68,7 @@ public:
     }
 
     MaEditorSequenceArea *getSequenceArea() const {
-        return seqArea;
+        return sequenceArea;
     }
 
     MaEditorNameList *getEditorNameList() const {
@@ -76,7 +76,7 @@ public:
     }
 
     MaEditorConsensusArea *getConsensusArea() const {
-        return consArea;
+        return consensusArea;
     }
 
     MaEditorOverviewArea *getOverviewArea() const {
@@ -84,7 +84,7 @@ public:
     }
 
     MSAEditorOffsetsViewController *getOffsetsViewController() const {
-        return offsetsView;
+        return offsetsViewController;
     }
 
     ScrollController *getScrollController() const {
@@ -107,7 +107,7 @@ public:
 
     QAction *getRedoAction() const;
 
-        /* Returns if collapsible mode is enabled or not.
+    /* Returns if collapsible mode is enabled or not.
      *
      * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
      * but have different features: in the collapsible mode the model can contains group of multiple sequences
@@ -162,11 +162,11 @@ protected:
 
 protected:
     MaEditor *editor;
-    MaEditorSequenceArea *seqArea;
+    MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
-    MaEditorConsensusArea *consArea;
+    MaEditorConsensusArea *consensusArea;
     MaEditorOverviewArea *overviewArea;
-    MSAEditorOffsetsViewController *offsetsView;
+    MSAEditorOffsetsViewController *offsetsViewController;
     MaEditorStatusBar *statusBar;
 
     QWidget *nameAreaContainer;

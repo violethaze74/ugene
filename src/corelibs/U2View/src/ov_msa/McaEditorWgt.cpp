@@ -64,7 +64,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     MaEditorConsensusAreaSettings consSettings;
     consSettings.visibleElements = MSAEditorConsElement_CONSENSUS_TEXT | MSAEditorConsElement_RULER;
     consSettings.highlightMismatches = true;
-    consArea->setDrawSettings(consSettings);
+    consensusArea->setDrawSettings(consSettings);
 
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
@@ -87,7 +87,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, showChromatograms, "'Show chromatograms' is checked on the view opening", editor->getFactoryId());
     GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !showChromatograms, "'Show chromatograms' is unchecked on the view opening", editor->getFactoryId());
 
-    McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consArea);
+    McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consensusArea);
     SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
@@ -99,7 +99,7 @@ McaEditor *McaEditorWgt::getEditor() const {
 }
 
 McaEditorConsensusArea *McaEditorWgt::getConsensusArea() const {
-    return qobject_cast<McaEditorConsensusArea *>(consArea);
+    return qobject_cast<McaEditorConsensusArea *>(consensusArea);
 }
 
 McaEditorNameList *McaEditorWgt::getEditorNameList() const {
@@ -107,7 +107,7 @@ McaEditorNameList *McaEditorWgt::getEditorNameList() const {
 }
 
 McaEditorSequenceArea *McaEditorWgt::getSequenceArea() const {
-    return qobject_cast<McaEditorSequenceArea *>(seqArea);
+    return qobject_cast<McaEditorSequenceArea *>(sequenceArea);
 }
 
 McaReferenceCharController *McaEditorWgt::getRefCharController() const {
@@ -115,8 +115,8 @@ McaReferenceCharController *McaEditorWgt::getRefCharController() const {
 }
 
 QAction *McaEditorWgt::getToggleColumnsAction() const {
-    SAFE_POINT(offsetsView != NULL, "Offset controller is NULL", NULL);
-    return offsetsView->getToggleColumnsViewAction();
+    SAFE_POINT(offsetsViewController != nullptr, "Offset controller is NULL", nullptr);
+    return offsetsViewController->toggleColumnsViewAction;
 }
 
 void McaEditorWgt::initActions() {
@@ -126,7 +126,7 @@ void McaEditorWgt::initActions() {
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {
-    seqArea = new McaEditorSequenceArea(this, shBar, cvBar);
+    sequenceArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
 void McaEditorWgt::initOverviewArea() {
@@ -138,11 +138,11 @@ void McaEditorWgt::initNameList(QScrollBar *nhBar) {
 }
 
 void McaEditorWgt::initConsensusArea() {
-    consArea = new McaEditorConsensusArea(this);
+    consensusArea = new McaEditorConsensusArea(this);
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), seqArea, getEditorNameList(), refCharController);
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, getEditorNameList(), refCharController);
 }
 
 }    // namespace U2

@@ -271,7 +271,7 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     appearanceMenu->addMenu(sequenceArea->getTraceActionsMenu());
     appearanceMenu->addAction(showOverviewAction);
     if (offsetsController != NULL) {
-        appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
+        appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
     appearanceMenu->addAction(ui->getToggleColumnsAction());
     appearanceMenu->addSeparator();

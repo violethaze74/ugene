@@ -37,8 +37,8 @@ namespace U2 {
 
 MsaEditorWgt::MsaEditorWgt(MSAEditor *editor)
     : MaEditorWgt(editor),
-      multiTreeViewer(NULL),
-      similarityStatistics(NULL) {
+      multiTreeViewer(nullptr),
+      similarityStatistics(nullptr) {
     rowHeightController = new MsaRowHeightController(this);
     initActions();
     initWidgets();
@@ -49,14 +49,14 @@ MSAEditor *MsaEditorWgt::getEditor() const {
 }
 
 MSAEditorSequenceArea *MsaEditorWgt::getSequenceArea() const {
-    return qobject_cast<MSAEditorSequenceArea *>(seqArea);
+    return qobject_cast<MSAEditorSequenceArea *>(sequenceArea);
 }
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
         maSplitter.removeWidget(multiTreeViewer);
         delete multiTreeViewer;
-        multiTreeViewer = NULL;
+        multiTreeViewer = nullptr;
         emit si_hideTreeOP();
         nameList->clearGroupsSelections();
     }
@@ -119,7 +119,7 @@ const MsaEditorAlignmentDependentWidget *MsaEditorWgt::getSimilarityWidget() {
 }
 
 void MsaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {
-    seqArea = new MSAEditorSequenceArea(this, shBar, cvBar);
+    sequenceArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
 void MsaEditorWgt::initOverviewArea() {
@@ -131,11 +131,11 @@ void MsaEditorWgt::initNameList(QScrollBar *nhBar) {
 }
 
 void MsaEditorWgt::initConsensusArea() {
-    consArea = new MSAEditorConsensusArea(this);
+    consensusArea = new MSAEditorConsensusArea(this);
 }
 
 void MsaEditorWgt::initStatusBar() {
-    statusBar = new MsaEditorStatusBar(editor->getMaObject(), seqArea);
+    statusBar = new MsaEditorStatusBar(editor->getMaObject(), sequenceArea);
 }
 
 MSAEditorTreeViewer *MsaEditorWgt::getCurrentTree() const {

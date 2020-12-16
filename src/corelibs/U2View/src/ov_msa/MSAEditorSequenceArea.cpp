@@ -92,19 +92,10 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     editingEnabled = true;
 
     connect(ui->copySelectionAction, SIGNAL(triggered()), SLOT(sl_copySelection()));
-    addAction(ui->copySelectionAction);
-
     connect(ui->copyFormattedSelectionAction, SIGNAL(triggered()), SLOT(sl_copySelectionFormatted()));
-    addAction(ui->copyFormattedSelectionAction);
-
     connect(ui->pasteAction, SIGNAL(triggered()), SLOT(sl_paste()));
-    addAction(ui->pasteAction);
-
     connect(ui->pasteBeforeAction, SIGNAL(triggered()), SLOT(sl_pasteBefore()));
-    addAction(ui->pasteBeforeAction);
-
     connect(ui->cutSelectionAction, SIGNAL(triggered()), SLOT(sl_cutSelection()));
-    addAction(ui->cutSelectionAction);
 
     delColAction = new QAction(QIcon(":core/images/msaed_remove_columns_with_gaps.png"), tr("Remove columns of gaps..."), this);
     delColAction->setObjectName("remove_columns_of_gaps");
@@ -581,13 +572,10 @@ void MSAEditorSequenceArea::runPasteTask(bool isPasteBefore) {
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
     SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
-    bool isFocused = ui->isAncestorOf(QApplication::focusWidget());
-    bool isAddToProject = !isFocused;
+    bool isAddToProject = false;    // Do not add the pasted document to the project -> add it to the alignment.
     PasteTask *pasteTask = pasteFactory->createPasteTask(isAddToProject);
     CHECK(pasteTask != nullptr, );
-    if (isFocused) {
-        connect(new TaskSignalMapper(pasteTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteTaskFinished(Task *)));
-    }
+    connect(new TaskSignalMapper(pasteTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteTaskFinished(Task *)));
     pasteTask->setProperty(IS_PASTE_BEFORE_PROPERTY_NAME, QVariant::fromValue(isPasteBefore));
     AppContext::getTaskScheduler()->registerTopLevelTask(pasteTask);
 }

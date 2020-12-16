@@ -284,7 +284,7 @@ void MSAEditor::addAppearanceMenu(QMenu *m) {
     appearanceMenu->addAction(showOverviewAction);
     auto offsetsController = ui->getOffsetsViewController();
     if (offsetsController != nullptr) {
-        appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
+        appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
     appearanceMenu->addSeparator();
     appearanceMenu->addAction(zoomInAction);

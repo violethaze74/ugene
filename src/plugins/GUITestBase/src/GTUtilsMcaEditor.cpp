@@ -154,11 +154,11 @@ MultipleAlignmentRowData *GTUtilsMcaEditor::getMcaRow(GUITestOpStatus &os, int r
 #define GT_METHOD_NAME "getOffsetAction"
 QAction *GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus &os) {
     McaEditorWgt *editorWgt = GTUtilsMcaEditor::getEditorUi(os);
-    GT_CHECK_RESULT(editorWgt != NULL, "McaEditorWgt not found", NULL);
+    GT_CHECK_RESULT(editorWgt != nullptr, "McaEditorWgt not found", nullptr);
 
     MSAEditorOffsetsViewController *offsetController = editorWgt->getOffsetsViewController();
-    GT_CHECK_RESULT(offsetController != NULL, "MSAEditorOffsetsViewController is NULL", NULL);
-    return offsetController->getToggleColumnsViewAction();
+    GT_CHECK_RESULT(offsetController != nullptr, "MSAEditorOffsetsViewController is NULL", nullptr);
+    return offsetController->toggleColumnsViewAction;
 }
 
 #undef GT_METHOD_NAME
