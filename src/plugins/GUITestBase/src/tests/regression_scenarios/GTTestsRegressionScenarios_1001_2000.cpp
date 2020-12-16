@@ -257,6 +257,8 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTThread::waitForMainThread();
         }
     };
 

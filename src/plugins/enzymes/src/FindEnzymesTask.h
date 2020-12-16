@@ -86,9 +86,9 @@ public:
 private:
     U2EntityRef dnaSeqRef;
     QList<SEnzymeData> enzymes;
-    QPointer<AnnotationTableObject> aObj;
+    QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
-    FindEnzymesTask *fTask;
+    FindEnzymesTask *findTask;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
@@ -96,26 +96,25 @@ class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
 public:
     FindEnzymesTask(const U2EntityRef &seqRef, const U2Region &region, const QList<SEnzymeData> &enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
 
-    QList<FindEnzymesAlgResult> getResults() const {
-        return results;
-    }
+    void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &stand) override;
 
-    virtual void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &stand);
+    ReportResult report() override;
 
-    ReportResult report();
+    QList<SharedAnnotationData> getResultsAsAnnotations(const QString &enzymeId) const;
 
-    QList<SharedAnnotationData> getResultsAsAnnotations(const QString &enzymeId = QString()) const;
-
-    void cleanup();
+    void cleanup() override;
 
 private:
     void registerResult(const FindEnzymesAlgResult &r);
 
     int maxResults;
     QVector<U2Region> excludedRegions;
-    bool circular;
+    bool isCircular;
     int seqlen;
-    QList<FindEnzymesAlgResult> results;
+
+    /** Map of search results by enzyme id. */
+    QMap<QString, QList<FindEnzymesAlgResult>> searchResultMap;
+    int countOfResultsInMap;
     QMutex resultsLock;
 
     QString group;
@@ -124,32 +123,34 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef &seqRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = NULL, bool circular = false, int maxResults = 0x7FFFFFFF);
+    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = NULL, bool isCircular = false, int maxResults = 0x7FFFFFFF);
 
     QList<FindEnzymesAlgResult> getResults() const {
-        return results;
+        return resultList;
     }
-    virtual void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &strand);
-    virtual void onRegion(SequenceDbiWalkerSubtask *t, TaskStateInfo &ti);
-    void cleanup();
+    void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &strand) override;
+    void onRegion(SequenceDbiWalkerSubtask *t, TaskStateInfo &ti) override;
+    void cleanup() override;
 
 private:
-    U2EntityRef dnaSeqRef;
+    U2EntityRef sequenceObjectRef;
     U2Region region;
     SEnzymeData enzyme;
     int maxResults;
     FindEnzymesAlgListener *resultListener;
-    QList<FindEnzymesAlgResult> results;
+    QList<FindEnzymesAlgResult> resultList;
     QMutex resultsLock;
-    bool circular;
+    bool isCircular;
 };
 
 class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {
     Q_OBJECT
 public:
     FindEnzymesAutoAnnotationUpdater();
-    Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa);
-    bool checkConstraints(const AutoAnnotationConstraints &constraints);
+
+    Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *annotationObject) override;
+
+    bool checkConstraints(const AutoAnnotationConstraints &constraints) override;
 };
 
 }    // namespace U2

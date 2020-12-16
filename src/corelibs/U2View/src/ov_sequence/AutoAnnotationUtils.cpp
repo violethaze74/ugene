@@ -53,7 +53,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget *v,
     setMenu(menu);
 
     connect(aaObj, SIGNAL(si_updateStarted()), SLOT(sl_autoAnnotationUpdateStarted()));
-    connect(aaObj, SIGNAL(si_updateFinshed()), SLOT(sl_autoAnnotationUpdateFinished()));
+    connect(aaObj, SIGNAL(si_updateFinished()), SLOT(sl_autoAnnotationUpdateFinished()));
 
     selectAllAction = new QAction(tr("Select all"), this);
     connect(selectAllAction, SIGNAL(triggered()), SLOT(sl_onSelectAll()));
@@ -105,7 +105,7 @@ void AutoAnnotationsADVAction::updateMenu() {
         bool enabled = updater->checkConstraints(constraints);
         toggleAction->setEnabled(enabled);
         toggleAction->setCheckable(true);
-        bool checked = updater->isCheckedByDefault() && !largeSequence;
+        bool checked = updater->isEnabledByDefault() && !largeSequence;
         toggleAction->setChecked(checked);
         aaObj->setGroupEnabled(updater->getGroupName(), checked);
         connect(toggleAction, SIGNAL(toggled(bool)), SLOT(sl_toggle(bool)));
@@ -125,7 +125,7 @@ void AutoAnnotationsADVAction::sl_toggle(bool toggled) {
         QString groupName = updater->getGroupName();
         aaObj->setGroupEnabled(groupName, toggled);
         aaObj->updateGroup(groupName);
-        updater->setCheckedByDefault(toggled);
+        updater->setEnabledByDefault(toggled);
     }
 }
 
@@ -181,7 +181,7 @@ void AutoAnnotationsADVAction::addUpdaterToMenu(AutoAnnotationsUpdater *updater)
     bool enabled = updater->checkConstraints(constraints);
     toggleAction->setEnabled(enabled);
     toggleAction->setCheckable(true);
-    bool checked = updater->isCheckedByDefault();
+    bool checked = updater->isEnabledByDefault();
     toggleAction->setChecked(checked);
     aaObj->setGroupEnabled(updater->getGroupName(), checked);
     connect(toggleAction, SIGNAL(toggled(bool)), SLOT(sl_toggle(bool)));
@@ -308,19 +308,20 @@ ExportAutoAnnotationsGroupTask::ExportAutoAnnotationsGroupTask(AnnotationGroup *
 }
 
 void ExportAutoAnnotationsGroupTask::prepare() {
-    QList<Annotation *> annsToExport;
-    aGroup->findAllAnnotationsInGroupSubTree(annsToExport);
+    QList<Annotation *> annotationList;
+    aGroup->findAllAnnotationsInGroupSubTree(annotationList);
 
-    QList<SharedAnnotationData> aData;
-    foreach (Annotation *a, annsToExport) {
-        SharedAnnotationData data(new AnnotationData(*(a->getData())));
+    QList<SharedAnnotationData> newAnnotationDataList;
+    for (const Annotation *annotation : annotationList) {
+        SharedAnnotationData data(new AnnotationData(*(annotation->getData())));
         U1AnnotationUtils::addDescriptionQualifier(data, annDescription);
-        aData.append(data);
+        newAnnotationDataList.append(data);
     }
 
-    CHECK(!aData.isEmpty(), );
+    CHECK(!newAnnotationDataList.isEmpty(), );
 
-    createTask = new ADVCreateAnnotationsTask(seqCtx->getAnnotatedDNAView(), aRef, aGroup->getName(), aData);
+    bool selectNewAnnotations = newAnnotationDataList.size() < 100;
+    createTask = new ADVCreateAnnotationsTask(seqCtx->getAnnotatedDNAView(), aRef, aGroup->getName(), newAnnotationDataList, selectNewAnnotations);
     addSubTask(createTask);
 }
 

@@ -188,16 +188,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1003);
     REGISTER_TEST(GUITest_regression_scenarios::test_1499);
     REGISTER_TEST(GUITest_regression_scenarios::test_1548);
     REGISTER_TEST(GUITest_regression_scenarios::test_2894);
     REGISTER_TEST(GUITest_regression_scenarios::test_3276);
     REGISTER_TEST(GUITest_regression_scenarios::test_4209);*/
-
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_1);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_2);
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
     
@@ -212,8 +207,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
-    
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1003, "too long test");
     
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");
 
@@ -449,6 +442,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1001_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_1001_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_1001_4);
+    REGISTER_TEST(GUITest_regression_scenarios::test_1003);
     REGISTER_TEST(GUITest_regression_scenarios::test_1011);
     REGISTER_TEST(GUITest_regression_scenarios::test_1013);
     REGISTER_TEST(GUITest_regression_scenarios::test_1015);
@@ -1407,6 +1401,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5412);
     REGISTER_TEST(GUITest_regression_scenarios::test_5417);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_1);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_5425_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5431);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5447_2);

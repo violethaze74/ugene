@@ -80,6 +80,12 @@ void AnnotationSelection::add(Annotation *a) {
     emit si_selectionChanged(this, QList<Annotation *>() << a, emptyAnnotations);
 }
 
+void AnnotationSelection::setAnnotations(QList<Annotation *> annotationList) {
+    QList<Annotation *> oldSelection = selection;
+    selection = annotationList;
+    emit si_selectionChanged(this, annotationList, oldSelection);
+}
+
 void AnnotationSelection::remove(Annotation *a) {
     bool removed = false;
     for (int i = 0; i < selection.size(); i++) {

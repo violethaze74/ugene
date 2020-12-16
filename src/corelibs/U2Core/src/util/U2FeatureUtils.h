@@ -52,12 +52,20 @@ public:
      * Returns DB representation of AnnotationTableObject associated with @tableRef
      */
     static U2AnnotationTable getAnnotationTable(const U2EntityRef &tableRef, U2OpStatus &os);
+
     /**
      * In case of multiple regions, feature contains all the names and qualifiers
      * and subfeatures contain only regions, in case of single regions features
      * contains all the information from the annotation
      */
     static U2Feature exportAnnotationDataToFeatures(const SharedAnnotationData &a, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os);
+
+    /**
+     * Same as exportAnnotationDataToFeatures for a single annotations but creates all of them and returns the resulted features list.
+     * This method creates a single lock over database and is more efficient to create large list of annotations than a method with a single annotation.
+     */
+    static QList<U2Feature> exportAnnotationDataToFeatures(const QList<SharedAnnotationData> &annotationsList, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os);
+
     /**
      * Creates a feature having @name and @parentId without location
      */

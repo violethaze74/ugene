@@ -44,6 +44,9 @@ public:
     /** Adds annotation to selection. Does nothing if annotation is already in the selection. */
     void add(Annotation *a);
 
+    /** Clears the current selection and adds all annotation from the list into the selection. */
+    void setAnnotations(QList<Annotation *> annotationList);
+
     void remove(Annotation *a);
 
     bool isEmpty() const;

@@ -115,8 +115,7 @@ QList<Annotation *> AnnotationGroup::addAnnotations(const QList<SharedAnnotation
     CHECK_OP(os, result);
 
     foreach (const SharedAnnotationData &d, anns) {
-        const U2Feature feature = U2FeatureUtils::exportAnnotationDataToFeatures(d, parentObject->getRootFeatureId(), id, parentObject->getEntityRef().dbiRef, os);
-
+        U2Feature feature = U2FeatureUtils::exportAnnotationDataToFeatures(d, parentObject->getRootFeatureId(), id, parentObject->getEntityRef().dbiRef, os);
         result.append(new Annotation(feature.id, d, this, parentObject));
         SAFE_POINT_OP(os, result);
     }

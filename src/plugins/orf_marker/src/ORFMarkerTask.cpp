@@ -124,7 +124,7 @@ ORFAutoAnnotationsUpdater::ORFAutoAnnotationsUpdater()
 
 Task *ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa) {
     AnnotationTableObject *aObj = aa->getAnnotationObject();
-    U2SequenceObject *dnaObj = aa->getSeqObject();
+    U2SequenceObject *dnaObj = aa->getSequenceObject();
 
     ORFAlgorithmSettings cfg;
     ORFSettingsKeys::read(cfg, AppContext::getSettings());

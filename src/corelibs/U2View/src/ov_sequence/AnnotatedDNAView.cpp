@@ -1455,7 +1455,7 @@ void AnnotatedDNAView::sl_aminoTranslationChanged() {
     U2SequenceObject *seqObj = seqCtx->getSequenceObject();
     QList<AutoAnnotationObject *> autoAnnotations = autoAnnotationsMap.values();
     foreach (AutoAnnotationObject *aa, autoAnnotations) {
-        if (aa->getSeqObject() == seqObj) {
+        if (aa->getSequenceObject() == seqObj) {
             aa->updateTranslationDependent(seqCtx->getAminoTT());
         }
     }
