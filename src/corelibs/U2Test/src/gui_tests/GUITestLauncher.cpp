@@ -144,7 +144,7 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<HI::GUITest *> &allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {
-        testsPerSuite << 900 << 840 << -1;
+        testsPerSuite << 910 << 800 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
