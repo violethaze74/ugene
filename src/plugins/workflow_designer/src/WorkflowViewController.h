@@ -314,12 +314,17 @@ private:
     void setDashboardActionVisible(bool visible);
     void commitWarningsToMonitor(WorkflowAbstractRunner *t);
 
-    void runWizard(Wizard *w);
-    void checkAutoRunWizard();
+    /** Asynchronously starts wizard dialogs. */
+    void startWizard(Wizard *wizard);
+
+    /** Runs wizard dialog,waits until it is finished and processes wizard results. */
+    void runWizardAndHandleResult(Wizard *wizard);
+
+    /** Calls 'startWizard' for the first wizard from schema with AutoRun flag. */
+    void startFirstAutoRunWizard();
+
     void loadWizardResult(const QString &result);
     void procItemAdded();
-
-    DashboardManagerHelper *getDMHInstance();
 
 private:
     bool running;
