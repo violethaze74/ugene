@@ -313,7 +313,7 @@ CDCResultItem::CDCResultItem(const U2Region &_r)
 // task
 CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject *> &table, const QSet<QString> &names, const CollocationsAlgorithmSettings &cfg)
     : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(false) {
-    GCOUNTER(cvar, tvar, "CollocationSearchTask");
+    GCOUNTER(cvar, "CollocationSearchTask");
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
     foreach (const QString &name, names) {

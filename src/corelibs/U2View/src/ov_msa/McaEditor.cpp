@@ -52,7 +52,6 @@ McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       referenceCtx(NULL) {
-    GCOUNTER(cvar, tvar, "Sanger Reads Editor");
     initZoom();
     initFont();
 
@@ -143,7 +142,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 }
 
 void McaEditor::sl_showHideChromatograms(bool show) {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "'Show chromatogram' action triggered", getFactoryId());
+    GCOUNTER(cvar, "Show/hide chromatogram in MCA");
     ui->getCollapseModel()->collapseAll(!show);
     sl_saveChromatogramState();
     emit si_completeUpdate();
@@ -151,8 +150,8 @@ void McaEditor::sl_showHideChromatograms(bool show) {
 
 void McaEditor::sl_showGeneralTab() {
     OptionsPanel *optionsPanel = getOptionsPanel();
-    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
-                                     " when msageneraltab opening was initiated", );
+    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
+                                        " when msageneraltab opening was initiated", );
     optionsPanel->openGroupById(McaGeneralTabFactory::getGroupId());
 }
 
@@ -235,14 +234,12 @@ void McaEditor::initActions() {
     showOverviewAction->setChecked(overviewVisible);
     ui->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, overviewVisible, "'Show overview' is checked on the view opening", getFactoryId());
-    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !overviewVisible, "'Show overview' is unchecked on the view opening", getFactoryId());
+    GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
 }
 
 void McaEditor::sl_saveOverviewState() {
     Settings *s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "'Show overview' action triggered", getFactoryId());
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, showOverviewAction->isChecked());
 }
 

@@ -42,7 +42,7 @@ ExportMca2MsaTask::ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObj
       includeReference(includeReference),
       convertTask(NULL),
       exportTask(NULL) {
-    GCOUNTER(cvar, tvar, "ExportMca2MsaTask");
+    GCOUNTER(cvar, "ExportMca2MsaTask");
     SAFE_POINT_EXT(NULL != mcaObject, setError(L10N::nullPointerError("MCA object")), );
 }
 

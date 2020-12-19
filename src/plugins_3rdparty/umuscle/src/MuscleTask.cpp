@@ -77,7 +77,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
       config(_config),
       inputMA(ma->getExplicitCopy())
 {
-    GCOUNTER( cvar, tvar, "MuscleTask" );
+    GCOUNTER( cvar, "MuscleTask" );
     config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
     SAFE_POINT_EXT(config.nThreads > 0,
         setError("Incorrect number of max parallel subtasks"), );

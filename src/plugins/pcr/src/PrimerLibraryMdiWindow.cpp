@@ -31,7 +31,7 @@
 namespace U2 {
 
 void PrimerLibraryMdiWindow::showLibrary() {
-    GCOUNTER(cvar, tvar, "Primer Library");
+    GCOUNTER(cvar, "Primer Library");
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
     SAFE_POINT(NULL != mdiManager, L10N::nullPointerError("MDI Manager"), );
 

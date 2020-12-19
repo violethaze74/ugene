@@ -84,8 +84,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
     collapseModel->collapseAll(!showChromatograms);
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, showChromatograms, "'Show chromatograms' is checked on the view opening", editor->getFactoryId());
-    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !showChromatograms, "'Show chromatograms' is unchecked on the view opening", editor->getFactoryId());
+    GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
 
     McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consensusArea);
     SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );

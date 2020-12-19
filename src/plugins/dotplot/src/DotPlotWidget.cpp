@@ -376,7 +376,7 @@ void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
         return;
     }
 
-    GCOUNTER(c, t, "Create dotplot");
+    GCOUNTER(c, "Create dotplot");
     dpFilteredResults->clear();
     dpFilteredResultsRevCompl->clear();
 

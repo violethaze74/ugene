@@ -51,7 +51,7 @@ const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject *aObj, const U2::U2EntityRef &entityRef, const SharedFeatureStore &store, const QStringList &filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), aTableObj(aObj),
       featureStore(store), filteredFeatures(filteredFeatureTypes) {
-    GCOUNTER(cvar, tvar, "CustomPatternAnnotationTask");
+    GCOUNTER(cvar, "CustomPatternAnnotationTask");
 }
 
 void CustomPatternAnnotationTask::prepare() {

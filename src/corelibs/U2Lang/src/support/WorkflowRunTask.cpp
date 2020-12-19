@@ -56,7 +56,7 @@ WorkflowRunTask::WorkflowRunTask(const Schema &sh, const QMap<ActorId, ActorId> 
     : WorkflowAbstractRunner(tr("Execute workflow"),
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
-    GCOUNTER(cvar, tvar, "WorkflowRunTask");
+    GCOUNTER(cvar, "WorkflowRunTask");
     if (NULL == debugInfo) {
         debugInfo = new WorkflowDebugStatus;
     }

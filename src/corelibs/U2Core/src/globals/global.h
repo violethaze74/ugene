@@ -150,4 +150,55 @@ enum DNAAlphabetType {
 Q_DECLARE_FLAGS(AlphabetFlags, DNAAlphabetType)
 Q_DECLARE_OPERATORS_FOR_FLAGS(AlphabetFlags)
 
+#define UGENE_ARCH_X86_64 8664
+#define UGENE_ARCH_X86_32 8632
+#define UGENE_ARCH_UNKNOWN -1
+
+/** Returns UGENE binary (build) architecture. */
+inline int getUgeneBinaryArch() {
+#if defined Q_PROCESSOR_X86_64
+    return UGENE_ARCH_X86_64;
+#elif defined Q_PROCESSOR_X86_32
+    return UGENE_ARCH_X86_32;
+#else
+    return UGENE_ARCH_UNKNOWN;
+#endif
+}
+
+/** Returns true if the current OS is Windows (Q_OS_WINDOWS). */
+inline bool isOsWindows() {
+#ifdef Q_OS_WIN
+    return true;
+#else
+    return false;
+#endif
+}
+
+/** Returns true if the current OS is MacOS (Q_OS_MAC). */
+inline bool isOsMac() {
+#ifdef Q_OS_MAC
+    return true;
+#else
+    return false;
+#endif
+}
+
+/** Returns true if the current OS is Linux (Q_OS_LINUX). */
+inline bool isOsLinux() {
+#ifdef Q_OS_LINUX
+    return true;
+#else
+    return false;
+#endif
+}
+
+/** Returns true if the current OS is a variant of Unix (Q_OS_UNIX). */
+inline bool isOsUnix() {
+#ifdef Q_OS_UNIX
+    return true;
+#else
+    return false;
+#endif
+}
+
 #endif

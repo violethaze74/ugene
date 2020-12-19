@@ -807,4 +807,3 @@ void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
 }
 
 }    // namespace U2
-// namespace U2

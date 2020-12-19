@@ -73,7 +73,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
       mafftTask(NULL),
       loadTmpDocumentTask(NULL),
       modStep(NULL) {
-    GCOUNTER(cvar, tvar, "MafftAddToAlignmentTask");
+    GCOUNTER(cvar, "MafftAddToAlignmentTask");
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 

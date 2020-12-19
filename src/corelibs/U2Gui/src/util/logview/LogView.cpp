@@ -340,9 +340,9 @@ void LogViewWidget::addText(const QString &txt) {
 void LogViewWidget::sl_dumpCounters() {
     QString text = "Counters report start ***********************\n";
     addText(text);
-    foreach (GCounter *c, GCounter::allCounters()) {
-        double val = c->scaledTotal();
-        text = c->name + " " + QString::number(val) + " " + c->suffix;
+    for (GCounter *counter : GCounter::getAllCounters()) {
+        double val = counter->getScaledValue();
+        text = counter->name + " " + QString::number(val) + " " + counter->suffix;
         addText(text);
     }
     text = "Counters report end ***********************\n";

@@ -215,7 +215,7 @@ void MaEditorNameList::sl_alignmentChanged(const MultipleAlignment &, const MaMo
 }
 
 void MaEditorNameList::sl_removeSelectedRows() {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Remove row", editor->getFactoryId());
+    GCounter::increment("Remove row", editor->getFactoryId());
     U2Region viewSelection = getSelection();
     CHECK(!viewSelection.isEmpty(), );
 
@@ -789,7 +789,7 @@ void MaEditorNameList::drawSelection(QPainter &painter) {
 }
 
 void MaEditorNameList::sl_editSequenceName() {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Rename row", editor->getFactoryId());
+    GCounter::increment("Rename row", editor->getFactoryId());
     MultipleAlignmentObject *maObj = editor->getMaObject();
     CHECK(!maObj->isStateLocked(), );
 

@@ -63,7 +63,7 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_input
       objRef(_objRef),
       settings(_settings),
       lock(NULL) {
-    GCOUNTER(cvar, tvar, "ClustalOSupportTask");
+    GCOUNTER(cvar, "ClustalOSupportTask");
     saveTemporaryDocumentTask = NULL;
     loadTemporyDocumentTask = NULL;
     clustalOTask = NULL;
@@ -300,7 +300,7 @@ Task::ReportResult ClustalOSupportTask::report() {
 ClustalOWithExtFileSpecifySupportTask::ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings &_settings)
     : Task("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "ClustalOSupportTask");
+    GCOUNTER(cvar, "ClustalOSupportTask");
     mAObject = NULL;
     currentDocument = NULL;
     saveDocumentTask = NULL;

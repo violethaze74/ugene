@@ -31,14 +31,13 @@
 #include <QUrl>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
-
 namespace U2 {
 
 const QColor CodonTableView::NONPOLAR_COLOR = QColor("#FFEE00").lighter();
@@ -119,6 +118,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
 }
 
 void CodonTableView::sl_setVisible() {
+    GCOUNTER(cvar, "CodonTableView");
     setVisible(!isVisible());
 }
 

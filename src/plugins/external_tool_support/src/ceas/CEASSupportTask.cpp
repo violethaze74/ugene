@@ -91,7 +91,7 @@ CEASSupportTask::CEASSupportTask(const CEASTaskSettings &_settings)
     : ExternalToolSupportTask("Running CEAS report task", TaskFlag_None),
       settings(_settings), bedDoc(NULL),
       bedTask(NULL), wigTask(NULL), etTask(NULL), activeSubtasks(0) {
-    GCOUNTER(cvar, tvar, "NGS:CEASTask");
+    GCOUNTER(cvar, "NGS:CEASTask");
     SAFE_POINT_EXT(NULL != settings.getStorage() || settings.getBedData().isEmpty(), setError(L10N::nullPointerError("workflow data storage")), );
 }
 

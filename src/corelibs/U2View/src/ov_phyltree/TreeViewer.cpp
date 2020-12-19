@@ -98,7 +98,7 @@ TreeViewer::TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangula
       root(_root),
       scale(s),
       ui(NULL) {
-    GCOUNTER(cvar, tvar, "PhylTreeViewer");
+    GCOUNTER(cvar, "PhylTreeViewer");
     phyObject = qobject_cast<PhyTreeObject *>(obj);
     objects.append(phyObject);
     requiredObjects.append(phyObject);

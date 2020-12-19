@@ -262,7 +262,7 @@ ClassificationReportTask::ClassificationReportTask(const QMap<TaxID, uint> &data
                                                    SortBy _sortBy)
     : Task(tr("Compose classification report"), TaskFlag_None),
       data(data), totalCount(totalCount), url(reportUrl), allTaxa(_allTaxa), sortBy(_sortBy) {
-    GCOUNTER(cvar, tvar, "ClassificationReportTask");
+    GCOUNTER(cvar, "ClassificationReportTask");
 
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }

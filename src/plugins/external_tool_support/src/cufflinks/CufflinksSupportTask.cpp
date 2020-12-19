@@ -59,7 +59,7 @@ CufflinksSupportTask::CufflinksSupportTask(const CufflinksSettings &_settings)
       convertAssToSamTask(NULL),
       cufflinksExtToolTask(NULL),
       loadIsoformAnnotationsTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:CufflinksTask");
+    GCOUNTER(cvar, "NGS:CufflinksTask");
 }
 
 CufflinksSupportTask::~CufflinksSupportTask() {

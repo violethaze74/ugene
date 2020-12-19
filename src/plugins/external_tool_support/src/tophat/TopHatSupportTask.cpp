@@ -57,7 +57,7 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings &_settings)
       tmpDocSaved(false),
       tmpDocPairedSaved(false),
       bowtieIndexTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:TopHatTask");
+    GCOUNTER(cvar, "NGS:TopHatTask");
 }
 
 TopHatSupportTask::~TopHatSupportTask() {

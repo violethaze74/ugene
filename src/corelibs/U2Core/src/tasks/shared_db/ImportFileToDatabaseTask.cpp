@@ -44,7 +44,7 @@ ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const 
       dstFolder(dstFolder),
       options(options),
       format(nullptr) {
-    GCOUNTER(cvar, tvar, "ImportFileToDatabaseTask");
+    GCOUNTER(cvar, "ImportFileToDatabaseTask");
     CHECK_EXT(QFileInfo(srcUrl).isFile(), setError(tr("It is not a file: ") + srcUrl), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 }

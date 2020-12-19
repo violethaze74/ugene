@@ -82,7 +82,7 @@ QList<Task *> MrBayesPrepareDataForCalculation::onSubTaskFinished(Task *subTask)
 
 MrBayesSupportTask::MrBayesSupportTask(const MultipleSequenceAlignment &_ma, const CreatePhyTreeSettings &s)
     : PhyTreeGeneratorTask(_ma, s) {
-    GCOUNTER(cvar, tvar, "MrBayesSupportTask");
+    GCOUNTER(cvar, "MrBayesSupportTask");
 
     setTaskName(tr("MrBayes tree calculation"));
 

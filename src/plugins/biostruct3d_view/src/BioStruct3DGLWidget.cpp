@@ -137,7 +137,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject *obj, const Annotated
       resetAlignmentAction(0), colorSchemeActions(0), rendererActions(0), molSurfaceRenderActions(0),
       molSurfaceTypeActions(0), selectColorSchemeMenu(0), selectRendererMenu(0), displayMenu(0) {
     lightPosition[0] = lightPosition[1] = lightPosition[2] = lightPosition[3] = 0;
-    GCOUNTER(cvar, tvar, "BioStruct3DGLWidget");
+    GCOUNTER(cvar, "BioStruct3DGLWidget");
 
     QString currentModelID = obj->getBioStruct3D().pdbId;
     setObjectName(QString("%1-%2").arg(++widgetCount).arg(currentModelID));

@@ -63,7 +63,7 @@ QString ExtractProductTask::getProductName(const QString &sequenceName, qint64 s
 
 ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct &product, const ExtractProductSettings &settings)
     : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(product), settings(settings), wholeSequenceLength(0), result(NULL) {
-    GCOUNTER(cvar, tvar, "ExtractProductTask");
+    GCOUNTER(cvar, "ExtractProductTask");
 }
 
 ExtractProductTask::~ExtractProductTask() {

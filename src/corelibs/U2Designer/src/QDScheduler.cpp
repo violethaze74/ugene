@@ -45,7 +45,7 @@ static int PROCESSING_PROGRESS_WEIGHT(80);
 
 QDScheduler::QDScheduler(const QDRunSettings &_settings)
     : Task(tr("QDScheduler"), TaskFlags_NR_FOSCOE), settings(_settings) {
-    GCOUNTER(cvar, tvar, "QueryDesignerScheduler");
+    GCOUNTER(cvar, "QueryDesignerScheduler");
     loadTask = NULL;
     createAnnsTask = NULL;
     linker = new QDResultLinker(this);

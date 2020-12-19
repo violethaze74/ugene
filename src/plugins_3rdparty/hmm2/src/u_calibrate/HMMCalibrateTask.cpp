@@ -13,7 +13,7 @@ namespace U2 {
 HMMCalibrateTask::HMMCalibrateTask(plan7_s* hmm, const UHMMCalibrateSettings& s) 
     : HMMCalibrateAbstractTask("", hmm, s)
 {
-    GCOUNTER( cvar, tvar, "HMMCalibrateTask" );
+    GCOUNTER( cvar, "HMMCalibrateTask" );
     setTaskName(tr("HMM calibrate '%1'").arg(hmm->name));
     tpm = Task::Progress_Manual;
 }

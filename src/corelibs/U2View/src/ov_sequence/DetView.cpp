@@ -369,12 +369,12 @@ void DetView::sl_translationRowsChanged() {
 }
 
 void DetView::sl_showComplementToggle(bool v) {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::ShowComplement");
+    GCOUNTER(cvar, "SequenceView::DetView::ShowComplement");
     setShowComplement(v);
 }
 
 void DetView::sl_showTranslationToggle(bool v) {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::ShowTranslations");
+    GCOUNTER(cvar, "SequenceView::DetView::ShowTranslations");
     setShowTranslation(v);
 }
 
@@ -401,7 +401,7 @@ void DetView::updateSelectedTranslations(const SequenceObjectContext::Translatio
 }
 
 void DetView::sl_wrapSequenceToggle(bool v) {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::WrapSequence");
+    GCOUNTER(cvar, "SequenceView::DetView::WrapSequence");
 
     AppContext::getSettings()->setValue(SEQUENCE_WRAPPED, QVariant(v));
     // turn off/on multiline mode

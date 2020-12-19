@@ -57,7 +57,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
       subject(NULL),
       actor(NULL),
       onFirstTableShow(true) {
-    GCOUNTER(cvar, tvar, "WorkflowEditor");
+    GCOUNTER(cvar, "WorkflowEditor");
     setupUi(this);
 
     specialParameters = new SpecialParametersPanel(this);

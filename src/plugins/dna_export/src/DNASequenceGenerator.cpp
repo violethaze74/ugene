@@ -173,7 +173,7 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
       evalTask(NULL),
       generateTask(NULL),
       saveTask(NULL) {
-    GCOUNTER(cvar, tvar, "DNASequenceGeneratorTask");
+    GCOUNTER(cvar, "DNASequenceGeneratorTask");
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
         const QString &docUrl = cfg.getReferenceUrl();

@@ -52,7 +52,7 @@ GSequenceLineView::GSequenceLineView(QWidget *p, SequenceObjectContext *_ctx)
       ignoreMouseSelectionEvents(false),
       singleBaseSelection(false),
       isSelectionResizing(false) {
-    GCOUNTER(cvar, tvar, "SequenceLineView");
+    GCOUNTER(cvar, "SequenceLineView");
     seqLen = ctx->getSequenceLength();
     setFocusPolicy(Qt::WheelFocus);
 

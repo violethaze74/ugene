@@ -1408,7 +1408,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
         annotationsToCreate[i]->type = annotationModel.data->type;
         U1AnnotationUtils::addDescriptionQualifier(annotationsToCreate[i], annotationModel.description);
     }
-    GCOUNTER(cvar, tvar, "FindAlgorithmTask");
+    GCOUNTER(cvar, "FindAlgorithmTask");
     if (annotationModel.data->name == annotationModel.groupName && usePatternNames) {
         group.clear();
     }

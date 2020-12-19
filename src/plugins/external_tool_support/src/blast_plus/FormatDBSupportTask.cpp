@@ -54,7 +54,7 @@ FormatDBSupportTask::FormatDBSupportTask(const FormatDBSupportTaskSettings &_set
       prepareTask(NULL),
       formatDBTask(NULL),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "FormatDBSupportTask");
+    GCOUNTER(cvar, "FormatDBSupportTask");
     externalToolLog = settings.outputPath + "MakeBLASTDB.log";
 }
 

@@ -664,7 +664,7 @@ enum { ElementsTab,
 
 QueryViewController::QueryViewController()
     : MWMDIWindow(tr("Query Designer")), currentActor(NULL) {
-    GCOUNTER(cvar, tvar, "OpenQDWindow");
+    GCOUNTER(cvar, "OpenQDWindow");
     scene = new QueryScene(this);
 
     sceneView = new GlassView(scene);

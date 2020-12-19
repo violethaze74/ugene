@@ -208,7 +208,7 @@ GObjectComboBoxController *CreateAnnotationNormalWidget::createGObjectComboBoxCo
 
 void CreateAnnotationNormalWidget::countDescriptionUsage() const {
     if (!leDescription->text().isEmpty()) {
-        GCOUNTER(cvar, tvar, "CreateAnnotationNormalWidget: description is used");
+        GCOUNTER(cvar, "CreateAnnotationNormalWidget: description is used");
     }
 }
 

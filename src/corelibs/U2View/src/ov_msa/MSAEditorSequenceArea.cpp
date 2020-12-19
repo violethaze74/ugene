@@ -672,7 +672,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
 
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     CHECK(getEditor() != nullptr, );
-    GCOUNTER(cvar, tvar, "Switch collapsing mode");
+    GCOUNTER(cvar, "Switch collapsing mode");
 
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     if (msaObject == nullptr || msaObject->isStateLocked()) {

@@ -23,42 +23,55 @@
 
 namespace U2 {
 
-QList<GCounter *> &GCounter::getCounters() {
-    static GCounterList counters;
-    return counters.list;
+/** A helper class that deletes all onHeap counters when destroyed. */
+class GCounterList {
+public:
+    ~GCounterList() {
+        for (int i = 0; i < list.size(); i++) {
+            GCounter *counter = list[i];
+            if (counter->isOnHeap) {
+                list[i] = nullptr;
+                delete counter;
+            }
+        }
+    }
+    QList<GCounter *> list;
+};
+
+static QList<GCounter *> &getGlobalCounterList() {
+    // Thread safe initialization of the global counters list.
+    static GCounterList counterList;
+    return counterList.list;
 }
 
-GCounter::GCounter(const QString &_name, const QString &s, double scale)
-    : name(_name), suffix(s), totalCount(0), counterScale(scale), destroyMe(false) {
-    assert(counterScale > 0);
-    getCounters().append(this);
+GCounter::GCounter(const QString &name, const QString &suffix, qint64 value, double scale, bool isReportable, bool isOnHeap)
+    : name(name), suffix(suffix), value(value), scale(scale), isReportable(isReportable), isOnHeap(isOnHeap) {
+    getGlobalCounterList() << this;
 }
 
 GCounter::~GCounter() {
-    getCounters().removeOne(this);
-}
+    getGlobalCounterList().removeOne(this);
+};
 
-GCounter *GCounter::getCounter(const QString &name, const QString &suffix) {
-    foreach (GCounter *counter, getCounters()) {
+GCounter *GCounter::findCounter(const QString &name, const QString &suffix) {
+    for (GCounter *counter : getGlobalCounterList()) {
         if (name == counter->name && suffix == counter->suffix) {
             return counter;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-GReportableCounter::GReportableCounter(const QString &name, const QString &suffix, double scale /* = 1 */)
-    : GCounter(name, suffix, scale) {
+QList<GCounter *> GCounter::getAllCounters() {
+    return getGlobalCounterList();
 }
 
-GCounterList::~GCounterList() {
-    for (int i = 0; i < list.size(); i++) {
-        if (list[i]->destroyMe) {
-            GCounter *counter = list[i];
-            list[i] = NULL;
-            delete counter;
-        }
+void GCounter::increment(const QString &name, const QString &suffix) {
+    GCounter *counter = GCounter::findCounter(name, suffix);
+    if (counter == nullptr) {
+        counter = new GCounter(name, suffix, 0, 1, true, true);
     }
+    counter->value++;
 }
 
 }    // namespace U2

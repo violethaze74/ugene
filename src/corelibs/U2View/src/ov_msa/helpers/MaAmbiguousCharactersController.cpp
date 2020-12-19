@@ -75,12 +75,12 @@ QAction *MaAmbiguousCharactersController::getNextAction() const {
 }
 
 void MaAmbiguousCharactersController::sl_next() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to next ambiguous character", maEditor->getFactoryId());
+    GCounter::increment("Jump to next ambiguous character", maEditor->getFactoryId());
     scrollToNextAmbiguous(Forward);
 }
 
 void MaAmbiguousCharactersController::sl_previous() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to previous ambiguous character", maEditor->getFactoryId());
+    GCounter::increment("Jump to previous ambiguous character", maEditor->getFactoryId());
     scrollToNextAmbiguous(Backward);
 }
 

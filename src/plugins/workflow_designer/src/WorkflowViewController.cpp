@@ -964,7 +964,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     ActorPrototype *addedProto = it->getProcess()->getProto();
     uiLog.trace(addedProto->getDisplayName() + " added");
     if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
-        GCOUNTER(cvar, tvar, "Element with external tool is added to the scene");
+        GCOUNTER(cvar, "Element with external tool is added to the scene");
     }
 
     update();
@@ -1396,13 +1396,13 @@ void WorkflowView::localHostLaunch() {
     }
 
     if (meta.isSample()) {
-        GRUNTIME_NAMED_COUNTER(cvar, tvar, meta.name, "WDSample:run");
+        GCounter::increment(meta.name, "WDSample:run");
     }
 
     const Schema *s = getSchema();
     foreach (const Actor *actor, schema->getProcesses()) {
         if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
-            GCOUNTER(cvar, tvar, "Element(s) with command line tool is present in the launched workflow");
+            GCOUNTER(cvar, "Element(s) with command line tool is present in the launched workflow");
             break;
         }
     }
@@ -1794,7 +1794,7 @@ void WorkflowView::sl_pasteSample(const QString &s) {
         rescale();
         sl_refreshActorDocs();
         meta.setSampleMark(true);
-        GRUNTIME_NAMED_COUNTER(c, t, meta.name, "WDSample:open");
+        GCounter::increment(meta.name, "WDSample:open");
         startFirstAutoRunWizard();
     } else {
         breakpointView->clear();

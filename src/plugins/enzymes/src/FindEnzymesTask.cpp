@@ -44,7 +44,7 @@ namespace U2 {
 
 FindEnzymesToAnnotationsTask::FindEnzymesToAnnotationsTask(AnnotationTableObject *aobj, const U2EntityRef &seqRef, const QList<SEnzymeData> &enzymes, const FindEnzymesTaskConfig &config)
     : Task(tr("Find and store enzymes"), TaskFlags_NR_FOSCOE), dnaSeqRef(seqRef), enzymes(enzymes), annotationObject(aobj), cfg(config), findTask(nullptr) {
-    GCOUNTER(cvar, tvar, "FindEnzymesToAnnotationsTask");
+    GCOUNTER(cvar, "FindEnzymesToAnnotationsTask");
 }
 
 void FindEnzymesToAnnotationsTask::prepare() {

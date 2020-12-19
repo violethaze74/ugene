@@ -270,7 +270,7 @@ void ClarkBuildWorker::sl_taskFinished(Task *t) {
 ClarkBuildTask::ClarkBuildTask(const QString &dbUrl, const QStringList &genomeUrls, int rank, const QString &taxdataUrl)
     : ExternalToolSupportTask(tr("Build Clark database"), TaskFlags_NR_FOSE_COSC),
       dbUrl(dbUrl), taxdataUrl(taxdataUrl), genomeUrls(genomeUrls), rank(rank) {
-    GCOUNTER(cvar, tvar, "ClarkBuildTask");
+    GCOUNTER(cvar, "ClarkBuildTask");
 
     SAFE_POINT_EXT(!dbUrl.isEmpty(), setError(tr("CLARK database URL is undefined")), );
     SAFE_POINT_EXT(!taxdataUrl.isEmpty(), setError(tr("Taxdata URL is undefined")), );

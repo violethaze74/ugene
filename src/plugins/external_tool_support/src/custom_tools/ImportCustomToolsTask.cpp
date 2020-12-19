@@ -48,7 +48,7 @@ ImportCustomToolsTask::ImportCustomToolsTask(const QString &_url)
     : Task(tr("Import custom external tools configuration"), TaskFlags_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
       url(_url),
       registerTask(nullptr) {
-    GCOUNTER(cvar, tvar, "ImportCustomToolsTask");
+    GCOUNTER(cvar, "ImportCustomToolsTask");
 }
 
 void ImportCustomToolsTask::prepare() {

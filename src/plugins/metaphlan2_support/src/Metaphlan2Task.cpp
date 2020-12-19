@@ -53,7 +53,7 @@ Metaphlan2ClassifyTask::Metaphlan2ClassifyTask(const Metaphlan2TaskSettings &_se
       settings(_settings),
       classifyTask(nullptr),
       calculateSequencesNumberTask(nullptr) {
-    GCOUNTER(cvar, tvar, "Metaphlan2ClassifyTask");
+    GCOUNTER(cvar, "Metaphlan2ClassifyTask");
 
     needToCountSequences = settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE &&
                            settings.normalizeByMetagenomeSize;

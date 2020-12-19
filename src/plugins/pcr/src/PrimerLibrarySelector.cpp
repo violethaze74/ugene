@@ -33,7 +33,7 @@ namespace U2 {
 
 PrimerLibrarySelector::PrimerLibrarySelector(QWidget *parent)
     : QDialog(parent) {
-    GCOUNTER(cvar, tvar, "PrimerLibrarySelector");
+    GCOUNTER(cvar, "PrimerLibrarySelector");
     setupUi(this);
     new HelpButton(this, buttonBox, "54363747");
 

@@ -33,7 +33,7 @@ namespace U2 {
 DiamondBuildTask::DiamondBuildTask(const DiamondBuildTaskSettings &_settings)
     : ExternalToolSupportTask(tr("Build DIAMOND database"), TaskFlags_NR_FOSE_COSC),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "DiamondBuildTask");
+    GCOUNTER(cvar, "DiamondBuildTask");
     checkSettings();
 }
 

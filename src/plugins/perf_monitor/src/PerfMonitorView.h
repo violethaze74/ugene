@@ -48,9 +48,9 @@ private:
 
 class PerfTreeItem : public QTreeWidgetItem {
 public:
-    PerfTreeItem(GCounter *counter);
-    GCounter *counter;
-    void updateVisual();
+    PerfTreeItem(const GCounter *counter);
+    const GCounter *counter;
+    void update();
 };
 
 }    // namespace U2

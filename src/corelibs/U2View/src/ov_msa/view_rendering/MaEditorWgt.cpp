@@ -285,11 +285,11 @@ void MaEditorWgt::initActions() {
 }
 
 void MaEditorWgt::sl_countUndo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Undo"), editor->getFactoryId());
+    GCounter::increment("Undo", editor->getFactoryId());
 }
 
 void MaEditorWgt::sl_countRedo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Redo"), editor->getFactoryId());
+    GCounter::increment("Redo", editor->getFactoryId());
 }
 
 }    // namespace U2

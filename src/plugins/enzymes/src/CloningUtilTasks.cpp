@@ -55,7 +55,7 @@ bool operator<(const GenomicPosition &left, const GenomicPosition &right) {
 DigestSequenceTask::DigestSequenceTask(U2SequenceObject *so, AnnotationTableObject *source, AnnotationTableObject *dest, const DigestSequenceTaskConfig &config)
     : Task("DigestSequenceTask", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       sourceObj(source), destObj(dest), dnaObj(so), cfg(config) {
-    GCOUNTER(cvar, tvar, "DigestSequenceIntoFragments");
+    GCOUNTER(cvar, "DigestSequenceIntoFragments");
 
     SAFE_POINT_EXT(sourceObj != NULL, setError(L10N::nullPointerError("source object")), );
     SAFE_POINT_EXT(destObj != NULL, setError(L10N::nullPointerError("destination object")), );
@@ -389,7 +389,7 @@ QByteArray DigestSequenceTask::getOverhang(const U2Region &region) const {
 LigateFragmentsTask::LigateFragmentsTask(const QList<DNAFragment> &fragments, const LigateFragmentsTaskConfig &config)
     : Task("LigateFragmentsTask", TaskFlags_NR_FOSCOE), fragmentList(fragments), cfg(config),
       resultDoc(NULL), resultAlphabet(NULL) {
-    GCOUNTER(cvar, tvar, "LigateFragments");
+    GCOUNTER(cvar, "LigateFragments");
 }
 
 void LigateFragmentsTask::processOverhangs(const DNAFragment &prevFragment, const DNAFragment &curFragment, QByteArray &overhangAddition) {

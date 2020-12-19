@@ -56,7 +56,7 @@ CallVariantsTask::CallVariantsTask( const CallVariantsTaskSettings& _settings, D
 ,mpileupTask(NULL)
 ,storage(_store)
 {
-    GCOUNTER(cvar, tvar, "NGS:CallVariantsTask");
+    GCOUNTER(cvar, "NGS:CallVariantsTask");
     setMaxParallelSubtasks(1);
 }
 

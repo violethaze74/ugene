@@ -218,7 +218,7 @@ Task *CutAdaptFastqWorker::getTask(const BaseNGSSetting &settings) const {
 //CutAdaptFastqTask
 CutAdaptFastqTask::CutAdaptFastqTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQCutAdaptTask");
+    GCOUNTER(cvar, "NGS:FASTQCutAdaptTask");
 }
 
 void CutAdaptFastqTask::prepareStep() {

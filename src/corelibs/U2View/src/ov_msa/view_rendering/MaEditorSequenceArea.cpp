@@ -331,7 +331,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
     maObj->removeRegion(selectedMaRows, selection.x(), effectiveWidth, true);
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
+    GCounter::increment("Delete current selection", editor->getFactoryId());
 }
 
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
@@ -630,13 +630,11 @@ void MaEditorSequenceArea::sl_cancelSelection() {
         exitFromEditCharacterMode();
         return;
     }
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != nullptr, "Clear selection", editor->getFactoryId());
-    MaEditorSelection emptySelection;
-    setSelection(emptySelection);
+    setSelection(MaEditorSelection());
 }
 
 void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Fill selection with gaps", editor->getFactoryId());
+    GCounter::increment("Fill selection with gaps", editor->getFactoryId());
     if (!isAlignmentLocked()) {
         emit si_startMaChanging();
         insertGapsBeforeSelection();
@@ -1509,9 +1507,8 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
         return;
     }
 
-    const bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, isGap, "Replace gap", editor->getFactoryId());
-    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !isGap, "Replace character", editor->getFactoryId());
+    bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
+    GCounter::increment(isGap ? "Replace gap" : "Replace character", editor->getFactoryId());
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

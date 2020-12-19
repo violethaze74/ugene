@@ -129,7 +129,7 @@ void TimeCounter::start() {
 void TimeCounter::stop() {
     assert(started);
     qint64 endTime = getCounter();
-    totalCounter->totalCount += endTime - startTime - correction;
+    totalCounter->value += endTime - startTime - correction;
     started = false;
 }
 

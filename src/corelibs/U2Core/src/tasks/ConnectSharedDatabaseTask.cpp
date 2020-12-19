@@ -34,7 +34,7 @@ namespace U2 {
 ConnectSharedDatabaseTask::ConnectSharedDatabaseTask(const U2DbiRef &dbiRef, const QString &_documentName, bool initializeDb)
     : DocumentProviderTask(tr("Connecting to database: ") + getUrlFromRef(dbiRef).getURLString(), TaskFlag_None),
       dbiRef(dbiRef), documentName(_documentName), initializeDb(initializeDb) {
-    GCOUNTER(cvar, tvar, "ConnectSharedDatabaseTask");
+    GCOUNTER(cvar, "ConnectSharedDatabaseTask");
     documentDescription = documentName;
 }
 

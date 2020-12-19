@@ -61,7 +61,7 @@ const QString DiamondClassifyTask::TAXONOMIC_CLASSIFICATION_OUTPUT_FORMAT = "102
 DiamondClassifyTask::DiamondClassifyTask(const DiamondClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify sequences with DIAMOND"), TaskFlags_FOSE_COSC),
       settings(settings) {
-    GCOUNTER(cvar, tvar, "DiamondClassifyTask");
+    GCOUNTER(cvar, "DiamondClassifyTask");
     checkSettings();
     CHECK_OP(stateInfo, );
 }

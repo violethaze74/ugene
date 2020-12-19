@@ -32,7 +32,7 @@ namespace U2
 
 SolventAccessibleSurface::SolventAccessibleSurface()
 {
-    GCOUNTER( cvar, tvar, "SolventAccessibleSurface" );
+    GCOUNTER( cvar, "SolventAccessibleSurface" );
 }
 
 void SolventAccessibleSurface::calculate(const QList<SharedAtom>& atoms, int& /*progress*/)

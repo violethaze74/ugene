@@ -53,7 +53,7 @@ WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
       optionsStartAt(-1),
       loadTask(NULL),
       workflowRunTask(NULL) {
-    GCOUNTER(cvar, tvar, "workflow_run_from_cmdline");
+    GCOUNTER(cvar, "workflow_run_from_cmdline");
 
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
 

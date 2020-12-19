@@ -37,14 +37,14 @@ HMMSearchTask::HMMSearchTask(plan7_s *_hmm, const DNASequence &_seq, const UHMMS
     : Task("", TaskFlag_NoRun),
       hmm(_hmm), seq(_seq), settings(s), complTrans(nullptr), aminoTrans(nullptr), fName(""), readHMMTask(nullptr), swTask(nullptr) {
     setTaskName(tr("HMM search with '%1'").arg(hmm->name));
-    GCOUNTER(cvar, tvar, "HMM2 Search");
+    GCOUNTER(cvar, "HMM2 Search");
 }
 
 HMMSearchTask::HMMSearchTask(const QString &hFile, const DNASequence &_seq, const UHMMSearchSettings &s)
     : Task("", TaskFlag_NoRun),
       hmm(nullptr), seq(_seq), settings(s), complTrans(nullptr), aminoTrans(nullptr), fName(hFile), readHMMTask(nullptr), swTask(nullptr) {
     setTaskName(tr("HMM Search"));
-    GCOUNTER(cvar, tvar, "HMM2 Search");
+    GCOUNTER(cvar, "HMM2 Search");
 }
 
 void HMMSearchTask::prepare() {

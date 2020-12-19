@@ -411,7 +411,7 @@ QString SharedConnectionsDialog::rollName(const QString &preferredName) const {
 
 void SharedConnectionsDialog::countConnectionsToPublicDatabase(const QString &dbiUrl) {
     if (U2DbiUtils::PUBLIC_DATABASE_URL == dbiUrl) {
-        GCOUNTER(cvar, tvar, "Connections to public database");
+        GCOUNTER(cvar, "Connections to public database");
     }
 }
 

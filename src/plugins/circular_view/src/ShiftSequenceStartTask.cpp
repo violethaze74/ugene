@@ -40,7 +40,7 @@ namespace U2 {
 
 ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject *sequenceObject, qint64 newSequenceStartPosition)
     : Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), sequenceObject(sequenceObject), newSequenceStartPosition(newSequenceStartPosition) {
-    GCOUNTER(cvar, tvar, "ShiftSequenceStartTask");
+    GCOUNTER(cvar, "ShiftSequenceStartTask");
 }
 
 Task::ReportResult ShiftSequenceStartTask::report() {

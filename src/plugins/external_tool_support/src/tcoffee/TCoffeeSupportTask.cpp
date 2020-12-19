@@ -62,7 +62,7 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment &_inputMs
       objRef(_objRef),
       settings(_settings),
       lock(NULL) {
-    GCOUNTER(cvar, tvar, "TCoffeeSupportTask");
+    GCOUNTER(cvar, "TCoffeeSupportTask");
     saveTemporaryDocumentTask = NULL;
     loadTmpDocumentTask = NULL;
     tCoffeeTask = NULL;
@@ -304,7 +304,7 @@ Task::ReportResult TCoffeeSupportTask::report() {
 TCoffeeWithExtFileSpecifySupportTask::TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings &_settings)
     : Task("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "TCoffeeSupportTask");
+    GCOUNTER(cvar, "TCoffeeSupportTask");
     mAObject = NULL;
     currentDocument = NULL;
     saveDocumentTask = NULL;

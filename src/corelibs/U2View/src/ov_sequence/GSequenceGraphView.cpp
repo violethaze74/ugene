@@ -49,7 +49,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, G
       baseView(_baseView),
       vName(_vName),
       graphDrawer(NULL) {
-    GCOUNTER(cvar, tvar, "GSequenceGraphView");
+    GCOUNTER(cvar, "GSequenceGraphView");
     assert(baseView);
 
     visualPropertiesAction = new QAction(tr("Graph settings..."), this);
