@@ -76,7 +76,7 @@ void GUITestService::sl_serviceRegistered() {
 
     switch (launchedFor) {
         case RUN_ONE_TEST:
-            QTimer::singleShot(1000, this, SLOT(runGUITest()));
+            QTimer::singleShot(isOsLinux() ? 100 : 1000, this, SLOT(runGUITest()));
             break;
 
         case RUN_ALL_TESTS:
