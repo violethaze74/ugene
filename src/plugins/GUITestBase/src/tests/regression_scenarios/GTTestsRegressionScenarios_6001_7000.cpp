@@ -6352,6 +6352,54 @@ GUI_TEST_CLASS_DEFINITION(test_6927) {
     // Expected state: columns from 10 to 20 are selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 0, 11, 18));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6953) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select the first sequence
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    // Press Ctrl+X
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+
+    // Press Ctrl+V
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 18, QString("Unexpected name list size, expected: 18, current: %1").arg(names.size()));
+
+    CHECK_SET_ERR(names[0] == "Isophya_altaica_EF540820", QString("Unexpected name, expected: \"Isophya_altaica_EF540820\", current: %1").arg(names[0]));
+    CHECK_SET_ERR(names[1] == "Phaneroptera_falcata", QString("Unexpected name, expected: \"Phaneroptera_falcata\", current: %1").arg(names[1]));
+
+    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+
+    // Select (0, 0, 4, 2) rectangle
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
+
+    // Press Ctrl+X
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+
+    // Press Ctrl+V
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 2), QPoint(3, 3), "TAAG\nTAAG");
+
+    // Expected state: the selection pasted under the Isophya_altaica_EF540820 sequence
+    QStringList names1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names1.size() == 20, QString("Unexpected name list size, expected: 18, current: %1").arg(names1.size()));
+
+    CHECK_SET_ERR(names1[2] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names1[2]));
+    CHECK_SET_ERR(names1[3] == "Isophya_altaica_EF540820_1", QString("Unexpected name, expected: \"Isophya_altaica_EF540820_1\", current: %1").arg(names1[3]));
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6954) {
+}
+GUI_TEST_CLASS_DEFINITION(test_6959) {
+
+}
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
