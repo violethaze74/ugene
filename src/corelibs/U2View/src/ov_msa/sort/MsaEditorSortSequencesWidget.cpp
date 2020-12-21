@@ -60,7 +60,7 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAE
 
     sortButton = new QPushButton(tr("Sort"));
     sortButton->setObjectName("sortButton");
-    sortButton->setToolTip(tr("Click to sort sequence in the alignment"));
+    sortButton->setToolTip(tr("Click to sort selected sequences range or the whole alignment"));
     lastRowLayout->addWidget(sortButton);
     connect(sortButton, SIGNAL(clicked()), SLOT(sl_sortClicked()));
 

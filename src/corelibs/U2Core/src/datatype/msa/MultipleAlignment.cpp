@@ -160,11 +160,14 @@ static bool isLessByName(const MultipleAlignmentRow &row1, const MultipleAlignme
     return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) < 0;
 }
 
-void MultipleAlignmentData::sortRowsByName(MultipleAlignment::Order order) {
+void MultipleAlignmentData::sortRowsByName(MultipleAlignment::Order order, const U2Region &range) {
+    U2Region allRowsRange = U2Region(0, rows.size());
+    SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
     MaStateCheck check(this);
     Q_UNUSED(check);
     bool isAscending = order == MultipleAlignment::Ascending;
-    std::stable_sort(rows.begin(), rows.end(), isAscending ? isLessByName : isGreaterByName);
+    U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
+    std::stable_sort(rows.begin() + sortingRange.startPos, rows.begin() + sortingRange.endPos(), isAscending ? isLessByName : isGreaterByName);
 }
 
 static bool isGreaterByLength(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
@@ -175,11 +178,14 @@ static bool isLessByLength(const MultipleAlignmentRow &row1, const MultipleAlign
     return row1->getUngappedLength() < row2->getUngappedLength();
 }
 
-void MultipleAlignmentData::sortRowsByLength(MultipleAlignment::Order order) {
+void MultipleAlignmentData::sortRowsByLength(MultipleAlignment::Order order, const U2Region &range) {
+    U2Region allRowsRange = U2Region(0, rows.size());
+    SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
     MaStateCheck check(this);
     Q_UNUSED(check);
     bool isAscending = order == MultipleAlignment::Ascending;
-    std::stable_sort(rows.begin(), rows.end(), isAscending ? isLessByLength : isGreaterByLength);
+    U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
+    std::stable_sort(rows.begin() + sortingRange.startPos, rows.begin() + sortingRange.endPos(), isAscending ? isLessByLength : isGreaterByLength);
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {

@@ -71,18 +71,22 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
 
     sortByNameAscendingAction = new QAction(tr("By name"), this);
     sortByNameAscendingAction->setObjectName("action_sort_by_name");
+    sortByNameAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, ascending"));
     connect(sortByNameAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
 
     sortByNameDescendingAction = new QAction(tr("By name, descending"), this);
     sortByNameDescendingAction->setObjectName("action_sort_by_name_descending");
+    sortByNameAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, descending"));
     connect(sortByNameDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
 
     sortByLengthAscendingAction = new QAction(tr("By length"), this);
     sortByLengthAscendingAction->setObjectName("action_sort_by_length");
+    sortByLengthAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by length, ascending"));
     connect(sortByLengthAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
 
     sortByLengthDescendingAction = new QAction(tr("By length, descending"), this);
     sortByLengthDescendingAction->setObjectName("action_sort_by_length_descending");
+    sortByLengthDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by length, descending"));
     connect(sortByLengthDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
 
     openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
@@ -494,9 +498,8 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
 }
 
 void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
-    if (!maObject->isStateLocked()) {
-        maObject->sortRowsByList(order);
-    }
+    CHECK(!maObject->isStateLocked(), );
+    maObject->sortRowsByList(order);
 }
 
 void MSAEditor::sl_showTreeOP() {
@@ -546,12 +549,10 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
         QDropEvent *de = (QDropEvent *)e;
         const QMimeData *md = de->mimeData();
         const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
-        if (gomd != NULL) {
-            if (maObject->isStateLocked()) {
-                return false;
-            }
+        if (gomd != nullptr) {
+            CHECK(!maObject->isStateLocked(), false)
             U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(gomd->objPtr.data());
-            if (dnaObj != NULL) {
+            if (dnaObj != nullptr) {
                 if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == NULL) {
                     return false;
                 }
@@ -605,9 +606,7 @@ void MSAEditor::sl_align() {
 
 void MSAEditor::sl_addToAlignment() {
     MultipleSequenceAlignmentObject *msaObject = getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
+    CHECK(!maObject->isStateLocked(), );
 
     ProjectView *pv = AppContext::getProjectView();
     SAFE_POINT(pv != nullptr, "Project view is null", );
@@ -758,14 +757,15 @@ void MSAEditor::sl_showCustomSettings() {
 
 void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder) {
     MultipleSequenceAlignmentObject *msaObject = getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
+    CHECK(!msaObject->isStateLocked(), );
+
     MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    const MaEditorSelection &selection = getSelection();
+    U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
     if (isByName) {
-        msa->sortRowsByName(sortOrder);
+        msa->sortRowsByName(sortOrder, sortRange);
     } else {
-        msa->sortRowsByLength(sortOrder);
+        msa->sortRowsByLength(sortOrder, sortRange);
     }
 
     // Drop collapsing mode.
@@ -789,8 +789,8 @@ void MSAEditor::sl_sortSequencesByLength() {
 }
 
 void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
-    bool isReadOnly = maObject->isStateLocked();
-    CHECK(!isReadOnly, );
+    CHECK(!maObject->isStateLocked(), )
+
     auto alphabetId = maObject->getAlphabet()->getId();
     bool isDnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     bool isRnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT();

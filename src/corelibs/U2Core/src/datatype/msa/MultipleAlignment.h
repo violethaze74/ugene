@@ -81,6 +81,7 @@ protected:
     MultipleAlignmentData(const QString &name = QString(),
                           const DNAAlphabet *alphabet = NULL,
                           const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
+
 public:
     virtual ~MultipleAlignmentData();
 
@@ -125,11 +126,11 @@ public:
 
     U2MsaListGapModel getGapModel() const;
 
-    /** Sorts rows by name */
-    void sortRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending);
+    /** Sorts rows by name. If range is provided and is not empty sorts only given range. */
+    void sortRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
 
-    /** Sort rows by un-gapped sequence length. */
-    void sortRowsByLength(MultipleAlignment::Order order = MultipleAlignment::Ascending);
+    /** Sort rows by un-gapped sequence length. If range is provided and is not empty sorts only given range.*/
+    void sortRowsByLength(MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
 
     /** Returns row of the alignment */
     MultipleAlignmentRow getRow(int row);
