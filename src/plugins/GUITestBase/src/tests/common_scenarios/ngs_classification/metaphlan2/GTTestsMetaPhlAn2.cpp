@@ -289,7 +289,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_METAPHLAN, getMetaphlan2WithoutScriptPath());
+            auto path = getMetaphlan2WithoutScriptPath();
+            coreLog.info(QString("getMetaphlan2WithoutScriptPath: %1").arg(path));
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_METAPHLAN, );
 
             //python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
