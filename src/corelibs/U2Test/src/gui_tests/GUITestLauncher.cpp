@@ -39,8 +39,6 @@
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-#define GUI_TEST_TIMEOUT_MILLIS 240000
-
 #ifdef Q_OS_MAC
 #    define NUMBER_OF_TEST_SUITES 4
 #elif defined(Q_OS_LINUX)
@@ -112,7 +110,7 @@ void GUITestLauncher::run() {
             GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
             try {
-                QString testResult = runTest(testName);
+                QString testResult = runTest(testName, test->getTimeout());
                 results[testName] = testResult;
                 if (GUITestTeamcityLogger::isTestFailed(testResult)) {
                     renameTestLog(testName);
@@ -339,7 +337,7 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString &te
     return env;
 }
 
-QString GUITestLauncher::runTest(const QString &testName) {
+QString GUITestLauncher::runTest(const QString &testName, const int timeout) {
     int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
     bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
@@ -348,7 +346,7 @@ QString GUITestLauncher::runTest(const QString &testName) {
             coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(iteration).arg(maxReruns));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, iteration, isVideoRecordingOn && iteration > 0);
+        testOutput = runTestOnce(os, testName, iteration, timeout, isVideoRecordingOn && iteration > 0);
         bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
@@ -358,7 +356,7 @@ QString GUITestLauncher::runTest(const QString &testName) {
     return testOutput;
 }
 
-QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording) {
+QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, int iteration, const int timeout, bool enableVideoRecording) {
     QProcessEnvironment environment = prepareTestRunEnvironment(testName, iteration);
 
     QString path = QCoreApplication::applicationFilePath();
@@ -381,7 +379,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
         os.setError(error);
         return error;
     }
-    bool isFinished = process.waitForFinished(GUI_TEST_TIMEOUT_MILLIS);
+    bool isFinished = process.waitForFinished(timeout);
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
     if (!isFinished || exitStatus != QProcess::NormalExit) {

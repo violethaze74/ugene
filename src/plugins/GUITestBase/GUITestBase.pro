@@ -223,6 +223,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
             src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h \
+            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.h \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
@@ -492,6 +493,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \
             src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.cpp \
+            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.cpp \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.cpp \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \

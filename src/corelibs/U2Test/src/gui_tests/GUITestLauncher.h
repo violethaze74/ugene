@@ -66,10 +66,10 @@ private:
     void firstTestRunCheck(const QString &testName);
 
     /** Runs test and returns test output. */
-    QString runTest(const QString &testName);
+    QString runTest(const QString &testName, const int timeout);
 
     /** Runs test once and returns test output. */
-    QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording);
+    QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, const int timeout, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray &output);
     bool renameTestLog(const QString &testName);
