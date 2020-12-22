@@ -33,9 +33,10 @@
 
 namespace U2 {
 
-CreateAnnotationFullWidget::CreateAnnotationFullWidget(QWidget *parent)
+CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget *parent)
     : CreateAnnotationWidget(parent),
-      formatType(Simple) {
+      formatType(Simple),
+      seqLen {seqLen} {
     setupUi(this);
     initLayout();
     init();
@@ -153,11 +154,22 @@ void CreateAnnotationFullWidget::setAnnotationName(const QString &name) {
 }
 
 void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
+    // Example: (200..len,1..100)=(200..100), lambda returns true
+    auto locationSplitted = [](const U2Location &location, qint64 seqLen) {
+        return location->regions[0].endPos() == seqLen && location->regions[1].startPos == 0;
+    };
+
     QString startString;
     QString endString;
     if (!location->isEmpty()) {
         startString = QString::number(location->regions.first().startPos + 1);
-        endString = QString::number(location->regions.first().endPos());
+
+        if (location->isMultiRegion() && locationSplitted(location, seqLen)) {
+            // (200..len,1..100,...) equals start=200, end=100
+            endString = QString::number(location->regions[1].endPos());
+        } else {
+            endString = QString::number(location->regions.first().endPos());
+        }
     }
 
     leRegionStart->setText(startString);
@@ -165,7 +177,8 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     chbComplement->setChecked(location->strand.isCompementary());
     leLocation->setText(getGenbankLocationString(location));
 
-    if (location->isMultiRegion()) {
+    // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
+    if (location->regions.size() > 2 || (location->regions.size() == 2 && !locationSplitted(location, seqLen))) {
         rbGenbankFormat->setChecked(true);
     }
 }
@@ -244,6 +257,10 @@ void CreateAnnotationFullWidget::sl_regionChanged() {
     CHECK(ok, );
 
     U2Location location;
+    if (startPos > endPos) { // split (200..100) to (200..len,1..100)
+        location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
+        startPos = 1;
+    }
     location->regions << U2Region(startPos - 1, endPos - startPos + 1);
     location->strand = U2Strand(U2Strand(chbComplement->isChecked() ? U2Strand::Complementary : U2Strand::Direct));
 

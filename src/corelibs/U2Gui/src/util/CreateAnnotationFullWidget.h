@@ -30,7 +30,7 @@ namespace U2 {
 class CreateAnnotationFullWidget : public CreateAnnotationWidget, private Ui_CreateAnnotationFullWidget {
     Q_OBJECT
 public:
-    CreateAnnotationFullWidget(QWidget *parent = NULL);
+    CreateAnnotationFullWidget(qint64 seqLen, QWidget *parent = NULL);
     ~CreateAnnotationFullWidget();
 
     void setGroupNameVisible(bool visible);
@@ -99,6 +99,7 @@ private:
     void connectSignals();
 
     FormatType formatType;
+    qint64 seqLen;
 };
 
 }    // namespace U2

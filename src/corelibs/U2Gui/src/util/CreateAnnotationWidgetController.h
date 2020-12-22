@@ -84,6 +84,7 @@ public:
 
     // useCompact defines the layout of the widget (normal or compact for the Options Panel)
     CreateAnnotationWidgetController(const CreateAnnotationModel &m, QObject *p, AnnotationWidgetMode layoutMode = Normal);
+    ~CreateAnnotationWidgetController();
 
     // returns error message or empty string if no error found;
     // does not create any new objects
