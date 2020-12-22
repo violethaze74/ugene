@@ -6398,6 +6398,93 @@ GUI_TEST_CLASS_DEFINITION(test_6953) {
 GUI_TEST_CLASS_DEFINITION(test_6954) {
 }
 GUI_TEST_CLASS_DEFINITION(test_6959) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select the first 5 sequences
+    GTUtilsMsaEditor::selectRows(os, 0, 4);
+
+    // Sort–>by name
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+
+    QComboBox *sortByCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortByComboBox"));
+    CHECK_SET_ERR(sortByCombo != nullptr, "sortByCombo is NULL");
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
+
+    QComboBox *sortOrderCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "sortOrderComboBox"));
+    CHECK_SET_ERR(sortOrderCombo != nullptr, "sortOrderCombo is NULL");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
+
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected result:
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList[0] == "Bicolorana_bicolor_EF540830", "The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList[1] == "Isophya_altaica_EF540820", "The 2 sequence is incorrect");
+    CHECK_SET_ERR(nameList[2] == "Montana_montana", "The 3 sequence is incorrect");
+    CHECK_SET_ERR(nameList[3] == "Phaneroptera_falcata", "The 4 sequence is incorrect");
+    CHECK_SET_ERR(nameList[4] == "Roeseliana_roeseli", "The 5 sequence is incorrect");
+    CHECK_SET_ERR(nameList[5] == "Metrioptera_japonica_EF540831", "The 6 sequence is incorrect");
+
+    // Select the first sequence
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    // Sort–>by name
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+    GTComboBox::selectItemByText(os, sortByCombo, "Name");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the order of all sequences is changed
+    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
+    CHECK_SET_ERR(nameList1[0] == "Bicolorana_bicolor_EF540830", "The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[1] == "Conocephalus_discolor", "The 2 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[2] == "Conocephalus_percaudata", "The 3 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[3] == "Conocephalus_sp.", "The 4 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[4] == "Deracantha_deracantoides_EF540", "The 5 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[5] == "Gampsocleis_sedakovii_EF540828", "The 6 sequence is incorrect");
+
+    // Select the first 5 sequences
+    GTUtilsMsaEditor::selectRows(os, 0, 4);
+
+    // Sort–>by length
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the selected sequences are sorted, the order of the other sequences is not changed
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2[0] == "Deracantha_deracantoides_EF540", "The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[1] == "Bicolorana_bicolor_EF540830", "The 2 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[2] == "Conocephalus_discolor", "The 3 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[3] == "Conocephalus_percaudata", "The 4 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[4] == "Conocephalus_sp.", "The 5 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[5] == "Gampsocleis_sedakovii_EF540828", "The 6 sequence is incorrect");
+
+    // Select the first sequence
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    // Sort–>by length
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+    GTComboBox::selectItemByText(os, sortByCombo, "Length");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the order of all sequences is changed
+    QStringList nameList3 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList3[0] == "Podisma_sapporensis", "The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList3[1] == "Zychia_baranovi", "The 2 sequence is incorrect");
+    CHECK_SET_ERR(nameList3[2] == "Deracantha_deracantoides_EF540", "The 3 sequence is incorrect");
+    CHECK_SET_ERR(nameList3[3] == "Mecopoda_sp.__Malaysia_", "The 4 sequence is incorrect");
+    CHECK_SET_ERR(nameList3[4] == "Bicolorana_bicolor_EF540830", "The 5 sequence is incorrect");
+    CHECK_SET_ERR(nameList3[5] == "Conocephalus_discolor", "The 6 sequence is incorrect");
 
 }
 }    // namespace GUITest_regression_scenarios
