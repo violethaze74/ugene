@@ -6396,6 +6396,34 @@ GUI_TEST_CLASS_DEFINITION(test_6953) {
 
 }
 GUI_TEST_CLASS_DEFINITION(test_6954) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select any sequence in the name list
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    // Click to "Consensus" label above the list
+    GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
+
+    // Press Ctrl-C & Ctrl-V
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: the sequence is added to the MSA right  below the selection because the focus is on the MSA
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 19, QString("Unexpected name list size, expected: 19, current: %1").arg(names.size()));
+    CHECK_SET_ERR(names[1] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names[1]));
+
+    // Move focus to the Project Tree view
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+
+    // Press Ctrl+V
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: the sequence is inserted into the project because the focus now is on the project list.
+    GTUtilsProjectTreeView::checkItem(os, "Phaneroptera_falcata");
+
 }
 GUI_TEST_CLASS_DEFINITION(test_6959) {
     // Open COI.aln
