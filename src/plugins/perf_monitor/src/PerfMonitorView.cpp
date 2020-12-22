@@ -36,7 +36,6 @@
 
 namespace U2 {
 
-static GCounter updateCounter("PerfMonitor::updateCounters", TimeCounter::getCounterSuffix(), 0, TimeCounter::getCounterScale());
 #ifdef Q_OS_LINUX
 static GCounter virtMemoryCounter("PerfMonitor::VIRTmemoryUsage", "mbytes", 0, 1024 * 1024);
 #endif
@@ -61,8 +60,6 @@ PerfMonitorView::PerfMonitorView()
     viewLayout->addWidget(tree);
     setLayout(viewLayout);
 
-    updateCounter.value = 0;
-
 #ifdef Q_OS_LINUX
     struct sysinfo usage;
     sysinfo(&usage);
@@ -80,7 +77,6 @@ PerfMonitorView::PerfMonitorView()
 }
 
 void PerfMonitorView::timerEvent(QTimerEvent *) {
-    TimeCounter c(&updateCounter);
 #ifdef Q_OS_LINUX
     struct sysinfo usage;
     sysinfo(&usage);
@@ -95,6 +91,7 @@ void PerfMonitorView::timerEvent(QTimerEvent *) {
 }
 
 void PerfMonitorView::updateCounters() {
+    GTIMER(c1, t1, "PerfMonitor::updateCounters");
     bool hasNewCounters = false;
     for (const GCounter *counters : GCounter::getAllCounters()) {
         PerfTreeItem *ci = findCounterItem(counters);
@@ -130,7 +127,7 @@ PerfTreeItem::PerfTreeItem(const GCounter *counter)
 
 void PerfTreeItem::update() {
     setText(0, counter->name);
-    setText(1, QString::number(counter->getScaledValue()));
+    setText(1, QString::number(counter->getScaledValue(), 'f'));
     setText(2, counter->suffix);
     setText(3, counter->isReportable ? "Yes" : "No");
 }
