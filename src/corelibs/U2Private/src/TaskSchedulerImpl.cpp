@@ -679,16 +679,16 @@ QDateTime TaskSchedulerImpl::estimatedFinishTime(Task *task) const {
 
 static QString state2String(Task::State state) {
     switch (state) {
-    case Task::State_New:
-        return TaskSchedulerImpl::tr("New");
-    case Task::State_Prepared:
-        return TaskSchedulerImpl::tr("Prepared");
-    case Task::State_Running:
-        return TaskSchedulerImpl::tr("Running");
-    case Task::State_Finished:
-        return TaskSchedulerImpl::tr("Finished");
-    default:
-        assert(0);
+        case Task::State_New:
+            return TaskSchedulerImpl::tr("New");
+        case Task::State_Prepared:
+            return TaskSchedulerImpl::tr("Prepared");
+        case Task::State_Running:
+            return TaskSchedulerImpl::tr("Running");
+        case Task::State_Finished:
+            return TaskSchedulerImpl::tr("Finished");
+        default:
+            assert(0);
     }
     return TaskSchedulerImpl::tr("Invalid name");
 }
@@ -771,51 +771,51 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
 
     checkSerialPromotion(pti, ti->task);
     switch (newState) {
-    case Task::State_Prepared:
-        if (pti != NULL) {
-            pti->numPreparedSubtasks++;
-        }
-        if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
-            taskLog.info(tr("Starting {%1} task").arg(ti->task->getTaskName()));
-        }
-        break;
-    case Task::State_Running:
-        tti.startTime = GTimer::currentTimeMicros();
-        if (pti != NULL) {
-            pti->numPreparedSubtasks--;
-            pti->numRunningSubtasks++;
-            if (pti->task->getState() < Task::State_Running) {
-                assert(pti->task->getState() == Task::State_Prepared);
-                promoteTask(pti, Task::State_Running);
+        case Task::State_Prepared:
+            if (pti != NULL) {
+                pti->numPreparedSubtasks++;
             }
-        }
-        break;
-    case Task::State_Finished:
-        checkFinishedState(ti);
-        tti.finishTime = GTimer::currentTimeMicros();
-        tsi.setDescription(QString());
-        if (pti != NULL) {
-            if (ti->selfRunFinished) {
-                pti->numRunningSubtasks--;
+            if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
+                taskLog.info(tr("Starting {%1} task").arg(ti->task->getTaskName()));
             }
-            assert(pti->numRunningSubtasks >= 0);
-            pti->numFinishedSubtasks++;
-            assert(pti->numFinishedSubtasks <= pti->task->getSubtasks().size());
-        }
-        if (ti->task->isTopLevelTask()) {
-            if (tsi.hasError() && !tsi.cancelFlag) {
-                taskLog.error(tr("Task {%1} finished with error: %2").arg(task->getTaskName()).arg(tsi.getError()));
-            } else if (tsi.cancelFlag) {
-                if (ti->task->isVerboseOnTaskCancel()) {
-                    taskLog.info(tr("Task {%1} canceled").arg(ti->task->getTaskName()));
+            break;
+        case Task::State_Running:
+            tti.startTime = GTimer::currentTimeMicros();
+            if (pti != NULL) {
+                pti->numPreparedSubtasks--;
+                pti->numRunningSubtasks++;
+                if (pti->task->getState() < Task::State_Running) {
+                    assert(pti->task->getState() == Task::State_Prepared);
+                    promoteTask(pti, Task::State_Running);
                 }
-            } else if (ti->task->isVerboseLogMode()) {
-                taskLog.info(tr("Task {%1} finished").arg(ti->task->getTaskName()));
             }
-        }
-        break;
-    default:
-        assert(0);
+            break;
+        case Task::State_Finished:
+            checkFinishedState(ti);
+            tti.finishTime = GTimer::currentTimeMicros();
+            tsi.setDescription(QString());
+            if (pti != NULL) {
+                if (ti->selfRunFinished) {
+                    pti->numRunningSubtasks--;
+                }
+                assert(pti->numRunningSubtasks >= 0);
+                pti->numFinishedSubtasks++;
+                assert(pti->numFinishedSubtasks <= pti->task->getSubtasks().size());
+            }
+            if (ti->task->isTopLevelTask()) {
+                if (tsi.hasError() && !tsi.cancelFlag) {
+                    taskLog.error(tr("Task {%1} finished with error: %2").arg(task->getTaskName()).arg(tsi.getError()));
+                } else if (tsi.cancelFlag) {
+                    if (ti->task->isVerboseOnTaskCancel()) {
+                        taskLog.info(tr("Task {%1} canceled").arg(ti->task->getTaskName()));
+                    }
+                } else if (ti->task->isVerboseLogMode()) {
+                    taskLog.info(tr("Task {%1} finished").arg(ti->task->getTaskName()));
+                }
+            }
+            break;
+        default:
+            assert(0);
     }
 #ifdef _DEBUG
     Task *parentTask = task->getParentTask();
@@ -824,18 +824,18 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
         localTotalSubs = localNewSubs = localPreparedSubs = localRunningSubs = localFinishedSubs = 0;
         foreach (const QPointer<Task> &sub, parentTask->getSubtasks()) {
             switch (sub->getState()) {
-            case Task::State_New:
-                localNewSubs++;
-                break;
-            case Task::State_Prepared:
-                localPreparedSubs++;
-                break;
-            case Task::State_Running:
-                localRunningSubs++;
-                break;
-            case Task::State_Finished:
-                localFinishedSubs++;
-                break;
+                case Task::State_New:
+                    localNewSubs++;
+                    break;
+                case Task::State_Prepared:
+                    localPreparedSubs++;
+                    break;
+                case Task::State_Running:
+                    localRunningSubs++;
+                    break;
+                case Task::State_Finished:
+                    localFinishedSubs++;
+                    break;
             }
             localTotalSubs++;
         }
@@ -1070,26 +1070,26 @@ void TaskThread::run() {
 bool TaskThread::event(QEvent *event) {
     QTimerEvent *timerEvent = NULL;
     switch (static_cast<int>(event->type())) {
-    case GET_NEW_SUBTASKS_EVENT_TYPE:
-        getNewSubtasks();
-        break;
-    case TERMINATE_MESSAGE_LOOP_EVENT_TYPE:
-        terminateMessageLoop();
-        break;
-    case PAUSE_THREAD_EVENT_TYPE:
-        pause();
-        break;
-    case QEvent::Timer:
-        timerEvent = dynamic_cast<QTimerEvent *>(event);
-        assert(NULL != timerEvent);
-        Q_UNUSED(timerEvent);
+        case GET_NEW_SUBTASKS_EVENT_TYPE:
+            getNewSubtasks();
+            break;
+        case TERMINATE_MESSAGE_LOOP_EVENT_TYPE:
+            terminateMessageLoop();
+            break;
+        case PAUSE_THREAD_EVENT_TYPE:
+            pause();
+            break;
+        case QEvent::Timer:
+            timerEvent = dynamic_cast<QTimerEvent *>(event);
+            assert(NULL != timerEvent);
+            Q_UNUSED(timerEvent);
 
-        if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled() || ti->task->hasError())) {
-            exit();
-        }
-        break;
-    default:
-        return false;
+            if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled() || ti->task->hasError())) {
+                exit();
+            }
+            break;
+        default:
+            return false;
     }
     return true;
 }
