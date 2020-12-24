@@ -57,6 +57,7 @@
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
 #include "tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h"
+#include "tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
 #include "tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h"
 #include "tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h"
@@ -125,6 +126,15 @@
         guiTestBase->registerTest(test); \
     }
 
+#define REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, BY, MESSAGE, reason) \
+    if (guiTestBase) { \
+        HI::GUITest *test = new X(); \
+        test->setIgnored(BY, MESSAGE); \
+        test->setTimeout(TIMEOUT); \
+        test->setReason(reason); \
+        guiTestBase->registerTest(test); \
+    }
+
 #define REGISTER_TEST_IGNORED(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::Ignored, MESSAGE, HI::GUITest::Bug)
 #define REGISTER_TEST_IGNORED_LINUX(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
 #define REGISTER_TEST_IGNORED_WINDOWS(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows, MESSAGE, HI::GUITest::Bug)
@@ -133,6 +143,10 @@
 #define REGISTER_TEST_NOT_FOR_LINUX(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredLinux, "not for Linux", HI::GUITest::System)
 #define REGISTER_TEST_NOT_FOR_WINDOWS(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows, "not for Windows", HI::GUITest::System)
 #define REGISTER_TEST_NOT_FOR_MAC(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac, "not for Mac", HI::GUITest::System)
+
+#define REGISTER_TEST_NOT_FOR_LINUX_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredLinux, "not for Linux with timeout", HI::GUITest::System)
+#define REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredWindows, "not for Windows with timeout", HI::GUITest::System)
+#define REGISTER_TEST_NOT_FOR_MAC_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredMac, "not for Mac with timeout", HI::GUITest::System)
 
 #define REGISTER_TEST_LINUX(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredMac, MESSAGE, HI::GUITest::Bug)
 #define REGISTER_TEST_WINDOWS(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac | HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
@@ -255,9 +269,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0004);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0005);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0006);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009);
@@ -2108,6 +2119,20 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007);
     REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003);
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/ngs_classification/workflow_designer
+    /////////////////////////////////////////////////////////////////////////
+
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, 600000);
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, 500000);
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, 500000);
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, 500000);
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, 500000);
+    REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, 500000);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor
