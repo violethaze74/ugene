@@ -886,7 +886,7 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
 
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    const QString colorSchemeName = getName() + "_Scheme";
+    const QString colorSchemeName = name + "_Scheme";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
@@ -5397,7 +5397,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     int oldItemsNumber = combo->count();
 
     //    3. Create a new custom nucleotide color scheme.
-    QString colorSchemeName = GTUtils::genUniqueString(getName());
+    QString colorSchemeName = GTUtils::genUniqueString(name);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));

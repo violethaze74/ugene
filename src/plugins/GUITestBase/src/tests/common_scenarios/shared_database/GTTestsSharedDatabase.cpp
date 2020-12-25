@@ -1814,9 +1814,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0015) {
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QDir(sandBoxDir).mkdir(getName());
-    GTFile::copy(os, testDir + "_common_data/bam/scerevisiae.bam", sandBoxDir + getName() + "/scerevisiae.bam");
-    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << sandBoxDir + getName() + "/scerevisiae.bam");
+    QDir(sandBoxDir).mkdir(name);
+    GTFile::copy(os, testDir + "_common_data/bam/scerevisiae.bam", sandBoxDir + name + "/scerevisiae.bam");
+    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << sandBoxDir + name + "/scerevisiae.bam");
 
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseAssemblyObjectPath;
@@ -1863,9 +1863,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0016) {
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QDir(sandBoxDir).mkdir(getName());
-    GTFile::copy(os, testDir + "_common_data/sam/scerevisiae.sam", sandBoxDir + getName() + "/scerevisiae.sam");
-    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << sandBoxDir + getName() + "/scerevisiae.sam");
+    QDir(sandBoxDir).mkdir(name);
+    GTFile::copy(os, testDir + "_common_data/sam/scerevisiae.sam", sandBoxDir + name + "/scerevisiae.sam");
+    GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << sandBoxDir + name + "/scerevisiae.sam");
 
     const QStringList expectedItems = QStringList() << objectFolderPath
                                                     << databaseAssemblyObjectPath;

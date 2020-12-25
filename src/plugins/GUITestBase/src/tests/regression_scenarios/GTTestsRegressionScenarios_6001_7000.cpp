@@ -4185,7 +4185,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_6640_4) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4212,7 +4212,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_4) {
 
 GUI_TEST_CLASS_DEFINITION(test_6640_5) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4232,7 +4232,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_5) {
 
 GUI_TEST_CLASS_DEFINITION(test_6640_6) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5000,7 +5000,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
 
 GUI_TEST_CLASS_DEFINITION(test_6692_1) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5317,7 +5317,7 @@ GUI_TEST_CLASS_DEFINITION(test_6712) {
 
 GUI_TEST_CLASS_DEFINITION(test_6714) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);

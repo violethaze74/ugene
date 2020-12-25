@@ -53,9 +53,9 @@
 
 namespace U2 {
 
-GUITestLauncher::GUITestLauncher(int _suiteNumber, bool _noIgnored, QString _iniFileTemplate)
+GUITestLauncher::GUITestLauncher(int suiteNumber, bool noIgnored, QString iniFileTemplate)
     : Task("gui_test_launcher", TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled),
-      suiteNumber(_suiteNumber), noIgnored(_noIgnored), pathToSuite(""), iniFileTemplate(_iniFileTemplate) {
+      suiteNumber(suiteNumber), noIgnored(noIgnored), pathToSuite(""), iniFileTemplate(iniFileTemplate) {
     tpm = Task::Progress_Manual;
     testOutDir = getTestOutDir();
 
@@ -81,17 +81,21 @@ bool GUITestLauncher::renameTestLog(const QString &testName) {
 }
 
 void GUITestLauncher::run() {
-    if (!initGUITestBase()) {
+    if (!initTestList()) {
         // FIXME: if test suite can't run for some reason UGENE runs shutdown task that asserts that startup is in progress.
         //  Workaround: wait 3 seconds to ensure that startup is complete & GUI test base error message is printed.
         QThread::currentThread()->sleep(3);
+        return;
+    }
+    if (testList.isEmpty()) {
+        setError(tr("No tests to run"));
         return;
     }
 
     qint64 suiteStartMicros = GTimer::currentTimeMicros();
 
     int finishedCount = 0;
-    foreach (HI::GUITest *test, tests) {
+    for (GUITest *test : testList) {
         if (isCanceled()) {
             return;
         }
@@ -99,31 +103,31 @@ void GUITestLauncher::run() {
             updateProgress(finishedCount++);
             continue;
         }
-        QString testName = test->getFullName();
-        QString testNameForTeamCity = test->getSuite() + "_" + test->getName();
-        results[testName] = "";
+        QString fullTestName = test->getFullName();
+        QString teamcityTestName = UGUITest::getTeamcityTestName(test->suite, test->name);
+        testResultByFullTestNameMap[fullTestName] = "";
 
-        firstTestRunCheck(testName);
+        firstTestRunCheck(fullTestName);
 
         if (!test->isIgnored()) {
             qint64 startTime = GTimer::currentTimeMicros();
-            GUITestTeamcityLogger::testStarted(testNameForTeamCity);
+            GUITestTeamcityLogger::testStarted(teamcityTestName);
 
             try {
-                QString testResult = runTest(testName, test->getTimeout());
-                results[testName] = testResult;
+                QString testResult = runTest(fullTestName, test->timeout);
+                testResultByFullTestNameMap[fullTestName] = testResult;
                 if (GUITestTeamcityLogger::isTestFailed(testResult)) {
-                    renameTestLog(testName);
+                    renameTestLog(fullTestName);
                 }
 
                 qint64 finishTime = GTimer::currentTimeMicros();
-                GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));
+                GUITestTeamcityLogger::teamCityLogResult(teamcityTestName, testResult, GTimer::millisBetween(startTime, finishTime));
             } catch (const std::exception &exc) {
-                coreLog.error("Got exception while running test: " + testName);
+                coreLog.error("Got exception while running test: " + fullTestName);
                 coreLog.error("Exception text: " + QString(exc.what()));
             }
         } else if (test->getReason() == HI::GUITest::Bug) {
-            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
+            GUITestTeamcityLogger::testIgnored(teamcityTestName, test->getIgnoreMessage());
         }
 
         updateProgress(finishedCount++);
@@ -134,12 +138,12 @@ void GUITestLauncher::run() {
 }
 
 void GUITestLauncher::firstTestRunCheck(const QString &testName) {
-    QString testResult = results[testName];
+    QString testResult = testResultByFullTestNameMap[testName];
     Q_ASSERT(testResult.isEmpty());
 }
 
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
-QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<HI::GUITest *> &allTests) {
+QList<GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {
         testsPerSuite << 910 << 750 << -1;
@@ -148,7 +152,7 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     } else if (suiteCount == 5) {
         testsPerSuite << 535 << 570 << 458 << 525 << -1;
     }
-    QList<HI::GUITest *> tests;
+    QList<GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
         SAFE_POINT(testsPerSuite.size() == suiteCount, QString("Illegal testsPerSuite size: %1").arg(testsPerSuite.size()), tests);
         int offset = 0;
@@ -161,34 +165,37 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     return tests;
 }
 
-bool GUITestLauncher::initGUITestBase() {
-    UGUITestBase *b = AppContext::getGUITestBase();
-    SAFE_POINT(b != nullptr, "Test base is NULL", false);
-    QString label = qgetenv("UGENE_GUI_TEST_LABEL");
-    QList<HI::GUITest *> allTestList = b->getTests(UGUITestBase::Normal, label);
-    if (allTestList.isEmpty()) {
-        setError(tr("No tests to run"));
-        return false;
-    }
+bool GUITestLauncher::initTestList() {
+    testList.clear();
 
-    tests.clear();
+    UGUITestBase *guiTestBase = AppContext::getGUITestBase();
+    SAFE_POINT(guiTestBase != nullptr, "Test base is NULL", false);
+
     if (suiteNumber != 0) {
         if (suiteNumber < 1 || suiteNumber > NUMBER_OF_TEST_SUITES) {
             setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
             return false;
         }
-        tests = getIdealTestsSplit(suiteNumber - 1, NUMBER_OF_TEST_SUITES, allTestList);
-        if (tests.isEmpty()) {
-            // Distribute tests between suites evenly.
-            for (int i = suiteNumber - 1; i < allTestList.length(); i += NUMBER_OF_TEST_SUITES) {
-                tests << allTestList[i];
+        // Tests label is used to filter test sets. If no label is provided 'nightly' tests are used by default.
+        QString labelFilter = qgetenv("UGENE_GUI_TEST_LABEL");
+        if (labelFilter.isEmpty()) {
+            labelFilter = TEAMCITY_BUILD_NIGHTLY;
+        }
+        QList<GUITest *> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, labelFilter);
+        testList = getIdealTestsSplit(suiteNumber - 1, NUMBER_OF_TEST_SUITES, labeledTestList);
+        if (testList.isEmpty()) {
+            // If there is no ideal test split for the given number -> distribute tests between suites evenly.
+            for (int i = suiteNumber - 1; i < labeledTestList.length(); i += NUMBER_OF_TEST_SUITES) {
+                testList << labeledTestList[i];
             }
         }
         coreLog.info(QString("Running suite %1, Tests in the suite: %2, total tests: %3")
                          .arg(suiteNumber)
-                         .arg(tests.size())
-                         .arg(allTestList.length()));
+                         .arg(testList.size())
+                         .arg(labeledTestList.length()));
     } else if (!pathToSuite.isEmpty()) {
+        // If a file with tests is specified we ignore labels and look-up in the complete tests set.
+        QList<GUITest *> allTestList = guiTestBase->getTests(UGUITestBase::Normal);
         QString absPath = QDir().absoluteFilePath(pathToSuite);
         QFile suite(absPath);
         if (!suite.open(QFile::ReadOnly)) {
@@ -202,17 +209,16 @@ bool GUITestLauncher::initGUITestBase() {
                 continue;    // comment line or empty line.
             }
             bool added = false;
-            foreach (HI::GUITest *test, allTestList) {
+            for (GUITest *test : allTestList) {
                 QString fullTestName = test->getFullName();
-                QString fullTestNameInTeamcityFormat = fullTestName;
-                fullTestNameInTeamcityFormat.replace(':', '_');
-                if (testName == fullTestName || testName == fullTestNameInTeamcityFormat) {
-                    tests << test;
+                QString teamcityTestName = UGUITest::getTeamcityTestName(test->suite, test->name);
+                if (testName == fullTestName || testName == teamcityTestName) {
+                    testList << test;
                     added = true;
                     break;
                 }
-                if (testName == test->getSuite()) {
-                    tests << test;
+                if (testName == test->suite) {
+                    testList << test;
                     added = true;
                 }
             }
@@ -222,11 +228,13 @@ bool GUITestLauncher::initGUITestBase() {
             }
         }
     } else {
-        tests = allTestList;
+        // Run all tests with the given label as a single suite.
+        // If label is not provided: all tests are selected.
+        testList = guiTestBase->getTests(UGUITestBase::Normal, qgetenv("UGENE_GUI_TEST_LABEL"));
     }
 
     if (noIgnored) {
-        foreach (HI::GUITest *test, tests) {
+        for (GUITest *test : testList) {
             test->setIgnored(false);
         }
     }
@@ -234,7 +242,7 @@ bool GUITestLauncher::initGUITestBase() {
 }
 
 void GUITestLauncher::updateProgress(int finishedCount) {
-    int testsSize = tests.size();
+    int testsSize = testList.size();
     if (testsSize) {
         stateInfo.progress = finishedCount * 100 / testsSize;
     }
@@ -412,8 +420,7 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
     process.kill();    // to avoid QProcess: Destroyed while process is still running.
     process.waitForFinished(2000);
 #endif
-    QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) :
-                                 QString("Test fails because of timeout.");
+    QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) : QString("Test fails because of timeout.");
     os.setError(error);
     return error;
 }
@@ -446,7 +453,7 @@ QString GUITestLauncher::generateReport() const {
     res += QString("<tr><th>%1</th><th>%2</th></tr>").arg(tr("Test name")).arg(tr("Status"));
 
     QMap<QString, QString>::const_iterator i;
-    for (i = results.begin(); i != results.end(); ++i) {
+    for (i = testResultByFullTestNameMap.begin(); i != testResultByFullTestNameMap.end(); ++i) {
         QString color = "green";
         if (GUITestTeamcityLogger::isTestFailed(i.value())) {
             color = "red";

@@ -60,7 +60,7 @@ private:
 class simple_crazy_user : public HI::GUITest {
 public:
     simple_crazy_user()
-        : HI::GUITest("simple_crazy_user") {
+        : GUITest("simple_crazy_user", "", DEFAULT_GUI_TEST_TIMEOUT) {
     }
 
 protected:

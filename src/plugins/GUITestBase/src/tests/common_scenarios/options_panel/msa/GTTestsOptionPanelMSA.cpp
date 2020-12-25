@@ -326,7 +326,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
 
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    QString schemeName = getName() + "Scheme" + suffix;
+    QString schemeName = name + "Scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, schemeName, NewColorSchemeCreator::nucl);
 
     //    3. Open highlighting option panel tab
@@ -358,9 +358,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
     QString suffix = GTUtils::genUniqueString();
-    QString scheme1 = getName() + "_scheme1" + suffix;
-    QString scheme2 = getName() + "_scheme2" + suffix;
-    QString scheme3 = getName() + "_scheme3" + suffix;
+    QString scheme1 = name + "_scheme1" + suffix;
+    QString scheme2 = name + "_scheme2" + suffix;
+    QString scheme3 = name + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::nucl);
@@ -378,7 +378,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111" + suffix;
+    const QString scheme = name + "_scheme111111111111111111111111111111111111111111111" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::nucl);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme" + suffix;
+    const QString scheme = name + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -834,9 +834,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
     QString suffix = GTUtils::genUniqueString();
-    QString scheme1 = getName() + "_scheme1" + suffix;
-    QString scheme2 = getName() + "_scheme2" + suffix;
-    QString scheme3 = getName() + "_scheme3" + suffix;
+    QString scheme1 = name + "_scheme1" + suffix;
+    QString scheme2 = name + "_scheme2" + suffix;
+    QString scheme3 = name + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::amino);
@@ -855,7 +855,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme" + suffix;
+    const QString scheme = name + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
 
     //    3. Open highlighting option panel tab

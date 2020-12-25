@@ -33,13 +33,26 @@
 namespace U2 {
 using namespace HI;
 
+/** Default for all GUI tests: Usual nightly build. */
+#define TEAMCITY_BUILD_NIGHTLY "nightly"
+
+/**
+ * A dedicated build with pre-installed data for NGS tests.
+ * Usually these are long running and resource consuming tests that runs on a dedicated Teamcity agents.
+ */
+#define TEAMCITY_BUILD_NGS "ngs"
+
+/** Default timeout for all GUI tests. */
+#define DEFAULT_GUI_TEST_TIMEOUT 240000
+
 class U2TEST_EXPORT UGUITest : public GUITest {
     Q_OBJECT
 public:
-    UGUITest(const QString &_name = "", const QString &_suite = "", int timeout = 240000)
-        : GUITest(_name, _suite, timeout) {
-    }
-    virtual ~UGUITest() {
+    UGUITest(const QString &name, const QString &suite, int timeout, const QStringList &labels);
+
+    /** Returns full test name as known by Teamcity. */
+    static QString getTeamcityTestName(const QString &suite, const QString &name) {
+        return suite + "_" + name;
     }
 
     static const QString testDir;
@@ -54,17 +67,8 @@ public:
 #define GUI_TEST_CLASS_DECLARATION(className) \
     class className : public UGUITest { \
     public: \
-        className() : UGUITest(TESTNAME(className), SUITENAME(className)) { \
-        } \
-\
-    protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
-    };
-
-#define GUI_TEST_CLASS_DECLARATION_SET_TIMEOUT(className, timeout) \
-    class className : public UGUITest { \
-    public: \
-        className() : UGUITest(TESTNAME(className), SUITENAME(className), timeout) { \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &teamcitySuiteList = QStringList()) \
+            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, teamcitySuiteList) { \
         } \
 \
     protected: \

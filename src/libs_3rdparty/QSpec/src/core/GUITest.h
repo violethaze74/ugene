@@ -11,13 +11,18 @@ namespace HI {
 class GUITestIgnorable {
 public:
     // not ignored test, ignored by all, ignored on windows platforms, ignored on linux platforms
-    enum IgnoreStatus { NotIgnored = 0x0,
-                        Ignored = 0x1,
-                        IgnoredWindows = 0x2,
-                        IgnoredLinux = 0x4,
-                        IgnoredMac = 0x8 };
-    enum IgnoreReason { Bug,
-                        System };
+    enum IgnoreStatus {
+        NotIgnored = 0x0,
+        Ignored = 0x1,
+        IgnoredWindows = 0x2,
+        IgnoredLinux = 0x4,
+        IgnoredMac = 0x8
+    };
+
+    enum IgnoreReason {
+        Bug,
+        System
+    };
 
     GUITestIgnorable()
         : ignoreStatus(NotIgnored), ignoreMessage(""), ignoreReason(Bug) {
@@ -40,22 +45,18 @@ public:
 
     bool isIgnored() const {
         bool ignored = ignoreStatus & Ignored;
-        bool platformIgnore = false;
-
-#ifdef _WIN32
-        platformIgnore = (ignoreStatus & IgnoredWindows);
+#if defined(Q_OS_WIN)
+        bool platformIgnored = ignoreStatus & IgnoredWindows;
+#elif defined(Q_OS_LINUX)
+        bool platformIgnored = ignoreStatus & IgnoredLinux;
+#elif defined(Q_OS_MAC)
+        bool platformIgnored = ignoreStatus & IgnoredMac;
+#else
+        bool platformIgnored = false;
 #endif
-
-#ifdef __linux__
-        platformIgnore = (ignoreStatus & IgnoredLinux);
-#endif
-
-#ifdef Q_OS_MAC
-        platformIgnore = (ignoreStatus & IgnoredMac);
-#endif
-
-        return ignored || platformIgnore;
+        return ignored || platformIgnored;
     }
+
     IgnoreReason getReason() {
         return ignoreReason;
     }
@@ -69,54 +70,46 @@ private:
 class HI_EXPORT GUITest : public QObject, public GUITestIgnorable {
     Q_OBJECT
 public:
-    GUITest(const QString &_name = "", const QString &_suite = "", int _timeout = 240000, QString _label = "")
-        : name(_name), suite(_suite), timeout(_timeout), label(_label) {
+    GUITest(const QString &name, const QString &suite, int timeout, const QStringList &labelList = QStringList())
+        : name(name), suite(suite), timeout(timeout), labelList(labelList) {
     }
     virtual ~GUITest() {
     }
 
-    QString getName() const {
-        return name;
-    }
-    QString getSuite() const {
-        return suite;
-    }
+    /** Returns full test name: suite + testName. */
     QString getFullName() const {
-        return suite + ":" + name;
-    }
-    QString getLabel() const {
-        return label;
-    }
-    int getTimeout() const {
-        return timeout;
-    }
-    void setName(const QString &n) {
-        name = n;
-    }
-    void setTimeout(int _timeout) {
-        timeout = _timeout;
-    }
-    void setLabel(QString _label) {
-        label = _label;
+        return getFullTestName(suite, name);
     }
 
+    /** Screenshot dir for tests. TODO: this field is not used inside QSpec. Move it to the correct module. */
     static const QString screenshotDir;
 
+    /** Scenario of the test. Must be implemented in the child class. */
     virtual void run(GUITestOpStatus &os) = 0;
+
+    /** Post-run cleanup. Optional. */
     virtual void cleanup() {
     }
 
-private slots:
-    void sl_fail();
+    /** Unique GUI test name within the suite. */
+    const QString name;
+
+    /** Name of the GUI test suite. */
+    const QString suite;
+
+    /** Timeout millis for the test. The test execution is interrupted if the test runs above that limit. */
+    const int timeout;
+
+    /** List of test labels. */
+    const QStringList labelList;
+
+    static QString getFullTestName(const QString &suiteName, const QString &testName) {
+        return suiteName + ":" + testName;
+    }
 
 private:
     GUITest(const GUITest &);
     GUITest &operator=(const GUITest &);
-
-    QString name;
-    QString suite;
-    int timeout;
-    QString label;
 };
 
 typedef QList<GUITest *> GUITests;
