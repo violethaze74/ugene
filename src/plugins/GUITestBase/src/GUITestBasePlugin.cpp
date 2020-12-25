@@ -105,23 +105,29 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
 
+#define NIGHTLY_TEST_LABEL (QStringList() << TEAMCITY_BUILD_NIGHTLY)
+
+/** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
-    guiTestBase->registerTest(new TestClass())
+    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, NIGHTLY_TEST_LABEL));
 
+/** Registers a GUI test included into nightly build with a custom timeout. */
 #define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \
-    guiTestBase->registerTest(new TestClass(TIMEOUT));
+    guiTestBase->registerTest(new TestClass(TIMEOUT, NIGHTLY_TEST_LABEL));
 
+/** Registers a GUI test included into nightly build with a default timeout and sets its state to Ignored. */
 #define REGISTER_TEST_IGNORED_BY(TestClass, BY, MESSAGE, reason) \
     { \
-        UGUITest *test = new TestClass(); \
+        UGUITest *test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, NIGHTLY_TEST_LABEL); \
         test->setIgnored(BY, MESSAGE); \
         test->setReason(reason); \
         guiTestBase->registerTest(test); \
     }
 
+/** Registers a GUI test included into nightly build with a custom timeout and sets its state to Ignored. */
 #define REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(TestClass, TIMEOUT, BY, MESSAGE, reason) \
     { \
-        UGUITest *test = new TestClass(TIMEOUT); \
+        UGUITest *test = new TestClass(TIMEOUT, NIGHTLY_TEST_LABEL); \
         test->setIgnored(BY, MESSAGE); \
         test->setReason(reason); \
         guiTestBase->registerTest(test); \
@@ -148,18 +154,12 @@
 #define REGISTER_TEST_ONLY_WINDOWS(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac | HI::GUITest::IgnoredLinux, "only for Windows", HI::GUITest::System)
 #define REGISTER_TEST_ONLY_MAC(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredLinux, "only for Mac", HI::GUITest::System)
 
-/**
- *  Registers the test as a part of the NGS teamcity build.
- *  When registered this way the test is excluded from the standard 'Nightly' build and runs only as a part of the special NGS build.
- *  Today NGS builds can't be run on Windows.
- */
-#define REGISTER_TEST_NGS(TestClass, TIMEOUT) \
-    { \
-        UGUITest *test = new TestClass(TIMEOUT, QStringList() << TEAMCITY_BUILD_NGS); \
-        test->setIgnored(GUITest::IgnoredWindows, "not for Windows"); \
-        test->setReason(HI::GUITest::System); \
-        guiTestBase->registerTest(test); \
-    }
+/** Registers a GUI test with no nightly label assigned. Such tests are not executed as part of nightly builds and can be enabled only via test-lists. */
+#define REGISTER_TEST_NO_NIGHTLY_LABEL(TestClass) \
+    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, QStringList()));
+
+#define REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(TestClass, TIMEOUT) \
+    guiTestBase->registerTest(new TestClass(TIMEOUT, QStringList()));
 
 namespace U2 {
 
@@ -2108,29 +2108,29 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/metaphlan2
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, DEFAULT_GUI_TEST_TIMEOUT);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, DEFAULT_GUI_TEST_TIMEOUT);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003);
+    REGISTER_TEST_NO_NIGHTLY_LABEL(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/workflow_designer
     /////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, 600000);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, 500000);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, 500000);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, 500000);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, 500000);
-    REGISTER_TEST_NGS(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, 500000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, 600000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, 500000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, 500000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, 500000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, 500000);
+    REGISTER_TEST_NO_NIGHTLY_LABEL_CUSTOM_TIMEOUT(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, 500000);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor
@@ -3347,6 +3347,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 }
 
 void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
+    //TODO: add custom timeouts for actions.
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0000, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0001, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0002, UGUITestBase::PreAdditional);

@@ -136,10 +136,4 @@ const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
 const QString UGUITest::screenshotDir = getScreenshotDir();
 
-UGUITest::UGUITest(const QString &name, const QString &suite, int timeout, const QStringList &labels)
-    : GUITest(name, suite, timeout,
-              // If labels are not provided mark add "nightly-biuld" label.
-              labels.isEmpty() ? QStringList() << TEAMCITY_BUILD_NIGHTLY : labels) {
-}
-
 }    // namespace U2
