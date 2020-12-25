@@ -89,6 +89,7 @@
 #include "tests/common_scenarios/undo_redo/GTTestsUndoRedo.h"
 #include "tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h"
 #include "tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.h"
+#include "tests/common_scenarios/workflow_designer/elements/GTTestsTrimmomaticElement.h"
 #include "tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h"
 #include "tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h"
 #include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
@@ -1549,7 +1550,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_6235_4);
     REGISTER_TEST(GUITest_regression_scenarios::test_6236);
-
 
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6240);
@@ -3064,6 +3064,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0007);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::output_dir_scanning_test_0008);
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Elements
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_trimmomatic_element::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_trimmomatic_element::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_trimmomatic_element::test_0003);
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Estimating
     /////////////////////////////////////////////////////////////////////////

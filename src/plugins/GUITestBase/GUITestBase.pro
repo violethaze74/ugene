@@ -255,6 +255,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.h \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h \
             src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.h \
+            src/tests/common_scenarios/workflow_designer/elements/GTTestsTrimmomaticElement.h \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
@@ -525,6 +526,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.cpp \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.cpp \
             src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.cpp \
+            src/tests/common_scenarios/workflow_designer/elements/GTTestsTrimmomaticElement.cpp \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.cpp \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
