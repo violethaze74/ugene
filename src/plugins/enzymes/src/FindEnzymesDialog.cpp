@@ -567,7 +567,7 @@ void FindEnzymesDialog::accept() {
         return;
     }
 
-    if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(seqCtx->getSequenceLength(), selectedEnzymes.size())) {
+    if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
         QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
         int ret = QMessageBox::question(this, tr("Warning!"), message, QMessageBox::Cancel | QMessageBox::Ignore);
         if (ret == QMessageBox::Cancel) {
