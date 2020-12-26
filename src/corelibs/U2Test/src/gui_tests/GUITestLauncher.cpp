@@ -39,16 +39,6 @@
 #include "GUITestTeamcityLogger.h"
 #include "UGUITestBase.h"
 
-#ifdef Q_OS_MAC
-#    define NUMBER_OF_TEST_SUITES 4
-#elif defined(Q_OS_LINUX)
-#    define NUMBER_OF_TEST_SUITES 5
-#elif defined(Q_OS_WIN)
-#    define NUMBER_OF_TEST_SUITES 3
-#else
-#    define NUMBER_OF_TEST_SUITES 1
-#endif
-
 #define GUITESTING_REPORT_PREFIX "GUITesting"
 
 namespace U2 {
@@ -143,7 +133,7 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 }
 
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
-QList<GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
+QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {
         testsPerSuite << 910 << 750 << -1;
@@ -172,27 +162,36 @@ bool GUITestLauncher::initTestList() {
     SAFE_POINT(guiTestBase != nullptr, "Test base is NULL", false);
 
     if (suiteNumber != 0) {
-        if (suiteNumber < 1 || suiteNumber > NUMBER_OF_TEST_SUITES) {
-            setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(NUMBER_OF_TEST_SUITES));
+        // Tests label is used to filter test sets. If no label is provided 'nightly' (TEAMCITY_BUILD_NIGHTLY) tests are used by default.
+        QString label = qgetenv("UGENE_GUI_TEST_LABEL");
+        if (label.isEmpty()) {
+            label = TEAMCITY_BUILD_NIGHTLY;
+        }
+        int testSuiteCount = 1;
+        if (label == TEAMCITY_BUILD_NIGHTLY) {
+            // TODO: make configurable via ENV.
+            testSuiteCount = isOsWindows() ? 3
+                              : isOsMac()   ? 4
+                              : isOsLinux() ? 5
+                                            : 1;
+        }
+
+        if (suiteNumber < 1 || suiteNumber > testSuiteCount) {
+            setError(QString("Invalid suite number: %1. There are %2 suites").arg(suiteNumber).arg(testSuiteCount));
             return false;
         }
-        // Tests label is used to filter test sets. If no label is provided 'nightly' tests are used by default.
-        QString labelFilter = qgetenv("UGENE_GUI_TEST_LABEL");
-        if (labelFilter.isEmpty()) {
-            labelFilter = TEAMCITY_BUILD_NIGHTLY;
+
+        QList<GUITest *> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, label);
+        if (label == TEAMCITY_BUILD_NIGHTLY) {
+            testList = getIdealNightlyTestsSplit(suiteNumber - 1, testSuiteCount, labeledTestList);
         }
-        QList<GUITest *> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, labelFilter);
-        testList = getIdealTestsSplit(suiteNumber - 1, NUMBER_OF_TEST_SUITES, labeledTestList);
         if (testList.isEmpty()) {
             // If there is no ideal test split for the given number -> distribute tests between suites evenly.
-            for (int i = suiteNumber - 1; i < labeledTestList.length(); i += NUMBER_OF_TEST_SUITES) {
+            for (int i = suiteNumber - 1; i < labeledTestList.length(); i += testSuiteCount) {
                 testList << labeledTestList[i];
             }
         }
-        coreLog.info(QString("Running suite %1, Tests in the suite: %2, total tests: %3")
-                         .arg(suiteNumber)
-                         .arg(testList.size())
-                         .arg(labeledTestList.length()));
+        coreLog.info(QString("Running suite %1-%2, Tests in the suite: %3, total tests: %4").arg(label).arg(suiteNumber).arg(testList.size()).arg(labeledTestList.length()));
     } else if (!pathToSuite.isEmpty()) {
         // If a file with tests is specified we ignore labels and look-up in the complete tests set.
         QList<GUITest *> allTestList = guiTestBase->getTests(UGUITestBase::Normal);
