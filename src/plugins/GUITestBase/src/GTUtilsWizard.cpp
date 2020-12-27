@@ -216,12 +216,10 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus &os, QWidget *w, QVariant value
 
 #define GT_METHOD_NAME "clickButton"
 void GTUtilsWizard::clickButton(HI::GUITestOpStatus &os, WizardButton button) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "activeModalWidget is NULL");
-
-    QWidget *w = GTWidget::findButtonByText(os, buttonMap.key(button), dialog);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget *buttonWidget = GTWidget::findButtonByText(os, buttonMap.key(button), dialog);
     GTGlobals::sleep(500);
-    GTWidget::click(os, w);
+    GTWidget::click(os, buttonWidget);
 }
 #undef GT_METHOD_NAME
 

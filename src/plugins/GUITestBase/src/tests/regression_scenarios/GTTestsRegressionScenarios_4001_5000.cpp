@@ -1760,8 +1760,11 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTFile::copy(os, testDir + "_common_data/vcf/valid.vcf", testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //2. Add sample: snpEff
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+
     //3. Set input file which contains spaces in path
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
@@ -1769,12 +1772,13 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
     //4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
     GTUtilsLog::check(os, l);
     GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4170) {
