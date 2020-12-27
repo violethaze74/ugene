@@ -1977,26 +1977,25 @@ GUI_TEST_CLASS_DEFINITION(test_1165) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1166) {
-    //1. Open file "data/samples/CLUSTALW/COI.aln" in alignment editor
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //1. Open alignment
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "alignx.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 6), QPoint(49, 9));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(24, 2), QPoint(29, 3));
 
     //2. Select any region in msa with left button, move it left
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(26, 2));
     GTMouseDriver::press();
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(40, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(24, 2));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
     //3. Drag the region you selected to its original place
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(43, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(24, 2));
     GTMouseDriver::press();
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(26, 2));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
