@@ -949,6 +949,8 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1052) {
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
+
     //    1. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -7305,7 +7307,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
+    QWidget *pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"

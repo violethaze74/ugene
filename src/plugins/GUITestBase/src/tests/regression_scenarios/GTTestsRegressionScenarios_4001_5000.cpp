@@ -3933,6 +3933,8 @@ GUI_TEST_CLASS_DEFINITION(test_4620) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4621) {
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
+
     //1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);

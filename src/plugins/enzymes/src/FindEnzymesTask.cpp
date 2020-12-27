@@ -120,20 +120,20 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef &seqRef, const U2Region &regi
     SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     seqlen = seq.getSequenceLength();
     //for every enzymes in selection create FindSingleEnzymeTask
-        foreach (const SEnzymeData &enzyme, enzymes) {
-            addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, circular));
-        }
+    for (const SEnzymeData &enzyme : enzymes) {
+        addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, circular));
+    }
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData &enzyme, const U2Strand &strand) {
     if (pos > seqlen) {
         pos %= seqlen;
     }
-        foreach (const U2Region &r, excludedRegions) {
-            if (U2Region(pos, enzyme->seq.length()).intersects(r)) {
-                return;
-            }
+    for (const U2Region &r : excludedRegions) {
+        if (U2Region(pos, enzyme->seq.length()).intersects(r)) {
+            return;
         }
+    }
 
     QMutexLocker locker(&resultsLock);
     if (countOfResultsInMap > maxResults) {
@@ -431,6 +431,9 @@ void FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(U2SequenceO
 }
 
 bool FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants) {
+    if (qgetenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK") == "1") {
+        return false;
+    }
     qint64 maxResultsEstimation = FindSingleEnzymeTask::estimateNumberOfEnzymesInSequence(sequenceLength, countOfEnzymeVariants);
     return maxResultsEstimation > AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE;
 }

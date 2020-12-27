@@ -3356,6 +3356,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
         }
     };
 
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
     class AllEnzymesSearchScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
