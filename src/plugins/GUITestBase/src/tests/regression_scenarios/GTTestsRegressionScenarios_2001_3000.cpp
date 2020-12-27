@@ -5323,45 +5323,38 @@ GUI_TEST_CLASS_DEFINITION(test_2891_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2894) {
-    //    1. Open {_common_data/clustal/100_sequences.aln}.
+    // Open {_common_data/clustal/100_sequences.aln}.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "100_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Use context menu {Tree->Build Tree}.
-    //    Expected state: "Build phylogenetic tree" dialog has been appeared.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsProjectTreeView::toggleView(os);    // close project tree view to get more space.
+
+    // Use context menu {Tree->Build Tree}.
+    // Expected state: "Build phylogenetic tree" dialog has been appeared.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_2894_COI.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-    //    3. Run "Phylip Neighbor Joining" with default parameters.
-    //    Expected state: tree view has been appeared.
-    GTWidget::findWidget(os, "treeView");
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "100_sequences [m] 100_sequences"), GTGlobals::FindOptions(false));
-    //    4. Press refresh tree button on the tree's toolbar.
-    //    Expected state: "Calculating Phylogenetic Tree" task has been started.
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
-        GTWidget::click(os, qt_toolbar_ext_button);
-    } else {
-        GTWidget::click(os, GTAction::button(os, "Refresh tree"));
-    }
 
+    // Run "Phylip Neighbor Joining" with default parameters.
+    // Expected state: tree view has been appeared.
+    GTWidget::findWidget(os, "treeView");
+
+    // Press refresh tree button on the tree's toolbar.
+    // Expected state: "Calculating Phylogenetic Tree" task has been started.
+    GTWidget::click(os, GTAction::button(os, "Refresh tree"));
     GTUtilsTask::checkTask(os, "Calculating Phylogenetic Tree");
-    //    5. Press refresh button again.
-    //    Expected state: a new refresh task is not started, the old one is in process.
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
-        GTWidget::click(os, qt_toolbar_ext_button);
-    } else {
-        GTWidget::click(os, GTAction::button(os, "Refresh tree"));
-    }
-    GTGlobals::sleep(100);
+
+    // Press refresh button again.
+    // Expected state: a new refresh task is not started, the old one is in process.
+    GTWidget::click(os, GTAction::button(os, "Refresh tree"));
 
     int num = GTUtilsTaskTreeView::countTasks(os, "Calculating Phylogenetic Tree");
     CHECK_SET_ERR(num == 1, QString("Wrong tasks number. Expected 1, actual: ").arg(num));
-    //    6. Close the tree view while the task is performed.
-    //    Expected state: UGENE doesn't crash, view is closed, task cancels.
+    // Close the tree view while the task is performed.
+    // Expected state: UGENE doesn't crash, view is closed, task cancels.
     GTUtilsProjectTreeView::click(os, "test_2894_COI.nwk");
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No)); // Save the nwk file? Select 'No'.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
