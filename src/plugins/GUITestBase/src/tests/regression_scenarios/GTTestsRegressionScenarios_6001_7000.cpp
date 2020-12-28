@@ -5948,6 +5948,52 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
     CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6826) {
+    // Open "Application settings", go to the "Resources" tab and set values "Optimize for CPU count" and "Threads limit" to 1.
+    class ThreadsLimitScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
+
+            QSpinBox *cpuBox = GTWidget::findExactWidget<QSpinBox *>(os, "cpuSpinBox", dialog);
+            GTSpinBox::setValue(os, cpuBox, 1, GTGlobals::UseKeyBoard);
+
+            QSpinBox *threadsBox = GTWidget::findExactWidget<QSpinBox *>(os, "threadSpinBox", dialog);
+            GTSpinBox::setValue(os, threadsBox, 1, GTGlobals::UseKeyBoard);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new ThreadsLimitScenario));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            GTWidget::getActiveModalWidget(os);
+
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/400000_symbols_msa.fasta").absoluteFilePath()));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(testDir + "_common_data/cmdline/pcr/primers2.fa").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    // Open WD and choose the "In Silico PCR" sample.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    // The task will run too long to complete in Nightly tests. Wait 10 seconds and cancel it.
+    GTGlobals::sleep(10000);
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6847) {
     //    1. Open 'human_T1.fa'
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
@@ -6398,7 +6444,6 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
 
-
 GUI_TEST_CLASS_DEFINITION(test_6953) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -6560,6 +6605,71 @@ GUI_TEST_CLASS_DEFINITION(test_6959) {
     CHECK_SET_ERR(nameList3[4] == "Bicolorana_bicolor_EF540830", "The 5 sequence is incorrect");
     CHECK_SET_ERR(nameList3[5] == "Conocephalus_discolor", "The 6 sequence is incorrect");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6966) {
+    // Open 100bp file
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/100bp.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Enable enzymes auto-annotations  (select all enzymes)
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
+    GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Open 200bp file
+    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/200bp.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 0..200 range is auto annotated with enzymes
+    // The 'AhaI' is found only once in the 200bp sequence at the position > 100.
+    GTUtilsAnnotationsTreeView::clickItem(os, "AhaI", 1, true);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6968) {
+    // Check 'too-many-results' scenario.
+
+    // Open 'human_T1.fa'
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Open "Find restriction sites" dialog
+    class SelectAllScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            // Select all sites.
+            GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ignore));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
+                                                                        << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new SelectAllScenario()));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6971) {
+    // Open WD.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class CheckWizardIsActiveAndCancelItScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            GTWidget::getActiveModalWidget(os);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new CheckWizardIsActiveAndCancelItScenario()));
+
+    // Add De novo assemble Illumina PE Reads sample
+    GTUtilsWorkflowDesigner::addSample(os, "De novo assemble Illumina PE Reads");
+
+    // Expected state: sample will appear
+    // Click Cancel
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

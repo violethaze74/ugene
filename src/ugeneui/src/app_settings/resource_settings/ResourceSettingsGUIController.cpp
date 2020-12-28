@@ -74,7 +74,9 @@ ResourceSettingsGUIPageWidget::ResourceSettingsGUIPageWidget(ResourceSettingsGUI
 void ResourceSettingsGUIPageWidget::setState(AppSettingsGUIPageState *s) {
     ResourceSettingsGUIPageState *state = qobject_cast<ResourceSettingsGUIPageState *>(s);
     cpuBox->setValue(state->nCpus);
+    cpuBox->setObjectName("cpuSpinBox");
     threadBox->setValue(state->nThreads);
+    threadBox->setObjectName("threadSpinBox");
     memBox->setValue(state->maxMem);
     memBox->setObjectName("memorySpinBox");
 }
