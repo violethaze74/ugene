@@ -40,7 +40,7 @@ public:
     void storeSettings();
     void restoreDefault();
     int getRandomSeed();
-    bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
+    bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
 
 private:
     void setComboText(QComboBox *combo, const QString &text);

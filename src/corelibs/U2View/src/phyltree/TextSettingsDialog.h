@@ -33,7 +33,8 @@ class TextSettingsDialog : public BaseSettingsDialog, public Ui_TextSettingsDial
     Q_OBJECT
 public:
     TextSettingsDialog(QWidget *parent, const OptionsMap &settings);
-    virtual void accept();
+
+    void accept() override;
 
 protected slots:
     void sl_colorButton();

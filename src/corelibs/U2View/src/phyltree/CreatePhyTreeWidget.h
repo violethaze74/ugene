@@ -40,11 +40,11 @@ public:
     virtual void fillSettings(CreatePhyTreeSettings &settings) = 0;
     virtual void storeSettings() = 0;
     virtual void restoreDefault() = 0;
+
     virtual bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
     virtual bool checkMemoryEstimation(QString &message, const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings);
-    virtual bool insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *outputOptionsWidget);
 
-    static QString settingsPath();
+    static QString getAppSettingsRoot();
 };
 
 }    // namespace U2

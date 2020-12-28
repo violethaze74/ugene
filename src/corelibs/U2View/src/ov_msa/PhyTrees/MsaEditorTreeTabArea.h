@@ -29,23 +29,28 @@
 
 namespace U2 {
 
-class MAlignmentRow;
 class MSADistanceMatrix;
 class MSAEditor;
 
 class MsaEditorTreeTab : public QTabWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTab(MSAEditor *msa, QWidget *parent);
+    MsaEditorTreeTab(MSAEditor *msaEditor, QWidget *parent);
 
+    //TODO: method hides base class method.
     void addTab(QWidget *page, const QString &label);
+
     void deleteTree(int index);
+
     QWidget *getCurrentWidget() const {
         return currentWidget();
     }
+
     void addExistingTree();
+
 public slots:
     void sl_addTabTriggered();
+
 private slots:
     void sl_onTabCloseRequested(int index);
     void sl_onCloseOtherTabs();
@@ -57,9 +62,7 @@ signals:
     void si_tabsCountChanged(int curTabsNumber);
 
 private:
-    void processMenuAction(QAction *triggeredAction);
-
-    MSAEditor *msa;
+    MSAEditor *editor;
     QPushButton *addTabButton;
     QPoint menuPos;
     QAction *closeOtherTabs;
@@ -70,20 +73,20 @@ private:
 class MsaEditorTreeTabArea : public QWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTabArea(MSAEditor *msa, QWidget *parent);
+    MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent);
 
     void addTab(QWidget *page, const QString &label);
-    void deleteTab(QWidget *page);
 
     MsaEditorTreeTab *getCurrentTabWidget() const {
         return treeTabWidget;
     }
+
     QWidget *getCurrentWidget() const {
         return treeTabWidget->getCurrentWidget();
     }
 
 protected:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *) override;
     virtual MsaEditorTreeTab *createTabWidget();
     void initialize();
 
@@ -92,7 +95,7 @@ signals:
 
 private:
     QPushButton *addTabButton;
-    MSAEditor *msa;
+    MSAEditor *editor;
     MsaEditorTreeTab *treeTabWidget;
     QLayout *currentLayout;
 };

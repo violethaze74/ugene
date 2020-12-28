@@ -74,8 +74,6 @@ class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     AddTreeWidgetFactory();
-    virtual ~AddTreeWidgetFactory() {
-    }
 
     QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 

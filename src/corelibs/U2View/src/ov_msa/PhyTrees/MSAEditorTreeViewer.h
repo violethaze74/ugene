@@ -39,9 +39,12 @@ class MSAEditor;
 class ColorGenerator {
 public:
     ColorGenerator(int countOfColors, qreal lightness);
+
     void setCountOfColors(int counts);
-    QColor getColor(int index);
-    int getCountOfColors() {
+
+    QColor getColor(int index) const;
+
+    int getCountOfColors() const {
         return countOfColors;
     }
 
@@ -75,7 +78,7 @@ public:
         return 0;
     }
 
-    void setCreatePhyTreeSettings(const CreatePhyTreeSettings &_buildSettings);
+    void setCreatePhyTreeSettings(const CreatePhyTreeSettings &newBuildSettings);
     void setParentAignmentName(const QString &_alignmentName) {
         alignmentName = _alignmentName;
     }
@@ -88,7 +91,7 @@ public:
     void desync();
     bool isSynchronized() const;
 
-    void setMSAEditor(MSAEditor *_msa);
+    void setMSAEditor(MSAEditor *newEditor);
     MSAEditor *getMsaEditor() const;
 
 protected:
@@ -112,7 +115,7 @@ private:
     QAction *sortSeqAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
-    MSAEditor *msa;
+    MSAEditor *editor;
     SynchronizationMode syncMode;
     bool slotsAreConnected;
     MaModificationInfo cachedModification;
@@ -168,7 +171,7 @@ protected slots:
     void sl_zoomOut();
 
 private slots:
-    void sl_selectionChanged(const QStringList &selection);
+    void sl_selectionChanged(const QStringList &selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onReferenceSeqChanged(qint64);
     void sl_onSceneRectChanged(const QRectF &);
@@ -177,14 +180,14 @@ private slots:
     virtual void sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch);
 
 private:
-    QList<GraphicsBranchItem *> getListNodesOfTree();
+    QList<GraphicsBranchItem *> getBranchItemsWithNames() const;
 
     QGraphicsLineItem *subgroupSelector;
     qreal subgroupSelectorPos;
     bool subgroupSelectionMode;
     ColorGenerator groupColors;
 
-    bool curLayoutIsRectangular;
+    bool isRectangularLayout;
 
     MSAEditorTreeViewer *curMSATreeViewer;
     SynchronizationMode syncMode;
