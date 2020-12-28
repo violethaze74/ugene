@@ -34,6 +34,7 @@
 #include "tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.h"
+#include "tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h"
 #include "tests/common_scenarios/Assembling/sam/GTTestsSAM.h"
 #include "tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h"
@@ -2958,6 +2959,15 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0002);
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0003);
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/extract_consensus
+    /////////////////////////////////////////////////////////////////////////
+
+    REGISTER_TEST(GUITest_assembly_extract_consensus::sorted_bam_test_0001);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::ugenedb_test_0001);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::multiple_inp_test_0001);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::wrong_inp_test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/sam
