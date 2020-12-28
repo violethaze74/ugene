@@ -41,23 +41,25 @@
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "utils/GTUtilsDialog.h"
 
+namespace {
+    enum class Algo {
+        DEFAULT,
+        SAMTOOLS
+    };
+}    // namespace
+
 namespace U2 {
 
 namespace GUITest_assembly_extract_consensus {
 
 struct ExtractConsensusWizardScenario : CustomScenario {
-    enum class Algorithm {
-        DEFAULT,
-        SAMTOOLS
-    };
-
     QStringList inpPaths;
-    Algorithm algo;
+    Algo algo;
     bool keepGaps;
     QString outFile;
 
     ExtractConsensusWizardScenario(const QStringList &assembliesPath = QStringList(),
-                                   const Algorithm algo = Algorithm::DEFAULT,
+                                   const Algo algo = Algo::DEFAULT,
                                    const bool keepGaps = true,
                                    const QString &outputFileName = "consensus.fa")
         : inpPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
@@ -97,8 +99,6 @@ struct ExtractConsensusWizardScenario : CustomScenario {
         GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
     }
 };
-
-using Algo = ExtractConsensusWizardScenario::Algorithm;
 
 GUI_TEST_CLASS_DEFINITION(sorted_bam_test_0001) {
     const GTLogTracer lt;
@@ -188,18 +188,13 @@ GUI_TEST_CLASS_DEFINITION(ugenedb_test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(multiple_inp_test_0001) {
     struct ExtractConsensusWizardWithAddScenario : CustomScenario {
-        enum class Algorithm {
-            DEFAULT,
-            SAMTOOLS
-        };
-
         QStringList inpPaths;
-        Algorithm algo;
+        Algo algo;
         bool keepGaps;
         QString outFile;
 
         ExtractConsensusWizardWithAddScenario(const QStringList &assembliesPath,
-                                              const Algorithm algo = Algorithm::DEFAULT,
+                                              const Algo algo = Algo::DEFAULT,
                                               const bool keepGaps = true,
                                               const QString &outputFileName = "consensus.fa")
             : inpPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
@@ -269,6 +264,27 @@ GUI_TEST_CLASS_DEFINITION(multiple_inp_test_0001) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+
+    //  6. Return to workflow and call the Extract consensus wizard
+    GTUtilsWorkflowDesigner::returnToWorkflow(os);
+    //  7. Fill in the dialog :
+    //      {Algorithm} SAMtools
+    //      {Keep gaps} False
+    //      {Output file}
+    //     And click "Run"
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(
+        os,
+        "Extract Consensus Wizard",
+        new ExtractConsensusWizardWithAddScenario(QStringList() << path1 << path2, Algo::SAMTOOLS, false, "")
+    ));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
+
+    //  8. Wait for workflow finished
+    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    //  Expected state: There should be no errors in the log
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    //  There should be no notifications in the dashboard
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
 
 GUI_TEST_CLASS_DEFINITION(wrong_inp_test_0001) {
@@ -314,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(wrong_inp_test_0001) {
 
     //  Expected state: There should be dialog "Workflow cannot be executed"
     CHECK_SET_ERR(QApplication::activeModalWidget(), "activeModalWidget is nullptr");
-    //  Click "Ok" in this dialog
+    //  8. Click "Ok" in this dialog
     GTUtilsDialog::waitForDialog(os, new HI::MessageBoxDialogFiller(os, QMessageBox::Ok));
     //  There should also be an error about missing required input parameter in the workflow
     GTUtilsWorkflowDesigner::checkErrorList(
