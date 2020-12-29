@@ -6611,7 +6611,7 @@ GUI_TEST_CLASS_DEFINITION(test_6966) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/100bp.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // Enable enzymes auto-annotations  (select all enzymes)
+    // Enable enzymes auto-annotations (with default enzymes selected).
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6621,8 +6621,8 @@ GUI_TEST_CLASS_DEFINITION(test_6966) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 0..200 range is auto annotated with enzymes
-    // The 'AhaI' is found only once in the 200bp sequence at the position > 100.
-    GTUtilsAnnotationsTreeView::clickItem(os, "AhaI", 1, true);
+    // The 'EcoRV' is found only once in the 200bp sequence at the position > 100.
+    GTUtilsAnnotationsTreeView::clickItem(os, "EcoRV", 1, true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6968) {
@@ -6682,7 +6682,7 @@ GUI_TEST_CLASS_DEFINITION(test_6979) {
 
     // Check tree widget with tabs was created.
 
-    QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *> (os, "MsaEditorTreeTab");
+    QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *>(os, "MsaEditorTreeTab");
     CHECK_SET_ERR(tabWidget->currentIndex() == 0, "Expected first tab to be active")
 
     // Build another phy-tree
