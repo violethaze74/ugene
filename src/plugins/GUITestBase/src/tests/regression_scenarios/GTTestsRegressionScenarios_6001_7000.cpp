@@ -95,6 +95,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
@@ -6668,6 +6669,30 @@ GUI_TEST_CLASS_DEFINITION(test_6971) {
 
     // Expected state: sample will appear
     // Click Cancel
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6979) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Build phy-tree with default settings
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_6979_COI.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check tree widget with tabs was created.
+
+    QTabWidget *tabWidget = GTWidget::findExactWidget<QTabWidget *> (os, "MsaEditorTreeTab");
+    CHECK_SET_ERR(tabWidget->currentIndex() == 0, "Expected first tab to be active")
+
+    // Build another phy-tree
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_6979_COI_1.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: a tab with tree created last is activated.
+    CHECK_SET_ERR(tabWidget->currentIndex() == 1, "Expected second tab to be active")
 }
 
 }    // namespace GUITest_regression_scenarios
