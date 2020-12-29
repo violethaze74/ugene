@@ -4141,21 +4141,17 @@ GUI_TEST_CLASS_DEFINITION(test_2638) {
 
 GUI_TEST_CLASS_DEFINITION(test_2640) {
     //    0. Set CPU optimisation in settings dialog
-    GTGlobals::sleep();
-    class custom : public CustomScenario {
+    class UpdateCPUCountScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
             QSpinBox *cpuBox = GTWidget::findExactWidget<QSpinBox *>(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 94, GTGlobals::UseKeyBoard);
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new custom));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new UpdateCPUCountScenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
     //    1. Open WD
@@ -4164,7 +4160,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     //    3. Set proper input data
     QString expected = "tophat2/tophat -p 94 --output-dir";
 
-    GTLogTracer l(expected);
+    GTLogTracer logTracer(expected);
     QMap<QString, QVariant> map;
     map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
     map.insert("Bowtie index basename", "e_coli");
@@ -4173,17 +4169,14 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "Single-sample"
                                                                                                                   << "Single-end"));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
-    GTGlobals::sleep();
-
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTThread::waitForMainThread();
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: tophat launched with argument -p
-    GTUtilsLog::checkContainsMessage(os, l);
+    GTUtilsLog::checkContainsMessage(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2651) {

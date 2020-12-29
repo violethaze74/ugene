@@ -1689,7 +1689,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memorySpinBox");
+            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
             CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
 
@@ -3607,7 +3607,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memorySpinBox", dialog), 200);
+            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

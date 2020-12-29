@@ -5956,10 +5956,10 @@ GUI_TEST_CLASS_DEFINITION(test_6826) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *cpuBox = GTWidget::findExactWidget<QSpinBox *>(os, "cpuSpinBox", dialog);
+            QSpinBox *cpuBox = GTWidget::findExactWidget<QSpinBox *>(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 1, GTGlobals::UseKeyBoard);
 
-            QSpinBox *threadsBox = GTWidget::findExactWidget<QSpinBox *>(os, "threadSpinBox", dialog);
+            QSpinBox *threadsBox = GTWidget::findExactWidget<QSpinBox *>(os, "threadBox", dialog);
             GTSpinBox::setValue(os, threadsBox, 1, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

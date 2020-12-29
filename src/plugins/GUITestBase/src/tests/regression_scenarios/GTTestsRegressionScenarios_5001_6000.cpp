@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
@@ -371,7 +371,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
