@@ -5990,9 +5990,8 @@ GUI_TEST_CLASS_DEFINITION(test_6826) {
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
     GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
 
-    // The task will run too long to complete in Nightly tests. Wait 10 seconds and cancel it.
-    GTGlobals::sleep(10000);
-    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
+    // The task is finished with no timeouts/deadocks.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6847) {
