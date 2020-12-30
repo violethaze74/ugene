@@ -95,7 +95,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter &p, const QSize &ca
     QList<U2Region> extraAnnotationRegions;
     qint64 sequenceLength = ctx->getSequenceLength();
     if (displaySettings.displayCutSites) {
-        annotationsRange = U2Region(annotationsRange.startPos - MAX_CUTSITE_DISTANCE, 2 * MAX_CUTSITE_DISTANCE);
+        annotationsRange = U2Region(annotationsRange.startPos - MAX_CUTSITE_DISTANCE, annotationsRange.length + 2 * MAX_CUTSITE_DISTANCE);
         if (annotationsRange.startPos < 0) {
             qint64 tailLength = -annotationsRange.startPos;
             extraAnnotationRegions << U2Region(sequenceLength - tailLength, tailLength);
