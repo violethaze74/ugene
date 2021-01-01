@@ -144,6 +144,7 @@ private:
 };
 
 class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
+    Q_OBJECT
 public:
     DetViewRenderArea(DetView *d);
     ~DetViewRenderArea();
