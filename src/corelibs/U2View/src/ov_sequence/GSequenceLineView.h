@@ -28,6 +28,8 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPixmap>
+#include <QScopedPointer>
 #include <QToolButton>
 #include <QWheelEvent>
 #include <QWidget>
@@ -225,34 +227,23 @@ class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget {
     Q_OBJECT
 public:
     GSequenceLineViewRenderArea(GSequenceLineView *p);
-    ~GSequenceLineViewRenderArea();
-
-    //TODO: this method is deprecated and will be removed because it does not support multi-line views.
-    virtual qint64 coordToPos(int x) const;
 
     /** Returns in-sequence base index by the current on-screen coordinate. */
     virtual qint64 coordToPos(const QPoint &coord) const;
 
-    /** Returns minimal on-screen X coordinate of the given position. */
-    virtual float posToCoordF(qint64 pos, bool useVirtualSpace = false) const;
+    /** Returns a minimal on-screen X coordinate of the given sequence position. */
+    virtual int posToCoord(qint64 pos, bool useVirtualSpace = false) const;
 
-    /**
-     * Returns minimal on-screen X coordinate of the given position rounded to integer type.
-     * This function can't be overriden and is based on posToCoordF behavior.
-     */
-    int posToCoord(qint64 pos, bool useVirtualSpace = false) const {
-        return qRound(posToCoordF(pos, useVirtualSpace));
-    }
-
-    //number of pixels per base
+    /** Returns number of pixels per-base. */
     virtual double getCurrentScale() const;
-    //char width, derived from current 'font'
+
+    /** Returns width in pixels required to draw a single text character using sequenceFont. */
     int getCharWidth() const {
         return charWidth;
     }
 
 protected:
-    virtual void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 
     virtual void drawAll(QPaintDevice *pd) = 0;
     void drawFrame(QPainter &p);
@@ -260,11 +251,16 @@ protected:
 
     void updateFontMetrics();
 
-    GSequenceLineView *view;
-    QPixmap *cachedView;
+    /** Returns a cached pixmap used to render the whole area. */
+    QPixmap *getCachedPixmap() const {
+        return cachedView.data();
+    }
 
-    //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modifyed in view).
-    //! Currenlty they are doubled in SequenceViewRenderer class.
+    GSequenceLineView *view;
+    QScopedPointer<QPixmap> cachedView;
+
+    //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modified in view).
+    //! Currently they are doubled in SequenceViewRenderer class.
     //per char and per line metrics
     QFont sequenceFont;
     QFont smallSequenceFont;

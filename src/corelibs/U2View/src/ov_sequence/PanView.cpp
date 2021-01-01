@@ -610,7 +610,7 @@ void PanViewRenderArea::drawAll(QPaintDevice *pd) {
 
     QPainter p(pd);
     if (completeRedraw) {
-        QPainter pCached(cachedView);
+        QPainter pCached(getCachedPixmap());
         renderer->drawAll(pCached, QSize(pd->width(), pd->height()), view->getVisibleRange());
         pCached.end();
     }

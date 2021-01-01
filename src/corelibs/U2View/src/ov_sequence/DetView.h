@@ -80,8 +80,8 @@ public:
     void ensurePositionVisible(int pos);
 
 protected slots:
-    virtual void sl_sequenceChanged();
-    void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed);
+    void sl_sequenceChanged() override;
+    void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
@@ -94,16 +94,16 @@ protected slots:
     void sl_showAllFrames();
 
 protected:
-    virtual void pack();
+    virtual void pack() override;
 
-    void showEvent(QShowEvent *e);
-    void hideEvent(QHideEvent *e);
+    void showEvent(QShowEvent *e) override;
+    void hideEvent(QHideEvent *e) override;
 
-    void mouseMoveEvent(QMouseEvent *me);
-    void mouseReleaseEvent(QMouseEvent *me);
-    void wheelEvent(QWheelEvent *we);
-    void resizeEvent(QResizeEvent *e);
-    void keyPressEvent(QKeyEvent *e);
+    void mouseMoveEvent(QMouseEvent *me) override;
+    void mouseReleaseEvent(QMouseEvent *me) override;
+    void wheelEvent(QWheelEvent *we) override;
+    void resizeEvent(QResizeEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
 
     void updateVisibleRange();
     void updateActions();
@@ -157,11 +157,9 @@ public:
 
     void setWrapSequence(bool v);
 
-    qint64 coordToPos(int x) const override;
-
     qint64 coordToPos(const QPoint &coord) const override;
 
-    float posToCoordF(qint64 pos, bool useVirtualSpace = false) const override;
+    int posToCoord(qint64 pos, bool useVirtualSpace = false) const override;
 
     DetView *getDetView() const;
 

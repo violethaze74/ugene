@@ -882,7 +882,7 @@ void DetViewRenderArea::drawAll(QPaintDevice *pd) {
     QSize canvasSize(pd->width(), pd->height() + scrollShift);
 
     if (completeRedraw) {
-        QPainter pCached(cachedView);
+        QPainter pCached(getCachedPixmap());
         pCached.translate(0, -scrollShift);
         renderer->drawAll(pCached, canvasSize, view->getVisibleRange());
         pCached.end();
@@ -901,24 +901,15 @@ void DetViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 }
 
-qint64 DetViewRenderArea::coordToPos(int coord) const {
-    qint64 result = GSequenceLineViewAnnotatedRenderArea::coordToPos(coord);
-    SAFE_POINT(false, "Unsafe use of coordToPos(x) in DetView. Use QPoint() based method with y() value.", result);
-    return result;
-}
-
 qint64 DetViewRenderArea::coordToPos(const QPoint &coord) const {
     QPoint pShifted(coord.x(), coord.y() + getDetView()->getShift());
     return renderer->coordToPos(pShifted, QSize(width(), height()), view->getVisibleRange());
 }
 
-float DetViewRenderArea::posToCoordF(qint64 pos, bool useVirtualSpace) const {
-    float x = GSequenceLineViewAnnotatedRenderArea::posToCoordF(pos, useVirtualSpace);
+int DetViewRenderArea::posToCoord(qint64 pos, bool useVirtualSpace) const {
+    int x = GSequenceLineViewAnnotatedRenderArea::posToCoord(pos, useVirtualSpace);
     int lineWidth = charWidth * getSymbolsPerLine();
-    while (x >= lineWidth) {
-        x -= lineWidth;
-    }
-    return x;
+    return x % lineWidth;
 }
 
 double DetViewRenderArea::getCurrentScale() const {
