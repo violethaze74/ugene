@@ -67,7 +67,7 @@ public:
     void keyReleaseEvent(QKeyEvent *e) override;
 
     void wheelEvent(QWheelEvent *we) override;
-    virtual QSize sizeHint() const override;
+    QSize sizeHint() const override;
 
     QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
 
