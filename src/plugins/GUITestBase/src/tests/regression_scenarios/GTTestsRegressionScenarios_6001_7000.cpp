@@ -6701,7 +6701,7 @@ GUI_TEST_CLASS_DEFINITION(test_6981) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // Create an annotation of length 1 close to the sequence end, so it will be on the last (but never the first) line of Det View.
-    GTUtilsAnnotationsTreeView::createAnnotation(os, "<auto>", "ann", "5809..5809");
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "<auto>", "ann", "complement(5809..5809)");
 
     // Ensure that the annotation we created is not selected: select another annotation.
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
