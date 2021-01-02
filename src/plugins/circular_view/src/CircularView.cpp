@@ -55,7 +55,7 @@ const int CircularView::MAX_GRADUATION_ANGLE = 360 * GRADUATION;
 CircularView::CircularView(QWidget *p, ADVSequenceObjectContext *ctx, CircularViewSettings *settings)
     : GSequenceLineViewAnnotated(p, ctx),
       lastMovePos(0),
-      currectSelectionLen(0),
+      currentSelectionLen(0),
       lastMouseY(0),
       clockwise(true),
       holdSelection(false),
@@ -67,7 +67,8 @@ CircularView::CircularView(QWidget *p, ADVSequenceObjectContext *ctx, CircularVi
         registerAnnotations(obj->getAnnotations());
     }
 
-    renderArea = new CircularViewRenderArea(this);
+    circularViewRenderArea = new CircularViewRenderArea(this);
+    renderArea = circularViewRenderArea;
     setMouseTracking(true);
 
     connect(ctx->getSequenceGObject(), SIGNAL(si_nameChanged(const QString &)), this, SLOT(sl_onSequenceObjectRenamed(const QString &)));
@@ -88,24 +89,22 @@ void CircularView::pack() {
 }
 
 void CircularView::updateMinSize() {
-    CircularViewRenderArea *ra = getRenderArea();
-    int min = (ra->regionY.count() - 1) * ra->ellipseDelta + MIN_OUTER_SIZE;
+    int min = (circularViewRenderArea->regionY.count() - 1) * circularViewRenderArea->ellipseDelta + MIN_OUTER_SIZE;
     setMinimumSize(min, min);
 }
 
 void CircularView::mousePressEvent(QMouseEvent *e) {
     visibleRange = U2Region(0, seqLen);
     GSequenceLineViewAnnotated::mousePressEvent(e);
-    CircularViewRenderArea *ra = getRenderArea();
     const QPoint renderAreaPoint = toRenderAreaPoint(e->pos());
-    lastPressAngle = ra->coordToAsin(renderAreaPoint);
+    lastPressAngle = circularViewRenderArea->coordToAsin(renderAreaPoint);
     lastMoveAngle = lastPressAngle;
 
-    lastPressPos = ra->asinToPos(lastPressAngle);
+    lastPressPos = circularViewRenderArea->asinToPos(lastPressAngle);
     lastMovePos = lastPressPos;
 
-    lastMouseY = toRenderAreaPoint(e->pos()).y() - getRenderArea()->getCenterY();
-    currectSelectionLen = 0;
+    lastMouseY = toRenderAreaPoint(e->pos()).y() - circularViewRenderArea->getCenterY();
+    currentSelectionLen = 0;
     holdSelection = false;
     QWidget::mousePressEvent(e);
 }
@@ -116,10 +115,9 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
         return;
     }
 
-    CircularViewRenderArea *ra = getRenderArea();
     QPoint areaPoint = toRenderAreaPoint(e->pos());
-    qreal arcSin = ra->coordToAsin(areaPoint);
-    ra->mouseAngle = arcSin;
+    qreal arcSin = circularViewRenderArea->coordToAsin(areaPoint);
+    circularViewRenderArea->mouseAngle = arcSin;
 
     Direction pressMove = getDirection(lastPressAngle, lastMoveAngle);
     Direction moveA = getDirection(lastMoveAngle, arcSin);
@@ -137,7 +135,7 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
         holdSelection = true;
     }
 
-    qint64 movement = ra->asinToPos(arcSin);
+    qint64 movement = circularViewRenderArea->asinToPos(arcSin);
     if (!clockwise) {
         qSwap<qint64>(lastPressPos, movement);
     }
@@ -155,7 +153,7 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
     }
 
     lastMovePos = movement;
-    lastMouseY = areaPoint.y() - ra->getCenterY();
+    lastMouseY = areaPoint.y() - circularViewRenderArea->getCenterY();
 
     if (e->modifiers() & Qt::ControlModifier) {    // invert the selection.
         twoParts = !twoParts;
@@ -174,8 +172,8 @@ void CircularView::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void CircularView::setAngle(int angle) {
-    assert(angle >= 0 && angle <= 360);
-    getRenderArea()->rotationDegree = angle;
+    SAFE_POINT(angle >= 0 && angle <= 360, "Invalid angle: " + QString::number(angle), );
+    circularViewRenderArea->rotationDegree = angle;
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     renderArea->update();
 }
@@ -218,7 +216,7 @@ QList<Annotation *> CircularView::findAnnotationsByCoord(const QPoint &coord) co
 }
 
 QSize CircularView::sizeHint() const {
-    return getRenderArea()->size();
+    return renderArea->size();
 }
 
 bool CircularView::isCircularTopology() const {
@@ -252,7 +250,7 @@ void CircularView::keyReleaseEvent(QKeyEvent *e) {
 }
 
 void CircularView::resizeEvent(QResizeEvent *e) {
-    if (getRenderArea()->currentScale == 0) {
+    if (circularViewRenderArea->currentScale == 0) {
         sl_fitInView();
     }
     QWidget::resizeEvent(e);
@@ -260,33 +258,30 @@ void CircularView::resizeEvent(QResizeEvent *e) {
 
 #define VIEW_MARGIN 10
 void CircularView::sl_fitInView() {
-    CircularViewRenderArea *ra = getRenderArea();
-    int yLvl = ra->regionY.count() - 1;
-    ra->outerEllipseSize = qMin(height(), width()) - ra->ellipseDelta * yLvl - VIEW_MARGIN;
-    ra->currentScale = 0;
+    int yLvl = circularViewRenderArea->regionY.count() - 1;
+    circularViewRenderArea->outerEllipseSize = qMin(height(), width()) - circularViewRenderArea->ellipseDelta * yLvl - VIEW_MARGIN;
+    circularViewRenderArea->currentScale = 0;
     adaptSizes();
     updateZoomActions();
 }
 
 #define ZOOM_SCALE 1.2
 void CircularView::sl_zoomIn() {
-    CircularViewRenderArea *ra = getRenderArea();
-    if (ra->outerEllipseSize / width() > 10) {
+    if (circularViewRenderArea->outerEllipseSize / width() > 10) {
         return;
     }
-    ra->outerEllipseSize *= ZOOM_SCALE;
-    ra->currentScale++;
+    circularViewRenderArea->outerEllipseSize *= ZOOM_SCALE;
+    circularViewRenderArea->currentScale++;
     adaptSizes();
     updateZoomActions();
 }
 
 void CircularView::sl_zoomOut() {
-    CircularViewRenderArea *ra = getRenderArea();
-    if (ra->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE) {
+    if (circularViewRenderArea->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE) {
         return;
     }
-    ra->outerEllipseSize /= ZOOM_SCALE;
-    ra->currentScale--;
+    circularViewRenderArea->outerEllipseSize /= ZOOM_SCALE;
+    circularViewRenderArea->currentScale--;
     adaptSizes();
     updateZoomActions();
 }
@@ -296,16 +291,14 @@ void CircularView::sl_onSequenceObjectRenamed(const QString &) {
 }
 
 void CircularView::sl_onCircularTopologyChange() {
-    CircularViewRenderArea *ra = getRenderArea();
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
-    ra->update();
+    circularViewRenderArea->update();
 }
 
 void CircularView::updateZoomActions() {
-    CircularViewRenderArea *ra = getRenderArea();
-    emit si_zoomInDisabled(ra->outerEllipseSize * ZOOM_SCALE / width() > 10);
-    emit si_fitInViewDisabled(ra->currentScale == 0);
-    emit si_zoomOutDisabled(ra->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE);
+    emit si_zoomInDisabled(circularViewRenderArea->outerEllipseSize * ZOOM_SCALE / width() > 10);
+    emit si_fitInViewDisabled(circularViewRenderArea->currentScale == 0);
+    emit si_zoomOutDisabled(circularViewRenderArea->outerEllipseSize / ZOOM_SCALE < MIN_OUTER_SIZE);
 }
 
 void CircularView::invertCurrentSelection() {
@@ -322,10 +315,6 @@ void CircularView::invertCurrentSelection() {
     }
 }
 
-CircularViewRenderArea *CircularView::getRenderArea() const {
-    return qobject_cast<CircularViewRenderArea *>(renderArea);
-}
-
 #define PI 3.1415926535897932384626433832795
 
 CircularView::Direction CircularView::getDirection(float a, float b) const {
@@ -337,13 +326,12 @@ CircularView::Direction CircularView::getDirection(float a, float b) const {
 }
 
 void CircularView::adaptSizes() {
-    CircularViewRenderArea *ra = getRenderArea();
-    ra->innerEllipseSize = ra->outerEllipseSize - CV_REGION_ITEM_WIDTH;
-    ra->rulerEllipseSize = ra->outerEllipseSize - CV_REGION_ITEM_WIDTH;
-    ra->middleEllipseSize = (ra->outerEllipseSize + ra->innerEllipseSize) / 2;
+    circularViewRenderArea->innerEllipseSize = circularViewRenderArea->outerEllipseSize - CV_REGION_ITEM_WIDTH;
+    circularViewRenderArea->rulerEllipseSize = circularViewRenderArea->outerEllipseSize - CV_REGION_ITEM_WIDTH;
+    circularViewRenderArea->middleEllipseSize = (circularViewRenderArea->outerEllipseSize + circularViewRenderArea->innerEllipseSize) / 2;
     updateMinSize();
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
-    ra->update();
+    circularViewRenderArea->update();
 }
 
 qreal CircularView::coordToAngle(const QPoint point) {
@@ -363,11 +351,11 @@ qreal CircularView::coordToAngle(const QPoint point) {
 }
 
 void CircularView::paint(QPainter &p, int w, int h, bool paintSelection, bool paintMarker) {
-    getRenderArea()->paintContent(p, w, h, paintSelection, paintMarker);
+    circularViewRenderArea->paintContent(p, w, h, paintSelection, paintMarker);
 }
 
 void CircularView::redraw() {
-    getRenderArea()->redraw();
+    circularViewRenderArea->redraw();
 }
 
 /************************************************************************/
@@ -489,7 +477,7 @@ void CircularViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 
     if (completeRedraw) {
-        QPainter pCached(cachedView);
+        QPainter pCached(getCachedPixmap());
         pCached.setRenderHint(QPainter::Antialiasing);
         pCached.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
         pCached.translate(parentWidget()->width() / 2, verticalOffset);
@@ -539,9 +527,9 @@ void CircularViewRenderArea::drawAnnotationsSelection(QPainter &p) {
                 item->setSelected(true);
                 item->paint(&p, NULL, this);
                 foreach (const CircularAnnotationRegionItem *r, item->getRegions()) {
-                    SAFE_POINT(r != NULL, "NULL annotataion region item is CV!", );
+                    SAFE_POINT(r != NULL, "NULL annotation region item is CV!", );
                     CircularAnnotationLabel *lbl = r->getLabel();
-                    SAFE_POINT(lbl != NULL, "NULL annotataion label item is CV!", );
+                    SAFE_POINT(lbl != NULL, "NULL annotation label item is CV!", );
                     if (lbl->isVisible()) {
                         lbl->paint(&p, NULL, this);
                     }
@@ -809,10 +797,6 @@ void CircularViewRenderArea::drawAnnotations(QPainter &p) {
 void CircularViewRenderArea::redraw() {
     settingsWereChanged = true;
     repaint();
-}
-
-bool isGreater(const U2Region &r1, const U2Region &r2) {
-    return r1.startPos > r2.startPos;
 }
 
 #define REGION_MIN_LEN 3

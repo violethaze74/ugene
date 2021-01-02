@@ -257,32 +257,32 @@ void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
     bool accepted = false;
     GSequenceLineView *view = coherentRangeView == NULL ? this : coherentRangeView;
     switch (key) {
-    case Qt::Key_Left:
-    case Qt::Key_Up:
-        view->setStartPos(qMax(qint64(0), visibleRange.startPos - 1));
-        accepted = true;
-        break;
-    case Qt::Key_Right:
-    case Qt::Key_Down:
-        view->setStartPos(qMin(seqLen - 1, visibleRange.startPos + 1));
-        accepted = true;
-        break;
-    case Qt::Key_Home:
-        view->setStartPos(0);
-        accepted = true;
-        break;
-    case Qt::Key_End:
-        view->setStartPos(seqLen - 1);
-        accepted = true;
-        break;
-    case Qt::Key_PageUp:
-        view->scrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        accepted = true;
-        break;
-    case Qt::Key_PageDown:
-        view->scrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        accepted = true;
-        break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+            view->setStartPos(qMax(qint64(0), visibleRange.startPos - 1));
+            accepted = true;
+            break;
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            view->setStartPos(qMin(seqLen - 1, visibleRange.startPos + 1));
+            accepted = true;
+            break;
+        case Qt::Key_Home:
+            view->setStartPos(0);
+            accepted = true;
+            break;
+        case Qt::Key_End:
+            view->setStartPos(seqLen - 1);
+            accepted = true;
+            break;
+        case Qt::Key_PageUp:
+            view->scrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            accepted = true;
+            break;
+        case Qt::Key_PageDown:
+            view->scrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            accepted = true;
+            break;
     }
     if (accepted) {
         e->accept();
@@ -607,9 +607,8 @@ void GSequenceLineView::changeSelection(QVector<U2Region> &regions, const U2Regi
 /// GSequenceLineViewRenderArea
 
 GSequenceLineViewRenderArea::GSequenceLineViewRenderArea(GSequenceLineView *v)
-    : QWidget(v) {
+    : QWidget(v), cachedView(new QPixmap()) {
     view = v;
-    cachedView = new QPixmap();
 
     sequenceFont.setFamily("Courier New");
     sequenceFont.setPointSize(12);
@@ -621,10 +620,6 @@ GSequenceLineViewRenderArea::GSequenceLineViewRenderArea(GSequenceLineView *v)
     rulerFont.setPointSize(8);
 
     updateFontMetrics();
-}
-
-GSequenceLineViewRenderArea::~GSequenceLineViewRenderArea() {
-    delete cachedView;
 }
 
 void GSequenceLineViewRenderArea::updateFontMetrics() {
@@ -670,8 +665,7 @@ void GSequenceLineViewRenderArea::paintEvent(QPaintEvent *e) {
     QSize currentSize = size() * devicePixelRatio();
     if (cachedViewSize != currentSize) {
         view->addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
-        delete cachedView;
-        cachedView = new QPixmap(currentSize);
+        cachedView.reset(new QPixmap(currentSize));
         cachedView->setDevicePixelRatio(devicePixelRatio());
     }
 
@@ -686,26 +680,22 @@ double GSequenceLineViewRenderArea::getCurrentScale() const {
     return double(width()) / view->getVisibleRange().length;
 }
 
-qint64 GSequenceLineViewRenderArea::coordToPos(int _x) const {
-    int x = qBound(0, _x, width());
+qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &coord) const {
+    int x = qBound(0, coord.x(), width());
     const U2Region &visibleRange = view->getVisibleRange();
     double scale = getCurrentScale();
     qint64 pos = qRound(visibleRange.startPos + x / scale);
     return qBound(visibleRange.startPos, pos, visibleRange.endPos());
 }
 
-qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &coord) const {
-    return coordToPos(coord.x());
-}
-
-float GSequenceLineViewRenderArea::posToCoordF(qint64 pos, bool useVirtualSpace) const {
+int GSequenceLineViewRenderArea::posToCoord(qint64 pos, bool useVirtualSpace) const {
     const U2Region &visibleRange = view->getVisibleRange();
     bool isInVisibleRange = visibleRange.contains(pos) || pos == visibleRange.endPos();
     if (!isInVisibleRange && !useVirtualSpace) {
         return -1;
     }
-    float coord = float((pos - visibleRange.startPos) * getCurrentScale());
-    SAFE_POINT(useVirtualSpace || qRound(coord) <= width(), "Position is out of range!", coord);
+    int coord = qRound((pos - visibleRange.startPos) * getCurrentScale());
+    SAFE_POINT(useVirtualSpace || coord <= width(), "Position is out of range!", coord);
     return coord;
 }
 
