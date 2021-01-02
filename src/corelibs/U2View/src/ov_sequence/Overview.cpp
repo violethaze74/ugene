@@ -48,7 +48,8 @@ const QString Overview::ANNOTATION_GRAPH_STATE = "sequenceViewSettings/annotatio
 Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     : GSequenceLineView(p, ctx),
       seqWidget(p) {
-    renderArea = overviewRenderArea = new OverviewRenderArea(this);
+    overviewRenderArea = new OverviewRenderArea(this);
+    renderArea = overviewRenderArea;
     visibleRange = U2Region(0, ctx->getSequenceLength());
     renderArea->setMouseTracking(true);
     renderArea->setObjectName("OverviewRenderArea");
