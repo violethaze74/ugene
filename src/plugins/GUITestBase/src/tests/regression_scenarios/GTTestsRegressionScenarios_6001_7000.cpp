@@ -6700,9 +6700,8 @@ GUI_TEST_CLASS_DEFINITION(test_6981) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // Create an annotation Build phy-tree with default settings 5809..5809
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann", "5809..5809"));
-    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    // Create an annotation of length 1 close to the sequence end, so it will be on the last (but never the first) line of Det View.
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "<auto>", "ann", "5809..5809");
 
     // Ensure that the annotation we created is not selected: select another annotation.
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");

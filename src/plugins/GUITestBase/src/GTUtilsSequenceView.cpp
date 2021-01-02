@@ -472,7 +472,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
     int x1 = renderArea->posToCoord(annotationVisibleRegion.startPos, true);
     int x2 = renderArea->posToCoord(annotationVisibleRegion.endPos() - 1, true) + renderArea->getCharWidth();
     if (x2 <= x1) {    // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
-        x2 = detView->width();
+        x2 = renderArea->width();
     }
 
     const QRect clickRect(x1, yRegion.startPos, x2 - x1, yRegion.length);
