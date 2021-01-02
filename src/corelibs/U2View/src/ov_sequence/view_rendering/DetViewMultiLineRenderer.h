@@ -36,34 +36,34 @@ public:
     DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx);
     ~DetViewMultiLineRenderer();
 
-    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const;
+    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
-    U2Region getMirroredYRange(const U2Strand &mStrand) const;
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    U2Region getMirroredYRange(const U2Strand &mStrand) const override;
 
-    qint64 getMinimumHeight() const;
-    qint64 getOneLineHeight() const;
-    qint64 getLinesCount(const QSize &canvasSize) const;
-    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const;
+    qint64 getMinimumHeight() const override;
+    qint64 getOneLineHeight() const override;
+    qint64 getLinesCount(const QSize &canvasSize) const override;
+    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    int getDirectLine() const;
+    int getDirectLine() const override;
 
-    int getRowsInLineCount() const;
+    int getRowsInLineCount() const override;
 
-    QSize getBaseCanvasSize(const U2Region &visibleRange) const;
+    QSize getBaseCanvasSize(const U2Region &visibleRange) const override;
 
-    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
+    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
 
-    void update();
+    void update() override;
 
 private:
-    DetViewSingleLineRenderer *singleLinePainter;
+    DetViewSingleLineRenderer *singleLineRenderer;
 
     int extraIndent;
 
