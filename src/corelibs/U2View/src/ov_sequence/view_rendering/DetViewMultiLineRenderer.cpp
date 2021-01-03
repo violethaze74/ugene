@@ -60,7 +60,7 @@ float DetViewMultiLineRenderer::posToXCoordF(const qint64 p, const QSize &canvas
 }
 
 U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const {
-    SAFE_POINT(locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", U2Region());
+    SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", U2Region());
 
     // Compute region offset within a single line.
     U2Region yRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, canvasSize, visibleRange);
