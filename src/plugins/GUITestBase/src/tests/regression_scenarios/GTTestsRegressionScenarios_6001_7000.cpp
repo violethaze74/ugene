@@ -90,6 +90,7 @@
 #include "primitives/GTMainWindow.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
@@ -6692,6 +6693,25 @@ GUI_TEST_CLASS_DEFINITION(test_6979) {
 
     // Expected state: a tab with tree created last is activated.
     CHECK_SET_ERR(tabWidget->currentIndex() == 1, "Expected second tab to be active")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6981) {
+    // Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Create an annotation of length 1 close to the sequence end, so it will be on the last (but never the first) line of Det View.
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "<auto>", "ann", "complement(5809..5809)");
+
+    // Ensure that the annotation we created is not selected: select another annotation.
+    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+
+    // Click the annotation location in DetView.
+    GTUtilsSequenceView::clickAnnotationDet(os, "ann", 5809);
+
+    // Expected state: the annotation has been selected
+    QString annTreeItem = GTUtilsAnnotationsTreeView::getSelectedItem(os);
+    CHECK_SET_ERR(annTreeItem == "ann", QString("Incorrect selected item name, expected: ann, current: %1").arg(annTreeItem));
 }
 
 }    // namespace GUITest_regression_scenarios
