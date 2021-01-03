@@ -9,66 +9,7 @@
 
 namespace HI {
 
-class GUITestIgnorable {
-public:
-    // not ignored test, ignored by all, ignored on windows platforms, ignored on linux platforms
-    enum IgnoreStatus {
-        NotIgnored = 0x0,
-        Ignored = 0x1,
-        IgnoredWindows = 0x2,
-        IgnoredLinux = 0x4,
-        IgnoredMac = 0x8
-    };
-
-    enum IgnoreReason {
-        Bug,
-        System
-    };
-
-    GUITestIgnorable()
-        : ignoreStatus(NotIgnored), ignoreMessage(""), ignoreReason(Bug) {
-    }
-
-    void setIgnored(int status, const QString &message = "") {
-        ignoreStatus = status;
-        ignoreMessage = message;
-        ignoreReason = Bug;
-    }
-    void setReason(IgnoreReason _reason) {
-        ignoreReason = _reason;
-    }
-    int getIgnoreStatus() const {
-        return ignoreStatus;
-    }
-    QString getIgnoreMessage() const {
-        return ignoreMessage;
-    }
-
-    bool isIgnored() const {
-        bool ignored = ignoreStatus & Ignored;
-#if defined(Q_OS_WIN)
-        bool platformIgnored = ignoreStatus & IgnoredWindows;
-#elif defined(Q_OS_LINUX)
-        bool platformIgnored = ignoreStatus & IgnoredLinux;
-#elif defined(Q_OS_MAC)
-        bool platformIgnored = ignoreStatus & IgnoredMac;
-#else
-        bool platformIgnored = false;
-#endif
-        return ignored || platformIgnored;
-    }
-
-    IgnoreReason getReason() {
-        return ignoreReason;
-    }
-
-private:
-    int ignoreStatus;
-    QString ignoreMessage;
-    IgnoreReason ignoreReason;
-};
-
-class HI_EXPORT GUITest : public QObject, public GUITestIgnorable {
+class HI_EXPORT GUITest : public QObject {
     Q_OBJECT
 public:
     GUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet = QSet<QString>())
@@ -108,9 +49,22 @@ public:
         return suiteName + ":" + testName;
     }
 
+    /** See docs for the field. */
+    const QString &getDescription() const {
+        return description;
+    }
+
+    /** See docs for the field. */
+    void setDescription(const QString &newDescription) {
+        description = newDescription;
+    }
+
 private:
     GUITest(const GUITest &);
     GUITest &operator=(const GUITest &);
+
+    /** Extra description about the test available to the test runner (example: Teamcity). */
+    QString description;
 };
 
 typedef QList<GUITest *> GUITests;

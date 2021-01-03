@@ -96,7 +96,6 @@
 #include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
 #include "tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h"
 #include "tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h"
-#include "tests/crazy_user/GUICrazyUserTest.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_1_1000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_2001_3000.h"
@@ -105,8 +104,25 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
 
-static QStringList labels(const QString &label) {
-    return QStringList() << label;
+namespace U2 {
+
+/** Converts list of label args into QStringList. */
+static QStringList labels(const QString &label1, const QString &label2 = "", const QString &label3 = "", const QString &label4 = "", const QString &label5 = "") {
+    QStringList rawLabelList = QStringList() << label1 << label2 << label3 << label4 << label5;
+    QStringList resultLabelList;
+    for (const QString &rawLabel : rawLabelList) {
+        if (!rawLabel.isEmpty()) {
+            resultLabelList << rawLabel;
+        }
+    }
+    return resultLabelList;
+}
+
+/** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
+static QStringList nightly(const QString &label1 = "", const QString &label2 = "", const QString &label3 = "", const QString &label4 = "", const QString &label5 = "") {
+    QStringList resultLabelList = labels(label1, label2, label3, label4, label5);
+    resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
+    return resultLabelList;
 }
 
 /** Converts minutes into milliseconds. Used to make tests registration more readable. */
@@ -116,50 +132,19 @@ static int minutes(int minutes) {
 
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
-    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(Nightly)));
+    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
 
 /** Registers a GUI test included into nightly build with a custom timeout. */
 #define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \
-    guiTestBase->registerTest(new TestClass(TIMEOUT, labels(Nightly)));
+    guiTestBase->registerTest(new TestClass(TIMEOUT, nightly()));
 
-/** Registers a GUI test included into nightly build with a default timeout and sets its state to Ignored. */
-#define REGISTER_TEST_IGNORED_BY(TestClass, BY, MESSAGE, reason) \
+/** Registers a GUI with a given set of labels and description. Usually used to pass some non-default labels and the reason to the test. */
+#define REGISTER_TEST_EXT(TestClass, LABELS, DESCRIPTION) \
     { \
-        auto test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(Nightly)); \
-        test->setIgnored(BY, MESSAGE); \
-        test->setReason(reason); \
+        auto test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, LABELS); \
+        test->setDescription(DESCRIPTION); \
         guiTestBase->registerTest(test); \
     }
-
-/** Registers a GUI test included into nightly build with a custom timeout and sets its state to Ignored. */
-#define REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(TestClass, TIMEOUT, BY, MESSAGE, reason) \
-    { \
-        auto test = new TestClass(TIMEOUT, labels(Nightly)); \
-        test->setIgnored(BY, MESSAGE); \
-        test->setReason(reason); \
-        guiTestBase->registerTest(test); \
-    }
-
-#define REGISTER_TEST_IGNORED(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::Ignored, MESSAGE, HI::GUITest::Bug)
-#define REGISTER_TEST_IGNORED_LINUX(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
-#define REGISTER_TEST_IGNORED_WINDOWS(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows, MESSAGE, HI::GUITest::Bug)
-#define REGISTER_TEST_IGNORED_MAC(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac, MESSAGE, HI::GUITest::Bug)
-
-#define REGISTER_TEST_NOT_FOR_LINUX(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredLinux, "not for Linux", HI::GUITest::System)
-#define REGISTER_TEST_NOT_FOR_WINDOWS(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows, "not for Windows", HI::GUITest::System)
-#define REGISTER_TEST_NOT_FOR_MAC(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac, "not for Mac", HI::GUITest::System)
-
-#define REGISTER_TEST_NOT_FOR_LINUX_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredLinux, "not for Linux with timeout", HI::GUITest::System)
-#define REGISTER_TEST_NOT_FOR_WINDOWS_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredWindows, "not for Windows with timeout", HI::GUITest::System)
-#define REGISTER_TEST_NOT_FOR_MAC_WITH_TIMEOUT(X, TIMEOUT) REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(X, TIMEOUT, HI::GUITest::IgnoredMac, "not for Mac with timeout", HI::GUITest::System)
-
-#define REGISTER_TEST_LINUX(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredMac, MESSAGE, HI::GUITest::Bug)
-#define REGISTER_TEST_WINDOWS(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac | HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
-#define REGISTER_TEST_MAC(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
-
-#define REGISTER_TEST_ONLY_LINUX(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredMac, "only for Linux", HI::GUITest::System)
-#define REGISTER_TEST_ONLY_WINDOWS(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredMac | HI::GUITest::IgnoredLinux, "only for Windows", HI::GUITest::System)
-#define REGISTER_TEST_ONLY_MAC(X) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredWindows | HI::GUITest::IgnoredLinux, "only for Mac", HI::GUITest::System)
 
 /** Registers a GUI test with the TIMEOUT and LABELS provided. */
 #define REGISTER_TEST_TL(TestClass, TIMEOUT, LABELS) \
@@ -171,7 +156,25 @@ static int minutes(int minutes) {
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
 
-namespace U2 {
+/**  Registers test on all platforms but with a global Ignored label. */
+#define REGISTER_TEST_IGNORED(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(Ignored), MESSAGE)
+/**  Registers test on all platforms but with am IgnoredOnWindows label. */
+#define REGISTER_TEST_IGNORED_WINDOWS(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(IgnoredOnWindows), MESSAGE)
+/**  Registers test on all platforms but with am IgnoredOnMacOS label. */
+#define REGISTER_TEST_IGNORED_MAC(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(IgnoredOnMacOS), MESSAGE)
+
+/** Registers test only on all platforms except Windows. */
+#define REGISTER_TEST_NOT_FOR_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Linux, MacOS))
+/** Registers test only on all platforms except MacOS. */
+#define REGISTER_TEST_NOT_FOR_MAC(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Linux, Windows))
+
+/** Registers test on all platforms and adds ignored labels for all of them, but not for the Linux. */
+#define REGISTER_TEST_LINUX(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(IgnoredOnMacOS, IgnoredOnWindows), MESSAGE)
+
+/** Registers test only on a single platform. */
+#define REGISTER_TEST_ONLY_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Linux))
+#define REGISTER_TEST_ONLY_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Windows))
+#define REGISTER_TEST_ONLY_MAC(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, MacOS))
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
@@ -2123,29 +2126,29 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/metaphlan2
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, labels(Metagenomics));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, labels(Metagenomics, Linux));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, labels(Metagenomics, Linux));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/workflow_designer
     /////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, minutes(10), labels(Metagenomics));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, minutes(10), labels(Metagenomics));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, minutes(10), labels(Metagenomics));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, minutes(10), labels(Metagenomics));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, minutes(10), labels(Metagenomics));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, minutes(10), labels(Metagenomics, Linux));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, minutes(10), labels(Metagenomics, Linux));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, minutes(10), labels(Metagenomics, Linux));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, minutes(10), labels(Metagenomics, Linux));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, minutes(10), labels(Metagenomics, Linux));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, minutes(10), labels(Metagenomics, Linux));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor

@@ -49,6 +49,45 @@ public:
 
     /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
     static const QString Metagenomics;
+
+    /** A test with this label is safe to run on Linux. */
+    static const QString Linux;
+
+    /** A test with this label is safe to run on MacOS. */
+    static const QString MacOS;
+
+    /** A test with this label is safe to run in Windows. */
+    static const QString Windows;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run and reported as ignored.
+     * Any Ignored or IgnoredOn<Platform> label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString Ignored;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on Linux and reported as ignored.
+     * Any IgnoredOnLinux label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnLinux;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on MacOS and reported as ignored.
+     * Any IgnoredOnMacOS label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnMacOS;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on Windows and reported as ignored.
+     * Any IgnoredOnWindows label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnWindows;
+
+    /** Returns true if the test is has Ignored or IgnoredOn<CurrentOS>. */
+    static bool hasIgnoredLabel(const GUITest *test);
+
+    /** Returns true if the test has current platform label: Linux, MacOS or Windows. */
+    static bool hasPlatformLabel(const GUITest *test);
 };
 
 /** GUI test with quick access to UGENE specific runtime variables: testDir, dataDir ... */
