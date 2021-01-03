@@ -77,7 +77,14 @@ public:
 
     virtual double getCurrentScale() const = 0;
 
-    virtual U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+    /**
+     * Returns on-screen Y-range of the annotation region in render area coordinates or an empty region if the view does not support this method.
+     * For multi-line views a region may span across multiple lines. In this case the method returns the region on the first line.
+     *
+     * TODO: this method is used only from isOnAnnotationLine(). They both can be replaced with
+     *  a more generic isScreenPointWithinAnnotationRegion(QPoint point, region ... ) which can be safely supported by all kind of views.
+     */
+    virtual U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
     virtual U2Region getMirroredYRange(const U2Strand &mStrand) const = 0;
 
     virtual qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const = 0;
