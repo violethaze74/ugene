@@ -150,22 +150,22 @@ static int minutes(int minutes) {
 #define REGISTER_TEST_TL(TestClass, TIMEOUT, LABELS) \
     guiTestBase->registerTest(new TestClass(TIMEOUT, LABELS));
 
-/** Registers a GUI test with the TIMEOUT provided. Adds NIGHTLY_TEST_LABEL label.*/
-#define REGISTER_TEST_T(TestClass, TIMEOUT) REGISTER_TEST_TL(TestClass, TIMEOUT, labels(Nightly));
+/** Registers a GUI test with the TIMEOUT provided as a part of nightly build.*/
+#define REGISTER_TEST_T(TestClass, TIMEOUT) REGISTER_TEST_TL(TestClass, TIMEOUT, nightly());
 
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
 
 /**  Registers test on all platforms but with a global Ignored label. */
 #define REGISTER_TEST_IGNORED(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(Ignored), MESSAGE)
-/**  Registers test on all platforms but with am IgnoredOnWindows label. */
+/**  Registers test on all platforms but with an IgnoredOnWindows label. */
 #define REGISTER_TEST_IGNORED_WINDOWS(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(IgnoredOnWindows), MESSAGE)
-/**  Registers test on all platforms but with am IgnoredOnMacOS label. */
+/**  Registers test on all platforms but with an IgnoredOnMacOS label. */
 #define REGISTER_TEST_IGNORED_MAC(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly(IgnoredOnMacOS), MESSAGE)
 
-/** Registers test only on all platforms except Windows. */
+/** Registers test on all platforms except Windows. */
 #define REGISTER_TEST_NOT_FOR_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Linux, MacOS))
-/** Registers test only on all platforms except MacOS. */
+/** Registers test on all platforms except MacOS. */
 #define REGISTER_TEST_NOT_FOR_MAC(TestClass) REGISTER_TEST_L(TestClass, labels(Nightly, Linux, Windows))
 
 /** Registers test on all platforms and adds ignored labels for all of them, but not for the Linux. */
