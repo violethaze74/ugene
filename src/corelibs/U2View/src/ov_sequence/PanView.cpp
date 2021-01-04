@@ -635,7 +635,7 @@ U2Region PanViewRenderArea::getAnnotationYRange(Annotation *annotation, int loca
 }
 
 QList<U2Region> PanViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
-    // Each annotation has only 1 y-region in PanView.
+    // Each annotation region has only 1 y-region in PanView.
     return QList<U2Region>() << getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
 }
 

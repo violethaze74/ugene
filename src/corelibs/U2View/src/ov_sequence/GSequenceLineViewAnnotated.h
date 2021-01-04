@@ -43,6 +43,10 @@ public:
 
     bool isAnnotationVisible(const Annotation *a) const;
 
+    /**
+     * Returns list of annotations that hold the on-screen point.
+     * The method is delegated to the renderArea. Override the renderArea's variant of the method when needed.
+    */
     QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
 
     static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
