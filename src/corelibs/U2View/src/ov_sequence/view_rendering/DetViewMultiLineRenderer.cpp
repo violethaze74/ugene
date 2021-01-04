@@ -59,25 +59,28 @@ float DetViewMultiLineRenderer::posToXCoordF(const qint64 p, const QSize &canvas
     return commonMetrics.charWidth * (p % symbolsPerLine);
 }
 
-U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const {
-    SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", U2Region());
+QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int canvasWidth, const U2Region &visibleRange) const {
+    SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", QList<U2Region>());
 
     // Compute region offset within a single line.
-    U2Region yRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, canvasSize, visibleRange);
+    U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
     // The first line is indented from the widget start by the half of indent.
-    yRegion.startPos += INDENT_BETWEEN_LINES / 2;
-
-    // Push yRegion to the correct wrap-line.
-    const U2Region &locationRegion = annotation->getRegions()[locationRegionIndex];
-    int locationRegionOffset = locationRegion.startPos - visibleRange.startPos;
-    int baseCountPerLine = getSymbolsPerLine(canvasSize.width());
-    if (locationRegionOffset > baseCountPerLine) {
-        int locationRegionLineIndex = locationRegionOffset / baseCountPerLine;
-        yRegion.startPos += locationRegionLineIndex * getOneLineHeight();
-    }
+    singleLineYRegion.startPos += INDENT_BETWEEN_LINES / 2;
     // Apply vertical scroll shift within multi-line det-view.
-    yRegion.startPos -= detView->getShift();
-    return yRegion;
+    singleLineYRegion.startPos -= detView->getShift();
+
+    int baseCountPerLine = getSymbolsPerLine(canvasWidth);
+    int singleLineHeight = getOneLineHeight();
+
+    // Compute continuous yRegions split across multiple lines for the given location region.
+    QList<U2Region> yRegionList;
+    const U2Region &locationRegion = annotation->getRegions()[locationRegionIndex];
+    int locationFirstLineIndex = (locationRegion.startPos - visibleRange.startPos) / baseCountPerLine;
+    int lineFirstPos = visibleRange.startPos + (locationFirstLineIndex * baseCountPerLine);
+    for (int lineIndex = locationFirstLineIndex; lineFirstPos < locationRegion.endPos(); lineIndex++, lineFirstPos += baseCountPerLine) {
+        yRegionList << U2Region(singleLineYRegion.startPos + lineIndex * singleLineHeight, singleLineYRegion.length);
+    }
+    return yRegionList;
 }
 
 U2Region DetViewMultiLineRenderer::getMirroredYRange(const U2Strand &) const {
@@ -98,9 +101,7 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
 }
 
 bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
-    qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
-    QSize oneLineMinSize(canvasSize.width(), getMinimumHeight());
-    U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, oneLineMinSize, U2Region(visibleRange.startPos, qMin(visibleRange.length, symbolsPerLine)));
+    U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;
     do {
         if (yRange.contains(p.y())) {
@@ -231,6 +232,10 @@ void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, 
 
 void DetViewMultiLineRenderer::update() {
     singleLineRenderer->update();
+}
+
+U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    FAIL("This method must never be called and exists due to a design flow. DetViewMultiLineRenderer delegates annotation rendering to DetViewSingleLineRenderer", U2Region());
 }
 
 }    // namespace U2

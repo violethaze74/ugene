@@ -466,7 +466,10 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
         goToPosition(os, center);
     }
 
-    U2Region yRegion = renderArea->getAnnotationYRange(annotation, annotationRegionIndex, as);
+    QList<U2Region> yRegionList = renderArea->getAnnotationYRegions(annotation, annotationRegionIndex, as);
+    GT_CHECK(!yRegionList.isEmpty(), "yRegionList is empty!");
+
+    U2Region yRegion = yRegionList.first();
     U2Region visibleRegion = detView->getVisibleRange();
     U2Region annotationVisibleRegion = annotationRegion.intersect(visibleRegion);
     int x1 = renderArea->posToCoord(annotationVisibleRegion.startPos, true);

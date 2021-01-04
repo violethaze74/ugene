@@ -592,14 +592,10 @@ const U2Region PanView::getRegionToZoom() const {
 //////////////////////////////////////////////////////////////////////////
 /// render
 PanViewRenderArea::PanViewRenderArea(PanView *d, PanViewRenderer *renderer)
-    : GSequenceLineViewAnnotatedRenderArea(d),
+    : GSequenceLineViewGridAnnotationRenderArea(d),
       panView(d),
       renderer(renderer) {
     SAFE_POINT(NULL != renderer, "Renderer is NULL", );
-}
-
-PanViewRenderArea::~PanViewRenderArea() {
-    delete renderer;
 }
 
 void PanViewRenderArea::drawAll(QPaintDevice *pd) {
@@ -632,20 +628,19 @@ void PanViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 }
 
-U2Region PanViewRenderArea::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const {
-    U2Region region = renderer->getAnnotationYRange(a, r, as, size(), view->getVisibleRange());
+U2Region PanViewRenderArea::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    U2Region region = renderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
     region.startPos += renderer->getContentIndentY(size(), view->getVisibleRange());
     return region;
 }
 
-int PanViewRenderArea::getRowLineHeight() const {
-    return renderer->getRowLineHeight();
+QList<U2Region> PanViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    // Each annotation has only 1 y-region in PanView.
+    return QList<U2Region>() << getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
 }
 
-void PanViewRenderArea::setRenderer(PanViewRenderer *newRenderer) {
-    SAFE_POINT(NULL != newRenderer, "New renderer is NULL", );
-    delete renderer;
-    renderer = newRenderer;
+int PanViewRenderArea::getRowLineHeight() const {
+    return renderer->getRowLineHeight();
 }
 
 bool PanViewRenderArea::isSequenceCharsVisible() const {

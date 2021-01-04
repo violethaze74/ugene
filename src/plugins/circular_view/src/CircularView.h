@@ -69,8 +69,6 @@ public:
     void wheelEvent(QWheelEvent *we) override;
     QSize sizeHint() const override;
 
-    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
-
     static qreal coordToAngle(const QPoint point);
 
     bool isCircularTopology() const;
@@ -146,8 +144,16 @@ class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     friend class CircularAnnotationRegionItem;
     Q_OBJECT
 public:
+    enum DrawAnnotationPass {
+        DrawAnnotationPass_DrawFill,
+        DrawAnnotationPass_DrawBorder
+    };
+
     CircularViewRenderArea(CircularView *d);
     ~CircularViewRenderArea();
+
+    /** Returns all annotations by a coordinate inside render area. */
+    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
 
     int getAnnotationYLevel(Annotation *a) const {
         return annotationYLevel.value(a);
@@ -164,7 +170,6 @@ protected:
     qint64 coordToPos(const QPoint &p) const override;
     void resizeEvent(QResizeEvent *e) override;
     virtual void drawAll(QPaintDevice *pd) override;
-    virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const override;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = NULL);
     void buildAnnotationLabel(const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);

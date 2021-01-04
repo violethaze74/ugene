@@ -143,7 +143,7 @@ private:
     static const QString TRANSLATION_STATE;
 };
 
-class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
+class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewGridAnnotationRenderArea {
     Q_OBJECT
 public:
     DetViewRenderArea(DetView *d);
@@ -153,7 +153,9 @@ public:
         return renderer;
     }
 
-    U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const override;
+    /** Returns all y regions covered by the given location of the annotation. */
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
+
     double getCurrentScale() const override;
 
     void setWrapSequence(bool v);
@@ -185,7 +187,6 @@ public:
     void updateSize();
 
     bool isOnTranslationsLine(const QPoint &p) const;
-    bool isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const override;
 
 protected:
     void drawAll(QPaintDevice *pd) override;

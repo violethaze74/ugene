@@ -570,41 +570,41 @@ void DetView::keyPressEvent(QKeyEvent *e) {
     bool accepted = false;
     GScrollBar *sBar = isWrapMode() ? verticalScrollBar : scrollBar;
     switch (key) {
-    case Qt::Key_Left:
-    case Qt::Key_Up:
-        if (isWrapMode()) {
-            verticalScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
-        } else {
-            setStartPos(qMax(qint64(0), visibleRange.startPos - 1));
-        }
-        accepted = true;
-        break;
-    case Qt::Key_Right:
-    case Qt::Key_Down:
-        if (isWrapMode()) {
-            verticalScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
-        } else {
-            setStartPos(qMin(seqLen - 1, visibleRange.startPos + 1));
-        }
-        accepted = true;
-        break;
-    case Qt::Key_Home:
-        setStartPos(0);
-        currentShiftsCounter = 0;
-        accepted = true;
-        break;
-    case Qt::Key_End:
-        setStartPos(seqLen - 1);
-        accepted = true;
-        break;
-    case Qt::Key_PageUp:
-        sBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        accepted = true;
-        break;
-    case Qt::Key_PageDown:
-        sBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        accepted = true;
-        break;
+        case Qt::Key_Left:
+        case Qt::Key_Up:
+            if (isWrapMode()) {
+                verticalScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+            } else {
+                setStartPos(qMax(qint64(0), visibleRange.startPos - 1));
+            }
+            accepted = true;
+            break;
+        case Qt::Key_Right:
+        case Qt::Key_Down:
+            if (isWrapMode()) {
+                verticalScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+            } else {
+                setStartPos(qMin(seqLen - 1, visibleRange.startPos + 1));
+            }
+            accepted = true;
+            break;
+        case Qt::Key_Home:
+            setStartPos(0);
+            currentShiftsCounter = 0;
+            accepted = true;
+            break;
+        case Qt::Key_End:
+            setStartPos(seqLen - 1);
+            accepted = true;
+            break;
+        case Qt::Key_PageUp:
+            sBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            accepted = true;
+            break;
+        case Qt::Key_PageDown:
+            sBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            accepted = true;
+            break;
     }
     if (accepted) {
         e->accept();
@@ -814,22 +814,22 @@ void DetView::setDefaultState() {
     setWrapSequence(settings->getValue(SEQUENCE_WRAPPED, QVariant(true)).toBool());
     setShowComplement(settings->getValue(COMPLEMENTARY_STRAND_SHOWN, QVariant(true)).toBool());
     switch (static_cast<SequenceObjectContext::TranslationState>(settings->getValue(TRANSLATION_STATE, QVariant(SequenceObjectContext::TS_DoNotTranslate)).toInt())) {
-    case SequenceObjectContext::TS_DoNotTranslate:
-        doNotTranslateAction->setChecked(true);
-        sl_doNotTranslate();
-        break;
-    case SequenceObjectContext::TS_AnnotationsOrSelection:
-        translateAnnotationsOrSelectionAction->setChecked(true);
-        sl_translateAnnotationsOrSelection();
-        break;
-    case SequenceObjectContext::TS_SetUpFramesManually:
-        setUpFramesManuallyAction->setChecked(true);
-        sl_setUpFramesManually();
-        break;
-    case SequenceObjectContext::TS_ShowAllFrames:
-        showAllFramesAction->setChecked(true);
-        sl_showAllFrames();
-        break;
+        case SequenceObjectContext::TS_DoNotTranslate:
+            doNotTranslateAction->setChecked(true);
+            sl_doNotTranslate();
+            break;
+        case SequenceObjectContext::TS_AnnotationsOrSelection:
+            translateAnnotationsOrSelectionAction->setChecked(true);
+            sl_translateAnnotationsOrSelection();
+            break;
+        case SequenceObjectContext::TS_SetUpFramesManually:
+            setUpFramesManuallyAction->setChecked(true);
+            sl_setUpFramesManually();
+            break;
+        case SequenceObjectContext::TS_ShowAllFrames:
+            showAllFramesAction->setChecked(true);
+            sl_showAllFrames();
+            break;
     }
 }
 
@@ -837,7 +837,7 @@ void DetView::setDefaultState() {
 /* DetViewRenderArea */
 /************************************************************************/
 DetViewRenderArea::DetViewRenderArea(DetView *v)
-    : GSequenceLineViewAnnotatedRenderArea(v) {
+    : GSequenceLineViewGridAnnotationRenderArea(v) {
     renderer = DetViewRendererFactory::createRenderer(getDetView(), view->getSequenceContext(), v->isWrapMode());
     setMouseTracking(true);
     updateSize();
@@ -854,23 +854,12 @@ void DetViewRenderArea::setWrapSequence(bool v) {
     updateSize();
 }
 
-U2Region DetViewRenderArea::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const {
-    U2Region absoluteRegion = renderer->getAnnotationYRange(a, r, as, size(), view->getVisibleRange());
-    absoluteRegion.startPos += renderer->getContentIndentY(size(), view->getVisibleRange());
-    return absoluteRegion;
-}
-
 bool DetViewRenderArea::isOnTranslationsLine(const QPoint &p) const {
     return renderer->isOnTranslationsLine(p, size(), view->getVisibleRange());
 }
 
-bool DetViewRenderArea::isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const {
-    int scrollShift = getDetView()->getShift();
-    QPoint pShifted(p.x(), p.y() + scrollShift);
-
-    QSize expandedSize = size();
-    expandedSize.setHeight(expandedSize.height() + scrollShift);
-    return renderer->isOnAnnotationLine(pShifted, a, region, as, expandedSize, view->getVisibleRange());
+QList<U2Region> DetViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    return renderer->getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings, width(), view->getVisibleRange());
 }
 
 void DetViewRenderArea::drawAll(QPaintDevice *pd) {
