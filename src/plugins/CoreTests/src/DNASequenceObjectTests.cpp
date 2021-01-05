@@ -826,8 +826,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
         }
 
         if (sortValue == "true") {
-            one->sortRowsByName();
-            two->sortRowsByName();
+            one->sortRows(MultipleAlignment::SortByName);
+            two->sortRows(MultipleAlignment::SortByName);
         }
 
         int seqSz = alignedSeqs1.size();

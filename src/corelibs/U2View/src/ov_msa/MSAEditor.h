@@ -100,7 +100,7 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    void sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder);
+    void sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos);
@@ -122,6 +122,7 @@ protected slots:
     void sl_showCustomSettings();
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
+    void sl_sortSequencesByLeadingGap();
     void sl_convertBetweenDnaAndRnaAlphabets();
 
 protected:
@@ -131,7 +132,7 @@ protected:
     void onObjectRenamed(GObject *obj, const QString &oldName) override;
     bool onCloseEvent() override;
 
-    void addCopyPasteMenu(QMenu* m) override;
+    void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;
     void addSortMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
@@ -164,6 +165,8 @@ public:
     QAction *sortByNameDescendingAction;
     QAction *sortByLengthAscendingAction;
     QAction *sortByLengthDescendingAction;
+    QAction *sortByLeadingGapAscendingAction;
+    QAction *sortByLeadingGapDescendingAction;
 
     QAction *convertDnaToRnaAction;
     QAction *convertRnaToDnaAction;

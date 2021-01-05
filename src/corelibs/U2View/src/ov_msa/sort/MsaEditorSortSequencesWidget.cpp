@@ -40,8 +40,9 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAE
 
     sortByCombo = new QComboBox();
     sortByCombo->setObjectName("sortByComboBox");
-    sortByCombo->addItem(tr("Name"));
-    sortByCombo->addItem(tr("Length"));
+    sortByCombo->addItem(tr("Name"), MultipleAlignment::SortByName);
+    sortByCombo->addItem(tr("Length"), MultipleAlignment::SortByLength);
+    sortByCombo->addItem(tr("Leading gap"), MultipleAlignment::SortByLeadingGap);
     layout->addWidget(sortByCombo);
 
     QLabel *sortOrderLabel = new QLabel();
@@ -70,9 +71,10 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAE
 }
 
 void MsaEditorSortSequencesWidget::sl_sortClicked() {
-    bool isByName = sortByCombo->currentIndex() == 0;
+    int sortType = sortByCombo->currentData().toInt();
+    SAFE_POINT(sortType >= MultipleAlignment::SortByName && sortType <= MultipleAlignment::SortByLeadingGap, "Invalid sort type: " + QString::number(sortType), );
     MultipleAlignment::Order sortOrder = sortOrderCombo->currentIndex() == 0 ? MultipleAlignment::Ascending : MultipleAlignment::Descending;
-    msaEditor->sortSequences(isByName, sortOrder);
+    msaEditor->sortSequences((MultipleAlignment::SortType)sortType, sortOrder);
 }
 
 void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {

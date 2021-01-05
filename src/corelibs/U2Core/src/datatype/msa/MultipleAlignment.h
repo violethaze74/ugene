@@ -45,6 +45,18 @@ public:
         Descending
     };
 
+    /** Type of the rows sorting algorithm. */
+    enum SortType {
+        /** Sorts rows by locale-insensitive name. */
+        SortByName = 1,
+
+        /** Sorts rows by the row sequence length (with no gaps). */
+        SortByLength = 2,
+
+        /** Sorts rows by the leading gap size. */
+        SortByLeadingGap = 3,
+    };
+
     virtual ~MultipleAlignment();
 
     MultipleAlignmentData *data() const;
@@ -126,11 +138,8 @@ public:
 
     U2MsaListGapModel getGapModel() const;
 
-    /** Sorts rows by name. If range is provided and is not empty sorts only given range. */
-    void sortRowsByName(MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
-
-    /** Sort rows by un-gapped sequence length. If range is provided and is not empty sorts only given range.*/
-    void sortRowsByLength(MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
+    /** Sorts rows. If range is provided and is not empty sorts only given range. */
+    void sortRows(const MultipleAlignment::SortType &type, const MultipleAlignment::Order &order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
 
     /** Returns row of the alignment */
     MultipleAlignmentRow getRow(int row);
