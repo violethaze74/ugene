@@ -43,7 +43,11 @@ public:
 
     bool isAnnotationVisible(const Annotation *a) const;
 
-    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
+    /**
+     * Returns list of annotations that hold the on-screen point.
+     * The method is delegated to the renderArea. Override the renderArea's variant of the method when needed.
+    */
+    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
 
     static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
 
@@ -97,23 +101,16 @@ protected:
 class U2VIEW_EXPORT GSequenceLineViewAnnotatedRenderArea : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
-    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *d);
+    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *sequenceLineViewAnnotated);
     ~GSequenceLineViewAnnotatedRenderArea();
 
-    //! VIEW_RENDERER_REFACTORING: only the second method should be available, because it is more common
-    virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const = 0;
-    virtual bool isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const;
-
-    GSequenceLineViewAnnotated *getGSequenceLineViewAnnotated() const;
+    /** Returns all annotations by a coordinate inside render area. */
+    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const = 0;
 
 protected:
     virtual void drawAll(QPaintDevice *pd) = 0;
 
-    //! VIEW_RENDERER_REFACTORING: should be removed, currenlty is used in CircularView
-    enum DrawAnnotationPass {
-        DrawAnnotationPass_DrawFill,
-        DrawAnnotationPass_DrawBorder
-    };
+    GSequenceLineViewAnnotated *const sequenceLineViewAnnotated;
 
     //! VIEW_RENDERER_REFACTORING: this parameters are also doubled in SequenceViewAnnotaterRenderer
     //af* == annotation font
@@ -127,6 +124,28 @@ protected:
     int afSmallCharWidth;
 
     QBrush gradientMaskBrush;
+};
+
+/**
+ * Common base class for all grid-like annotation areas: PanView, DetView.
+ * Note: the alternative to grid is a circular render area (see CircularView).
+ */
+class U2VIEW_EXPORT GSequenceLineViewGridAnnotationRenderArea : public GSequenceLineViewAnnotatedRenderArea {
+    Q_OBJECT
+public:
+    GSequenceLineViewGridAnnotationRenderArea(GSequenceLineViewAnnotated *sequenceLineView);
+
+    /** Returns all annotations by a coordinate inside render area. */
+    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
+
+    /** Returns true if the given annotation region contains 'y' point. */
+    bool checkAnnotationRegionContainsYPoint(int y, Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const;
+
+    /**
+     * Returns all y-regions covered by the annotation location region.
+     * TODO: rework to return list of QRects (may require a bigger refactoring).
+     */
+    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const = 0;
 };
 
 class ClearAnnotationsTask : public Task {

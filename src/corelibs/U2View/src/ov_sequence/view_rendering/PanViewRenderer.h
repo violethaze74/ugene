@@ -48,7 +48,8 @@ public:
 
     double getCurrentScale() const;
 
-    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
+    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const override;
+
     U2Region getMirroredYRange(const U2Strand &mStrand) const;
 
     qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const;

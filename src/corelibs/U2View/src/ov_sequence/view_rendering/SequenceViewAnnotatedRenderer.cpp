@@ -123,12 +123,12 @@ void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter &p, const Q
     for (Annotation *annotation : selection->getAnnotations()) {
         AnnotationTableObject *o = annotation->getGObject();
         if (ctx->getAnnotationObjects(true).contains(o)) {
-            drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, U2Region(), true);
+            drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, true);
         }
     }
 }
 
-void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, const U2Region &predefinedY, bool selected, const AnnotationSettings *as) {
+void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected, const AnnotationSettings *as) {
     const SharedAnnotationData &aData = a->getData();
     if (as == NULL) {
         AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
@@ -146,7 +146,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &can
         const U2Region &r = location.at(ri);
         if (r.intersects(visibleRange)) {
             const U2Region visibleLocation = r.intersect(visibleRange);
-            const U2Region y = predefinedY.isEmpty() ? getAnnotationYRange(a, ri, as, canvasSize, visibleRange) : predefinedY;
+            const U2Region y = getAnnotationYRange(a, ri, as);
             if (y.startPos < 0) {
                 continue;
             }
@@ -270,8 +270,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
                     x1 = qBound(-MAX_VIRTUAL_RANGE, x1, MAX_VIRTUAL_RANGE);    //qt4.4 crashes in line clipping alg for extremely large X values
                     x2 = qBound(-MAX_VIRTUAL_RANGE, x2, MAX_VIRTUAL_RANGE);
                     const int midX = (x1 + x2) / 2;
-                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as, canvasSize, visibleRange);
-                    const U2Region yr = getAnnotationYRange(a, ri, as, canvasSize, visibleRange);
+                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as);
+                    const U2Region yr = getAnnotationYRange(a, ri, as);
                     const int y1 = pyr.startPos;
                     const int dy1 = pyr.length / 2;
                     const int y2 = yr.startPos;

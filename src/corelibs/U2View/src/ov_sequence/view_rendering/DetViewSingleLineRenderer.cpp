@@ -82,14 +82,18 @@ qint64 DetViewSingleLineRenderer::coordToPos(const QPoint &p, const QSize & /*ca
     return qMin(visibleRange.startPos + p.x() / commonMetrics.charWidth, visibleRange.endPos());
 }
 
-U2Region DetViewSingleLineRenderer::getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as, const QSize & /*canvasSize*/, const U2Region & /*visibleRange*/) const {
-    const SharedAnnotationData &aData = a->getData();
+QList<U2Region> DetViewSingleLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int /*canvasWidth*/, const U2Region & /*visibleRange*/) const {
+    return QList<U2Region>() << getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
+}
+
+U2Region DetViewSingleLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    const SharedAnnotationData &aData = annotation->getData();
     const U2Strand strand = aData->getStrand();
     const bool complement = strand.isCompementary() && detView->hasComplementaryStrand();
-    const TriState aminoState = as->amino ? TriState_Yes : TriState_No;
+    const TriState aminoState = annotationSettings->amino ? TriState_Yes : TriState_No;
 
     const bool transl = detView->hasTranslations() && (aminoState == TriState_Yes);
-    const int frame = U1AnnotationUtils::getRegionFrame(detView->getSequenceLength(), strand, aData->isOrder(), region, aData->getRegions());
+    const int frame = U1AnnotationUtils::getRegionFrame(detView->getSequenceLength(), strand, aData->isOrder(), locationRegionIndex, aData->getRegions());
 
     const bool isTranslateAnnotationOrSelection = (ctx->getTranslationState() == SequenceObjectContext::TS_AnnotationsOrSelection);
     //TODO: fix this crutch in UGENE-5912
@@ -170,7 +174,7 @@ bool DetViewSingleLineRenderer::isOnTranslationsLine(const QPoint &p, const QSiz
 }
 
 bool DetViewSingleLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
-    U2Region r = getAnnotationYRange(a, region, as, canvasSize, visibleRange);
+    U2Region r = getAnnotationYRange(a, region, as);
     r.startPos += getContentIndentY(canvasSize, visibleRange);
     return r.contains(p.y());
 }
@@ -311,36 +315,36 @@ static QByteArray translateSelection(const QVector<U2Region> &regions, DNATransl
         int mod = reg.length % 3;
         qint64 length = 0;
         switch (mod) {
-        case 0:
-            if (reg.startPos % 3 == 2 && offset == 0) {
-                length = endPos - offset - 2;
-            } else {
-                length = endPos + 1;
-                if (direction == U2Strand::Direct) {
-                    length -= offset;
+            case 0:
+                if (reg.startPos % 3 == 2 && offset == 0) {
+                    length = endPos - offset - 2;
+                } else {
+                    length = endPos + 1;
+                    if (direction == U2Strand::Direct) {
+                        length -= offset;
+                    }
                 }
-            }
-            break;
-        case 1:
-            if (reg.startPos % 3 == 2 && offset == 0) {
-                length = endPos - offset - 3;
-            } else {
-                length = endPos;
-                if (direction == U2Strand::Direct) {
-                    length -= offset;
+                break;
+            case 1:
+                if (reg.startPos % 3 == 2 && offset == 0) {
+                    length = endPos - offset - 3;
+                } else {
+                    length = endPos;
+                    if (direction == U2Strand::Direct) {
+                        length -= offset;
+                    }
                 }
-            }
-            break;
-        case 2:
-            if (reg.startPos % 3 == 2 && offset == 0) {
-                length = endPos - offset - 4;
-            } else {
-                length = endPos - 1;
-                if (direction == U2Strand::Direct) {
-                    length -= offset;
+                break;
+            case 2:
+                if (reg.startPos % 3 == 2 && offset == 0) {
+                    length = endPos - offset - 4;
+                } else {
+                    length = endPos - 1;
+                    if (direction == U2Strand::Direct) {
+                        length -= offset;
+                    }
                 }
-            }
-            break;
+                break;
         }
 
         QByteArray currentTranslation = translate(t, seq, length);
@@ -349,15 +353,15 @@ static QByteArray translateSelection(const QVector<U2Region> &regions, DNATransl
 
         int selTranslationSize = 0;
         switch (mod) {
-        case 0:
-            selTranslationSize = (reg.length + 1) / 3;
-            break;
-        case 1:
-            selTranslationSize = reg.length / 3;
-            break;
-        case 2:
-            selTranslationSize = (reg.length - 1) / 3;
-            break;
+            case 0:
+                selTranslationSize = (reg.length + 1) / 3;
+                break;
+            case 1:
+                selTranslationSize = reg.length / 3;
+                break;
+            case 2:
+                selTranslationSize = (reg.length - 1) / 3;
+                break;
         }
 
         const int indent = translationSize - selTranslationSize - resultTranslation.size();

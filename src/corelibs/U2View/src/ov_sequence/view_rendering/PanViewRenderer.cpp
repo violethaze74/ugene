@@ -55,16 +55,11 @@ double PanViewRenderer::getCurrentScale() const {
     return double(panView->getRenderArea()->width()) / panView->getVisibleRange().length;
 }
 
-U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
+U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const {
     Q_UNUSED(r);
-    Q_UNUSED(canvasSize);
-    Q_UNUSED(visibleRange);
-
     CHECK(as->visible, U2Region(-1, 0));
-
     const int row = panView->getRowsManager()->getAnnotationRowIdx(a);
     const int line = s->getRowLine(row);
-
     return U2Region(getLineY(line) + 2, commonMetrics.lineHeight - 4);
 }
 
@@ -428,7 +423,10 @@ PanViewRenderAreaFactory::~PanViewRenderAreaFactory() {
 }
 
 PanViewRenderArea *PanViewRenderAreaFactory::createRenderArea(PanView *panView) const {
-    return new PanViewRenderArea(panView, new PanViewRenderer(panView, panView->getSequenceContext()));
+    auto renderer = new PanViewRenderer(panView, panView->getSequenceContext());
+    auto renderArea = new PanViewRenderArea(panView, renderer);
+    renderer->setParent(renderArea);    // Delete renderer when render area is deleted.
+    return renderArea;
 }
 
 }    // namespace U2

@@ -39,7 +39,9 @@ public:
     qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
     float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    /** Returns all y regions used to draw the given location of the annotation. */
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int canvasWidth, const U2Region &visibleRange) const override;
+
     U2Region getMirroredYRange(const U2Strand &mStrand) const override;
 
     qint64 getMinimumHeight() const override;
@@ -61,6 +63,9 @@ public:
     void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
 
     void update() override;
+
+protected:
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
 
 private:
     DetViewSingleLineRenderer *singleLineRenderer;

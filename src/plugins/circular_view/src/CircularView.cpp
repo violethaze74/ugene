@@ -188,33 +188,6 @@ void CircularView::sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVect
     renderArea->update();
 }
 
-QList<Annotation *> CircularView::findAnnotationsByCoord(const QPoint &coord) const {
-    QList<Annotation *> res;
-    CircularViewRenderArea *renderArea = qobject_cast<CircularViewRenderArea *>(this->renderArea);
-    QPoint cp(coord - QPoint(width() / 2, renderArea->getCenterY()));
-    foreach (CircularAnnotationItem *item, renderArea->circItems) {
-        int region = item->containsRegion(cp);
-        if (region != -1) {
-            res.append(item->getAnnotation());
-            if (item->getAnnotation()->getType() != U2FeatureTypes::RestrictionSite) {
-                // only restriction sites can intersect
-                return res;
-            }
-        }
-    }
-    foreach (CircularAnnotationItem *item, renderArea->circItems) {
-        foreach (CircularAnnotationRegionItem *r, item->getRegions()) {
-            CircularAnnotationLabel *lbl = r->getLabel();
-            SAFE_POINT(lbl != NULL, "NULL annotation label item!", res);
-            if (lbl->isVisible() && lbl->contains(cp)) {
-                res.append(item->getAnnotation());
-                return res;
-            }
-        }
-    }
-    return res;
-}
-
 QSize CircularView::sizeHint() const {
     return renderArea->size();
 }
@@ -1048,10 +1021,6 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
     }
 }
 
-U2Region CircularViewRenderArea::getAnnotationYRange(Annotation *, int, const AnnotationSettings *) const {
-    return U2Region(0, 0);
-}
-
 qint64 CircularViewRenderArea::coordToPos(const QPoint &p) const {
     qreal arcsin = coordToAsin(p);
     qint64 resultPosition = asinToPos(arcsin);
@@ -1163,6 +1132,32 @@ qint64 CircularViewRenderArea::asinToPos(const qreal asin) const {
     qint64 resultPosition = (seqLength * graduatedAngle) / CircularView::MAX_GRADUATION_ANGLE + 0.5f;
 
     return resultPosition;
+}
+
+QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint &coord) const {
+    QList<Annotation *> res;
+    QPoint cp(coord - QPoint(width() / 2, getCenterY()));
+    for (CircularAnnotationItem *item : circItems) {
+        int region = item->containsRegion(cp);
+        if (region != -1) {
+            res.append(item->getAnnotation());
+            if (item->getAnnotation()->getType() != U2FeatureTypes::RestrictionSite) {
+                // only restriction sites can intersect
+                return res;
+            }
+        }
+    }
+    for (CircularAnnotationItem *item : circItems) {
+        for (CircularAnnotationRegionItem *r : item->getRegions()) {
+            CircularAnnotationLabel *lbl = r->getLabel();
+            SAFE_POINT(lbl != nullptr, "NULL annotation label item!", res);
+            if (lbl->isVisible() && lbl->contains(cp)) {
+                res.append(item->getAnnotation());
+                return res;
+            }
+        }
+    }
+    return res;
 }
 
 }    // namespace U2
