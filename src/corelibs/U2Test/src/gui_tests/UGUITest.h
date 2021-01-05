@@ -83,7 +83,7 @@ public:
      */
     static const QString IgnoredOnWindows;
 
-    /** Returns true if the test is has Ignored or IgnoredOn<CurrentOS>. */
+    /** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
     static bool hasIgnoredLabel(const GUITest *test);
 
     /** Returns true if the test has current platform label: Linux, MacOS or Windows. */

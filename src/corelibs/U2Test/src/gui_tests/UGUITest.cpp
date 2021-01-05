@@ -132,7 +132,7 @@ static QString getScreenshotDir() {
     return result;
 }
 
-/** Returns true if the test is has Ignored or IgnoredOn<CurrentOS>. */
+/** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
 bool UGUITestLabels::hasIgnoredLabel(const GUITest *test) {
     QString ignoreOnPlatformLabel = isOsLinux()     ? UGUITestLabels::IgnoredOnLinux
                                     : isOsMac()     ? UGUITestLabels::IgnoredOnMacOS
