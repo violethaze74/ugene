@@ -106,7 +106,7 @@
 
 namespace U2 {
 
-/** Converts list of label args into QStringList. */
+/** Returns the given labels list as is. Used to improve readability of macros. */
 static QStringList labels(const QStringList &labelList) {
     return labelList;
 }
