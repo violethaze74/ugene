@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <api/GTUtils.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -2526,16 +2527,16 @@ GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     //        Parameters page: a parameter with a type "Output file URL".
     //    4. Accept the wizard.
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.elementName = "test_6481_1";
+    QString elementName = GTUtils::genUniqueString("test_6481_1");
+    settings.elementName = elementName;
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_file_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFileUrl, QString()));
     settings.command = "%USUPP_JAVA% -help $output_file_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
-    GTGlobals::sleep();
 
     //    5. Create a valid workflow with the new element.
-    GTUtilsWorkflowDesigner::click(os, "test_6481_1");
+    GTUtilsWorkflowDesigner::click(os, elementName);
     GTUtilsWorkflowDesigner::setParameter(os, "output_file_url", QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
     //    6. Launch the workflow.
@@ -2576,16 +2577,16 @@ GUI_TEST_CLASS_DEFINITION(test_6481_2) {
     //        Parameters page: a parameter with a type "Output folder URL".
     //    4. Accept the wizard.
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
-    settings.elementName = "test_6481_2";
+    QString elementName = GTUtils::genUniqueString("test_6481_2");
+    settings.elementName = elementName;
     settings.tooltype = CreateElementWithCommandLineToolFiller::CommandLineToolType::IntegratedExternalTool;
     settings.parameters << CreateElementWithCommandLineToolFiller::ParameterData("output_folder_url", qMakePair(CreateElementWithCommandLineToolFiller::OutputFolderUrl, QString()));
     settings.command = "%USUPP_JAVA% -help $output_folder_url";
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
-    GTGlobals::sleep();
 
     //    5. Create a valid workflow with the new element.
-    GTUtilsWorkflowDesigner::click(os, "test_6481_2");
+    GTUtilsWorkflowDesigner::click(os, elementName);
     GTUtilsWorkflowDesigner::setParameter(os, "output_folder_url", QFileInfo(sandBoxDir).absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
     //    6. Launch the workflow.
@@ -2619,7 +2620,6 @@ GUI_TEST_CLASS_DEFINITION(test_6481_3) {
     //    3. Select "_common_data/scenarios/_regression/6481/test_6481_3.etc". Accept the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_3.etc"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
-    GTGlobals::sleep();
 
     //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_3");
@@ -2656,7 +2656,6 @@ GUI_TEST_CLASS_DEFINITION(test_6481_4) {
     //    3. Select "_common_data/scenarios/_regression/6481/test_6481_4.etc". Accept the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6481/test_6481_4.etc"));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Add element with external tool");
-    GTGlobals::sleep();
 
     //    4. Create a valid workflow with the new element.
     GTUtilsWorkflowDesigner::click(os, "test_6481_4");
