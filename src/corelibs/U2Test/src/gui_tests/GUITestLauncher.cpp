@@ -99,7 +99,10 @@ void GUITestLauncher::run() {
 
         firstTestRunCheck(fullTestName);
 
-        if (!test->isIgnored()) {
+        bool isValidPlatform = UGUITestLabels::hasPlatformLabel(test);
+        bool isIgnored = UGUITestLabels::hasIgnoredLabel(test);
+        bool isSkipIgnoredCheck = noIgnored;
+        if (isValidPlatform && (!isIgnored || isSkipIgnoredCheck)) {
             qint64 startTime = GTimer::currentTimeMicros();
             GUITestTeamcityLogger::testStarted(teamcityTestName);
 
@@ -116,8 +119,9 @@ void GUITestLauncher::run() {
                 coreLog.error("Got exception while running test: " + fullTestName);
                 coreLog.error("Exception text: " + QString(exc.what()));
             }
-        } else if (test->getReason() == HI::GUITest::Bug) {
-            GUITestTeamcityLogger::testIgnored(teamcityTestName, test->getIgnoreMessage());
+        } else if (isValidPlatform) {
+            // If the test should run on the current platform but has ignored label -> report it to the teamcity.
+            GUITestTeamcityLogger::testIgnored(teamcityTestName, test->getDescription());
         }
 
         updateProgress(finishedCount++);
@@ -235,11 +239,6 @@ bool GUITestLauncher::initTestList() {
         testList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
     }
 
-    if (noIgnored) {
-        for (GUITest *test : testList) {
-            test->setIgnored(false);
-        }
-    }
     return true;
 }
 

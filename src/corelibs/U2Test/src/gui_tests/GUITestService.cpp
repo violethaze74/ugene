@@ -249,8 +249,8 @@ void GUITestService::runAllGUITests() {
             continue;
         }
 
-        if (test->isIgnored()) {
-            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getIgnoreMessage());
+        if (UGUITestLabels::hasIgnoredLabel(test)) {
+            GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getDescription());
             continue;
         }
 

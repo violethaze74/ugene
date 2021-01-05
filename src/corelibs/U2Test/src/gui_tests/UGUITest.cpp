@@ -29,6 +29,7 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "UGUITest.h"
 
@@ -131,6 +132,26 @@ static QString getScreenshotDir() {
     return result;
 }
 
+/** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
+bool UGUITestLabels::hasIgnoredLabel(const GUITest *test) {
+    QString ignoreOnPlatformLabel = isOsLinux()     ? UGUITestLabels::IgnoredOnLinux
+                                    : isOsMac()     ? UGUITestLabels::IgnoredOnMacOS
+                                    : isOsWindows() ? UGUITestLabels::IgnoredOnWindows
+                                                    : "";
+    SAFE_POINT(!ignoreOnPlatformLabel.isEmpty(), "Platform is not supported!", true);
+    return test->labelSet.contains(UGUITestLabels::Ignored) || test->labelSet.contains(ignoreOnPlatformLabel);
+}
+
+/** Returns true if the test has current platform label: Linux, MacOS or Windows. */
+bool UGUITestLabels::hasPlatformLabel(const GUITest *test) {
+    QString platformLabel = isOsLinux()     ? UGUITestLabels::Linux
+                            : isOsMac()     ? UGUITestLabels::MacOS
+                            : isOsWindows() ? UGUITestLabels::Windows
+                                            : "";
+    SAFE_POINT(!platformLabel.isEmpty(), "Platform is not supported!", true);
+    return test->labelSet.contains(platformLabel);
+}
+
 const QString UGUITest::testDir = getTestDir();
 const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
@@ -138,5 +159,12 @@ const QString UGUITest::screenshotDir = getScreenshotDir();
 
 const QString UGUITestLabels::Nightly = "Nightly";
 const QString UGUITestLabels::Metagenomics = "Metagenonics";
+const QString UGUITestLabels::Linux = "Linux";
+const QString UGUITestLabels::MacOS = "MacOS";
+const QString UGUITestLabels::Windows = "Windows";
+const QString UGUITestLabels::Ignored = "Ignored";
+const QString UGUITestLabels::IgnoredOnLinux = "IgnoredOnLinux";
+const QString UGUITestLabels::IgnoredOnMacOS = "IgnoredOnMacOS";
+const QString UGUITestLabels::IgnoredOnWindows = "IgnoredOnWindows";
 
 }    // namespace U2
