@@ -75,9 +75,13 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *anno
     // Compute continuous yRegions split across multiple lines for the given location region.
     QList<U2Region> yRegionList;
     const U2Region &locationRegion = annotation->getRegions()[locationRegionIndex];
-    int locationFirstLineIndex = (locationRegion.startPos - visibleRange.startPos) / baseCountPerLine;
+    U2Region visibleLocationRegion = visibleRange.intersect(locationRegion);
+    if (visibleLocationRegion.isEmpty()) {
+        return yRegionList;
+    }
+    int locationFirstLineIndex = (visibleLocationRegion.startPos - visibleRange.startPos) / baseCountPerLine;
     int lineFirstPos = visibleRange.startPos + (locationFirstLineIndex * baseCountPerLine);
-    for (int lineIndex = locationFirstLineIndex; lineFirstPos < locationRegion.endPos(); lineIndex++, lineFirstPos += baseCountPerLine) {
+    for (int lineIndex = locationFirstLineIndex; lineFirstPos < visibleLocationRegion.endPos(); lineIndex++, lineFirstPos += baseCountPerLine) {
         yRegionList << U2Region(singleLineYRegion.startPos + lineIndex * singleLineHeight, singleLineYRegion.length);
     }
     return yRegionList;
