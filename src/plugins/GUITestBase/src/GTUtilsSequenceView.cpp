@@ -434,7 +434,8 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
     QList<Annotation *> selectedAnnotationList;
     for (const AnnotationTableObject *ao : context->getAnnotationObjects(true)) {
         for (Annotation *a : ao->getAnnotations()) {
-            for (const U2Region &r : a->getLocation().data()->regions) {
+            QVector<U2Region> regions = a->getLocation()->regions;
+            for (const U2Region &r : regions) {
                 if (a->getName() == annotationName && r.startPos == annotationRegionStartPos - 1) {
                     selectedAnnotationList << a;
                 }
