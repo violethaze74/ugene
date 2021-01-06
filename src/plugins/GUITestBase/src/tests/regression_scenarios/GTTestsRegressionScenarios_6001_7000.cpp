@@ -6713,6 +6713,89 @@ GUI_TEST_CLASS_DEFINITION(test_6981) {
     CHECK_SET_ERR(annTreeItem == "ann", QString("Incorrect selected item name, expected: ann, current: %1").arg(annTreeItem));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6990_1) {
+    // Use context menu to check "Sort By leading gap" action.
+
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    // Expected state: the order of the sequences is not changed
+    QStringList nameList0 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList0[0] == "Phaneroptera_falcata", "1. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList0[17] == "Hetrodes_pupus_EF540832", "1. The last sequence is incorrect");
+
+    // Insert gap to the (0, 0) position.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Sort by leading gap.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    // Expected state: the last sequence is Phaneroptera_falcata
+    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList1[0] == "Isophya_altaica_EF540820", "2. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[17] == "Phaneroptera_falcata", "2. The last sequence is incorrect");
+
+    // Sort by leading gap -> Descending.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_SORT << "action_sort_by_leading_gap_descending"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    // Expected state: the last sequence is Hetrodes_pupus_EF540832.
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2[0] == "Phaneroptera_falcata", "3. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[17] == "Hetrodes_pupus_EF540832", "3. The last sequence is incorrect");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6990_2) {
+    // Use Options panel tab to check "Sort By leading gap" action.
+
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Sort by leading gap
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
+
+    auto sortByCombo = GTWidget::findExactWidget<QComboBox *>(os, "sortByComboBox");
+    GTComboBox::selectItemByText(os, sortByCombo, "Leading gap");
+
+    auto sortOrderCombo = GTWidget::findExactWidget<QComboBox *>(os, "sortOrderComboBox");
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the order of the sequences is not changed
+    QStringList nameList0 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList0[0] == "Phaneroptera_falcata", "1. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList0[17] == "Hetrodes_pupus_EF540832", "1. The last sequence is incorrect");
+
+    // Insert gap to the (0, 0) position.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Sort by leading gap.
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the last sequence is Phaneroptera_falcata
+    QStringList nameList1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList1[0] == "Isophya_altaica_EF540820", "2. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList1[17] == "Phaneroptera_falcata", "2. The last sequence is incorrect");
+
+    // Sort by leading gap -> Descending.
+    GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
+    GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
+
+    // Expected state: the last sequence is Hetrodes_pupus_EF540832.
+    QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList2[0] == "Phaneroptera_falcata", "3. The 1 sequence is incorrect");
+    CHECK_SET_ERR(nameList2[17] == "Hetrodes_pupus_EF540832", "3. The last sequence is incorrect");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
