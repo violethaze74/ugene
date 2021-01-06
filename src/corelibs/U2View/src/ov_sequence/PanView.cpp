@@ -22,7 +22,6 @@
 #include "PanView.h"
 
 #include <QDialog>
-#include <QFontMetrics>
 #include <QGridLayout>
 #include <QPainter>
 #include <QTextEdit>
@@ -37,11 +36,9 @@
 #include <U2Core/Log.h>
 #include <U2Core/SelectionModel.h>
 #include <U2Core/Timer.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
-#include <U2Gui/GraphUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -629,8 +626,8 @@ void PanViewRenderArea::drawAll(QPaintDevice *pd) {
 }
 
 U2Region PanViewRenderArea::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
-    U2Region region = renderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
-    region.startPos += renderer->getContentIndentY(size(), view->getVisibleRange());
+    U2Region region = renderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, height());
+    region.startPos += renderer->getContentIndentY(height());
     return region;
 }
 

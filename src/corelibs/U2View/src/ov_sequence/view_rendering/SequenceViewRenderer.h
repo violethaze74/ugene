@@ -62,8 +62,7 @@ public:
 
     virtual double getCurrentScale() const = 0;
 
-    virtual qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const = 0;
-    virtual qint64 getMinimumHeight() const = 0;
+    virtual int getMinimumHeight() const = 0;
 
     virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
     virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;

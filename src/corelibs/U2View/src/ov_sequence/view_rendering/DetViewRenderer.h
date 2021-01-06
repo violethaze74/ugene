@@ -53,7 +53,7 @@ public:
     virtual void update() = 0;
 
     /** Returns all y regions used to draw the given location of the annotation. */
-    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int canvasWidth, const U2Region &visibleRange) const = 0;
+    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
 
 protected:
     DetView *const detView;

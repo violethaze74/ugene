@@ -59,17 +59,18 @@ float DetViewMultiLineRenderer::posToXCoordF(const qint64 p, const QSize &canvas
     return commonMetrics.charWidth * (p % symbolsPerLine);
 }
 
-QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int canvasWidth, const U2Region &visibleRange) const {
+QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const {
     SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", QList<U2Region>());
 
     // Compute region offset within a single line.
-    U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, availableHeightForSingleLine);
     // The first line is indented from the widget start by the half of indent.
     singleLineYRegion.startPos += INDENT_BETWEEN_LINES / 2;
     // Apply vertical scroll shift within multi-line det-view.
     singleLineYRegion.startPos -= detView->getShift();
 
-    int baseCountPerLine = getSymbolsPerLine(canvasWidth);
+    int baseCountPerLine = getSymbolsPerLine(canvasSize.width());
     int singleLineHeight = getOneLineHeight();
 
     // Compute continuous yRegions split across multiple lines for the given location region.
@@ -87,7 +88,7 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *anno
     return yRegionList;
 }
 
-U2Region DetViewMultiLineRenderer::getMirroredYRange(const U2Strand &) const {
+U2Region DetViewMultiLineRenderer::getCutSiteYRange(const U2Strand &, int) const {
     FAIL("The method must never be called", U2Region());
 }
 
@@ -105,7 +106,8 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
 }
 
 bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
-    U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as);
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, availableHeightForSingleLine);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;
     do {
         if (yRange.contains(p.y())) {
@@ -117,7 +119,7 @@ bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a
     return false;
 }
 
-qint64 DetViewMultiLineRenderer::getMinimumHeight() const {
+int DetViewMultiLineRenderer::getMinimumHeight() const {
     return singleLineRenderer->getMinimumHeight();
 }
 
@@ -127,10 +129,6 @@ qint64 DetViewMultiLineRenderer::getOneLineHeight() const {
 
 qint64 DetViewMultiLineRenderer::getLinesCount(const QSize &canvasSize) const {
     return canvasSize.height() / getOneLineHeight();
-}
-
-qint64 DetViewMultiLineRenderer::getContentIndentY(const QSize &, const U2Region &) const {
-    return 0;
 }
 
 int DetViewMultiLineRenderer::getDirectLine() const {
@@ -238,7 +236,7 @@ void DetViewMultiLineRenderer::update() {
     singleLineRenderer->update();
 }
 
-U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *, int, const AnnotationSettings *, int) const {
     FAIL("This method must never be called and exists due to a design flow. DetViewMultiLineRenderer delegates annotation rendering to DetViewSingleLineRenderer", U2Region());
 }
 
