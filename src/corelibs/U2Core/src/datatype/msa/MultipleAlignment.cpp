@@ -168,25 +168,15 @@ static bool isLessByLength(const MultipleAlignmentRow &row1, const MultipleAlign
     return row1->getUngappedLength() < row2->getUngappedLength();
 }
 
-/** Returns leading gap size of the given row. */
-static int getLeadingGapSize(const MultipleAlignmentRow &row) {
-    const U2MsaRowGapModel &gapModel = row->getGapModel();
-    if (gapModel.isEmpty()) {
-        return 0;
-    }
-    const U2MsaGap &gap = gapModel.first();
-    return gap.offset == 0 ? gap.gap : 0;
-}
-
 static bool isGreaterByLeadingGap(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
-    return getLeadingGapSize(row1) > getLeadingGapSize(row2);
+    return row1->getCoreStart() > row2->getCoreStart();
 }
 
 static bool isLessByLeadingGap(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
-    return getLeadingGapSize(row1) < getLeadingGapSize(row2);
+    return row1->getCoreStart() < row2->getCoreStart();
 }
 
-void MultipleAlignmentData::sortRows(const MultipleAlignment::SortType &type, const MultipleAlignment::Order &order, const U2Region &range) {
+void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order, const U2Region &range) {
     U2Region allRowsRange = U2Region(0, rows.size());
     SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
     MaStateCheck check(this);

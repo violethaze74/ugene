@@ -6718,7 +6718,7 @@ GUI_TEST_CLASS_DEFINITION(test_6990) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // Sort -> Leading gap
+    // Sort by leading gap
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
@@ -6734,11 +6734,11 @@ GUI_TEST_CLASS_DEFINITION(test_6990) {
     CHECK_SET_ERR(nameList0[0] == "Phaneroptera_falcata", "1. The 1 sequence is incorrect");
     CHECK_SET_ERR(nameList0[17] == "Hetrodes_pupus_EF540832", "1. The last sequence is incorrect");
 
-    // Insert gap to the (0, 0) position
+    // Insert gap to the (0, 0) position.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    // Sort -> Leading gap
+    // Sort by leading gap.
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
 
     // Expected state: the last sequence is Phaneroptera_falcata
@@ -6746,11 +6746,11 @@ GUI_TEST_CLASS_DEFINITION(test_6990) {
     CHECK_SET_ERR(nameList1[0] == "Isophya_altaica_EF540820", "2. The 1 sequence is incorrect");
     CHECK_SET_ERR(nameList1[17] == "Phaneroptera_falcata", "2. The last sequence is incorrect");
 
-    // Sort -> Leading gap -> Descending
+    // Sort by leading gap -> Descending.
     GTComboBox::selectItemByText(os, sortOrderCombo, "Descending");
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
 
-    // Expected state: the last sequence is Hetrodes_pupus_EF540832
+    // Expected state: the last sequence is Hetrodes_pupus_EF540832.
     QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList2[0] == "Phaneroptera_falcata", "3. The 1 sequence is incorrect");
     CHECK_SET_ERR(nameList2[17] == "Hetrodes_pupus_EF540832", "3. The last sequence is incorrect");

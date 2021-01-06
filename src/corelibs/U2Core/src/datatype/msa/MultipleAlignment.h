@@ -139,7 +139,7 @@ public:
     U2MsaListGapModel getGapModel() const;
 
     /** Sorts rows. If range is provided and is not empty sorts only given range. */
-    void sortRows(const MultipleAlignment::SortType &type, const MultipleAlignment::Order &order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
+    void sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
 
     /** Returns row of the alignment */
     MultipleAlignmentRow getRow(int row);
