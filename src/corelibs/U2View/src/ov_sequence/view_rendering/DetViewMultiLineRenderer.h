@@ -40,14 +40,13 @@ public:
     float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
     /** Returns all y regions used to draw the given location of the annotation. */
-    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int canvasWidth, const U2Region &visibleRange) const override;
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    U2Region getMirroredYRange(const U2Strand &mStrand) const override;
+    U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const override;
 
-    qint64 getMinimumHeight() const override;
+    int getMinimumHeight() const override;
     qint64 getOneLineHeight() const override;
     qint64 getLinesCount(const QSize &canvasSize) const override;
-    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const override;
 
     int getDirectLine() const override;
 
@@ -65,7 +64,7 @@ public:
     void update() override;
 
 protected:
-    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const override;
 
 private:
     DetViewSingleLineRenderer *singleLineRenderer;

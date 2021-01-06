@@ -55,7 +55,7 @@ double PanViewRenderer::getCurrentScale() const {
     return double(panView->getRenderArea()->width()) / panView->getVisibleRange().length;
 }
 
-U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const {
+U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, int /* availableHeight*/) const {
     Q_UNUSED(r);
     CHECK(as->visible, U2Region(-1, 0));
     const int row = panView->getRowsManager()->getAnnotationRowIdx(a);
@@ -63,15 +63,15 @@ U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const Annota
     return U2Region(getLineY(line) + 2, commonMetrics.lineHeight - 4);
 }
 
-U2Region PanViewRenderer::getMirroredYRange(const U2Strand &) const {
+U2Region PanViewRenderer::getCutSiteYRange(const U2Strand &, int) const {
     FAIL("Must not be called!", U2Region(-1, 0));
 }
 
-qint64 PanViewRenderer::getContentIndentY(const QSize &canvasSize, const U2Region & /*visibleRange*/) const {
-    return (canvasSize.height() - s->numLines * commonMetrics.lineHeight) / 2;
+int PanViewRenderer::getContentIndentY(int canvasHeight) const {
+    return (canvasHeight - s->numLines * commonMetrics.lineHeight) / 2;
 }
 
-qint64 PanViewRenderer::getMinimumHeight() const {
+int PanViewRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight * (s->getAdditionalLines() + 1);
 }
 
@@ -108,7 +108,7 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
 
     GraphUtils::RulerConfig c;
 
-    int hCenter = (int)getContentIndentY(canvasSize, visibleRange);
+    int hCenter = getContentIndentY(canvasSize.height());
     double halfChar = getCurrentScale() / 2;
     int firstCharCenter = qRound(posToXCoordF(visibleRange.startPos, canvasSize, visibleRange) + halfChar);
     int lastCharCenter = qRound(posToXCoordF(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar);
@@ -137,7 +137,7 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
 }
 
 void PanViewRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
-    int hCenter = (int)getContentIndentY(canvasSize, visibleRange);
+    int hCenter = getContentIndentY(canvasSize.height());
     p.translate(0, hCenter);
 
     drawSequence(p, canvasSize, visibleRange);
@@ -266,10 +266,10 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
 
         p.setPen(pen1);
         if (visibleRange.contains(r.startPos) && s->numLines > 1) {
-            p.drawLine(x1, -(int)getContentIndentY(canvasSize, visibleRange), x1, ly);
+            p.drawLine(x1, -getContentIndentY(canvasSize.height()), x1, ly);
         }
         if (visibleRange.contains(r.endPos() - 1) && s->numLines > 1) {
-            p.drawLine(x2, -(int)getContentIndentY(canvasSize, visibleRange), x2, ly);
+            p.drawLine(x2, -getContentIndentY(canvasSize.height()), x2, ly);
         }
 
         if (drawRect) {

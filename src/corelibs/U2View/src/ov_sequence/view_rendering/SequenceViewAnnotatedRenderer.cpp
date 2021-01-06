@@ -142,11 +142,12 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &can
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
     bool simple = location.size() == 1;
+    int availableHeight = canvasSize.height();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region &r = location.at(ri);
         if (r.intersects(visibleRange)) {
             const U2Region visibleLocation = r.intersect(visibleRange);
-            const U2Region y = getAnnotationYRange(a, ri, as);
+            const U2Region y = getAnnotationYRange(a, ri, as, availableHeight);
             if (y.startPos < 0) {
                 continue;
             }
@@ -248,6 +249,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
             dx1 = FEATURE_ARROW_HLEN;
         }
     }
+    int availableHeight = canvasSize.height();
     QVector<U2Region> location = aData->getRegions();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region &r = location.at(ri);
@@ -270,8 +272,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
                     x1 = qBound(-MAX_VIRTUAL_RANGE, x1, MAX_VIRTUAL_RANGE);    //qt4.4 crashes in line clipping alg for extremely large X values
                     x2 = qBound(-MAX_VIRTUAL_RANGE, x2, MAX_VIRTUAL_RANGE);
                     const int midX = (x1 + x2) / 2;
-                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as);
-                    const U2Region yr = getAnnotationYRange(a, ri, as);
+                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as, availableHeight);
+                    const U2Region yr = getAnnotationYRange(a, ri, as, availableHeight);
                     const int y1 = pyr.startPos;
                     const int dy1 = pyr.length / 2;
                     const int y2 = yr.startPos;
@@ -305,7 +307,8 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter &p, const SharedAnnotat
     }
 
     bool isDirectStrand = aData->getStrand().isDirect();
-    U2Region cutSiteY = isDirectStrand ? getMirroredYRange(U2Strand(U2Strand::Complementary)) : getMirroredYRange(U2Strand(U2Strand::Direct));
+    int availableHeight = canvasSize.height();
+    U2Region cutSiteY = getCutSiteYRange(U2Strand(isDirectStrand ? U2Strand::Complementary : U2Strand::Direct), availableHeight);
     QRect mirroredAnnotationRect = annotationRect;
     mirroredAnnotationRect.setY(cutSiteY.startPos);
     mirroredAnnotationRect.setHeight(cutSiteY.length);

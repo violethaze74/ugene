@@ -859,7 +859,7 @@ bool DetViewRenderArea::isOnTranslationsLine(const QPoint &p) const {
 }
 
 QList<U2Region> DetViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
-    return renderer->getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings, width(), view->getVisibleRange());
+    return renderer->getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings, size(), view->getVisibleRange());
 }
 
 void DetViewRenderArea::drawAll(QPaintDevice *pd) {

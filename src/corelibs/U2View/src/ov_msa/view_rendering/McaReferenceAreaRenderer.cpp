@@ -48,7 +48,7 @@ McaReferenceAreaRenderer::McaReferenceAreaRenderer(PanView *panView, SequenceObj
     setFont(maEditor->getFont());
 }
 
-qint64 McaReferenceAreaRenderer::getMinimumHeight() const {
+int McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
