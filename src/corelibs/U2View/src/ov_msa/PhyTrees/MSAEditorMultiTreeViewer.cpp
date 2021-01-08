@@ -60,7 +60,7 @@ void MSAEditorMultiTreeViewer::addTreeView(GObjectViewWindow *treeView) {
     treeViewList.append(treeView);
 
     const QList<GObject *> &objects = treeView->getObjects();
-    for (GObject *obj : objects) {
+    for (GObject *obj : qAsConst(objects)) {
         if (obj->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE) {
             tabsNameList.append(obj->getDocument()->getName());
         }

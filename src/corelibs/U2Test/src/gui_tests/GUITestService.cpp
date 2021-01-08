@@ -239,7 +239,7 @@ void GUITestService::runAllGUITests() {
     SAFE_POINT(!tests.isEmpty(), "", );
 
     QString runOneTestOnly = qgetenv("UGENE_GUI_TEST_NAME_RUN_ONLY");
-    for (GUITest *test : tests) {
+    for (GUITest *test : qAsConst(tests)) {
         QString testName = test->getFullName();
         QString testNameForTeamCity = test->suite + "_" + test->name;
 
@@ -259,7 +259,7 @@ void GUITestService::runAllGUITests() {
 
         HI::GUITestOpStatus os;
         log.trace("GTRUNNER - runAllGUITests - going to run initial checks before " + testName);
-        for (GUITest *initTest : initTests) {
+        for (GUITest *initTest : qAsConst(initTests)) {
             initTest->run(os);
         }
 
@@ -268,12 +268,12 @@ void GUITestService::runAllGUITests() {
         test->run(os);
         log.trace("GTRUNNER - runAllGUITests - finished running test " + testName);
 
-        for (GUITest *postCheckTest : postCheckTests) {
+        for (GUITest *postCheckTest : qAsConst(postCheckTests)) {
             postCheckTest->run(os);
         }
 
         HI::GUITestOpStatus os2;
-        for (GUITest *postActionTest : postActionTests) {
+        for (GUITest *postActionTest : qAsConst(postActionTests)) {
             postActionTest->run(os2);
         }
 
@@ -303,7 +303,8 @@ void GUITestService::runGUITest() {
 
     if (test == nullptr) {
         // Search by teamcity test name.
-        for (GUITest *test2 : testBase->getTests()) {
+        const QList<GUITest *> testList = testBase->getTests();
+        for (GUITest *test2 : qAsConst(testList)) {
             QString teamcityTestName = UGUITest::getTeamcityTestName(test2->suite, test2->name);
             if (fullTestName == teamcityTestName) {
                 test = test2;

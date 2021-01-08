@@ -111,7 +111,7 @@ void ShutdownTask::prepare() {
     activeTopLevelTaskList.removeOne(this);
     if (!activeTopLevelTaskList.isEmpty()) {
         QStringList activeUserTaskNameList;
-        for (Task *task : activeTopLevelTaskList) {
+        for (Task *task : qAsConst(activeTopLevelTaskList)) {
             if (!task->hasFlags(TaskFlag_SilentCancelOnShutdown)) {
                 activeUserTaskNameList.append(task->getTaskName());
             }

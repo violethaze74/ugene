@@ -46,7 +46,7 @@ void PasteTask::processDocument(Document *) {
 QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpStatus &os) {
     QList<DNASequence> res;
 
-    for (Document *doc : docs) {
+    for (Document *doc : qAsConst(docs)) {
         for (GObject *seqObj : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
             U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(seqObj);
             if (casted == nullptr) {
@@ -59,12 +59,14 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document *> &docs, U2OpS
             seq.alphabet = casted->getAlphabet();
             res.append(seq);
         }
-        for (GObject *msaObj : doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
+        const QList<GObject *> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+        for (GObject *msaObj : qAsConst(msaObjectList)) {
             MultipleSequenceAlignmentObject *casted = qobject_cast<MultipleSequenceAlignmentObject *>(msaObj);
             if (casted == nullptr) {
                 continue;
             }
-            for (const MultipleSequenceAlignmentRow &row : casted->getMsa()->getMsaRows()) {
+            const QList<MultipleSequenceAlignmentRow> msaRowList = casted->getMsa()->getMsaRows();
+            for (const MultipleSequenceAlignmentRow &row : qAsConst(msaRowList)) {
                 DNASequence seq = row->getSequence();
                 seq.seq = row->getData();
                 seq.alphabet = casted->getAlphabet();

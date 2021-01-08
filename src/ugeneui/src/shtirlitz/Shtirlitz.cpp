@@ -172,7 +172,7 @@ void Shtirlitz::saveGatheredInfo() {
     //1. Save counters
     Settings *s = AppContext::getSettings();
     QList<GCounter *> appCounters = GCounter::getAllCounters();
-    for (const GCounter *counter : appCounters) {
+    for (const GCounter *counter : qAsConst(appCounters)) {
         if (counter->isReportable) {
             QString ctrKey = counter->name + SEPARATOR + counter->suffix;
             double ctrVal = counter->getScaledValue();

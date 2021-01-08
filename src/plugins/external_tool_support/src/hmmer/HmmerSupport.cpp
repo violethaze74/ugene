@@ -387,7 +387,7 @@ void Hmmer3LogParser::parseErrOutput(const QString &partOfLog) {
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 
-    for (const QString &buf : lastPartOfLog) {
+    for (const QString &buf : qAsConst(lastPartOfLog)) {
         if (!buf.isEmpty()) {
             algoLog.error("Hmmer3: " + buf);
             setLastError(buf);

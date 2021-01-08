@@ -71,7 +71,7 @@ NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement &do
         updateNotificationRow(notificationIndex);
     }
     if (monitor != nullptr) {
-        for (auto notification : monitor->getNotifications()) {
+        for (auto notification : qAsConst(monitor->getNotifications())) {
             sl_newNotification(notification, 1);
         }
         connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
@@ -126,7 +126,7 @@ QString NotificationsDashboardWidget::toHtml() const {
     QString html = "<div id=\"problemsWidget\">\n<table>\n";
     html += "<thead><tr><th>" + tr("Type") + "</th><th>" + tr("Element") + "</th><th>" + tr("Message") + "</th></tr></thead>\n";
     html += "<tbody id=\"" + NOTIFICATIONS_WIDGET_ID + "\">\n";
-    for (auto notification : notificationList) {
+    for (auto notification : qAsConst(notificationList)) {
         if (notification.type.isEmpty()) {
             continue;
         }

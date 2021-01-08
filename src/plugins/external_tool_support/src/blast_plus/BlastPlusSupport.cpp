@@ -209,7 +209,7 @@ void BlastPlusSupport::sl_runWithExtFileSpecify() {
             default:
                 assert(false);
         }
-        for (const QString &id : toolList) {
+        for (const QString &id : qAsConst(toolList)) {
             if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured = true;
                 break;
@@ -308,7 +308,7 @@ void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
     bool isShowId = !selectedId.isEmpty();
 
     bool isBlastResult = false;
-    for (const Annotation *annotation : dnaView->getAnnotationsSelection()->getAnnotations()) {
+    for (const Annotation *annotation : qAsConst(dnaView->getAnnotationsSelection()->getAnnotations())) {
         if (name != annotation->getName()) {
             name = "";
         }
@@ -330,9 +330,9 @@ void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m) {
 }
 
 void BlastPlusSupportContext::sl_showDialog() {
-    //Check that any of BLAST+ tools and tempory folder path defined
+    //Check that any of BLAST+ tools and temporary folder path defined
     bool isOneOfToolConfigured = false;
-    for (const QString &id : toolIdList) {
+    for (const QString &id : qAsConst(toolIdList)) {
         if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
             isOneOfToolConfigured = true;
             break;
@@ -357,7 +357,7 @@ void BlastPlusSupportContext::sl_showDialog() {
             default:
                 assert(false);
         }
-        for (const QString &id : toolIdList) {
+        for (const QString &id : qAsConst(toolIdList)) {
             if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured = true;
                 break;

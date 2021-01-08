@@ -193,7 +193,7 @@ static bool findCircular(ServiceRegistryImpl *sr, Service *s, int currentDepth) 
 
 static QStringList findNotEnabledServices(ServiceRegistryImpl *registry, const QList<ServiceType> &serviceTypeList) {
     QStringList result;
-    for (ServiceType serviceType : serviceTypeList) {
+    for (ServiceType serviceType : qAsConst(serviceTypeList)) {
         QList<Service *> parentServices = registry->findServices(serviceType);
         if (parentServices.isEmpty()) {
             result << "NA: " + QString::number(serviceType.id);

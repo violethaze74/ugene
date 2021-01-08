@@ -793,7 +793,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
     if (circularView->isCircularTopology()) {
         // For a circular sequence merge regions around 0 point.
         QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
-        for (const RegionsPair &pair : mergedRegions) {
+        for (const RegionsPair &pair : qAsConst(mergedRegions)) {
             int idx = aDataLocation.indexOf(pair.first);
             CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(U2Region(pair.first.startPos, pair.first.length + pair.second.length), seqLen, yLevel, isComplementaryStrand, idx);
             if (regItem != nullptr) {
@@ -1004,7 +1004,7 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
     if (circularView->isCircularTopology()) {
         // Use merged regions for circular topology.
         QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
-        for (const RegionsPair &pair : mergedRegions) {
+        for (const RegionsPair &pair : qAsConst(mergedRegions)) {
             newLocation.append(U2Region(pair.first.startPos, pair.first.length + pair.second.length));
         }
     } else {
@@ -1137,7 +1137,7 @@ qint64 CircularViewRenderArea::asinToPos(const qreal asin) const {
 QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint &coord) const {
     QList<Annotation *> res;
     QPoint cp(coord - QPoint(width() / 2, getCenterY()));
-    for (CircularAnnotationItem *item : circItems) {
+    for (CircularAnnotationItem *item : qAsConst(circItems)) {
         int region = item->containsRegion(cp);
         if (region != -1) {
             res.append(item->getAnnotation());
@@ -1147,7 +1147,7 @@ QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint 
             }
         }
     }
-    for (CircularAnnotationItem *item : circItems) {
+    for (CircularAnnotationItem *item : qAsConst(circItems)) {
         for (CircularAnnotationRegionItem *r : item->getRegions()) {
             CircularAnnotationLabel *lbl = r->getLabel();
             SAFE_POINT(lbl != nullptr, "NULL annotation label item!", res);

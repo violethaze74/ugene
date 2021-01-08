@@ -1119,7 +1119,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     msaEditor->getUI()->getSequenceArea()->sl_setCollapsingMode(false);
 
     QSet<qint64> resultUidSet;
-    for (const FindPatternWidgetResult &result : allSearchResults) {
+    for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {
         resultUidSet << result.rowId;
     }
     const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
@@ -1140,7 +1140,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     // Reorder rows: move search results to the top. Keep the order stable.
     QList<qint64> rowsInTheGroup;
     QList<qint64> rowsOutOfTheGroup;
-    for (qint64 rowId : allRowIds) {
+    for (qint64 rowId : qAsConst(allRowIds)) {
         if (resultUidSet.contains(rowId)) {
             rowsInTheGroup << rowId;
         } else {

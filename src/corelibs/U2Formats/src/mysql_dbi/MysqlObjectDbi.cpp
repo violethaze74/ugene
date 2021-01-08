@@ -693,17 +693,17 @@ void MysqlObjectDbi::redo(const U2DataId &objId, U2OpStatus &os) {
         return;
     }
 
-    for (const QList<U2SingleModStep> &multiStepSingleSteps : modSteps) {
+    for (const QList<U2SingleModStep> &multiStepSingleSteps : qAsConst(modSteps)) {
         QSet<U2DataId> objectIds;
 
-        for (const U2SingleModStep &modStep : multiStepSingleSteps) {
+        for (const U2SingleModStep &modStep : qAsConst(multiStepSingleSteps)) {
             redoSingleModStep(modStep, os);
             CHECK_OP(os, );
             objectIds.insert(modStep.objectId);
         }
         objectIds.insert(objId);
 
-        for (const U2DataId &objectId : objectIds) {
+        for (const U2DataId &objectId : qAsConst(objectIds)) {
             incrementVersion(objectId, os);
             if (os.hasError()) {
                 coreLog.trace("Can't increment an object version");

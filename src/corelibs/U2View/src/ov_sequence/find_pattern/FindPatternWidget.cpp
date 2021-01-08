@@ -676,7 +676,7 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
         const QString lineBreakShortcut = "Cmd+Enter";
 #endif
         QString text = "";
-        for (const MessageFlag &flag : messageFlags) {
+        for (const MessageFlag &flag : qAsConst(messageFlags)) {
             switch (flag) {
                 case PatternIsTooLong: {
                     const QString message = tr("The value is longer than the search region."
@@ -854,7 +854,7 @@ bool FindPatternWidget::verifyPatternAlphabet() {
 
     QStringList patternNoNames;
     QList<NamePattern> patternsWithNames = getPatternsFromTextPatternField(os);
-    for (const NamePattern &name_pattern : patternsWithNames) {
+    for (const NamePattern &name_pattern : qAsConst(patternsWithNames)) {
         patternNoNames.append(name_pattern.second);
     }
 
@@ -920,7 +920,7 @@ void FindPatternWidget::checkState() {
         return;
     }
     if (usePatternNames && !usePatternFromFileRadioButton->isChecked()) {
-        for (const QString &name : nameList) {
+        for (const QString &name : qAsConst(nameList)) {
             if (!Annotation::isValidAnnotationName(name)) {
                 showHideMessage(true, AnnotationNotValidFastaParsedName);
                 return;
@@ -1017,7 +1017,7 @@ QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternFiel
 
     if (result.isEmpty()) {
         QStringList patterns = inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
-        for (const QString &pattern : patterns) {
+        for (const QString &pattern : qAsConst(patterns)) {
             result.append(qMakePair(QString(""), pattern));
         }
     }
@@ -1361,7 +1361,7 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns() {
     QList<NamePattern> newPatterns = getPatternsFromTextPatternField(os);
 
     nameList.clear();
-    for (const NamePattern &newPattern : newPatterns) {
+    for (const NamePattern &newPattern : qAsConst(newPatterns)) {
         nameList.append(newPattern.first);
     }
     return newPatterns;
@@ -1477,7 +1477,7 @@ bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern> &newP
     if (newPatterns.size() != patternList.size()) {
         return true;
     }
-    for (const NamePattern &newPattern : newPatterns) {
+    for (const NamePattern &newPattern : qAsConst(newPatterns)) {
         if (!patternList.contains(newPattern.second)) {
             return true;
         }
@@ -1545,9 +1545,9 @@ void FindPatternWidget::stopTrackingFocusedSequenceSelection() {
 }
 
 bool FindPatternWidget::isRegionListInSearchResults(const QVector<U2Region> &regionList) const {
-    for (const U2Region &region : regionList) {
+    for (const U2Region &region : qAsConst(regionList)) {
         bool isFound = false;
-        for (const SharedAnnotationData &result : findPatternResults) {
+        for (const SharedAnnotationData &result : qAsConst(findPatternResults)) {
             if (result->getRegions().contains(region)) {
                 isFound = true;
                 break;

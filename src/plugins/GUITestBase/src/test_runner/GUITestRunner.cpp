@@ -49,7 +49,7 @@ GUITestRunner::GUITestRunner(UGUITestBase *guiTestBase, QWidget *parent)
     tree->setColumnWidth(0, 550);
 
     QList<GUITest *> testList = guiTestBase->getTests();
-    for (GUITest *test : testList) {
+    for (GUITest *test : qAsConst(testList)) {
         QList<QTreeWidgetItem *> suiteItems = tree->findItems(test->suite, Qt::MatchExactly);
         QTreeWidgetItem *suiteItem = suiteItems.isEmpty() ? nullptr : suiteItems.first();
         if (suiteItem == nullptr) {

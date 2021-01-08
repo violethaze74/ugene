@@ -140,7 +140,8 @@ void TreeOptionsWidget::updateAllWidgets() {
     penGroup->setVisible(viewSettings.showPenSettings);
 
     QMap<TreeViewOption, QVariant> settings = getTreeViewer()->getSettings();
-    for (const TreeViewOption &option : settings.keys()) {
+    const QList<TreeViewOption> keyList = settings.keys();
+    for (const TreeViewOption &option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
     if (!settings[SHOW_NODE_LABELS].toBool()) {

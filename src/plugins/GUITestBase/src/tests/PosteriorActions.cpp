@@ -181,7 +181,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     if (QDir(sandBoxDir).exists()) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
-        for (const QString &path: sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+        const QStringList entryList = sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden);
+        for (const QString &path: qAsConst(entryList)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

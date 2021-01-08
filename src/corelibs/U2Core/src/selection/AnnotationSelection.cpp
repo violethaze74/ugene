@@ -104,7 +104,7 @@ void AnnotationSelection::getSequenceInRegions(QByteArray &res, const QVector<U2
     QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqRef, regions, complTT, aminoTT, false, os);
     CHECK_OP(os, )
     qint64 resLen = res.length();
-    for (const QByteArray &part : parts) {
+    for (const QByteArray &part : qAsConst(parts)) {
         resLen += part.length();
     }
     resLen += parts.size() - 1;    // gaps between parts.

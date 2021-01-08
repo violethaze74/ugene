@@ -81,7 +81,7 @@ void MSAEditorTreeManager::sl_onDocumentRemovedFromProject(Document *doc) {
     QList<GObjectRelation> treeRelationList = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
     CHECK(!treeRelationList.isEmpty(), );
 
-    for (const GObjectRelation &treeRelation : treeRelationList) {
+    for (const GObjectRelation &treeRelation : qAsConst(treeRelationList)) {
         if (treeRelation.ref.entityRef.isValid() && doc->getObjectById(treeRelation.ref.entityRef.entityId) != nullptr) {
             msaObject->removeObjectRelation(treeRelation);
         }
@@ -93,7 +93,7 @@ void MSAEditorTreeManager::loadRelatedTrees() {
     QList<GObjectRelation> treeRelationList = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
     CHECK(!treeRelationList.isEmpty(), );
 
-    for (const GObjectRelation &treeRelation : treeRelationList) {
+    for (const GObjectRelation &treeRelation : qAsConst(treeRelationList)) {
         const QString &treeFileName = treeRelation.getDocURL();
         Document *doc = AppContext::getProject()->findDocumentByURL(treeFileName);
         if (doc != nullptr) {
@@ -186,7 +186,7 @@ void MSAEditorTreeManager::sl_openTree(Task *treeBuildTask) {
 
     const QList<Document *> documents = AppContext::getProject()->getDocuments();
     bool isNewDocument = true;
-    for (Document *doc : documents) {
+    for (Document *doc : qAsConst(documents)) {
         if (treeFileName == doc->getURLString()) {
             treeDocument = doc;
             isNewDocument = false;
@@ -213,7 +213,7 @@ void MSAEditorTreeManager::sl_openTree(Task *treeBuildTask) {
         return;
     } else {
         const QList<GObject *> &objects = treeDocument->getObjects();
-        for (GObject *obj : objects) {
+        for (GObject *obj : qAsConst(objects)) {
             PhyTreeObject *treeObj = qobject_cast<PhyTreeObject *>(obj);
             if (treeObj) {
                 treeObj->setTree(treeGeneratorTask->getResult());
@@ -239,7 +239,7 @@ void MSAEditorTreeManager::sl_onPhyTreeDocLoaded(Task *task) {
     auto loadTask = qobject_cast<LoadUnloadedDocumentTask *>(task);
     treeDocument = loadTask->getDocument();
     PhyTreeObject *treeObj = nullptr;
-    for (GObject *obj : treeDocument->getObjects()) {
+    for (GObject *obj : qAsConst(treeDocument->getObjects())) {
         treeObj = qobject_cast<PhyTreeObject *>(obj);
         if (treeObj != nullptr) {
             treeObj->setTree(phyTree);
@@ -332,7 +332,7 @@ void MSAEditorTreeManager::loadTreeFromFile(const QString &treeFileName) {
     }
 
     const QList<GObject *> &objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
-    for (GObject *obj : objects) {
+    for (GObject *obj : qAsConst(objects)) {
         auto treeObject = qobject_cast<PhyTreeObject *>(obj);
         msaObject->addObjectRelation(GObjectRelation(GObjectReference(treeObject), ObjectRole_PhylogeneticTree));
         if (treeObject == nullptr) {

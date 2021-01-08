@@ -477,7 +477,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
     QSet<QString> names;
     int rowIdx = 0;
 
-    for (const Annotation *annotation : selection) {
+    for (const Annotation *annotation : qAsConst(selection)) {
         SAFE_POINT(annotation->getName() == BLAST_ANNOTATION_NAME, tr("%1 is not a BLAST annotation").arg(annotation->getName()), );
 
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(annotation->getGObject());

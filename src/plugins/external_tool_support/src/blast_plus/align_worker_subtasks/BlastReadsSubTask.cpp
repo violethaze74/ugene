@@ -68,7 +68,7 @@ void BlastReadsSubTask::prepare() {
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
     // First create all tasks to keep the original reads order.
-    for (const SharedDbiDataHandler &read : reads) {
+    for (const SharedDbiDataHandler &read : qAsConst(reads)) {
         blastSubTasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
     }
 

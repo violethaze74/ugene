@@ -83,7 +83,7 @@ QMap<QString, GUITest *> &UGUITestBase::getMap(TestType testType) {
  * Note: We can't use QSet::intersects today because it is not available in QT5.4 (was added in QT5.6)
  */
 static bool intersects(const QSet<QString> &set1, const QSet<QString> &set2) {
-    for (const QString &value1 : set1) {
+    for (const QString &value1 : qAsConst(set1)) {
         if (set2.contains(value1)) {
             return true;
         }
@@ -99,14 +99,14 @@ QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &la
     QList<GUITest *> filteredTestList;
     QSet<QString> includeLabelSet;
     QSet<QString> excludeLabelSet;
-    for (const QString &label : labelList) {
+    for (const QString &label : qAsConst(labelList)) {
         if (label.startsWith("-")) {
             excludeLabelSet << label;
         } else {
             includeLabelSet << label;
         }
     }
-    for (GUITest *test : allTestList) {
+    for (GUITest *test : qAsConst(allTestList)) {
         if (test->labelSet.contains(includeLabelSet) && !intersects(test->labelSet, excludeLabelSet)) {
             filteredTestList << test;
         }

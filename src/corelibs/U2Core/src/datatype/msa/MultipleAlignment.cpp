@@ -142,7 +142,7 @@ int MultipleAlignmentData::getNumRows() const {
 U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MsaListGapModel gapModel;
     const int alignmentLength = getLength();
-    for (const MultipleAlignmentRow &row : rows) {
+    for (const MultipleAlignmentRow &row : qAsConst(rows)) {
         gapModel << row->getGapModel();
         const int rowPureLength = row->getRowLengthWithoutTrailing();
         if (rowPureLength < alignmentLength) {

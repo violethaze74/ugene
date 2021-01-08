@@ -290,7 +290,7 @@ void AutoAnnotationsUpdateTask::prepare() {
     sequenceObject->lockState(lock);
 
     autoAnnotationObject->emitStateChange(true);
-    for (Task *subtask : subTasks) {
+    for (Task *subtask : qAsConst(subTasks)) {
         addSubTask(subtask);
     }
 }

@@ -93,7 +93,8 @@ void PerfMonitorView::timerEvent(QTimerEvent *) {
 void PerfMonitorView::updateCounters() {
     GTIMER(c1, t1, "PerfMonitor::updateCounters");
     bool hasNewCounters = false;
-    for (const GCounter *counters : GCounter::getAllCounters()) {
+    const QList<GCounter *> counterList = GCounter::getAllCounters();
+    for (const GCounter *counters : qAsConst(counterList)) {
         PerfTreeItem *ci = findCounterItem(counters);
         if (ci == nullptr) {
             ci = new PerfTreeItem(counters);
