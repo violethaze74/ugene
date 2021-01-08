@@ -3531,7 +3531,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    2. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3549,7 +3548,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    3. Select the second row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3567,7 +3565,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    4. Select the last row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 15);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3585,7 +3582,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    5. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-    GTGlobals::sleep(1000);
 
     //    Expected state: all rows have been expanded, the labels are the same as in the previous step.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3600,10 +3596,9 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("5. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("5. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("5. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
-    GTGlobals::sleep(500);
+
     //    6. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(500);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3621,7 +3616,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    7. Select the first base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3630,6 +3624,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
     readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+
     CHECK_SET_ERR(NONE_MARK == rowNumberString, QString("7. Unexpected row number label: expected '%1', got '%2'").arg(NONE_MARK).arg(rowNumberString));
     CHECK_SET_ERR("16" == rowCountString, QString("7. Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowCountString));
     CHECK_SET_ERR("1" == referencePositionString, QString("7. Unexpected reference position label: expected '%1', got '%2'").arg("1").arg(referencePositionString));
@@ -3639,7 +3634,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    8. Select the third base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3657,7 +3651,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    9. Select the last base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 11936);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3675,7 +3668,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    10. Select a column with a gap in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2071);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3693,7 +3685,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    11. Select the first base of the second read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2052, 1));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3711,7 +3702,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    12. Select the third base of the fourth read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4615, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3729,7 +3719,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    13. Select the fourth symbol of the fourth read (it is a gap).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4616, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3747,7 +3736,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3070, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3765,7 +3753,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    15. Select the 21 symbol of the 7 read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3072, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);

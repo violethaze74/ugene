@@ -66,12 +66,12 @@ private:
 
 class McaEditorReferenceRenderArea : public PanViewRenderArea {
 public:
-    McaEditorReferenceRenderArea(McaEditorWgt *_ui, PanView *d, PanViewRenderer *renderer);
+    McaEditorReferenceRenderArea(McaEditorWgt *ui, PanView *d, PanViewRenderer *renderer);
 
-    virtual qint64 coordToPos(int x) const;
+    qint64 coordToPos(const QPoint &coord) const override;
 
 private:
-    McaEditorWgt *ui;
+    McaEditorWgt *const ui;
 };
 
 class McaEditorReferenceRenderAreaFactory : public PanViewRenderAreaFactory {
