@@ -202,7 +202,7 @@ signals:
     void si_updateRows();
 
 public:
-    void setSelection(const U2Region &r);
+    void setSelection(const U2Region &r) override;
     void centerRow(int row);
     int calculateNumRowBarSteps() const;
 

@@ -187,7 +187,7 @@ protected slots:
 protected:
     QPoint toRenderAreaPoint(const QPoint &p) const;
     virtual void updateScrollBar();
-    void setSelection(const U2Region &r);
+    virtual void setSelection(const U2Region &r);
     void addSelection(const U2Region &r);
     void removeSelection(const U2Region &r);
     virtual void setBorderCursor(const QPoint &p);

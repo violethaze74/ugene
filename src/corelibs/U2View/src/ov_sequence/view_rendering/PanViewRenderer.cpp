@@ -110,8 +110,8 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
 
     int hCenter = getContentIndentY(canvasSize.height());
     double halfChar = getCurrentScale() / 2;
-    int firstCharCenter = qRound(posToXCoordF(visibleRange.startPos, canvasSize, visibleRange) + halfChar);
-    int lastCharCenter = qRound(posToXCoordF(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar);
+    int firstCharCenter = posToXCoord(visibleRange.startPos, canvasSize, visibleRange) + halfChar;
+    int lastCharCenter = posToXCoord(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar;
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
         firstLastWidth--;    // make the end of the ruler visible
@@ -218,7 +218,7 @@ void PanViewRenderer::drawSequence(QPainter &p, const QSize &canvasSize, const U
     int y = getLineY(s->getSelectionLine()) + commonMetrics.lineHeight - commonMetrics.yCharOffset;
     for (int i = 0; i < visibleRange.length; i++) {
         char c = seq[i];
-        int x = qRound(posToXCoordF(visibleRange.startPos + i, canvasSize, visibleRange) + halfCharByScale - halfCharByFont);
+        int x = posToXCoord(visibleRange.startPos + i, canvasSize, visibleRange) + halfCharByScale - halfCharByFont;
         p.drawText(x, y, QString(c));
     }
 }

@@ -34,7 +34,8 @@ public:
     McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor);
 
     int getMinimumHeight() const override;
-    float posToXCoordF(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const override;
+
+    int posToXCoord(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
     void setFont(const QFont &font);
 
