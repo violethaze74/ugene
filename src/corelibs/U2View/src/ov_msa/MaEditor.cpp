@@ -131,6 +131,10 @@ void MaEditor::sl_onAlignmentChanged(const MultipleAlignment &, const MaModifica
     updateActions();
 }
 
+void MaEditor::sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &) {
+    updateActions();
+}
+
 QVariantMap MaEditor::saveState() {
     return MaEditorState::saveState(this);
 }
@@ -374,6 +378,10 @@ void MaEditor::initActions() {
     ui->addAction(clearSelectionAction);
 
     connect(this, SIGNAL(si_clearSelection()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
+
+    connect(ui->getSequenceArea(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 }
 
 void MaEditor::initZoom() {

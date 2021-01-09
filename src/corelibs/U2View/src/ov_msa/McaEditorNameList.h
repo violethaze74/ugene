@@ -35,10 +35,10 @@ public:
     McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar);
 
 protected slots:
-    void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &oldSelection);
+    void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &oldSelection) override;
 
 private slots:
-    void sl_updateActions();
+    void sl_updateActions() override;
 
 signals:
     void si_selectionChanged();
@@ -55,7 +55,7 @@ private:
     void drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect);
     QRectF calculateArrowRect(const U2Region &yRange) const;
 
-    int getAvailableWidth() const;
+    int getAvailableWidth() const override;
     int getMinimumWidgetWidth() const;
 
     int getIconColumnWidth() const;
