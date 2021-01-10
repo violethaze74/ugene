@@ -98,6 +98,11 @@ protected:
     /**
      * When activated MCA editor moves start of the currently selected read into the view.
      * If the selection contains multiple reads - selects the first one.
+     *
+     * The start of the direct reads (reads located on 3'-5' strand) is the same with their visual start on the screen -
+     *  direct reads are read from the left to the right direction.
+     * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
+     * This way the action works the same as annotation selection in the sequence view.
      */
     QAction *gotoSelectedReadAction;
 
