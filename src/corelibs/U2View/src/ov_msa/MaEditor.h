@@ -190,7 +190,12 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
-    void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+
+    /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
+    virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+
+    /** The slot is called each time selection is changed. By default calls 'updateActions'. */
+    virtual void sl_selectionChanged(const MaEditorSelection &ma, const MaEditorSelection &modInfo);
 
 private slots:
     void sl_resetColumnWidthCache();

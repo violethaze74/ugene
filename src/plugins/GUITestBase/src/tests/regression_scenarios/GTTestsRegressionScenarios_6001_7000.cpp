@@ -60,6 +60,7 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/DetView.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_6001_7000.h"
@@ -6794,6 +6795,33 @@ GUI_TEST_CLASS_DEFINITION(test_6990_2) {
     QStringList nameList2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList2[0] == "Phaneroptera_falcata", "3. The 1 sequence is incorrect");
     CHECK_SET_ERR(nameList2[17] == "Hetrodes_pupus_EF540832", "3. The last sequence is incorrect");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6995) {
+    // Open an MCA object and use context menu action to go to start position of direct and complement reads.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Check direct read first.
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Check complement read.
+    GTUtilsMcaEditor::clickReadName(os, 2);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MCAE_MENU_NAVIGATION << "centerReadStartAction"));
+    GTUtilsMcaEditorSequenceArea::callContextMenu(os);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
 }
 
 }    // namespace GUITest_regression_scenarios
