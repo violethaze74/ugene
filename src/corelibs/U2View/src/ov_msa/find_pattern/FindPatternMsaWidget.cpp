@@ -1122,7 +1122,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {
         resultUidSet << result.rowId;
     }
-    const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
+    const QList<qint64> allRowIds = msaEditor->getMaRowIds();
     if (resultUidSet.size() >= allRowIds.size()) {
         // Can't re-group anything: every sequence has a result.
         msaEditor->selectRows(0, allRowIds.size());

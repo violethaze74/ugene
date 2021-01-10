@@ -1137,7 +1137,8 @@ qint64 CircularViewRenderArea::asinToPos(const qreal asin) const {
 QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint &coord) const {
     QList<Annotation *> res;
     QPoint cp(coord - QPoint(width() / 2, getCenterY()));
-    for (CircularAnnotationItem *item : qAsConst(circItems)) {
+    const QList<CircularAnnotationItem *> itemList = circItems.values();
+    for (CircularAnnotationItem *item : qAsConst(itemList)) {
         int region = item->containsRegion(cp);
         if (region != -1) {
             res.append(item->getAnnotation());
@@ -1147,7 +1148,7 @@ QList<Annotation *> CircularViewRenderArea::findAnnotationsByCoord(const QPoint 
             }
         }
     }
-    for (CircularAnnotationItem *item : qAsConst(circItems)) {
+    for (CircularAnnotationItem *item : qAsConst(itemList)) {
         for (CircularAnnotationRegionItem *r : item->getRegions()) {
             CircularAnnotationLabel *lbl = r->getLabel();
             SAFE_POINT(lbl != nullptr, "NULL annotation label item!", res);

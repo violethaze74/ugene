@@ -628,7 +628,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
             groupRootItemList.append(node);
             continue;
         }
-        const QList<QGraphicsItem *> &childItemList = node->childItems();
+        const QList<QGraphicsItem *> childItemList = node->childItems();
         for (QGraphicsItem *curItem : qAsConst(childItemList)) {
             auto branchItem = dynamic_cast<GraphicsRectangularBranchItem *>(curItem);
             if (branchItem == nullptr) {

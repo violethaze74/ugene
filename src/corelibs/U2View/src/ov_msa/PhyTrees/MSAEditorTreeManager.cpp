@@ -331,8 +331,8 @@ void MSAEditorTreeManager::loadTreeFromFile(const QString &treeFileName) {
         AppContext::getProject()->addDocument(doc);
     }
 
-    const QList<GObject *> &objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
-    for (GObject *obj : qAsConst(objects)) {
+    const QList<GObject *> treeObjectList = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    for (GObject *obj : qAsConst(treeObjectList)) {
         auto treeObject = qobject_cast<PhyTreeObject *>(obj);
         msaObject->addObjectRelation(GObjectRelation(GObjectReference(treeObject), ObjectRole_PhylogeneticTree));
         if (treeObject == nullptr) {

@@ -580,7 +580,8 @@ AppSettingsGUIPageState *ExternalToolSupportSettingsPageWidget::getState(QString
     Q_UNUSED(err);
 
     QList<ExternalTool *> externalTools;
-    for (const ExternalToolInfo &info : qAsConst(externalToolsInfo)) {
+    const QList<ExternalToolInfo> toolInfoList = externalToolsInfo.values();
+    for (const ExternalToolInfo &info : qAsConst(toolInfoList)) {
         auto externalTool = new ExternalTool(info.id, info.dirName, info.name, info.path);
         externalTool->setValid(info.isValid);
         externalTool->setVersion(info.version);
