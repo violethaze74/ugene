@@ -241,7 +241,7 @@ public:
     int zoomUsing;
 };
 
-class PanViewRenderArea : public GSequenceLineViewGridAnnotationRenderArea {
+class U2VIEW_EXPORT PanViewRenderArea : public GSequenceLineViewGridAnnotationRenderArea {
     friend class PanView;
     Q_OBJECT
 public:
