@@ -96,7 +96,7 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
 
     HI::GUITestOpStatus os;
     try {
-        for (GUITest *test : tests) {
+        for (GUITest *test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
             test->run(os);
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
@@ -107,7 +107,8 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
-            for (GUITest *test : getTests(UGUITestBase::PostAdditionalChecks)) {
+            const QList<GUITest *> postCheckList = getTests(UGUITestBase::PostAdditionalChecks);
+            for (GUITest *test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
                 test->run(os);
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
@@ -123,7 +124,8 @@ void GUITestThread::clearSandbox() {
     const QString pathToSandbox = UGUITest::testDir + "_common_data/scenarios/sandbox/";
     QDir sandbox(pathToSandbox);
 
-    for (const QString &fileName : sandbox.entryList()) {
+    const QStringList entryList = sandbox.entryList();
+    for (const QString &fileName : qAsConst(entryList)) {
         if (fileName != "." && fileName != "..") {
             if (QFile::remove(pathToSandbox + fileName)) {
                 continue;
@@ -138,7 +140,8 @@ void GUITestThread::clearSandbox() {
 void GUITestThread::removeDir(const QString &dirName) {
     QDir dir(dirName);
 
-    for (const QFileInfo &fileInfo : dir.entryInfoList()) {
+    const QFileInfoList fileInfoList = dir.entryInfoList();
+    for (const QFileInfo &fileInfo : qAsConst(fileInfoList)) {
         const QString fileName = fileInfo.fileName();
         const QString filePath = fileInfo.filePath();
         if (fileName != "." && fileName != "..") {
@@ -180,7 +183,8 @@ void GUITestThread::saveScreenshot() {
 void GUITestThread::cleanup() {
     qDebug("Running cleanup after the test");
     testToRun->cleanup();
-    for (HI::GUITest *postAction : getTests(UGUITestBase::PostAdditionalActions)) {
+    const QList<GUITest *> postActionList = getTests(UGUITestBase::PostAdditionalActions);
+    for (HI::GUITest *postAction : qAsConst(postActionList)) {
         HI::GUITestOpStatus os;
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());

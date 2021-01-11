@@ -85,7 +85,7 @@ void GUITestLauncher::run() {
     qint64 suiteStartMicros = GTimer::currentTimeMicros();
 
     int finishedCount = 0;
-    for (GUITest *test : testList) {
+    for (GUITest *test : qAsConst(testList)) {
         if (isCanceled()) {
             return;
         }
@@ -215,7 +215,7 @@ bool GUITestLauncher::initTestList() {
                 continue;    // comment line or empty line.
             }
             bool added = false;
-            for (GUITest *test : allTestList) {
+            for (GUITest *test : qAsConst(allTestList)) {
                 QString fullTestName = test->getFullName();
                 QString teamcityTestName = UGUITest::getTeamcityTestName(test->suite, test->name);
                 if (testName == fullTestName || testName == teamcityTestName) {

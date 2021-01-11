@@ -70,7 +70,7 @@ ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 QList<ExternalToolsTreeNode *> GTUtilsDashboard::getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
     QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
     QList<ExternalToolsTreeNode *> result;
-    for (auto node : nodes) {
+    for (auto node : qAsConst(nodes)) {
         if (node->content == textPattern) {
             result << node;
         } else if (!isExactMatch && node->content.contains(textPattern)) {
@@ -84,7 +84,7 @@ QList<ExternalToolsTreeNode *> GTUtilsDashboard::getExternalToolNodesByText(HI::
 #define GT_METHOD_NAME "getExternalToolNodeByTextWithParent"
 ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
     QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
-    for (auto node : nodes) {
+    for (auto node : qAsConst(nodes)) {
         if (node->content == textPattern) {
             return node;
         } else if (!isExactMatch && node->content.contains(textPattern)) {
@@ -111,7 +111,7 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
 static QStringList getFileButtonLabels(QWidget *parentWidget) {
     QList<QToolButton *> buttons = parentWidget->findChildren<QToolButton *>();
     QStringList labels;
-    for (auto button : buttons) {
+    for (auto button : qAsConst(buttons)) {
         labels << button->text();
     }
     return labels;
@@ -225,7 +225,7 @@ QString GTUtilsDashboard::getChildNodeId(GUITestOpStatus &os, const QString &nod
 QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus &os, const QString &nodeId, const QList<int> &childIndexes) {
     QList<ExternalToolsTreeNode *> childNodes = getChildNodes(os, nodeId);
     QString resultNodeId = nodeId;
-    for (int i : childIndexes) {
+    for (int i : qAsConst(childIndexes)) {
         GT_CHECK_RESULT(i >= 0 && i < childNodes.size(), "Illegal child index: " + QString::number(i) + ", nodes: " + childNodes.size(), "");
         resultNodeId = childNodes[i]->objectName();
         childNodes = childNodes[i]->children;

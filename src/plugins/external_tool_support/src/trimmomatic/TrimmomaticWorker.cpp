@@ -105,7 +105,7 @@ Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
 
     QList<Task *> tasks;
     QSet<QString> takenNames;
-    for (const QString &trimmingStep : trimmingSteps) {
+    for (const QString &trimmingStep : qAsConst(trimmingSteps)) {
         if (!trimmingStep.startsWith(IlluminaClipStepFactory::ID)) {
             continue;
         }

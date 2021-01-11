@@ -23,10 +23,12 @@
 
 #include <QApplication>
 #include <QLayout>
+#include <QSpinBox>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <QSpinBox>
 
+#include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "drivers/GTKeyboardDriver.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTComboBox.h"
@@ -39,10 +41,6 @@
 #include "primitives/GTTableView.h"
 #include "primitives/GTWidget.h"
 
-#include "../../workflow_designer/src/WorkflowViewItems.h"
-
-#include "GTUtilsWorkflowDesigner.h"
-
 namespace U2 {
 
 using namespace HI;
@@ -50,31 +48,31 @@ using namespace HI;
 #define GT_CLASS_NAME "TrimmomaticDialogFiller"
 
 const QMap<TrimmomaticDialogFiller::TrimmomaticSteps, QString> TrimmomaticDialogFiller::STEPS = {
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, "AVGQUAL"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::CROP, "CROP"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::HEADCROP, "HEADCROP"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, "ILLUMINACLIP"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::LEADING, "LEADING"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::MAXINFO, "MAXINFO"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::MINLEN, "MINLEN"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::SLIDINGWINDOW, "SLIDINGWINDOW"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::TOPHRED33, "TOPHRED33"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::TOPHRED64, "TOPHRED64"},
-                                                                          {TrimmomaticDialogFiller::TrimmomaticSteps::TRAILING, "TRAILING"} };
+    {TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, "AVGQUAL"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::CROP, "CROP"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::HEADCROP, "HEADCROP"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, "ILLUMINACLIP"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::LEADING, "LEADING"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::MAXINFO, "MAXINFO"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::MINLEN, "MINLEN"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::SLIDINGWINDOW, "SLIDINGWINDOW"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::TOPHRED33, "TOPHRED33"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::TOPHRED64, "TOPHRED64"},
+    {TrimmomaticDialogFiller::TrimmomaticSteps::TRAILING, "TRAILING"}};
 
 const QMap<TrimmomaticDialogFiller::TrimmomaticValues, QString> TrimmomaticDialogFiller::VALUES = {
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "sbQualityThreshold"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::Length, "leLength"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::AdapterSequence, "fileName"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::SeedMismatches, "mismatches"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::PalindromeClipThreshold, "palindromeThreshold"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::SimpleClipThreshold, "simpleThreshold"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings, "groupBox"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::MinAdapterLength, "minLengthSpin"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::KeepBothReads, "keepBothCombo"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::TargetLength, "sbTargetLength"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::Strictness, "dsbStrictness"},
-                                                                            {TrimmomaticDialogFiller::TrimmomaticValues::WindowSize, "leWindowSize"} };
+    {TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "sbQualityThreshold"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::Length, "leLength"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::AdapterSequence, "fileName"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::SeedMismatches, "mismatches"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::PalindromeClipThreshold, "palindromeThreshold"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::SimpleClipThreshold, "simpleThreshold"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings, "groupBox"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::MinAdapterLength, "minLengthSpin"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::KeepBothReads, "keepBothCombo"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::TargetLength, "sbTargetLength"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::Strictness, "dsbStrictness"},
+    {TrimmomaticDialogFiller::TrimmomaticValues::WindowSize, "leWindowSize"}};
 
 void TrimmomaticDialogFiller::openDialog(HI::GUITestOpStatus &os, WorkflowProcessItem *trimmomaticElement) {
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
@@ -130,7 +128,7 @@ void TrimmomaticDialogFiller::addSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "Dialog not found");
 
-    for (auto step : addValues) {
+    for (auto step : qAsConst(addValues)) {
         auto stepString = STEPS.value(step.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
@@ -216,7 +214,7 @@ void TrimmomaticDialogFiller::moveSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "Dialog not found");
 
-    for (auto step : moveValues) {
+    for (auto step : qAsConst(moveValues)) {
         auto stepString = STEPS.value(step.first.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
@@ -236,14 +234,13 @@ void TrimmomaticDialogFiller::moveSteps() {
         }
         GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, buttonName));
     }
-
 }
 
 void TrimmomaticDialogFiller::removeSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "Dialog not found");
 
-    for (auto step : removeValues) {
+    for (auto step : qAsConst(removeValues)) {
         auto stepString = STEPS.value(step.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 

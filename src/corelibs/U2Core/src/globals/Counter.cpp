@@ -54,7 +54,7 @@ GCounter::~GCounter() {
 };
 
 GCounter *GCounter::findCounter(const QString &name, const QString &suffix) {
-    for (GCounter *counter : getGlobalCounterList()) {
+    for (GCounter *counter : qAsConst(getGlobalCounterList())) {
         if (name == counter->name && suffix == counter->suffix) {
             return counter;
         }

@@ -105,7 +105,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter &p, const QSize &ca
             extraAnnotationRegions << U2Region(0, headLength);
         }
     }
-    for (const AnnotationTableObject *annotationObject : ctx->getAnnotationObjects(true)) {
+    const QSet<AnnotationTableObject *> annotationObjectSet = ctx->getAnnotationObjects(true);
+    for (const AnnotationTableObject *annotationObject : qAsConst(annotationObjectSet)) {
         for (Annotation *annotation : annotationObject->getAnnotations()) {
             bool isVisible = annotationsRange.intersects(annotation->getRegions());
             for (int i = 0; i < extraAnnotationRegions.size() && !isVisible; i++) {
@@ -120,7 +121,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter &p, const QSize &ca
 
 void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings) {
     const AnnotationSelection *selection = ctx->getAnnotationsSelection();
-    for (Annotation *annotation : selection->getAnnotations()) {
+    for (Annotation *annotation : qAsConst(selection->getAnnotations())) {
         AnnotationTableObject *o = annotation->getGObject();
         if (ctx->getAnnotationObjects(true).contains(o)) {
             drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, true);

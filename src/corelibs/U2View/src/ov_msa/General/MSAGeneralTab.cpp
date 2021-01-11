@@ -115,7 +115,7 @@ void MSAGeneralTab::initializeParameters() {
     QList<DocumentFormatId> supportedFormats = formatRegistry->selectFormats(constr);
     supportedFormats.append(BaseDocumentFormats::PLAIN_TEXT);
 
-    for (const DocumentFormatId &fid : supportedFormats) {
+    for (const DocumentFormatId &fid : qAsConst(supportedFormats)) {
         DocumentFormat *format = formatRegistry->getFormatById(fid);
         copyType->addItem(QIcon(), format->getFormatName(), format->getFormatId());
     }

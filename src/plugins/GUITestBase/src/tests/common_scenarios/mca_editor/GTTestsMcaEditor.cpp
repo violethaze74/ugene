@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    for (const QString &rowName : rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
         bool isNameFound = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
@@ -157,7 +157,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
 
     //5. Report with info
-    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)" << "Filtered by low similarity (4)");
+    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)"
+                                                                        << "Filtered by low similarity (4)");
 
     // No Еrrors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));

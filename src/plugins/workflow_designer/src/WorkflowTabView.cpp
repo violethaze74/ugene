@@ -196,7 +196,7 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
 
         DashboardInfoRegistry *dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
         QStringList existingIds = allIds();
-        for (const QString &dashboardId : added) {
+        for (const QString &dashboardId : qAsConst(added)) {
             if (!existingIds.contains(dashboardId)) {
                 DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
                 if (dashboardInfo.opened) {

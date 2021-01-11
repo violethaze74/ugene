@@ -428,14 +428,12 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
     auto renderArea = qobject_cast<DetViewRenderArea *>(detView->getRenderArea());
     GT_CHECK(renderArea != nullptr, "detView render area not found");
 
-    ADVSequenceObjectContext *context = sequenceView->getSequenceContext();
-    context->getAnnotationObjects(true);
-
     QList<Annotation *> selectedAnnotationList;
-    for (const AnnotationTableObject *ao : context->getAnnotationObjects(true)) {
+    const QSet<AnnotationTableObject *> annotationObjectSet = sequenceView->getSequenceContext()->getAnnotationObjects(true);
+    for (const AnnotationTableObject *ao : qAsConst(annotationObjectSet)) {
         for (Annotation *a : ao->getAnnotations()) {
             QVector<U2Region> regions = a->getLocation()->regions;
-            for (const U2Region &r : regions) {
+            for (const U2Region &r : qAsConst(regions)) {
                 if (a->getName() == annotationName && r.startPos == annotationRegionStartPos - 1) {
                     selectedAnnotationList << a;
                 }
@@ -453,7 +451,8 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
 
     U2Region annotationRegion;
     int annotationRegionIndex = 0;
-    for (const U2Region &reg : annotation->getRegions()) {
+    const QVector<U2Region> regionList = annotation->getRegions();
+    for (const U2Region &reg : qAsConst(regionList)) {
         if (reg.startPos == annotationRegionStartPos - 1) {
             annotationRegion = reg;
             break;

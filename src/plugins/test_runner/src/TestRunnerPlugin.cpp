@@ -271,7 +271,7 @@ void TestRunnerService::readSavedSuites() {
     //TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    for (const QString &suiteUrl : suiteUrls) {
+    for (const QString &suiteUrl : qAsConst(suiteUrls)) {
         QString err;
         GTestSuite *ts = GTestSuite::readTestSuite(suiteUrl, err);
         if (ts == nullptr) {

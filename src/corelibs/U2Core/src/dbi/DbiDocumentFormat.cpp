@@ -23,7 +23,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
-#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -99,7 +98,7 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
     QMap<U2DataId, GObject *> match;
 
-    for (const U2DataId &dataId : objectIds) {
+    for (const U2DataId &dataId : qAsConst(objectIds)) {
         U2OpStatus2Log status;
         ref.entityId = dataId;
 
@@ -119,7 +118,8 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
     }
 
     if (handle.dbi->getObjectRelationsDbi() != NULL) {
-        for (const U2DataId &dataId : match.keys()) {
+        const QList<U2DataId> matchKeys = match.keys();
+        for (const U2DataId &dataId : qAsConst(matchKeys)) {
             U2OpStatus2Log status;
             GObject *srcObj = match.value(dataId, NULL);
             SAFE_POINT(srcObj != NULL, "Source object is NULL", QList<GObject *>());

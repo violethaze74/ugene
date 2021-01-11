@@ -4049,7 +4049,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
             CHECK_SET_ERR(m != NULL, "menu not found");
             QList<QAction *> menuActions = m->actions();
             CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            for (QAction *act : menuActions) {
+            for (QAction *act : qAsConst(menuActions)) {
                 CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
             }
 

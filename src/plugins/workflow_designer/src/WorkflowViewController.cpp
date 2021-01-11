@@ -2067,7 +2067,8 @@ void WorkflowView::procItemAdded() {
 }
 
 void WorkflowView::startFirstAutoRunWizard() {
-    for (Wizard *wizard : schema->getWizards()) {
+    const QList<Wizard *> wizardList = schema->getWizards();
+    for (Wizard *wizard : qAsConst(wizardList)) {
         if (wizard->isAutoRun()) {
             startWizard(wizard);
             return;

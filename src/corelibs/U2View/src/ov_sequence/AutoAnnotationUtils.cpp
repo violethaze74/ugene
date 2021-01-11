@@ -312,7 +312,7 @@ void ExportAutoAnnotationsGroupTask::prepare() {
     aGroup->findAllAnnotationsInGroupSubTree(annotationList);
 
     QList<SharedAnnotationData> newAnnotationDataList;
-    for (const Annotation *annotation : annotationList) {
+    for (const Annotation *annotation : qAsConst(annotationList)) {
         SharedAnnotationData data(new AnnotationData(*(annotation->getData())));
         U1AnnotationUtils::addDescriptionQualifier(data, annDescription);
         newAnnotationDataList.append(data);

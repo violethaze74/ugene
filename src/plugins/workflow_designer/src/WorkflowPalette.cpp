@@ -776,7 +776,8 @@ bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype *proto) c
     WorkflowView *wv = dynamic_cast<WorkflowView *>(schemaConfig);
     CHECK(wv != nullptr, false);
     int actorWithCurrentProtoCounter = 0;
-    for (auto actor : wv->getSchema()->getProcesses()) {
+    const QList<Actor *> actorList = wv->getSchema()->getProcesses();
+    for (auto actor : qAsConst(actorList)) {
         if (actor->getProto() == proto) {
             actorWithCurrentProtoCounter++;
         }

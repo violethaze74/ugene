@@ -335,7 +335,7 @@ bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel 
         return true;    // leading gap.
     }
     int totalGapsLen = 0;
-    for (const U2MsaGap &gap : gapModel) {
+    for (const U2MsaGap &gap : qAsConst(gapModel)) {
         totalGapsLen += gap.gap;
         if (position < gap.offset) {
             return false;    // somewhere in the middle.

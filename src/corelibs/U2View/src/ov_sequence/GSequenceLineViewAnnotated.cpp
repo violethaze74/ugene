@@ -440,7 +440,7 @@ QList<Annotation *> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsBy
     }
     U2Region pointRegion(pos - uncertaintyLength, 1 + 2 * uncertaintyLength);    // A region of sequence covered by the 'QPoint& coord'.
     const QSet<AnnotationTableObject *> annotationObjectSet = sequenceContext->getAnnotationObjects(true);
-    for (const AnnotationTableObject *annotationObject : annotationObjectSet) {
+    for (const AnnotationTableObject *annotationObject : qAsConst(annotationObjectSet)) {
         for (Annotation *annotation : annotationObject->getAnnotationsByRegion(pointRegion)) {
             const SharedAnnotationData &aData = annotation->getData();
             const QVector<U2Region> locationRegionList = aData->getRegions();
@@ -474,7 +474,7 @@ QList<Annotation *> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsBy
 
 bool GSequenceLineViewGridAnnotationRenderArea::checkAnnotationRegionContainsYPoint(int y, Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
     QList<U2Region> yRegionList = getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings);
-    for (const U2Region &region : yRegionList) {
+    for (const U2Region &region : qAsConst(yRegionList)) {
         if (region.contains(y)) {
             return true;
         }

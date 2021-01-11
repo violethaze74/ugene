@@ -128,7 +128,7 @@ void TCoffeeSupportContext::buildMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    for (GObjectViewAction *a : actions) {
+    for (GObjectViewAction *a : qAsConst(actions)) {
         a->addToMenuWithOrder(alignMenu);
     }
 }

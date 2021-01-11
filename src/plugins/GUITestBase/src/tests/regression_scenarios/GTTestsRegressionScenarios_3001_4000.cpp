@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     GTGlobals::sleep(500);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r : regions) {
+    for (const U2Region &r : qAsConst(regions)) {
         CHECK_SET_ERR(r.length > 0, "Invalid annotated region!");
     }
 }
@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
     GTGlobals::systemSleep();
-    for (Task *task : AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    for (Task *task : qAsConst(AppContext::getTaskScheduler()->getTopLevelTasks())) {
         if (task->getTaskName() != "Auto-annotations update task") {
             continue;
         }
@@ -1965,7 +1965,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
     QString name;
-    for (const QString &key : keys) {
+    for (const QString &key : qAsConst(keys)) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2626,10 +2626,10 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
             continue;
         }
         QList<Task *> innertList;
-        for (Task *t : tList) {
+        for (Task *t : qAsConst(tList)) {
             innertList.append(t->getPureSubtasks());
         }
-        for (Task *t : innertList) {
+        for (Task *t : qAsConst(innertList)) {
             if (t->getTaskName().contains("Opening view")) {
                 end = true;
                 break;
@@ -4632,7 +4632,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTGlobals::sleep();
 
     QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &curRegion : annotatedRegions) {
+    for (const U2Region &curRegion : qAsConst(annotatedRegions)) {
         CHECK_SET_ERR(curRegion.startPos >= 20, "Incorrect annotated region");
     }
 }
@@ -5350,7 +5350,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
-    for (QModelIndex index : list) {
+    for (QModelIndex index : qAsConst(list)) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
@@ -5716,7 +5716,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r : regions) {
+    for (const U2Region &r : qAsConst(regions)) {
         CHECK_SET_ERR((r.startPos >= 1000 && r.startPos <= 4000 &&
                        r.endPos() >= 1000 && r.endPos() <= 4000),
                       "Invalid annotated region!");

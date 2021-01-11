@@ -36,6 +36,8 @@
 #include <QToolButton>
 #include <QWizard>
 
+#include <U2Core/global.h>
+
 #include "GTUtilsWizard.h"
 
 namespace U2 {
@@ -61,20 +63,21 @@ const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUt
 void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus &os, const QList<QStringList> &inputFiles) {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
     int i = 0;
-    for (const QStringList &datasetFiles : inputFiles) {
+    for (const QStringList &datasetFiles : qAsConst(inputFiles)) {
         QTabWidget *tabWidget = GTWidget::findWidgetByType<QTabWidget *>(os, dialog, "tabWidget not found");
         GTTabWidget::setCurrentIndex(os, tabWidget, i);
 
         QMap<QString, QStringList> dir2files;
-        for (const QString &datasetFile : datasetFiles) {
+        for (const QString &datasetFile : qAsConst(datasetFiles)) {
             QFileInfo fileInfo(datasetFile);
             dir2files[fileInfo.absoluteDir().path()] << fileInfo.fileName();
         }
 
-        for (const QString &dir : dir2files.keys()) {
+        const QList<QString> dirList = dir2files.keys();
+        for (const QString &dir : qAsConst(dirList)) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, dir, dir2files[dir]));
             QList<QWidget *> addFileButtonList = dialog->findChildren<QWidget *>("addFileButton");
-            for (QWidget *addFileButton : addFileButtonList) {
+            for (QWidget *addFileButton : qAsConst(addFileButtonList)) {
                 if (addFileButton->isVisible()) {
                     GTWidget::click(os, addFileButton);
                     break;

@@ -79,7 +79,7 @@ void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     bool isErrorFound = false;
-    for (QString error : logTracer.errorsList) {
+    for (QString error : qAsConst(logTracer.errorsList)) {
         if (error.contains(messagePart)) {
             isErrorFound = true;
             break;

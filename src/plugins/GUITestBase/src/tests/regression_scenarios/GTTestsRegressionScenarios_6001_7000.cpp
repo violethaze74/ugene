@@ -1679,7 +1679,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     //Do it twice, for two different ids
     QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    for (auto id : ensembleIds) {
+    for (auto id : qAsConst(ensembleIds)) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, QStringList() << id);
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");

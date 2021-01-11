@@ -69,7 +69,7 @@ QList<Task *> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task *subTask) {
 
     bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
     QMap<QString, QList<SharedAnnotationData>> annotationsByGroupMap;
-    for (const SEnzymeData &enzyme : enzymes) {
+    for (const SEnzymeData &enzyme : qAsConst(enzymes)) {
         QList<SharedAnnotationData> resultAnnotationList = findTask->getResultsAsAnnotations(enzyme->id);
         if (resultAnnotationList.size() >= cfg.minHitCount && resultAnnotationList.size() <= cfg.maxHitCount) {
             QString group = useSubgroups ? cfg.groupName + "/" + enzyme->id : cfg.groupName;
@@ -90,7 +90,7 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
         if (proj != nullptr) {
             Document *toDelete = nullptr;
             QList<Document *> docs = proj->getDocuments();
-            for (Document *doc : docs) {
+            for (Document *doc : qAsConst(docs)) {
                 if (doc->getObjects().contains(annotationObject)) {
                     toDelete = doc;
                     break;
@@ -120,7 +120,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef &seqRef, const U2Region &regi
     SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     seqlen = seq.getSequenceLength();
     //for every enzymes in selection create FindSingleEnzymeTask
-    for (const SEnzymeData &enzyme : enzymes) {
+    for (const SEnzymeData &enzyme : qAsConst(enzymes)) {
         addSubTask(new FindSingleEnzymeTask(seqRef, region, enzyme, this, circular));
     }
 }
@@ -129,7 +129,7 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData &enzyme, const U2Stran
     if (pos > seqlen) {
         pos %= seqlen;
     }
-    for (const U2Region &r : excludedRegions) {
+    for (const U2Region &r : qAsConst(excludedRegions)) {
         if (U2Region(pos, enzyme->seq.length()).intersects(r)) {
             return;
         }
@@ -155,7 +155,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
     QString cutStr;
     QString dbxrefStr;
     QList<FindEnzymesAlgResult> searchResultList = searchResultMap.value(enzymeId);
-    for (const FindEnzymesAlgResult &searchResult : searchResultList) {
+    for (const FindEnzymesAlgResult &searchResult : qAsConst(searchResultList)) {
         const SEnzymeData &enzyme = searchResult.enzyme;
         if (!enzyme->accession.isEmpty()) {
             QString accession = enzyme->accession;
@@ -175,7 +175,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
         break;
     }
 
-    for (const FindEnzymesAlgResult &searchResult : searchResultList) {
+    for (const FindEnzymesAlgResult &searchResult : qAsConst(searchResultList)) {
         const SEnzymeData &enzyme = searchResult.enzyme;
         if (isCircular && searchResult.pos + enzyme->seq.size() > seqlen) {
             if (seqlen < searchResult.pos) {
@@ -344,7 +344,7 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
     QList<SEnzymeData> allEnzymesList = EnzymesIO::getDefaultEnzymesList();
     QStringList selectedEnzymeIdList = selectedEnzymesString.split(ENZYME_LIST_SEPARATOR);
     QList<SEnzymeData> selectedEnzymes;
-    for (const QString &id : selectedEnzymeIdList) {
+    for (const QString &id : qAsConst(selectedEnzymeIdList)) {
         for (const SEnzymeData &enzyme : allEnzymesList) {
             if (id == enzyme->id) {
                 selectedEnzymes.append(enzyme);
