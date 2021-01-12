@@ -32,8 +32,8 @@ namespace GUITest_assembly_extract_consensus {
 
 GUI_TEST_CLASS_DECLARATION(sorted_bam_test_0001)
 GUI_TEST_CLASS_DECLARATION(ugenedb_test_0001)
-GUI_TEST_CLASS_DECLARATION(multiple_inp_test_0001)
-GUI_TEST_CLASS_DECLARATION(wrong_inp_test_0001)
+GUI_TEST_CLASS_DECLARATION(multiple_input_test_0001)
+GUI_TEST_CLASS_DECLARATION(wrong_input_test_0001)
 
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_assembly_extract_consensus

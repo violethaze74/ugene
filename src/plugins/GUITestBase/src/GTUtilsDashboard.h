@@ -39,6 +39,28 @@ public:
                 Input,
                 ExternalTools };
 
+    // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
+    // element to which the notification relates and the notification message
+    struct Notification {
+        enum class Type { INFO,
+                          WARN,
+                          ERR };
+
+        static const QString typesNames[3];
+
+        static QString typeToQString(Type t) {
+            return typesNames[static_cast<int>(t)];
+        }
+
+        Notification() = delete;
+
+        Type type;
+        QString element;
+        QString message;
+
+        operator QString() const;
+    };
+
     /** Returns active dashboard or nullptr if not found. */
     static Dashboard *findDashboard(HI::GUITestOpStatus &os);
 
@@ -59,7 +81,14 @@ public:
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
     static QString getTabObjectName(Tabs tab);
+
     static bool hasNotifications(HI::GUITestOpStatus &os);
+
+    static QList<Notification> getNotifications(HI::GUITestOpStatus &os);
+
+    // Returns a QString containing all dashboard notifications, splitted by '\n'
+    static QString getJoinedNotificationsString(HI::GUITestOpStatus &os);
+
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
     static bool hasTab(HI::GUITestOpStatus &os, Tabs tab);

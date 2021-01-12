@@ -21,7 +21,6 @@
 
 #include "GTTestsAssemblyExtractConsensus.h"
 
-#include <QApplication>
 #include <QFileInfo>
 
 #include "GTUtilsDashboard.h"
@@ -42,60 +41,48 @@
 #include "utils/GTUtilsDialog.h"
 
 namespace {
-    enum class Algo {
-        DEFAULT,
-        SAMTOOLS
-    };
+enum class Algo {
+    DEFAULT,
+    SAMTOOLS
+};
 }    // namespace
 
 namespace U2 {
 
 namespace GUITest_assembly_extract_consensus {
 
-struct ExtractConsensusWizardScenario : CustomScenario {
-    QStringList inpPaths;
+class ExtractConsensusWizardScenario : public CustomScenario {
+    QStringList inputPaths;
     Algo algo;
     bool keepGaps;
     QString outFile;
 
+public:
     ExtractConsensusWizardScenario(const QStringList &assembliesPath = QStringList(),
                                    const Algo algo = Algo::DEFAULT,
                                    const bool keepGaps = true,
                                    const QString &outputFileName = "consensus.fa")
-        : inpPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
+        : inputPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
     }
 
-    void run(HI::GUITestOpStatus &os) {
-        QWidget *const dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog != nullptr, "activeModalWidget is nullptr");
-        {
-            auto *const urlleInp = GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog);
-            CHECK_SET_ERR(urlleInp != nullptr, "Assembly widget is nullptr");
-            QString inpText;
-            foreach (const QString &inp, inpPaths) {
-                inpText += QFileInfo(inp).absoluteFilePath();
-                inpText += ";";
-            }
-            if (inpText.length() > 0) {
-                inpText.remove(inpText.length() - 1, 1);
-            }
-            GTLineEdit::setText(os, urlleInp, inpText);
-        }
-        {
-            auto *const cbAlgo = GTWidget::findExactWidget<QComboBox *>(os, "Algorithm widget", dialog);
-            CHECK_SET_ERR(cbAlgo != nullptr, "Algorithm widget is nullptr");
-            GTComboBox::selectItemByIndex(os, cbAlgo, static_cast<int>(algo));
-        }
-        {
-            auto *const cbKeepGaps = GTWidget::findExactWidget<QComboBox *>(os, "Keep gaps widget", dialog);
-            CHECK_SET_ERR(cbKeepGaps != nullptr, "Keep gaps widget is nullptr");
-            GTComboBox::selectItemByIndex(os, cbKeepGaps, static_cast<int>(keepGaps));
-        }
-        {
-            auto *const urlleOut = GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog);
-            CHECK_SET_ERR(urlleOut != nullptr, "Output file widget is nullptr");
-            GTLineEdit::setText(os, urlleOut, outFile);
-        }
+    void run(HI::GUITestOpStatus &os) override {
+        QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+
+        // Dialog filling
+        std::transform(inputPaths.begin(), inputPaths.end(), inputPaths.begin(), [](const QString &path) {
+            return QFileInfo(path).absoluteFilePath();
+        });
+        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog),
+            inputPaths.join(';'));
+
+        GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "Algorithm widget", dialog),
+            static_cast<int>(algo));
+
+        GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "Keep gaps widget", dialog),
+            static_cast<int>(keepGaps));
+
+        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog), outFile);
+
         GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
     }
 };
@@ -115,11 +102,12 @@ GUI_TEST_CLASS_DEFINITION(sorted_bam_test_0001) {
                                                 << "Extract consensus from assemblies...");
 
     //  4. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
@@ -136,11 +124,12 @@ GUI_TEST_CLASS_DEFINITION(sorted_bam_test_0001) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  7. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(ugenedb_test_0001) {
@@ -158,11 +147,12 @@ GUI_TEST_CLASS_DEFINITION(ugenedb_test_0001) {
                                                 << "Extract consensus from assemblies...");
 
     //  4. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
@@ -179,66 +169,50 @@ GUI_TEST_CLASS_DEFINITION(ugenedb_test_0001) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  7. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
-GUI_TEST_CLASS_DEFINITION(multiple_inp_test_0001) {
-    struct ExtractConsensusWizardWithAddScenario : CustomScenario {
-        QStringList inpPaths;
+GUI_TEST_CLASS_DEFINITION(multiple_input_test_0001) {
+    class ExtractConsensusWizardWithAddScenario : public CustomScenario {
+        QStringList inputPaths;
         Algo algo;
         bool keepGaps;
         QString outFile;
 
-        ExtractConsensusWizardWithAddScenario(const QStringList &assembliesPath,
+    public:
+        ExtractConsensusWizardWithAddScenario(const QStringList &assembliesPath = QStringList(),
                                               const Algo algo = Algo::DEFAULT,
                                               const bool keepGaps = true,
                                               const QString &outputFileName = "consensus.fa")
-            : inpPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
+            : inputPaths(assembliesPath), algo(algo), keepGaps(keepGaps), outFile(outputFileName) {
         }
 
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *const dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is nullptr");
-            {
-                auto *const urlleInp = GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog);
-                CHECK_SET_ERR(urlleInp != nullptr, "Assembly widget is nullptr");
-                QString inpText;
-                foreach (const QString &inp, inpPaths) {
-                    inpText += QFileInfo(inp).absoluteFilePath();
-                    inpText += ";";
-                }
-                if (inpText.length() > 0) {
-                    inpText.remove(inpText.length() - 1, 1);
-                }
-                GTLineEdit::setText(os, urlleInp, inpText);
-            }
-            {
-                auto *const cbAlgo = GTWidget::findExactWidget<QComboBox *>(os, "Algorithm widget", dialog);
-                CHECK_SET_ERR(cbAlgo != nullptr, "Algorithm widget is nullptr");
-                GTComboBox::selectItemByIndex(os, cbAlgo, static_cast<int>(algo));
-            }
-            {
-                auto *const cbKeepGaps = GTWidget::findExactWidget<QComboBox *>(os, "Keep gaps widget", dialog);
-                CHECK_SET_ERR(cbKeepGaps != nullptr, "Keep gaps widget is nullptr");
-                GTComboBox::selectItemByIndex(os, cbKeepGaps, static_cast<int>(keepGaps));
-            }
-            {
-                auto *const urlleOut = GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog);
-                CHECK_SET_ERR(urlleOut != nullptr, "Output file widget is nullptr");
-                GTLineEdit::setText(os, urlleOut, outFile);
-            }
-            {
-                auto *const tbAddInp = GTWidget::findButtonByText(os, "Add", dialog);
-                CHECK_SET_ERR(tbAddInp != nullptr, "Add button is nullptr");
-                tbAddInp->click();
-                GTUtilsDialog::waitForDialog(os,
-                                             new GTFileDialogUtils(os,
-                                                                   testDir + "_common_data/bam/small.bam.sorted.bam"));
-            }
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+
+            // Dialog filling
+            std::transform(inputPaths.begin(), inputPaths.end(), inputPaths.begin(), [](const QString &path) {
+                return QFileInfo(path).absoluteFilePath();
+            });
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
+
+            GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "Algorithm widget", dialog),
+                static_cast<int>(algo));
+
+            GTComboBox::selectItemByIndex(os, GTWidget::findExactWidget<QComboBox *>(os, "Keep gaps widget", dialog),
+                static_cast<int>(keepGaps));
+
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog), outFile);
+
+            GTWidget::findButtonByText(os, "Add", dialog)->click();
+            GTUtilsDialog::waitForDialog(os,
+                                         new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
+
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -259,11 +233,12 @@ GUI_TEST_CLASS_DEFINITION(multiple_inp_test_0001) {
                                                 << "Extract consensus from assemblies...");
 
     //  5. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 
     //  6. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
@@ -280,14 +255,15 @@ GUI_TEST_CLASS_DEFINITION(multiple_inp_test_0001) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  8. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
+        GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
-GUI_TEST_CLASS_DEFINITION(wrong_inp_test_0001) {
+GUI_TEST_CLASS_DEFINITION(wrong_input_test_0001) {
     const GTLogTracer lt;
     const QString path1 = dataDir + "samples/Assembly/chrM.fa";
     const QString path2 = dataDir + "samples/Assembly/chrM.sorted.bam";
@@ -310,8 +286,8 @@ GUI_TEST_CLASS_DEFINITION(wrong_inp_test_0001) {
                                                 << "Extract consensus from assemblies...");
 
     //  4. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
-    //  Expected state: There should be an error about unsopported format in the log
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
+    //  Expected state: There should be an error about unsupported format in the log
     GTUtilsLog::checkContainsError(os, lt, dashboardErrMsg);
     //  There should be a notification about this error in the dashboard
     CHECK_SET_ERR(hasDashboardNotification(os, dashboardErrMsg),
@@ -326,10 +302,9 @@ GUI_TEST_CLASS_DEFINITION(wrong_inp_test_0001) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  7. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
-
+    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
     //  Expected state: There should be dialog "Workflow cannot be executed"
-    CHECK_SET_ERR(QApplication::activeModalWidget(), "activeModalWidget is nullptr");
+    CHECK_SET_ERR(GTWidget::getActiveModalWidget(os), "activeModalWidget is nullptr");
     //  8. Click "Ok" in this dialog
     GTUtilsDialog::waitForDialog(os, new HI::MessageBoxDialogFiller(os, QMessageBox::Ok));
     //  There should also be an error about missing required input parameter in the workflow

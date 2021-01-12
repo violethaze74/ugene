@@ -2966,8 +2966,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_assembly_extract_consensus::sorted_bam_test_0001);
     REGISTER_TEST(GUITest_assembly_extract_consensus::ugenedb_test_0001);
-    REGISTER_TEST(GUITest_assembly_extract_consensus::multiple_inp_test_0001);
-    REGISTER_TEST(GUITest_assembly_extract_consensus::wrong_inp_test_0001);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::multiple_input_test_0001);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::wrong_input_test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/sam
