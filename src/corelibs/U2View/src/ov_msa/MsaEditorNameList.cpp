@@ -21,6 +21,8 @@
 
 #include "MsaEditorNameList.h"
 
+#include <QMouseEvent>
+
 #include <U2Gui/GUIUtils.h>
 
 #include "MSAEditor.h"
@@ -55,6 +57,15 @@ void MsaEditorNameList::buildMenu(QMenu *menu) {
 
 MSAEditor *MsaEditorNameList::getEditor() const {
     return qobject_cast<MSAEditor *>(editor);
+}
+
+void MsaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton) {
+        sl_editSequenceName();
+        e->ignore();
+        return;
+    }
+    QWidget::mouseDoubleClickEvent(e);
 }
 
 }    // namespace U2

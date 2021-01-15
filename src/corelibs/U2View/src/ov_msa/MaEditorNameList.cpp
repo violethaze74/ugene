@@ -809,13 +809,6 @@ void MaEditorNameList::sl_editSequenceName() {
     }
 }
 
-void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
-    Q_UNUSED(e);
-    if (e->button() == Qt::LeftButton) {
-        sl_editSequenceName();
-    }
-}
-
 void MaEditorNameList::moveSelectedRegion(int shift) {
     CHECK(shift != 0, );
     MultipleAlignmentObject *maObj = editor->getMaObject();

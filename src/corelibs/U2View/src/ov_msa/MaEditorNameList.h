@@ -61,10 +61,10 @@ public slots:
 
 protected slots:
     void sl_completeRedraw();
+    void sl_editSequenceName();
 
 private slots:
     void sl_copyCurrentSequence();
-    void sl_editSequenceName();
     void sl_lockedStateChanged();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
     void sl_vScrollBarActionPerformed();
@@ -85,7 +85,6 @@ protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
-    void mouseDoubleClickEvent(QMouseEvent *e) override;
     void focusOutEvent(QFocusEvent *fe) override;
     void focusInEvent(QFocusEvent *fe) override;
     void wheelEvent(QWheelEvent *we) override;

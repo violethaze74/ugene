@@ -65,7 +65,6 @@ void GTUtilsMcaEditor::checkMcaEditorWindowIsActive(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-
 #define GT_METHOD_NAME "getEditor"
 McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
     McaEditorWgt *editorUi = getEditorUi(os);
@@ -292,6 +291,13 @@ void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readNam
 void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton) {
     moveToReadName(os, readNumber);
     GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "doubleClickReadName"
+void GTUtilsMcaEditor::doubleClickReadName(GUITestOpStatus &os, int readIndex) {
+    moveToReadName(os, readIndex);
+    GTMouseDriver::doubleClick();
 }
 #undef GT_METHOD_NAME
 
