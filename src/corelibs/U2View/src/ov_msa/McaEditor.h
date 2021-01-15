@@ -72,6 +72,10 @@ public:
 
     SequenceObjectContext *getReferenceContext() const;
 
+    QAction *getGotoSelectedReadAction() const {
+        return gotoSelectedReadAction;
+    }
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos) override;
     void sl_showHideChromatograms(bool show);

@@ -40,6 +40,7 @@
 #include <QList>
 
 #include <U2View/MaEditorNameList.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "GTTestsMcaEditor.h"
 #include "GTUtilsDashboard.h"
@@ -3768,6 +3769,31 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("15. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("20" == readPositionString, QString("15. Unexpected read position label: expected '%1', got '%2'").arg("20").arg(readPositionString));
     CHECK_SET_ERR("1036" == readLengthString, QString("15. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0042) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Select first read (direct).
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Select the second read (complement).
+    GTUtilsMcaEditor::clickReadName(os, 2);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor
