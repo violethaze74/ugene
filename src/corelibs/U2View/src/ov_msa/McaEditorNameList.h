@@ -44,6 +44,8 @@ signals:
     void si_selectionChanged();
 
 protected:
+    void keyPressEvent(QKeyEvent *e) override;
+
     void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) override;
 
     void setSelection(int startSeq, int count) override;
