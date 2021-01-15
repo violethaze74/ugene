@@ -340,6 +340,7 @@ void McaEditor::addEditMenu(QMenu *menu) {
 }
 
 void McaEditor::sl_gotoSelectedRead() {
+    GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
     MaEditorSelection selection = getSelection();
     int rowIndex = selection.y();
     CHECK(selection.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
