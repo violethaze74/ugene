@@ -274,6 +274,28 @@ QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWind
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "createSubImage"
+QImage GTWidget::createSubImage(GUITestOpStatus &os, const QImage &image, const QRect &rect) {
+    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect!", QImage());
+    int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
+    return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "hasSingleFillColor"
+bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            QColor pixelColor = image.pixel(x, y);
+            if (pixelColor != color) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "hasPixelWithColor"
 bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor) {
     QImage image = getImage(os, widget);

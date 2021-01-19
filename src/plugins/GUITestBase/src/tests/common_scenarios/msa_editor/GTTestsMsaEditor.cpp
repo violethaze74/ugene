@@ -4585,6 +4585,36 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
     CHECK_SET_ERR(sequencesNameList[10] == "human_T3", "No pasted sequences");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0090) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QWidget *sequenceAreaWidget = GTUtilsMsaEditor::getSequenceArea(os);
+
+    // Check that sequence area cell contains a text character up until the cell size is > 7px.
+    // 7px is a hardcoded constant in the MA editor.
+    const int minWidthToShowText = 7;
+    QRect prevRect(0, 0, 10000, 10000);
+    while (true) {
+        QRect globalRect = GTUtilsMSAEditorSequenceArea::getPositionRect(os, QPoint(0, 0));
+        // TODO: using '-1' due to the bug in getPositionRect or in rendering:
+        //  the cellImageRect contains border-line pixels from the next base.
+        QRect cellImageRect(0, 0, globalRect.width() - 1, globalRect.height() - 1);
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FF99B1");
+        bool hasTextInTheCell = !hasOnlyBgColor;
+        if (globalRect.width() >= minWidthToShowText) {
+            CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
+        } else {
+            CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
+            break;
+        }
+        GTUtilsMsaEditor::zoomOut(os);
+        CHECK_SET_ERR(globalRect.width() < prevRect.width(), "Zoom Out had no effect");
+        prevRect = globalRect;
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_fake) {
     Q_UNUSED(os);
 }
