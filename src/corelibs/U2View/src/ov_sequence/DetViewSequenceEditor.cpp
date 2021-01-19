@@ -154,7 +154,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
             insertChar(U2Msa::GAP_CHAR);
             break;
         default:
-            if ((key >= Qt::Key_A && key <= Qt::Key_Z)) {
+            if (key >= Qt::Key_A && key <= Qt::Key_Z) {
                 if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                     insertChar(key);
                 }
