@@ -1,5 +1,4 @@
-﻿
-/**
+﻿/**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
@@ -3794,6 +3793,43 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     visibleRange = referenceArea->getVisibleRange();
     CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0043) {
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    // Center the second (index = 1) read in the sequence area.
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Collapse the chromatogram view.
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+    QWidget *sequenceAreaWidget = GTUtilsMcaEditor::getSequenceArea(os);
+
+    // Check that sequence area cell contains a text character up until the cell size is > 7px.
+    // 7px is a hardcoded constant in the MA editor.
+    const int minWidthToShowText = 7;
+    QRect prevRect(0, 0, 10000, 10000);
+    while (true) {
+        QRect rect = GTUtilsMcaEditorSequenceArea::getPositionRect(os, 1, 2053);    // Symbol 'T'.
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        // Reduce captured cell image rect by 1 px to avoid border aliasing effects with the next char.
+        QRect cellImageRect(rect.topLeft(), rect.bottomRight() + QPoint(-1, -1));
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#EAEDF7");
+        bool hasTextInTheCell = !hasOnlyBgColor;
+        if (rect.width() >= minWidthToShowText) {
+            CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
+        } else {
+            CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
+            break;
+        }
+        GTUtilsMcaEditor::zoomOut(os);
+        CHECK_SET_ERR(rect.width() < prevRect.width(), "Zoom Out had no effect");
+        prevRect = rect;
+    }
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor

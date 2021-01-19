@@ -22,9 +22,9 @@
 #ifndef _U2_GT_UTILS_MCA_EDITOR_H_
 #define _U2_GT_UTILS_MCA_EDITOR_H_
 
-#include <QWidget>
 #include <QLabel>
 #include <QScrollBar>
+#include <QWidget>
 
 namespace HI {
 class GUITestOpStatus;
@@ -43,7 +43,7 @@ class MultipleAlignmentRowData;
 class GTUtilsMcaEditor {
 public:
     /** Returns active MCA editor window or fails. */
-    static QWidget* getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
+    static QWidget *getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
 
     /** Checks if editor window is active or fails. */
     static void checkMcaEditorWindowIsActive(HI::GUITestOpStatus &os);
