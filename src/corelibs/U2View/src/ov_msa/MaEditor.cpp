@@ -60,7 +60,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       ui(NULL),
       resizeMode(ResizeMode_FontAndContent),
       minimumFontPointSize(6),
-      maximumFontPointSize(48),
+      maximumFontPointSize(24),
       zoomFactor(0),
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
