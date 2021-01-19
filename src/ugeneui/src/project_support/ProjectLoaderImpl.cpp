@@ -512,7 +512,15 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                 FormatDetectionConfig conf;
                 conf.useImporters = hints.value(ProjectLoaderHint_UseImporters, true).toBool();
                 conf.bestMatchesOnly = false;
-                formats = DocumentUtils::detectFormat(url, conf);
+                QString forcedFormatId = hints.value(ProjectLoaderHint_DocumentFormat).toString();
+                DocumentFormat *documentFormat = forcedFormatId.isEmpty() ? nullptr : AppContext::getDocumentFormatRegistry()->getFormatById(forcedFormatId);
+                if (documentFormat != nullptr) {
+                    FormatDetectionResult formatDetectionResult;
+                    formatDetectionResult.format = documentFormat;
+                    formats << formatDetectionResult;
+                } else {
+                    formats = DocumentUtils::detectFormat(url, conf);
+                }
             } else {
                 FormatDetectionResult result;
                 result.format = AppContext::getDocumentFormatRegistry()->getFormatById(hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat].toString());
@@ -718,7 +726,7 @@ void ProjectLoaderImpl::sl_paste() {
     SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
     PasteTask *task = pasteFactory->createPasteTask(true);
-    CHECK(task != nullptr,);
+    CHECK(task != nullptr, );
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
