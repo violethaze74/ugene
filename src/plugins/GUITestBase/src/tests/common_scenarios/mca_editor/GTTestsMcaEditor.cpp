@@ -3796,6 +3796,27 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0043) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Double-click the first read (direct).
+    GTUtilsMcaEditor::doubleClickReadName(os, 1);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Double-click the second read (complement).
+    GTUtilsMcaEditor::doubleClickReadName(os, 2);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
 }    //namespace GUITest_common_scenarios_mca_editor
 
 }    //namespace U2

@@ -142,4 +142,14 @@ void McaEditorNameList::keyPressEvent(QKeyEvent *e) {
     MaEditorNameList::keyPressEvent(e);
 }
 
+void McaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
+    QAction *gotoSelectedReadAction = getEditor()->getGotoSelectedReadAction();
+    if (gotoSelectedReadAction->isEnabled()) {
+        gotoSelectedReadAction->trigger();
+        e->ignore();
+        return;
+    }
+    MaEditorNameList::mouseDoubleClickEvent(e);
+}
+
 }    // namespace U2

@@ -31,6 +31,10 @@ class MsaEditorNameList : public MaEditorNameList {
 public:
     MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar);
 
+protected:
+    /** Double-click in MSA editor is bound to 'rename-sequence' action. */
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
+
 private slots:
     void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
     void sl_buildContextMenu(GObjectView *view, QMenu *menu);
