@@ -210,9 +210,6 @@ void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize,
     int pos = editor->getCursorPosition();
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), );
 
-    int hCenter = getContentIndentY(canvasSize.height());
-    p.translate(0, hCenter);
-
     int ymargin = commonMetrics.yCharOffset / 2;
     int y = getLineY(directLine, canvasSize.height()) - 2 * ymargin;
     int height = commonMetrics.lineHeight + 4 * ymargin;
@@ -225,8 +222,6 @@ void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize,
     p.drawLine(x, y, x, y + height);
     p.drawLine(x - ymargin, y, x + ymargin, y);
     p.drawLine(x - ymargin, y + height, x + ymargin, y + height);
-
-    p.translate(0, -hCenter);
 }
 
 void DetViewSingleLineRenderer::update() {
