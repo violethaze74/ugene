@@ -135,11 +135,12 @@ class ExportMaConsensusTask : public DocumentProviderTask {
 public:
     ExportMaConsensusTask(const ExportMaConsensusTaskSettings &s);
 
-    void prepare();
+    void prepare() override;
+
     const QString &getConsensusUrl() const;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
     Document *createDocument();

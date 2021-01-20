@@ -1985,7 +1985,6 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     //    3. Select some existing file as output
     QString s = sandBoxDir + fileName;
     QFile f(s);
@@ -2102,23 +2101,12 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new exportConsensusTest0004Filler()));
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLineEdit *pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     QString pathLeText = pathLe->text();
     CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus_1.txt"), "wrong lineEdit text: " + pathLeText);
-}
-
-GUI_TEST_CLASS_DEFINITION(export_consensus_test_0005) {
-    Q_UNUSED(os);
-    //empty path
-}
-
-GUI_TEST_CLASS_DEFINITION(export_consensus_test_0006) {
-    Q_UNUSED(os);
-    //empty path
 }
 
 GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {

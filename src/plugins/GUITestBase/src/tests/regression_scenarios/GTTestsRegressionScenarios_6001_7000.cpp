@@ -1716,7 +1716,6 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     //2. Open "Export consensus" tab, set "../sandbox/Mapped reads_consensus.txt" to the "Export to file" field and click export
     QString exportToFile = sandBoxDir + "Aligned reads_consensus.txt";
     GTUtilsOptionPanelMca::setExportFileName(os, exportToFile);
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
     GTUtilsOptionPanelMca::pushExportButton(os);
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1725,7 +1724,6 @@ GUI_TEST_CLASS_DEFINITION(test_6247) {
     GTUtilsProjectTreeView::doubleClickItem(os, "alignment.ugenedb");
 
     //4. And again open "Export consensus" tab, and click export
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario));
     GTUtilsOptionPanelMca::pushExportButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);

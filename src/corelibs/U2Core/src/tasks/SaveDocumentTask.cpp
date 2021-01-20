@@ -161,11 +161,11 @@ void SaveDocumentTask::run() {
 }
 
 Task::ReportResult SaveDocumentTask::report() {
-    if (lock != NULL) {
-        assert(!doc.isNull());
+    if (lock != nullptr) {
+        SAFE_POINT(!doc.isNull(), "document is null!",  ReportResult_Finished);
         doc->unlockState(lock);
         delete lock;
-        lock = NULL;
+        lock = nullptr;
     }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
@@ -191,12 +191,22 @@ Task::ReportResult SaveDocumentTask::report() {
         }
     }
     if (flags.testFlag(SaveDoc_OpenAfter)) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url);
+        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
         if (NULL != openTask) {
             AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
         }
     }
     return Task::ReportResult_Finished;
+}
+
+/** Returns current set of 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+QVariantMap SaveDocumentTask::getOpenDocumentWithProjectHints() const {
+    return openDocumentWithProjectHints;
+}
+
+/** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap &hints) {
+    openDocumentWithProjectHints = hints;
 }
 
 //////////////////////////////////////////////////////////////////////////
