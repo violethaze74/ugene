@@ -41,8 +41,6 @@ namespace U2 {
 #define MSAE_MENU_ADVANCED "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD "MSAE_MENU_LOAD_SEQ"
 
-#define MOBJECT_MIN_FONT_SIZE 8
-#define MOBJECT_MAX_FONT_SIZE 18
 #define MOBJECT_MIN_COLUMN_WIDTH 1
 
 #define MOBJECT_SETTINGS_COLOR_NUCL "color_nucl"
@@ -165,6 +163,9 @@ public:
     /** Sets selection to the given view rows. */
     virtual void selectRows(int firstViewRowIndex, int numberOfRows);
 
+    /** Returns a unified bounding rect for a single sequence character for the given font. */
+    QRect getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const;
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -214,7 +215,9 @@ protected:
     void addAlignMenu(QMenu *m);    // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
-    void calcFontPixelToPointSizeCoef();
+
+    /** Updates font metrics like fontPixelToPointSize, minimum-font-size. Called on every font update. */
+    void updateFontMetrics();
 
     void setFirstVisiblePosSeq(int firstPos, int firstSeq);
     void setZoomFactor(double newZoomFactor);
@@ -226,6 +229,17 @@ protected:
 
     QFont font;
     ResizeMode resizeMode;
+
+    /** Minimum font size to render a sequence. Then zoomed-out below this value no sequence text is shown. */
+    int minimumFontPointSize;
+
+    /**
+     * Maximum font size to render a sequence. Then zoomed-in above this value sequence text stops to grow.
+     * Note: since MA editor does not allow a cell size to grow beyond the size defined by the maximumFontPointSize
+     *  this value indirectly defines the maximum zoom level.
+     */
+    int maximumFontPointSize;
+
     SNPSettings snp;
     double zoomFactor;
     double fontPixelToPointSize;

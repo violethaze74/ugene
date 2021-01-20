@@ -310,6 +310,20 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getPositionRect"
+QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int rowIndex, int referenceBaseIndex) {
+    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getUI();
+
+    U2Region xRegion = mcaWidget->getBaseWidthController()->getBaseScreenRange(referenceBaseIndex);
+    U2Region yRegion = mcaWidget->getRowHeightController()->getScreenYRegionByMaRowIndex(rowIndex);
+
+    QPoint topLeftPoint(xRegion.startPos, yRegion.startPos);
+    QPoint bottomRight(xRegion.endPos(), yRegion.endPos());
+
+    return QRect(topLeftPoint, bottomRight);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "clickToReferencePositionCenter"
 void GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint &clickPointAdjustment) {
     moveCursorToReferencePositionCenter(os, position, clickPointAdjustment);
