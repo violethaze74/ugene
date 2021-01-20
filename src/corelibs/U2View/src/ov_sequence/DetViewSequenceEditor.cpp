@@ -121,7 +121,8 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
         SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
 
         int key = keyEvent->key();
-        bool shiftPressed = keyEvent->modifiers().testFlag(Qt::ShiftModifier);
+        Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
+        bool shiftPressed = modifiers.testFlag(Qt::ShiftModifier);
         switch (key) {
         case Qt::Key_Left:
             navigate(cursor - 1, shiftPressed);
@@ -154,7 +155,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
             break;
         default:
             if (key >= Qt::Key_A && key <= Qt::Key_Z) {
-                if (keyEvent->modifiers() == Qt::NoModifier) {
+                if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                     insertChar(key);
                 }
             }
