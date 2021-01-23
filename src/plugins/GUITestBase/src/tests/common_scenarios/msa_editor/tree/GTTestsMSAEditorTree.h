@@ -6,6 +6,7 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
+k
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,40 +20,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHICS_CIRCULAR_BRANCH_ITEM_H_
-#define _U2_GRAPHICS_CIRCULAR_BRANCH_ITEM_H_
+/** Tree integration into MSA editor. */
+#ifndef GTTESTS_MSA_EDITOR_TREE_H_
+#define GTTESTS_MSA_EDITOR_TREE_H_
 
-#include <U2Core/Task.h>
-
-#include "GraphicsBranchItem.h"
-
-class QGraphicsItem;
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-class PhyNode;
-class GraphicsButtonItem;
-class GraphicsRectangularBranchItem;
+namespace GUITest_common_scenarios_msa_editor_tree {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_msa_editor_tree"
 
-class U2VIEW_EXPORT GraphicsCircularBranchItem : public GraphicsBranchItem {
-    qreal height;
-    Direction direction;
-    bool visible;
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
-public:
-    GraphicsCircularBranchItem(QGraphicsItem *parent, qreal height, GraphicsRectangularBranchItem *from, double nodeValue = -1.0);
-
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setVisibleW(bool v) {
-        visible = v;
-    }
-
-protected:
-    void setLabelPositions();
-};
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_msa_editor_tree
 
 }    // namespace U2
 
-#endif
+#endif    //GTTESTS_MSA_EDITOR_TREE_H_

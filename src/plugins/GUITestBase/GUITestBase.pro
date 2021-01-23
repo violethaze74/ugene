@@ -219,6 +219,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
@@ -490,6 +491,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.cpp \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \

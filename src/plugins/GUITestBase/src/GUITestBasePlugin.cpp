@@ -54,6 +54,7 @@
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
+#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
@@ -2384,6 +2385,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/tree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
