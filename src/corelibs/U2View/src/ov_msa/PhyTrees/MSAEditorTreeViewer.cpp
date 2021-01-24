@@ -129,6 +129,10 @@ bool MSAEditorTreeViewer::sync() {
     sortSeqAction->setEnabled(true);
     treeViewerUI->sl_sortAlignment();
     treeViewerUI->highlightBranches();
+
+    // Trigger si_visibleRangeChanged that will make tree widget update geometry to the correct scale. TODO: create a better API for this.
+    editor->getUI()->getSequenceArea()->onVisibleRangeChanged();
+
     return true;
 }
 
