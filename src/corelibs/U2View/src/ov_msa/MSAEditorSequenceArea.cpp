@@ -106,7 +106,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
 
     createSubaligniment = new QAction(tr("Save subalignment..."), this);
     createSubaligniment->setObjectName("Save subalignment");
-    connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubaligniment()));
+    connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubalignment()));
 
     saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
     saveSequence->setObjectName("Save sequence");
@@ -467,20 +467,25 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     SAFE_POINT_OP(os, );
 }
 
-void MSAEditorSequenceArea::sl_createSubaligniment() {
-    CHECK(getEditor() != nullptr, );
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(getEditor()->getMaObject(), selection.toRect(), this);
+void MSAEditorSequenceArea::sl_createSubalignment() {
+    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
+    const MaEditorSelection &selection = getSelection();
+    QList<int> selectedRowIndexes = getSelectedMaRowIndexes();
+    QList<qint64> selectedRowIdList = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(selectedRowIndexes);
+    U2Region selectedColumnsRegion = selection.isEmpty() ? U2Region(0, msaObject->getLength()) : selection.getXRegion();
+
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, selectedRowIdList, selectedColumnsRegion, this);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
     if (dialog->result() == QDialog::Accepted) {
-        U2Region window = dialog->getRegion();
+        selectedColumnsRegion = dialog->getSelectedColumnsRegion();
         bool addToProject = dialog->getAddToProjFlag();
         QString path = dialog->getSavePath();
-        QList<qint64> rowIds = dialog->getSelectedRowIds();
-        Task *csTask = new CreateSubalignmentAndOpenViewTask(getEditor()->getMaObject(),
-                                                             CreateSubalignmentSettings(window, rowIds, path, true, addToProject, dialog->getFormatId()));
-        AppContext::getTaskScheduler()->registerTopLevelTask(csTask);
+        selectedRowIdList = dialog->getSelectedRowIds();
+        CreateSubalignmentSettings createSubalignmentSettings(selectedColumnsRegion, selectedRowIdList, path, true, addToProject, dialog->getFormatId());
+        auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(msaObject, createSubalignmentSettings);
+        AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
     }
 }
 
