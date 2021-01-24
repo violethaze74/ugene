@@ -3149,19 +3149,22 @@ GUI_TEST_CLASS_DEFINITION(test_3484) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
+    // Check that tree is visible.
+    GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
 
     GTUtilsDocument::unloadDocument(os, "COI_3484.nwk", false);
-    GTGlobals::sleep(500);
-    GTUtilsDocument::saveDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::unloadDocument(os, "COI_3484.aln", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     GTUtilsDocument::removeDocument(os, "COI_3484.nwk");
-    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk") == false, "Unauthorized tree opening!");
+    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk", false) == false, "Unauthorized tree opening!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3484_1) {
