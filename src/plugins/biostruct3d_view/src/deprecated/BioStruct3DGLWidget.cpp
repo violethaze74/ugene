@@ -82,7 +82,11 @@ void BioStruct3DGLWidget::tryGL() {
 bool BioStruct3DGLWidget::canRender() {
     QGLWidget w;
     w.makeCurrent();
-    return glGetError() == GL_NO_ERROR;
+    bool canRender = glGetError() == GL_NO_ERROR;
+    if (!canRender) {
+        coreLog.error(tr("BioStruct3DView plugin has been added, but cannot be used"));
+    }
+    return canRender;
 }
 
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;

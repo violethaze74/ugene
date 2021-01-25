@@ -96,8 +96,6 @@ BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     if (BioStruct3DGLWidget::canRender()) {
         viewContext = new BioStruct3DViewContext(this);
         viewContext->init();
-    } else {
-        uiLog.details(QStringLiteral("BioStruct3DView plugin has been added, but cannot be used"));
     }
 }
 
