@@ -93,8 +93,12 @@ extern "C" Q_DECL_EXPORT QString *U2_PLUGIN_FAIL_MASSAGE_FUNC() {
 BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules.")) {
     // Init plugin view context
-    viewContext = new BioStruct3DViewContext(this);
-    viewContext->init();
+    if (BioStruct3DGLWidget::canRender()) {
+        viewContext = new BioStruct3DViewContext(this);
+        viewContext->init();
+    } else {
+        uiLog.details(QStringLiteral("BioStruct3DView plugin has been added, but cannot be used"));
+    }
 }
 
 BioStruct3DViewPlugin::~BioStruct3DViewPlugin() {

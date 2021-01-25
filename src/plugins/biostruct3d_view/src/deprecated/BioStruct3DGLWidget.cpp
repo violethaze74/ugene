@@ -79,6 +79,12 @@ void BioStruct3DGLWidget::tryGL() {
     Q_UNUSED(wgt);
 }
 
+bool BioStruct3DGLWidget::canRender() {
+    QGLWidget w;
+    w.makeCurrent();
+    return glGetError() == GL_NO_ERROR;
+}
+
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;
 
