@@ -94,7 +94,6 @@ class BioStruct3DGLWidget : public QGLWidget {
 public:
     // Used in PluginChecker to detect whether the GL is available
     static void tryGL();
-    // Used in BioStruct3DViewPlugin constructor to detect possibilities of creating QGLWidget and render
     static bool canRender();
 
 public:

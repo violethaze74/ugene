@@ -94,6 +94,7 @@ class BioStruct3DGLWidget : public QOpenGLWidget {
 public:
     // Used in PluginChecker to detect whether the GL is available
     static bool checkShaderPrograms();
+    static bool canRender();
     static void tryGL();
 
     static const double MINIMUM_ACCEPTABLE_VERSION;
