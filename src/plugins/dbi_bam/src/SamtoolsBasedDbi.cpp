@@ -634,8 +634,9 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpSt
     CHECK_EXT(NULL != header, os.setError("NULL header"), 0);
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
-    // Convert to a 64-bits value first to avoid UINT_MAX as the result for "0" - "1".
-    return qint64(header->target_len[id]) - 1;
+    qint64 targetLength = header->target_len[id];
+    // Avoid returning '-1' (object-not-found) for empty assemblies.
+    return targetLength == 0 ? 0 : targetLength - 1;
 }
 
 U2Region SamtoolsBasedAssemblyDbi::getCorrectRegion(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
