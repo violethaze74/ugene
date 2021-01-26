@@ -27,10 +27,7 @@
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -40,7 +37,6 @@
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
 #include <U2Core/U2CrossDatabaseReferenceDbi.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -50,8 +46,6 @@
 #include <U2Core/VariantTrackObject.h>
 
 #include <U2Gui/ObjectViewTasks.h>
-
-#include "AssemblyBrowser.h"
 
 namespace U2 {
 
@@ -175,39 +169,45 @@ U2Region AssemblyModel::getGlobalRegion() {
 }
 
 qint64 AssemblyModel::getModelLength(U2OpStatus &os) {
-    if (NO_VAL == cachedModelLength) {
-        // try to set length from attributes
-        U2AttributeDbi *attributeDbi = dbiHandle.dbi->getAttributeDbi();
-        if (attributeDbi != NULL) {
-            U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, assembly.id, U2BaseAttributeName::reference_length, os);
-            LOG_OP(os);
-            if (attr.hasValidId()) {
-                cachedModelLength = attr.value;
-            }
-            // ignore incorrect attribute value and remove corrupted attribute (auto-fix incorrectly converted ugenedb)
-            if (cachedModelLength == 0) {
-                coreLog.details(QString("ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!").arg(QString(U2BaseAttributeName::reference_length)).arg(cachedModelLength));
-                cachedModelLength = NO_VAL;
-                U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
-            }
+    if (cachedModelLength != NO_VAL) {
+        return cachedModelLength;
+    }
+    // Try to set 'cachedModelLength' from attributes.
+    QSet<U2DbiFeature> dbiFeatureSet = dbiHandle.dbi->getFeatures();
+    bool canReadAttributes = dbiFeatureSet.contains(U2DbiFeature_ReadAttributes);
+    bool canWriteAttributes = dbiFeatureSet.contains(U2DbiFeature_WriteAttributes);
+    U2AttributeDbi *attributeDbi = canReadAttributes ? dbiHandle.dbi->getAttributeDbi() : nullptr;
+    if (attributeDbi != nullptr) {
+        U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, assembly.id, U2BaseAttributeName::reference_length, os);
+        LOG_OP(os);
+        if (attr.hasValidId()) {
+            cachedModelLength = attr.value;
         }
-        // if cannot from attributes -> set from reference or max end pos
+        // Ignore incorrect attribute value and remove the corrupted attribute: auto-fix incorrectly converted ugenedb.
+        if (cachedModelLength == 0 && canWriteAttributes) {
+            coreLog.details(QString("ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!").arg(QString(U2BaseAttributeName::reference_length)).arg(cachedModelLength));
+            cachedModelLength = NO_VAL;
+            U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
+        }
+
+        // If cannot get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
             qint64 refLen = hasReference() ? refObj->getSequenceLength() : 0;
             qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os);
             LOG_OP(os);
             cachedModelLength = qMax(refLen, assLen);
 
-            // and save in attribute
-            U2IntegerAttribute attr;
-            U2AttributeUtils::init(attr, assembly, U2BaseAttributeName::reference_length);
-            attr.value = cachedModelLength;
-            attributeDbi->createIntegerAttribute(attr, os);
+            // And save the correct value into the DB.
+            if (canWriteAttributes) {
+                U2AttributeUtils::init(attr, assembly, U2BaseAttributeName::reference_length);
+                attr.value = cachedModelLength;
+                attributeDbi->createIntegerAttribute(attr, os);
+            }
         }
-        if (cachedModelLength == NO_VAL) {
-            os.setError("Can't get model length, database is corrupted");
-            LOG_OP(os);
-        }
+    }
+    if (cachedModelLength == NO_VAL) {
+        os.setError("Can't get model length from the database!");
+        LOG_OP(os);
     }
     return cachedModelLength;
 }
