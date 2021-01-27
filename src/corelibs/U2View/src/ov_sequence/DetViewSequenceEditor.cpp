@@ -28,7 +28,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/Settings.h>
@@ -38,8 +37,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceWidget.h>
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/SequenceObjectContext.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -62,7 +59,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView *view)
     connect(view->getSequenceObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_objectLockStateChanged()));
 
     reset();
-    connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
+    connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_cursorAnimationTimerCallback()));
     setParent(view);
 }
 
@@ -333,6 +330,8 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
         if (sequenceWidget) {
             sequenceWidget->setDetViewCollapsed(false);
         }
+        // Grab the focus and start 'blicking cursor' animation.
+        view->setFocus();
         animationTimer.start(500);
     } else {
         editAction->setDisabled(view->getSequenceObject()->isStateLocked());
@@ -343,8 +342,10 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
     }
 }
 
-void DetViewSequenceEditor::sl_changeCursorColor() {
-    cursorColor = (cursorColor == QColor(Qt::black)) ? Qt::darkGray : Qt::black;
+void DetViewSequenceEditor::sl_cursorAnimationTimerCallback() {
+    // Reproduce 'blink' effect: change the cursor color periodically.
+    // Show 'edit-cursor' only for the focused view and hide it (use transparent color) otherwise.
+    cursorColor = view->hasFocus() ? (cursorColor == Qt::black ? Qt::darkGray : Qt::black) : Qt::transparent;
     view->update();
 }
 
