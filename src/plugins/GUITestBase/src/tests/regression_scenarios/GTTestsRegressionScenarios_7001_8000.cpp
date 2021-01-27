@@ -66,7 +66,7 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 
     int msaLength = GTUtilsMSAEditorSequenceArea::getLength(os);
-    CHECK_SET_ERR(msaLength == 6, "Unexpected exported alignment length: " + QString::number(msaLength));
+    CHECK_SET_ERR(msaLength == 5, "Unexpected exported alignment length: " + QString::number(msaLength));
 }
 
 }    // namespace GUITest_regression_scenarios
