@@ -471,7 +471,8 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     const MaEditorSelection &selection = getSelection();
     QList<int> selectedRowIndexes = getSelectedMaRowIndexes();
-    QList<qint64> selectedRowIdList = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(selectedRowIndexes);
+    const MultipleAlignment &alignment = msaObject->getMultipleAlignment();
+    QList<qint64> selectedRowIdList = selectedRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(selectedRowIndexes);
     U2Region selectedColumnsRegion = selection.isEmpty() ? U2Region(0, msaObject->getLength()) : selection.getXRegion();
 
     QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, selectedRowIdList, selectedColumnsRegion, this);

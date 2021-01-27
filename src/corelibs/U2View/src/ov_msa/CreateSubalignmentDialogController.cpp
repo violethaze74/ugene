@@ -81,7 +81,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     if (selectedColumnRegion.isEmpty()) {
         selectedColumnRegion = U2Region(0, msaLength);
     }
-    startLineEdit->setText(QString::number(selectedColumnRegion.startPos));
+    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1)); // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
     const MultipleSequenceAlignment msa = msaObject->getMsa();
@@ -202,8 +202,9 @@ void CreateSubalignmentDialogController::accept() {
         return;
     }
 
-    U2Region region(start, end - start + 1), sequence(0, seqLen);
-    if (!sequence.contains(region)) {
+    U2Region newSelectedColumnRegion(start, end - start + 1);
+    U2Region wholeSequenceRegion(0, seqLen);
+    if (!wholeSequenceRegion.contains(newSelectedColumnRegion)) {
         QMessageBox::critical(this, this->windowTitle(), tr("Illegal column range!"));
         return;
     }
@@ -215,7 +216,7 @@ void CreateSubalignmentDialogController::accept() {
         return;
     }
 
-    selectedColumnRegion = region;
+    selectedColumnRegion = newSelectedColumnRegion;
 
     this->close();
     QDialog::accept();
