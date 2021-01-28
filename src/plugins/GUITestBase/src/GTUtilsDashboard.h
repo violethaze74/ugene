@@ -42,15 +42,18 @@ public:
     // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
     // element to which the notification relates and the notification message
     struct Notification {
+        // Type of notification
         enum class Type { INFO,
                           WARN,
                           ERR };
 
-        static const QString typesNames[3];
+        static const QString typeNames[3];
 
-        static QString typeToQString(Type t) {
-            return typesNames[static_cast<int>(t)];
-        }
+        // Returns the notification type |t| as a string
+        static QString typeToString(Type t);
+        // Returns null QVariant if the string |str| isn't the name of the notification type, and the notification type
+        // if it is
+        static QVariant stringToType(const QString &str);
 
         Notification() = delete;
 
@@ -58,7 +61,8 @@ public:
         QString element;
         QString message;
 
-        operator QString() const;
+        // Returns the notification as a string
+        QString toString() const;
     };
 
     /** Returns active dashboard or nullptr if not found. */
@@ -84,6 +88,7 @@ public:
 
     static bool hasNotifications(HI::GUITestOpStatus &os);
 
+    // Returns a list of dashboard notifications
     static QList<Notification> getNotifications(HI::GUITestOpStatus &os);
 
     // Returns a QString containing all dashboard notifications, splitted by '\n'
@@ -134,6 +139,12 @@ public:
     static QList<ExternalToolsTreeNode *> getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
 private:
+    /** The <img> tag with the class attribute is searched for in the |html|. The attribute value is the type of notification. */
+    static Notification::Type getNotificationTypeFromHtml(HI::GUITestOpStatus &os, const QString &html);
+
+    /** Returns text from the (row, column) notification table cell. The (row, column) cell must exist. */
+    static QString getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout, int row, int col);
+
     static const QMap<QString, Tabs> tabMap;
 };
 

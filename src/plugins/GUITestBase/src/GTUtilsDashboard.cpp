@@ -26,74 +26,42 @@
 #include <QRegularExpression>
 #include <QStringBuilder>
 #include <QTabWidget>
+#include <QXmlStreamReader>
 
 #include <U2Gui/HoverQLabel.h>
 
 #include "GTUtilsDashboard.h"
-
-namespace {
-
-// A substring with the name of the notification type is searched for. If the |str| contains exactly one type of
-// notification, then this type is returned, otherwise a null QVariant is returned.
-QVariant getNotificationTypeFromString(const QString &str) {
-    using Notification = U2::GTUtilsDashboard::Notification;
-
-    QVariant returnable;
-    constexpr int typesNumber = sizeof(Notification::typesNames) / sizeof(QString);
-    int counter = 0;
-    Notification::Type type;
-
-    for (int typeInd = 0; typeInd < typesNumber; ++typeInd) {
-        if (str.contains(Notification::typesNames[typeInd], Qt::CaseInsensitive)) {
-            ++counter;
-            type = static_cast<Notification::Type>(typeInd);
-        }
-    }
-
-    if (counter == 1) {
-        returnable = static_cast<int>(type);
-    }
-    return returnable;
-};
-
-#define GT_CLASS_NAME "GTUtilsDashboard"
-
-#define GT_METHOD_NAME "getCellText"
-// Returns text from the (row, column) table cell. The (row, column) cell must exist
-QString getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout, const int row, const int col) {
-    QString text;
-    const QWidget *const cellWidget = tableLayout.itemAtPosition(row, col)->widget();
-
-    if (cellWidget != nullptr && cellWidget->objectName() == "tableCell") {
-        if (const QLayout *const cellLayout = cellWidget->layout()) {
-            for (int labelInd = 0; labelInd < cellLayout->count(); ++labelInd) {
-                if (const auto *const label = qobject_cast<QLabel *>(cellLayout->itemAt(labelInd)->widget())) {
-                    text = label->text();
-                }
-            }
-        }
-    }
-    return text;
-}
-#undef GT_METHOD_NAME
-
-#undef GT_CLASS_NAME
-
-}    // namespace
 
 namespace U2 {
 using namespace HI;
 
 const QString GTUtilsDashboard::TREE_ROOT_ID = ExternalToolsDashboardWidget::TREE_ID;
 
-const QString GTUtilsDashboard::Notification::typesNames[] = {QStringLiteral("INFO"),
-                                                              QStringLiteral("WARNING"),
-                                                              QStringLiteral("ERROR")};
+const QString GTUtilsDashboard::Notification::typeNames[] = {"INFO",
+                                                             "WARNING",
+                                                             "ERROR"};
 
-GTUtilsDashboard::Notification::operator QString() const {
-    const QString lBracket = QStringLiteral("[");
-    const QString rBracket = QStringLiteral("]");
-    return lBracket % typeToQString(type) % rBracket % lBracket % element % rBracket % QStringLiteral(" ") % message;
+QString GTUtilsDashboard::Notification::typeToString(Type t) {
+    return typeNames[static_cast<int>(t)];
+}
+
+QVariant GTUtilsDashboard::Notification::stringToType(const QString &str) {
+    QVariant type;
+    if (str.isEmpty()) {
+        return type;
+    }
+
+    constexpr int typesNumber = sizeof(Notification::typeNames) / sizeof(QString);
+    for (int typeInd = 0; typeInd < typesNumber; typeInd++) {
+        if (QString::compare(str, Notification::typeNames[typeInd], Qt::CaseInsensitive) == 0) {
+            return type = typeInd;
+        }
+    }
+    return type;
+}
+
+QString GTUtilsDashboard::Notification::toString() const {
+    return "[" % typeToString(type) % "][" % element % "] " % message;
 }
 
 #define GT_CLASS_NAME "GTUtilsDashboard"
@@ -207,31 +175,66 @@ bool GTUtilsDashboard::hasNotifications(HI::GUITestOpStatus &os) {
     return notificationsWidget->isVisible();
 }
 
+#define GT_METHOD_NAME "getNotificationTypeFromHtml"
+GTUtilsDashboard::Notification::Type GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os,
+    const QString &html) {
+    using Notification = U2::GTUtilsDashboard::Notification;
+    const QString errMsg = "Dashboard notification type not found";
+    GT_CHECK_RESULT(!html.isEmpty(), errMsg, Notification::Type::ERR)
+
+    QXmlStreamReader reader(html);
+    while (reader.readNextStartElement()) {
+        if (reader.name() == "img") {
+            const QVariant type = Notification::stringToType(reader.attributes().value("class").toString());
+            if (type.canConvert<int>()) {
+                return static_cast<Notification::Type>(type.toInt());
+            }
+        }
+    }
+    GT_CHECK_RESULT(false, errMsg, Notification::Type::ERR)
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getNotificationCellText"
+QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout,
+    const int row, const int col) {
+    const QWidget *cellWidget = tableLayout.itemAtPosition(row, col)->widget();
+    QString text;
+
+    if (cellWidget != nullptr && cellWidget->objectName() == "tableCell") {
+        if (const QLayout *const cellLayout = cellWidget->layout()) {
+            for (int labelInd = 0; labelInd < cellLayout->count(); ++labelInd) {
+                if (const auto *const label = qobject_cast<QLabel *>(cellLayout->itemAt(labelInd)->widget())) {
+                    text = label->text();
+                }
+            }
+        }
+    }
+    GT_CHECK_RESULT(!text.isEmpty(),
+        QString("Error getting (%1,%2) cell of dashboard notification table").arg(row).arg(col), text)
+    return text;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getNotifications"
 QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus &os) {
-    using Type = Notification::Type;
-
-    const QString notificationsWidgetName = QStringLiteral("NotificationsDashboardWidget");
+    const QString notificationsWidgetName = "NotificationsDashboardWidget";
     const auto tableLayout = qobject_cast<QGridLayout *>(
         GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os))->layout());
     QList<Notification> notifications;
 
     GT_CHECK_RESULT(tableLayout != nullptr && tableLayout->columnCount() == 3,
-                    notificationsWidgetName % QStringLiteral(" was found, but cannot be used in a test"),
-                    notifications);
+                    notificationsWidgetName % " was found, but cannot be used in a test",
+                    notifications)
 
     const int notificationsNumber = tableLayout->rowCount();
     notifications.reserve(notificationsNumber);
-    for (int row = 0; row < notificationsNumber; ++row) {
-        const QString typeStr = getNotificationCellText(os, *tableLayout, row, 0);
+    for (int row = 1; row < notificationsNumber; row++) {
+        const Notification::Type type = getNotificationTypeFromHtml(os,
+            getNotificationCellText(os, *tableLayout, row, 0));
         const QString element = getNotificationCellText(os, *tableLayout, row, 1);
         const QString message = getNotificationCellText(os, *tableLayout, row, 2);
-        if (!typeStr.isNull() && !element.isNull() && !message.isNull()) {
-            const QVariant type = getNotificationTypeFromString(typeStr);
-            if (!type.isNull()) {
-                notifications << Notification {static_cast<Type>(type.toInt()), element, message};
-            }
-        }
+        notifications << Notification {type, element, message};
     }
     return notifications;
 }
@@ -240,8 +243,8 @@ QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITest
 QString GTUtilsDashboard::getJoinedNotificationsString(GUITestOpStatus &os) {
     const auto notifications = getNotifications(os);
     QStringList stringNotifications;
-    for (const auto &notification : notifications) {
-        stringNotifications << notification;
+    for (const auto &notification : qAsConst(notifications)) {
+        stringNotifications << notification.toString();
     }
     return stringNotifications.join('\n');
 }

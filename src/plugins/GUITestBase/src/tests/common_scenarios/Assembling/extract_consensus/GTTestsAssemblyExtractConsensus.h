@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,10 +30,9 @@ namespace GUITest_assembly_extract_consensus {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_assembly_extract_consensus"
 
-GUI_TEST_CLASS_DECLARATION(sorted_bam_test_0001)
-GUI_TEST_CLASS_DECLARATION(ugenedb_test_0001)
-GUI_TEST_CLASS_DECLARATION(multiple_input_test_0001)
-GUI_TEST_CLASS_DECLARATION(wrong_input_test_0001)
+GUI_TEST_CLASS_DECLARATION(test_0001_single_input)
+GUI_TEST_CLASS_DECLARATION(test_0002_multiple_input)
+GUI_TEST_CLASS_DECLARATION(test_0003_wrong_input)
 
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_assembly_extract_consensus
