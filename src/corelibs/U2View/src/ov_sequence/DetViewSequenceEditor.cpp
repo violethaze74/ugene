@@ -88,79 +88,79 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
     QAction *a = dnaView->removeAnnsAndQsAction;
 
     switch (event->type()) {
-    case QEvent::FocusOut:
-        // return delete
-        a->setShortcut(QKeySequence(Qt::Key_Delete));
-        return true;
-    case QEvent::FocusIn:
-        // block delete again
-        a->setShortcut(QKeySequence());
-        return true;
+        case QEvent::FocusOut:
+            // return delete
+            a->setShortcut(QKeySequence(Qt::Key_Delete));
+            return true;
+        case QEvent::FocusIn:
+            // block delete again
+            a->setShortcut(QKeySequence());
+            return true;
 
-        // TODO_SVEDIT: shift button!
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseMove: {
-        QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-        SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
+            // TODO_SVEDIT: shift button!
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove: {
+            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+            SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
 
-        if (mouseEvent->buttons() & Qt::LeftButton) {
-            qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
-            setCursor(pos);    // use navigate and take shift into account
+            if (mouseEvent->buttons() & Qt::LeftButton) {
+                qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
+                setCursor(pos);    // use navigate and take shift into account
+            }
+            return false;
         }
-        return false;
-    }
 
-        // TODO_SVEDIT: separate methods
-    case QEvent::KeyPress: {
-        // set cursor position
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
+            // TODO_SVEDIT: separate methods
+        case QEvent::KeyPress: {
+            // set cursor position
+            QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+            SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
 
-        int key = keyEvent->key();
-        Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
-        bool shiftPressed = modifiers.testFlag(Qt::ShiftModifier);
-        switch (key) {
-        case Qt::Key_Left:
-            navigate(cursor - 1, shiftPressed);
-            break;
-        case Qt::Key_Right:
-            navigate(cursor + 1, shiftPressed);
-            break;
-        case Qt::Key_Up:
-            if (view->isWrapMode()) {
-                navigate(cursor - view->getSymbolsPerLine(), shiftPressed);
+            int key = keyEvent->key();
+            Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
+            bool shiftPressed = modifiers.testFlag(Qt::ShiftModifier);
+            switch (key) {
+                case Qt::Key_Left:
+                    navigate(cursor - 1, shiftPressed);
+                    break;
+                case Qt::Key_Right:
+                    navigate(cursor + 1, shiftPressed);
+                    break;
+                case Qt::Key_Up:
+                    if (view->isWrapMode()) {
+                        navigate(cursor - view->getSymbolsPerLine(), shiftPressed);
+                    }
+                    break;
+                case Qt::Key_Down:
+                    if (view->isWrapMode()) {
+                        navigate(cursor + view->getSymbolsPerLine(), shiftPressed);
+                    }
+                    break;
+                case Qt::Key_Home:
+                    navigate(0, shiftPressed);
+                    break;
+                case Qt::Key_End:
+                    navigate(view->getSequenceLength(), shiftPressed);
+                    break;
+                case Qt::Key_Delete:
+                case Qt::Key_Backspace:
+                    deleteChar(key);
+                    break;
+                case Qt::Key_Space:
+                    insertChar(U2Msa::GAP_CHAR);
+                    break;
+                default:
+                    if (key >= Qt::Key_A && key <= Qt::Key_Z) {
+                        if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
+                            insertChar(key);
+                        }
+                    }
             }
-            break;
-        case Qt::Key_Down:
-            if (view->isWrapMode()) {
-                navigate(cursor + view->getSymbolsPerLine(), shiftPressed);
-            }
-            break;
-        case Qt::Key_Home:
-            navigate(0, shiftPressed);
-            break;
-        case Qt::Key_End:
-            navigate(view->getSequenceLength(), shiftPressed);
-            break;
-        case Qt::Key_Delete:
-        case Qt::Key_Backspace:
-            deleteChar(key);
-            break;
-        case Qt::Key_Space:
-            insertChar(U2Msa::GAP_CHAR);
-            break;
+            return true;
+        }
         default:
-            if (key >= Qt::Key_A && key <= Qt::Key_Z) {
-                if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
-                    insertChar(key);
-                }
-            }
-        }
-        return true;
-    }
-    default:
-        return false;
+            return false;
     }
 }
 
@@ -345,7 +345,11 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
 void DetViewSequenceEditor::sl_cursorAnimationTimerCallback() {
     // Reproduce 'blink' effect: change the cursor color periodically.
     // Show 'edit-cursor' only for the focused view and hide it (use transparent color) otherwise.
-    cursorColor = view->hasFocus() ? (cursorColor == Qt::black ? Qt::darkGray : Qt::black) : Qt::transparent;
+    QColor newCursorColor = view->hasFocus() ? (cursorColor == Qt::black ? Qt::darkGray : Qt::black) : Qt::transparent;
+    if (newCursorColor == cursorColor) {    // Avoid extra updates on no changes when  in disabled/transparent mode)
+        return;
+    }
+    cursorColor = newCursorColor;
     view->update();
 }
 
