@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", ugenedbScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
-    //  7. Wait for workflow finished
+    //  8. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -201,13 +201,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", emptyInputScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
-    //  7. Wait for workflow finished
+    //  8. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
     //  Expected state: There should be dialog "Workflow cannot be executed"
     CHECK_SET_ERR(GTWidget::getActiveModalWidget(os), "activeModalWidget is nullptr");
-    //  8. Click "Ok" in this dialog
+
+    //  9. Click "Ok" in this dialog
     GTUtilsDialog::waitForDialog(os, new HI::MessageBoxDialogFiller(os, QMessageBox::Ok));
-    //  There should also be an error about missing required input parameter in the workflow
+    //  Expected state: There should also be an error about missing required input parameter in the workflow
     GTUtilsWorkflowDesigner::checkErrorList(os,
         "Read Assembly: Required parameter has no input urls specified: Input file(s)");
 }
