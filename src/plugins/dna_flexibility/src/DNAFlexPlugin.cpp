@@ -65,7 +65,7 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
     AnnotatedDNAView *annotView = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(annotView);
 
-    ADVSequenceObjectContext *seqCtx = annotView->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = annotView->getActiveSequenceContext();
     SAFE_POINT(seqCtx != NULL, "no sequence to perform flex search", );
 
     const DNAAlphabet *alphabet = seqCtx->getAlphabet();
