@@ -94,6 +94,7 @@
 #include "tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h"
 #include "tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h"
 #include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
+#include "tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h"
 #include "tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h"
 #include "tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_1001_2000.h"
@@ -3093,6 +3094,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0003);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Samples
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_workflow_samples::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Scripting
