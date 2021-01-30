@@ -168,9 +168,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     const QString dashboardErrMsg = "Unsupported document format: ";
 
     const auto hasDashboardNotification = [](HI::GUITestOpStatus &os, const QString &errMsg) {
-        return !GTWidget::findLabelByText(os, errMsg, GTWidget::findWidget(
-            os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os)
-        )).isEmpty();
+        QWidget *const notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget",
+            GTUtilsDashboard::getDashboard(os));
+        return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
     };
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."

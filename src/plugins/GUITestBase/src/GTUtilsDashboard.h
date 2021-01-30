@@ -42,24 +42,11 @@ public:
     // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
     // element to which the notification relates and the notification message
     struct Notification {
-        // Type of notification
-        enum class Type { INFO,
-                          WARN,
-                          ERR };
+        Notification() = delete; // No default dashboard notification
 
-        static const QString typeNames[3];
-
-        // Returns the notification type |t| as a string
-        static QString typeToString(Type t);
-        // Returns null QVariant if the string |str| isn't the name of the notification type, and the notification type
-        // if it is
-        static QVariant stringToType(const QString &str);
-
-        Notification() = delete;
-
-        Type type;
-        QString element;
-        QString message;
+        QString type; // The type of dashboard notification (info/warning/error)
+        QString element; // The name of workflow element to which the dashboard notification relates
+        QString message; // The dashboard notification message
 
         // Returns the notification as a string
         QString toString() const;
@@ -140,7 +127,7 @@ public:
 
 private:
     /** The <img> tag with the class attribute is searched for in the |html|. The attribute value is the type of notification. */
-    static Notification::Type getNotificationTypeFromHtml(HI::GUITestOpStatus &os, const QString &html);
+    static QString getNotificationTypeFromHtml(HI::GUITestOpStatus &os, const QString &html);
 
     /** Returns text from the (row, column) notification table cell. The (row, column) cell must exist. */
     static QString getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout, int row, int col);

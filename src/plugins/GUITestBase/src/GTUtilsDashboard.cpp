@@ -26,7 +26,6 @@
 #include <QRegularExpression>
 #include <QStringBuilder>
 #include <QTabWidget>
-#include <QXmlStreamReader>
 
 #include <U2Gui/HoverQLabel.h>
 
@@ -37,31 +36,8 @@ using namespace HI;
 
 const QString GTUtilsDashboard::TREE_ROOT_ID = ExternalToolsDashboardWidget::TREE_ID;
 
-const QString GTUtilsDashboard::Notification::typeNames[] = {"INFO",
-                                                             "WARNING",
-                                                             "ERROR"};
-
-QString GTUtilsDashboard::Notification::typeToString(Type t) {
-    return typeNames[static_cast<int>(t)];
-}
-
-QVariant GTUtilsDashboard::Notification::stringToType(const QString &str) {
-    QVariant type;
-    if (str.isEmpty()) {
-        return type;
-    }
-
-    constexpr int typesNumber = sizeof(Notification::typeNames) / sizeof(QString);
-    for (int typeInd = 0; typeInd < typesNumber; typeInd++) {
-        if (QString::compare(str, Notification::typeNames[typeInd], Qt::CaseInsensitive) == 0) {
-            return type = typeInd;
-        }
-    }
-    return type;
-}
-
 QString GTUtilsDashboard::Notification::toString() const {
-    return "[" % typeToString(type) % "][" % element % "] " % message;
+    return "[" % type.toUpper() % "][" % element % "] " % message;
 }
 
 #define GT_CLASS_NAME "GTUtilsDashboard"
@@ -176,22 +152,17 @@ bool GTUtilsDashboard::hasNotifications(HI::GUITestOpStatus &os) {
 }
 
 #define GT_METHOD_NAME "getNotificationTypeFromHtml"
-GTUtilsDashboard::Notification::Type GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os,
-    const QString &html) {
-    using Notification = U2::GTUtilsDashboard::Notification;
-    const QString errMsg = "Dashboard notification type not found";
-    GT_CHECK_RESULT(!html.isEmpty(), errMsg, Notification::Type::ERR)
+QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os, const QString &html) {
+    QString type;
 
-    QXmlStreamReader reader(html);
-    while (reader.readNextStartElement()) {
-        if (reader.name() == "img") {
-            const QVariant type = Notification::stringToType(reader.attributes().value("class").toString());
-            if (type.canConvert<int>()) {
-                return static_cast<Notification::Type>(type.toInt());
-            }
-        }
-    }
-    GT_CHECK_RESULT(false, errMsg, Notification::Type::ERR)
+    int start = html.indexOf("<img class=\"");
+    int end = html.indexOf("\"", start + 12); // 12 = length of "<img class=\""
+    GT_CHECK_RESULT(start >= 0 && end >= 0, "Dashboard notification type not found", type)
+
+    start += 12;
+    end -= start;
+    type = html.mid(start, end);
+    return type;
 }
 #undef GT_METHOD_NAME
 
@@ -219,8 +190,9 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const
 #define GT_METHOD_NAME "getNotifications"
 QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus &os) {
     const QString notificationsWidgetName = "NotificationsDashboardWidget";
-    const auto tableLayout = qobject_cast<QGridLayout *>(
-        GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os))->layout());
+    QWidget *const notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName,
+        GTUtilsDashboard::getDashboard(os));
+    const auto tableLayout = qobject_cast<QGridLayout *>(notificationsWidget->layout());
     QList<Notification> notifications;
 
     GT_CHECK_RESULT(tableLayout != nullptr && tableLayout->columnCount() == 3,
@@ -228,10 +200,8 @@ QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITest
                     notifications)
 
     const int notificationsNumber = tableLayout->rowCount();
-    notifications.reserve(notificationsNumber);
     for (int row = 1; row < notificationsNumber; row++) {
-        const Notification::Type type = getNotificationTypeFromHtml(os,
-            getNotificationCellText(os, *tableLayout, row, 0));
+        const QString type = getNotificationTypeFromHtml(os, getNotificationCellText(os, *tableLayout, row, 0));
         const QString element = getNotificationCellText(os, *tableLayout, row, 1);
         const QString message = getNotificationCellText(os, *tableLayout, row, 2);
         notifications << Notification {type, element, message};

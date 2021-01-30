@@ -2963,7 +2963,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/extract_consensus
     /////////////////////////////////////////////////////////////////////////
-
     REGISTER_TEST(GUITest_assembly_extract_consensus::test_0001_single_input);
     REGISTER_TEST(GUITest_assembly_extract_consensus::test_0002_multiple_input);
     REGISTER_TEST(GUITest_assembly_extract_consensus::test_0003_wrong_input);
