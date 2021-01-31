@@ -2637,6 +2637,15 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(!chbComplement->isChecked(), "67. Simple location complement checkbox is unexpectedly checked");
             CHECK_SET_ERR(leLocation->text().isEmpty(), QString("68. Unexpected GenBank location string: expect an empty string, got, '%1'").arg(leLocation->text()));
 
+            //    30. Set Location "1..2,3..4".
+            setGenbankLocation(os, "1..2,3..4", dialog);
+            //    31. Select "Simple format" location style. Check "Complement" checkbox.
+            GTRadioButton::click(os, rbSimpleFormat);
+            GTCheckBox::setChecked(os, chbComplement, true);
+            //    Expected state: Simple format checked, Genbank format unchecked.
+            CHECK_SET_ERR(rbSimpleFormat->isChecked() && !rbGenbankFormat->isChecked(), "76. Unexpected switch between formats");
+
+
             //    24. Check if destination table widgets are enabled or disabled.
             //    Expected state:
             //        Existing table radio button - disabled

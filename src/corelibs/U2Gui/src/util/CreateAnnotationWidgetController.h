@@ -150,12 +150,14 @@ private:
 
     CreateAnnotationModel model;
     GObjectComboBoxController *occ;
-    CreateAnnotationWidget *w;
+    QScopedPointer<CreateAnnotationWidget> w;
     SaveDocumentController *saveController;
 
     QString GROUP_NAME_AUTO;
     static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
+
+    Q_DISABLE_COPY(CreateAnnotationWidgetController)
 };
 
 }    // namespace U2

@@ -36,7 +36,7 @@ namespace U2 {
 CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget *parent)
     : CreateAnnotationWidget(parent),
       formatType(Simple),
-      seqLen {seqLen} {
+      seqLen (seqLen) {
     setupUi(this);
     initLayout();
     init();
@@ -155,16 +155,21 @@ void CreateAnnotationFullWidget::setAnnotationName(const QString &name) {
 
 void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     // Example: (200..len,1..100)=(200..100), lambda returns true
-    auto locationSplitted = [](const U2Location &location, qint64 seqLen) {
+    auto isSimpleSplitLocation = [](const U2Location &location, qint64 seqLen) {
+        if (location->regions.size() < 2) {
+            return false;
+        }
         return location->regions[0].endPos() == seqLen && location->regions[1].startPos == 0;
     };
+
+    const bool firstLocationSetting = leRegionStart->text().isEmpty() && leRegionEnd->text().isEmpty();
 
     QString startString;
     QString endString;
     if (!location->isEmpty()) {
         startString = QString::number(location->regions.first().startPos + 1);
 
-        if (location->isMultiRegion() && locationSplitted(location, seqLen)) {
+        if (location->isMultiRegion() && isSimpleSplitLocation(location, seqLen)) {
             // (200..len,1..100,...) equals start=200, end=100
             endString = QString::number(location->regions[1].endPos());
         } else {
@@ -178,7 +183,9 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     leLocation->setText(getGenbankLocationString(location));
 
     // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
-    if (location->regions.size() > 2 || (location->regions.size() == 2 && !locationSplitted(location, seqLen))) {
+    const bool needToShowInGenbank = location->regions.size() > 2 ||
+        (location->regions.size() == 2 && !isSimpleSplitLocation(location, seqLen));
+    if (firstLocationSetting && needToShowInGenbank) {
         rbGenbankFormat->setChecked(true);
     }
 }

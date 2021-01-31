@@ -120,16 +120,15 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
 
     commonWidgetUpdate(model);
 
-    connect(w, SIGNAL(si_selectExistingTableRequest()), SLOT(sl_onLoadObjectsClicked()));
-    connect(w, SIGNAL(si_selectGroupNameMenuRequest()), SLOT(sl_groupName()));
-    connect(w, SIGNAL(si_groupNameEdited()), SLOT(sl_groupNameEdited()));
-    connect(w, SIGNAL(si_annotationNameEdited()), SLOT(sl_annotationNameEdited()));
-    connect(w, SIGNAL(si_usePatternNamesStateChanged()), SLOT(sl_usePatternNamesStateChanged()));
+    connect(w.data(), SIGNAL(si_selectExistingTableRequest()), SLOT(sl_onLoadObjectsClicked()));
+    connect(w.data(), SIGNAL(si_selectGroupNameMenuRequest()), SLOT(sl_groupName()));
+    connect(w.data(), SIGNAL(si_groupNameEdited()), SLOT(sl_groupNameEdited()));
+    connect(w.data(), SIGNAL(si_annotationNameEdited()), SLOT(sl_annotationNameEdited()));
+    connect(w.data(), SIGNAL(si_usePatternNamesStateChanged()), SLOT(sl_usePatternNamesStateChanged()));
     connect(occ, SIGNAL(si_comboBoxChanged()), SLOT(sl_documentsComboUpdated()));
 }
 
 CreateAnnotationWidgetController::~CreateAnnotationWidgetController() {
-    delete w;
 }
 
 void CreateAnnotationWidgetController::updateWidgetForAnnotationModel(const CreateAnnotationModel &newModel) {
@@ -317,16 +316,15 @@ void CreateAnnotationWidgetController::updateModel(bool forValidation) {
 void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetController::AnnotationWidgetMode layoutMode) {
     switch (layoutMode) {
     case Full:
-        w = new CreateAnnotationFullWidget(model.sequenceLen);
+        w.reset(new CreateAnnotationFullWidget(model.sequenceLen));
         break;
     case Normal:
-        w = new CreateAnnotationNormalWidget();
+        w.reset(new CreateAnnotationNormalWidget());
         break;
     case OptionsPanel:
-        w = new CreateAnnotationOptionsPanelWidget();
+        w.reset(new CreateAnnotationOptionsPanelWidget());
         break;
     default:
-        w = NULL;
         FAIL("Unexpected widget type", );
     }
 }
@@ -353,7 +351,7 @@ void CreateAnnotationWidgetController::initSaveController() {
     conf.defaultFormatId = BaseDocumentFormats::PLAIN_GENBANK;
     conf.defaultDomain = SETTINGS_LASTDIR;
     conf.defaultFileName = defaultDir() + "/MyDocument.gb";
-    conf.parentWidget = w;
+    conf.parentWidget = w.data();
     conf.saveTitle = tr("Save File");
     conf.rollOutProjectUrls = true;
     w->fillSaveDocumentControllerConfig(conf);
@@ -420,7 +418,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     }
     qSort(groupNames);
 
-    QMenu menu(w);
+    QMenu menu(w.data());
     foreach (const QString &str, groupNames) {
         QAction *a = new QAction(str, &menu);
         connect(a, SIGNAL(triggered()), SLOT(sl_setPredefinedGroupName()));
@@ -472,7 +470,7 @@ void CreateAnnotationWidgetController::sl_usePatternNamesStateChanged() {
 }
 
 QWidget *CreateAnnotationWidgetController::getWidget() const {
-    return w;
+    return w.data();
 }
 
 AnnotationCreationPattern CreateAnnotationWidgetController::getAnnotationPattern() const {
