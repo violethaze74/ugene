@@ -27,6 +27,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "base_dialogs/GTFileDialog.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTWidget.h"
@@ -62,6 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     };
 
     const GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
