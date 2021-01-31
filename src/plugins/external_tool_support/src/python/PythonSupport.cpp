@@ -53,11 +53,13 @@ PythonSupport::PythonSupport()
     executableFileName = "python2.7";
 #    endif
 #endif
-    validMessage = "Python ";
+    const QString pythonVersionRegexpStr = "(\\d+.\\d+.\\d+)";
+
+    validMessage = "Python " + pythonVersionRegexpStr;
     validationArguments << "--version";
 
     description += tr("Python scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegExp(pythonVersionRegexpStr);
     toolKitName = "python";
 
     muted = true;
