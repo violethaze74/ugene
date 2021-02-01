@@ -3098,7 +3098,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Samples
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_TL(GUITest_common_scenarios_workflow_samples::test_0001, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
+    REGISTER_TEST(GUITest_common_scenarios_workflow_samples::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Scripting
