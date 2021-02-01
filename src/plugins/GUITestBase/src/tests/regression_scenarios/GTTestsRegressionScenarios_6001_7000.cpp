@@ -57,6 +57,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -6614,8 +6615,7 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
             const auto lePath = GTWidget::findExactWidget<QLineEdit *>(os, "projectFilePathEdit", dialog);
 
-            const QString expected = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) +
-                                     "/UGENE_Data/project.uprj";
+            const QString expected = U2::UserAppsSettings().getDefaultDataDirPath() + "/project.uprj";
             const QString actual = lePath->text();
             CHECK_SET_ERR(expected == actual,
                           QString("Default project file path: expected \"%1\", actual \"%2\"").arg(expected, actual))
