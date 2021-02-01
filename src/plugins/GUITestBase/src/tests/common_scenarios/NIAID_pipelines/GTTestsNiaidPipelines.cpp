@@ -323,6 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     };
 
     const GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     QString assemblyFilePath = QFileInfo(dataDir + "samples/Assembly/chrM.sorted.bam").absoluteFilePath();
     const auto bamFiller = new WizardFiller(os, "Call Variants Wizard", new VariantCallingWizard(assemblyFilePath));
     GTUtilsDialog::waitForDialog(os, bamFiller);
