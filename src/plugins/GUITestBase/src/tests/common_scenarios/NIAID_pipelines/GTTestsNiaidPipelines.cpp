@@ -362,10 +362,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     CHECK_SET_ERR(hasDashboardNotification(os, errMsg), "Expected dashboard notification \"" + errMsg + "\"")
 
     QStringList out = GTUtilsDashboard::getOutputFiles(os);
-    bool b = out.removeOne("chrM.sam.bam.sorted.bam") && out.removeOne("variations.vcf");
-    CHECK_SET_ERR(b,
-        "Expected two output files, but one or both are missing")
-    CHECK_SET_ERR(out.isEmpty(), "Unexpected output file(s) in dashboard")
+    bool checkOutputFiles = out.contains("chrM.sam.bam.sorted.bam") && out.contains("variations.vcf") &&
+                            out.size() == 2;
+    CHECK_SET_ERR(checkOutputFiles,
+        "Expected two output files, but one or both are missing or there is an unexpected file")
 }
 
 }    // namespace GUITest_common_scenarios_NIAID_pipelines
