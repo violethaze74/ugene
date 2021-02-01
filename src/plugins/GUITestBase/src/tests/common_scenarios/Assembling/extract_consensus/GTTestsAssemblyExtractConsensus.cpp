@@ -73,11 +73,12 @@ public:
 
 GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     const GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "samples/Assembly/chrM.sorted.bam" as an input
     //  3. Click "Run"
-    auto *const bamScenario =
+    const auto bamScenario =
         new ExtractConsensusWizardScenario(QStringList() << dataDir + "samples/Assembly/chrM.sorted.bam");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", bamScenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -96,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
     //  6. Set "_common_data/ugenedb/scerevisiae.bam.ugenedb" as an input and "" as an output
     //  7. Click "Run"
-    auto *const ugenedbScenario =
+    const auto ugenedbScenario =
         new ExtractConsensusWizardScenario(QStringList() << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb",
             "");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", ugenedbScenario));
@@ -140,12 +141,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
     };
 
     const GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "_common_data/ugenedb/scerevisiae.bam.ugenedb" and "samples/Assembly/chrM.sorted.bam" as an input
     //  3. Add "_common_data/bam/small.bam.sorted.bam" to assemblies
     //  4. Click "Run"
-    auto *const multiInputScenario = new ExtractConsensusWizardScenario(QStringList()
+    const auto multiInputScenario = new ExtractConsensusWizardScenario(QStringList()
         << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"
         << dataDir + "samples/Assembly/chrM.sorted.bam");
 
@@ -173,10 +175,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
         return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
     };
 
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "samples/Assembly/chrM.sorted.bam" and "samples/Assembly/chrM.fa" as an input
     //  3. Click "Run"
-    auto *const wrongInputScenario = new ExtractConsensusWizardScenario(QStringList()
+    const auto wrongInputScenario = new ExtractConsensusWizardScenario(QStringList()
         << dataDir + "samples/Assembly/chrM.sorted.bam"
         << dataDir + "samples/Assembly/chrM.fa");
 
@@ -197,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
     //  6. Clear input assemblies
     //  7. Click "Run"
-    auto *const emptyInputScenario = new ExtractConsensusWizardScenario();
+    const auto emptyInputScenario = new ExtractConsensusWizardScenario();
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", emptyInputScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
