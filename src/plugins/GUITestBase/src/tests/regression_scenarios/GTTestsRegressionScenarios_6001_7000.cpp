@@ -50,6 +50,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
+#include <QStandardPaths>
 #include <QTableWidget>
 #include <QWizard>
 
@@ -6603,6 +6604,53 @@ GUI_TEST_CLASS_DEFINITION(test_6959) {
     CHECK_SET_ERR(nameList3[3] == "Mecopoda_sp.__Malaysia_", "The 4 sequence is incorrect");
     CHECK_SET_ERR(nameList3[4] == "Bicolorana_bicolor_EF540830", "The 5 sequence is incorrect");
     CHECK_SET_ERR(nameList3[5] == "Conocephalus_discolor", "The 6 sequence is incorrect");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6960) {
+    class ProjectPathValidationScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            GTGlobals::sleep();
+            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+            const auto lePath = GTWidget::findExactWidget<QLineEdit *>(os, "projectFilePathEdit", dialog);
+
+            const QString expected = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) +
+                                     "/UGENE_Data/project.uprj";
+            const QString actual = lePath->text();
+            CHECK_SET_ERR(expected == actual,
+                          QString("Default project file path: expected \"%1\", actual \"%2\"").arg(expected, actual))
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    // 1. Select "File->New project...". The "Create New Project" dialog appears
+    //    Expected state: In this dialog "Save project to file" field contains "~/Documents/UGENE_Data/project.uprj"
+    // 2. Close this dialog
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "CreateNewProjectDialog", QDialogButtonBox::Cancel, new ProjectPathValidationScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "New project...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Open any file
+    GTUtilsProject::openFile(os, dataDir + "samples/ABIF/A01.abi");
+    // 4. Select "File->Save project as...". The "Save project as" dialog appears
+    //    Expected state: In this dialog "Save project to file" field contains "~/Documents/UGENE_Data/project.uprj"
+    // 5. Close this dialog
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "CreateNewProjectDialog", QDialogButtonBox::Cancel, new ProjectPathValidationScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Save project as...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 6. Select "File->Export project...". The "Export Project" dialog appears
+    //    Expected state: In this dialog "Project file name" field contains "~/Documents/UGENE_Data/project.uprj"
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "ExportProjectDialog", QDialogButtonBox::Cancel, new ProjectPathValidationScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Export project...");
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6966) {
