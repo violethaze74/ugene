@@ -35,6 +35,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/IdRegistry.h>
@@ -901,7 +902,7 @@ void ProjectDialogController::sl_projectNameEdited(const QString &text) {
 
 void ProjectDialogController::setupDefaults() {
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    projectFilePathEdit->setText(QFileInfo("project" + PROJECTFILE_EXT).absoluteFilePath());
+    projectFilePathEdit->setText(QFileInfo(GUrlUtils::getDefaultDataPath(), "project" + PROJECTFILE_EXT).absoluteFilePath());
 }
 
 void ProjectDialogController::accept() {
