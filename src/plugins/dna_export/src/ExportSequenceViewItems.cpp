@@ -314,8 +314,8 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     QString dirPath;
     QString fileBaseName;
 
-    GUrl seqUrl = view->getSequenceInFocus()->getSequenceGObject()->getDocument()->getURL();
-    GUrlUtils::getLocalPathFromUrl(seqUrl, view->getSequenceInFocus()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
+    GUrl seqUrl = view->getActiveSequenceContext()->getSequenceGObject()->getDocument()->getURL();
+    GUrlUtils::getLocalPathFromUrl(seqUrl, view->getActiveSequenceContext()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_annotation." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
     QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true,
@@ -357,7 +357,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
 }
 
 void ADVExportContext::sl_saveSelectedSequences() {
-    ADVSequenceObjectContext *seqCtx = view->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
     DNASequenceSelection *sel = NULL;
     if (seqCtx != NULL) {
         //TODO: support multi-export..
@@ -424,7 +424,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 
     Annotation *first = *annotationSet.begin();
     Document *doc = first->getGObject()->getDocument();
-    ADVSequenceObjectContext *sequenceContext = view->getSequenceInFocus();
+    ADVSequenceObjectContext *sequenceContext = view->getActiveSequenceContext();
 
     GUrl url;
     if (doc != NULL) {
