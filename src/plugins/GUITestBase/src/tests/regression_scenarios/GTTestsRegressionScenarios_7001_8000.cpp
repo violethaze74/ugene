@@ -47,11 +47,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             QString toolPath = testDir + "_common_data/regression/7003/dumb.";
-            #ifdef Q_OS_WIN
-            toolPath += "cmd";
-            #else
-            toolPath += "sh";
-            #endif
+            toolPath += isOsWindows() ? "cmd" : "sh";
 
             AppSettingsDialogFiller::setExternalToolPath(os, "python", QFileInfo(toolPath).absoluteFilePath());
             CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "python"),
