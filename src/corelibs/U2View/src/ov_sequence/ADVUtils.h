@@ -62,8 +62,7 @@ public:
     }
 
 private slots:
-    /** Calls updateState() on every active sequence widget change. */
-    void sl_activeSequenceChanged();
+    void sl_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *);
 
 private:
     void updateState();

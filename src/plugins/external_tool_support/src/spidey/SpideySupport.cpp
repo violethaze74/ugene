@@ -103,7 +103,7 @@ SpideySupportContext::SpideySupportContext(QObject *p)
 void SpideySupportContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(view);
     assert(dnaView != NULL);
-    if (dnaView->getActiveSequenceContext() == NULL) {
+    if (dnaView->getSequenceInFocus() == NULL) {
         return;
     }
 
@@ -169,7 +169,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
     ADVGlobalAction *action = qobject_cast<ADVGlobalAction *>(sender());
     assert(action != NULL);
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    U2SequenceObject *dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
+    U2SequenceObject *dnaObj = dnaView->getSequenceInFocus()->getSequenceObject();
 
     if (rnaObj && dnaObj) {
         CreateAnnotationModel m;

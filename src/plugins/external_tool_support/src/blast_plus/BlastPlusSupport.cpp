@@ -377,7 +377,7 @@ void BlastPlusSupportContext::sl_showDialog() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     QObjectScopedPointer<BlastPlusSupportRunDialog> dlg = new BlastPlusSupportRunDialog(seqCtx, lastDBPath, lastDBName, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );

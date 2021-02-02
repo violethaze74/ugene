@@ -130,7 +130,7 @@ void CodonTableView::sl_setAminoTranslation() {
     }
 }
 
-void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
+void CodonTableView::sl_onSequenceFocusChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
     CHECK(to != NULL, );
 
     const QList<ADVSequenceObjectContext *> ctx = to->getSequenceContexts();

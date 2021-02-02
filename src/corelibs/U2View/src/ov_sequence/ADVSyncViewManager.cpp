@@ -309,7 +309,7 @@ void ADVSyncViewManager::sl_sync() {
 }
 
 void ADVSyncViewManager::sync(bool lock, SyncMode m) {
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
     if (focusedW == NULL) {
         return;
     }
@@ -391,7 +391,7 @@ int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget *w) co
 }
 
 ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
     assert(focusedW != NULL);
     QList<ADVSingleSequenceWidget *> seqs = getViewsFromADV();
 
@@ -471,7 +471,7 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection *sel, const QVe
 
     selectionRecursion = true;
 
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
     if (focusedW == NULL) {
         return;
     }

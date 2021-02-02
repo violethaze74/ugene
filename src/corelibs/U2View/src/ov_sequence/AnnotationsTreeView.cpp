@@ -1508,7 +1508,7 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
             // auto-annotations have to be handled differently
             if (AutoAnnotationsSupport::isAutoAnnotationObject(movedGroupItem->getAnnotationTableObject())) {
                 GObjectReference dstRef(dstObject);
-                ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
+                ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
                 Task *t = new ExportAutoAnnotationsGroupTask(movedGroupItem->getAnnotationGroup(), dstRef, seqCtx);
                 moveAutoAnnotationTasks.append(t);
                 continue;
@@ -2232,7 +2232,7 @@ void AnnotationsTreeView::sl_exportAutoAnnotationsGroup() {
     AVItem *item = static_cast<AVItem *>(tree->currentItem());
     AnnotationGroup *ag = item->getAnnotationGroup();
 
-    ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
 
     CreateAnnotationModel m;
     m.hideAnnotationType = true;

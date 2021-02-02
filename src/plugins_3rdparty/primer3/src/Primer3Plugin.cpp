@@ -102,7 +102,7 @@ void Primer3ADVContext::sl_showDialog() {
     AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
     assert(seqCtx->getAlphabet()->isNucleic());
     {
         Primer3TaskSettings defaultSettings;

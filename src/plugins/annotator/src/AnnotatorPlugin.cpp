@@ -117,7 +117,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
         return;
     }
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     if (seqCtx == NULL) {
         return;
     }
@@ -132,7 +132,7 @@ void AnnotatorViewContext::sl_showCustomAutoAnnotationDialog() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     if (seqCtx == NULL) {
         return;
     }

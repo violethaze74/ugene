@@ -55,10 +55,11 @@ const QString ADVClipboard::COPY_FAILED_MESSAGE = QApplication::translate("ADVCl
 const qint64 ADVClipboard::MAX_COPY_SIZE_FOR_X86 = 100 * 1024 * 1024;
 
 ADVClipboard::ADVClipboard(AnnotatedDNAView *c)
-    : QObject(c), ctx(c) {
+    : QObject(c) {
+    ctx = c;
     //TODO: listen seqadded/seqremoved!!
 
-    connect(ctx, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceChanged()));
+    connect(ctx, SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onFocusedSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
 
     foreach (ADVSequenceObjectContext *sCtx, ctx->getSequenceContexts()) {
         connectSequence(sCtx);
@@ -362,10 +363,12 @@ QAction *ADVClipboard::createPasteSequenceAction(QObject *parent) {
 }
 
 ADVSequenceObjectContext *ADVClipboard::getSequenceContext() const {
-    return ctx->getActiveSequenceContext();
+    return ctx->getSequenceInFocus();
 }
 
-void ADVClipboard::sl_onActiveSequenceChanged() {
+void ADVClipboard::sl_onFocusedSequenceWidgetChanged(ADVSequenceWidget *oldW, ADVSequenceWidget *newW) {
+    Q_UNUSED(oldW);
+    Q_UNUSED(newW);
     updateActions();
 }
 }    // namespace U2

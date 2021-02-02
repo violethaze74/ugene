@@ -60,7 +60,7 @@ PrimerGroupBox::PrimerGroupBox(QWidget *parent)
 void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView *dnaView) {
     cancelFindPrimerTask();
     annotatedDnaView = dnaView;
-    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annotatedDnaView, SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_focusChanged()));
 }
 
 void PrimerGroupBox::sl_onPrimerChanged(const QString &primer) {
@@ -106,7 +106,7 @@ void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
         QList<FindAlgorithmResult> results = findPrimerTask->popResults();
         if (results.size() == 1) {
             // in case of the sequence context was changed the task is canceled
-            ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+            ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
             SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
             U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
             SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
@@ -124,9 +124,9 @@ void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
     disconnect(this, SLOT(sl_findPrimerTaskStateChanged()));
 }
 
-void PrimerGroupBox::sl_activeSequenceChanged() {
+void PrimerGroupBox::sl_focusChanged() {
     cancelFindPrimerTask();
-    if (annotatedDnaView->getActiveSequenceContext() != NULL) {
+    if (annotatedDnaView->getSequenceInFocus() != NULL) {
         sl_onPrimerChanged(primerEdit->text());
     } else {
         annotatedDnaView = NULL;
@@ -146,7 +146,7 @@ void PrimerGroupBox::findPrimerAlternatives(const QString &primer) {
     FindAlgorithmTaskSettings settings;
 
     SAFE_POINT(annotatedDnaView != NULL, L10N::nullPointerError("Annotated DNA view"), );
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
     SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
