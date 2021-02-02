@@ -179,7 +179,7 @@ private slots:
 
     void sl_onPosChangeRequest(int position);
 
-    void sl_createSubaligniment();
+    void sl_createSubalignment();
 
     void sl_saveSequence();
 

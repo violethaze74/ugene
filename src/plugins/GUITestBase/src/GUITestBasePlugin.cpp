@@ -104,6 +104,7 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
+#include "tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h"
 
 namespace U2 {
 
@@ -1728,6 +1729,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6990_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6990_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6995);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_7014);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
