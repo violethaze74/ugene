@@ -43,6 +43,8 @@
 #include <QListWidget>
 #include <QTreeView>
 
+#include <U2Core/UserApplicationsSettings.h>
+
 #include "GTTestsCreateAnnotationWidget.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsMdi.h"
@@ -2183,6 +2185,12 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
+            //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+            const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+            const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog)->text();
+            CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                          QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
+
             //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0034");
             setNewTable(os, dialog);
@@ -2250,6 +2258,12 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
+            //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+            const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+            const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog)->text();
+            CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                          QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
+
             //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0035");
             setNewTable(os, dialog);
@@ -2310,6 +2324,12 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    2. Open "Search in Sequence" options panel tab. Set any pattern. Open "Save annotation(s) to" group.
     openFileOpenSearchTabAndSetPattern(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os);
+
+    //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+    const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+    const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath")->text();
+    CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                  QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
     //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
     setNewTable(os);
