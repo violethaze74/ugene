@@ -6,6 +6,7 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
+k
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,25 +20,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_EXPORT_MSA2MSA_DIALOG_FILLER_H_
-#define _U2_GT_RUNNABLES_EXPORT_MSA2MSA_DIALOG_FILLER_H_
+/** Tree integration into MSA editor. */
+#ifndef GTTESTS_MSA_EDITOR_TREE_H_
+#define GTTESTS_MSA_EDITOR_TREE_H_
 
-#include "utils/GTUtilsDialog.h"
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
-using namespace HI;
 
-class ExportMSA2MSADialogFiller : public Filler {
-public:
-    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "", bool includeGaps = false, bool unknownAsGaps = false);
-    void commonScenario();
+namespace GUITest_common_scenarios_msa_editor_tree {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_msa_editor_tree"
 
-private:
-    int formatVal;
-    QString path;
-    bool includeGaps = false;
-    bool unknownAsGaps = false;
-};
+GUI_TEST_CLASS_DECLARATION(test_0001)
+
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_msa_editor_tree
+
 }    // namespace U2
 
-#endif
+#endif    //GTTESTS_MSA_EDITOR_TREE_H_

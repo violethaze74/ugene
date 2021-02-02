@@ -19,25 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_EXPORT_MSA2MSA_DIALOG_FILLER_H_
-#define _U2_GT_RUNNABLES_EXPORT_MSA2MSA_DIALOG_FILLER_H_
+#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#define _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
 
-#include "utils/GTUtilsDialog.h"
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
-using namespace HI;
 
-class ExportMSA2MSADialogFiller : public Filler {
-public:
-    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "", bool includeGaps = false, bool unknownAsGaps = false);
-    void commonScenario();
+namespace GUITest_regression_scenarios {
 
-private:
-    int formatVal;
-    QString path;
-    bool includeGaps = false;
-    bool unknownAsGaps = false;
-};
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_regression_scenarios"
+
+GUI_TEST_CLASS_DECLARATION(test_7014)
+
+#undef GUI_TEST_SUITE
+
+}    // namespace GUITest_regression_scenarios
+
 }    // namespace U2
 
-#endif
+#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
