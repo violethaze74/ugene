@@ -150,13 +150,15 @@ private:
 
     CreateAnnotationModel model;
     GObjectComboBoxController *occ;
-    QScopedPointer<CreateAnnotationWidget> w;
+    CreateAnnotationWidget *w;
     SaveDocumentController *saveController;
 
     QString GROUP_NAME_AUTO;
     static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
 
+    CreateAnnotationWidgetController(CreateAnnotationWidgetController &&) = delete;
+    CreateAnnotationWidgetController &operator=(CreateAnnotationWidgetController &&) = delete;
     Q_DISABLE_COPY(CreateAnnotationWidgetController)
 };
 

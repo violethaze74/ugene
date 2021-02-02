@@ -30,7 +30,7 @@ namespace U2 {
 class CreateAnnotationFullWidget : public CreateAnnotationWidget, private Ui_CreateAnnotationFullWidget {
     Q_OBJECT
 public:
-    CreateAnnotationFullWidget(qint64 seqLen, QWidget *parent = NULL);
+    CreateAnnotationFullWidget(qint64 seqLen, QWidget *parent = nullptr);
     ~CreateAnnotationFullWidget();
 
     void setGroupNameVisible(bool visible);

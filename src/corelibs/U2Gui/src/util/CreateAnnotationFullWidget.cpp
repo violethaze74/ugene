@@ -155,7 +155,7 @@ void CreateAnnotationFullWidget::setAnnotationName(const QString &name) {
 
 void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     // Example: (200..len,1..100)=(200..100), lambda returns true
-    auto isSimpleSplitLocation = [](const U2Location &location, qint64 seqLen) {
+    auto isSimpleSplitLocation = [&location](qint64 seqLen) {
         if (location->regions.size() < 2) {
             return false;
         }
@@ -169,7 +169,7 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     if (!location->isEmpty()) {
         startString = QString::number(location->regions.first().startPos + 1);
 
-        if (location->isMultiRegion() && isSimpleSplitLocation(location, seqLen)) {
+        if (location->isMultiRegion() && isSimpleSplitLocation(seqLen)) {
             // (200..len,1..100,...) equals start=200, end=100
             endString = QString::number(location->regions[1].endPos());
         } else {
@@ -184,7 +184,7 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
 
     // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
     const bool needToShowInGenbank = location->regions.size() > 2 ||
-        (location->regions.size() == 2 && !isSimpleSplitLocation(location, seqLen));
+        (location->regions.size() == 2 && !isSimpleSplitLocation(seqLen));
     if (firstLocationSetting && needToShowInGenbank) {
         rbGenbankFormat->setChecked(true);
     }
