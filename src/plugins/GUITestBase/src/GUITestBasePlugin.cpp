@@ -54,6 +54,7 @@
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
+#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
@@ -1730,6 +1731,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6995);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7003);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7014);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2339,6 +2341,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0083);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0090);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0091);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0092);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
@@ -2389,6 +2393,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/tree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
@@ -3113,6 +3122,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0004, minutes(20), labels({Cistrome, Linux}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
+    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0007);
+
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
     /////////////////////////////////////////////////////////////////////////

@@ -23,9 +23,18 @@
 
 #include <QFileInfo>
 
+#include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
+#include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsTaskTreeView.h"
+
 #include "primitives/GTMenu.h"
 #include "primitives/GTWidget.h"
+#include "primitives/PopupChooser.h"
+
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -61,6 +70,41 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...",
                               GTGlobals::UseMouse);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7014) {
+    // The test checks 'Save subalignment' in the collapse (virtual groups) mode.
+    GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Enable collapsing.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expand collapsed group.
+    GTUtilsMsaEditor::toggleCollapsingGroup(os, "LR882519 exotic DQB1");
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(5, 4));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7014.aln");
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMdi::closeWindow(os, "DQB1_exon4 [DQB1_exon4.nexus]");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Expected state: the saved sub-alignment is opened. Check the content.
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList expectedNameList = QStringList() << "LR882519 exotic DQB1"
+                                                 << "LR882531 local DQB1"
+                                                 << "LR882507 local DQB1"
+                                                 << "LR882509 local DQB1";
+    CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
+
+    int msaLength = GTUtilsMSAEditorSequenceArea::getLength(os);
+    CHECK_SET_ERR(msaLength == 5, "Unexpected exported alignment length: " + QString::number(msaLength));
 }
 
 }    // namespace GUITest_regression_scenarios
