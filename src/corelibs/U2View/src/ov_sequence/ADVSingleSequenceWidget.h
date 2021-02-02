@@ -247,8 +247,7 @@ protected:
     virtual void paintEvent(QPaintEvent *e);
 
 protected slots:
-    /** Toggles header active/inactive visual state if the old or the new widget is related to the header. */
-    void sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *oldActiveWidget, ADVSequenceWidget *newActiveWidget);
+    void sl_advFocusChanged(ADVSequenceWidget *prevFocus, ADVSequenceWidget *newFocus);
     void sl_actionTriggered(QAction *a);
 
 private:

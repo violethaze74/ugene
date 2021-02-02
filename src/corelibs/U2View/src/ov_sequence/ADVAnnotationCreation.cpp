@@ -86,7 +86,7 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView *c)
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {
-    ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
     SAFE_POINT(seqCtx != nullptr, "Invalid sequence context detected!", );
     CreateAnnotationModel m;
     m.useUnloadedObjects = true;

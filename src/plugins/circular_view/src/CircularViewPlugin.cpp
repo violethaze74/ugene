@@ -311,11 +311,11 @@ void CircularViewContext::sl_setSequenceOrigin() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(setSequenceOriginAction->getObjectView());
     CHECK(NULL != av, );
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     U2SequenceObject *seqObj = seqCtx->getSequenceObject();
     CHECK(NULL != seqObj, );
 
-    QObjectScopedPointer<SetSequenceOriginDialog> dlg = new SetSequenceOriginDialog(av->getActiveSequenceWidget());
+    QObjectScopedPointer<SetSequenceOriginDialog> dlg = new SetSequenceOriginDialog(av->getSequenceWidgetInFocus());
     const int res = dlg->exec();
     CHECK(!dlg.isNull(), );
 

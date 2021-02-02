@@ -49,9 +49,7 @@ private slots:
     void sl_browse();
 
     void sl_findPrimerTaskStateChanged();
-
-    /** Updates group box state to match the new active sequence. */
-    void sl_activeSequenceChanged();
+    void sl_focusChanged();
 
 private:
     static QString getTmString(const QString &sequence);

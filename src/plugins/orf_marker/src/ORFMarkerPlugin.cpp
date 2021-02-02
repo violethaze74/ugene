@@ -106,7 +106,7 @@ void ORFViewContext::sl_showDialog() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     assert(seqCtx->getAlphabet()->isNucleic());
     QObjectScopedPointer<ORFDialog> d = new ORFDialog(seqCtx);
     d->exec();

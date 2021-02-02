@@ -79,7 +79,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
     connect(extractProductButton, SIGNAL(clicked()), SLOT(sl_extractProduct()));
     connect(annotatedDnaView, SIGNAL(si_sequenceModified(ADVSequenceObjectContext *)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext *)));
     connect(annotatedDnaView, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext *)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext *)));
-    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annotatedDnaView, SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onFocusChanged()));
     connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_onProductsSelectionChanged()));
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_onProductDoubleClicked()));
     connect(detailsLinkLabel, SIGNAL(linkActivated(const QString &)), SLOT(sl_showDetails(const QString &)));
@@ -93,7 +93,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
-    sl_activeSequenceChanged();
+    sl_onFocusChanged();
     sl_onPrimerChanged();
 }
 
@@ -145,7 +145,7 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     SAFE_POINT(maxProduct > 0, "Non-positive product size", );
     int perfectMatch = perfectSpinBox->value();
     SAFE_POINT(perfectMatch >= 0, "Negative perfect match", );
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
     SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
@@ -236,8 +236,8 @@ bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext *seque
     return alphabet->isDNA();
 }
 
-void InSilicoPcrOptionPanelWidget::sl_activeSequenceChanged() {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+void InSilicoPcrOptionPanelWidget::sl_onFocusChanged() {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
     bool isDna = isDnaSequence(sequenceContext);
     runPcrWidget->setEnabled(isDna);
     algoWarningLabel->setVisible(!isDna);

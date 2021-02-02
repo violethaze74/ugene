@@ -67,7 +67,7 @@ void SecStructPredictViewAction::sl_execute() {
         return;
     }
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
     SAFE_POINT(NULL != seqCtx, "NULL sequence context", );
     SAFE_POINT(NULL != seqCtx->getAlphabet(), "NULL alphabet", );
     SAFE_POINT(seqCtx->getAlphabet()->isAmino(), "Wrong alphabet", );

@@ -49,10 +49,7 @@ private slots:
     void sl_extractProduct();
     void sl_onFindTaskFinished();
     void sl_onSequenceChanged(ADVSequenceObjectContext *sequenceContext);
-
-    /** Updates state of the widget to match the new active sequence. */
-    void sl_activeSequenceChanged();
-
+    void sl_onFocusChanged();
     void sl_onProductsSelectionChanged();
     void sl_onProductDoubleClicked();
     void sl_showDetails(const QString &link);

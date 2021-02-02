@@ -120,7 +120,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
 
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
     QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, av->getWidget());
