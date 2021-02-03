@@ -48,8 +48,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
     // 3. Add the 'dumb.sh' or 'dumb.cmd' as a Python executable
     // 4. Check that validation fails
 
-    CHECK_SET_ERR(qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") != "1",
-                  "UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY is set to 1, but expected 0")
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
 
     class CheckPythonInvalidation : public CustomScenario {
         void run(GUITestOpStatus &os) override {
