@@ -6824,11 +6824,13 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6999) {
+    // 1. Create read_only_dir
     const QString projectPath = QFileInfo(sandBoxDir + "read_only_dir/project.uprj").absoluteFilePath();
 
     QDir().mkpath(sandBoxDir + "read_only_dir");
     GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
 
+    // 2. Open any file
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6837,6 +6839,10 @@ GUI_TEST_CLASS_DEFINITION(test_6999) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", projectPath));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // 3. Select "File->Save project as..."
+    // 4. Save project to file "read_only_dir/project.proj"
+    // 5. Click "Save"
+    //    Expected state: Message Box with text "Folder is read-only" appears
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
 
