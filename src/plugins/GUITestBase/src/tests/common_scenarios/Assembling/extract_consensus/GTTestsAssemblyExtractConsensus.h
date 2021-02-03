@@ -1,12 +1,11 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
-k
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,32 +19,24 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_NIAID_PIPELINES_H_
-#define GTTESTS_NIAID_PIPELINES_H_
+#ifndef _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
+#define _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
 
 #include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_NIAID_pipelines {
+namespace GUITest_assembly_extract_consensus {
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_NIAID_pipelines"
+#define GUI_TEST_SUITE "GUITest_assembly_extract_consensus"
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
-GUI_TEST_CLASS_DECLARATION(test_0003)
-GUI_TEST_CLASS_DECLARATION(test_0004)
-GUI_TEST_CLASS_DECLARATION(test_0005)
-GUI_TEST_CLASS_DECLARATION(test_0006)
-GUI_TEST_CLASS_DECLARATION(test_0007)
-GUI_TEST_CLASS_DECLARATION(test_0008)
-GUI_TEST_CLASS_DECLARATION(test_0009)
-GUI_TEST_CLASS_DECLARATION(test_0010)
-GUI_TEST_CLASS_DECLARATION(test_0011)
+GUI_TEST_CLASS_DECLARATION(test_0001_single_input)
+GUI_TEST_CLASS_DECLARATION(test_0002_multiple_input)
+GUI_TEST_CLASS_DECLARATION(test_0003_wrong_input)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_NIAID_pipelines
+}    // namespace GUITest_assembly_extract_consensus
 
 }    // namespace U2
 
-#endif    // GTTESTS_NIAID_PIPELINES_H_
+#endif    // _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
