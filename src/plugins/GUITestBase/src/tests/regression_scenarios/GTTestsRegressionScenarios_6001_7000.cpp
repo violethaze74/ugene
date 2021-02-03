@@ -6611,7 +6611,6 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     class ProjectPathValidationScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            GTGlobals::sleep();
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
             const auto lePath = GTWidget::findExactWidget<QLineEdit *>(os, "projectFilePathEdit", dialog);
 
@@ -6629,7 +6628,6 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "CreateNewProjectDialog", QDialogButtonBox::Cancel, new ProjectPathValidationScenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New project...");
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Open any file

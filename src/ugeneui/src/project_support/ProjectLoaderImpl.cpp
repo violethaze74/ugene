@@ -901,8 +901,9 @@ void ProjectDialogController::sl_projectNameEdited(const QString &text) {
 }
 
 void ProjectDialogController::setupDefaults() {
+    const QString defaultPath = QFileInfo(GUrlUtils::getDefaultDataPath(), "project" + PROJECTFILE_EXT).absoluteFilePath();
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    projectFilePathEdit->setText(QFileInfo(GUrlUtils::getDefaultDataPath(), "project" + PROJECTFILE_EXT).absoluteFilePath());
+    projectFilePathEdit->setText(defaultPath);
 }
 
 void ProjectDialogController::accept() {
