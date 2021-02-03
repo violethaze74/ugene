@@ -202,6 +202,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.h \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h \
+            src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.h \
             src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h \
@@ -475,6 +476,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.cpp \
+            src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.cpp \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.cpp \
             src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.cpp \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.cpp \
