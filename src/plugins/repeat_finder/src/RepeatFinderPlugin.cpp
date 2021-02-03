@@ -112,7 +112,7 @@ void RepeatViewContext::sl_showDialog() {
     QAction *a = (QAction *)sender();
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
     assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindRepeatsDialog> d = new FindRepeatsDialog(sctx);
@@ -123,7 +123,7 @@ void RepeatViewContext::sl_showTandemDialog() {
     QAction *a = (QAction *)sender();
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
     assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindTandemsDialog> d = new FindTandemsDialog(sctx);

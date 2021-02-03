@@ -115,7 +115,7 @@ void QueryDesignerViewContext::sl_showDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(sender());
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     QObjectScopedPointer<QDDialog> d = new QDDialog(seqCtx);
     d->exec();
 }
