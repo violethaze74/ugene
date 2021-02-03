@@ -35,6 +35,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/IdRegistry.h>
@@ -906,6 +907,16 @@ void ProjectDialogController::setupDefaults() {
 
 void ProjectDialogController::accept() {
     QString projectPath = getProjectFilePathFromPathEdit(projectFilePathEdit);
+
+    // Check that dir path is valid
+    U2OpStatus2Log os;
+    QString projectDir = GUrlUtils::prepareDirLocation(QFileInfo(projectPath).absoluteDir().absolutePath(), os);
+    if (projectDir.isEmpty()) {
+        assert(os.hasError());
+        QMessageBox::critical(this, this->windowTitle(), os.getError());
+        return;
+    }
+
     if (QFileInfo(projectPath).exists()) {
         int rc = QMessageBox::question(this, windowTitle(), tr("<html><body align=\"center\"><br>Project file already exists.<br>Are you sure you want to overwrite it?<body></html>"), QMessageBox::Yes, QMessageBox::No);
         if (rc != QMessageBox::Yes) {

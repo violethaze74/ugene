@@ -115,6 +115,7 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -6820,6 +6821,29 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     visibleRange = referenceArea->getVisibleRange();
     CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6999) {
+    const QString projectPath = QFileInfo(sandBoxDir + "read_only_dir/project.uprj").absoluteFilePath();
+
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::StandardButton::Ok));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", projectPath));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Save project as...");
+
+    QWidget *dialog = QApplication::activeModalWidget();
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+
+    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 }    // namespace GUITest_regression_scenarios
