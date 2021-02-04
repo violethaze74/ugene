@@ -36,12 +36,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps)
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
     : Filler(_os, "U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
       path(_path),
       includeGaps(_includeGaps),
-      unknownAsGaps(_unknownAsGaps) {
+      unknownAsGaps(_unknownAsGaps),
+      frame(_frame) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -65,6 +66,27 @@ void ExportMSA2MSADialogFiller::commonScenario() {
             GTRadioButton::click(os, "rbUseGaps", dialog);
         }
     }
+
+    if (frame != 1) {
+        QString widgetName;
+        if (frame == 1) {
+            widgetName = "rb1";
+        } else if (frame == 2) {
+            widgetName = "rb2";
+        } else if (frame == 3) {
+            widgetName = "rb3";
+        } else if (frame == -1) {
+            widgetName = "rbM1";
+        } else if (frame == -2) {
+            widgetName = "rbM2";
+        } else if (frame == -3) {
+            widgetName = "rbM3";
+        } else {
+            GT_CHECK(false, "incorrect frame");
+        }
+        GTRadioButton::click(os, widgetName, dialog);
+    }
+
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
