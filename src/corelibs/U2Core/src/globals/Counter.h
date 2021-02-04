@@ -25,6 +25,7 @@
 #include <QList>
 #include <QObject>
 
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -32,74 +33,62 @@ namespace U2 {
 class U2CORE_EXPORT GCounter : public QObject {
     Q_OBJECT
 public:
-    GCounter(const QString &name, const QString &suffix, double scale = 1);
+    /**
+     * Creates and adds counter to the global counter list.
+     * To remove the counter from the global list a counter must be deleted.
+     * If the counter is not deleted until application shutdown 'isOnHeap' flag is used to check if the counter must be deleted manually.
+     */
+    GCounter(const QString &name, const QString &suffix, qint64 value = 0, double scale = 1, bool isReportable = false, bool isOnHeap = false);
+
+    /** Unregisters counter from the global counters list. */
     virtual ~GCounter();
 
-    static const QList<GCounter *> &allCounters() {
-        return getCounters();
+    /** Returns a snapshot (copy) of all registered counters. */
+    static QList<GCounter *> getAllCounters();
+
+    /** Returns instance of the currently registered counter or nullptr if no counter with the given name/suffix was found. */
+    static GCounter *findCounter(const QString &name, const QString &suffix);
+
+    /** Visual name of the counter. Name + suffix used to uniquely identify the counter. */
+    const QString name;
+
+    /**
+     * Suffix of the counter or unit. Example: milliseconds, counts, megabytes, algorithm type within some family of algorithms.
+     * May be empty. Name + suffix is used to uniquely identify the counter.
+     */
+    const QString suffix;
+
+    /**
+     * Value of the counter.
+     * Example: count of invocations, sum of all time periods, used memory size, etc...
+     */
+    qint64 value;
+
+    /**
+     * Scale factor for the counter value. May be used to convert counter values into another domain.
+     * Example: convert cpu-clock-count into time-millis.
+     */
+    const double scale;
+
+    /** Reportable counters are sent to UGENE developers as a part of Shtirlitz service reports. */
+    const bool isReportable;
+
+    /** Returns scaled counter value. */
+    double getScaledValue() const {
+        return value / scale;
     }
-    static GCounter *getCounter(const QString &name, const QString &suffix);
 
-    QString name;
-    QString suffix;
-    qint64 totalCount;
-    double counterScale;
-    bool destroyMe;    //true if counter should be deleted by counter list
+    /** If 'true' the counter was allocated on heap and must be manually deleted. */
+    const bool isOnHeap;
 
-    double scaledTotal() const {
-        return totalCount / counterScale;
-    }
-
-protected:
-    static QList<GCounter *> &getCounters();
+    /** Increments value of the existing counter or creates a new reportable on-heap counter if no counter with this name+suffix is registered. */
+    static void increment(const QString &name, const QString &suffix = "");
 };
 
-class GCounterList {
-public:
-    ~GCounterList();
-
-    QList<GCounter *> list;
-};
-
-//Marks that counter will be reported by Shtirlitz
-//TODO: implement GPerformanceCounter for plugin_perf_monitor?
-class U2CORE_EXPORT GReportableCounter : public GCounter {
-    Q_OBJECT
-public:
-    GReportableCounter(const QString &name, const QString &suffix, double scale = 1);
-};
-
-class U2CORE_EXPORT SimpleEventCounter {
-public:
-    SimpleEventCounter(GCounter *tc)
-        : totalCounter(tc), eventCount(1) {
-        assert(tc != NULL);
-    }
-    virtual ~SimpleEventCounter() {
-        totalCounter->totalCount += eventCount;
-    }
-
-private:
-    GCounter *totalCounter;
-    qint64 eventCount;
-};
-
-#define GCOUNTER(cvar, tvar, name) \
-    static GReportableCounter cvar(name, "", 1); \
-    SimpleEventCounter tvar(&cvar)
-
-#define GRUNTIME_NAMED_COUNTER(cvar, tvar, name, suffix) \
-    GCounter *cvar = GCounter::getCounter(name, suffix); \
-    if (NULL == cvar) { \
-        cvar = new GReportableCounter(name, suffix, 1); \
-        cvar->destroyMe = true; \
-    } \
-    SimpleEventCounter tvar(cvar)
-
-#define GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, condition, name, suffix) \
-    if (condition) { \
-        GRUNTIME_NAMED_COUNTER(cvar, tvar, name, suffix); \
-    }
+/** Creates a new reportable counter as function local static variable and increments it's value. */
+#define GCOUNTER(cvar, name) \
+    static GCounter cvar(name, "", 0, 1, true, false); \
+    cvar.value += 1;
 
 }    // namespace U2
 

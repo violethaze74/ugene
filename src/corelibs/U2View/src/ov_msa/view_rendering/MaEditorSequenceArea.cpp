@@ -111,11 +111,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     connect(fillWithGapsinsSymAction, SIGNAL(triggered()), SLOT(sl_fillCurrentSelectionWithGaps()));
     addAction(fillWithGapsinsSymAction);
 
-    QAction *undoAction = ui->getUndoAction();
-    QAction *redoAction = ui->getRedoAction();
-    addAction(undoAction);
-    addAction(redoAction);
-
     connect(this, SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
@@ -245,10 +240,12 @@ void MaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
     update();
 
     //TODO: the code below can be moved to the sl_updateActions().
-    bool selectionExists = !selection.isEmpty();
-    ui->getCopySelectionAction()->setEnabled(selectionExists);
-    ui->getCopyFormattedSelectionAction()->setEnabled(selectionExists);
-    emit si_copyFormattedChanging(selectionExists);
+    bool isReadOnly = editor->getMaObject()->isStateLocked();
+    bool hasSelection = !selection.isEmpty();
+    ui->copySelectionAction->setEnabled(hasSelection);
+    ui->copyFormattedSelectionAction->setEnabled(hasSelection);
+    emit si_copyFormattedChanging(hasSelection);
+    ui->cutSelectionAction->setEnabled(hasSelection && !isReadOnly);
 
     sl_updateActions();
 }
@@ -334,7 +331,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
     maObj->removeRegion(selectedMaRows, selection.x(), effectiveWidth, true);
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Delete current selection", editor->getFactoryId());
+    GCounter::increment("Delete current selection", editor->getFactoryId());
 }
 
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
@@ -633,13 +630,11 @@ void MaEditorSequenceArea::sl_cancelSelection() {
         exitFromEditCharacterMode();
         return;
     }
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvat, tvar, qobject_cast<McaEditorWgt *>(sender()) != nullptr, "Clear selection", editor->getFactoryId());
-    MaEditorSelection emptySelection;
-    setSelection(emptySelection);
+    setSelection(MaEditorSelection());
 }
 
 void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Fill selection with gaps", editor->getFactoryId());
+    GCounter::increment("Fill selection with gaps", editor->getFactoryId());
     if (!isAlignmentLocked()) {
         emit si_startMaChanging();
         insertGapsBeforeSelection();
@@ -1512,9 +1507,8 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
         return;
     }
 
-    const bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
-    GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, isGap, "Replace gap", editor->getFactoryId());
-    GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !isGap, "Replace character", editor->getFactoryId());
+    bool isGap = maObj->getRow(selection.y())->isGap(selection.x());
+    GCounter::increment(isGap ? "Replace gap" : "Replace character", editor->getFactoryId());
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

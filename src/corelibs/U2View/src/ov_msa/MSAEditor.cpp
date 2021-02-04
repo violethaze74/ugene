@@ -71,19 +71,33 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
 
     sortByNameAscendingAction = new QAction(tr("By name"), this);
     sortByNameAscendingAction->setObjectName("action_sort_by_name");
+    sortByNameAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, ascending"));
     connect(sortByNameAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
 
     sortByNameDescendingAction = new QAction(tr("By name, descending"), this);
     sortByNameDescendingAction->setObjectName("action_sort_by_name_descending");
+    sortByNameAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by name, descending"));
     connect(sortByNameDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByName()));
 
     sortByLengthAscendingAction = new QAction(tr("By length"), this);
     sortByLengthAscendingAction->setObjectName("action_sort_by_length");
+    sortByLengthAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by length, ascending"));
     connect(sortByLengthAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
 
     sortByLengthDescendingAction = new QAction(tr("By length, descending"), this);
     sortByLengthDescendingAction->setObjectName("action_sort_by_length_descending");
+    sortByLengthDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by length, descending"));
     connect(sortByLengthDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
+
+    sortByLeadingGapAscendingAction = new QAction(tr("By leading gap"), this);
+    sortByLeadingGapAscendingAction->setObjectName("action_sort_by_leading_gap");
+    sortByLeadingGapAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by leading gap, ascending"));
+    connect(sortByLeadingGapAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLeadingGap()));
+
+    sortByLeadingGapDescendingAction = new QAction(tr("By leading gap, descending"), this);
+    sortByLeadingGapDescendingAction->setObjectName("action_sort_by_leading_gap_descending");
+    sortByLeadingGapDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by leading gap, descending"));
+    connect(sortByLeadingGapDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLeadingGap()));
 
     openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
     openCustomSettingsAction->setObjectName("Create new color scheme");
@@ -174,7 +188,7 @@ MSAEditor::~MSAEditor() {
 }
 
 void MSAEditor::buildStaticToolbar(QToolBar *tb) {
-    tb->addAction(ui->getCopyFormattedSelectionAction());
+    tb->addAction(ui->copyFormattedSelectionAction);
 
     tb->addAction(saveAlignmentAction);
     tb->addAction(saveAlignmentAsAction);
@@ -203,7 +217,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addLoadMenu(m);
 
-    addCopyMenu(m);
+    addCopyPasteMenu(m);
     addEditMenu(m);
     addSortMenu(m);
 
@@ -220,6 +234,42 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
     GUIUtils::disableEmptySubmenus(m);
 }
 
+void MSAEditor::addCopyPasteMenu(QMenu *m) {
+    MaEditor::addCopyPasteMenu(m);
+
+    QMenu *copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
+    SAFE_POINT(copyMenu != nullptr, "copyMenu is null", );
+
+    const MaEditorSelection &selection = getSelection();
+    ui->copySelectionAction->setDisabled(selection.isEmpty());
+
+    //TODO:? move the signal emit point to a correct location.
+    auto sequenceArea = qobject_cast<MSAEditorSequenceArea *>(ui->getSequenceArea());
+    SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
+    emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
+
+    copyMenu->addAction(ui->copySelectionAction);
+    ui->copyFormattedSelectionAction->setDisabled(selection.isEmpty());
+    copyMenu->addAction(ui->copyFormattedSelectionAction);
+    copyMenu->addAction(copyConsensusAction);
+    copyMenu->addAction(copyConsensusWithGapsAction);
+    copyMenu->addSeparator();
+    copyMenu->addAction(ui->pasteAction);
+    copyMenu->addAction(ui->pasteBeforeAction);
+    copyMenu->addSeparator();
+    copyMenu->addAction(ui->cutSelectionAction);
+
+    auto nameList = qobject_cast<MaEditorNameList *>(ui->getEditorNameList());
+    SAFE_POINT(nameList != nullptr, "nameList is null", );
+    copyMenu->addSeparator();
+
+    copyMenu->addAction(nameList->copyCurrentSequenceAction);
+
+    //TODO: trigger action update on selection change, not in the menu activation code!
+    int selectedMaRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selection.y());
+    nameList->copyCurrentSequenceAction->setDisabled(selectedMaRowIndex == -1);
+}
+
 void MSAEditor::addEditMenu(QMenu *m) {
     QMenu *menu = m->addMenu(tr("Edit"));
     menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
@@ -232,6 +282,8 @@ void MSAEditor::addSortMenu(QMenu *m) {
     menu->addAction(sortByNameDescendingAction);
     menu->addAction(sortByLengthAscendingAction);
     menu->addAction(sortByLengthDescendingAction);
+    menu->addAction(sortByLeadingGapAscendingAction);
+    menu->addAction(sortByLeadingGapDescendingAction);
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -248,7 +300,7 @@ void MSAEditor::addAppearanceMenu(QMenu *m) {
     appearanceMenu->addAction(showOverviewAction);
     auto offsetsController = ui->getOffsetsViewController();
     if (offsetsController != nullptr) {
-        appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
+        appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
     appearanceMenu->addSeparator();
     appearanceMenu->addAction(zoomInAction);
@@ -427,7 +479,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addAppearanceMenu(&m);
     addNavigationMenu(&m);
     addLoadMenu(&m);
-    addCopyMenu(&m);
+    addCopyPasteMenu(&m);
     addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();
@@ -455,12 +507,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     GUIUtils::disableEmptySubmenus(&m);
 
     m.exec(QCursor::pos());
-}
-
-void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
-    if (!maObject->isStateLocked()) {
-        maObject->sortRowsByList(order);
-    }
 }
 
 void MSAEditor::sl_showTreeOP() {
@@ -510,12 +556,10 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
         QDropEvent *de = (QDropEvent *)e;
         const QMimeData *md = de->mimeData();
         const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
-        if (gomd != NULL) {
-            if (maObject->isStateLocked()) {
-                return false;
-            }
+        if (gomd != nullptr) {
+            CHECK(!maObject->isStateLocked(), false)
             U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(gomd->objPtr.data());
-            if (dnaObj != NULL) {
+            if (dnaObj != nullptr) {
                 if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == NULL) {
                     return false;
                 }
@@ -546,7 +590,7 @@ void MSAEditor::sl_align() {
     QMenu m, *mm;
 
     addLoadMenu(&m);
-    addCopyMenu(&m);
+    addCopyPasteMenu(&m);
     addEditMenu(&m);
     addSortMenu(&m);
     m.addSeparator();
@@ -569,9 +613,7 @@ void MSAEditor::sl_align() {
 
 void MSAEditor::sl_addToAlignment() {
     MultipleSequenceAlignmentObject *msaObject = getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
+    CHECK(!maObject->isStateLocked(), );
 
     ProjectView *pv = AppContext::getProjectView();
     SAFE_POINT(pv != nullptr, "Project view is null", );
@@ -720,20 +762,17 @@ void MSAEditor::sl_showCustomSettings() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
 }
 
-void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder) {
+void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder) {
     MultipleSequenceAlignmentObject *msaObject = getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
-    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
-    if (isByName) {
-        msa->sortRowsByName(sortOrder);
-    } else {
-        msa->sortRowsByLength(sortOrder);
-    }
+    CHECK(!msaObject->isStateLocked(), );
 
-    // Drop collapsing mode.
-    getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
+    const MaEditorSelection &selection = getSelection();
+    U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
+    msa->sortRows(sortType, sortOrder, sortRange);
+
+    // Disable virtual mode.
+    getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
 
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
@@ -744,17 +783,22 @@ void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sor
 
 void MSAEditor::sl_sortSequencesByName() {
     MultipleAlignment::Order order = sender() == sortByNameDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(true, order);
+    sortSequences(MultipleAlignment::SortByName, order);
 }
 
 void MSAEditor::sl_sortSequencesByLength() {
     MultipleAlignment::Order order = sender() == sortByLengthDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(false, order);
+    sortSequences(MultipleAlignment::SortByLength, order);
+}
+
+void MSAEditor::sl_sortSequencesByLeadingGap() {
+    MultipleAlignment::Order order = sender() == sortByLeadingGapDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
+    sortSequences(MultipleAlignment::SortByLeadingGap, order);
 }
 
 void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
-    bool isReadOnly = maObject->isStateLocked();
-    CHECK(!isReadOnly, );
+    CHECK(!maObject->isStateLocked(), )
+
     auto alphabetId = maObject->getAlphabet()->getId();
     bool isDnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     bool isRnaAlphabet = alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT();
@@ -771,4 +815,3 @@ void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
 }
 
 }    // namespace U2
-// namespace U2

@@ -52,7 +52,7 @@ const QString SeqPosTask::TREAT_NAME("treatment");
 
 SeqPosTask::SeqPosTask(const SeqPosSettings &_settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &_treatAnn)
     : ExternalToolSupportTask("SeqPos annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), storage(storage), treatAnn(_treatAnn), treatDoc(NULL), treatTask(NULL), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:SeqPosTask");
+    GCOUNTER(cvar, "NGS:SeqPosTask");
     SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 

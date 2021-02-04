@@ -66,7 +66,7 @@ void DatasetsListWidget::appendPage(const QString &name, QWidget *page) {
 }
 
 void DatasetsListWidget::sl_deleteDataset(int idx) {
-    GCOUNTER(cvar, tvar, "WD::Dataset::Delete Dataset");
+    GCOUNTER(cvar, "WD::Dataset::Delete Dataset");
     QWidget *w = tabs->widget(idx);
     tabs->removeTab(idx);
     ctrl->deleteDataset(idx);
@@ -89,7 +89,7 @@ QString DatasetsListWidget::getTip() const {
 }
 
 void DatasetsListWidget::sl_newDataset() {
-    GCOUNTER(cvar, tvar, "WD::Dataset::New Dataset");
+    GCOUNTER(cvar, "WD::Dataset::New Dataset");
     QString error;
     QString text = getTip();
     do {
@@ -116,7 +116,7 @@ void DatasetsListWidget::sl_newDataset() {
 }
 
 void DatasetsListWidget::sl_renameDataset() {
-    GCOUNTER(cvar, tvar, "WD::Dataset::Rename Dataset");
+    GCOUNTER(cvar, "WD::Dataset::Rename Dataset");
     QAction *a = dynamic_cast<QAction *>(sender());
     CHECK(NULL != a, );
 

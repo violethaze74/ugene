@@ -50,7 +50,7 @@ ConvertAceToSqliteTask::ConvertAceToSqliteTask(const GUrl &_sourceUrl, const U2D
       dbi(NULL),
       databaseWasCreated(false),
       countImportedAssembly(0) {
-    GCOUNTER(cvar, tvar, "ConvertAceToUgenedb");
+    GCOUNTER(cvar, "ConvertAceToUgenedb");
     tpm = Progress_Manual;
 }
 

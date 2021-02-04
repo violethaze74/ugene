@@ -39,7 +39,11 @@
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
-#include <U2Algorithm/OpenCLGpuRegistry.h>
+
+#ifdef OPENCL_SUPPORT
+#    include <U2Algorithm/OpenCLGpuRegistry.h>
+#endif
+
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -64,16 +68,12 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/LogCache.h>
 #include <U2Core/ResourceTracker.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/TaskStarter.h>
 #include <U2Core/Timer.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -84,9 +84,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/QueryDesignerRegistry.h>
-#include <U2Lang/ScriptContext.h>
 #include <U2Lang/WorkflowEnvImpl.h>
-#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
@@ -296,8 +294,7 @@ UgeneContextWrapper::UgeneContextWrapper(const QString &workingDirectoryPath)
     dpr = new U2DataPathRegistry();
     appContext->setDataPathRegistry(dpr);
 
-    GReportableCounter launchCounter("U2Script is ready", "", 1);
-    ++launchCounter.totalCount;
+    GCOUNTER(cvar, "U2Script is ready");
 
     t1.stop();
     QObject::connect(psp, SIGNAL(si_allStartUpPluginsLoaded()), &app, SLOT(quit()));

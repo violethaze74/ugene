@@ -160,7 +160,7 @@ Task *CASAVAFilterWorker::getTask(const BaseNGSSetting &settings) const {
 //CASAVAFilterTask
 CASAVAFilterTask::CASAVAFilterTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:CASAVAFilterTask");
+    GCOUNTER(cvar, "NGS:CASAVAFilterTask");
 }
 
 void CASAVAFilterTask::runStep() {
@@ -324,7 +324,7 @@ Task *FastqQualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
 //QualityTrimTask
 FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQQualityTrimmerTask");
+    GCOUNTER(cvar, "NGS:FASTQQualityTrimmerTask");
 }
 
 // diagnose
@@ -555,7 +555,7 @@ Task *MergeFastqWorker::getTask(const BaseNGSSetting &settings) const {
 //MergeFastqTask
 MergeFastqTask::MergeFastqTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQMergeFastqmerTask");
+    GCOUNTER(cvar, "NGS:FASTQMergeFastqmerTask");
 }
 
 void MergeFastqTask::runStep() {

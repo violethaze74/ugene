@@ -65,7 +65,7 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings &s,
                                  SW_AlgType _algType)
     : Task(taskName, TaskFlag_NoRun),
       sWatermanConfig(s) {
-    GCOUNTER(cvar, tvar, "SWAlgorithmTask");
+    GCOUNTER(cvar, "SWAlgorithmTask");
 
     algType = _algType;
     if (algType == SW_sse2) {
@@ -507,7 +507,7 @@ bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
 
 PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings *_settings, SW_AlgType _algType)
     : PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings) {
-    GCOUNTER(cvar, tvar, "SWAlgorithmTask");
+    GCOUNTER(cvar, "SWAlgorithmTask");
 
     assert(settings != NULL);
     bool isValid = settings->convertCustomSettings();

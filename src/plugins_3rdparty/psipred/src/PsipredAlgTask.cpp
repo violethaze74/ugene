@@ -39,7 +39,7 @@ QMutex PsipredAlgTask::runLock;
 
 PsipredAlgTask::PsipredAlgTask(const QByteArray& inputSeq) : SecStructPredictTask(inputSeq)
 {
-    GCOUNTER( cvar, tvar, "PsipredAlgTask" );
+    GCOUNTER( cvar, "PsipredAlgTask" );
 }
 
 #define PSIPRED_ANNOTATION_NAME "psipred_results"

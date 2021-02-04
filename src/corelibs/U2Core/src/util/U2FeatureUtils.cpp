@@ -60,32 +60,45 @@ U2AnnotationTable U2FeatureUtils::getAnnotationTable(const U2EntityRef &tableRef
     return featureDbi->getAnnotationTableObject(tableRef.entityId, os);
 }
 
-U2Feature U2FeatureUtils::exportAnnotationDataToFeatures(const SharedAnnotationData &a, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
-    U2Feature feature;
-    QList<U2FeatureKey> fKeys;
-    SAFE_POINT(!parentFeatureId.isEmpty(), "Invalid feature ID detected!", feature);
-    SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference detected!", feature);
-    SAFE_POINT(!a->location->regions.isEmpty(), "Invalid annotation location!", feature);
+U2Feature U2FeatureUtils::exportAnnotationDataToFeatures(const SharedAnnotationData &annotation, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
+    QList<SharedAnnotationData> annotationList;
+    annotationList << annotation;
+    QList<U2Feature> featureList = exportAnnotationDataToFeatures(annotationList, rootFeatureId, parentFeatureId, dbiRef, os);
+    CHECK_OP(os, U2Feature());
+    return featureList.first();
+}
 
-    createFeatureEntityFromAnnotationData(a, rootFeatureId, parentFeatureId, feature, fKeys);
-    // when the feature is group it has to have no regions and vice versa
-    const bool isMultyRegion = a->location->isMultiRegion();
+QList<U2Feature> U2FeatureUtils::exportAnnotationDataToFeatures(const QList<SharedAnnotationData> &annotationList, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
+    QList<U2Feature> resultFeatureList;
+
+    SAFE_POINT(!parentFeatureId.isEmpty(), "Invalid feature ID detected!", resultFeatureList);
+    SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference detected!", resultFeatureList);
+
+    DbiOperationsBlock dbiOperationsBlock(dbiRef, os);
+    CHECK_OP(os, resultFeatureList);
 
     DbiConnection connection(dbiRef, os);
-    CHECK_OP(os, feature);
-
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Feature DBI is not initialized!", feature);
 
-    //store to db to get ID
-    dbi->createFeature(feature, fKeys, os);
-    CHECK_OP(os, feature);
+    SAFE_POINT(dbi != nullptr, "Feature DBI is not initialized!", resultFeatureList);
 
-    //add subfeatures
-    if (isMultyRegion) {
-        U2FeatureUtils::addSubFeatures(a->location->regions, a->location->strand, feature.id, rootFeatureId, dbiRef, os);
+    for (const SharedAnnotationData &annotation : qAsConst(annotationList)) {
+        SAFE_POINT(!annotation->location->regions.isEmpty(), "Invalid annotation location!", resultFeatureList);
+
+        U2Feature feature;
+        QList<U2FeatureKey> featureKeyList;
+        createFeatureEntityFromAnnotationData(annotation, rootFeatureId, parentFeatureId, feature, featureKeyList);
+
+        dbi->createFeature(feature, featureKeyList, os);
+        CHECK_OP(os, resultFeatureList);
+
+        // add sub-features
+        if (annotation->location->isMultiRegion()) {
+            U2FeatureUtils::addSubFeatures(annotation->location->regions, annotation->location->strand, feature.id, rootFeatureId, dbiRef, os);
+        }
+        resultFeatureList << feature;
     }
-    return feature;
+    return resultFeatureList;
 }
 
 U2Feature U2FeatureUtils::exportAnnotationGroupToFeature(const QString &name, const U2DataId &rootFeatureId, const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os) {
@@ -100,7 +113,7 @@ U2Feature U2FeatureUtils::exportAnnotationGroupToFeature(const QString &name, co
     CHECK_OP(os, result);
 
     U2FeatureDbi *dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(NULL != dbi, "Feature DBI is not initialized!", result);
+    SAFE_POINT(dbi != nullptr, "Feature DBI is not initialized!", result);
 
     result.featureClass = U2Feature::Group;
     //store to db to get ID
@@ -501,8 +514,8 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
     }
 
     //add qualifiers
-    foreach (const U2Qualifier &qual, annotation->qualifiers) {
-        resFeatureKeys.append(U2FeatureKey(qual.name, qual.value));
+    for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
+        resFeatureKeys.append(U2FeatureKey(qualifier.name, qualifier.value));
     }
 
     //add operation
@@ -519,17 +532,17 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
 U2FeatureKey U2FeatureUtils::createFeatureKeyLocationOperator(U2LocationOperator value) {
     U2FeatureKey result;
     switch (value) {
-    case U2LocationOperator_Join:
-        result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationJoin);
-        break;
-    case U2LocationOperator_Order:
-        result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationOrder);
-        break;
-    case U2LocationOperator_Bond:
-        result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationBond);
-        break;
-    default:
-        SAFE_POINT(false, "Unexpected location operator!", result);
+        case U2LocationOperator_Join:
+            result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationJoin);
+            break;
+        case U2LocationOperator_Order:
+            result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationOrder);
+            break;
+        case U2LocationOperator_Bond:
+            result = U2FeatureKey(U2FeatureKeyOperation, U2FeatureKeyOperationBond);
+            break;
+        default:
+            SAFE_POINT(false, "Unexpected location operator!", result);
     }
     return result;
 }

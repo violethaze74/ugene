@@ -294,7 +294,7 @@ void GeneByGeneReportTask::run() {
     if (isCanceled()) {
         return;
     }
-    GCOUNTER(cvar, tvar, "GeneByGeneTask");
+    GCOUNTER(cvar, "GeneByGeneTask");
 
     GeneByGeneReportIO io(settings.outFile, settings.existingFile);
     io.prepareOutputFile(stateInfo);

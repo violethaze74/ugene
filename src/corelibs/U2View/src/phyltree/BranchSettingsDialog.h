@@ -33,7 +33,7 @@ class BranchSettingsDialog : public BaseSettingsDialog, public Ui_BranchSettings
 public:
     BranchSettingsDialog(QWidget *parent, const OptionsMap &settings);
 
-    virtual void accept();
+    void accept() override;
 
 protected slots:
     void sl_colorButton();

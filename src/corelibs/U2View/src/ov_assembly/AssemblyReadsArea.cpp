@@ -382,7 +382,7 @@ void AssemblyReadsArea::showDdBusyScreen() {
 
 void AssemblyReadsArea::drawReads(QPainter &p) {
     GTIMER(c1, t1, "AssemblyReadsArea::drawReads");
-    GCOUNTER(c2, t2, "AssemblyReadsArea::drawReads");
+    GCOUNTER(c2, "AssemblyReadsArea::drawReads");
     qint64 t0 = GTimer::currentTimeMicros();
     coveredRegionsLabel.hide();
     bdBusyLabel.hide();
@@ -893,7 +893,7 @@ void AssemblyReadsArea::updateMenuActions() {
 }
 
 void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead> &reads) {
-    GCOUNTER(cvar, tvar, "AssemblyReadsArea:exportReads");
+    GCOUNTER(cvar, "AssemblyReadsArea:exportReads");
 
     SAFE_POINT(!reads.isEmpty(), "No reads supplied for export", );
     QObjectScopedPointer<ExportReadsDialog> dlg = new ExportReadsDialog(this,

@@ -21,6 +21,8 @@
 
 #include "McaEditorNameList.h"
 
+#include <QKeyEvent>
+
 #include <U2Gui/GraphUtils.h>
 
 #include "McaEditor.h"
@@ -124,6 +126,30 @@ int McaEditorNameList::getMinimumWidgetWidth() const {
 int McaEditorNameList::getIconColumnWidth() const {
     static int iconColumnWidth = MARGIN_ARROW_LEFT + ARROW_LENGTH + MARGIN_ARROW_RIGHT;
     return iconColumnWidth;
+}
+
+void McaEditorNameList::keyPressEvent(QKeyEvent *e) {
+    const int key = e->key();
+    const Qt::KeyboardModifiers modifiers = e->modifiers();
+    if (modifiers == Qt::NoModifier && (key == Qt::Key_Space || key == Qt::Key_Enter || key == Qt::Key_Return)) {
+        QAction *gotoSelectedReadAction = getEditor()->getGotoSelectedReadAction();
+        if (gotoSelectedReadAction->isEnabled()) {
+            gotoSelectedReadAction->trigger();
+            e->ignore();
+            return;
+        }
+    }
+    MaEditorNameList::keyPressEvent(e);
+}
+
+void McaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
+    QAction *gotoSelectedReadAction = getEditor()->getGotoSelectedReadAction();
+    if (gotoSelectedReadAction->isEnabled()) {
+        gotoSelectedReadAction->trigger();
+        e->ignore();
+        return;
+    }
+    MaEditorNameList::mouseDoubleClickEvent(e);
 }
 
 }    // namespace U2

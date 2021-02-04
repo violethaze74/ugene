@@ -32,8 +32,7 @@
 namespace U2 {
 
 TmpDirChecker::TmpDirChecker()
-    : Task("Checking access rights to the temporary folder", TaskFlag_None)    // TODO: make translation
-{
+    : Task(tr("Checking access rights to the temporary folder"), TaskFlag_SilentCancelOnShutdown) {
 }
 
 void TmpDirChecker::run() {

@@ -41,7 +41,7 @@ namespace U2 {
 SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &settings, const QString &annDescription)
     : SplicedAlignmentTask("SpideySupportTask", TaskFlags_NR_FOSCOE, settings),
       annDescription(annDescription) {
-    GCOUNTER(cvar, tvar, "SpideySupportTask");
+    GCOUNTER(cvar, "SpideySupportTask");
     setMaxParallelSubtasks(1);
     spideyTask = NULL;
     prepareDataForSpideyTask = NULL;

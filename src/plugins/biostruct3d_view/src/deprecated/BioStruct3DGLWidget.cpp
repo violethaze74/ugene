@@ -79,6 +79,19 @@ void BioStruct3DGLWidget::tryGL() {
     Q_UNUSED(wgt);
 }
 
+bool BioStruct3DGLWidget::canRender() {
+    QGLWidget w;
+    w.makeCurrent();
+
+    GLenum error = glGetError();
+    bool canRender = error == GL_NO_ERROR;
+    if (!canRender) {
+        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
+            QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
+    }
+    return canRender;
+}
+
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;
 
@@ -116,7 +129,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject *obj, const Annotated
       resetAlignmentAction(0), colorSchemeActions(0), rendererActions(0), molSurfaceRenderActions(0),
       molSurfaceTypeActions(0), selectColorSchemeMenu(0), selectRendererMenu(0), displayMenu(0) {
     lightPosition[0] = lightPosition[1] = lightPosition[2] = lightPosition[3] = 0;
-    GCOUNTER(cvar, tvar, "BioStruct3DGLWidget");
+    GCOUNTER(cvar, "BioStruct3DGLWidget");
 
     QString currentModelID = obj->getBioStruct3D().pdbId;
     setObjectName(QString("%1-%2").arg(++widgetCount).arg(currentModelID));
@@ -338,9 +351,10 @@ void BioStruct3DGLWidget::setLightPosition(const Vector3D &pos) {
 }
 
 static int getSequenceChainId(const U2SequenceObject *seqObj) {
-    QVariantMap info = seqObj->getSequenceInfo();
-    SAFE_POINT(info.contains(DNAInfo::CHAIN_ID), "Sequence does not have the CHAIN_ID attribute", -1);
-    return seqObj->getIntegerAttribute(DNAInfo::CHAIN_ID);
+    bool isFound = false;
+    qint64 result = seqObj->getSequenceInfo().value(DNAInfo::CHAIN_ID).toInt(&isFound);
+    SAFE_POINT(isFound, "Sequence does not have the CHAIN_ID attribute", -1);
+    return (int)result;
 }
 
 void BioStruct3DGLWidget::sl_onSequenceSelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed) {

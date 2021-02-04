@@ -57,7 +57,7 @@ namespace U2 {
 BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings &_settings)
     : ExternalToolSupportTask("Run NCBI Blast+ task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "BlastPlusSupportCommonTask");
+    GCOUNTER(cvar, "BlastPlusSupportCommonTask");
     blastPlusTask = NULL;
     tmpDoc = NULL;
     saveTemporaryDocumentTask = NULL;

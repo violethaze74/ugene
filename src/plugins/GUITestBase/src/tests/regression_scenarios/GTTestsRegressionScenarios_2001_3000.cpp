@@ -886,7 +886,7 @@ GUI_TEST_CLASS_DEFINITION(test_2124) {
 
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    const QString colorSchemeName = getName() + "_Scheme";
+    const QString colorSchemeName = name + "_Scheme";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
@@ -4141,21 +4141,17 @@ GUI_TEST_CLASS_DEFINITION(test_2638) {
 
 GUI_TEST_CLASS_DEFINITION(test_2640) {
     //    0. Set CPU optimisation in settings dialog
-    GTGlobals::sleep();
-    class custom : public CustomScenario {
+    class UpdateCPUCountScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
             QSpinBox *cpuBox = GTWidget::findExactWidget<QSpinBox *>(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 94, GTGlobals::UseKeyBoard);
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new custom));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new UpdateCPUCountScenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...");
     //    1. Open WD
@@ -4164,7 +4160,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     //    3. Set proper input data
     QString expected = "tophat2/tophat -p 94 --output-dir";
 
-    GTLogTracer l(expected);
+    GTLogTracer logTracer(expected);
     QMap<QString, QVariant> map;
     map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
     map.insert("Bowtie index basename", "e_coli");
@@ -4173,17 +4169,14 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "Single-sample"
                                                                                                                   << "Single-end"));
     GTUtilsWorkflowDesigner::addSample(os, "RNA-seq analysis with Tuxedo tools");
-    GTGlobals::sleep();
-
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTThread::waitForMainThread();
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: tophat launched with argument -p
-    GTUtilsLog::checkContainsMessage(os, l);
+    GTUtilsLog::checkContainsMessage(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2651) {
@@ -4719,10 +4712,9 @@ GUI_TEST_CLASS_DEFINITION(test_2761_1) {
             : ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_2761_1/2761.aln", QStringList() << "Bicolorana_bicolor_EF540830"
                                                                                                                                   << "Roeseliana_roeseli") {
         }
-        void run() {
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to"));
+        void run() override {
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission"));
             ExtractSelectedAsMSADialogFiller::run();
-            GTGlobals::sleep(1000);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
@@ -4749,10 +4741,9 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
             : ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_2761_2/2761.aln", QStringList() << "Bicolorana_bicolor_EF540830"
                                                                                                                                   << "Roeseliana_roeseli") {
         }
-        void run() {
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
+        void run() override {
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Export folder does not exist"));
             ExtractSelectedAsMSADialogFiller::run();
-            GTGlobals::sleep(1000);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
@@ -5323,45 +5314,38 @@ GUI_TEST_CLASS_DEFINITION(test_2891_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2894) {
-    //    1. Open {_common_data/clustal/100_sequences.aln}.
+    // Open {_common_data/clustal/100_sequences.aln}.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "100_sequences.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Use context menu {Tree->Build Tree}.
-    //    Expected state: "Build phylogenetic tree" dialog has been appeared.
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsProjectTreeView::toggleView(os);    // close project tree view to get more space.
+
+    // Use context menu {Tree->Build Tree}.
+    // Expected state: "Build phylogenetic tree" dialog has been appeared.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_2894_COI.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
-    //    3. Run "Phylip Neighbor Joining" with default parameters.
-    //    Expected state: tree view has been appeared.
-    GTWidget::findWidget(os, "treeView");
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "100_sequences [m] 100_sequences"), GTGlobals::FindOptions(false));
-    //    4. Press refresh tree button on the tree's toolbar.
-    //    Expected state: "Calculating Phylogenetic Tree" task has been started.
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
-        GTWidget::click(os, qt_toolbar_ext_button);
-    } else {
-        GTWidget::click(os, GTAction::button(os, "Refresh tree"));
-    }
 
+    // Run "Phylip Neighbor Joining" with default parameters.
+    // Expected state: tree view has been appeared.
+    GTWidget::findWidget(os, "treeView");
+
+    // Press refresh tree button on the tree's toolbar.
+    // Expected state: "Calculating Phylogenetic Tree" task has been started.
+    GTWidget::click(os, GTAction::button(os, "Refresh tree"));
     GTUtilsTask::checkTask(os, "Calculating Phylogenetic Tree");
-    //    5. Press refresh button again.
-    //    Expected state: a new refresh task is not started, the old one is in process.
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
-        GTWidget::click(os, qt_toolbar_ext_button);
-    } else {
-        GTWidget::click(os, GTAction::button(os, "Refresh tree"));
-    }
-    GTGlobals::sleep(100);
+
+    // Press refresh button again.
+    // Expected state: a new refresh task is not started, the old one is in process.
+    GTWidget::click(os, GTAction::button(os, "Refresh tree"));
 
     int num = GTUtilsTaskTreeView::countTasks(os, "Calculating Phylogenetic Tree");
     CHECK_SET_ERR(num == 1, QString("Wrong tasks number. Expected 1, actual: ").arg(num));
-    //    6. Close the tree view while the task is performed.
-    //    Expected state: UGENE doesn't crash, view is closed, task cancels.
+    // Close the tree view while the task is performed.
+    // Expected state: UGENE doesn't crash, view is closed, task cancels.
     GTUtilsProjectTreeView::click(os, "test_2894_COI.nwk");
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No)); // Save the nwk file? Select 'No'.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
@@ -5397,7 +5381,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     int oldItemsNumber = combo->count();
 
     //    3. Create a new custom nucleotide color scheme.
-    QString colorSchemeName = GTUtils::genUniqueString(getName());
+    QString colorSchemeName = GTUtils::genUniqueString(name);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));

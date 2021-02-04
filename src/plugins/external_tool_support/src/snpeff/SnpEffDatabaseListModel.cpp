@@ -42,7 +42,7 @@ SnpEffDatabaseListModel::SnpEffDatabaseListModel(QObject *parent)
 
 void SnpEffDatabaseListModel::getData(const QString &databaseListFilePath) {
     GTIMER(cvar, tvar, "GetSnpEffDatabaseList");
-    GCOUNTER(cv, ct, "GetSnpEffDatabaseList");
+    GCOUNTER(cv, "GetSnpEffDatabaseList");
 
     QFile file(databaseListFilePath);
     file.open(QFile::ReadOnly);

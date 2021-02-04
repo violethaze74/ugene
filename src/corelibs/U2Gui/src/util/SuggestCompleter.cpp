@@ -171,7 +171,7 @@ int BaseCompleter::getLastChosenItemIndex() const {
 QStringList MSACompletionFiller::getSuggestions(const QString &userText) {
     QStringList result;
     QString userTextLc = userText.toLower();    //TODO: does toLower work correctly for non-Latin1 characters range?
-    for (QString sequenceName : seqNameList) {
+    for (QString sequenceName : qAsConst(seqNameList)) {
         QString sequenceNameLc = sequenceName.toLower();
         if (sequenceNameLc.startsWith(userTextLc)) {
             result.append(sequenceName);

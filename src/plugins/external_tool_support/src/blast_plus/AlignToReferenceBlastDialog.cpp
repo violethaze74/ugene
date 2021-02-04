@@ -97,7 +97,7 @@ AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Setting
       cmdlineTask(NULL),
       loadRef(NULL),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
-    GCOUNTER(cvar, tvar, "AlignToReferenceBlastCmdlineTask");
+    GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
 }
 
 void AlignToReferenceBlastCmdlineTask::prepare() {
@@ -253,7 +253,7 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
       saveController(NULL),
       savableWidget(this) {
     setupUi(this);
-    GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
+    GCOUNTER(cvar, "'Map reads to reference' dialog opening");
 
     new HelpButton(this, buttonBox, "54362733");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));

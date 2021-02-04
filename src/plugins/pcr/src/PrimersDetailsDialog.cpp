@@ -29,7 +29,7 @@ namespace U2 {
 
 PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &details)
     : QDialog(parent) {
-    GCOUNTER(cvar, tvar, "PrimersDetailsDialog");
+    GCOUNTER(cvar, "PrimersDetailsDialog");
     setupUi(this);
     new HelpButton(this, buttonBox, "54363751");
     textEdit->setText(details);

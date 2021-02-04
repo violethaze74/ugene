@@ -46,7 +46,7 @@ const QString SaveWorkflowSceneTask::SCHEMA_PATHS_SETTINGS_TAG = "workflow_setti
 
 SaveWorkflowSceneTask::SaveWorkflowSceneTask(Schema *s, const Metadata &m)
     : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
-    GCOUNTER(cvar, tvar, "SaveWorkflowSceneTask");
+    GCOUNTER(cvar, "SaveWorkflowSceneTask");
     assert(schema != NULL);
 
     // add ( name, path ) pair to settings. need for running schemas in cmdline by name
@@ -75,7 +75,7 @@ LoadWorkflowSceneTask::LoadWorkflowSceneTask(Schema *_schema, Metadata *_meta, W
       url(_url),
       noUrl(_noUrl),
       disableWizardAutorun(_disableWizardAutorun) {
-    GCOUNTER(cvar, tvar, "LoadWorkflowSceneTask");
+    GCOUNTER(cvar, "LoadWorkflowSceneTask");
     assert(schema != NULL);
     assert(meta != NULL);
     assert(scene != NULL);

@@ -57,6 +57,12 @@ class U2OpStatus;
 #define ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed "open-by-system-if-format-detection-failed"
 #define ProjectLoaderHint_DoNotAddToRecentDocuments "do-not-add-to-recent-documents"
 
+/**
+ * When this hint is provided the 'openWithProjectTask' skips document format detection.
+ * Effective only for a single document mode today.
+ */
+#define ProjectLoaderHint_DocumentFormat "document-format"
+
 /// Service responsible for project loading / unloading
 class U2CORE_EXPORT ProjectLoader : public QObject {
 public:
@@ -148,9 +154,6 @@ signals:
     void si_objectViewStateAdded(GObjectViewState *);
 
     void si_objectViewStateRemoved(GObjectViewState *);
-};
-
-class DocumentSerialState {
 };
 
 }    // namespace U2

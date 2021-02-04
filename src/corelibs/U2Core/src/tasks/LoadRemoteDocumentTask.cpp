@@ -175,7 +175,7 @@ LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl &url)
     : BaseLoadRemoteDocumentTask(),
       loadDataFromEntrezTask(NULL) {
     fileUrl = url;
-    GCOUNTER(cvar, tvar, "LoadRemoteDocumentTask");
+    GCOUNTER(cvar, "LoadRemoteDocumentTask");
 }
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString &accId, const QString &dbName, const QString &fullPathDir, const QString &fileFormat, const QVariantMap &hints)
@@ -183,7 +183,7 @@ LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString &accId, const QStri
       loadDataFromEntrezTask(NULL),
       accNumber(accId),
       dbName(dbName) {
-    GCOUNTER(cvar, tvar, "LoadRemoteDocumentTask");
+    GCOUNTER(cvar, "LoadRemoteDocumentTask");
     format = fileFormat;
 }
 

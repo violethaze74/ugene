@@ -46,7 +46,7 @@ void BlastDBCmdSupportTaskSettings::reset() {
 
 BlastDBCmdSupportTask::BlastDBCmdSupportTask(const BlastDBCmdSupportTaskSettings &_settings)
     : Task("Run NCBI BlastDBCmd task", TaskFlags_NR_FOSCOE), settings(_settings) {
-    GCOUNTER(cvar, tvar, "BlastDBCmdSupportTask");
+    GCOUNTER(cvar, "BlastDBCmdSupportTask");
     blastDBCmdTask = nullptr;
     toolId = BlastDbCmdSupport::ET_BLASTDBCMD_ID;
 }

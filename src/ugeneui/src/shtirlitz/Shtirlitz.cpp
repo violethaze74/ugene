@@ -171,11 +171,11 @@ void Shtirlitz::saveGatheredInfo() {
     }
     //1. Save counters
     Settings *s = AppContext::getSettings();
-    QList<GCounter *> appCounters = GCounter::allCounters();
-    foreach (GCounter *ctr, appCounters) {
-        if (qobject_cast<GReportableCounter *>(ctr)) {
-            QString ctrKey = ctr->name + SEPARATOR + ctr->suffix;
-            double ctrVal = ctr->scaledTotal();
+    QList<GCounter *> appCounters = GCounter::getAllCounters();
+    for (const GCounter *counter : qAsConst(appCounters)) {
+        if (counter->isReportable) {
+            QString ctrKey = counter->name + SEPARATOR + counter->suffix;
+            double ctrVal = counter->getScaledValue();
 
             QString curKey = QString(SETTINGS_COUNTERS) + "/" + ctrKey;
             QVariant lastValQvar = s->getValue(curKey, QVariant());
@@ -338,7 +338,8 @@ void ShtirlitzTask::run() {
     // Get actual location of the reports receiver
     //FIXME: error handling
     QString reportsPath = http.syncGet(QUrl(QString(DESTINATION_URL_KEEPER_SRV) +
-                                            QString(DESTINATION_URL_KEEPER_PAGE)), 10000);
+                                            QString(DESTINATION_URL_KEEPER_PAGE)),
+                                       10000);
     if (reportsPath.isEmpty()) {
         stateInfo.setError(tr("Cannot resolve destination path for statistical reports"));
         return;

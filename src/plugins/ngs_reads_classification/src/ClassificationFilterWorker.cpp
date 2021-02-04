@@ -399,7 +399,7 @@ void ClassificationFilterWorker::sl_taskFinished(Task *t) {
 ClassificationFilterTask::ClassificationFilterTask(const ClassificationFilterSettings &settings, const QString &readsUrl, const QString &pairedReadsUrl, const TaxonomyClassificationResult &report)
     : Task(tr("Filter classified reads"), TaskFlag_None),
       cfg(settings), readsUrl(readsUrl), pairedReadsUrl(pairedReadsUrl), report(report), missed(false) {
-    GCOUNTER(cvar, tvar, "ClassificationFilterTask");
+    GCOUNTER(cvar, "ClassificationFilterTask");
 
     SAFE_POINT_EXT(!readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!cfg.paired || !pairedReadsUrl.isEmpty(), setError("Classification report URL is empty"), );

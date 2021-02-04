@@ -34,7 +34,7 @@ namespace U2
 
 SolventExcludedSurface::SolventExcludedSurface()
 {
-    GCOUNTER( cvar, tvar, "SolventExcludedSurface" );
+    GCOUNTER( cvar, "SolventExcludedSurface" );
 }
 
 

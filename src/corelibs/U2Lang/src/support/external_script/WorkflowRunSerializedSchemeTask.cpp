@@ -50,7 +50,7 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &
                                                                  QStringList &outputFiles)
     : BaseSerializedSchemeRunner(_pathToScheme, _scheduler, outputFiles), scheme(NULL),
       loadTask(NULL), runTask(NULL) {
-    GCOUNTER(cvar, tvar, "workflow_run_from_script");
+    GCOUNTER(cvar, "workflow_run_from_script");
 
     loadTask = createLoadSchemeTask();
     if (NULL != loadTask) {

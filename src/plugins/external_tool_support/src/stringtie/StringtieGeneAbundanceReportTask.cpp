@@ -57,7 +57,7 @@ StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QString
     if (reportUrl.isEmpty()) {
         reportUrl = "StringTie_report.txt";
     }
-    GCOUNTER(cvar, tvar, "StringtieGeneAbundanceReportTask");
+    GCOUNTER(cvar, "StringtieGeneAbundanceReportTask");
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }
 

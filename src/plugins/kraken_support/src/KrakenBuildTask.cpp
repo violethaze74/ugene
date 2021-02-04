@@ -55,7 +55,7 @@ KrakenBuildTaskSettings::KrakenBuildTaskSettings()
 KrakenBuildTask::KrakenBuildTask(const KrakenBuildTaskSettings &settings)
     : ExternalToolSupportTask(tr("%1 Kraken database"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
-    GCOUNTER(cvar, tvar, "KrakenBuildTask");
+    GCOUNTER(cvar, "KrakenBuildTask");
     setTaskName(getTaskName().arg(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink")));
 
     checkSettings();

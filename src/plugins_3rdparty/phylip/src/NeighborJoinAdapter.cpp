@@ -109,7 +109,7 @@ NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSeque
 void NeighborJoinCalculateTreeTask::run(){
     QMutexLocker runLocker( &runLock );
 
-    GCOUNTER(cvar,tvar, "PhylipNeigborJoin" );
+    GCOUNTER(cvar, "PhylipNeigborJoin" );
 
 
     PhyTree phyTree(NULL);

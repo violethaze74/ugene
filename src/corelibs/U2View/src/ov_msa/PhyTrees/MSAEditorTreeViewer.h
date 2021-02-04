@@ -39,9 +39,12 @@ class MSAEditor;
 class ColorGenerator {
 public:
     ColorGenerator(int countOfColors, qreal lightness);
+
     void setCountOfColors(int counts);
-    QColor getColor(int index);
-    int getCountOfColors() {
+
+    QColor getColor(int index) const;
+
+    int getCountOfColors() const {
         return countOfColors;
     }
 
@@ -75,7 +78,7 @@ public:
         return 0;
     }
 
-    void setCreatePhyTreeSettings(const CreatePhyTreeSettings &_buildSettings);
+    void setCreatePhyTreeSettings(const CreatePhyTreeSettings &newBuildSettings);
     void setParentAignmentName(const QString &_alignmentName) {
         alignmentName = _alignmentName;
     }
@@ -88,7 +91,7 @@ public:
     void desync();
     bool isSynchronized() const;
 
-    void setMSAEditor(MSAEditor *_msa);
+    void setMSAEditor(MSAEditor *newEditor);
     MSAEditor *getMsaEditor() const;
 
 protected:
@@ -112,7 +115,7 @@ private:
     QAction *sortSeqAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
-    MSAEditor *msa;
+    MSAEditor *editor;
     SynchronizationMode syncMode;
     bool slotsAreConnected;
     MaModificationInfo cachedModification;
@@ -128,16 +131,18 @@ public:
         emit si_groupColorsChanged(GroupColorSchema());
     }
 
-    QStringList getOrderedSeqNames();
-
-    U2Region getTreeSize();
-
     bool canSynchronizeWithMSA(MSAEditor *msa);
 
     void setSynchronizeMode(SynchronizationMode syncMode);
     bool isCurTreeViewerSynchronized() const;
 
     void highlightBranches();
+
+    /**
+     * Return virtual grouping state for MSA that corresponds to the current tree state.
+     * All sequences are ordered by 'y' position. All collapsed branches are mapped to the virtual groups.
+     */
+    QList<QStringList> getGroupingStateForMsa(const GraphicsBranchItem *root) const;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
@@ -153,7 +158,6 @@ protected:
 
 signals:
     void si_collapseModelChangedInTree(const QList<QStringList> &);
-    void si_seqOrderChanged(const QStringList &order);
     void si_groupColorsChanged(const GroupColorSchema &schema);
     void si_zoomIn();
     void si_zoomOut();
@@ -168,7 +172,7 @@ protected slots:
     void sl_zoomOut();
 
 private slots:
-    void sl_selectionChanged(const QStringList &selection);
+    void sl_selectionChanged(const QStringList &selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onReferenceSeqChanged(qint64);
     void sl_onSceneRectChanged(const QRectF &);
@@ -177,14 +181,14 @@ private slots:
     virtual void sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch);
 
 private:
-    QList<GraphicsBranchItem *> getListNodesOfTree();
+    QList<GraphicsBranchItem *> getBranchItemsWithNames() const;
 
     QGraphicsLineItem *subgroupSelector;
     qreal subgroupSelectorPos;
     bool subgroupSelectionMode;
     ColorGenerator groupColors;
 
-    bool curLayoutIsRectangular;
+    bool isRectangularLayout;
 
     MSAEditorTreeViewer *curMSATreeViewer;
     SynchronizationMode syncMode;
@@ -196,11 +200,10 @@ private:
 };
 
 class MSAEditorTreeViewerUtils {
-public:
-    static QList<QStringList> getCollapsedGroups(const GraphicsBranchItem *root);
-
 private:
     MSAEditorTreeViewerUtils();
+
+public:
     static QStringList getSeqsNamesInBranch(const GraphicsBranchItem *branch);
 };
 

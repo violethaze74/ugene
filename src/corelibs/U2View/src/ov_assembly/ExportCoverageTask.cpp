@@ -154,7 +154,7 @@ void ExportCoverageTask::write(const QByteArray &dataToWrite) {
 
 ExportCoverageHistogramTask::ExportCoverageHistogramTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings, TaskFlags_FOSE_COSC) {
-    GCOUNTER(c, t, "ExportCoverageHistogramTask");
+    GCOUNTER(c, "ExportCoverageHistogramTask");
 }
 
 void ExportCoverageHistogramTask::run() {
@@ -195,7 +195,7 @@ QByteArray ExportCoverageHistogramTask::toByteArray(int coverage, qint64 assembl
 
 ExportCoveragePerBaseTask::ExportCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings) {
-    GCOUNTER(c, t, "ExportCoveragePerBaseTask");
+    GCOUNTER(c, "ExportCoveragePerBaseTask");
 }
 
 void ExportCoveragePerBaseTask::processRegion(const QVector<CoveragePerBaseInfo> *regionCoverage) {
@@ -258,7 +258,7 @@ void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo> *
 ExportCoverageBedgraphTask::ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings)
     : ExportCoverageTask(dbiRef, assemblyId, settings),
       currentCoverage(U2Region(), -1) {
-    GCOUNTER(c, t, "ExportCoverageBedgraphTask");
+    GCOUNTER(c, "ExportCoverageBedgraphTask");
 }
 
 QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *subTask) {

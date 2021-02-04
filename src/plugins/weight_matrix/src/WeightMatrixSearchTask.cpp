@@ -52,7 +52,7 @@ QList<WeightMatrixSearchResult> WeightMatrixSearchTask::takeResults() {
 //Weight matrix single search
 WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, const QByteArray &_seq, const WeightMatrixSearchCfg &cfg, int ro)
     : Task(tr("Weight matrix search"), TaskFlags_NR_FOSCOE), model(m), cfg(cfg), resultsOffset(ro), seq(_seq) {
-    GCOUNTER(cvar, tvar, "WeightMatrixSingleSearchTask");
+    GCOUNTER(cvar, "WeightMatrixSingleSearchTask");
     SequenceWalkerConfig c;
     c.walkCircular = false;
     c.seq = seq.constData();

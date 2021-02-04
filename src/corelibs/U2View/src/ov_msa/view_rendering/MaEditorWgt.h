@@ -68,7 +68,7 @@ public:
     }
 
     MaEditorSequenceArea *getSequenceArea() const {
-        return seqArea;
+        return sequenceArea;
     }
 
     MaEditorNameList *getEditorNameList() const {
@@ -76,7 +76,7 @@ public:
     }
 
     MaEditorConsensusArea *getConsensusArea() const {
-        return consArea;
+        return consensusArea;
     }
 
     MaEditorOverviewArea *getOverviewArea() const {
@@ -84,7 +84,7 @@ public:
     }
 
     MSAEditorOffsetsViewController *getOffsetsViewController() const {
-        return offsetsView;
+        return offsetsViewController;
     }
 
     ScrollController *getScrollController() const {
@@ -107,39 +107,14 @@ public:
 
     QAction *getRedoAction() const;
 
-    QAction *getDelSelectionAction() const {
-        return delSelectionAction;
-    }
+    /* Returns 'true' if the virtual ordering/grouping mode is enabled. See docs for 'virtualOrderMode' for more details. */
+    bool isVirtualOrderMode() const;
 
-    QAction *getCopySelectionAction() const {
-        return copySelectionAction;
-    }
-
-    QAction *getCopyFormattedSelectionAction() const {
-        return copyFormattedSelectionAction;
-    }
-
-    QAction *getPasteAction() const {
-        return pasteAction;
-    }
-
-    QAction *getPasteBeforeAction() const {
-        return pasteBeforeAction;
-    }
-
-    /* Returns if collapsible mode is enabled or not.
-     *
-     * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
-     * but have different features: in the collapsible mode the model can contains group of multiple sequences
-     * or reordered rows.
+    /*
+     * Sets virtual grouping mode ON or OFF.
+     * A trivial method that updates the flag in the view model with no other actions/callbacks.
      */
-    bool isCollapsibleMode() const {
-        return collapsibleMode;
-    }
-
-    void setCollapsibleMode(bool collapse) {
-        collapsibleMode = collapse;
-    }
+    void setVirtualOrderMode(bool flag);
 
     MaCollapseModel *getCollapseModel() const {
         return collapseModel;
@@ -182,11 +157,11 @@ protected:
 
 protected:
     MaEditor *editor;
-    MaEditorSequenceArea *seqArea;
+    MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
-    MaEditorConsensusArea *consArea;
+    MaEditorConsensusArea *consensusArea;
     MaEditorOverviewArea *overviewArea;
-    MSAEditorOffsetsViewController *offsetsView;
+    MSAEditorOffsetsViewController *offsetsViewController;
     MaEditorStatusBar *statusBar;
 
     QWidget *nameAreaContainer;
@@ -200,18 +175,40 @@ protected:
     MsaUndoRedoFramework *undoFWK;
 
     MaCollapseModel *collapseModel;
-    bool collapsibleMode;
+
+    /**
+     * If true, the 'collapseModel' holds virtual ordering/grouping state.
+     * Otherwise 'collapseModel' contains a trivial (1:1) mapping of in-view row indexes to the file indexes that are always the same.
+     *
+     * This virtual state is never saved to MA file and is preserved in the current view only in runtime.
+     *
+     * Examples of use of virtual grouping/ordering state:
+     *  - Group of sequences with the common content: reorder + groups.
+     *  - Tree sync mode: reorder + groups.
+     *  - Any other mode that requires grouping & expand-collapse capabilities.
+     *
+     * Examples of non-virtual (in-file order modifications):
+     *  - Sort by name, length, leading gap size.
+     *  - Drag & drop or rows in the non-virutalOrderingMode.
+     *
+     *  The virtual ordering/grouping can be applied to read-only alignments.
+     *  Any changes to the order while in the virtualOrderMode are not saved to the MA file.
+     */
+    bool virtualOrderMode;
+
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;
     BaseWidthController *baseWidthController;
     RowHeightController *rowHeightController;
     DrawHelper *drawHelper;
 
+public:
     QAction *delSelectionAction;
     QAction *copySelectionAction;
     QAction *copyFormattedSelectionAction;
     QAction *pasteAction;
     QAction *pasteBeforeAction;
+    QAction *cutSelectionAction;
 };
 
 }    // namespace U2

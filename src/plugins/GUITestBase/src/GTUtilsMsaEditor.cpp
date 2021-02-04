@@ -407,6 +407,22 @@ void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomIn"
+void GTUtilsMsaEditor::zoomIn(GUITestOpStatus &os) {
+    QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* zoomInButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom In");
+    GTWidget::click(os, zoomInButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomOut"
+void GTUtilsMsaEditor::zoomOut(GUITestOpStatus &os) {
+    QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    QWidget* zoomOutButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom Out");
+    GTWidget::click(os, zoomOutButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "isUndoEnabled"
 bool GTUtilsMsaEditor::isUndoEnabled(GUITestOpStatus &os) {
     getActiveMsaEditorWindow(os);

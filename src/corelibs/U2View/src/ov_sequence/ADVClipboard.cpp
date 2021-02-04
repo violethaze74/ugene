@@ -199,7 +199,7 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
 #endif
 
     QByteArray res;
-    for (auto annotation : selectedAnnotationList) {
+    for (auto annotation : qAsConst(selectedAnnotationList)) {
         if (!res.isEmpty()) {
             res.append('\n');
         }
@@ -284,7 +284,7 @@ void ADVClipboard::updateActions() {
 
     auto setActionsEnabled =
         [](const QList<QAction *> &copyActions, const bool isEnabled) {
-            for (QAction *action : copyActions) {
+            for (QAction *action : qAsConst(copyActions)) {
                 if (action != nullptr) {
                     action->setEnabled(isEnabled);
                 }

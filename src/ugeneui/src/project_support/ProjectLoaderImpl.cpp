@@ -35,6 +35,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GHints.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/IdRegistry.h>
@@ -512,7 +513,15 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
                 FormatDetectionConfig conf;
                 conf.useImporters = hints.value(ProjectLoaderHint_UseImporters, true).toBool();
                 conf.bestMatchesOnly = false;
-                formats = DocumentUtils::detectFormat(url, conf);
+                QString forcedFormatId = hints.value(ProjectLoaderHint_DocumentFormat).toString();
+                DocumentFormat *documentFormat = forcedFormatId.isEmpty() ? nullptr : AppContext::getDocumentFormatRegistry()->getFormatById(forcedFormatId);
+                if (documentFormat != nullptr) {
+                    FormatDetectionResult formatDetectionResult;
+                    formatDetectionResult.format = documentFormat;
+                    formats << formatDetectionResult;
+                } else {
+                    formats = DocumentUtils::detectFormat(url, conf);
+                }
             } else {
                 FormatDetectionResult result;
                 result.format = AppContext::getDocumentFormatRegistry()->getFormatById(hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat].toString());
@@ -718,7 +727,7 @@ void ProjectLoaderImpl::sl_paste() {
     SAFE_POINT(pasteFactory != nullptr, "PasteFactory is null", );
 
     PasteTask *task = pasteFactory->createPasteTask(true);
-    CHECK(task != nullptr,);
+    CHECK(task != nullptr, );
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
@@ -892,8 +901,9 @@ void ProjectDialogController::sl_projectNameEdited(const QString &text) {
 }
 
 void ProjectDialogController::setupDefaults() {
+    const QString defaultPath = QFileInfo(GUrlUtils::getDefaultDataPath(), "project" + PROJECTFILE_EXT).absoluteFilePath();
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    projectFilePathEdit->setText(QFileInfo("project" + PROJECTFILE_EXT).absoluteFilePath());
+    projectFilePathEdit->setText(defaultPath);
 }
 
 void ProjectDialogController::accept() {

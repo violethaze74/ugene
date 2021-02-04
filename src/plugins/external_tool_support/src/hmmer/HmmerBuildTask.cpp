@@ -35,7 +35,7 @@ HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString
     : ExternalToolRunTask(HmmerSupport::BUILD_TOOL_ID, getArguments(settings, msaUrl), new Hmmer3LogParser()),
       settings(settings),
       stockholmMsaUrl(msaUrl) {
-    GCOUNTER(cvar, tvar, "UHMM3BuildTask");
+    GCOUNTER(cvar, "UHMM3BuildTask");
 
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 

@@ -51,7 +51,7 @@ ModifySequenceContentTask::ModifySequenceContentTask(const DocumentFormatId &dfI
     : Task(tr("Modify sequence task"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported), resultFormatId(dfId),
       mergeAnnotations(mergeAnnotations), recalculateQualifiers(recalculateQualifiers), curDoc(seqObj->getDocument()), newDoc(NULL), url(url), strat(str),
       seqObj(seqObj), regionToReplace(regionTodelete), sequence2Insert(seq2Insert) {
-    GCOUNTER(cvar, tvar, "Modify sequence task");
+    GCOUNTER(cvar, "Modify sequence task");
     inplaceMod = url == curDoc->getURL() || url.isEmpty();
 }
 

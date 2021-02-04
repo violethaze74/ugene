@@ -28,7 +28,7 @@ BaseSettingsDialog::BaseSettingsDialog(QWidget *parent)
 }
 
 const OptionsMap &BaseSettingsDialog::getSettings() const {
-    return changedSettings;
+    return updatedSettings;
 }
 
 }    // namespace U2

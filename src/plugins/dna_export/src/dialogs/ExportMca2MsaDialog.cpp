@@ -35,7 +35,7 @@ ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget
     : QDialog(parent),
       saveController(NULL) {
     setupUi(this);
-    GCOUNTER(cvar, tvar, "'Export Alignment without Chromatograms' dialog opening");
+    GCOUNTER(cvar, "'Export Alignment without Chromatograms' dialog opening");
 
     new HelpButton(this, buttonBox, "54362290");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));

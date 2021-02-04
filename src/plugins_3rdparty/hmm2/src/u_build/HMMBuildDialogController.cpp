@@ -327,7 +327,7 @@ QString HMMBuildToFileTask::generateReport() const {
 HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma) 
   : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(NULL)
 {
-    GCOUNTER( cvar, tvar, "HMMBuildTask" );
+    GCOUNTER( cvar, "HMMBuildTask" );
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
 }
 

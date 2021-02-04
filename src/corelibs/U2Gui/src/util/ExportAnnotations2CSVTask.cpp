@@ -41,7 +41,7 @@ ExportAnnotations2CSVTask::ExportAnnotations2CSVTask(const QList<Annotation *> &
     : Task(tr("Export annotations to CSV format"), TaskFlag_None), annotations(annotations), sequence(sequence), seqName(_seqName),
       complementTranslation(complementTranslation), exportSequence(exportSequence), exportSequenceName(_exportSeqName), url(url),
       append(apnd), separator(sep) {
-    GCOUNTER(cvar, tvar, "ExportAnnotattions2CSVTask");
+    GCOUNTER(cvar, "ExportAnnotattions2CSVTask");
 }
 
 static void writeCSVLine(const QStringList &container, IOAdapter *ioAdapter, const QString &separator, U2OpStatus &os) {

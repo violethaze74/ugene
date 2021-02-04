@@ -310,20 +310,20 @@ void WelcomePageWidget::sl_openRecentFile() {
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
     CHECK(this == watched, false);
     switch (event->type()) {
-    case QEvent::DragEnter:
-        dragEnterEvent(dynamic_cast<QDragEnterEvent *>(event));
-        return true;
-    case QEvent::DragMove:
-        dragMoveEvent(dynamic_cast<QDragMoveEvent *>(event));
-        return true;
-    case QEvent::Drop:
-        dropEvent(dynamic_cast<QDropEvent *>(event));
-        return true;
-    case QEvent::FocusIn:
-        setFocus();
-        return true;
-    default:
-        break;
+        case QEvent::DragEnter:
+            dragEnterEvent(dynamic_cast<QDragEnterEvent *>(event));
+            return true;
+        case QEvent::DragMove:
+            dragMoveEvent(dynamic_cast<QDragMoveEvent *>(event));
+            return true;
+        case QEvent::Drop:
+            dropEvent(dynamic_cast<QDropEvent *>(event));
+            return true;
+        case QEvent::FocusIn:
+            setFocus();
+            return true;
+        default:
+            break;
     }
     return false;
 }
@@ -331,7 +331,7 @@ bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
 void WelcomePageWidget::runAction(const QString &actionId) {
     auto action = AppContext::getWelcomePageActionRegistry()->getById(actionId);
     if (action != nullptr) {
-        GRUNTIME_NAMED_COUNTER(cvar, tvar, "Welcome Page: " + actionId, "");
+        GCounter::increment("Welcome Page: " + actionId);
         action->perform();
     } else if (actionId == BaseWelcomePageActions::CREATE_WORKFLOW) {
         QMessageBox::warning(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), tr("The Workflow Designer plugin is not loaded. You can add it using the menu Settings -> Plugins. Then you need to restart UGENE."));

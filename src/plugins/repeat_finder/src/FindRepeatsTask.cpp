@@ -66,7 +66,7 @@ void RevComplSequenceTask::cleanup() {
 FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const DNASequence &seq2)
     : Task(tr("Find repeats in a single sequence"), TaskFlags_FOSCOE), settings(s),
       seq1(seq), seq2(seq2), tandemTask1(NULL), tandemTask2(NULL) {
-    GCOUNTER(cvar, tvar, "FindRepeatsTask");
+    GCOUNTER(cvar, "FindRepeatsTask");
     if (settings.seqRegion.length == 0) {
         settings.seqRegion = U2Region(0, seq1.length());
     }

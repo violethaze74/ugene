@@ -31,7 +31,6 @@
 #include <U2Gui/MainWindow.h>
 
 #include "GUITestLauncher.h"
-//#include "MainThreadTimer.h"
 
 namespace U2 {
 
@@ -69,7 +68,7 @@ public:
 public slots:
     void runGUICrazyUserTest();
     void runGUITest();
-    void runGUITest(HI::GUITest *t);
+    void runGUITest(GUITest *t);
 
     void runAllGUITests();
 
@@ -77,16 +76,11 @@ private slots:
     void sl_allStartUpPluginsLoaded();
     void sl_registerService();
     void sl_serviceRegistered();
-    void sl_registerTestLauncherTask();
     void sl_taskStateChanged(Task *);
     void sl_testThreadFinish();
 
 private:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    static HI::GUITests preChecks();
-    static HI::GUITests postChecks();
-    static HI::GUITests postActions();
 
     static void clearSandbox();
     static void removeDir(QString dirName);
@@ -102,8 +96,8 @@ private:
 
     QAction *runTestsAction;
     Task *testLauncher;
-    HI::GUITests testsToRun;
-    bool needTeamcityLog;
+    QList<GUITest *> testsToRun;
+    bool isTeamcityLogOn;
     //    MainThreadTimer timer;
 };
 

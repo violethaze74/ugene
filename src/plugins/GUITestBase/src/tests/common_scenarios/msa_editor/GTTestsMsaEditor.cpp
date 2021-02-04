@@ -3969,50 +3969,50 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QDir().mkpath(sandBoxDir + "read_only_dir");
     GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
     //    Open "Export subalignment" dialog
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GTGlobals::sleep(500);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
             //    Check wrong parameters:
             //    Dir to save does not exists
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "some_dir/subalignment.aln");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Export folder does not exist"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
+
             //    No permission  to write to folder
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "read_only_dir/subalignment.aln");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to "));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
+
             //    Empty file path
             GTLineEdit::setText(os, filepathEdit, "");
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No path specified"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
+
             //    Filename is empty
             GTLineEdit::setText(os, filepathEdit, sandBoxDir);
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Filename to save is empty"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Export file name is empty"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
+
             //    Select 0 sequences
             GTLineEdit::setText(os, filepathEdit, sandBoxDir + "subalignment.aln");
 
             GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You must select at least one sequence"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No selected sequence found"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            //    Start pos > end pos
 
+            //    Start pos > end pos
             QLineEdit *startLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "startLineEdit", dialog);
             GTLineEdit::setText(os, startLineEdit, "50");
             QLineEdit *endLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "endLineEdit", dialog);
             GTLineEdit::setText(os, endLineEdit, "40");
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal region!"));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal column range!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            GTGlobals::sleep(500);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -4020,10 +4020,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
 
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new custom()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
-
-    GTGlobals::sleep(500);
 
     GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
@@ -4049,7 +4046,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
             CHECK_SET_ERR(m != NULL, "menu not found");
             QList<QAction *> menuActions = m->actions();
             CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            for (QAction *act : menuActions) {
+            for (QAction *act : qAsConst(menuActions)) {
                 CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
             }
 
@@ -4583,6 +4580,88 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
     // The sequence was added to the bottom of the alignment.
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
     CHECK_SET_ERR(sequencesNameList[10] == "human_T3", "No pasted sequences");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0090) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QWidget *sequenceAreaWidget = GTUtilsMsaEditor::getSequenceArea(os);
+
+    // Check that sequence area cell contains a text character up until the cell size is > 7px.
+    // 7px is a hardcoded constant in the MA editor.
+    const int minWidthToShowText = 7;
+    QRect prevRect(0, 0, 10000, 10000);
+    while (true) {
+        QRect globalRect = GTUtilsMSAEditorSequenceArea::getPositionRect(os, QPoint(0, 0));
+        // TODO: using '-1' due to the bug in getPositionRect or in rendering:
+        //  the cellImageRect contains border-line pixels from the next base.
+        QRect cellImageRect(0, 0, globalRect.width() - 1, globalRect.height() - 1);
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FF99B1");
+        bool hasTextInTheCell = !hasOnlyBgColor;
+        if (globalRect.width() >= minWidthToShowText) {
+            CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
+        } else {
+            CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
+            break;
+        }
+        GTUtilsMsaEditor::zoomOut(os);
+        CHECK_SET_ERR(globalRect.width() < prevRect.width(), "Zoom Out had no effect");
+        prevRect = globalRect;
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0091) {
+    // 1. Open file _common_data\scenarios\msa\nucl_with_leading_gaps.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/nucl_with_leading_gaps.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // 2. Do document context menu {Export->Export aligniment to amino format}
+    // 3. Translate with "Include gaps"
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0091.aln", true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 4. Copy to clipboard
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
+                                                                        << "copy_selection"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: TAVS\nXXVS
+    const QString clipboardText = GTClipboard::sequences(os);
+    const QString expectedMSA = "TAVS\nXXVS";
+    CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0092) {
+    // 1. Open file _common_data\scenarios\msa\nucl_with_leading_gaps.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/nucl_with_leading_gaps.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // 2. Do document context menu {Export->Export aligniment to amino format}
+    // 3. Translate with "Include gaps", click on the "Gap" radio button
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0092.aln", true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 4. Copy to clipboard
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
+                                                                        << "copy_selection"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: TAVS\n--VS
+    const QString clipboardText = GTClipboard::sequences(os);
+    const QString expectedMSA = "TAVS\n--VS";
+    CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_fake) {

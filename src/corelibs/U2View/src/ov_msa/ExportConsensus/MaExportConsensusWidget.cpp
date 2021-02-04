@@ -74,7 +74,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor *ma_, QWidget *parent)
 }
 
 void MaExportConsensusWidget::sl_exportClicked() {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Exporting of consensus", ma->getFactoryId());
+    GCounter::increment("Exporting of consensus", ma->getFactoryId());
     if (saveController->getSaveFileName().isEmpty()) {
         saveController->setPath(getDefaultFilePath());
     }
@@ -87,7 +87,7 @@ void MaExportConsensusWidget::sl_exportClicked() {
     settings.url = saveController->getSaveFileName();
     settings.algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm()->clone();
 
-    ExportMaConsensusTask *exportTask = new ExportMaConsensusTask(settings);
+    auto exportTask = new ExportMaConsensusTask(settings);
     connect(exportTask, SIGNAL(si_stateChanged()), this, SLOT(sl_exportTaskStateChanged()));
     exportTaskUrls << exportTask->getConsensusUrl();
     TaskWatchdog::trackResourceExistence(ma->getMaObject(), exportTask, tr("A problem occurred during export consensus. The multiple alignment is no more available."));

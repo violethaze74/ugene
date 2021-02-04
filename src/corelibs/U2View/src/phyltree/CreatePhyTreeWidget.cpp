@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-QString CreatePhyTreeWidget::settingsPath() {
+QString CreatePhyTreeWidget::getAppSettingsRoot() {
     return QString(PHY_TREE_SETTINGS);
 }
 
@@ -39,10 +39,6 @@ bool CreatePhyTreeWidget::checkSettings(QString &, const CreatePhyTreeSettings &
 
 bool CreatePhyTreeWidget::checkMemoryEstimation(QString &, const MultipleSequenceAlignment &, const CreatePhyTreeSettings &) {
     return true;
-}
-
-bool CreatePhyTreeWidget::insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *) {
-    return false;
 }
 
 }    // namespace U2

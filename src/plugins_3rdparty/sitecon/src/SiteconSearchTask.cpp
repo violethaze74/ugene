@@ -28,7 +28,7 @@ SiteconSearchTask::SiteconSearchTask(const SiteconModel& m, const QByteArray& se
 : Task(tr("SITECON search"), TaskFlags_NR_FOSCOE), model(new SiteconModel(m)), cfg(new SiteconSearchCfg(cfg)), resultsOffset(ro), wholeSeq(seq)
 {
     lock = new QMutex();
-    GCOUNTER( cvar, tvar, "SiteconSearchTask" );
+    GCOUNTER( cvar, "SiteconSearchTask" );
     model->checkState(true);
     model->matrix = SiteconAlgorithm::normalize(model->matrix, model->settings);
     SequenceWalkerConfig c;

@@ -40,11 +40,7 @@ class U2VIEW_EXPORT MSAEditorOffsetsViewController : public QObject {
 public:
     MSAEditorOffsetsViewController(MaEditorWgt *maEditorUi, MaEditor *editor, MaEditorSequenceArea *seqArea);
 
-    MSAEditorOffsetsViewWidget *getLeftWidget() const;
-    MSAEditorOffsetsViewWidget *getRightWidget() const;
-
-    QAction *getToggleColumnsViewAction() const;
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e) override;
 
 private slots:
     void sl_updateOffsets();
@@ -55,9 +51,11 @@ private:
 
     MaEditorSequenceArea *seqArea;
     MaEditor *editor;
-    MSAEditorOffsetsViewWidget *lw;
-    MSAEditorOffsetsViewWidget *rw;
-    QAction *viewAction;
+
+public:
+    MSAEditorOffsetsViewWidget *leftWidget;
+    MSAEditorOffsetsViewWidget *rightWidget;
+    QAction *toggleColumnsViewAction;
 };
 
 class MSAEditorOffsetsViewWidget : public QWidget {

@@ -257,6 +257,8 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+            GTThread::waitForMainThread();
         }
     };
 
@@ -947,6 +949,8 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1052) {
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
+
     //    1. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1973,26 +1977,25 @@ GUI_TEST_CLASS_DEFINITION(test_1165) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1166) {
-    //1. Open file "data/samples/CLUSTALW/COI.aln" in alignment editor
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //1. Open alignment
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "alignx.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(44, 6), QPoint(49, 9));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(24, 2), QPoint(29, 3));
 
     //2. Select any region in msa with left button, move it left
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(26, 2));
     GTMouseDriver::press();
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(40, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(24, 2));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
     //3. Drag the region you selected to its original place
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(43, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(24, 2));
     GTMouseDriver::press();
 
-    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46, 7));
+    GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(26, 2));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
@@ -7303,7 +7306,7 @@ GUI_TEST_CLASS_DEFINITION(test_1701) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
-    QWidget* pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
+    QWidget *pdb2Widget = GTWidget::findWidget(os, "2-1CF7", sequenceViewWindow);
 
     // PDB 2 is active -> update 3d rendering settings.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Render Style"

@@ -55,7 +55,7 @@ ConvertToSQLiteTask::ConvertToSQLiteTask(const GUrl &_sourceUrl, const U2DbiRef 
       dstDbiRef(dstDbiRef),
       bamInfo(_bamInfo),
       sam(_sam) {
-    GCOUNTER(cvar, tvar, "ConvertBamToUgenedb");
+    GCOUNTER(cvar, "ConvertBamToUgenedb");
     tpm = Progress_Manual;
 }
 

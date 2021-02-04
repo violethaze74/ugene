@@ -685,7 +685,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 #define START_WAIT_MSEC 3000
 
 void LaunchExternalToolTask::run() {
-    GCOUNTER(cvar, tvar, "A task for an element with external tool is launched");
+    GCOUNTER(cvar, "A task for an element with external tool is launched");
     QProcess *externalProcess = new QProcess();
     externalProcess->setWorkingDirectory(workingDir);
     if (execString.contains(">")) {

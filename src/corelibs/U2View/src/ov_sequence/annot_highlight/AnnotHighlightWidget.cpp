@@ -275,12 +275,12 @@ QList<AnnotatedRegion> AnnotHighlightWidget::getAllAnnotatedRegionsByStartPos(qi
 }
 
 void AnnotHighlightWidget::sl_onNextAnnotationClick() {
-    GCOUNTER(cvar, tvar, "Annotations navigation: next annotation");
+    GCOUNTER(cvar, "Annotations navigation: next annotation");
     selectNextAnnotation(true);
 }
 
 void AnnotHighlightWidget::sl_onPrevAnnotationClick() {
-    GCOUNTER(cvar, tvar, "Annotations navigation: previous annotation");
+    GCOUNTER(cvar, "Annotations navigation: previous annotation");
     selectNextAnnotation(false);
 }
 

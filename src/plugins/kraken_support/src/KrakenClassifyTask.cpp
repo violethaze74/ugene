@@ -46,7 +46,7 @@ KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &setting
     : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_FOSE_COSC),
       settings(settings),
       classifyTask(NULL) {
-    GCOUNTER(cvar, tvar, "KrakenClassifyTask");
+    GCOUNTER(cvar, "KrakenClassifyTask");
 
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!settings.pairedReads || !settings.readsUrl.isEmpty(), setError("Paired reads URL is empty, but the 'paired reads' option is set"), );

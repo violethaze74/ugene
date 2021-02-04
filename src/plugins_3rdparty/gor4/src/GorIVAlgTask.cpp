@@ -36,7 +36,7 @@ QMutex GorIVAlgTask::runLock;
 
 GorIVAlgTask::GorIVAlgTask(const QByteArray& inputSeq) : SecStructPredictTask(inputSeq)
 {
-    GCOUNTER( cvar, tvar, "GorIVAlgTask" );
+    GCOUNTER( cvar, "GorIVAlgTask" );
 }
 
 void GorIVAlgTask::run() 

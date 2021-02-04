@@ -597,23 +597,23 @@ void AnnotationsTreeView::sl_onAnnotationsAdded(const QList<Annotation *> &as) {
             continue;
         }
         AVGroupItem *gi = findGroupItem(ag);
-        if (NULL != gi) {
+        if (gi != nullptr) {
             buildAnnotationTree(gi, a);
         } else {
             AnnotationGroup *childGroup = ag;
             while (true) {
                 gi = findGroupItem(childGroup->getParentGroup());
-                if (gi != NULL) {
+                if (gi != nullptr) {
                     break;
                 }
                 childGroup = childGroup->getParentGroup();
             }
-            SAFE_POINT(NULL != gi, "AnnotationsTreeView::sl_onAnnotationsAdded: childGroup not found", );
+            SAFE_POINT(gi != nullptr, "AnnotationsTreeView::sl_onAnnotationsAdded: childGroup not found", );
             buildGroupTree(gi, childGroup);
             createdGroups << childGroup;    // if a group item has been built it already contains corresponding annotation items
                 // so in further iterations we skip child annotations of this group
         }
-        SAFE_POINT(NULL != gi, "Invalid annotation view item!", );
+        SAFE_POINT(gi != nullptr, "Invalid annotation view item!", );
         toUpdate.insert(gi);
 
         if (dndAdded.contains(a)) {
@@ -631,7 +631,7 @@ void AnnotationsTreeView::sl_onAnnotationsAdded(const QList<Annotation *> &as) {
         toUpdate.remove(i);
         i->updateVisual();
         AVGroupItem *p = dynamic_cast<AVGroupItem *>(i->parent());
-        if (p != NULL) {
+        if (p != nullptr) {
             toUpdate.insert(p);
         }
     }
@@ -779,10 +779,10 @@ AVGroupItem *AnnotationsTreeView::buildGroupTree(AVGroupItem *parentGroupItem, A
 AVAnnotationItem *AnnotationsTreeView::buildAnnotationTree(AVGroupItem *parentGroup, Annotation *a, bool areAnnotationsNew) {
     if (!areAnnotationsNew) {
         AVAnnotationItem *annotationItem = findAnnotationItem(parentGroup, a);
-        CHECK(NULL == annotationItem, annotationItem);
+        CHECK(annotationItem == nullptr, annotationItem);
     }
 
-    AVAnnotationItem *annotationItem = new AVAnnotationItem(parentGroup, a);
+    auto annotationItem = new AVAnnotationItem(parentGroup, a);
     const QVector<U2Qualifier> qualifiers = a->getQualifiers();
     if (!qualifiers.isEmpty()) {
         annotationItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
@@ -915,7 +915,7 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView *, QMenu *m) {
     if (selItems.size() == 1) {
         AVItem *avItem = static_cast<AVItem *>(selItems.first());
         AnnotationTableObject *aObj = avItem->getAnnotationTableObject();
-        if (AutoAnnotationsSupport::isAutoAnnotation(aObj) && !aObj->getAnnotations().isEmpty()) {
+        if (AutoAnnotationsSupport::isAutoAnnotationObject(aObj) && !aObj->getAnnotations().isEmpty()) {
             if (avItem->parent() != NULL) {
                 m->addAction(exportAutoAnnotationsGroup);
             }
@@ -1092,7 +1092,7 @@ void AnnotationsTreeView::sl_removeObjectFromView() {
 
     foreach (GObject *obj, objects) {
         SAFE_POINT(obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE, "Unexpected object type", );
-        if (AutoAnnotationsSupport::isAutoAnnotation(obj)) {
+        if (AutoAnnotationsSupport::isAutoAnnotationObject(obj)) {
             continue;
         }
         ctx->removeObject(obj);
@@ -1164,7 +1164,7 @@ void AnnotationsTreeView::updateState() {
     bool hasAutoAnnotationObjects = false;
     foreach (AVGroupItem *item, topLevelGroups) {
         AnnotationTableObject *aObj = item->getAnnotationTableObject();
-        if (AutoAnnotationsSupport::isAutoAnnotation(aObj)) {
+        if (AutoAnnotationsSupport::isAutoAnnotationObject(aObj)) {
             hasAutoAnnotationObjects = true;
             break;
         }
@@ -1401,7 +1401,7 @@ bool AnnotationsTreeView::initiateDragAndDrop(QMouseEvent *) {
         SAFE_POINT(NULL != itemi, L10N::nullPointerError("Annotation tree item"), false);
         AnnotationTableObject *ao = itemi->getAnnotationTableObject();
         SAFE_POINT(NULL != ao, L10N::nullPointerError("annotation table object"), false);
-        if (AutoAnnotationsSupport::isAutoAnnotation(ao)) {
+        if (AutoAnnotationsSupport::isAutoAnnotationObject(ao)) {
             //  only allow to drag top-level auto annotations groups
             if (!(itemi->type == AVItemType_Group && itemi->parent() != NULL)) {
                 continue;
@@ -1481,7 +1481,7 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
     AnnotationTableObject *dstObject = dropDestination->getAnnotationTableObject();
 
     // Can not drag anything to auto-annotation object
-    if (AutoAnnotationsSupport::isAutoAnnotation(dstObject)) {
+    if (AutoAnnotationsSupport::isAutoAnnotationObject(dstObject)) {
         return;
     }
 
@@ -1506,7 +1506,7 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
             }
 
             // auto-annotations have to be handled differently
-            if (AutoAnnotationsSupport::isAutoAnnotation(movedGroupItem->getAnnotationTableObject())) {
+            if (AutoAnnotationsSupport::isAutoAnnotationObject(movedGroupItem->getAnnotationTableObject())) {
                 GObjectReference dstRef(dstObject);
                 ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
                 Task *t = new ExportAutoAnnotationsGroupTask(movedGroupItem->getAnnotationGroup(), dstRef, seqCtx);
@@ -2247,7 +2247,7 @@ void AnnotationsTreeView::sl_exportAutoAnnotationsGroup() {
     CHECK(!dlg.isNull(), );
 
     if (dlg->result() == QDialog::Accepted) {
-        ExportAutoAnnotationsGroupTask *task = new ExportAutoAnnotationsGroupTask(ag, m.annotationObjectRef, seqCtx, m.description);
+        auto task = new ExportAutoAnnotationsGroupTask(ag, m.annotationObjectRef, seqCtx, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
@@ -2401,7 +2401,7 @@ void AVGroupItem::updateAnnotations(const QString &nameFilter, ATVAnnUpdateFlags
 bool AVGroupItem::isReadonly() const {
     //documents names are not editable
     GObject *obj = group->getGObject();
-    bool readOnly = obj->isStateLocked() || AutoAnnotationsSupport::isAutoAnnotation(obj);
+    bool readOnly = obj->isStateLocked() || AutoAnnotationsSupport::isAutoAnnotationObject(obj);
     return group->getParentGroup() == NULL ? true : readOnly;
 }
 

@@ -73,7 +73,7 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
       bunchSize(0),
       index(NULL),
       lastQuery(NULL) {
-    GCOUNTER(cvar, tvar, "GenomeAlignerTask");
+    GCOUNTER(cvar, "GenomeAlignerTask");
     setMaxParallelSubtasks(4);
     hasResults = false;
     readsCount = 0;

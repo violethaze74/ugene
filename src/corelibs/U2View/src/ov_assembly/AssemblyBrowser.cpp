@@ -103,7 +103,7 @@ AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
       zoomInAction(NULL), zoomOutAction(NULL), posSelectorAction(NULL), posSelector(NULL), showCoordsOnRulerAction(NULL), saveScreenShotAction(NULL),
       exportToSamAction(NULL), setReferenceAction(NULL), extractAssemblyRegionAction(NULL), loadReferenceTask(NULL) {
-    GCOUNTER(cvar, tvar, "AssemblyBrowser");
+    GCOUNTER(cvar, "AssemblyBrowser");
     initFont();
     setupActions();
 

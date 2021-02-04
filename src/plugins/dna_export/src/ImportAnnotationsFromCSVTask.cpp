@@ -54,7 +54,7 @@ QBitArray CSVParsingConfig::QUOTES = TextUtils::createBitMap("\'\"");
 ImportAnnotationsFromCSVTask::ImportAnnotationsFromCSVTask(ImportAnnotationsFromCSVTaskConfig &_config)
     : Task(tr("Import annotations from CSV"), TaskFlags_NR_FOSCOE),
       config(_config), readTask(NULL), writeTask(NULL), addTask(NULL) {
-    GCOUNTER(cvar, tvar, "ImportAnnotationsFromCSVTask");
+    GCOUNTER(cvar, "ImportAnnotationsFromCSVTask");
     readTask = new ReadCSVAsAnnotationsTask(config.csvFile, config.parsingOptions);
     addSubTask(readTask);
 }

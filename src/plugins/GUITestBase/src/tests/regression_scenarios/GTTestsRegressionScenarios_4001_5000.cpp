@@ -1689,7 +1689,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memorySpinBox");
+            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
             CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
 
@@ -1760,8 +1760,11 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTFile::copy(os, testDir + "_common_data/vcf/valid.vcf", testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //2. Add sample: snpEff
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+
     //3. Set input file which contains spaces in path
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
@@ -1769,12 +1772,13 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
     //4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
     GTUtilsLog::check(os, l);
     GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4170) {
@@ -2052,17 +2056,50 @@ GUI_TEST_CLASS_DEFINITION(test_4194) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4209) {
+    // Run a task with 10k reads to align (total run time is 20-30 minutes).
+    // Check that the task runs correctly.
+    // Cancel the task: check that UI is not frozen and the task can be canceled correctly.
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "Align to Reference");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference URL", testDir + "_common_data/scenarios/_regression/4209/seq1.gb", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", testDir + "_common_data/scenarios/sandbox/4209/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", QDir(sandBoxDir).absolutePath() + "/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/reads/e_coli_10000snp.fa");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Wait for some period to ensure that the long running sub-task is started with no crash and cancel it next.
+    GTGlobals::sleep(20000);
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4209_1) {
+    // Run a task with 1k reads to align (total run time is 2-3 minutes).
+    // Check that the task finishes with no errors.
+    GTLogTracer logTracer;
+
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Align to Reference");
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference URL", testDir + "_common_data/scenarios/_regression/4209/seq1.gb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", QDir(sandBoxDir).absolutePath() + "/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/reads/e_coli_1000.fa");
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // OMG!
+    // The only error we have today is the error about missed chromatogram.
+    // The error is not correct: "Align to Reference" with BLAST does not need/use a chromatogram at all.
+    // The error was introduced during the time the test was suppressed and made impossible to run "Align to Reference" for reads with no chromatograms.
+    // See: UGENE-5423: Use ChromObject in Sanger algorithm.
+    // This problem will be addressed in the separate bug and logTracer will be checked for no errors.
+    CHECK_SET_ERR(logTracer.errorsList.size() == 1 && logTracer.errorsList[0].contains("The related chromatogram not found"),
+                  "Got unexpected error: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4218) {
@@ -3570,7 +3607,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memorySpinBox", dialog), 200);
+            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3933,6 +3970,8 @@ GUI_TEST_CLASS_DEFINITION(test_4620) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4621) {
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
+
     //1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);

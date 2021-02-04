@@ -319,7 +319,7 @@ bool clipRegion(U2Region &region, const U2Region &clippingRegion) {
 Primer3Task::Primer3Task(const Primer3TaskSettings &settingsArg)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
       settings(settingsArg) {
-    GCOUNTER(cvar, tvar, "Primer3Task");
+    GCOUNTER(cvar, "Primer3Task");
     {
         U2Region region = settings.getIncludedRegion();
         region.startPos -= settings.getFirstBaseIndex();

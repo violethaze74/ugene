@@ -53,7 +53,7 @@ bool InSilicoPcrProduct::isValid() const {
 InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlags_FOSE_COSC),
       settings(settings), forwardSearch(NULL), reverseSearch(NULL), minProductSize(0) {
-    GCOUNTER(cvar, tvar, "InSilicoPcrTask");
+    GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
 }
 

@@ -80,6 +80,12 @@ void AnnotationSelection::add(Annotation *a) {
     emit si_selectionChanged(this, QList<Annotation *>() << a, emptyAnnotations);
 }
 
+void AnnotationSelection::setAnnotations(QList<Annotation *> annotationList) {
+    QList<Annotation *> oldSelection = selection;
+    selection = annotationList;
+    emit si_selectionChanged(this, annotationList, oldSelection);
+}
+
 void AnnotationSelection::remove(Annotation *a) {
     bool removed = false;
     for (int i = 0; i < selection.size(); i++) {
@@ -98,7 +104,7 @@ void AnnotationSelection::getSequenceInRegions(QByteArray &res, const QVector<U2
     QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqRef, regions, complTT, aminoTT, false, os);
     CHECK_OP(os, )
     qint64 resLen = res.length();
-    for (const QByteArray &part : parts) {
+    for (const QByteArray &part : qAsConst(parts)) {
         resLen += part.length();
     }
     resLen += parts.size() - 1;    // gaps between parts.

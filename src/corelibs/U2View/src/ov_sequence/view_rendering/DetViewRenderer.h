@@ -35,10 +35,8 @@ class DetView;
 class U2VIEW_EXPORT DetViewRenderer : public SequenceViewAnnotatedRenderer {
 public:
     DetViewRenderer(DetView *detView, SequenceObjectContext *ctx);
-    virtual ~DetViewRenderer() {
-    }
 
-    double getCurrentScale() const;
+    double getCurrentScale() const override;
     qint64 getSymbolsPerLine(const qint64 width) const;
     virtual int getDirectLine() const = 0;
 
@@ -54,8 +52,11 @@ public:
 
     virtual void update() = 0;
 
+    /** Returns all y regions used to draw the given location of the annotation. */
+    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+
 protected:
-    DetView *detView;
+    DetView *const detView;
 };
 
 /************************************************************************/

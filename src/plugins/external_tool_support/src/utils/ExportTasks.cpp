@@ -58,7 +58,7 @@ SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment &_ma, const
       fileName(_fileName),
       hints(_hints),
       format(_f) {
-    GCOUNTER(cvar, tvar, "ExportAlignmentTask");
+    GCOUNTER(cvar, "ExportAlignmentTask");
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
@@ -102,7 +102,7 @@ const MultipleSequenceAlignment &SaveAlignmentTask::getMAlignment() const {
 SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment &_ma, const QString &_url, bool _trimAli, DocumentFormatId _format)
     : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
       ma(_ma->getCopy()), url(_url), trimAli(_trimAli), format(_format) {
-    GCOUNTER(cvar, tvar, "ExportMSA2SequencesTask");
+    GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
     stateInfo.setProgress(0);
 }

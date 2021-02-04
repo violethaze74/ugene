@@ -52,7 +52,7 @@ const QString ConductGOTask::TREAT_NAME("treatment");
 
 ConductGOTask::ConductGOTask(const ConductGOSettings &settings)
     : ExternalToolSupportTask("ConductGO annotation", TaskFlag_CollectChildrenWarnings), settings(settings), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:ConductGOTask");
+    GCOUNTER(cvar, "NGS:ConductGOTask");
 }
 
 ConductGOTask::~ConductGOTask() {

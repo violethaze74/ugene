@@ -184,7 +184,7 @@ void SiteconBuildDialogController::reject() {
 SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin) 
 : Task (tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy())
 {
-    GCOUNTER( cvar, tvar, "SiteconBuildTask" );
+    GCOUNTER( cvar, "SiteconBuildTask" );
     tpm = Task::Progress_Manual;
     m.aliURL = origin;
 }

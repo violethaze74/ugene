@@ -259,7 +259,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &refUrl, cons
       composeSubTask(NULL),
       saveTask(NULL),
       storage(storage) {
-    GCOUNTER(cvar, tvar, "AlignToReferenceBlastTask");
+    GCOUNTER(cvar, "AlignToReferenceBlastTask");
 }
 
 void AlignToReferenceBlastTask::prepare() {

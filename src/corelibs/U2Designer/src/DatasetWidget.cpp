@@ -118,7 +118,7 @@ void URLListWidget::sl_addFileButton() {
     } else {
         files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
     }
-    for (const QString &file : files) {
+    for (const QString &file : qAsConst(files)) {
         lod.url = file;
         addUrl(file);
     }

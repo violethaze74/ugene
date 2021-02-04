@@ -46,7 +46,7 @@ EditPrimerDialog::EditPrimerDialog(QWidget *parent, const Primer &editToPrimer)
 }
 
 void EditPrimerDialog::init() {
-    GCOUNTER(cvar, tvar, "Add primer in library");
+    GCOUNTER(cvar, "Add primer in library");
     setupUi(this);
     new HelpButton(this, buttonBox, "54363754");
 

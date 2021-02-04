@@ -34,7 +34,7 @@ public:
     const OptionsMap &getSettings() const;
 
 protected:
-    OptionsMap changedSettings;
+    OptionsMap updatedSettings;
 };
 
 }    // namespace U2

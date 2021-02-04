@@ -51,7 +51,7 @@ const QString SpadesTask::SCAFFOLDS_NAME = "scaffolds.fasta";
 
 SpadesTask::SpadesTask(const GenomeAssemblyTaskSettings &settings)
     : GenomeAssemblyTask(settings, TaskFlags_NR_FOSCOE) {
-    GCOUNTER(cvar, tvar, "SpadesTask");
+    GCOUNTER(cvar, "SpadesTask");
 }
 
 void SpadesTask::prepare() {

@@ -60,7 +60,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
       pcrTask(NULL),
       resultTableShown(false),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
-    GCOUNTER(cvar, tvar, "PCR options panel");
+    GCOUNTER(cvar, "PCR options panel");
     setupUi(this);
     forwardPrimerBoxSubgroup->init(FORWARD_SUBGROUP_ID, tr("Forward primer"), forwardPrimerBox, true);
     reversePrimerBoxSubgroup->init(REVERSE_SUBGROUP_ID, tr("Reverse primer"), reversePrimerBox, true);
