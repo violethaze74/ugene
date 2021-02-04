@@ -507,6 +507,9 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
+    int frameNum = static_cast<int>(d->translationFrame);
+    bool reverseCompement = frameNum < 0;
+    int offset = (qAbs(frameNum) - 1);
     Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa,
                                                                 0,
                                                                 msa->getNumRows(),
@@ -514,7 +517,9 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
                                                                 trans,
                                                                 d->formatId,
                                                                 !d->includeGaps,
-                                                                convertUnknowToGaps),
+                                                                convertUnknowToGaps,
+                                                                reverseCompement,
+                                                                offset),
                                           d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }

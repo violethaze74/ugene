@@ -44,6 +44,19 @@ public:
         Gap
     };
 
+    /*!
+     * \class TranslationFrame
+     * \brief Frame to translate (reverse-complement if minus)
+     */
+    enum class TranslationFrame {
+        One = 1,
+        Two = 2,
+        Three = 3,
+        MinusOne = -1,
+        MinusTwo = -2,
+        MinusThree = -3
+    };
+
     void updateModel();
     DocumentFormatId formatId;
     QString file;
@@ -55,6 +68,10 @@ public:
      * The character unknown amino acids should be translated to
      */
     UnknownAmino unknownAmino = UnknownAmino::X;
+    /*!
+     * The character we need to start translate from (minus - reverce-complemented)
+     */
+    TranslationFrame translationFrame = TranslationFrame::One;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

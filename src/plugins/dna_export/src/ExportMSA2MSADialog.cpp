@@ -30,6 +30,7 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -76,6 +77,22 @@ void ExportMSA2MSADialog::updateModel() {
     includeGaps = cbIncludeGaps->isChecked();
     if (includeGaps) {
         unknownAmino = rbUseX->isChecked() ? UnknownAmino::X : UnknownAmino::Gap;
+    }
+
+    if (rb1->isChecked()) {
+        translationFrame = TranslationFrame::One;
+    } else if (rb2->isChecked()) {
+        translationFrame = TranslationFrame::Two;
+    } else if (rb3->isChecked()) {
+        translationFrame = TranslationFrame::Three;
+    } else if (rbM1->isChecked()) {
+        translationFrame = TranslationFrame::MinusOne;
+    } else if (rbM2->isChecked()) {
+        translationFrame = TranslationFrame::MinusTwo;
+    } else if (rbM3->isChecked()) {
+        translationFrame = TranslationFrame::MinusThree;
+    } else {
+        FAIL("Unexpected frame", );
     }
     addToProjectFlag = addDocumentButton->isChecked();
     exportWholeAlignment = wholeRangeButton->isChecked();
