@@ -118,7 +118,7 @@ void ProjectServiceImpl::sl_saveAs() {
 void ProjectServiceImpl::sl_exportProject() {
     Project *p = getProject();
     QString pUrl = p->getProjectURL();
-    QString projectFilePath = pUrl.isEmpty() ? QDir::homePath() + "/project" + PROJECTFILE_EXT : pUrl;
+    QString projectFilePath = pUrl.isEmpty() ? GUrlUtils::getDefaultDataPath() + "/project" + PROJECTFILE_EXT : pUrl;
     QObjectScopedPointer<ExportProjectDialogController> dialog = new ExportProjectDialogController(AppContext::getMainWindow()->getQMainWindow(), projectFilePath);
     dialog->exec();
     CHECK(!dialog.isNull(), );
