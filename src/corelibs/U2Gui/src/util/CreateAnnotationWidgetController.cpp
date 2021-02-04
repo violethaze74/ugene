@@ -129,6 +129,7 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
 }
 
 CreateAnnotationWidgetController::~CreateAnnotationWidgetController() {
+    // Do not remove the empty destructor because https://doc.qt.io/qt-5/qscopedpointer.html#forward-declared-pointers
 }
 
 void CreateAnnotationWidgetController::updateWidgetForAnnotationModel(const CreateAnnotationModel &newModel) {
