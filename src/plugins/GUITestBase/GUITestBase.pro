@@ -262,6 +262,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
+            src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h \
 #   UGENE primitives
@@ -536,6 +537,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.cpp \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
+            src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.cpp \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.cpp \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.cpp \
 #   UGENE primitives
