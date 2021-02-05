@@ -44,19 +44,6 @@ public:
         Gap
     };
 
-    /*!
-     * \class TranslationFrame
-     * \brief Frame to translate (reverse-complement if minus)
-     */
-    enum class TranslationFrame {
-        One = 1,
-        Two = 2,
-        Three = 3,
-        MinusOne = -1,
-        MinusTwo = -2,
-        MinusThree = -3
-    };
-
     void updateModel();
     DocumentFormatId formatId;
     QString file;
@@ -69,9 +56,10 @@ public:
      */
     UnknownAmino unknownAmino = UnknownAmino::X;
     /*!
-     * The character we need to start translate from (minus - reverce-complemented)
+     * The translation frame. Positive - direct, negative - complement.
+     * Possible values - 1, 2, 3, -1, -2, -3.
      */
-    TranslationFrame translationFrame = TranslationFrame::One;
+    int translationFrame = 1;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

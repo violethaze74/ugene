@@ -70,17 +70,17 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     if (frame != 1) {
         QString widgetName;
         if (frame == 1) {
-            widgetName = "rb1";
+            widgetName = "rbFirstDirectFrame";
         } else if (frame == 2) {
-            widgetName = "rb2";
+            widgetName = "rbSecondDirectFrame";
         } else if (frame == 3) {
-            widgetName = "rb3";
+            widgetName = "rbThirdDirectFrame";
         } else if (frame == -1) {
-            widgetName = "rbM1";
+            widgetName = "rbFirstComplementFrame";
         } else if (frame == -2) {
-            widgetName = "rbM2";
+            widgetName = "rbSecondComplementFrame";
         } else if (frame == -3) {
-            widgetName = "rbM3";
+            widgetName = "rbThirdComplementFrame";
         } else {
             GT_CHECK(false, "incorrect frame");
         }

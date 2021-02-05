@@ -79,18 +79,18 @@ void ExportMSA2MSADialog::updateModel() {
         unknownAmino = rbUseX->isChecked() ? UnknownAmino::X : UnknownAmino::Gap;
     }
 
-    if (rb1->isChecked()) {
-        translationFrame = TranslationFrame::One;
-    } else if (rb2->isChecked()) {
-        translationFrame = TranslationFrame::Two;
-    } else if (rb3->isChecked()) {
-        translationFrame = TranslationFrame::Three;
-    } else if (rbM1->isChecked()) {
-        translationFrame = TranslationFrame::MinusOne;
-    } else if (rbM2->isChecked()) {
-        translationFrame = TranslationFrame::MinusTwo;
-    } else if (rbM3->isChecked()) {
-        translationFrame = TranslationFrame::MinusThree;
+    if (rbFirstDirectFrame->isChecked()) {
+        translationFrame = 1;
+    } else if (rbSecondDirectFrame->isChecked()) {
+        translationFrame = 2;
+    } else if (rbThirdDirectFrame->isChecked()) {
+        translationFrame = 3;
+    } else if (rbFirstComplementFrame->isChecked()) {
+        translationFrame = -1;
+    } else if (rbSecondComplementFrame->isChecked()) {
+        translationFrame = -2;
+    } else if (rbThirdComplementFrame->isChecked()) {
+        translationFrame = -3;
     } else {
         FAIL("Unexpected frame", );
     }

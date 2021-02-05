@@ -116,7 +116,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QRadioButton" name="rb1">
+       <widget class="QRadioButton" name="rbFirstDirectFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -129,7 +129,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QRadioButton" name="rbM1">
+       <widget class="QRadioButton" name="rbFirstComplementFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -142,7 +142,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QRadioButton" name="rb2">
+       <widget class="QRadioButton" name="rbSecondDirectFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -155,7 +155,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QRadioButton" name="rbM2">
+       <widget class="QRadioButton" name="rbSecondComplementFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -168,7 +168,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QRadioButton" name="rb3">
+       <widget class="QRadioButton" name="rbThirdDirectFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -181,7 +181,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QRadioButton" name="rbM3">
+       <widget class="QRadioButton" name="rbThirdComplementFrame">
         <property name="enabled">
          <bool>true</bool>
         </property>

@@ -120,9 +120,8 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelectionRect().height();
 
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
-    int frameNum = static_cast<int>(d->translationFrame);
-    bool reverseCompement = frameNum < 0;
-    int baseOffset = (qAbs(frameNum) - 1);
+    bool reverseCompement = d->translationFrame < 0;
+    int baseOffset = qAbs(d->translationFrame) - 1;
     Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
                                                                 offset,
                                                                 len,
