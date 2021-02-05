@@ -1723,6 +1723,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6953);
     REGISTER_TEST(GUITest_regression_scenarios::test_6954);
     REGISTER_TEST(GUITest_regression_scenarios::test_6959);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6960);
     REGISTER_TEST(GUITest_regression_scenarios::test_6966);
     REGISTER_TEST(GUITest_regression_scenarios::test_6968);
     REGISTER_TEST(GUITest_regression_scenarios::test_6971);
@@ -3136,9 +3137,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
     REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0007);
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0008, labels({Nightly, Cistrome, Windows, Linux, MacOS}));
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0008, minutes(7), labels({Cistrome, Windows, Linux, MacOS}));
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0009, labels({Nightly, Cistrome, Windows, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0010, labels({Nightly, Cistrome, Linux, MacOS}));
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0010, minutes(7), labels({Cistrome, Linux, MacOS}));
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0011, labels({Nightly, Cistrome, Linux, MacOS}));
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
