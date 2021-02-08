@@ -4712,7 +4712,8 @@ GUI_TEST_CLASS_DEFINITION(test_0093_2) {
 
     // Expected: GGHG\nHG--
     const QString clipboardText = GTClipboard::sequences(os);
-    const QString expectedMSA = "GGHG\nHG--";
+    const QString expectedMSA = "GHGG\nGH--";
+
     CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
 }
 

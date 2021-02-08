@@ -120,7 +120,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelectionRect().height();
 
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
-    bool reverseCompement = d->translationFrame < 0;
+    bool reverseComplement = d->translationFrame < 0;
     int baseOffset = qAbs(d->translationFrame) - 1;
     Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
                                                                 offset,
@@ -130,7 +130,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
                                                                 d->formatId,
                                                                 !d->includeGaps,
                                                                 convertUnknowToGaps,
-                                                                reverseCompement,
+                                                                reverseComplement,
                                                                 baseOffset),
                                           d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

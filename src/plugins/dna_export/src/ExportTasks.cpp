@@ -203,9 +203,6 @@ void ExportMSA2MSATask::run() {
             }
             resseq.replace("*", "X");
             DNASequence rs(name, resseq, aminoTT->getDstAlphabet());
-            if (reverseComplement) {
-                rs = DNASequenceUtils::reverse(rs);
-            }
             seqList << rs;
         } else {
             seqList << s;

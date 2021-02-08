@@ -206,7 +206,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
     trid.replace("0", QString("%1").arg(transTable));
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(trid);
 
-    bool reverseCompement = translationFrame < 0;
+    bool reverseComplement = translationFrame < 0;
     int offset = qAbs(translationFrame) - 1;
     exportTask = new ExportMSA2MSATask(srcAl,
                                        selectedRows.length ? selectedRows.startPos : 0,
@@ -216,7 +216,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
                                        BaseDocumentFormats::CLUSTAL_ALN,
                                        !includeGaps,
                                        convertUnknownAmino2Gap,
-                                       reverseCompement,
+                                       reverseComplement,
                                        offset);
     addSubTask(exportTask);
 }

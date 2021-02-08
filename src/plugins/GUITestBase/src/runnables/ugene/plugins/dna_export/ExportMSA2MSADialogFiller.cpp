@@ -67,25 +67,23 @@ void ExportMSA2MSADialogFiller::commonScenario() {
         }
     }
 
-    if (frame != 1) {
-        QString widgetName;
-        if (frame == 1) {
-            widgetName = "rbFirstDirectFrame";
-        } else if (frame == 2) {
-            widgetName = "rbSecondDirectFrame";
-        } else if (frame == 3) {
-            widgetName = "rbThirdDirectFrame";
-        } else if (frame == -1) {
-            widgetName = "rbFirstComplementFrame";
-        } else if (frame == -2) {
-            widgetName = "rbSecondComplementFrame";
-        } else if (frame == -3) {
-            widgetName = "rbThirdComplementFrame";
-        } else {
-            GT_CHECK(false, "incorrect frame");
-        }
-        GTRadioButton::click(os, widgetName, dialog);
+    QString widgetName;
+    if (frame == 1) {
+        widgetName = "rbFirstDirectFrame";
+    } else if (frame == 2) {
+        widgetName = "rbSecondDirectFrame";
+    } else if (frame == 3) {
+        widgetName = "rbThirdDirectFrame";
+    } else if (frame == -1) {
+        widgetName = "rbFirstComplementFrame";
+    } else if (frame == -2) {
+        widgetName = "rbSecondComplementFrame";
+    } else if (frame == -3) {
+        widgetName = "rbThirdComplementFrame";
+    } else {
+        GT_CHECK(false, "incorrect frame");
     }
+    GTRadioButton::click(os, widgetName, dialog);
 
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
