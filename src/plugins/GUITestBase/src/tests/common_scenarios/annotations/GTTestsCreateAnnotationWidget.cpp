@@ -2543,7 +2543,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(!tbDoComplement->isEnabled(), "34. tbDoComplement is unexpectedly enabled");
 
             //   30. Enter region "(1'000'000..50)" to simple location widgets.
-            setSimpleLocation(os, 1000'000, 50, false, dialog);
+            setSimpleLocation(os, 1000000, 50, false, dialog);
 
             //    Expected state: GenBank location string contains "1..50" region.
             expectedGenbankLocation = "1..50";
