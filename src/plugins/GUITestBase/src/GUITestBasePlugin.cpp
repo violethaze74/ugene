@@ -3143,7 +3143,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0009, labels({Nightly, Cistrome, Windows, Linux, MacOS}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0010, minutes(7), labels({Cistrome, Linux, MacOS}));
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0011, labels({Nightly, Cistrome, Linux, MacOS}));
-    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0012, labels({Cistrome, Linux, MacOS}));
+    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0012, labels({Nightly, Cistrome, Linux, MacOS}));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
