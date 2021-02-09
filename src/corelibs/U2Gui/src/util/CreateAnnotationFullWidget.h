@@ -100,6 +100,7 @@ private:
 
     FormatType formatType;
     qint64 seqLen;
+    bool isValidLocation;
 };
 
 }    // namespace U2

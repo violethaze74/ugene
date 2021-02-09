@@ -2542,6 +2542,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(!leLocation->isEnabled(), "33. leLocation is unexpectedly enabled");
             CHECK_SET_ERR(!tbDoComplement->isEnabled(), "34. tbDoComplement is unexpectedly enabled");
 
+            //   30. Enter region "(1'000'000..50)" to simple location widgets.
+            setSimpleLocation(os, 1000'000, 50, false, dialog);
+
+            //    Expected state: GenBank location string contains "1..50" region.
+            expectedGenbankLocation = "1..50";
+            genbankLocation = leLocation->text();
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("77. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+
             //    14. Select "GenBank/EMBL format" location style. Set location "300..400".
             setGenbankLocation(os, "300..400", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);

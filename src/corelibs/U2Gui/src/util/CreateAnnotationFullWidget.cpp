@@ -36,7 +36,8 @@ namespace U2 {
 CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget *parent)
     : CreateAnnotationWidget(parent),
       formatType(Simple),
-      seqLen (seqLen) {
+      seqLen(seqLen),
+      isValidLocation(false) {
     setupUi(this);
     initLayout();
     init();
@@ -164,27 +165,37 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
 
     const bool firstLocationSetting = leRegionStart->text().isEmpty() && leRegionEnd->text().isEmpty();
 
-    QString startString;
-    QString endString;
+    isValidLocation = false;
+
+    QString startPos;
+    QString endPos;
     if (!location->isEmpty()) {
-        startString = QString::number(location->regions.first().startPos + 1);
+        qint64 start;
+        qint64 end;
+        start = location->regions.first().startPos + 1;
 
         if (location->isMultiRegion() && isSimpleSplitLocation(seqLen)) {
             // (200..len,1..100,...) equals start=200, end=100
-            endString = QString::number(location->regions[1].endPos());
+            end = location->regions[1].endPos();
         } else {
-            endString = QString::number(location->regions.first().endPos());
+            end = location->regions.first().endPos();
+        }
+
+        isValidLocation = (start >= 1 && start <= seqLen && end >= 1 && end <= seqLen);
+        if (isValidLocation) {
+            startPos = QString::number(start);
+            endPos = QString ::number(end);
         }
     }
 
-    leRegionStart->setText(startString);
-    leRegionEnd->setText(endString);
+    leRegionStart->setText(startPos);
+    leRegionEnd->setText(endPos);
     chbComplement->setChecked(location->strand.isCompementary());
     leLocation->setText(getGenbankLocationString(location));
 
     // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
     const bool needToShowInGenbank = location->regions.size() > 2 ||
-        (location->regions.size() == 2 && !isSimpleSplitLocation(seqLen));
+                                     (location->regions.size() == 2 && !isSimpleSplitLocation(seqLen));
     if (firstLocationSetting && needToShowInGenbank) {
         rbGenbankFormat->setChecked(true);
     }
@@ -213,7 +224,14 @@ QString CreateAnnotationFullWidget::getDescription() const {
 }
 
 QString CreateAnnotationFullWidget::getLocationString() const {
-    return leLocation->text();
+    const QString location = leLocation->text();
+    if (isValidLocation) {
+        return location;
+    }
+    if (location.startsWith("complement(") && location.endsWith(")")) {
+        return "complement()";
+    }
+    return QString();
 }
 
 bool CreateAnnotationFullWidget::isUsePatternNamesChecked() const {
@@ -258,14 +276,18 @@ void CreateAnnotationFullWidget::showSelectGroupMenu(QMenu &menu) {
 
 void CreateAnnotationFullWidget::sl_regionChanged() {
     bool ok = false;
+    isValidLocation = false;
     qint64 startPos = leRegionStart->text().toLongLong(&ok);
     CHECK(ok, );
     qint64 endPos = leRegionEnd->text().toLongLong(&ok);
     CHECK(ok, );
+    isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
 
     U2Location location;
     if (startPos > endPos) { // split (200..100) to (200..len,1..100)
-        location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
+        if (startPos <= seqLen && endPos >= 1) {
+            location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
+        }
         startPos = 1;
     }
     location->regions << U2Region(startPos - 1, endPos - startPos + 1);
