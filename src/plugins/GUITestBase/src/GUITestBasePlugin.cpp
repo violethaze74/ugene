@@ -35,6 +35,7 @@
 #include "tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.h"
+#include "tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h"
 #include "tests/common_scenarios/Assembling/sam/GTTestsSAM.h"
 #include "tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h"
@@ -54,6 +55,7 @@
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
+#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
@@ -104,6 +106,7 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
+#include "tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h"
 
 namespace U2 {
 
@@ -1720,6 +1723,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6953);
     REGISTER_TEST(GUITest_regression_scenarios::test_6954);
     REGISTER_TEST(GUITest_regression_scenarios::test_6959);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6960);
     REGISTER_TEST(GUITest_regression_scenarios::test_6966);
     REGISTER_TEST(GUITest_regression_scenarios::test_6968);
     REGISTER_TEST(GUITest_regression_scenarios::test_6971);
@@ -1728,6 +1732,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6990_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6990_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6995);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_7014);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2337,6 +2343,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0083);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0090);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0091);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0092);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_1);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0093_2);
 
     /////////////////////////////////////////////////////////////////////////
     // Common align sequences to an alignment
@@ -2387,6 +2397,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0006);
+
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/tree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
@@ -2999,6 +3014,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
 
     /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/extract_consensus
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_assembly_extract_consensus::test_0001_single_input);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::test_0002_multiple_input);
+    REGISTER_TEST(GUITest_assembly_extract_consensus::test_0003_wrong_input);
+
+    /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Assembling/sam
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_SAM::test_0002);
@@ -3116,6 +3138,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0004, minutes(20), labels({Cistrome, Linux}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome, Linux, Windows, MacOS}));
+    REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0007);
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0008, minutes(7), labels({Cistrome, Windows, Linux, MacOS}));
+    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0009, labels({Nightly, Cistrome, Windows, Linux, MacOS}));
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0010, minutes(7), labels({Cistrome, Linux, MacOS}));
+    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0011, labels({Nightly, Cistrome, Linux, MacOS}));
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
     /////////////////////////////////////////////////////////////////////////
