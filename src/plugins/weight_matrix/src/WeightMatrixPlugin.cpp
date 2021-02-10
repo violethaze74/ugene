@@ -114,7 +114,7 @@ void WeightMatrixADVContext::sl_search() {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     QObjectScopedPointer<PWMSearchDialogController> d = new PWMSearchDialogController(seqCtx, av->getWidget());
     d->exec();

@@ -125,7 +125,7 @@ void SiteconADVContext::sl_search() {
     GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
 
-    ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     QObjectScopedPointer<SiteconSearchDialogController> d = new SiteconSearchDialogController(seqCtx, av->getWidget());
     d->exec();
