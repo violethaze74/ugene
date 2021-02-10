@@ -21,6 +21,7 @@
 
 #include "GTTestsNiaidPipelines.h"
 #include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
@@ -48,6 +49,7 @@
 #include "primitives/GTMenu.h"
 #include "primitives/GTToolbar.h"
 #include "primitives/PopupChooser.h"
+#include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -174,8 +176,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     class ChIPSeqAnalysisWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "Treatment FASTQ widget");
             QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Control FASTQ widget");
             GTLineEdit::setText(os, lineEdit1, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/chr4.bed").absoluteFilePath());
@@ -221,8 +221,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
             
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
@@ -249,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Single-end
+    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Paired-end
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
     //3. Click "Next" several times and "Run"
     //4. Wait for workflow finished
@@ -258,8 +256,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
             QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
 
@@ -366,6 +362,212 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                             out.size() == 2;
     CHECK_SET_ERR(checkOutputFiles,
         "Expected two output files, but one or both are missing or there is an unexpected file")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Skip mapping
+    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+    class RawRNASeqDataProcessingWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
+
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList() << "Single-end" << "Skip mapping"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw RNA-Seq Data Processing Wizard", new RawRNASeqDataProcessingWizard()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw RNA-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Skip mapping
+    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+    class RawRNASeqDataProcessingWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
+            QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
+
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit11, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList() << "Paired-end"
+                                                                                                                              << "Skip mapping"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw RNA-Seq Data Processing Wizard", new RawRNASeqDataProcessingWizard()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw RNA-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0010) {
+    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Include mapping with tophat
+    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    //3. Click "Next" two times
+    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    //5. Click "Next" several times and "Run"
+    //6. Wait for workflow finished
+    //Expected state: no errors
+    class RawRNASeqDataProcessingWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override  {
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
+
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index folder widget");
+            QLineEdit *lineEdit3 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index basename widget");
+
+            GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/bowtie/index").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit3, "e_coli");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList() << "Single-end" << "Include mapping with TopHat"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw RNA-Seq Data Processing Wizard", new RawRNASeqDataProcessingWizard()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw RNA-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Include mapping with tophat
+    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    //3. Click "Next" two times
+    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    //5. Click "Next" several times and "Run"
+    //6. Wait for workflow finished
+    //Expected state: no errors
+    class RawRNASeqDataProcessingWizard : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
+            QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
+
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit11, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index folder widget");
+            QLineEdit *lineEdit3 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index basename widget");
+
+            GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/bowtie/index").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit3, "e_coli");
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw RNA-Seq Data Processing", QStringList() << "Paired-end"
+                                                                                                                              << "Include mapping with TopHat"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw RNA-Seq Data Processing Wizard", new RawRNASeqDataProcessingWizard()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw RNA-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0012) {
+    //1. Click Tools -> NGS data analysis -> RNA-Seq data analysis...
+    //2. Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq" as FASTQ file 1
+    //3. Message box about paired reads appears. Click Yes in it
+    //4. Click "Next". Select ILLUMINACLIP as Trimming steps
+    //5. Click "Next". Set "_common_data/cmdline/tuxedo_pipeline/data/test_0004/NC_010473.fa" as reference genome
+    //6. Click "Next" two times and "Run"
+    //7. Wait for workflow finished
+    //Expected state: no errors in log and dashboard
+    class RnaSeqAnalysisWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+
+            // Input fastq
+            QList<QToolButton *> addFastq = dialog->findChildren<QToolButton *>("addFileButton");
+            CHECK_SET_ERR(addFastq.size() == 2, "Add file button not found")
+            const QString fastq = QFileInfo(testDir + "_common_data/cmdline/tuxedo_pipeline/data/test_0004/fastq1/exp_1_1.fastq").absoluteFilePath();
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, fastq));
+            GTWidget::click(os, addFastq.at(1));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            // Trimming steps wizard filling
+            using TrimmomaticAddSettings = QPair<TrimmomaticDialogFiller::TrimmomaticSteps, QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant>>;
+            QList<TrimmomaticAddSettings> steps;
+            QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> illuminaclip = {{TrimmomaticDialogFiller::TrimmomaticValues::AdapterSequence, dataDir + "adapters/illumina/TruSeq3-SE.fa"},
+                                                                                       {TrimmomaticDialogFiller::TrimmomaticValues::SeedMismatches, "2"},
+                                                                                       {TrimmomaticDialogFiller::TrimmomaticValues::PalindromeClipThreshold, "30"},
+                                                                                       {TrimmomaticDialogFiller::TrimmomaticValues::SimpleClipThreshold, "10"}};
+            steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::ILLUMINACLIP, illuminaclip));
+            TrimmomaticDialogFiller *trimmomaticFiller = new TrimmomaticDialogFiller(os, steps);
+            GTUtilsDialog::waitForDialog(os, trimmomaticFiller);
+
+            const auto trimmProperty = GTWidget::findExactWidget<QToolButton *>(os, "trimmomaticPropertyToolButton");
+            GTWidget::click(os, trimmProperty);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            // Reference fasta
+            QLineEdit *leReference = GTWidget::findExactWidget<QLineEdit *>(os, "Reference genome widget");
+            const QString ref = QFileInfo(testDir + "_common_data/cmdline/tuxedo_pipeline/data/test_0004/NC_010473.fa").absoluteFilePath();
+            GTLineEdit::setText(os, leReference, ref);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    const GTLogTracer lt;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "RNA-Seq Analysis with TopHat and StringTie", new RnaSeqAnalysisWizardScenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "RNA-Seq data analysis...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
+                  "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 }    // namespace GUITest_common_scenarios_NIAID_pipelines

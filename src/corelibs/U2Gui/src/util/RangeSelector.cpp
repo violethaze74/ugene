@@ -244,6 +244,7 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget *_parent, const QVector<U2R
 }
 
 MultipleRangeSelector::~MultipleRangeSelector() {
+    delete ui->multipleRegionEdit->validator();
     delete ui;
 }
 

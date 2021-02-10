@@ -93,10 +93,8 @@ extern "C" Q_DECL_EXPORT QString *U2_PLUGIN_FAIL_MASSAGE_FUNC() {
 BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules.")) {
     // Init plugin view context
-    if (BioStruct3DGLWidget::canRender()) {
-        viewContext = new BioStruct3DViewContext(this);
-        viewContext->init();
-    }
+    viewContext = new BioStruct3DViewContext(this);
+    viewContext->init();
 }
 
 BioStruct3DViewPlugin::~BioStruct3DViewPlugin() {
@@ -107,7 +105,7 @@ BioStruct3DViewContext::BioStruct3DViewContext(QObject *p)
 
 void BioStruct3DViewContext::initViewContext(GObjectView *v) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
-    U2SequenceObject *dna = av->getSequenceInFocus()->getSequenceObject();
+    U2SequenceObject *dna = av->getActiveSequenceContext()->getSequenceObject();
 
     QList<GObject *> allBiostructs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
     QList<GObject *> targetBiostructs = GObjectUtils::findObjectsRelatedToObjectByRole(dna,

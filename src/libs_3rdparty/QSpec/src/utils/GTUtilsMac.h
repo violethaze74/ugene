@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
-#define _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#ifndef _HI_GT_UTILS_MAC_H_
+#define _HI_GT_UTILS_MAC_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <QProcess>
 
-namespace U2 {
+#include "GTGlobals.h"
 
-namespace GUITest_regression_scenarios {
+namespace HI {
 
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_regression_scenarios"
+class HI_EXPORT GTUtilsMac {
 
-GUI_TEST_CLASS_DECLARATION(test_7003)
-GUI_TEST_CLASS_DECLARATION(test_7014)
-GUI_TEST_CLASS_DECLARATION(test_7022)
+public:
+    GTUtilsMac();
+    ~GTUtilsMac();
 
-#undef GUI_TEST_SUITE
+    void startWorkaroundForMacCGEvents(int delay, bool waitFinished);
 
-}    // namespace GUITest_regression_scenarios
+private:
+    QProcess *process = nullptr;
 
-}    // namespace U2
+};
 
-#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+}    // namespace HI
+
+#endif // _HI_GT_UTILS_MAC_H_

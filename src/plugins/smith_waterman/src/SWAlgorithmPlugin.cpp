@@ -161,7 +161,7 @@ void SWAlgorithmADVContext::sl_search() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     assert(av != NULL);
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     SmithWatermanDialogController::run(av->getWidget(), seqCtx, &dialogConfig);
 }
 

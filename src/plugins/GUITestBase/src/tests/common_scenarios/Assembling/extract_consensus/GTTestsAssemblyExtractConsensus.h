@@ -19,26 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
-#define _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#ifndef _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
+#define _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
 
 #include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_regression_scenarios {
+namespace GUITest_assembly_extract_consensus {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_assembly_extract_consensus"
+
+GUI_TEST_CLASS_DECLARATION(test_0001_single_input)
+GUI_TEST_CLASS_DECLARATION(test_0002_multiple_input)
+GUI_TEST_CLASS_DECLARATION(test_0003_wrong_input)
 
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_regression_scenarios"
-
-GUI_TEST_CLASS_DECLARATION(test_7003)
-GUI_TEST_CLASS_DECLARATION(test_7014)
-GUI_TEST_CLASS_DECLARATION(test_7022)
-
-#undef GUI_TEST_SUITE
-
-}    // namespace GUITest_regression_scenarios
+}    // namespace GUITest_assembly_extract_consensus
 
 }    // namespace U2
 
-#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#endif    // _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_

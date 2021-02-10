@@ -100,8 +100,8 @@ private slots:
     void sl_loadPatternTaskStateChanged();
     void sl_findPatternTaskStateChanged();
 
-    /** Another sequence has been selected */
-    void sl_onFocusChanged(ADVSequenceWidget *, ADVSequenceWidget *);
+    /** Stops track the old sequence and attaches to the new one. */
+    void sl_onActiveSequenceChanged();
 
     /** A sequence part was added, removed or replaced */
     void sl_onSequenceModified();

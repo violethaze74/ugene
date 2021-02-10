@@ -19,26 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
-#define _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#ifndef GTTESTS_WORKFLOW_SAMPLES_H_
+#define GTTESTS_WORKFLOW_SAMPLES_H_
 
 #include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_regression_scenarios {
+namespace GUITest_common_scenarios_workflow_samples {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_workflow_samples"
+
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_regression_scenarios"
-
-GUI_TEST_CLASS_DECLARATION(test_7003)
-GUI_TEST_CLASS_DECLARATION(test_7014)
-GUI_TEST_CLASS_DECLARATION(test_7022)
-
-#undef GUI_TEST_SUITE
-
-}    // namespace GUITest_regression_scenarios
+}    // namespace GUITest_common_scenarios_workflow_samples
 
 }    // namespace U2
 
-#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#endif    // GTTESTS_WORKFLOW_SAMPLES_H_
