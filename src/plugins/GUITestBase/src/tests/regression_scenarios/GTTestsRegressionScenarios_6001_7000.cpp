@@ -6835,7 +6835,6 @@ GUI_TEST_CLASS_DEFINITION(test_6999) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::StandardButton::Ok));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", projectPath));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -6846,10 +6845,8 @@ GUI_TEST_CLASS_DEFINITION(test_6999) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
 
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-
-    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 }    // namespace GUITest_regression_scenarios
