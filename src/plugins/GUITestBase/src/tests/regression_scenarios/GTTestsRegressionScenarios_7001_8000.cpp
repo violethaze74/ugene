@@ -123,6 +123,40 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
                                                  << "seqA";
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_7045) {
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "COI_subalign.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select 's1'.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "s1");
+
+    // Copy (CTRL C) and Paste (CTRL V) -> new 's1_1' sequence appears.
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Switch collapsing mode on -> 2 collapsed groups: 's1' and' Mecopoda_elongata_Ishigaki_J' are on the screen.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Select 's1'.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "s1");
+
+    // Call Export -> Save subalignment context menu.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state : new alignment where s1, s1_1 and s2 are present.
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList expectedNameList = QStringList() << "s1"
+                                                 << "s1_1"
+                                                 << "s2";
+    CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
