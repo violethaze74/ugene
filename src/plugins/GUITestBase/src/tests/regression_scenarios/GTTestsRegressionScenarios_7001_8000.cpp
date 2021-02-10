@@ -75,8 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckPythonInvalidation()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+                                                << "Preferences...", GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
