@@ -165,7 +165,7 @@ void uHMMPlugin::sl_search() {
             GObjectView* ov = ow->getObjectView();
             AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(ov);
             if (av!=NULL) {
-                seqCtx = av->getSequenceInFocus();
+                seqCtx = av->getActiveSequenceContext();
                 obj = seqCtx->getSequenceObject();
             }
         }
@@ -262,7 +262,7 @@ void HMMADVContext::sl_search() {
     }else{
         p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     }
-    ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     if(seqCtx == NULL) {
         QMessageBox::critical(p, tr("Error"), tr("No sequences found"));
         return;

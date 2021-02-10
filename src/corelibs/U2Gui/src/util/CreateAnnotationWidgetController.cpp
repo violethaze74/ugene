@@ -128,6 +128,10 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
     connect(occ, SIGNAL(si_comboBoxChanged()), SLOT(sl_documentsComboUpdated()));
 }
 
+CreateAnnotationWidgetController::~CreateAnnotationWidgetController() {
+    // Do not remove the empty destructor because https://doc.qt.io/qt-5/qscopedpointer.html#forward-declared-pointers
+}
+
 void CreateAnnotationWidgetController::updateWidgetForAnnotationModel(const CreateAnnotationModel &newModel) {
     SAFE_POINT(newModel.sequenceObjectRef.isValid(),
                "Internal error: incorrect sequence object reference was supplied"
@@ -313,7 +317,7 @@ void CreateAnnotationWidgetController::updateModel(bool forValidation) {
 void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetController::AnnotationWidgetMode layoutMode) {
     switch (layoutMode) {
     case Full:
-        w = new CreateAnnotationFullWidget();
+        w = new CreateAnnotationFullWidget(model.sequenceLen);
         break;
     case Normal:
         w = new CreateAnnotationNormalWidget();
@@ -322,7 +326,7 @@ void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetContro
         w = new CreateAnnotationOptionsPanelWidget();
         break;
     default:
-        w = NULL;
+        w = nullptr;
         FAIL("Unexpected widget type", );
     }
 }

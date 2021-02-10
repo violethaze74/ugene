@@ -56,7 +56,9 @@ public:
 public slots:
     void sl_setVisible();
     void sl_setAminoTranslation();
-    void sl_onSequenceFocusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
+
+    /** Updates amino translation to match the new active sequence translation. */
+    void sl_onActiveSequenceChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
 
 private:
     QTableWidget *table;
