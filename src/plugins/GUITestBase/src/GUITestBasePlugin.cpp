@@ -212,8 +212,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
-    /*  REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0038);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
+/*  REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
@@ -223,7 +222,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1548);
     REGISTER_TEST(GUITest_regression_scenarios::test_3276);*/
 
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
+    
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
@@ -2742,7 +2741,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0035);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0036);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0037);
-
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0038);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0039);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0040);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0041);
