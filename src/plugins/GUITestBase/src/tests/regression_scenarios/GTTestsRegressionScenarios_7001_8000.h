@@ -32,6 +32,7 @@ namespace GUITest_regression_scenarios {
 #define GUI_TEST_SUITE "GUITest_regression_scenarios"
 
 GUI_TEST_CLASS_DECLARATION(test_7014)
+GUI_TEST_CLASS_DECLARATION(test_7043)
 
 #undef GUI_TEST_SUITE
 
