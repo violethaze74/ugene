@@ -41,6 +41,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/ProjectModel.h>
@@ -334,7 +335,7 @@ void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetContro
 QString CreateAnnotationWidgetController::defaultDir() {
     QString dir = AppContext::getSettings()->getValue(SETTINGS_LASTDIR, QString(""), true).toString();
     if (dir.isEmpty() || !QDir(dir).exists()) {
-        dir = QDir::homePath();
+        dir = GUrlUtils::getDefaultDataPath();
         Project *prj = AppContext::getProject();
         if (prj != NULL) {
             const QString &prjUrl = prj->getProjectURL();
