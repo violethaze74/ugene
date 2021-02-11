@@ -86,7 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
     bool isPicture = colors.size() > 100; // Usually 875 colors are drawn for 1CF7.pdb
 
     auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
-    bool isError = errorLbl.size() == 1;
+    bool isError = errorLbl.size() > 0;
 
     // There must be one thing: either a picture or an error
     CHECK_SET_ERR(isPicture != isError, "Biostruct was not drawn or error label wasn't displayed");
