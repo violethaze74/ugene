@@ -848,7 +848,7 @@ GUI_TEST_CLASS_DEFINITION(test_2100_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Click toolbutton "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
@@ -870,7 +870,7 @@ GUI_TEST_CLASS_DEFINITION(test_2100_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Click toolbutton "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //3. Select Mecopoda_sp.__Malaysia_
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Mecopoda_sp.__Malaysia_"));
@@ -1927,7 +1927,7 @@ GUI_TEST_CLASS_DEFINITION(test_2284) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Press the "Switch on/off collapsing" button
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
@@ -1955,7 +1955,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click the "Switch on/off collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     //    Expected state: Collapsed mode is switched on, there are one collapsed group.
     int visableNamesNum = GTUtilsMSAEditorSequenceArea::getVisibleNames(os).count();
     CHECK_SET_ERR(visableNamesNum == 17,
@@ -1990,7 +1990,7 @@ GUI_TEST_CLASS_DEFINITION(test_2306) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Turn on collapsing mode in MSA
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ are collapsed
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Mecopoda_elongata__Sumatra_")),
