@@ -266,10 +266,14 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
         mdiManager->addMDIWindow(w);
         return;
     }
-    auto treeViewer = dynamic_cast<MSAEditorTreeViewer *>(createTreeViewerTask->getTreeViewer());
-    SAFE_POINT(treeViewer != nullptr, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
-    auto viewWindow = new GObjectViewWindow(createTreeViewerTask->getTreeViewer(), editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
 
+    auto treeViewer = qobject_cast<MSAEditorTreeViewer *>(createTreeViewerTask->getTreeViewer());
+    SAFE_POINT(treeViewer != nullptr, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
+
+    //TODO: pass MSA editor to the constructor of MSAEditorTreeViewer and avoid extra state when MSAEditorTreeViewer has no msaEditor assigned.
+    treeViewer->setMSAEditor(editor);
+
+    auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
     connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow *)), this, SLOT(sl_onWindowClosed(GObjectViewWindow *)));
 
     MsaEditorWgt *msaUI = editor->getUI();
@@ -280,9 +284,8 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
         treeViewer->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
     }
 
-    treeViewer->setMSAEditor(editor);
     if (settings.syncAlignmentWithTree) {
-        treeViewer->sync();
+        treeViewer->enableSyncMode();
     }
 
     connect(treeViewer, SIGNAL(si_refreshTree(MSAEditorTreeViewer *)), SLOT(sl_refreshTree(MSAEditorTreeViewer *)));

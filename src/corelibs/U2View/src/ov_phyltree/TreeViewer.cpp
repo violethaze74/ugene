@@ -1592,4 +1592,8 @@ bool TreeViewerUI::isOnlyLeafSelected() const {
     return selectedItems == 2;
 }
 
+GraphicsBranchItem *TreeViewerUI::getRoot() const{
+    return root;
+}
+
 }    // namespace U2

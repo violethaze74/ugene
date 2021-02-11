@@ -58,11 +58,6 @@ private:
     qreal lightness;
 };
 
-enum SynchronizationMode {
-    FullSynchronization,
-    WithoutSynchronization
-};
-
 class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
@@ -84,41 +79,87 @@ public:
     }
 
     QAction *getSortSeqsAction() const {
-        return sortSeqAction;
+        return syncModeAction;
     }
 
-    bool sync();
-    void desync();
-    bool isSynchronized() const;
+    /**
+     * Enables Tree & MSA synchronization. See 'syncModeAction' for the details about the sync mode.
+     * Returns true if the enableSyncMode mode is enabled or false if it can't be enabled.
+     * The 'sync' mode may not be enabled if the msa sequence list does not match tree branches anymore.
+     */
+    bool enableSyncMode();
+
+    /** Disables Tree&MSA synchronization. See 'syncModeAction' for the details about the sync mode. */
+    void disableSyncMode();
+
+    /** Returns true if Tree and MSA are in 'sync' mode. */
+    bool isSyncModeEnabled() const;
 
     void setMSAEditor(MSAEditor *newEditor);
+
     MSAEditor *getMsaEditor() const;
+
+    /** Updates order of sequences and collapsed group states in the alignment using the tree state as the reference. */
+    void orderAlignmentByTree();
 
 protected:
     virtual QWidget *createWidget();
 
 private slots:
+
+    /** A callback for 'syncModeAction'. Enables or disables 'sync' mode based on the 'syncModeAction' checked state. */
+    void sl_syncModeActionTriggered();
+
     void sl_refreshTree();
 
-    void sl_stopTracking();
-    void sl_startTracking(bool changed);
-    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+    /** Callback on alignment change. Disables sync mode if needed. See 'syncModeAction' for details. */
+    void sl_alignmentChanged();
+
+    /** Callback on alignment collapse model change. Disables sync mode if needed. See 'syncModeAction' for details. */
+    void sl_alignmentCollapseModelChanged();
 
 signals:
     void si_refreshTree(MSAEditorTreeViewer *treeViewer);
 
 private:
-    void connectSignals();
-    void disconnectSignals();
+    /** Update internal state of the syncModeAction: text, icon, checked state. */
+    void updateSyncModeActionState(bool isSyncModeOn);
 
+    /** Checks if Tree and MSA name lists are synchronized: use the same order & collapse states. */
+    bool checkTreeAndMsaNameListsAreSynchronized() const;
+
+    /** Checks if Tree and MSA can be synchronized. When there is no way to sync Tree & MSA the 'syncModeAction' is disabled. */
+    bool checkTreeAndMsaCanBeSynchronized() const;
+
+    /** Checks if Tree & MSA are topologically synchronized and if not disables 'sync' mode. */
+    void disableSyncModeIfTreeAndMsaContentIsNotInSync();
+
+    /** Re-calculates the tree using originally used parameters & the current MSA state. */
     QAction *refreshTreeAction;
-    QAction *sortSeqAction;
+
+    /**
+     * Sync mode action is used to enable or disable 'sync' mode between Tree & MSA view.
+     *
+     * When sync mode is enabled:
+     *  - The order of sequences in MSA follows the order of sequences in the Tree.
+     *  - When a tree branch is collapsed/expanded the same transformation is done for the MSA list.
+     *
+     * The sync mode is automatically disabled on the following modifications from the MSA side:
+     *  - A sequence is modified/renamed.
+     *  - New sequences added/removed from MSA.
+     *  - Order of sequences or grouping (collapsing) mode changed not by the Tree.
+     *
+     * The sync mode between the Tree and MSA can be re-enabled using this action if the Tree and MSA have the same number of sequences matched by name.
+     *
+     * States of the action:
+     *  - Enabled: the sync mode is possible. Use 'isChecked' if the sync mode is ON or OFF.
+     *  - Checked: the sync mode is ON. Note: the action can't be checked in the disabled state.
+     */
+    QAction *syncModeAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
     MSAEditor *editor;
-    SynchronizationMode syncMode;
-    bool slotsAreConnected;
-    MaModificationInfo cachedModification;
+    MSAEditorTreeViewerUI *msaTreeViewerUi;
 };
 
 class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
@@ -131,9 +172,9 @@ public:
         emit si_groupColorsChanged(GroupColorSchema());
     }
 
-    bool canSynchronizeWithMSA(MSAEditor *msa);
+    /** Update tree sub-widgets state to match the current enableSyncMode mode. */
+    void updateSyncModeState(bool isSyncModeOn);
 
-    void setSynchronizeMode(SynchronizationMode syncMode);
     bool isCurTreeViewerSynchronized() const;
 
     void highlightBranches();
@@ -142,7 +183,7 @@ public:
      * Return virtual grouping state for MSA that corresponds to the current tree state.
      * All sequences are ordered by 'y' position. All collapsed branches are mapped to the virtual groups.
      */
-    QList<QStringList> getGroupingStateForMsa(const GraphicsBranchItem *root) const;
+    QList<QStringList> getGroupingStateForMsa() const;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
@@ -157,14 +198,10 @@ protected:
     virtual void setTreeLayout(TreeLayout newLayout);
 
 signals:
-    void si_collapseModelChangedInTree(const QList<QStringList> &);
     void si_groupColorsChanged(const GroupColorSchema &schema);
     void si_zoomIn();
     void si_zoomOut();
     void si_resetZooming();
-
-public slots:
-    void sl_sortAlignment();
 
 protected slots:
     void sl_zoomToAll();
@@ -190,13 +227,9 @@ private:
 
     bool isRectangularLayout;
 
-    MSAEditorTreeViewer *curMSATreeViewer;
-    SynchronizationMode syncMode;
+    MSAEditorTreeViewer *const msaEditorTreeViewer;
 
     QTransform rectangularTransform;
-
-    bool hasMinSize;
-    bool hasMaxSize;
 };
 
 class MSAEditorTreeViewerUtils {

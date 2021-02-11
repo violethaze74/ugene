@@ -28,9 +28,7 @@
 #include <QStack>
 #include <QVBoxLayout>
 
-#include <U2Core/AppContext.h>
 #include <U2Core/PhyTree.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -47,27 +45,30 @@ namespace U2 {
 MSAEditorTreeViewer::MSAEditorTreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *_root, qreal s)
     : TreeViewer(viewName, obj, _root, s),
       refreshTreeAction(nullptr),
-      sortSeqAction(nullptr),
+      syncModeAction(nullptr),
       editor(nullptr),
-      syncMode(WithoutSynchronization),
-      slotsAreConnected(false) {
+      msaTreeViewerUi(nullptr) {
 }
 
 QWidget *MSAEditorTreeViewer::createWidget() {
     SAFE_POINT(ui == nullptr, QString("MSAEditorTreeViewer::createWidget error"), nullptr);
+    SAFE_POINT(editor != nullptr, "MSAEditor must be set in createWidget!", nullptr);
 
     auto view = new QWidget();
     view->setObjectName("msa_editor_tree_view_container_widget");
 
     auto viewLayout = new QVBoxLayout();
-    ui = new MSAEditorTreeViewerUI(this);
+    msaTreeViewerUi = new MSAEditorTreeViewerUI(this);
+    ui = msaTreeViewerUi;
 
     auto toolBar = new QToolBar(tr("MSAEditor tree toolbar"));
     buildMSAEditorStaticToolbar(toolBar);
 
-    sortSeqAction = new QAction(QIcon(":core/images/sort_ascending.png"), tr("Sort alignment by tree"), ui);
-    sortSeqAction->setObjectName("Sort Alignment");
-    connect(sortSeqAction, SIGNAL(triggered()), ui, SLOT(sl_sortAlignment()));
+    syncModeAction = new QAction(ui);
+    syncModeAction->setCheckable(true);
+    syncModeAction->setObjectName("sync_msa_action");
+    updateSyncModeActionState(false);
+    connect(syncModeAction, SIGNAL(triggered()), SLOT(sl_syncModeActionTriggered()));
 
     refreshTreeAction = new QAction(QIcon(":core/images/refresh.png"), tr("Refresh tree"), ui);
     refreshTreeAction->setObjectName("Refresh tree");
@@ -76,7 +77,7 @@ QWidget *MSAEditorTreeViewer::createWidget() {
 
     toolBar->addSeparator();
     toolBar->addAction(refreshTreeAction);
-    toolBar->addAction(sortSeqAction);
+    toolBar->addAction(syncModeAction);
 
     viewLayout->setSpacing(0);
     viewLayout->setMargin(0);
@@ -84,16 +85,43 @@ QWidget *MSAEditorTreeViewer::createWidget() {
     viewLayout->addWidget(ui);
     view->setLayout(viewLayout);
 
-    return view;
-}
-
-void MSAEditorTreeViewer::setMSAEditor(MSAEditor *newEditor) {
-    editor = newEditor;
-    CHECK(editor != nullptr, );
-
     connect(ui, SIGNAL(si_zoomIn()), editor, SLOT(sl_zoomIn()));
     connect(ui, SIGNAL(si_zoomOut()), editor, SLOT(sl_zoomOut()));
     connect(ui, SIGNAL(si_resetZooming()), editor, SLOT(sl_resetZoom()));
+
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), msaTreeViewerUi, SLOT(sl_onReferenceSeqChanged(qint64)));
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged()));
+
+    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    connect(collapseModel, SIGNAL(si_toggled()), this, SLOT(sl_alignmentCollapseModelChanged()));
+
+    MSAEditorSequenceArea *msaSequenceArea = editor->getUI()->getSequenceArea();
+    connect(msaSequenceArea, SIGNAL(si_visibleRangeChanged(QStringList, int)), msaTreeViewerUi, SLOT(sl_onVisibleRangeChanged(QStringList, int)));
+    connect(msaSequenceArea, SIGNAL(si_selectionChanged(const QStringList &)), msaTreeViewerUi, SLOT(sl_selectionChanged(const QStringList &)));
+
+    MaEditorNameList *msaNameList = editor->getUI()->getEditorNameList();
+    connect(msaTreeViewerUi, SIGNAL(si_groupColorsChanged(const GroupColorSchema &)), msaNameList, SLOT(sl_onGroupColorsChanged(const GroupColorSchema &)));
+    connect(msaNameList, SIGNAL(si_sequenceNameChanged(QString, QString)), msaTreeViewerUi, SLOT(sl_sequenceNameChanged(QString, QString)));
+
+    return view;
+}
+
+void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
+    bool isEnabled = editor == nullptr ? false : checkTreeAndMsaCanBeSynchronized();
+    syncModeAction->setEnabled(isEnabled);
+
+    bool isChecked = isEnabled && isSyncModeOn;    // Override 'isSyncModeOn' with a safer option.
+    syncModeAction->setChecked(isChecked);
+    syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
+    syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
+
+    msaTreeViewerUi->updateSyncModeState(true);
+}
+
+void MSAEditorTreeViewer::setMSAEditor(MSAEditor *newEditor) {
+    SAFE_POINT(newEditor != nullptr, "MSAEditor can't be null!", );
+    SAFE_POINT(editor == nullptr, "MSAEditor can't be set twice!", );
+    editor = newEditor;
 }
 
 MSAEditor *MSAEditorTreeViewer::getMsaEditor() const {
@@ -109,26 +137,14 @@ void MSAEditorTreeViewer::sl_refreshTree() {
     emit si_refreshTree(this);
 }
 
-bool MSAEditorTreeViewer::sync() {
-    CHECK(editor != nullptr, false);
-    MSAEditorTreeViewerUI *treeViewerUI = qobject_cast<MSAEditorTreeViewerUI *>(ui);
-    CHECK(treeViewerUI != nullptr, false);
-    if (!treeViewerUI->canSynchronizeWithMSA(editor)) {
+bool MSAEditorTreeViewer::enableSyncMode() {
+    if (!checkTreeAndMsaCanBeSynchronized()) {
+        updateSyncModeActionState(false);
         return false;
     }
-
-    syncMode = FullSynchronization;
-    treeViewerUI->setSynchronizeMode(syncMode);
-
-    CHECK(editor != nullptr, false);
-    MsaEditorWgt *msaUI = editor->getUI();
-    connect(msaUI->editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged(MultipleAlignment, MaModificationInfo)));
-    connect(msaUI, SIGNAL(si_stopMaChanging(bool)), this, SLOT(sl_startTracking(bool)));
-
-    connectSignals();
-    sortSeqAction->setEnabled(true);
-    treeViewerUI->sl_sortAlignment();
-    treeViewerUI->highlightBranches();
+    orderAlignmentByTree();
+    msaTreeViewerUi->highlightBranches();
+    updateSyncModeActionState(true);
 
     // Trigger si_visibleRangeChanged that will make tree widget update geometry to the correct scale. TODO: create a better API for this.
     editor->getUI()->getSequenceArea()->onVisibleRangeChanged();
@@ -136,161 +152,86 @@ bool MSAEditorTreeViewer::sync() {
     return true;
 }
 
-void MSAEditorTreeViewer::desync() {
-    disconnectSignals();
+void MSAEditorTreeViewer::disableSyncMode() {
+    MaEditorNameList *msaNameList = editor->getUI()->getEditorNameList();
+    msaNameList->clearGroupsSelections();
+    msaNameList->update();
 
-    CHECK(editor != nullptr, );
-    MsaEditorWgt *msaUI = editor->getUI();
-    CHECK(msaUI != nullptr, );
-
-    msaUI->getEditorNameList()->clearGroupsSelections();
-    msaUI->getEditorNameList()->update();
-
-    syncMode = WithoutSynchronization;
-    MSAEditorTreeViewerUI *treeViewerUI = qobject_cast<MSAEditorTreeViewerUI *>(ui);
-    treeViewerUI->setSynchronizeMode(syncMode);
-    sortSeqAction->setEnabled(false);
+    updateSyncModeActionState(false);
 }
 
-bool MSAEditorTreeViewer::isSynchronized() const {
-    return syncMode == FullSynchronization;
+bool MSAEditorTreeViewer::isSyncModeEnabled() const {
+    return syncModeAction->isChecked();
 }
 
-void MSAEditorTreeViewer::connectSignals() {
-    CHECK(!slotsAreConnected, );
-    CHECK(editor != nullptr, );
-
-    MsaEditorWgt *msaUI = editor->getUI();
-    CHECK(msaUI != nullptr, );
-
-    auto treeViewerUI = qobject_cast<MSAEditorTreeViewerUI *>(ui);
-    CHECK(treeViewerUI != nullptr, );
-
-    connect(msaUI, SIGNAL(si_startMaChanging()), this, SLOT(sl_stopTracking()));
-
-    connect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setVirtualGroupingMode(const QList<QStringList> &)));
-    connect(treeViewerUI, SIGNAL(si_groupColorsChanged(const GroupColorSchema &)), msaUI->getEditorNameList(), SLOT(sl_onGroupColorsChanged(const GroupColorSchema &)));
-
-    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), treeViewerUI, SLOT(sl_onReferenceSeqChanged(qint64)));
-    connect(msaUI->getSequenceArea(), SIGNAL(si_visibleRangeChanged(QStringList, int)), treeViewerUI, SLOT(sl_onVisibleRangeChanged(QStringList, int)));
-
-    connect(msaUI->getSequenceArea(), SIGNAL(si_selectionChanged(const QStringList &)), treeViewerUI, SLOT(sl_selectionChanged(const QStringList &)));
-    connect(msaUI->getEditorNameList(), SIGNAL(si_sequenceNameChanged(QString, QString)), treeViewerUI, SLOT(sl_sequenceNameChanged(QString, QString)));
-
-    slotsAreConnected = true;
+void MSAEditorTreeViewer::sl_alignmentChanged() {
+    disableSyncModeIfTreeAndMsaContentIsNotInSync();
 }
 
-void MSAEditorTreeViewer::disconnectSignals() {
-    CHECK(slotsAreConnected, );
-    CHECK(editor != nullptr, );
-
-    MsaEditorWgt *msaUI = editor->getUI();
-    CHECK(msaUI != nullptr, );
-
-    auto treeViewerUI = qobject_cast<MSAEditorTreeViewerUI *>(ui);
-    CHECK(treeViewerUI != nullptr, );
-
-    disconnect(msaUI, SIGNAL(si_startMaChanging()), this, SLOT(sl_stopTracking()));
-
-    disconnect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setVirtualGroupingMode(const QList<QStringList> &)));
-    disconnect(treeViewerUI, SIGNAL(si_groupColorsChanged(const GroupColorSchema &)), msaUI->getEditorNameList(), SLOT(sl_onGroupColorsChanged(const GroupColorSchema &)));
-
-    disconnect(editor, SIGNAL(si_referenceSeqChanged(qint64)), treeViewerUI, SLOT(sl_onReferenceSeqChanged(qint64)));
-    disconnect(msaUI->getSequenceArea(), SIGNAL(si_visibleRangeChanged(QStringList, int)), treeViewerUI, SLOT(sl_onVisibleRangeChanged(QStringList, int)));
-    disconnect(msaUI->getSequenceArea(), SIGNAL(si_selectionChanged(const QStringList &)), treeViewerUI, SLOT(sl_selectionChanged(const QStringList &)));
-    disconnect(msaUI->getEditorNameList(), SIGNAL(si_sequenceNameChanged(QString, QString)), treeViewerUI, SLOT(sl_sequenceNameChanged(QString, QString)));
-
-    slotsAreConnected = false;
+void MSAEditorTreeViewer::sl_alignmentCollapseModelChanged() {
+    disableSyncModeIfTreeAndMsaContentIsNotInSync();
 }
 
-void MSAEditorTreeViewer::sl_startTracking(bool changed) {
-    CHECK(editor != nullptr, );
-    MsaEditorWgt *msaUI = editor->getUI();
-
-    CHECK(msaUI != nullptr, );
-    disconnect(msaUI, SIGNAL(si_stopMaChanging(bool)), this, SLOT(sl_startTracking(bool)));
-
-    if (!changed) {
-        // alignment wasn't changed, the synchronization can remain
-        bool ok = sync();
-        if (!ok) {
-            desync();
-        }
-        SAFE_POINT(ok, "Cannot synchronize the tree with the alignment", );
-        return;
+void MSAEditorTreeViewer::disableSyncModeIfTreeAndMsaContentIsNotInSync() {
+    CHECK(isSyncModeEnabled(), );
+    if (!checkTreeAndMsaNameListsAreSynchronized()) {
+        // Disable sync mode if MSA modification breaks sync mode.
+        disableSyncMode();
     }
-    QObjectScopedPointer<QMessageBox> desyncQuestion = new QMessageBox(QMessageBox::Question,
-                                                                       tr("Alignment Modification Confirmation"),
-                                                                       tr("The alignment has been modified.\n\n"
-                                                                          "All phylogenetic tree(s), opened in the same view, "
-                                                                          "will be no more synchronized with the alignment."));
-    desyncQuestion->setInformativeText(tr("Do you want to confirm the modification?"));
-    desyncQuestion->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    desyncQuestion->button(QMessageBox::No)->setText(tr("Cancel"));
-    desyncQuestion->button(QMessageBox::Yes)->setText(tr("Confirm"));
-    desyncQuestion->setDefaultButton(QMessageBox::No);
-    desyncQuestion->setModal(true);
+}
 
-    int res = desyncQuestion->exec();
-    if (res == QMessageBox::No) {
-        // undo the change and synchronize
-        disconnect(msaUI->editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged(MultipleAlignment, MaModificationInfo)));
+bool MSAEditorTreeViewer::checkTreeAndMsaNameListsAreSynchronized() const {
+    QList<QStringList> groupStateGuidedByTree = msaTreeViewerUi->getGroupingStateForMsa();
+    QStringList treeNameList;    // The list of sequences names to compare with MSA state.
+    for (const QStringList &namesInGroup : qAsConst(groupStateGuidedByTree)) {
+        SAFE_POINT(namesInGroup.size() >= 1, "Group must have at least 1 sequence!", false);
+        treeNameList << namesInGroup[0];
+    }
+    const MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    int msaViewRowCount = collapseModel->getViewRowCount();
+    if (msaViewRowCount != treeNameList.size()) {
+        return false;
+    }
+    MultipleSequenceAlignmentObject *maObject = editor->getMaObject();
+    for (int viewRowIndex = 0; viewRowIndex < msaViewRowCount; viewRowIndex++) {
+        int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+        const MultipleAlignmentRow &row = maObject->getRow(maRowIndex);
+        QString msaRowSequenceName = row->getName();
+        if (msaRowSequenceName != treeNameList[viewRowIndex]) {
+            return false;
+        }
+    }
+    return true;
+}
 
-        if (cachedModification.type != MaModificationType_Undo) {
-            if (!msaUI->getUndoAction()->isEnabled()) {
-                desync();
-                FAIL("Processing the alignment change, but undo-redo stack is empty!", );
-            }
-            msaUI->getUndoAction()->trigger();
-        } else {
-            if (!msaUI->getRedoAction()->isEnabled()) {
-                desync();
-                FAIL("Processing the alignment change, but undo-redo stack is empty!", );
-            }
-            msaUI->getRedoAction()->trigger();
-        }
-        bool ok = sync();
-        if (!ok) {
-            desync();
-        }
-        SAFE_POINT(ok, "Cannot synchronize the tree with the alignment", );
+bool MSAEditorTreeViewer::checkTreeAndMsaCanBeSynchronized() const {
+    CHECK(msaTreeViewerUi->isRectangularLayoutMode(), false);    // Only 'rect' mode can be synchronized.
+
+    QStringList treeNameList;    // The list of sequences names in the tree.
+    QList<QStringList> groupStateGuidedByTree = msaTreeViewerUi->getGroupingStateForMsa();
+    for (const QStringList &namesInGroup : qAsConst(groupStateGuidedByTree)) {
+        treeNameList.append(namesInGroup);
+    }
+
+    QStringList msaSequenceNameList = editor->getMaObject()->getMsa()->getRowNames();    // The list of sequences names in the MSA.
+
+    // Check that 2 name lists are identical.
+    treeNameList.sort();
+    msaSequenceNameList.sort();
+    return treeNameList == msaSequenceNameList;
+}
+
+void MSAEditorTreeViewer::sl_syncModeActionTriggered() {
+    if (syncModeAction->isChecked()) {
+        enableSyncMode();
     } else {
-        // break the connection completely
-        desync();
+        disableSyncMode();
     }
 }
 
-void MSAEditorTreeViewer::sl_stopTracking() {
-    disconnectSignals();
-}
-
-void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment & /*ma*/, const MaModificationInfo &modInfo) {
-    cachedModification = modInfo;
-
-    bool connectionIsNotBrokenOnAlignmentChange = slotsAreConnected && (modInfo.rowContentChanged || modInfo.rowListChanged || modInfo.alignmentLengthChanged);
-    if (connectionIsNotBrokenOnAlignmentChange) {
-        // alignment was modified by undo-redo or outside of current msa editor
-        MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-        SAFE_POINT(mdiManager != nullptr, "MWMDIManager is NULL", );
-        auto objectViewWindow = qobject_cast<GObjectViewWindow *>(mdiManager->getActiveWindow());
-        if (objectViewWindow != nullptr) {
-            if (objectViewWindow->getObjectView() == editor) {
-                // undo-redo at the same window
-                disconnectSignals();
-                sl_startTracking(true);
-                return;
-            }
-        }
-
-        // the change outside the current msa editor detected -- desync the tree
-        CHECK(editor != nullptr, );
-        MsaEditorWgt *msaUI = editor->getUI();
-
-        CHECK(msaUI != nullptr, );
-        disconnect(msaUI->editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), this, SLOT(sl_alignmentChanged(MultipleAlignment, MaModificationInfo)));
-        disconnect(msaUI, SIGNAL(si_stopMaChanging(bool)), this, SLOT(sl_startTracking(bool)));
-        desync();
-    }
+void MSAEditorTreeViewer::orderAlignmentByTree() {
+    QList<QStringList> groupList = msaTreeViewerUi->getGroupingStateForMsa();
+    editor->getUI()->getSequenceArea()->sl_setVirtualGroupingMode(groupList);
 }
 
 //---------------------------------------------
@@ -298,7 +239,7 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment & /*ma*/, 
 //---------------------------------------------
 MSAEditorTreeViewerUI::MSAEditorTreeViewerUI(MSAEditorTreeViewer *treeViewer)
     : TreeViewerUI(treeViewer), subgroupSelectorPos(0.0), groupColors(1, 0.86), isRectangularLayout(true),
-      curMSATreeViewer(treeViewer), syncMode(WithoutSynchronization), hasMinSize(false), hasMaxSize(false) {
+      msaEditorTreeViewer(treeViewer) {
     connect(scene(), SIGNAL(sceneRectChanged(const QRectF &)), SLOT(sl_onSceneRectChanged(const QRectF &)));
 
     QRectF rect = scene()->sceneRect();
@@ -374,7 +315,7 @@ void MSAEditorTreeViewerUI::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void MSAEditorTreeViewerUI::wheelEvent(QWheelEvent *we) {
-    if (!isRectangularLayout || !curMSATreeViewer->isSynchronized()) {
+    if (!isRectangularLayout || !msaEditorTreeViewer->isSyncModeEnabled()) {
         TreeViewerUI::wheelEvent(we);
         return;
     }
@@ -427,6 +368,7 @@ void MSAEditorTreeViewerUI::sl_onSceneRectChanged(const QRectF &) {
 }
 
 void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList &selectedSequenceNameList) {
+    CHECK(msaEditorTreeViewer->isSyncModeEnabled(), );
     bool cleanSelection = true;
     QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : qAsConst(items)) {
@@ -448,35 +390,6 @@ void MSAEditorTreeViewerUI::sl_selectionChanged(const QStringList &selectedSeque
             branchItem->setSelectedRecurs(false, false);
         }
     }
-}
-
-bool MSAEditorTreeViewerUI::canSynchronizeWithMSA(MSAEditor *msa) {
-    if (!isRectangularLayout) {
-        return false;
-    }
-    QStringList seqsNames = msa->getMaObject()->getMultipleAlignment()->getRowNames();
-    QList<QGraphicsItem *> items = scene()->items();
-
-    int counter = 0;
-    for (QGraphicsItem *item : qAsConst(items)) {
-        GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(item);
-        if (branchItem == nullptr) {
-            continue;
-        }
-        QGraphicsSimpleTextItem *nameItem = branchItem->getNameText();
-        if (nameItem == nullptr) {
-            continue;
-        }
-        QString nodeName = QString(nameItem->text());
-        if (!seqsNames.contains(nodeName)) {
-            return false;
-        }
-        counter++;
-    }
-    if (counter != seqsNames.size()) {
-        return false;
-    }
-    return true;
 }
 
 void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString newName) {
@@ -506,12 +419,12 @@ void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout &layout) {
         setTransform(rectangularTransform);
     }
     isRectangularLayout = (RECTANGULAR_LAYOUT == layout);
-    curMSATreeViewer->getSortSeqsAction()->setEnabled(false);
+    msaEditorTreeViewer->getSortSeqsAction()->setEnabled(false);
     if (isRectangularLayout) {
         subgroupSelector->show();
-        if (syncMode == FullSynchronization) {
-            curMSATreeViewer->getSortSeqsAction()->setEnabled(true);
-            MSAEditor *msa = curMSATreeViewer->getMsaEditor();
+        if (msaEditorTreeViewer->isSyncModeEnabled()) {
+            msaEditorTreeViewer->getSortSeqsAction()->setEnabled(true);
+            MSAEditor *msa = msaEditorTreeViewer->getMsaEditor();
             CHECK(msa != nullptr, );
             msa->getUI()->getSequenceArea()->onVisibleRangeChanged();
         }
@@ -521,6 +434,8 @@ void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout &layout) {
 }
 
 void MSAEditorTreeViewerUI::sl_onReferenceSeqChanged(qint64) {
+    CHECK(msaEditorTreeViewer->isSyncModeEnabled(), );
+
     QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : qAsConst(items)) {
         auto branchItem = dynamic_cast<GraphicsBranchItem *>(item);
@@ -537,12 +452,6 @@ void MSAEditorTreeViewerUI::sl_onReferenceSeqChanged(qint64) {
     scene()->update();
 }
 
-void MSAEditorTreeViewerUI::sl_sortAlignment() {
-    // Apply current tree order & collapsing to the alignment.
-    QList<QStringList> groupList = getGroupingStateForMsa(rectRoot);
-    emit si_collapseModelChangedInTree(groupList);
-}
-
 void MSAEditorTreeViewerUI::highlightBranches() {
     OptionsMap rootSettings = rectRoot->getSettings();
     rootSettings[BRANCH_COLOR] = static_cast<int>(Qt::black);
@@ -554,7 +463,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
     QStack<GraphicsRectangularBranchItem *> graphicsItemList;
     QList<GraphicsRectangularBranchItem *> groupRootItemList;
     QList<GraphicsRectangularBranchItem *> collapsedRootItemList;
-    graphicsItemList.push(getRectRoot());
+    graphicsItemList.push(rectRoot);
 
     int countOfListNodes = getBranchItemsWithNames().size();
     if (groupColors.getCountOfColors() < countOfListNodes) {
@@ -639,9 +548,7 @@ void MSAEditorTreeViewerUI::resizeEvent(QResizeEvent *e) {
     e->accept();
 }
 
-void MSAEditorTreeViewerUI::setSynchronizeMode(SynchronizationMode newSyncMode) {
-    syncMode = newSyncMode;
-    bool isFullSync = syncMode == FullSynchronization;
+void MSAEditorTreeViewerUI::updateSyncModeState(bool isSyncModeOn) {
     QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : qAsConst(items)) {
         auto buttonItem = dynamic_cast<GraphicsButtonItem *>(item);
@@ -654,18 +561,18 @@ void MSAEditorTreeViewerUI::setSynchronizeMode(SynchronizationMode newSyncMode) 
         }
         QGraphicsSimpleTextItem *nameItem = branchItem->getNameText();
         if (nameItem != nullptr) {
-            nameItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, isFullSync);
+            nameItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, isSyncModeOn);
         }
         QGraphicsSimpleTextItem *distanceTextItem = branchItem->getDistanceText();
         if (distanceTextItem != nullptr) {
-            distanceTextItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, isFullSync);
+            distanceTextItem->setFlag(QGraphicsItem::ItemIgnoresTransformations, isSyncModeOn);
         }
     }
     updateRect();
 }
 
 bool MSAEditorTreeViewerUI::isCurTreeViewerSynchronized() const {
-    return curMSATreeViewer->isSynchronized();
+    return msaEditorTreeViewer->isSyncModeEnabled();
 }
 
 QList<GraphicsBranchItem *> MSAEditorTreeViewerUI::getBranchItemsWithNames() const {
@@ -685,7 +592,7 @@ QList<GraphicsBranchItem *> MSAEditorTreeViewerUI::getBranchItemsWithNames() con
 }
 
 void MSAEditorTreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newValue) {
-    bool isSizeSynchronized = (syncMode == FullSynchronization && isRectangularLayout);
+    bool isSizeSynchronized = msaEditorTreeViewer->isSyncModeEnabled() && isRectangularLayout;
     if (!isSizeSynchronized) {
         TreeViewerUI::onSettingsChanged(option, newValue);
         return;
@@ -707,7 +614,7 @@ void MSAEditorTreeViewerUI::onSettingsChanged(TreeViewOption option, const QVari
 
 void MSAEditorTreeViewerUI::updateTreeSettings(bool setDefaultZoom) {
     TreeViewerUI::updateTreeSettings(setDefaultZoom);
-    MSAEditor *msaEditor = curMSATreeViewer->getMsaEditor();
+    MSAEditor *msaEditor = msaEditorTreeViewer->getMsaEditor();
     CHECK(msaEditor != nullptr, );
     msaEditor->getUI()->getSequenceArea()->onVisibleRangeChanged();
     updateRect();
@@ -716,13 +623,11 @@ void MSAEditorTreeViewerUI::updateTreeSettings(bool setDefaultZoom) {
 void MSAEditorTreeViewerUI::sl_rectLayoutRecomputed() {
     QMatrix curMatrix = matrix();
     TreeViewerUI::sl_rectLayoutRecomputed();
-    if (syncMode == FullSynchronization) {
-        curMSATreeViewer->sync();
-    }
     setMatrix(curMatrix);
 }
 
 void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, int height) {
+    CHECK(msaEditorTreeViewer->isSyncModeEnabled(), );
     SAFE_POINT(height > 0, QString("Argument 'height' in function 'MSAEditorTreeViewerUI::sl_onVisibleRangeChanged' less then 1"), );
     CHECK(isRectangularLayout, );
     QList<GraphicsBranchItem *> branchItemList = getBranchItemsWithNames();
@@ -753,15 +658,17 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
-    sl_sortAlignment();
+    if (msaEditorTreeViewer->isSyncModeEnabled()) {
+        msaEditorTreeViewer->orderAlignmentByTree();
+    }
 }
 
-QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa(const GraphicsBranchItem *root) const {
+QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
     QList<QStringList> groupList;
 
     // treeBranchStack is used here for Depth-First-Search algorithm implementation with no recursion.
     QStack<const GraphicsBranchItem *> treeBranchStack;
-    treeBranchStack.push(root);
+    treeBranchStack.push(getRoot());
 
     while (!treeBranchStack.isEmpty()) {
         const GraphicsBranchItem *branchItem = treeBranchStack.pop();
@@ -780,8 +687,9 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa(const GraphicsB
         QList<QGraphicsItem *> childItemList = branchItem->childItems();
 
         // Sort items by Y, so virtual order will be the same with the tree.
-        std::sort(childItemList.begin(), childItemList.end(), [](QGraphicsItem *item1, QGraphicsItem *item2) {
-            return item1->y() - item2->y();
+        // The item with the higher Y must go first: this way it will be processed last when pushed to the stack below.
+        std::sort(childItemList.begin(), childItemList.end(), [](const QGraphicsItem *item1, const QGraphicsItem *item2) {
+            return item1->y() >= item2->y();
         });
 
         for (QGraphicsItem *childItem : qAsConst(childItemList)) {
@@ -792,7 +700,6 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa(const GraphicsB
             treeBranchStack.push(childBranchItem);
         }
     }
-
     return groupList;
 }
 
