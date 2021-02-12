@@ -153,6 +153,14 @@ void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus &os, const QPoint &scre
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "copySelectionByContextMenu"
+void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus &os) {
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
     MSAEditorSequenceArea *msaSeqArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
