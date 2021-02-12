@@ -26,6 +26,8 @@
 
 namespace U2 {
 
+const QString U2Clipboard::ugeneMimeType = "text/ugene";
+
 ///////////////////
 ///PasteFactory
 PasteFactory::PasteFactory(QObject *parent)
