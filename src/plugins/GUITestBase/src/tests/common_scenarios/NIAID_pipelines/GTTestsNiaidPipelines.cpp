@@ -570,5 +570,35 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                   "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0013) {
+    //1. Click Tools -> NGS data analysis -> Extract transcript sequences...
+    //2. Click "Read Sequence(s)" element
+    //3. Add "_common_data/cmdline/tuxedo_pipeline/data/index/chr6.fa" file to "Dataset 1" dataset
+    //4. Click "Read Transcripts" element
+    //5. Add "_common_data/cmdline/tuxedo_pipeline/data_to_compare_with/transcripts.gtf" file to "Dataset 1" dataset
+    //6. Run workflow. Wait for workflow finished
+    //Expected state: no errors
+    const GTLogTracer lt;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Extract transcript sequences...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence(s)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/tuxedo_pipeline/data/index/chr6.fa", true);
+
+    GTUtilsWorkflowDesigner::click(os, "Read Transcripts");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/tuxedo_pipeline/data_to_compare_with/transcripts.gtf", true);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
+                  "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
+}
+
 }    // namespace GUITest_common_scenarios_NIAID_pipelines
 }    // namespace U2
