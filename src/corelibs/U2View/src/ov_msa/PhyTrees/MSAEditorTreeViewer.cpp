@@ -173,7 +173,6 @@ void MSAEditorTreeViewer::sl_alignmentCollapseModelChanged() {
 }
 
 void MSAEditorTreeViewer::disableSyncModeIfTreeAndMsaContentIsNotInSync() {
-    CHECK(isSyncModeEnabled(), );
     if (!checkTreeAndMsaNameListsAreSynchronized()) {
         // Disable sync mode if MSA modification breaks sync mode.
         disableSyncMode();
