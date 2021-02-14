@@ -4086,9 +4086,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, align);
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_1", 0, 0, true));
@@ -4100,14 +4098,14 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
 
     GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
-    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
     CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be not available");
     CHECK_SET_ERR(sequenceCount - 1 == GTUtilsMsaEditor::getSequencesCount(os), "Undo must remove 1 sequence from the MSA");
 
     GTUtilsMsaEditor::redo(os);
     CHECK_SET_ERR(sequenceCount == GTUtilsMsaEditor::getSequencesCount(os), "Redo must return 1 sequence back to the MSA");
-    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be available again");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be available again");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {
