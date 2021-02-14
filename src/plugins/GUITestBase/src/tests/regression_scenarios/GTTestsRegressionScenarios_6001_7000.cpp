@@ -4318,7 +4318,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    const QString selection1 = GTClipboard::sequences(os);
+    const QString selection1 = GTClipboard::text(os);
     GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, QPoint(9, 5), QPoint(10, 5));
 
     // 4. The same region (but shifted to the right) is selected.
@@ -5416,7 +5416,7 @@ GUI_TEST_CLASS_DEFINITION(test_6730) {
     QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
 }
 
@@ -6220,7 +6220,7 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     QString expectedClipboard = "CTACTAATTCGATTATTAATTCGATTGCTAATTCGATTATTAATCCGGCTATTAATTCGA";
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
 
@@ -6247,7 +6247,7 @@ GUI_TEST_CLASS_DEFINITION(test_6901) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
 GUI_TEST_CLASS_DEFINITION(test_6903) {
@@ -6272,7 +6272,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
 GUI_TEST_CLASS_DEFINITION(test_6916) {

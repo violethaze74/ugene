@@ -284,20 +284,20 @@ void GTUtilsMsaEditor::clickColumn(GUITestOpStatus &os, int column, Qt::MouseBut
 #define GT_METHOD_NAME "selectRows"
 void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, GTGlobals::UseMethod method) {
     switch (method) {
-    case GTGlobals::UseKey:
-        clickSequence(os, firstRowNumber);
-        GTKeyboardDriver::keyPress(Qt::Key_Shift);
-        clickSequence(os, lastRowNumber);
-        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-        break;
-    case GTGlobals::UseMouse:
-        GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowNumber).center(),
-                                   getSequenceNameRect(os, lastRowNumber).center());
-        break;
-    case GTGlobals::UseKeyBoard:
-        GT_CHECK(false, "Not implemented");
-    default:
-        GT_CHECK(false, "An unknown method");
+        case GTGlobals::UseKey:
+            clickSequence(os, firstRowNumber);
+            GTKeyboardDriver::keyPress(Qt::Key_Shift);
+            clickSequence(os, lastRowNumber);
+            GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+            break;
+        case GTGlobals::UseMouse:
+            GTMouseDriver::dragAndDrop(getSequenceNameRect(os, firstRowNumber).center(),
+                                       getSequenceNameRect(os, lastRowNumber).center());
+            break;
+        case GTGlobals::UseKeyBoard:
+            GT_CHECK(false, "Not implemented");
+        default:
+            GT_CHECK(false, "An unknown method");
     }
 }
 #undef GT_METHOD_NAME
@@ -305,20 +305,20 @@ void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int l
 #define GT_METHOD_NAME "selectColumns"
 void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, GTGlobals::UseMethod method) {
     switch (method) {
-    case GTGlobals::UseKey:
-        clickColumn(os, firstColumnNumber);
-        GTKeyboardDriver::keyPress(Qt::Key_Shift);
-        clickColumn(os, lastColumnNumber);
-        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-        break;
-    case GTGlobals::UseMouse:
-        GTMouseDriver::dragAndDrop(getColumnHeaderRect(os, firstColumnNumber).center(),
-                                   getColumnHeaderRect(os, lastColumnNumber).center());
-        break;
-    case GTGlobals::UseKeyBoard:
-        GT_CHECK(false, "Not implemented");
-    default:
-        GT_CHECK(false, "An unknown method");
+        case GTGlobals::UseKey:
+            clickColumn(os, firstColumnNumber);
+            GTKeyboardDriver::keyPress(Qt::Key_Shift);
+            clickColumn(os, lastColumnNumber);
+            GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+            break;
+        case GTGlobals::UseMouse:
+            GTMouseDriver::dragAndDrop(getColumnHeaderRect(os, firstColumnNumber).center(),
+                                       getColumnHeaderRect(os, lastColumnNumber).center());
+            break;
+        case GTGlobals::UseKeyBoard:
+            GT_CHECK(false, "Not implemented");
+        default:
+            GT_CHECK(false, "An unknown method");
     }
 }
 #undef GT_METHOD_NAME
@@ -389,7 +389,7 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
 
-    return GTClipboard::sequences(os).split('\n');
+    return GTClipboard::text(os).split('\n');
 }
 #undef GT_METHOD_NAME
 
@@ -410,7 +410,7 @@ void GTUtilsMsaEditor::redo(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "zoomIn"
 void GTUtilsMsaEditor::zoomIn(GUITestOpStatus &os) {
     QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
-    QWidget* zoomInButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom In");
+    QWidget *zoomInButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom In");
     GTWidget::click(os, zoomInButton);
 }
 #undef GT_METHOD_NAME
@@ -418,7 +418,7 @@ void GTUtilsMsaEditor::zoomIn(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "zoomOut"
 void GTUtilsMsaEditor::zoomOut(GUITestOpStatus &os) {
     QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
-    QWidget* zoomOutButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom Out");
+    QWidget *zoomOutButton = GTToolbar::getWidgetForActionObjectName(os, toolbar, "Zoom Out");
     GTWidget::click(os, zoomOutButton);
 }
 #undef GT_METHOD_NAME
