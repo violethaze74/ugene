@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3445,7 +3445,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Enable "Collapsing mode". As result 2 names in the name list are hidden.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
@@ -6443,6 +6443,38 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     GTUtilsDashboard::getDashboard(os);
     //There should be no notifications.
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6952) {
+    //1. Click Tools -> BLAST -> Remote NCBI BLAST... Choose _common_data/fasta/human_T1_cutted.fa as input file
+    //2. CLick Next two times, then Run
+    //Expected state: no errors
+    class RemoteBLASTWizardFiller : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath()));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    const GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBLASTWizardFiller()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "BLAST"
+                                                << "Remote NCBI BLAST...");
+    
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
+                  "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6953) {
