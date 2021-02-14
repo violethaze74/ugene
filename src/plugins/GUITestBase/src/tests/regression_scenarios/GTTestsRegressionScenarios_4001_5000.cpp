@@ -4952,7 +4952,6 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
@@ -4962,7 +4961,6 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, nameListWidget, Qt::RightButton);
-    GTGlobals::sleep(500);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
 
@@ -4970,17 +4968,13 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
     QString clipboardText = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
     //Expected state subalignment pasted correctly
     GTKeyboardUtils::copy(os);
-    GTGlobals::sleep(200);
     clipboardText = GTClipboard::sequences(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
@@ -4998,15 +4992,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 7, "Sequence count should be 7");
 }
@@ -5023,15 +5013,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 8, "Sequence count should be 7");
 }
