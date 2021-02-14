@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,13 +20,16 @@
  */
 
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 
@@ -68,6 +71,31 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 
     int msaLength = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(msaLength == 5, "Unexpected exported alignment length: " + QString::number(msaLength));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7022) {
+    // 1. Open _common_data/scenarios/_regression/7022/test_7022.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7022/test_7022.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
+    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    if (!wrapMode->isChecked()) {
+        GTWidget::click(os, GTAction::button(os, wrapMode));
+    }
+    GTUtilsSequenceView::clickAnnotationDet(os, "Misc. Feature", 2);
+
+    // 3. copy selected annotation
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy annotation sequence"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC
+    QString expected = "TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC";
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == expected, QString("Unexpected annotation, expected: %1, current: %2").arg(expected).arg(text));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7044) {
