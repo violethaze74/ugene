@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1854,7 +1854,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1870,7 +1870,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_1) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -1886,7 +1886,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019_2) {
 
     QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     // 2. Press button Enable collapsing
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
     QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);

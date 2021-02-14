@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -920,7 +920,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     //    Expected state: some sequences are collapsed into two groups.
 
     //    3. Click {Statistics->Generate distance matrix} in the context menu.
@@ -2648,7 +2648,7 @@ GUI_TEST_CLASS_DEFINITION(test_1241) {
     GTUtilsMsaEditor::clickSequenceName(os, "ma959");
 
     //3. Press "Enable collapsing".
-    GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //Expected: UGENE doesn't crash, no errors in log.
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -4968,7 +4968,7 @@ GUI_TEST_CLASS_DEFINITION(test_1483) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Press tool button "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Start selection in sequences name list and then go for the lower boundary of the list
     //    Expected state: Ugene doesn't crashes
@@ -5643,7 +5643,7 @@ GUI_TEST_CLASS_DEFINITION(test_1574) {
 
     //    2. Turn on the collapsing mode with the "Switch on/off collapsing" button on the toolbar.
     //    Expected state: there are two collapsed groups.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Try to select some area in the Sequence area (selection start point must be in the white space under sequences).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 15), QPoint(2, 0), GTGlobals::UseMouse);
@@ -5676,7 +5676,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Open any group and try to edit any sequence:
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
@@ -5780,7 +5780,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Enable collapsing mode.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select a sequence area including collapsed rows, sequences above and below them.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 9), QPoint(10, 12));
@@ -5966,8 +5966,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -5992,8 +5992,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -6018,8 +6018,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -6044,8 +6044,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6066,8 +6066,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_5) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6083,7 +6083,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_5) {
     int num = names.size();
     CHECK_SET_ERR(num == 9, QString("unexpected sequence number: %1").arg(num));
     CHECK_SET_ERR(!names.contains("Isophya_altaica_EF540820"), "Isophya_altaica_EF540820 was not removed");
-    CHECK_SET_ERR(collapce->isChecked(), "collapce button unexpectidly checked");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1600_6) {
@@ -6091,8 +6091,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_6) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6121,8 +6121,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    Expected state: One collapsible item has appeared in MSA
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
@@ -6154,8 +6153,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_8) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6285,9 +6284,9 @@ GUI_TEST_CLASS_DEFINITION(test_1616) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(0, 17));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1622) {

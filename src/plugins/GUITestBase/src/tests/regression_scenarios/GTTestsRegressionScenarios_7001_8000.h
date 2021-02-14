@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,6 +33,7 @@ namespace GUITest_regression_scenarios {
 
 GUI_TEST_CLASS_DECLARATION(test_7014)
 GUI_TEST_CLASS_DECLARATION(test_7022)
+GUI_TEST_CLASS_DECLARATION(test_7044)
 
 #undef GUI_TEST_SUITE
 
