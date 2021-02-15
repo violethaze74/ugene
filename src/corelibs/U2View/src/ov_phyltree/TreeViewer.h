@@ -269,12 +269,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e);
 
     virtual void setTreeLayout(TreeLayout newLayout);
-    GraphicsBranchItem *getRoot() {
-        return root;
-    }
-    GraphicsRectangularBranchItem *getRectRoot() {
-        return rectRoot;
-    }
+
+    /** Returns root item for the tree. */
+    GraphicsBranchItem *getRoot() const;
+
     void setZoom(qreal newzoom);
     void setZoom(qreal horizontalZoom, qreal verticalZoom);
     void defaultZoom();

@@ -4038,130 +4038,108 @@ GUI_TEST_CLASS_DEFINITION(test_4674) {
     // 1. Open COI.aln
     // 2. Build the tree and synchronize it with the alignment
     // 3. Delete one sequence
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the edit is undone and the tree is still connected with the alignment
-    // 5. Delete one sequence one more time
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the sequence is removed
+    //    Expected state: tree is not in sync anymore and can't be synced.
+    // 4. Undo.
+    //    Expected state: tree can be synced again but is not in sync.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    int sequenceCount1 = GTUtilsMsaEditor::getSequencesCount(os);
+
     GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
+    int sequenceCount2 = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount2 == sequenceCount1 - 1, "Sequence was not deleted/1");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode button must not be enabled");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "The sequence removal was not undone");
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "The sequence was not removed");
+    int sequenceCount3 = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount3 == sequenceCount1, "Sequence was not restored");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode button must be enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_1) {
-    // 1. Open COI.aln
-    // 2. Align the sequence to alignment
-    // 3. Build the tree and synchronize it with the alignment
-    // 4. Click Undo
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the undoing is undone and the tree is still connected with the alignment
-    // 5. Click Undo one more time
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the aligned sequence is removed
+    // 1. Open COI.aln.
+    // 2. Align the sequence to alignment.
+    // 3. Build the tree and synchronize it with the alignment.
+    // 4. Click Undo.
+    //    Expected state: the sequence is removed, tree is not in sync anymore and sync action is disabled.
+    // 5. Click Redo
+    // 6. Sync action is enabled again.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, align);
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_1", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+
     GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be not available");
+    CHECK_SET_ERR(sequenceCount - 1 == GTUtilsMsaEditor::getSequencesCount(os), "Undo must remove 1 sequence from the MSA");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 1");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMsaEditor::undo(os);
-    GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 2");
+    GTUtilsMsaEditor::redo(os);
+    CHECK_SET_ERR(sequenceCount == GTUtilsMsaEditor::getSequencesCount(os), "Redo must return 1 sequence back to the MSA");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be available again");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {
-    // 1. Open COI.aln
-    // 2. Build the tree and synchronize it with the alignment
-    // 3. Insert a gap
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the insertion is undone and the tree is still connected with the alignment
-    // 5. Insert a gap again
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the gap is removed
-    // 7. Delete some character
-    // Expected state: no message box
+    // 1. Open COI.aln.
+    // 2. Build the tree and check that it is synchronized with MSA.
+    // 3. Insert a gap.
+    //    Expected state: tree is not in sync anymore.
+    // 4. Sync tree.
+    //    Expected state: tree is in sync again.
+    // 5. Delete some character
+    //    Expected state: Tree is not in sync anymore.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_2", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int alnLen = GTUtilsMSAEditorSequenceArea::getLength(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(alnLen == GTUtilsMSAEditorSequenceArea::getLength(os), "Undo was not undone");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(alnLen != GTUtilsMSAEditorSequenceArea::getLength(os), "Undo was not undone");
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4687) {
