@@ -557,7 +557,7 @@ void MSAEditorSequenceArea::sl_copySelection() {
     }
     auto mimeData = new QMimeData();
     mimeData->setText(textMimeContent);
-    mimeData->setData(U2Clipboard::ugeneMimeType, ugeneMimeContent.toUtf8());
+    mimeData->setData(U2Clipboard::UGENE_MIME_TYPE, ugeneMimeContent.toUtf8());
     QApplication::clipboard()->setMimeData(mimeData);
 }
 

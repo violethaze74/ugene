@@ -36,7 +36,7 @@ public:
      * MIME type used internally by UGENE. Marks the plain text data of a known document format
      * that can be auto-detected by UGENE. Example: FASTA, CLUSTALW, Genbank...
      */
-    static const QString ugeneMimeType;
+    static const QString UGENE_MIME_TYPE;
 };
 
 class U2CORE_EXPORT PasteTask : public Task {

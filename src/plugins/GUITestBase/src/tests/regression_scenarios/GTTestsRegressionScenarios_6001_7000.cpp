@@ -6219,7 +6219,7 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QString expectedClipboard = "CTACTAATTCGATTATTAATTCGATTGCTAATTCGATTATTAATCCGGCTATTAATTCGA";
+    QString expectedClipboard = "CTACTAATTCGA\nTTATTAATTCGA\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
@@ -6235,9 +6235,7 @@ GUI_TEST_CLASS_DEFINITION(test_6901) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
-
+    QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
@@ -6246,10 +6244,11 @@ GUI_TEST_CLASS_DEFINITION(test_6901) {
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
+    QString expectedClipboard = "CUACUAAUUCGA\nUUAUUAAUUCGA\nUUGCUAAUUCGA\nUUAUUAAUCCGG\nCUAUUAAUUCGA";
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6903) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -6260,9 +6259,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
     GTWidget::click(os, toDnaButton);
 
-    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
-
+    QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
@@ -6271,7 +6268,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QString expectedClipboard = "CUACUAAUUCGAUUAUUAAUUCGAUUGCUAAUUCGAUUAUUAAUCCGGCUAUUAAUUCGA";
+    QString expectedClipboard = "CUACUAAUUCGA\nUUAUUAAUUCGA\nUUGCUAAUUCGA\nUUAUUAAUCCGG\nCUAUUAAUUCGA";
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
@@ -6468,7 +6465,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "BLAST"
                                                 << "Remote NCBI BLAST...");
-    
+
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
@@ -6680,7 +6677,6 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
                                                 << "Export project...");
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6966) {

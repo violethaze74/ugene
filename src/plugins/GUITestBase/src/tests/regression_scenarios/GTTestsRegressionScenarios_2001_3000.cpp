@@ -2028,34 +2028,15 @@ GUI_TEST_CLASS_DEFINITION(test_2309) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsProjectTreeView::toggleView(os);    // Hide project tree view to ensure that all buttons on the toolbar are visible.
+
+    // 3. Expect that sequence name list stays the same after the tree is refreshed.
     QStringList initialNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QAbstractButton *refresh = GTAction::button(os, "Refresh tree");
-
-    CHECK(NULL != refresh, );
-    if (refresh->isVisible()) {
-        GTWidget::click(os, refresh);
-    } else {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
-        QToolBar *toolBar = qobject_cast<QToolBar *>(refresh->parent());
-        GTMouseDriver::moveTo(toolBar->mapToGlobal(toolBar->geometry().bottomRight()) - QPoint(5, 15));
-        GTMouseDriver::click();
-    }
-
+    GTWidget::click(os, GTAction::button(os, "Refresh tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList newNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(newNames == initialNames, "Wrong sequences order");
-
-    GTGlobals::sleep();
-    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(100);
-
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::NoToAll));
-    GTGlobals::sleep(200);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2318) {
@@ -5345,7 +5326,7 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Expected state: UGENE doesn't crash, view is closed, task cancels.
     GTUtilsProjectTreeView::click(os, "test_2894_COI.nwk");
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No)); // Save the nwk file? Select 'No'.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));    // Save the nwk file? Select 'No'.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
