@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,6 +150,14 @@ void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus & /*os*/) {
 void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus &os, const QPoint &screenMaPoint) {
     GTMouseDriver::moveTo(convertCoordinates(os, screenMaPoint));
     GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "copySelectionByContextMenu"
+void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus &os) {
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 #undef GT_METHOD_NAME
 

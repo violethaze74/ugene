@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1736,6 +1736,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7014);
     REGISTER_TEST(GUITest_regression_scenarios::test_7022);
     REGISTER_TEST(GUITest_regression_scenarios::test_7043);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7044);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3146,6 +3147,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0010, minutes(7), labels({Cistrome, Linux, MacOS}));
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0011, labels({Nightly, Cistrome, Linux, MacOS}));
     REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0012, labels({Nightly, Cistrome, Linux, MacOS}));
+    REGISTER_TEST_L(GUITest_common_scenarios_NIAID_pipelines::test_0013, labels({Nightly, Cistrome, Linux, MacOS}));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
