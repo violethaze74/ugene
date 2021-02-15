@@ -19,12 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-
-#include <system/GTClipboard.h>
-
+#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 
@@ -136,9 +135,61 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     QString expected = "TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC";
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text == expected, QString("Unexpected annotation, expected: %1, current: %2").arg(expected).arg(text));
-
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7044) {
+    // The test checks 'Save subalignment' in the collapse (virtual groups) mode after reordering.
+    GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Enable collapsing.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Rename the last two sequences in 'seqA' and 'seqB'.
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "LR882509 local DQB1", "seqA");
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "LR882503 local DQB1", "seqB");
+
+    // Copy seqA.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA");
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Select first collapsed mode and 'Paste before'.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "LR882520 exotic DQB1");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('v', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    // Cut seqB.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqB");
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+
+    // Select the first sequence and 'Paste before'
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA_1");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('v', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    // Select seqB and seqA_1 (a group of seqA_1 and seqA).
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA_1");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqB");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    // Export -> Save subalignment.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: the saved sub-alignment is opened. Check the content.
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList expectedNameList = QStringList() << "seqB"
+                                                 << "seqA_1"
+                                                 << "seqA";
+    CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
+}
 
 }    // namespace GUITest_regression_scenarios
 

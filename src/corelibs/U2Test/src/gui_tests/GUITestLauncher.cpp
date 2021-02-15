@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,7 @@ QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 535 << 570 << 458 << 525 << -1;
+        testsPerSuite << 540 << 575 << 465 << 535 << -1;
     }
     QList<GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3466,7 +3466,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
 
@@ -3490,7 +3490,7 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
@@ -5104,7 +5104,7 @@ GUI_TEST_CLASS_DEFINITION(test_3797) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Mecopoda_sp.__Malaysia_"));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
@@ -5379,7 +5379,7 @@ GUI_TEST_CLASS_DEFINITION(test_3843) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Turn the collapsing mode on.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Expand one of the collapsed sequences.
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
@@ -5740,7 +5740,7 @@ GUI_TEST_CLASS_DEFINITION(test_3927) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Enable collapsing mode.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     // 3. Remove the first sequence. x3
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Isophya_altaica_EF540820");
