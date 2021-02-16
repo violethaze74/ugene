@@ -2022,6 +2022,7 @@ GUI_TEST_CLASS_DEFINITION(test_2309) {
     // 1. Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     // 2. Build tree for the alignment
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2309.nwk", 0, 0, true));
@@ -2030,8 +2031,8 @@ GUI_TEST_CLASS_DEFINITION(test_2309) {
 
     GTUtilsProjectTreeView::toggleView(os);    // Hide project tree view to ensure that all buttons on the toolbar are visible.
 
-    // 3. Expect that sequence name list stays the same after the tree is refreshed.
     QStringList initialNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
+
     GTWidget::click(os, GTAction::button(os, "Refresh tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

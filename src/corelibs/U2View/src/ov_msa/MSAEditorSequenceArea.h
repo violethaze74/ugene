@@ -142,6 +142,12 @@ public slots:
 
     void sl_copySelectionFormatted();
 
+    /**
+     * Enables virtual grouping mode. Re-orders and re-groups sequences according to the name lists.
+     * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
+     */
+    void sl_setVirtualGroupingMode(const QList<QStringList> &);
+
 protected:
     void focusOutEvent(QFocusEvent *fe);
     void focusInEvent(QFocusEvent *fe);
@@ -184,12 +190,6 @@ private slots:
     void sl_saveSequence();
 
     void sl_modelChanged();
-
-    /**
-     * Enables virtual grouping mode. Re-orders and re-groups sequences according to the name lists.
-     * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
-     */
-    void sl_setVirtualGroupingMode(const QList<QStringList> &);
 
     void sl_fontChanged(QFont font);
 

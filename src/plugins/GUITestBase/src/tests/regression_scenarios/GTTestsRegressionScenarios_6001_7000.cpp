@@ -117,6 +117,7 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -6894,6 +6895,32 @@ GUI_TEST_CLASS_DEFINITION(test_6995) {
 
     visibleRange = referenceArea->getVisibleRange();
     CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6999) {
+    // 1. Create read_only_dir
+    const QString projectPath = QFileInfo(sandBoxDir + "read_only_dir/project.uprj").absoluteFilePath();
+
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
+    // 2. Open any file
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::StandardButton::Ok));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", projectPath));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Select "File->Save project as..."
+    // 4. Save project to file "read_only_dir/project.proj"
+    // 5. Click "Save"
+    //    Expected state: Message Box with text "Folder is read-only" appears
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Save project as...");
+
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
 
 }    // namespace GUITest_regression_scenarios

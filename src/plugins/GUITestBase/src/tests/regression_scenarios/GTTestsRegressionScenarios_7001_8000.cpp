@@ -19,24 +19,63 @@
  * MA 02110-1301, USA.
  */
 
-#include <system/GTClipboard.h>
-
+#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+
+#include <QFileInfo>
+
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+
+#include "primitives/GTMenu.h"
+#include "primitives/GTWidget.h"
+#include "primitives/PopupChooser.h"
+
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
+
+GUI_TEST_CLASS_DEFINITION(test_7003) {
+    // 1. Ensure that 'UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY' is not set to "1"
+    // 2. Open "UGENE Application Settings", select "External Tools" tab
+    // 3. Add the 'dumb.sh' or 'dumb.cmd' as a Python executable
+    // 4. Check that validation fails
+
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
+
+    class CheckPythonInvalidation : public CustomScenario {
+        void run(GUITestOpStatus &os) override {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            QString toolPath = testDir + "_common_data/regression/7003/dumb.";
+            toolPath += isOsWindows() ? "cmd" : "sh";
+
+            AppSettingsDialogFiller::setExternalToolPath(os, "python", QFileInfo(toolPath).absoluteFilePath());
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "python"),
+                          "Python module is expected to be invalid, but in fact it is valid")
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckPythonInvalidation()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...", GTGlobals::UseMouse);
+}
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
     // The test checks 'Save subalignment' in the collapse (virtual groups) mode.
@@ -96,9 +135,84 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     QString expected = "TGTCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGAGGTCAGGTTACCCACAAAGGGAAGCCCATCAGAC";
     QString text = GTClipboard::text(os);
     CHECK_SET_ERR(text == expected, QString("Unexpected annotation, expected: %1, current: %2").arg(expected).arg(text));
-
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7043) {
+    // 1. Open data/samples/PDB/1CF7.pdb
+    // 2. Check that you see 3D struct or black screen with text "Failed to initialize OpenGL"
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto biostructWidget = GTWidget::findWidget(os, "1-1CF7");
+    const QImage image1 = GTWidget::getImage(os, biostructWidget, true);
+    QSet<QRgb> colors;
+    for (int i = 0; i < image1.width(); i++) {
+        for (int j = 0; j < image1.height(); j++) {
+            colors << image1.pixel(i, j);
+        }
+    }
+    bool isPicture = colors.size() > 100; // Usually 875 colors are drawn for 1CF7.pdb
+
+    auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
+    bool isError = errorLbl.size() > 0;
+
+    // There must be one thing: either a picture or an error
+    CHECK_SET_ERR(isPicture != isError, "Biostruct was not drawn or error label wasn't displayed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7044) {
+    // The test checks 'Save subalignment' in the collapse (virtual groups) mode after reordering.
+    GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Enable collapsing.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Rename the last two sequences in 'seqA' and 'seqB'.
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "LR882509 local DQB1", "seqA");
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "LR882503 local DQB1", "seqB");
+
+    // Copy seqA.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA");
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Select first collapsed mode and 'Paste before'.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "LR882520 exotic DQB1");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('v', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    // Cut seqB.
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqB");
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+
+    // Select the first sequence and 'Paste before'
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA_1");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTKeyboardDriver::keyClick('v', Qt::AltModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    // Select seqB and seqA_1 (a group of seqA_1 and seqA).
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqA_1");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMSAEditorSequenceArea::selectSequence(os, "seqB");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    // Export -> Save subalignment.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
+    saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
+    GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: the saved sub-alignment is opened. Check the content.
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList expectedNameList = QStringList() << "seqB"
+                                                 << "seqA_1"
+                                                 << "seqA";
+    CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
+}
 
 }    // namespace GUITest_regression_scenarios
 
