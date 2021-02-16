@@ -70,6 +70,9 @@ public:
     static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
     static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
+    /** Calls context menu Copy/Paste->Copy. */
+    static void copySelectionByContextMenu(GUITestOpStatus &os);
+
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(GUITestOpStatus &os, const QPoint &position);
     static void scrollToBottom(GUITestOpStatus &os);

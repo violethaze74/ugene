@@ -735,10 +735,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //3. Select region 6..12 for Conocephalus_discolor sequence. Use context menu {Copy->Copy selection}.
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 4), QPoint(11, 4));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "copy_selection"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
-    GTGlobals::sleep(500);
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
+
     //Expected state: TATTAA- has copied to clipboard
     clipboardTest = GTClipboard::sequences(os);
     CHECK_SET_ERR(clipboardTest == "TATTAA-", "\n Expected: \nTATTAA-\nFound:\n" + clipboardTest);

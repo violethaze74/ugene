@@ -144,7 +144,7 @@ QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 535 << 570 << 458 << 525 << -1;
+        testsPerSuite << 540 << 575 << 465 << 535 << -1;
     }
     QList<GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {

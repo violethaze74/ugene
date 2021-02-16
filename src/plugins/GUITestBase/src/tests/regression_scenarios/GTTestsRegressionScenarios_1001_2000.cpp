@@ -920,7 +920,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     //    Expected state: some sequences are collapsed into two groups.
 
     //    3. Click {Statistics->Generate distance matrix} in the context menu.
@@ -2648,7 +2648,7 @@ GUI_TEST_CLASS_DEFINITION(test_1241) {
     GTUtilsMsaEditor::clickSequenceName(os, "ma959");
 
     //3. Press "Enable collapsing".
-    GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //Expected: UGENE doesn't crash, no errors in log.
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -4968,7 +4968,7 @@ GUI_TEST_CLASS_DEFINITION(test_1483) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Press tool button "Enable collapsing"
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Start selection in sequences name list and then go for the lower boundary of the list
     //    Expected state: Ugene doesn't crashes
@@ -5060,65 +5060,61 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
 GUI_TEST_CLASS_DEFINITION(test_1499) {
     class CustomBuildTreeDialogFiller : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
+            auto algorithmBox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
-            QLineEdit *saveLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
+            auto saveLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1499.nwk");
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            auto box = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
+
             QPushButton *button = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(button != NULL, "Ok button is NULL");
             GTWidget::click(os, button);
         }
     };
 
     GTLogTracer lt;
-    // 1) Open "samples/CLUSTALW/COI.aln".
+    // Open "samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2) Click the "Build Tree" button on the toolbar.
-    // 3) Choose MrBayes tree building method.
-    // 4) Choose "Display tree with alignment editor".
-    // 5) Build.
+    // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+    GTUtilsProjectTreeView::toggleView(os);
+
+    // Click the "Build Tree" button on the toolbar.
+    // Choose MrBayes tree building method.
+    // Choose "Display tree with alignment editor".
+    // Build.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CustomBuildTreeDialogFiller()));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the tree appears synchronized with the MSA Editor.
-    const QStringList msaSequences0 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    const QStringList msaSequences0 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    // Break sync mode by moving sequences in the MSA.
+    QPoint oldPosition = GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center();
+    QPoint newPosition = GTUtilsMsaEditor::getSequenceNameRect(os, "Montana_montana").center();
+    GTMouseDriver::click(oldPosition);
+    GTMouseDriver::dragAndDrop(oldPosition, newPosition);
 
-    // 6) Click the "Sort alignment by tree" button on the Tree View toolbar.
-    // = > UGENE does not crash.
-    GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center());
-    GTMouseDriver::click();
-    GTGlobals::sleep(1000);
-    GTMouseDriver::press();
-    GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect(os, "Montana_montana").center());
-    GTMouseDriver::release();
-
-    const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+    const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(msaSequences1 != msaSequences0, "MSA is not changed");
-    GTGlobals::sleep(5000);
-    QWidget *parent = GTWidget::findWidget(os, "COI [m] COI", GTWidget::findWidget(os, "COI [m] COI_SubWindow"));
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", parent, GTGlobals::FindOptions(false));
-    if (qt_toolbar_ext_button != NULL && qt_toolbar_ext_button->isVisible()) {
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Sort Alignment"));
-        GTWidget::click(os, qt_toolbar_ext_button);
-    } else {
-        GTWidget::click(os, GTAction::button(os, "Sort Alignment"));
-    }
 
-    const QStringList msaSequences2 = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    CHECK_SET_ERR(msaSequences0 == msaSequences2, "MSA is not synchronized with tree");
+    // Click the "Sync" button on the Tree View toolbar.
+    // = > UGENE does not crash.
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
 
+    const QStringList msaSequences2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(msaSequences0 == msaSequences2, "MSA is not synchronized with tree.");
+
+    // Check that there are no errors in the log.
     GTUtilsLog::check(os, lt);
 }
 
@@ -5434,18 +5430,39 @@ GUI_TEST_CLASS_DEFINITION(test_1537) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1548) {
-    // 1. Open file "data/samples/CLUSTALW/COI.aln"
+    // Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Build tree for the alignment
+    QStringList originalNameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+
+    // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+    GTUtilsProjectTreeView::toggleView(os);
+
+    // Build tree for the alignment
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/1548.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //3. Ensure that the "Sort alignment by tree" button on the tree view toolbar is disabled.
-    QAction *sortAction = GTAction::findAction(os, "Sort Alignment");
-    CHECK_SET_ERR(!sortAction->isEnabled(), "'Sort alignment by tree' is unexpectedly enabled");
+    // Ensure that the "Sync" mode is ON and 'Mecopoda_elongata_Sumatra' and 'Mecopoda_elongata_Ishigaki_J' are in the correct order.
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+
+    QStringList syncModeNameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(syncModeNameList != originalNameList, "Name list must be updated in sync mode");
+
+    int ishigakiIndex = syncModeNameList.indexOf("Mecopoda_elongata__Ishigaki__J");
+    CHECK_SET_ERR(ishigakiIndex == 12, "Wrong order for 'Mecopoda_elongata__Ishigaki__J': " + QString::number(ishigakiIndex));
+    int sumatraIndex = syncModeNameList.indexOf("Mecopoda_elongata__Sumatra_");
+    CHECK_SET_ERR(sumatraIndex == 13, "Wrong order for 'Mecopoda_elongata__Sumatra_': " + QString::number(sumatraIndex));
+
+    // Disable 'sync' mode for the tree.
+    // The name list must keep the current order, because there may be other trees in sync. The current tree must exit the sync mode.
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(nameList == syncModeNameList, "Name list must not be changed when sync mode is OFF.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1551) {
@@ -5626,7 +5643,7 @@ GUI_TEST_CLASS_DEFINITION(test_1574) {
 
     //    2. Turn on the collapsing mode with the "Switch on/off collapsing" button on the toolbar.
     //    Expected state: there are two collapsed groups.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Try to select some area in the Sequence area (selection start point must be in the white space under sequences).
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 15), QPoint(2, 0), GTGlobals::UseMouse);
@@ -5659,7 +5676,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click the "Enable collapsing" button on the toolbar.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    3. Open any group and try to edit any sequence:
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
@@ -5763,7 +5780,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Enable collapsing mode.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select a sequence area including collapsed rows, sequences above and below them.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 9), QPoint(10, 12));
@@ -5949,8 +5966,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -5975,8 +5992,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -6001,8 +6018,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    3. Choose in MSA context menu { Edit -> Remove columns of gaps... }
@@ -6027,8 +6044,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_4) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6049,8 +6066,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_5) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6066,7 +6083,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_5) {
     int num = names.size();
     CHECK_SET_ERR(num == 9, QString("unexpected sequence number: %1").arg(num));
     CHECK_SET_ERR(!names.contains("Isophya_altaica_EF540820"), "Isophya_altaica_EF540820 was not removed");
-    CHECK_SET_ERR(collapce->isChecked(), "collapce button unexpectidly checked");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1600_6) {
@@ -6074,8 +6091,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_6) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6104,8 +6121,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_7) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     //    Expected state: One collapsible item has appeared in MSA
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
@@ -6137,8 +6153,8 @@ GUI_TEST_CLASS_DEFINITION(test_1600_8) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Turn the collapsing mode on by the "Switch on/off collapsing" button on the main toolbar
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    GTWidget::click(os, collapce);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
@@ -6268,9 +6284,9 @@ GUI_TEST_CLASS_DEFINITION(test_1616) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 17), QPoint(0, 17));
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     GTGlobals::sleep();
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1622) {
