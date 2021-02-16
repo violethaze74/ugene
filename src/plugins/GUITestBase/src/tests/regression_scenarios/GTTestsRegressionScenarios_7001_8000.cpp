@@ -26,17 +26,56 @@
 #include <system/GTClipboard.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+
+#include <QFileInfo>
+
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+
+#include "primitives/GTMenu.h"
+#include "primitives/GTWidget.h"
+#include "primitives/PopupChooser.h"
+
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
+
+GUI_TEST_CLASS_DEFINITION(test_7003) {
+    // 1. Ensure that 'UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY' is not set to "1"
+    // 2. Open "UGENE Application Settings", select "External Tools" tab
+    // 3. Add the 'dumb.sh' or 'dumb.cmd' as a Python executable
+    // 4. Check that validation fails
+
+    qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
+
+    class CheckPythonInvalidation : public CustomScenario {
+        void run(GUITestOpStatus &os) override {
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            QString toolPath = testDir + "_common_data/regression/7003/dumb.";
+            toolPath += isOsWindows() ? "cmd" : "sh";
+
+            AppSettingsDialogFiller::setExternalToolPath(os, "python", QFileInfo(toolPath).absoluteFilePath());
+            CHECK_SET_ERR(!AppSettingsDialogFiller::isExternalToolValid(os, "python"),
+                          "Python module is expected to be invalid, but in fact it is valid")
+
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckPythonInvalidation()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...", GTGlobals::UseMouse);
+}
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
     // The test checks 'Save subalignment' in the collapse (virtual groups) mode.
