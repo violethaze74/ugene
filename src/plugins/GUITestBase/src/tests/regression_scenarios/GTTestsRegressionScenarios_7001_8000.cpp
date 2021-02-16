@@ -137,6 +137,29 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     CHECK_SET_ERR(text == expected, QString("Unexpected annotation, expected: %1, current: %2").arg(expected).arg(text));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7043) {
+    // 1. Open data/samples/PDB/1CF7.pdb
+    // 2. Check that you see 3D struct or black screen with text "Failed to initialize OpenGL"
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto biostructWidget = GTWidget::findWidget(os, "1-1CF7");
+    const QImage image1 = GTWidget::getImage(os, biostructWidget, true);
+    QSet<QRgb> colors;
+    for (int i = 0; i < image1.width(); i++) {
+        for (int j = 0; j < image1.height(); j++) {
+            colors << image1.pixel(i, j);
+        }
+    }
+    bool isPicture = colors.size() > 100; // Usually 875 colors are drawn for 1CF7.pdb
+
+    auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
+    bool isError = errorLbl.size() > 0;
+
+    // There must be one thing: either a picture or an error
+    CHECK_SET_ERR(isPicture != isError, "Biostruct was not drawn or error label wasn't displayed");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7044) {
     // The test checks 'Save subalignment' in the collapse (virtual groups) mode after reordering.
     GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
