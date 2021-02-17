@@ -5390,11 +5390,12 @@ GUI_TEST_CLASS_DEFINITION(test_4833_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4833_2) {
-    // Add sequence from curent project by context menu.
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4833_2", "ext_amino.fa");
+    //Add sequence from curent project by context menu
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4833_2", "standard_amino.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ext_amino.fa", "ext_amino_seq"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
