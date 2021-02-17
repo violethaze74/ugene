@@ -111,7 +111,7 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
                                     ? QString::fromUtf8(mimeData->data(U2Clipboard::UGENE_MIME_TYPE))
                                     : clipboard->text();
         if (clipboardText.isEmpty()) {
-            coreLog.error("UGENE can not recognize current clipboard content as one of the supported formats.");
+            coreLog.error(tr("UGENE can not recognize current clipboard content as one of the supported formats."));
             return nullptr;
         }
         return new PasteTextTask(clipboardText, isAddToProject);
