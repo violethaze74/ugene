@@ -537,20 +537,28 @@ void MSAEditorSequenceArea::sl_copySelection() {
 
     MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
     MaCollapseModel *collapseModel = ui->getCollapseModel();
-    QString selText;
+    QString textMimeContent;
+    QString ugeneMimeContent;
     U2OpStatus2Log os;
     int len = selection.width();
-    for (int viewRow = selection.y(); viewRow <= selection.bottom() && !os.hasError(); ++viewRow) {    // bottom is inclusive
-        int maRow = collapseModel->getMaRowIndexByViewRowIndex(viewRow);
-        const MultipleSequenceAlignmentRow &row = maObj->getMsaRow(maRow);
-        QByteArray seqPart = row->mid(selection.x(), len, os)->toByteArray(os, len);
-        selText.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
+    for (int viewRowIndex = selection.y(); viewRowIndex <= selection.bottom() && !os.hasError(); ++viewRowIndex) {    // bottom is inclusive
+        int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+        const MultipleSequenceAlignmentRow &row = maObj->getMsaRow(maRowIndex);
+        QByteArray sequence = row->mid(selection.x(), len, os)->toByteArray(os, len);
+        ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
             .append(row.data()->getName())
             .append('\n')
-            .append(TextUtils::split(seqPart, 80).join("\n"))
+            .append(TextUtils::split(sequence, 80).join("\n"))
             .append('\n');
+
+        bool isLastLine = viewRowIndex == selection.bottom();
+        textMimeContent.append(sequence)
+            .append(isLastLine ? "" : "\n");
     }
-    QApplication::clipboard()->setText(selText);
+    auto mimeData = new QMimeData();
+    mimeData->setText(textMimeContent);
+    mimeData->setData(U2Clipboard::UGENE_MIME_TYPE, ugeneMimeContent.toUtf8());
+    QApplication::clipboard()->setMimeData(mimeData);
 }
 
 void MSAEditorSequenceArea::sl_copySelectionFormatted() {

@@ -525,7 +525,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, const
 
     GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
     GTKeyboardUtils::copy(os);
-    return GTClipboard::sequences(os);
+    return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME
 
@@ -539,7 +539,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, int r
 
     GTUtilsMsaEditor::clickSequenceName(os, names[rowNumber]);
     GTKeyboardUtils::copy(os);
-    return GTClipboard::sequences(os);
+    return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME
 
@@ -723,7 +723,7 @@ void GTUtilsMSAEditorSequenceArea::checkSelection(GUITestOpStatus &os, const QPo
     selectArea(os, start, end);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     GT_CHECK(clipboardText == expected, QString("unexpected selection:\n%1").arg(clipboardText));
 }
 #undef GT_METHOD_NAME
