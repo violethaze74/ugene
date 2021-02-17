@@ -688,7 +688,7 @@ QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa() const {
         // Sort items by Y, so virtual order will be the same with the tree.
         // The item with the higher Y must go first: this way it will be processed last when pushed to the stack below.
         std::sort(childItemList.begin(), childItemList.end(), [](const QGraphicsItem *item1, const QGraphicsItem *item2) {
-            return item1->y() >= item2->y();
+            return item1->y() > item2->y();
         });
 
         for (QGraphicsItem *childItem : qAsConst(childItemList)) {
