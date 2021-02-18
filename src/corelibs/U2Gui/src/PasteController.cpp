@@ -106,18 +106,19 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
     if (mimeData->hasUrls()) {
         return new PasteUrlsTask(mimeData->urls(), isAddToProject);
     }
-    QString clipboardText;
     try {
-        clipboardText = clipboard->text();
+        QString clipboardText = mimeData->hasFormat(U2Clipboard::UGENE_MIME_TYPE)
+                                    ? QString::fromUtf8(mimeData->data(U2Clipboard::UGENE_MIME_TYPE))
+                                    : clipboard->text();
+        if (clipboardText.isEmpty()) {
+            coreLog.error(tr("UGENE can not recognize current clipboard content as one of the supported formats."));
+            return nullptr;
+        }
+        return new PasteTextTask(clipboardText, isAddToProject);
     } catch (...) {
         coreLog.error(PasteFactory::tr("Data in clipboard is too large."));
         return nullptr;
     }
-    if (clipboardText.isEmpty()) {
-        coreLog.error("UGENE can not recognize current clipboard content as one of the supported formats.");
-        return nullptr;
-    }
-    return new PasteTextTask(clipboardText, isAddToProject);
 }
 
 ///////////////////////
