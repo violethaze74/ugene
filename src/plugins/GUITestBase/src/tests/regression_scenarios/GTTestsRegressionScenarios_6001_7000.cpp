@@ -6992,7 +6992,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     class Scenario : public CustomScenario {
     public:
         void run(GUITestOpStatus& os) override {
-            auto labelsList = GTWidget::findLabelByText(os, "Save document");
+            auto labelsList = GTWidget::findLabelByText(os, "Save document", GTWidget::getActiveModalWidget(os));
             QMessageBox::StandardButton b = QMessageBox::No;
             if (labelsList.first()->text().endsWith("annot1.gb")) {
                 b = QMessageBox::Cancel;
