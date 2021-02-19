@@ -6989,12 +6989,24 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "Misc. Feature", "", "1..1", annotationPath));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
+    class Scenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            auto labelsList = GTWidget::findLabelByText(os, "Save document");
+            QMessageBox::StandardButton b = QMessageBox::No;
+            if (labelsList.first()->text().endsWith("annot1.gb")) {
+                b = QMessageBox::Cancel;
+            }
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b));
+        }
+    };
+
     GTLogTracer log3("Task {Shutdown} canceled");
 
     // 11. Close UGENE.
     // 12. Click "No", then "Cancel"
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Exit");
     //     Expected state: similar.
