@@ -6950,9 +6950,9 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     // 7.1. Close UGENE.
     // 7.2. Click "Yes", then "Save", then "Cancel".
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "/", GTGlobals::UseMouse, GTFileDialogUtils::Cancel));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "permission", "permissionBox"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
     //      Expected state: 1) The log has "Task {Shutdown} canceled" message;
     //                      2) Project tree has "annot.gb" document;
@@ -6965,8 +6965,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     // 8.1. Close UGENE.
     // 8.2. Click "Yes", then "Cancel".
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "permission", "permissionBox"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log1);
