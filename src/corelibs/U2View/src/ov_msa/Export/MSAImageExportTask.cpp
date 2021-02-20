@@ -301,14 +301,16 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    SAFE_POINT(ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
-    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    CHECK(!selection.isEmpty(), );
-    msaSettings.region = U2Region(selection.x(), selection.width());
+    QRect exportRect = ui->getSequenceArea()->getSelection().toRect();
+    if (exportRect.isEmpty()) {
+        exportRect = QRect(0, 0, ui->getEditor()->getAlignmentLen(), ui->getSequenceArea()->getViewRowCount());
+    }
+    msaSettings.region = U2Region(exportRect.x(), exportRect.width());
     msaSettings.seqIdx.clear();
     MaCollapseModel *model = ui->getCollapseModel();
-    for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-        msaSettings.seqIdx.append(model->getMaRowIndexByViewRowIndex(i));
+    for (int viewRowIndex = exportRect.top(); viewRowIndex <= exportRect.bottom(); viewRowIndex++) {
+        int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
+        msaSettings.seqIdx.append(maRowIndex);
     }
 }
 

@@ -232,9 +232,17 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
         // Synchronize collapsible model with a current alignment.
         collapseModel->reset(getEditor()->getMaRowIds());
         return;
-    } else if (mode != MaEditorRowOrderMode::Sequence) {
+    } else if (mode == MaEditorRowOrderMode::Free) {
+        // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
+        QSet<qint64> maRowIds = getEditor()->getMaRowIds().toSet();
+        QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
+        if (viewModelRowIds != maRowIds) {
+            sl_toggleSequenceRowOrder(false);
+        }
         return;
     }
+
+    SAFE_POINT(mode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
 
     // Order and group rows by sequence content.
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
@@ -691,11 +699,9 @@ void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     GCOUNTER(cvar, "Switch collapsing mode");
 
     MaEditorRowOrderMode newMode = isOrderBySequence ? MaEditorRowOrderMode::Sequence : MaEditorRowOrderMode::Original;
-    bool isChanged = editor->getRowOrderMode() != newMode;
-    CHECK(isChanged, );
+    CHECK(editor->getRowOrderMode() != newMode, );
 
     editor->setRowOrderMode(newMode);
-
     updateRowOrderActionsState();
     if (isOrderBySequence) {
         sl_groupSequencesByContent();
