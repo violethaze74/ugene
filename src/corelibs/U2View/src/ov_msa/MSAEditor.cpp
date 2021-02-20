@@ -771,7 +771,7 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
     U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
     msa->sortRows(sortType, sortOrder, sortRange);
 
-    // Disable virtual mode.
+    // Switch into 'Original' ordering mode.
     getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
 
     QStringList rowNames = msa->getRowNames();

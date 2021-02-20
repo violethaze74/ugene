@@ -361,14 +361,13 @@ bool GTUtilsMSAEditorSequenceArea::isCollapsed(GUITestOpStatus &os, QString seqN
 #define GT_METHOD_NAME "collapsingMode"
 bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus &os) {
     QAbstractButton *toggleSequenceOrderButton = GTAction::button(os, "toggle_sequence_row_order_action");
-    bool nameLists = getVisibleNames(os) == getNameList(os);
-    if (nameLists && !toggleSequenceOrderButton->isChecked()) {
+    bool nameListsAreEqual = getVisibleNames(os) == getNameList(os);
+    if (nameListsAreEqual && !toggleSequenceOrderButton->isChecked()) {
         return false;
-    } else if (!nameLists && toggleSequenceOrderButton->isChecked()) {
+    } else if (!nameListsAreEqual && toggleSequenceOrderButton->isChecked()) {
         return true;
-    } else {
-        GT_CHECK_RESULT(false, "something wrong with collapsing mode", false);
     }
+    GT_CHECK_RESULT(false, "something wrong with collapsing mode", false);
 }
 #undef GT_METHOD_NAME
 
