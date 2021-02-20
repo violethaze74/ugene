@@ -199,7 +199,7 @@ private:
     void initRenderer();
     void runPasteTask(bool isPasteBefore);
 
-    /** Updates */
+    /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
     void updateRowOrderActionsState();
 
     void buildMenu(QMenu *m);
