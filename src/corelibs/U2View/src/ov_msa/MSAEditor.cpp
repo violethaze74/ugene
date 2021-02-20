@@ -772,7 +772,7 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
     msa->sortRows(sortType, sortOrder, sortRange);
 
     // Disable virtual mode.
-    getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
+    getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
 
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {

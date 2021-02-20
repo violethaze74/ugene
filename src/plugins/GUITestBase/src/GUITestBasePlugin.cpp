@@ -2408,6 +2408,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Common scenarios/msa_editor/tree
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0002);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
