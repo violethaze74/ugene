@@ -1206,7 +1206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
             isReadWasDelete = false;
         }
     }
-    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not deleted");
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
 
     //4. Select 3 reads using Shift modifier
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_5B70");
@@ -1215,7 +1215,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR51");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    //5 Push Remove sequence(s) button
+    //5 Push Remove seuence(s) button
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove read"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
@@ -1224,23 +1224,13 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     //Expected state : 3 reads are deleted
     //Expected state : No corresponding reads in the map
     reads = GTUtilsMcaEditor::getReadsNames(os);
-    bool isReadWasDeleted70 = true;
-    bool isReadWasDeleted71 = true;
-    bool isReadWasDeleted51 = true;
+    isReadWasDelete = true;
     foreach (QString read, reads) {
-        if (read == "SZYD_Cas9_5B70") {
-            isReadWasDeleted70 = false;
-        }
-        if (read == "SZYD_Cas9_5B71") {
-            isReadWasDeleted71 = false;
-        }
-        if (read == "SZYD_Cas9_CR51") {
-            isReadWasDeleted51 = false;
+        if (read == "SZYD_Cas9_5B70" || read == "SZYD_Cas9_5B71" || read == "SZYD_Cas9_CR51") {
+            isReadWasDelete = false;
         }
     }
-    CHECK_SET_ERR(isReadWasDeleted70, "Error: read SZYD_Cas9_CR70 was not deleted");
-    CHECK_SET_ERR(isReadWasDeleted71, "Error: read SZYD_Cas9_CR71 was not deleted");
-    CHECK_SET_ERR(isReadWasDeleted51, "Error: read SZYD_Cas9_CR51 was not deleted");
+    CHECK_SET_ERR(isReadWasDelete, "Error: read SZYD_Cas9_CR50 was not delete");
 
     //6. Push undo
     GTUtilsMcaEditor::undo(os);
