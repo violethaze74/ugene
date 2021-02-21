@@ -203,6 +203,11 @@ void MSAImageExportToSvgTask::run() {
     int ok = msaSettings.exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     SAFE_POINT_EXT(ok, setError(tr("Nothing to export")), );
 
+    // Repeating logic of ExportToBitmap task. TODO: use common code for both tasks.
+    if (msaSettings.exportAll) {
+        msaSettings.region = U2Region(0, mObj->getLength());
+    }
+
     QSvgGenerator generator;
     generator.setFileName(settings.fileName);
 
@@ -286,7 +291,7 @@ void MSAImageExportController::sl_showSelectRegionDialog() {
 void MSAImageExportController::sl_regionChanged() {
     bool customRegionIsSelected = (settingsUi->comboBox->currentIndex() == 1);
     msaSettings.exportAll = !customRegionIsSelected;
-    if (customRegionIsSelected) {
+    if (customRegionIsSelected && msaSettings.region.isEmpty()) {
         sl_showSelectRegionDialog();
     } else {
         checkRegionToExport();
@@ -301,14 +306,12 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    QRect exportRect = ui->getSequenceArea()->getSelection().toRect();
-    if (exportRect.isEmpty()) {
-        exportRect = QRect(0, 0, ui->getEditor()->getAlignmentLen(), ui->getSequenceArea()->getViewRowCount());
-    }
-    msaSettings.region = U2Region(exportRect.x(), exportRect.width());
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
+    CHECK(!selection.isEmpty(), );
+    msaSettings.region = U2Region(selection.x(), selection.width());
     msaSettings.seqIdx.clear();
     MaCollapseModel *model = ui->getCollapseModel();
-    for (int viewRowIndex = exportRect.top(); viewRowIndex <= exportRect.bottom(); viewRowIndex++) {
+    for (qint64 viewRowIndex = selection.y(); viewRowIndex <= selection.bottom(); viewRowIndex++) {
         int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
         msaSettings.seqIdx.append(maRowIndex);
     }
