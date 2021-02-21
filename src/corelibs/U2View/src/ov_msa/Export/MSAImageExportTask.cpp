@@ -286,7 +286,7 @@ void MSAImageExportController::sl_showSelectRegionDialog() {
 void MSAImageExportController::sl_regionChanged() {
     bool customRegionIsSelected = (settingsUi->comboBox->currentIndex() == 1);
     msaSettings.exportAll = !customRegionIsSelected;
-    if (customRegionIsSelected && msaSettings.region.isEmpty()) {
+    if (customRegionIsSelected) {
         sl_showSelectRegionDialog();
     } else {
         checkRegionToExport();
