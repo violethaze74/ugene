@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <core/CustomScenario.h>
+#include <utils/GTThread.h>
+
 #include "GTSlider.h"
 
 namespace HI {
@@ -26,15 +29,28 @@ namespace HI {
 
 #define GT_METHOD_NAME "setValue"
 void GTSlider::setValue(GUITestOpStatus &os, QSlider *slider, int value) {
-    Q_UNUSED(os);
-    GT_CHECK(slider != NULL, "slider not found");
-    int min = slider->minimum();
-    int max = slider->maximum();
-    GT_CHECK(slider->isEnabled(), "slider is disabled");
-    GT_CHECK(value >= min, QString("can not set value %1, mininum is %2").arg(value).arg(min));
-    GT_CHECK(value <= max, QString("can not set value %1, maximum is %2").arg(value).arg(max));
+    GT_CHECK(slider != nullptr, "Slider is null!");
 
-    slider->setValue(value);
+    class MainThreadScenario : public CustomScenario {
+    public:
+        MainThreadScenario(QSlider *_slider, int _value)
+            : slider(_slider), value(_value) {
+        }
+        void run(GUITestOpStatus &os) override {
+            int min = slider->minimum();
+            int max = slider->maximum();
+
+            GT_CHECK(slider->isEnabled(), "slider is disabled");
+            GT_CHECK(value >= min, QString("can not set value %1, minimum is %2").arg(value).arg(min));
+            GT_CHECK(value <= max, QString("can not set value %1, maximum is %2").arg(value).arg(max));
+
+            slider->setValue(value);
+        }
+        QSlider *slider;
+        int value;
+    };
+
+    GTThread::runInMainThread(os, new MainThreadScenario(slider, value));
 }
 #undef GT_CLASS_NAME
 
