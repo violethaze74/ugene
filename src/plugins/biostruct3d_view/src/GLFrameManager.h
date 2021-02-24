@@ -46,23 +46,20 @@ public:
 
     void setState(const QVariantMap &state);
     void writeStateToMap(QVariantMap &states);
-    QOpenGLWidget *getGLWidget() {
-        return glWidget;
-    }
-    void makeCurrent() {
-        glWidget->makeCurrent();
-    }
+
+    QOpenGLWidget *getGLWidget();
+
+    void makeCurrent();
+
     void updateViewPort(int width, int height);
     void updateViewPort();
-    void updateGL() {
-        glWidget->update();
-    }
-    GLfloat getZoomFactor() const {
-        return zoomFactor;
-    }
-    float *getRotationMatrix() {
-        return rotMatrix.data();
-    }
+
+    void updateGL();
+
+    GLfloat getZoomFactor() const;
+
+    float *getRotationMatrix();
+
     void rotateCamera(const Vector3D &rotAxis, float rotAngle);
 
     void setCameraClip(float clipNear, float clipFar);
@@ -92,9 +89,9 @@ public:
         : syncLock(false) {
     }
     ~GLFrameManager();
-    bool getSyncLock() const {
-        return syncLock;
-    }
+
+    bool getSyncLock() const;
+
     void setSyncLock(bool lockOn, QOpenGLWidget *syncWidget);
     void addGLFrame(GLFrame *frame);
     GLFrame *getGLWidgetFrame(QOpenGLWidget *widget);

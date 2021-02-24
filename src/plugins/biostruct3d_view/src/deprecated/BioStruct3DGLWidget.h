@@ -109,19 +109,13 @@ public:
     ~BioStruct3DGLWidget();
 
     //! @return BioStruct3D const reference.
-    const BioStruct3D &getBioStruct3D() const {
-        return *(contexts.first().biostruct);
-    }
+    const BioStruct3D &getBioStruct3D() const;
 
     //! @return BioStruct3D Protein Data Bank id.
-    const QString getPDBId() const {
-        return contexts.first().biostruct->pdbId;
-    }
+    const QString getPDBId() const;
 
     //! @return BioStruct3DObject name.
-    const QString getBioStruct3DObjectName() const {
-        return contexts.first().obj->getGObjectName();
-    }
+    const QString getBioStruct3DObjectName() const;
 
     /*!
     * @return Menu containing display actions: renderers, color schemes etc.
@@ -154,9 +148,7 @@ public:
     void setBackgroundColor(QColor backgroundColor);
 
     /** @returns This widget GLFrame */
-    GLFrame *getGLFrame() {
-        return glFrame.data();
-    }
+    GLFrame *getGLFrame();
 
     /** Draws scene without setting camera */
     void draw();
@@ -167,9 +159,7 @@ public:
     /** @returns scene bounding sphere radius */
     float getSceneRadius() const;
 
-    void setImageRenderingMode(bool status) {
-        imageRenderingMode = status;
-    }
+    void setImageRenderingMode(bool status);
 
 protected:
     /*!

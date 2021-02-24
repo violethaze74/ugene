@@ -66,6 +66,10 @@ bool BioStruct3DGLRendererRegistry::isAvailableFor(const QString &name, const Bi
     return fact->isAvailableFor(biostruct);
 }
 
+const QString BioStruct3DGLRendererFactory::getName() const {
+    return name;
+}
+
 QList<QString> BioStruct3DGLRendererRegistry::getRenderersAvailableFor(const BioStruct3D &biostruct) {
     BioStruct3DGLRendererRegistry *reg = getInstance();
 

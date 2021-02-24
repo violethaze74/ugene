@@ -151,6 +151,18 @@ BioStruct3DGLWidget::~BioStruct3DGLWidget() {
     uiLog.trace("Biostruct3DGLWdiget " + objectName() + " deleted");
 }
 
+const BioStruct3D &BioStruct3DGLWidget::getBioStruct3D() const {
+    return *(contexts.first().biostruct);
+}
+
+const QString BioStruct3DGLWidget::getPDBId() const {
+    return contexts.first().biostruct->pdbId;
+}
+
+const QString BioStruct3DGLWidget::getBioStruct3DObjectName() const {
+    return contexts.first().obj->getGObjectName();
+}
+
 void BioStruct3DGLWidget::setupFrame() {
     const float scaleFactor = 2.5;
     float radius = getSceneRadius();
@@ -478,6 +490,14 @@ void BioStruct3DGLWidget::updateAllRenderers() {
 void BioStruct3DGLWidget::setBackgroundColor(QColor backgroundColor) {
     this->backgroundColor = backgroundColor;
     qglClearColor(backgroundColor);
+}
+
+GLFrame *BioStruct3DGLWidget::getGLFrame() {
+    return glFrame.data();
+}
+
+void BioStruct3DGLWidget::setImageRenderingMode(bool status) {
+    imageRenderingMode = status;
 }
 
 void BioStruct3DGLWidget::zoom(float delta) {

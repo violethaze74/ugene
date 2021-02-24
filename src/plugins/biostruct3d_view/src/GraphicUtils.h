@@ -59,9 +59,7 @@ public:
     float &operator[](unsigned int i);
 
     bool operator==(const Color4f &a) const;
-    const float *getConstData() const {
-        return color;
-    }
+    const float *getConstData() const;
 };
 
 //! OpenGL drawable object

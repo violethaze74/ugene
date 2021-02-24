@@ -76,9 +76,7 @@ public:
     }
 
     /** @returns Factory name */
-    const QString getName() const {
-        return name;
-    }
+    const QString getName() const;
 
     /** Check if biostruct can be drawn with renderer */
     virtual bool isAvailableFor(const BioStruct3D &biostruct) const = 0;
@@ -152,27 +150,19 @@ public:
     void setColorScheme(const BioStruct3DColorScheme *s);
 
     //! @returns current color scheme.
-    const BioStruct3DColorScheme *getColorScheme() const {
-        return colorScheme;
-    }
+    const BioStruct3DColorScheme *getColorScheme() const;
 
     /** @returns shown models indexes list reference.
       * indexes are just index numbers of models, NOT modelIds
       */
-    const QList<int> &getShownModelsIndexes() const {
-        return shownModels;
-    }
+    const QList<int> &getShownModelsIndexes() const;
 
     /** Sets shown models models list. */
-    void setShownModelsIndexes(const QList<int> &_shownModels) {
-        shownModels = _shownModels;
-    }
+    void setShownModelsIndexes(const QList<int> &_shownModels);
 
 public:
     /** Check if biostruct can be visualized by renderer */
-    static bool isAvailableFor(const BioStruct3D &) {
-        return true;
-    }
+    static bool isAvailableFor(const BioStruct3D &);
 
 protected:
     const BioStruct3D &bioStruct;

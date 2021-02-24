@@ -64,6 +64,26 @@ void GLFrame::performShift(float deltaX, float deltaY) {
     cameraPosition += shiftVector;
 }
 
+QOpenGLWidget *GLFrame::getGLWidget() {
+    return glWidget;
+}
+
+void GLFrame::makeCurrent() {
+    glWidget->makeCurrent();
+}
+
+void GLFrame::updateGL() {
+    glWidget->update();
+}
+
+GLfloat GLFrame::getZoomFactor() const {
+    return zoomFactor;
+}
+
+float *GLFrame::getRotationMatrix() {
+    return rotMatrix.data();
+}
+
 const Vector3D GLFrame::getCameraPosition() const {
     return cameraPosition;
 }
@@ -127,6 +147,10 @@ void GLFrame::updateViewPort() {
 }
 
 GLFrameManager::~GLFrameManager() {
+}
+
+bool GLFrameManager::getSyncLock() const {
+    return syncLock;
 }
 
 void GLFrameManager::addGLFrame(GLFrame *glFrame) {
