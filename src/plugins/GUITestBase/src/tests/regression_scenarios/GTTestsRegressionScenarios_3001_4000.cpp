@@ -1779,21 +1779,22 @@ GUI_TEST_CLASS_DEFINITION(test_3276) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/1");
 
     // Rename the first and the second sequences to "1".
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Bicolorana_bicolor_EF540830", "1");
 
-    // Ensure that sync mode is OFF, but still can be enabled because tree sequences were also renamed.
-    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
-    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled");
+    // Ensure that sync mode is ON: the tree tracks all sequence rename operations correctly.
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/2");
 
     // Remove the first sequence.
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "1");
 
     // Ensure that sync mode is OFF, and can't be  enabled because tree and MSA sequence counts do not match.
-    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
     CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be disabled");
 }
 
