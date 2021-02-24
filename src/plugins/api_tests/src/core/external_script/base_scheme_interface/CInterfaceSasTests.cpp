@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Lang/ActorModel.h>
@@ -31,12 +32,32 @@
 
 #include "SchemeSimilarityUtils.h"
 
-static const QString WORKING_DIR = U2::AppContext::getWorkingDirectoryPath();
-#ifndef Q_OS_MAC
-static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../test/_common_data/cmdline/wd-sas-schemes/";
-#else
-static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../../../../../test/_common_data/cmdline/wd-sas-schemes/";
-#endif
+#include <QFileInfo>
+
+static QString getTestDirImpl() {
+    QString testDir = qgetenv("UGENE_TESTS_PATH");
+    auto getDefaultTestDir = []() -> QString {
+        QString defaultTestDir;
+        #ifndef Q_OS_MAC
+        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
+        #else
+        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
+        #endif
+        return defaultTestDir;
+    };
+    if (testDir.isEmpty()) {
+        testDir = getDefaultTestDir();
+    } else if (!QFileInfo::exists(testDir)) {
+        QString defaultTestDir = getDefaultTestDir();
+        U2::coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'. The default path is set: '%2'.").arg(testDir).arg(defaultTestDir));
+        testDir = getDefaultTestDir();
+    }
+
+    testDir = testDir + (testDir.endsWith("/") ? "" : "/");
+    return testDir;
+}
+
+static const QString PROPER_WD_SCHEMES_PATH = getTestDirImpl() + "_common_data/cmdline/wd-sas-schemes/";
 
 static U2ErrorType getActorDisplayName(const QString &actorId, QString &actorName) {
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
