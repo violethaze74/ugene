@@ -6989,14 +6989,11 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "Misc. Feature", "", "1..1", annotationPath));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    class Scenario : public CustomScenario {
+    class Clicker : public CustomScenario {
     public:
         void run(GUITestOpStatus& os) override {
             auto labelsList = GTWidget::findLabelByText(os, "Save document", GTWidget::getActiveModalWidget(os));
-            QMessageBox::StandardButton b = QMessageBox::No;
-            if (labelsList.first()->text().endsWith("annot1.gb")) {
-                b = QMessageBox::Cancel;
-            }
+            QMessageBox::StandardButton b = labelsList.first()->text().endsWith("annot1.gb") ? QMessageBox::Cancel : QMessageBox::No;
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b));
         }
     };
@@ -7005,8 +7002,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     // 11. Close UGENE.
     // 12. Click "No", then "Cancel"
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Scenario()));
-    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Clicker()));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Clicker()));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Exit");
     //     Expected state: similar.
