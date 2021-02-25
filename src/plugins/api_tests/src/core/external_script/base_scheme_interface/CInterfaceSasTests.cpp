@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
+#include <U2Core/global.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -38,11 +39,11 @@ static QString getTestDirImpl() {
     QString testDir = qgetenv("UGENE_TESTS_PATH");
     auto getDefaultTestDir = []() -> QString {
         QString defaultTestDir;
-        #ifndef Q_OS_MAC
-        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
-        #else
-        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
-        #endif
+        if (isOsMac()) {
+            defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
+        } else {
+            defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
+        }
         return defaultTestDir;
     };
     if (testDir.isEmpty()) {
@@ -50,14 +51,14 @@ static QString getTestDirImpl() {
     } else if (!QFileInfo::exists(testDir)) {
         QString defaultTestDir = getDefaultTestDir();
         U2::coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'. The default path is set: '%2'.").arg(testDir).arg(defaultTestDir));
-        testDir = getDefaultTestDir();
+        testDir = defaultTestDir;
     }
 
     testDir = testDir + (testDir.endsWith("/") ? "" : "/");
     return testDir;
 }
 
-static const QString PROPER_WD_SCHEMES_PATH = getTestDirImpl() + "_common_data/cmdline/wd-sas-schemes/";
+static const QString WD_SCHEMES_PATH = getTestDirImpl() + "_common_data/cmdline/wd-sas-schemes/";
 
 static U2ErrorType getActorDisplayName(const QString &actorId, QString &actorName) {
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
@@ -93,7 +94,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalO_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_clustalO.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_clustalO.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -112,7 +113,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalW_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_clustalW.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_clustalW.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -131,7 +132,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_kalign_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_kalign.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_kalign.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -150,7 +151,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_mafft_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_mafft.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_mafft.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -169,7 +170,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_muscle_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_muscle.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_muscle.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -188,7 +189,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_tcoffee_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "align_with_tcoffee.uwl",
+                                                  WD_SCHEMES_PATH + "align_with_tcoffee.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -207,7 +208,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, annotate_with_uql_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "annotate_with_uql.uwl",
+                                                  WD_SCHEMES_PATH + "annotate_with_uql.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -227,7 +228,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, basic_align_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "basic_align.uwl",
+                                                  WD_SCHEMES_PATH + "basic_align.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -247,7 +248,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, build_weight_matrix_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "build_weight_matrix.uwl",
+                                                  WD_SCHEMES_PATH + "build_weight_matrix.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -266,7 +267,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, cd_search_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "cd_search.uwl",
+                                                  WD_SCHEMES_PATH + "cd_search.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -285,7 +286,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, dna_statistics_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "dna_statistics.uwl",
+                                                  WD_SCHEMES_PATH + "dna_statistics.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -305,7 +306,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, faqual2fastq_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "faqual2fastq.uwl",
+                                                  WD_SCHEMES_PATH + "faqual2fastq.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -325,7 +326,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, filter_annotations_by_name_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "filter_annotations_by_name.uwl",
+                                                  WD_SCHEMES_PATH + "filter_annotations_by_name.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -366,7 +367,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, find_repeats_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "find_repeats.uwl",
+                                                  WD_SCHEMES_PATH + "find_repeats.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -385,7 +386,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, hmm2_build_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "hmm2_build.uwl",
+                                                  WD_SCHEMES_PATH + "hmm2_build.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -405,7 +406,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, import_phred_qualities_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "import_phred_qualities.uwl",
+                                                  WD_SCHEMES_PATH + "import_phred_qualities.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -425,7 +426,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, join_sequences_into_alignment_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "join_sequences_into_alignment.uwl",
+                                                  WD_SCHEMES_PATH + "join_sequences_into_alignment.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -445,7 +446,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, local_blast_plus_search_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "local_blast_plus_search.uwl",
+                                                  WD_SCHEMES_PATH + "local_blast_plus_search.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -464,7 +465,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, merge_annotations_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "merge_annotations.uwl",
+                                                  WD_SCHEMES_PATH + "merge_annotations.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -483,7 +484,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, merge_assemblies_with_cuffmerge_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "merge_assemblies_with_cuffmerge.uwl",
+                                                  WD_SCHEMES_PATH + "merge_assemblies_with_cuffmerge.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -502,7 +503,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, orf_marker_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "orf_marker.uwl",
+                                                  WD_SCHEMES_PATH + "orf_marker.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -521,7 +522,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, remote_blast_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "remote_blast.uwl",
+                                                  WD_SCHEMES_PATH + "remote_blast.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -540,7 +541,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, reverse_complement_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "reverse_complement.uwl",
+                                                  WD_SCHEMES_PATH + "reverse_complement.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -559,7 +560,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, split_alignment_into_sequences_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "split_alignment_into_sequences.uwl",
+                                                  WD_SCHEMES_PATH + "split_alignment_into_sequences.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -578,7 +579,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, split_assembly_into_sequences_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "split_assembly_into_sequences.uwl",
+                                                  WD_SCHEMES_PATH + "split_assembly_into_sequences.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -597,7 +598,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, text2sequence_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "text2sequence.uwl",
+                                                  WD_SCHEMES_PATH + "text2sequence.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -616,7 +617,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, extract_consensus_sas) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "consensus.uwl",
+                                                  WD_SCHEMES_PATH + "consensus.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
