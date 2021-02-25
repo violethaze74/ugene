@@ -52,7 +52,7 @@ HEADERS += src/DetectWin10.h \
            src/SendReportDialog.h \
            src/Utils.h 
 
-FORMS += src/ui/SendReportDialog.ui
+FORMS += src/SendReportDialog.ui
 
 SOURCES += src/DetectWin10.cpp \
            src/main.cpp \

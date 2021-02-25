@@ -10,8 +10,8 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 37.0-dev)
-set(UGENE_VER_MAJOR 37)
+set(UGENE_VERSION 38.0-dev)
+set(UGENE_VER_MAJOR 38)
 set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
@@ -47,7 +47,6 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=parentheses"
             " -Werror=return-type"
             " -Werror=uninitialized"
-            " -Wno-cast-function-type"
             " -Wno-catch-value"
             " -Wno-class-memaccess"
             " -Wno-deprecated-copy"
@@ -55,20 +54,19 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Wno-ignored-attributes"
             " -Wno-implicit-fallthrough"
             " -Wno-sign-compare"
-            " -Wno-unused-parameter"
             " -Wno-unused-variable"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
 endif ()
 
-# 3rd party libs
+# 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
 add_subdirectory(src/libs_3rdparty/breakpad)
 add_subdirectory(src/libs_3rdparty/samtools)
 add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
 
-# Core libs
+# Core libraries.
 add_subdirectory(src/corelibs/U2Algorithm)
 add_subdirectory(src/corelibs/U2Core)
 add_subdirectory(src/corelibs/U2Designer)
@@ -80,11 +78,13 @@ add_subdirectory(src/corelibs/U2Script)
 add_subdirectory(src/corelibs/U2Test)
 add_subdirectory(src/corelibs/U2View)
 
-# launchers
-add_subdirectory(src/ugeneui)
+# Executables.
+add_subdirectory(src/plugins_checker)
 add_subdirectory(src/ugenecl)
+add_subdirectory(src/ugenem)
+add_subdirectory(src/ugeneui)
 
-# local plugins
+# Plugins.
 add_subdirectory(src/plugins/CoreTests)
 add_subdirectory(src/plugins/GUITestBase)
 add_subdirectory(src/plugins/annotator)
@@ -105,6 +105,7 @@ add_subdirectory(src/plugins/external_tool_support)
 add_subdirectory(src/plugins/genome_aligner)
 add_subdirectory(src/plugins/kraken_support)
 add_subdirectory(src/plugins/linkdata_support)
+add_subdirectory(src/plugins/metaphlan2_support)
 add_subdirectory(src/plugins/ngs_reads_classification)
 add_subdirectory(src/plugins/orf_marker)
 add_subdirectory(src/plugins/pcr)
@@ -115,9 +116,10 @@ add_subdirectory(src/plugins/repeat_finder)
 add_subdirectory(src/plugins/smith_waterman)
 add_subdirectory(src/plugins/test_runner)
 add_subdirectory(src/plugins/weight_matrix)
+add_subdirectory(src/plugins/wevote_support)
 add_subdirectory(src/plugins/workflow_designer)
 
-# 3rd party plugins
+# Third party plugins.
 add_subdirectory(src/plugins_3rdparty/ball)
 add_subdirectory(src/plugins_3rdparty/gor4)
 add_subdirectory(src/plugins_3rdparty/hmm2)
