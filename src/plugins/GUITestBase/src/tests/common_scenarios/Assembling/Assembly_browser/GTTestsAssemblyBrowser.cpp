@@ -1025,17 +1025,20 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0037) {
-    //    1. Open assembly
+    // Open assembly.
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    //    2. Use context menu on any read: {copy read data}
+    // Zoom to the reads level.
     GTUtilsAssemblyBrowser::zoomToReads(os);
-
     for (int i = 0; i < 10; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
-    //    Check clipboard
+
+    // Shift view to the 1k+ coordinates to check that large numbers are correctly formatted.
+    GTUtilsAssemblyBrowser::goToPosition(os, 5000);
+
+    // Copy read information and check that it is valid.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "copy_read_information", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     QString clipboard = GTClipboard::text(os);
@@ -1043,7 +1046,8 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
                       clipboard.contains("Length") && clipboard.contains("Row") &&
                       clipboard.contains("Cigar") && clipboard.contains("Strand"),
                   "Unexpected clipboard: " + clipboard)
-    //    Check reads position
+
+    // Check that read position is copied as a number.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy current position to clipboard", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     clipboard = GTClipboard::text(os);
