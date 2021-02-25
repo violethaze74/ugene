@@ -1869,9 +1869,13 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Disable sync mode to allow resize of the view.
+
+    GTUtilsProjectTreeView::toggleView(os);    // Close opened project tree view to make all icons on the toolbar visible with no overflow.
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+
     GTWidget::click(os, syncModeButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
     auto treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
