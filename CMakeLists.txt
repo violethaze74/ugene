@@ -62,6 +62,7 @@ endif ()
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
 add_subdirectory(src/libs_3rdparty/breakpad)
+add_subdirectory(src/libs_3rdparty/qscore)
 add_subdirectory(src/libs_3rdparty/samtools)
 add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
