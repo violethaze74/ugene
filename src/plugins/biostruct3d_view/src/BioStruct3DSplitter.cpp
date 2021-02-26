@@ -744,6 +744,10 @@ bool DBLinksFile::load() {
     return true;
 }
 
+QList<DBLink> DBLinksFile::getLinks() {
+    return links;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // AddModelToSplitterTask
 
