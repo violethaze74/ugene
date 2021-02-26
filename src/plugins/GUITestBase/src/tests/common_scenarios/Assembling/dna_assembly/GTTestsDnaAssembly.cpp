@@ -52,8 +52,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
-
-    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
