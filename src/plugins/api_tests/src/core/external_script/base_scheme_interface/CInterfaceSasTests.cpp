@@ -37,19 +37,15 @@
 
 static QString getTestDirImpl() {
     QString testDir = qgetenv("UGENE_TESTS_PATH");
-    auto getDefaultTestDir = []() -> QString {
-        QString defaultTestDir;
-        if (isOsMac()) {
-            defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
-        } else {
-            defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
-        }
-        return defaultTestDir;
-    };
+    QString defaultTestDir;
+    if (isOsMac()) {
+        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
+    } else {
+        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
+    }
     if (testDir.isEmpty()) {
-        testDir = getDefaultTestDir();
+        testDir = defaultTestDir;
     } else if (!QFileInfo::exists(testDir)) {
-        QString defaultTestDir = getDefaultTestDir();
         U2::coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'. The default path is set: '%2'.").arg(testDir).arg(defaultTestDir));
         testDir = defaultTestDir;
     }
