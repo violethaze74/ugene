@@ -38,7 +38,7 @@
 
 #define SETTINGS_ROOT QString("test_runner/")
 /** Default number of threads to run XML tests. */
-#define NUM_THREADS_VAR_VALUE "10"
+#define NUM_THREADS_VAR_VALUE "1"
 #define TIME_OUT_VAR_VALUE "0"
 
 namespace U2 {
