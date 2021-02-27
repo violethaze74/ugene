@@ -68,7 +68,6 @@ public:
         //    Expcted state: warning messagebox appeared
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b, message));
         GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        GTGlobals::sleep();
         GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
     }
 };
@@ -95,7 +94,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     //    Expected state: index is built
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".1.ebwt"), "index1 not found");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".2.ebwt"), "index2 not found");
@@ -171,7 +169,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -193,7 +190,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     //    2. Delete one of the indes files
     QFile f(sandBoxDir + refName + ".3.ebwt");
     CHECK_SET_ERR(f.exists(), "index not built");
@@ -204,7 +200,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 //BOWTIE2 TESTS
@@ -296,7 +291,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -324,7 +318,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 //BWA TESTS
@@ -428,7 +421,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -456,7 +448,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
