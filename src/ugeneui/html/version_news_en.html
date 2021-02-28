@@ -18,11 +18,31 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  MA 02110-1301, USA.
 -->
-<h3>Changes in UGENE v. 37</h3>
+<h3>Changes in UGENE v. 38</h3>
+
+<h4>Alignment Editor</h4>
 <ul>
-    <li>External tools update: blast, bowtie, mafft, hmmer3, etc…</li>
-    <li>Improved Copy/Paste functionality in Alignment Editor.</li>
-    <li>Support for conversion of DNA alignments to RNA and back.</li>
-    <li>Usability improvements for import and export from remote database.</li>
-    <li>Minor UI improvements in Alignment Editor and Sequence Viewer.</li>
+    <li>New options for copy & paste routines: paste before or after a selection.</li>
+    <li>A new sorting option: "Sort by leading gap size".</li>
+    <li>A new option to change a DNA alphabet into RNA in place.</li>
+    <li>A new option to select a translation table in DNA-to-protein export.</li>
+    <li>Advanced gap handling options in DNA-to-protein export.</li>
+    <li>Better scaling of text for high-resolution displays.</li>
+    <li>Reworked alignment and phylogenetic tree synchronization logic.</li>
+    <li>The recent "Copy selection" change was reverted to the old simple mode.</li>
+</ul>
+
+<h4>Sequence Editor</h4>
+<ul>
+    <li>Faster and less resource-consuming auto-annotation mode.</li>
+    <li>Fixed issues with annotation selection in multi-line mode.</li>
+    <li>Better parsing of overlapping circular sequence regions in the annotation creation dialog.</li>
+</ul>
+
+<h4>Miscellaneous</h4>
+<ul>
+    <li>Improved BLAST algorithm speed and resource usage when used for NGS.</li>
+    <li>In Sanger Editor click on a read now centers the read on a screen.</li>
+    <li>Fixed Linux/GTK3 issue with file dialogs in Workflow Designer.</li>
+    <li>A lot of other stability and performance improvements.</li>
 </ul>
