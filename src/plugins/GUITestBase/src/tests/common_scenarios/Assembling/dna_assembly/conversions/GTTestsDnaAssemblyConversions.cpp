@@ -117,9 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
-    GTGlobals::sleep(5000);
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
-    GTGlobals::sleep();
     //     3. Click start:
     //     Expected: the error dialog appears. It tells that the short reads file has the unknown format.
 }
@@ -145,7 +143,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
     //UGENE can hang up here
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
