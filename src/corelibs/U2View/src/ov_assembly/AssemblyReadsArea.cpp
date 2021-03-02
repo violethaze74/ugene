@@ -115,8 +115,8 @@ void AssemblyReadsArea::createMenu() {
     copyDataAction->setObjectName("copy_read_information");
     connect(copyDataAction, SIGNAL(triggered()), SLOT(sl_onCopyReadData()));
 
-    QAction *copyPosAction = readMenu->addAction(tr("Copy current position to clipboard"));
-    connect(copyPosAction, SIGNAL(triggered()), SLOT(sl_onCopyCurPos()));
+    QAction *copyPositionAction = readMenu->addAction(tr("Copy current position to clipboard"));
+    connect(copyPositionAction, SIGNAL(triggered()), SLOT(sl_copyPositionToClipboard()));
 
     QMenu *exportMenu = readMenu->addMenu(tr("Export"));
     exportMenu->menuAction()->setObjectName("Export");
@@ -880,9 +880,9 @@ void AssemblyReadsArea::sl_onCopyReadData() {
     QApplication::clipboard()->setText(AssemblyReadsAreaHint::getReadDataAsString(read));
 }
 
-void AssemblyReadsArea::sl_onCopyCurPos() {
-    qint64 asmPos = browser->calcAsmPosX(curPos.x()) + 1;    // displayed are 1-based coordinates
-    QApplication::clipboard()->setText(FormatUtils::formatNumberWithSeparators(asmPos));
+void AssemblyReadsArea::sl_copyPositionToClipboard() {
+    qint64 assemblyPosition = browser->calcAsmPosX(curPos.x()) + 1;    // User values starts from 1.
+    QApplication::clipboard()->setText(QString::number(assemblyPosition));
 }
 
 void AssemblyReadsArea::updateMenuActions() {
