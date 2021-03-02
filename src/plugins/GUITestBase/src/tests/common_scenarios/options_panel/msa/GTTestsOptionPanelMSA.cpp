@@ -55,7 +55,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -1580,7 +1579,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     // Check/prepare tree widgets.
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
     QWidget *heightSlider = GTWidget::findWidget(os, "heightSlider");
-    QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
+    QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox *>(os, "layoutCombo");
 
     const QImage initImage = GTWidget::getImage(os, treeView);
 
@@ -1858,35 +1857,47 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
-    //    1. Open data/samples/CLUSTALW/COI.aln
+    // Open data/samples/CLUSTALW/COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open tree settings option panel tab. build tree
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Open tree settings option panel tab. Build a tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
-    CHECK_SET_ERR(treeView != NULL, "tree view not found");
+    // Disable sync mode to allow resize of the view.
+
+    GTUtilsProjectTreeView::toggleView(os);    // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+
+    GTWidget::click(os, syncModeButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    auto treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     QGraphicsScene *scene = treeView->scene();
-    //    3. change widthSlider value
-    int initWidth = scene->width();
-    QSlider *widthSlider = GTWidget::findExactWidget<QSlider *>(os, "widthSlider");
-    GTSlider::setValue(os, widthSlider, 50);
-    GTGlobals::sleep(300);
-    //    Expected state:tree became wider
-    int finalWidth = scene->width();
-    CHECK_SET_ERR(initWidth < finalWidth, "width not changed");
 
-    //    4. change heightSlider value
-    int initheight = scene->height();
-    QSlider *heightSlider = GTWidget::findExactWidget<QSlider *>(os, "heightSlider");
+    // Change widthSlider value.
+    int initialWidth = scene->width();
+    auto widthSlider = GTWidget::findExactWidget<QSlider *>(os, "widthSlider");
+    GTSlider::setValue(os, widthSlider, 50);
+
+    // Expected state: the tree became wider.
+    int finalWidth = scene->width();
+    CHECK_SET_ERR(initialWidth < finalWidth, QString("Width is not changed! Initial: %1, final: %2").arg(initialWidth).arg(finalWidth));
+
+    // Change heightSlider value.
+    int initialHeight = scene->height();
+    auto heightSlider = GTWidget::findExactWidget<QSlider *>(os, "heightSlider");
     GTSlider::setValue(os, heightSlider, 20);
-    GTGlobals::sleep(300);
-    //    Expected state:tree became wider
-    int finalHiegth = scene->height();
-    CHECK_SET_ERR(initheight < finalHiegth, "height not changed");
+
+    // Expected state: the tree became wider.
+    int finalHeight = scene->height();
+    CHECK_SET_ERR(initialHeight < finalHeight, QString("Height is not changed! Initial: %1, final: %2").arg(initialHeight).arg(finalHeight));
 }
 
 namespace {

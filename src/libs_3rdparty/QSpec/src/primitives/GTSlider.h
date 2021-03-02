@@ -30,6 +30,10 @@ namespace HI {
 
 class HI_EXPORT GTSlider {
 public:
+    /**
+     * Sets slider value in the main thread.
+     * Fails if the slider is not enabled or if the value is out of min/max range.
+     */
     static void setValue(GUITestOpStatus &os, QSlider *slider, int value);
 };
 
