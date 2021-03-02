@@ -40,9 +40,7 @@ public:
     int execIfAlgorithmAvailable();
 
     /** @returns set up StructuralAlignmentTask */
-    StructuralAlignmentTask *getTask() {
-        return task;
-    }
+    StructuralAlignmentTask *getTask();
 
 public slots:
     virtual void accept();

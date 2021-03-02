@@ -147,4 +147,8 @@ int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
     }
 }
 
+StructuralAlignmentTask *StructuralAlignmentDialog::getTask() {
+    return task;
+}
+
 }    // namespace U2

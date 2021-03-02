@@ -95,6 +95,10 @@ void SelectModelsDialog::accept() {
     QDialog::accept();
 }
 
+const QList<int> &SelectModelsDialog::getSelectedModelsIndexes() const {
+    return selectedModelsIndexes;
+}
+
 SelectModelsDialog::~SelectModelsDialog() {
 }
 

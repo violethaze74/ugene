@@ -240,4 +240,15 @@ void BioStruct3DSettingsDialog::setAnaglyphSettings(const AnaglyphSettings &sett
     eyesShiftSlider->setSliderPosition(anaglyphSettings.eyesShift * 100.0);
 }
 
+GlassesColorScheme::GlassesColorScheme() {
+    name = "";
+    leftEyeColor = QColor(0, 0, 0);
+    rightEyeColor = leftEyeColor;
+}
+
+GlassesColorScheme::GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor) {
+    this->name = name;
+    this->leftEyeColor = leftEyeColor;
+    this->rightEyeColor = rightEyeColor;
+}
 }    // namespace U2

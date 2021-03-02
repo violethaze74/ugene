@@ -35,9 +35,7 @@ public:
     SelectModelsDialog(const QList<int> &modelIds, const QList<int> &selectedItems, QWidget *parent = 0);
     ~SelectModelsDialog();
 
-    const QList<int> &getSelectedModelsIndexes() const {
-        return selectedModelsIndexes;
-    }
+    const QList<int> &getSelectedModelsIndexes() const;
 
 public slots:
     virtual void accept();

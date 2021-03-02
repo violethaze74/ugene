@@ -47,6 +47,10 @@ AnaglyphSettings AnaglyphSettings::fromMap(const QVariantMap &map) {
     return AnaglyphSettings(eyesShift, leftEyeColor, rightEyeColor);
 }
 
+AnaglyphSettings AnaglyphSettings::defaultSettings() {
+    return AnaglyphSettings(1.6f, QColor(0, 255, 255), QColor(255, 0, 0));
+}
+
 void AnaglyphRenderer::init() {
     createEmptyTextures();
 }
@@ -237,6 +241,14 @@ AnaglyphRenderer::AnaglyphRenderer(BioStruct3DGLWidget *_renderer, const Anaglyp
       anaglyphRenderTextureRight(0),
       tempAnaglyphRenderTexture(0),
       hasErrors(false) {
+}
+
+const AnaglyphSettings &AnaglyphRenderer::getSettings() const {
+    return settings;
+}
+
+void AnaglyphRenderer::setSettings(const AnaglyphSettings &_settings) {
+    settings = _settings;
 }
 
 AnaglyphRenderer::~AnaglyphRenderer() {

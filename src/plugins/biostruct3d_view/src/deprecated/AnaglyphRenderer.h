@@ -47,9 +47,7 @@ public:
     QColor leftEyeColor, rightEyeColor;
 
 public:
-    static AnaglyphSettings defaultSettings() {
-        return AnaglyphSettings(1.6f, QColor(0, 255, 255), QColor(255, 0, 0));
-    }
+    static AnaglyphSettings defaultSettings();
 
 public:
     QVariantMap toMap(QVariantMap &map) const;
@@ -70,12 +68,9 @@ public:
     virtual void resize(int w, int h);
     virtual void draw();
 
-    const AnaglyphSettings &getSettings() const {
-        return settings;
-    }
-    void setSettings(const AnaglyphSettings &_settings) {
-        settings = _settings;
-    }
+    const AnaglyphSettings &getSettings() const;
+
+    void setSettings(const AnaglyphSettings &_settings);
 
 private:
     /** Set up an ortho projection. For textures rendering */

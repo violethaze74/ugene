@@ -282,6 +282,10 @@ QSplitter *BioStruct3DSplitter::getParentSplitter() {
     return parentSplitter;
 }
 
+QAction *BioStruct3DSplitter::getCloseSplitterAction() {
+    return closeAction;
+}
+
 void BioStruct3DSplitter::adaptSize(int numVisibleWidgets) {
     if (numVisibleWidgets > 0) {
         isViewCollapsed = false;
@@ -738,6 +742,10 @@ bool DBLinksFile::load() {
     file.close();
 
     return true;
+}
+
+QList<DBLink> DBLinksFile::getLinks() {
+    return links;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
