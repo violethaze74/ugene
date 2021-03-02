@@ -22,27 +22,22 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
+#include <utils/GTUtilsDialog.h>
 
-#include "GTTestsRegressionScenarios_7001_8000.h"
-
+#include <QApplication>
 #include <QFileInfo>
 
+#include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-
-#include "primitives/GTMenu.h"
-#include "primitives/GTWidget.h"
-#include "primitives/PopupChooser.h"
-
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-
-#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 
@@ -74,7 +69,8 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckPythonInvalidation()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...", GTGlobals::UseMouse);
+                                                << "Preferences...",
+                              GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
@@ -151,7 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
             colors << image1.pixel(i, j);
         }
     }
-    bool isPicture = colors.size() > 100; // Usually 875 colors are drawn for 1CF7.pdb
+    bool isPicture = colors.size() > 100;    // Usually 875 colors are drawn for 1CF7.pdb
 
     auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
     bool isError = errorLbl.size() > 0;
@@ -245,6 +241,26 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
                                                  << "s1_1"
                                                  << "s2";
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7091) {
+    // The test compares images of UGENE's main window before and after "Preferences" dialog is closed.
+    QWidget *mainWindow = QApplication::activeWindow();
+    QImage initialImage = GTWidget::getImage(os, mainWindow);
+
+    // The scenario does nothing and only closes the dialog.
+    class NoOpScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new NoOpScenario()));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
+
+    QImage currentImage = GTWidget::getImage(os, mainWindow);
+    CHECK_SET_ERR(initialImage == currentImage, "Visual appearance of the dialog should not change.");
 }
 
 }    // namespace GUITest_regression_scenarios
