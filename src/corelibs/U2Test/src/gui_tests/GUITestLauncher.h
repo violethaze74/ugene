@@ -84,7 +84,14 @@ private:
     void updateProgress(int finishedCount);
 
     QString getScreenRecorderString(QString testName);
-    QString getVideoPath(const QString &testName);
+
+    /**
+     * Returns full video file path for the given test.
+     *
+     * By default the dir for the tests is the current QDir::currentDir() + '/videos' but
+     * it can be changed with UGENE_GUI_TEST_VIDEO_DIR_PATH environment variable.
+     */
+    static QString getVideoPath(const QString &testName);
 };
 
 }    // namespace U2
