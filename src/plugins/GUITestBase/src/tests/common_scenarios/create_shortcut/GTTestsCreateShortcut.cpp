@@ -53,7 +53,6 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001)
 {
     //    Start UGENE
-    GTGlobals::sleep();
     QString title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 
@@ -61,12 +60,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
     GTMenu::clickMainMenuItem(os,
                               QStringList() << "Help"
                                             << "Create desktop shortcut");
-    GTGlobals::sleep(4000);
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
     //    Expected state: Dialog information has appeared.
     // Press 'OK'.
-    GTGlobals::sleep(4000);
 
     //    Expected state: the desktop shortcut file created and exists
 #if defined(Q_OS_WIN)
