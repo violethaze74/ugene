@@ -82,6 +82,10 @@ bool Color4f::operator==(const Color4f &a) const {
     }
 }
 
+const float *Color4f::getConstData() const {
+    return color;
+}
+
 void glDrawCylinder(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, double thickness, float renderDetailLevel) {
     int numSlices = (8 * renderDetailLevel);
     int numStacks = 1;
@@ -585,6 +589,14 @@ void accPerspective(GLdouble fovy, GLdouble aspect, GLdouble _near, GLdouble _fa
     left = -right;
 
     accFrustum(left, right, bottom, top, _near, _far, pixdx, pixdy, eyedx, eyedy, focus);
+}
+
+const Color4f &Object3D::getColor() const {
+    return color;
+}
+
+void Object3D::setColor(const Color4f &c) {
+    color = Color4f(c);
 }
 
 }    // namespace U2

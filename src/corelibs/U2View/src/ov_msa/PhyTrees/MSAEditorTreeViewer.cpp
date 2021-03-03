@@ -230,7 +230,7 @@ void MSAEditorTreeViewer::sl_syncModeActionTriggered() {
 
 void MSAEditorTreeViewer::orderAlignmentByTree() {
     QList<QStringList> groupList = msaTreeViewerUi->getGroupingStateForMsa();
-    editor->getUI()->getSequenceArea()->sl_setVirtualGroupingMode(groupList);
+    editor->getUI()->getSequenceArea()->sl_enableFreeRowOrderMode(groupList);
 }
 
 //---------------------------------------------

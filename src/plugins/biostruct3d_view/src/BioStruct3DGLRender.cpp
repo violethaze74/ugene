@@ -66,6 +66,10 @@ bool BioStruct3DGLRendererRegistry::isAvailableFor(const QString &name, const Bi
     return fact->isAvailableFor(biostruct);
 }
 
+const QString BioStruct3DGLRendererFactory::getName() const {
+    return name;
+}
+
 QList<QString> BioStruct3DGLRendererRegistry::getRenderersAvailableFor(const BioStruct3D &biostruct) {
     BioStruct3DGLRendererRegistry *reg = getInstance();
 
@@ -95,6 +99,22 @@ BioStruct3DGLRenderer::BioStruct3DGLRenderer(const BioStruct3D &_bioStruct, cons
 void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme *s) {
     colorScheme = s;
     updateColorScheme();
+}
+
+const BioStruct3DColorScheme *BioStruct3DGLRenderer::getColorScheme() const {
+    return colorScheme;
+}
+
+const QList<int> &BioStruct3DGLRenderer::getShownModelsIndexes() const {
+    return shownModels;
+}
+
+void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int> &_shownModels) {
+    shownModels = _shownModels;
+}
+
+bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D &) {
+    return true;
 }
 
 }    // namespace U2

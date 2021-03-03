@@ -143,7 +143,10 @@ private slots:
     void sl_onVScrollMoved(int pos);
     void sl_zoomOperationPerformed();
     void sl_onCopyReadData();
-    void sl_onCopyCurPos();
+
+    /** Copies current numeric X cursor position to the clipboard. */
+    void sl_copyPositionToClipboard();
+
     void sl_onExportRead();
     void sl_onExportReadsOnScreen();
     void sl_onShadowingModeChanged(QAction *a);

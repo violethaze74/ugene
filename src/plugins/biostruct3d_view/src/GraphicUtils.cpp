@@ -80,6 +80,10 @@ bool Color4f::operator==(const Color4f &a) const {
     }
 }
 
+const float *Color4f::getConstData() const {
+    return color;
+}
+
 void glDrawCylinder(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, double thickness, float renderDetailLevel) {
     int numSlices = (8 * renderDetailLevel);
     int numStacks = 1;

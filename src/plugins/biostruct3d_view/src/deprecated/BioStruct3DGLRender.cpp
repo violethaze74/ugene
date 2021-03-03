@@ -97,4 +97,25 @@ void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme *s) {
     updateColorScheme();
 }
 
+const BioStruct3DColorScheme *BioStruct3DGLRenderer::getColorScheme() const {
+    return colorScheme;
+}
+
+const QList<int> &BioStruct3DGLRenderer::getShownModelsIndexes() const {
+    return shownModels;
+}
+
+void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int> &_shownModels) {
+    shownModels = _shownModels;
+}
+
+bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D &) {
+    return true;
+}
+/* BioStruct3DGLRenderer abstract factory */
+
+const QString BioStruct3DGLRendererFactory::getName() const {
+    return name;
+}
+
 }    // namespace U2

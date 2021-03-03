@@ -47,6 +47,10 @@ AnaglyphSettings AnaglyphSettings::fromMap(const QVariantMap &map) {
     return AnaglyphSettings(eyesShift, leftEyeColor, rightEyeColor);
 }
 
+AnaglyphSettings AnaglyphSettings::defaultSettings() {
+    return AnaglyphSettings(1.6f, QColor(0, 255, 255), QColor(255, 0, 0));
+}
+
 void AnaglyphRenderer::init() {
     createEmptyTextures();
 }
@@ -127,6 +131,14 @@ void AnaglyphRenderer::draw() {
     glPopMatrix();
 
     CHECK_GL_ERROR
+}
+
+const AnaglyphSettings &AnaglyphRenderer::getSettings() const {
+    return settings;
+}
+
+void AnaglyphRenderer::setSettings(const AnaglyphSettings &_settings) {
+    settings = _settings;
 }
 
 void AnaglyphRenderer::setOrthoProjection() {

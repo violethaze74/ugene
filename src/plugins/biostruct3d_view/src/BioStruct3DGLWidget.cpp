@@ -215,6 +215,26 @@ Vector3D BioStruct3DGLWidget::getSceneCenter() const {
     return c / float(contexts.length());
 }
 
+const BioStruct3D &BioStruct3DGLWidget::getBioStruct3D() const {
+    return *(contexts.first().biostruct);
+}
+
+const QString BioStruct3DGLWidget::getPDBId() const {
+    return contexts.first().biostruct->pdbId;
+}
+
+const QString BioStruct3DGLWidget::getBioStruct3DObjectName() const {
+    return contexts.first().obj->getGObjectName();
+}
+
+void BioStruct3DGLWidget::setImageRenderingMode(bool status) {
+    imageRenderingMode = status;
+}
+
+GLFrame *BioStruct3DGLWidget::getGLFrame() {
+    return glFrame.data();
+}
+
 void BioStruct3DGLWidget::initializeGL() {
     setLightPosition(Vector3D(0, 0.0, 1.0));
     GLfloat light_diffuse[] = {0.8f, 0.8f, 0.8f, 1.0};
@@ -678,7 +698,6 @@ void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
         lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
     }
 }
-
 
 void BioStruct3DGLWidget::setUnselectedShadingLevel(int shading) {
     foreach (const BioStruct3DRendererContext &ctx, contexts) {

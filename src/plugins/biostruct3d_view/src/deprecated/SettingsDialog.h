@@ -37,17 +37,9 @@ public:
 
     QString name;
 
-    GlassesColorScheme() {
-        name = "";
-        leftEyeColor = QColor(0, 0, 0);
-        rightEyeColor = leftEyeColor;
-    }
+    GlassesColorScheme();
 
-    GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor) {
-        this->name = name;
-        this->leftEyeColor = leftEyeColor;
-        this->rightEyeColor = rightEyeColor;
-    }
+    GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor);
 };
 
 class BioStruct3DSettingsDialog : public QDialog, private Ui_SettingsDialog {

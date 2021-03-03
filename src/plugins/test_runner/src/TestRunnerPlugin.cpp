@@ -66,7 +66,6 @@ void TestRunnerPlugin::sl_startTestRunner() {
     TestRunnerService *srv = new TestRunnerService();
     srv->setEnvironment();
 
-    /* Disabling to check if it fixes slow commit/nightly builds
     CMDLineRegistry *cmdReg = AppContext::getCMDLineRegistry();
     if (cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
         QString val = cmdReg->getParameterValue(CMDLineCoreOptions::TEST_THREADS);
@@ -80,7 +79,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
         }
         srv->setVar(NUM_THREADS_VAR, val);
     }
-*/
+
     foreach (const QString &param, suiteUrls) {
         QString dir;
         if (param.contains(":") || param[0] == '.' || param[0] == '/') {

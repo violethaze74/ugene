@@ -58,9 +58,7 @@ public:
     float &operator[](unsigned int i);
 
     bool operator==(const Color4f &a) const;
-    const float *getConstData() const {
-        return color;
-    }
+    const float *getConstData() const;
 };
 
 //! OpenGL drawable object
@@ -76,12 +74,9 @@ public:
     virtual ~Object3D() {
     }
 
-    const Color4f &getColor() const {
-        return color;
-    }
-    void setColor(const Color4f &c) {
-        color = Color4f(c);
-    }
+    const Color4f &getColor() const;
+
+    void setColor(const Color4f &c);
 
 };    // class Strand3D
 
