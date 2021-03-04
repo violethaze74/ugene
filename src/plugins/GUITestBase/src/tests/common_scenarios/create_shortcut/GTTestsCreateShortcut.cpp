@@ -22,19 +22,19 @@
 #include <QDir>
 
 #if defined(Q_OS_WIN)
-#include <windows.h>
-#include <shlguid.h>
-#include <shlobj.h>
+#    include <shlguid.h>
+#    include <shlobj.h>
+#    include <windows.h>
 #elif defined(Q_OS_LINUX)
-#include <QCoreApplication>
-#include <QFile>
+#    include <QCoreApplication>
+#    include <QFile>
 #elif defined(Q_OS_MAC)
-#include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcess>
-#include <QTemporaryFile>
-#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
+#    include <QCoreApplication>
+#    include <QDir>
+#    include <QFileInfo>
+#    include <QProcess>
+#    include <QTemporaryFile>
+#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -43,6 +43,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
@@ -50,22 +51,13 @@ namespace U2 {
 
 namespace GUITest_common_scenarios_create_shortcut {
 using namespace HI;
-GUI_TEST_CLASS_DEFINITION(test_0001)
-{
-    //    Start UGENE
-    QString title = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
-
-    //    Use main menu: Help->Create desktop shortcut
-    GTMenu::clickMainMenuItem(os,
-                              QStringList() << "Help"
-                                            << "Create desktop shortcut");
+GUI_TEST_CLASS_DEFINITION(test_0001) {
+    // Use main menu: Help->Create desktop shortcut & click OK.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTMenu::clickMainMenuItem(os, {"Help", "Create desktop shortcut"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: Dialog information has appeared.
-    // Press 'OK'.
-
-    //    Expected state: the desktop shortcut file created and exists
+    // Expected state: the shortcut file is created.
 #if defined(Q_OS_WIN)
     HRESULT hres;
     IShellLink *psl;
@@ -78,7 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
                             NULL,
                             CLSCTX_INPROC_SERVER,
                             IID_IShellLink,
-                            (LPVOID *) &psl);
+                            (LPVOID *)&psl);
     if (SUCCEEDED(hres)) {
         // Set the path to the shortcut target and add the description.
         WCHAR path[MAX_PATH];
@@ -89,7 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
         // Query IShellLink for the IPersistFile interface, used for saving the
         // shortcut in persistent storage.
         IPersistFile *ppf;
-        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *) &ppf);
+        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
 
         if (SUCCEEDED(hres)) {
             WCHAR wsz[MAX_PATH + 1];
@@ -107,8 +99,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
                         if (!link.permissions().testFlag(QFileDevice::ExeOwner) || !link.permissions().testFlag(QFileDevice::ExeUser)) {
                             CHECK_SET_ERR(false, "Unexpected the desktop shortcut file permissions");
                         }
-                    }
-                    else {
+                    } else {
                         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
                     }
                 }
