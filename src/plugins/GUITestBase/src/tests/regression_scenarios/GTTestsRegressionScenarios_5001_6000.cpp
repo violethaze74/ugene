@@ -1041,8 +1041,8 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     int minimumExpectedColors = 10;
     QWidget *biostructWidget = GTWidget::findWidget(os, "1-");
     QImage initialImage = GTWidget::getImage(os, biostructWidget, true);
-    QSet<QRgb> initialColorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
-    CHECK_SET_ERR(initialColorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors/1");
+    QSet<QRgb> colorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
+    CHECK_SET_ERR(colorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors");
 
     // Call a context menu, open "Render Style" submenu.
     // Expected state: "Ball-and-Stick" renderer is selected.
@@ -1061,8 +1061,7 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
 
     //  Expected state: UGENE doesn't crash, the 3d structure is shown.
     QImage currentImage = GTWidget::getImage(os, biostructWidget, true);
-    QSet<QRgb> currentColorSet = GTWidget::countColors(currentImage, minimumExpectedColors);
-    CHECK_SET_ERR(initialColorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors/2");
+    CHECK_SET_ERR(currentImage == initialImage, "Current image is not equal to initial");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5314) {
