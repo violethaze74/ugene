@@ -2099,7 +2099,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
-    // Note: the test depends on the fact that the first test in the Font Selection dialog is not the current font used by UGENE.
+    // Note: the test depends on the fact that the first font in the Font Selection dialog is not the current font used by UGENE.
 
     // Open document samples/CLUSTALW/COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
