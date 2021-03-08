@@ -308,7 +308,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
     //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_0339);
 
     if (QSysInfo::WordSize == 32) {

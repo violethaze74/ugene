@@ -249,7 +249,6 @@ GUI_TEST_CLASS_DECLARATION(test_0092)
 GUI_TEST_CLASS_DECLARATION(test_0093_1)
 GUI_TEST_CLASS_DECLARATION(test_0093_2)
 
-GUI_TEST_CLASS_DECLARATION(test_fake)
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_msa_editor
 

@@ -1250,7 +1250,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList.size() >= 2, "nameList doesn't contain enough strings");
     CHECK_SET_ERR(!nameList.contains("L|revcompl"), "There are 'L|revcompl' in nameList");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -2099,29 +2098,23 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     //Expected state: MSA is zoomed back
 }
 
-// linux test
 GUI_TEST_CLASS_DEFINITION(test_0025) {
-    //    1. open document samples/CLUSTALW/COI.aln
+    // Note: the test depends on the fact that the first font in the Font Selection dialog is not the current font used by UGENE.
+
+    // Open document samples/CLUSTALW/COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. press "change font button" on toolbar
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    auto msaEditor = GTWidget::findExactWidget<MsaEditorWgt *>(os, "msa_editor_COI")->getEditor();
+    QString initialFont = msaEditor->getFont().toString();
+
+    // Click "change font button" on the toolbar.
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
+    GTWidget::click(os, GTAction::button(os, "Change Font"));
 
-    QAbstractButton *change_font = GTAction::button(os, "Change Font");
-    GTWidget::click(os, change_font);
-    GTGlobals::sleep(500);
-
-    QWidget *nameListWidget = GTWidget::findWidget(os, "msa_editor_COI");
-    MsaEditorWgt *ui = qobject_cast<MsaEditorWgt *>(nameListWidget);
-
-    QFont f = ui->getEditor()->getFont();
-    QString expectedFont = "Sans Serif,10,-1,5,50,0,0,0,0,0";
-
-    CHECK_SET_ERR(f.toString() == expectedFont, "Expected: " + expectedFont + " found: " + f.toString());
-    //    Expected state: change font dialog appeared
-
-    //    3. choose some font, press OK
-    //    Expected state: font is changed
+    // Check that the font was changed and is not equal to the initial.
+    QString currentFont = msaEditor->getFont().toString();
+    CHECK_SET_ERR(currentFont != initialFont, "Expected font to be changed, initial: " + initialFont + ", current: " + currentFont);
 }
 
 // windows test
@@ -4674,10 +4667,6 @@ GUI_TEST_CLASS_DEFINITION(test_0093_2) {
     const QString expectedMSA = "GHGG\nGH--";
 
     CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
-}
-
-    GUI_TEST_CLASS_DEFINITION(test_fake) {
-    Q_UNUSED(os);
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor
