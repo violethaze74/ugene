@@ -122,7 +122,6 @@
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
@@ -1034,45 +1033,35 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5295) {
-    //    1. Open "_common_data/pdb/Helix.pdb".
+    // Open "_common_data/pdb/Helix.pdb".
     GTFileDialog::openFile(os, testDir + "_common_data/pdb/Helix.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    //  Expected state: UGENE doesn't crash, the 3d structure is shown.
+    int minimumExpectedColors = 10;
     QWidget *biostructWidget = GTWidget::findWidget(os, "1-");
-    const QImage image1 = GTWidget::getImage(os, biostructWidget);
-    QSet<QRgb> colors;
-    for (int i = 0; i < image1.width(); i++) {
-        for (int j = 0; j < image1.height(); j++) {
-            colors << image1.pixel(i, j);
-        }
-    }
-    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
+    QImage initialImage = GTWidget::getImage(os, biostructWidget, true);
+    QSet<QRgb> colorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
+    CHECK_SET_ERR(colorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors");
 
-    //    2. Call a context menu, open "Render Style" submenu.
-    //    Expected state: "Ball-and-Stick" renderer is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Render Style"
-                                                                              << "Ball-and-Stick",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsChecked)));
+    // Call a context menu, open "Render Style" submenu.
+    // Expected state: "Ball-and-Stick" renderer is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Render Style", "Ball-and-Stick"}, PopupChecker::CheckOptions(PopupChecker::IsChecked)));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
 
-    //    3. Select "Model" renderer. Select "Ball-and-Stick" again.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
-                                                                              << "Space Fill"));
+    // Select "Model" renderer. Select "Space Fill".
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Render Style", "Space Fill"}));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
-                                                                              << "Ball-and-Stick"));
+    QImage spaceFillImage = GTWidget::getImage(os, biostructWidget, true);
+    CHECK_SET_ERR(spaceFillImage != initialImage, "Space Fill image is the same as Ball-and-Stick!");
+
+    // Select "Model" renderer. Select "Ball-and-stick" again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Render Style", "Ball-and-Stick"}));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
 
-    //    Expected state: UGENE doesn't crash, the 3d structure is shown.
-    const QImage image2 = GTWidget::getImage(os, biostructWidget);
-    colors.clear();
-    for (int i = 0; i < image2.width(); i++) {
-        for (int j = 0; j < image2.height(); j++) {
-            colors << image2.pixel(i, j);
-        }
-    }
-    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
+    //  Expected state: UGENE doesn't crash, the 3d structure is shown.
+    QImage currentImage = GTWidget::getImage(os, biostructWidget, true);
+    CHECK_SET_ERR(currentImage == initialImage, "Current image is not equal to initial");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5314) {
@@ -1492,33 +1481,33 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
-             GTGlobals::sleep(500);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTGlobals::sleep(500);
 
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -1564,33 +1553,33 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
-             GTGlobals::sleep(500);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTGlobals::sleep(500);
 
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
