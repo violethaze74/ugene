@@ -58,7 +58,7 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
         delete multiTreeViewer;
         multiTreeViewer = nullptr;
         emit si_hideTreeOP();
-        nameList->clearGroupsSelections();
+        nameList->clearGroupsColors();
     }
 }
 

@@ -107,6 +107,9 @@ public:
 
     static void buildPhylogeneticTree(HI::GUITestOpStatus &os, const QString &pathToSave);
 
+    /** Closes the active tree tab. Fails if there is no phy-tab found. */
+    static void closeActiveTreeTab(HI::GUITestOpStatus &os);
+
     static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
 };
 

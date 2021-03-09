@@ -132,6 +132,7 @@ void MsaEditorTreeTab::sl_onCloseTab() {
 MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent)
     : QWidget(parent), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
     initialize();
+    setObjectName("msa_editor_tree_tab_area");
 }
 
 void MsaEditorTreeTabArea::initialize() {

@@ -139,12 +139,20 @@ public slots:
 
     void sl_copySelectionFormatted();
 
+public:
     /**
-     * Enables 'Free' grouping mode. Re-orders and re-groups rows according to the name lists.
+     * Enables 'Free' ordering mode. Re-orders and re-groups rows according to the name lists.
+     * The 'client' object is a pointer to object that requested the Free mode to be ON (See 'freeModeClientSet').
      * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
      * TODO: move this method to MSAEditor class.
      */
-    void sl_enableFreeRowOrderMode(const QList<QStringList> &);
+    void enableFreeRowOrderMode(QObject *client, const QList<QStringList> &);
+
+    /**
+     * Removes 'client' object from a 'Free' mode locks (See 'freeModeClientSet').
+     * When all clients for the Free mode are removed the view is automatically switched to the Original mode.
+     */
+    void disableFreeRowOrderMode(QObject *client);
 
 protected:
     void focusOutEvent(QFocusEvent *fe);
@@ -233,6 +241,17 @@ private:
     QAction *reverseComplementAction;
     QAction *reverseAction;
     QAction *complementAction;
+
+    /**
+     * Set of 'client' objects that requested Free ordering mode to be ON.
+     * Free mode can be active only if there is at least one 'client' in the set.
+     *
+     * When the last client object is removed from the set the ordering automatically switches to the 'Original'.
+     * Example of clients: multiple synchronized phy-tree views that want to lock the ordering of MSA.
+     *
+     * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
+     */
+    QSet<QObject *> freeModeClientSet;
 };
 
 // SANGER_TODO: move to EditorTasks?
