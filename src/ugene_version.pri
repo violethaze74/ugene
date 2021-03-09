@@ -12,7 +12,7 @@ U2_DISTRIBUTION_INFO=sources
 }
 
 # int version levels for executables
-UGENE_VER_MAJOR=38
+UGENE_VER_MAJOR=39
 UGENE_VER_MINOR=0
 UGENE_VER_SUFFIX=-dev
 
