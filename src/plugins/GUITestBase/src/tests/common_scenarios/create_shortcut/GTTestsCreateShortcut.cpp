@@ -22,8 +22,8 @@
 #include <QDir>
 
 #if defined(Q_OS_WIN)
-#    include <shlguid.h>
 #    include <shlobj.h>
+#    include <shlguid.h>
 #    include <windows.h>
 #elif defined(Q_OS_LINUX)
 #    include <QCoreApplication>
