@@ -142,21 +142,22 @@ public slots:
 public:
     /**
      * Enables 'Free' ordering mode. Re-orders and re-groups rows according to the name lists.
-     * The 'client' object is a pointer to object that requested the Free mode to be ON (See 'freeModeClientSet').
+     * The 'marker' object is provided by the 'master' controller that requested the Free mode to be ON (See 'freeModeMasterMarkersSet').
      * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
      * TODO: move this method to MSAEditor class.
      */
-    void enableFreeRowOrderMode(QObject *client, const QList<QStringList> &);
+    void enableFreeRowOrderMode(QObject *marker, const QList<QStringList> &);
 
     /**
-     * Removes 'client' object from a 'Free' mode locks (See 'freeModeClientSet').
-     * When all clients for the Free mode are removed the view is automatically switched to the Original mode.
+     * Removes 'marker' object from a 'Free' mode locks (See 'freeModeMasterMarkersSet').
+     * When all 'markers' for the Free mode are removed the view is automatically switched to the Original mode.
      */
-    void disableFreeRowOrderMode(QObject *client);
+    void disableFreeRowOrderMode(QObject *marker);
 
 protected:
-    void focusOutEvent(QFocusEvent *fe);
-    void focusInEvent(QFocusEvent *fe);
+    void focusOutEvent(QFocusEvent *fe) override;
+
+    void focusInEvent(QFocusEvent *fe) override;
 
 private slots:
     void sl_buildStaticMenu(GObjectView *v, QMenu *m);
@@ -243,15 +244,15 @@ private:
     QAction *complementAction;
 
     /**
-     * Set of 'client' objects that requested Free ordering mode to be ON.
-     * Free mode can be active only if there is at least one 'client' in the set.
+     * Set of 'marker' objects from the 'master' components that requested Free ordering mode to be ON are responsible for the 'free' mode ordering.
+     * Free mode can be active only if there is at least one 'marker' in the set.
      *
-     * When the last client object is removed from the set the ordering automatically switches to the 'Original'.
-     * Example of clients: multiple synchronized phy-tree views that want to lock the ordering of MSA.
+     * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
+     * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
      *
      * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
      */
-    QSet<QObject *> freeModeClientSet;
+    QSet<QObject *> freeModeMasterMarkersSet;
 };
 
 // SANGER_TODO: move to EditorTasks?

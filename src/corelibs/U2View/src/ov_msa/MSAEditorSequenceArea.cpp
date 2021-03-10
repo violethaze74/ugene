@@ -702,7 +702,7 @@ void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     CHECK(editor->getRowOrderMode() != newMode, );
 
     editor->setRowOrderMode(newMode);
-    freeModeClientSet.clear();
+    freeModeMasterMarkersSet.clear();
 
     updateRowOrderActionsState();
     if (isOrderBySequence) {
@@ -830,7 +830,7 @@ void MSAEditorSequenceArea::sl_complementCurrentSelection() {
     reverseComplementModification(type);
 }
 
-void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject *client, const QList<QStringList> &collapsedGroups) {
+void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject *marker, const QList<QStringList> &collapsedGroups) {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
     QList<qint64> rowIds = msaObject->getRowIds();
@@ -852,14 +852,14 @@ void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject *client, const QList<
         collapsibleGroupList << MaCollapsibleGroup(maRowIndexList, maRowIdList, isCollapsed);
     }
     editor->setRowOrderMode(MaEditorRowOrderMode::Free);
-    freeModeClientSet.insert(client);
+    freeModeMasterMarkersSet.insert(marker);
     updateRowOrderActionsState();
     ui->getCollapseModel()->update(collapsibleGroupList);
 }
 
-void MSAEditorSequenceArea::disableFreeRowOrderMode(QObject *client) {
-    freeModeClientSet.remove(client);
-    if (freeModeClientSet.isEmpty() && editor->getRowOrderMode() == MaEditorRowOrderMode::Free) {
+void MSAEditorSequenceArea::disableFreeRowOrderMode(QObject *marker) {
+    freeModeMasterMarkersSet.remove(marker);
+    if (freeModeMasterMarkersSet.isEmpty() && editor->getRowOrderMode() == MaEditorRowOrderMode::Free) {
         // Switch back to the Original ordering.
         sl_toggleSequenceRowOrder(false);
     }
