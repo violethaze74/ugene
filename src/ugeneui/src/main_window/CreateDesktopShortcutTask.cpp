@@ -23,9 +23,11 @@
 
 
 #if defined(Q_OS_WIN)
+// clang-format off
 #include <Windows.h>
 #include <ShlGuid.h>
 #include <ShlObj.h>
+// clang-format on
 #elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
 #include <QDir>
