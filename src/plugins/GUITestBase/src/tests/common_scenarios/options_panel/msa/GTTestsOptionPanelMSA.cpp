@@ -1612,48 +1612,58 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
-    //    1. Open data/samples/CLUSTALW/COI.aln
+    // Compare that 'Default'/'Cladogram'/'Phylogram' are stable within the type and are different between different types.
+    // To check that images are stable capture 2 versions of each image.
+
+    // Open data/samples/CLUSTALW/COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Open tree settings option panel tab. build tree
+    // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep(1000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //prepating widgets
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != NULL, "tree view not found");
-    QComboBox *treeViewCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "treeViewCombo"));
-    CHECK_SET_ERR(treeViewCombo != NULL, "treeViewCombo not found");
+    QComboBox *treeViewCombo = GTWidget::findExactWidget<QComboBox *>(os, "treeViewCombo");
 
-    const QImage initImage = GTWidget::getImage(os, treeView);
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
-    //    3. Select phylogram view
+    // Capture 2 variants of  'Phylogram', 'Default', 'Cladogram' images.
     GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage phylogramImage1 = GTWidget::getImage(os, treeView);
 
-    //    Expected state: layout changed
-    const QImage circularImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage != circularImage, "tree view not changed to Phylogram");
-
-    //    4. Select cladogram view
-    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
-    GTGlobals::sleep(500);
-
-    //    Expected state: layout changed
-    const QImage unrootedImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage != unrootedImage, "tree view not changed to unrooted");
-
-    //    5. Select default view
     GTComboBox::selectItemByText(os, treeViewCombo, "Default");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage defaultImage1 = GTWidget::getImage(os, treeView);
 
-    //    Expected state: tree is similar to the beginning
-    const QImage rectangularImage = GTWidget::getImage(os, treeView);
-    CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
+    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage cladogramImage1 = GTWidget::getImage(os, treeView);
+
+    GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage phylogramImage2 = GTWidget::getImage(os, treeView);
+
+    GTComboBox::selectItemByText(os, treeViewCombo, "Cladogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage cladogramImage2 = GTWidget::getImage(os, treeView);
+
+    GTComboBox::selectItemByText(os, treeViewCombo, "Default");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    const QImage defaultImage2 = GTWidget::getImage(os, treeView);
+
+    CHECK_SET_ERR(defaultImage1 == defaultImage2, "Default images are not equal");
+    CHECK_SET_ERR(cladogramImage1 == cladogramImage2, "Cladogram images are not equal");
+    CHECK_SET_ERR(phylogramImage1 == phylogramImage1, "Phylogram images are not equal");
+
+    CHECK_SET_ERR(defaultImage1 != cladogramImage1, "Default image must not be equal to Cladogram");
+    CHECK_SET_ERR(defaultImage1 != phylogramImage1, "Default image must not be equal to Phylogram");
+    CHECK_SET_ERR(cladogramImage1 != phylogramImage1, "Cladogram image image must not be equal to Phylogram");
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
