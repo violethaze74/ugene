@@ -167,9 +167,6 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    /** Calls disableFreeRowOrderMode() when marker object is destroyed. */
-    void sl_onFreeModeMarkerDestroyed(QObject *marker);
-
     void sl_copySelection();
     void sl_paste();
     void sl_pasteBefore();

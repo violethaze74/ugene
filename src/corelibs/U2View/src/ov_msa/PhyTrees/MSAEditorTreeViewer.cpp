@@ -50,6 +50,12 @@ MSAEditorTreeViewer::MSAEditorTreeViewer(const QString &viewName, GObject *obj, 
       msaTreeViewerUi(nullptr) {
 }
 
+MSAEditorTreeViewer::~MSAEditorTreeViewer() {
+    if (editor != nullptr && isSyncModeEnabled()) {
+        editor->getUI()->getSequenceArea()->disableFreeRowOrderMode(this);
+    }
+}
+
 QWidget *MSAEditorTreeViewer::createWidget() {
     SAFE_POINT(ui == nullptr, QString("MSAEditorTreeViewer::createWidget error"), nullptr);
     SAFE_POINT(editor != nullptr, "MSAEditor must be set in createWidget!", nullptr);
