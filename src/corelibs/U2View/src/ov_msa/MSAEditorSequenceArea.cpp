@@ -702,11 +702,6 @@ void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     CHECK(editor->getRowOrderMode() != newMode, );
 
     editor->setRowOrderMode(newMode);
-
-    // Release all free-mode master markers.
-    for (QObject *marker : freeModeMasterMarkersSet) {
-        marker->disconnect(this, SLOT(sl_onFreeModeMarkerDestroyed(QObject *)));
-    }
     freeModeMasterMarkersSet.clear();
 
     updateRowOrderActionsState();
