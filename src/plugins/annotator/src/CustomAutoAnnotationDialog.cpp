@@ -40,7 +40,7 @@ namespace U2 {
 CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext *ctx)
     : QDialog(ctx->getAnnotatedDNAView()->getWidget()), seqCtx(ctx) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363900");
+    new HelpButton(this, buttonBox, "60229298");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Annotate"));
 
     loadSettings();
