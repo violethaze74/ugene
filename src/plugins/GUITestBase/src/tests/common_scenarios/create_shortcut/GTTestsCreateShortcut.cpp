@@ -22,9 +22,11 @@
 #include <QDir>
 
 #if defined(Q_OS_WIN)
+// clang-format off
 #    include <shlobj.h>
 #    include <shlguid.h>
 #    include <windows.h>
+// clang-format on
 #elif defined(Q_OS_LINUX)
 #    include <QCoreApplication>
 #    include <QFile>
