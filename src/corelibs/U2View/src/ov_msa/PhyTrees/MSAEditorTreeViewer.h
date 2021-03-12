@@ -194,7 +194,10 @@ protected:
 
     virtual void onLayoutChanged(const TreeLayout &layout);
     void onSettingsChanged(TreeViewOption option, const QVariant &newValue);
-    virtual void updateTreeSettings(bool setDefaultZoom = true);
+
+    /** Overrides the original method to trigger MSA related updates as the result of tree update. */
+    void updateScene(bool fitSceneToView) override;
+
     virtual void setTreeLayout(TreeLayout newLayout);
 
 signals:
