@@ -62,7 +62,6 @@ class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
     MSAEditorTreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
-    ~MSAEditorTreeViewer();
 
     const CreatePhyTreeSettings &getCreatePhyTreeSettings() {
         return buildSettings;
@@ -159,7 +158,7 @@ private:
     QAction *syncModeAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
-    QPointer<MSAEditor> editor;
+    MSAEditor *editor;
     MSAEditorTreeViewerUI *msaTreeViewerUi;
 };
 
