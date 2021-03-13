@@ -177,12 +177,12 @@ void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-static bool compare(const QString &s1, const QString &s2, bool exactMatch) {
-    return QString::compare(s1, s2, exactMatch ? Qt::CaseSensitive : Qt::CaseInsensitive);
+static bool compare(QString s1, QString s2, bool isExactMatch) {
+    return isExactMatch ? s1 == s2 : s1.toLower().contains(s2.toLower());
 }
 
 #define GT_METHOD_NAME "findTreeItem"
-QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, const QString& itemName, tab t, bool exactMatch, bool failIfNULL) {
+QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, const QString &itemName, tab t, bool exactMatch, bool failIfNULL) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTreeWidgetItem *foundItem = NULL;
     QTreeWidget *w;
@@ -251,7 +251,7 @@ QList<QTreeWidgetItem *> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestO
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addAlgorithm"
-void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QString& algName, bool exactMatch, bool useDragAndDrop) {
+void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch, bool useDragAndDrop) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     expandTabs(os);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", wdWindow));
@@ -513,45 +513,45 @@ QStringList GTUtilsWorkflowDesigner::getPaletteGroupEntriesNames(GUITestOpStatus
 }
 #undef GT_METHOD_NAME
 
-QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os, const QString& itemName) {
+QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     QPoint p = r.center();
     return p;
 }
 
 #define GT_METHOD_NAME "removeItem"
-void GTUtilsWorkflowDesigner::removeItem(HI::GUITestOpStatus &os, const QString& itemName) {
+void GTUtilsWorkflowDesigner::removeItem(HI::GUITestOpStatus &os, const QString &itemName) {
     click(os, itemName);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
-int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, const QString& itemName) {
+int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.left();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, const QString& itemName) {
+int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.right();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, const QString& itemName) {
+int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.top();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, const QString& itemName) {
+int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.bottom();
     return i;
 }
 #define GT_METHOD_NAME "click"
-void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, const QString& itemName, QPoint p, Qt::MouseButton button) {
+void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, const QString &itemName, QPoint p, Qt::MouseButton button) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
     GT_CHECK(sceneView != NULL, "scene view is NULL");
@@ -584,7 +584,7 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWorker"
-WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, const QString& itemName, const GTGlobals::FindOptions &options) {
+WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
     GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr);
@@ -621,7 +621,7 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWorkerText"
-QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, const QString& itemName, const GTGlobals::FindOptions &options) {
+QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     WorkflowProcessItem *worker = getWorker(os, itemName, options);
     foreach (QGraphicsItem *child, worker->childItems()) {
         foreach (QGraphicsItem *subchild, child->childItems()) {
@@ -636,7 +636,7 @@ QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, const QS
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, const QString& itemName, Qt::MouseButton button, int step) {
+void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button, int step) {
     WorkflowProcessItem *worker = getWorker(os, itemName);
 
     int left = GTUtilsWorkflowDesigner::getItemLeft(os, itemName);
@@ -682,7 +682,7 @@ QList<WorkflowPortItem *> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, const QString& itemName) {
+QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, const QString &itemName) {
     //TODO: support finding items when there are several similar workers in scheme
     WorkflowProcessItem *w = getWorker(os, itemName);
     QRect result = GTGraphicsItem::getGraphicsItemRect(os, w);
