@@ -68,7 +68,6 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
     GTKeyboardUtils::copy(os);
-    GTGlobals::sleep(500);
 
     const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
@@ -95,7 +94,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsProjectTreeView::click(os, "tub1.txt");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document tub1.txt");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
@@ -126,7 +124,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document 3000_sequences.aln");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
