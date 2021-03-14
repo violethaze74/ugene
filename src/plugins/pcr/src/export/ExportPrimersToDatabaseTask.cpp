@@ -48,7 +48,7 @@ void ExportPrimersToDatabaseTask::run() {
     for (const Primer &primer : qAsConst(primers)) {
         U2SequenceImporter importer;
         QByteArray sequence = primer.sequence.toLocal8Bit();
-        const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence);    // In the most cases primers have DNA alphabet, it it may also be a DNA extended.
+        const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence);    // In most cases primers have DNA alphabet, but it may also be a 'DNA extended'.
         importer.startSequence(stateInfo, dbiRef, folder, primer.name, false, alphabet->getId());
         CHECK_OP(stateInfo, );
 

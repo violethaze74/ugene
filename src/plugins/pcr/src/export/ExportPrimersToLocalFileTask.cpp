@@ -68,7 +68,7 @@ QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
 
 Document *ExportPrimersToLocalFileTask::prepareDocument() {
     IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(IOAdapterUtils::url2io(url));
-    SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("I/O adapter factory")), NULL);
+    SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("I/O adapter factory")), nullptr);
     return format->createNewLoadedDocument(ioAdapterFactory, url, stateInfo);
 }
 
