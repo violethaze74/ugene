@@ -20,6 +20,7 @@
  */
 
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
@@ -37,6 +38,7 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 
 namespace U2 {
@@ -261,6 +263,26 @@ GUI_TEST_CLASS_DEFINITION(test_7091) {
 
     QImage currentImage = GTWidget::getImage(os, mainWindow);
     CHECK_SET_ERR(initialImage == currentImage, "Visual appearance of the dialog should not change.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7106) {
+    // Check that in Tree-Sync mode Drag & Drop of sequences in the MSA name list is disabled.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7106");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList sequenceList1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+
+    QRect firstRowRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    QRect secondRowRect = GTUtilsMsaEditor::getSequenceNameRect(os, 1);
+
+    GTMouseDriver::click(firstRowRect.center());
+    GTMouseDriver::dragAndDrop(firstRowRect.center(), secondRowRect.center());
+
+    QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
 }
 
 }    // namespace GUITest_regression_scenarios

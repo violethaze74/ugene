@@ -50,6 +50,12 @@ MSAEditorTreeViewer::MSAEditorTreeViewer(const QString &viewName, GObject *obj, 
       msaTreeViewerUi(nullptr) {
 }
 
+MSAEditorTreeViewer::~MSAEditorTreeViewer() {
+    if (editor != nullptr && isSyncModeEnabled()) {
+        editor->getUI()->getSequenceArea()->disableFreeRowOrderMode(this);
+    }
+}
+
 QWidget *MSAEditorTreeViewer::createWidget() {
     SAFE_POINT(ui == nullptr, QString("MSAEditorTreeViewer::createWidget error"), nullptr);
     SAFE_POINT(editor != nullptr, "MSAEditor must be set in createWidget!", nullptr);
@@ -153,8 +159,11 @@ bool MSAEditorTreeViewer::enableSyncMode() {
 }
 
 void MSAEditorTreeViewer::disableSyncMode() {
+    // Reset the MSA state back to the original from 'Free'.
+    editor->getUI()->getSequenceArea()->disableFreeRowOrderMode(this);
+
     MaEditorNameList *msaNameList = editor->getUI()->getEditorNameList();
-    msaNameList->clearGroupsSelections();
+    msaNameList->clearGroupsColors();
     msaNameList->update();
 
     updateSyncModeActionState(false);
@@ -230,7 +239,7 @@ void MSAEditorTreeViewer::sl_syncModeActionTriggered() {
 
 void MSAEditorTreeViewer::orderAlignmentByTree() {
     QList<QStringList> groupList = msaTreeViewerUi->getGroupingStateForMsa();
-    editor->getUI()->getSequenceArea()->sl_enableFreeRowOrderMode(groupList);
+    editor->getUI()->getSequenceArea()->enableFreeRowOrderMode(this, groupList);
 }
 
 //---------------------------------------------
