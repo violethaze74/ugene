@@ -44,6 +44,7 @@ win32 {
 unix {
     target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
+    !macx: QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }
 
 unix_not_mac() : LIBS += -lX11
