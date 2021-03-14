@@ -34,8 +34,8 @@ class ExportPrimersToDatabaseTask : public Task {
 public:
     ExportPrimersToDatabaseTask(const QList<Primer> &primers, const U2DbiRef &dbiRef, const QString &folder);
 
-    void run();
-    ReportResult report();
+    void run() override;
+    ReportResult report() override;
 
     const QMap<U2DataId, U2DataId> &getImportedObjectIds() const;
 
