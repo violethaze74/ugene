@@ -20,6 +20,7 @@
  */
 
 #include "GenomicLibraryDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QFileInfo>
@@ -37,8 +38,7 @@ GenomicLibraryDialogFiller::GenomicLibraryDialogFiller(GUITestOpStatus &os, cons
 #define GT_CLASS_NAME "GenomicLibraryDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void GenomicLibraryDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is nullptr");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QStringList dirUrls;
     QStringList fileUrls;
@@ -55,11 +55,11 @@ void GenomicLibraryDialogFiller::commonScenario() {
     }
 
     if (!fileUrls.isEmpty()) {
-        GTUtilsWorkflowDesigner::setDatasetInputFiles(os, fileUrls);
+        GTUtilsWorkflowDesigner::setDatasetInputFiles(os, fileUrls, dialog);
     }
 
     if (!dirUrls.isEmpty()) {
-        GTUtilsWorkflowDesigner::setDatasetInputFolders(os, dirUrls);
+        GTUtilsWorkflowDesigner::setDatasetInputFolders(os, dirUrls, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

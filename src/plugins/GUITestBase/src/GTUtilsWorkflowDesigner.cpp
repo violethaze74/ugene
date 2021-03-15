@@ -177,18 +177,12 @@ void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-namespace {
-bool compare(QString s1, QString s2, bool exactMatch) {
-    if (exactMatch) {
-        return s1 == s2;
-    } else {
-        return s1.toLower().contains(s2.toLower());
-    }
+static bool compare(QString s1, QString s2, bool isExactMatch) {
+    return isExactMatch ? s1 == s2 : s1.toLower().contains(s2.toLower());
 }
-}    // namespace
 
 #define GT_METHOD_NAME "findTreeItem"
-QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, QString itemName, tab t, bool exactMatch, bool failIfNULL) {
+QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, const QString &itemName, tab t, bool exactMatch, bool failIfNULL) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTreeWidgetItem *foundItem = NULL;
     QTreeWidget *w;
@@ -257,7 +251,7 @@ QList<QTreeWidgetItem *> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestO
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addAlgorithm"
-void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algName, bool exactMatch, bool useDragAndDrop) {
+void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch, bool useDragAndDrop) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     expandTabs(os);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", wdWindow));
@@ -327,7 +321,7 @@ void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidg
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSample"
-void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const *const parentWidget) {
+void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget *parentWidget) {
     expandTabs(os, parentWidget);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", parentWidget));
     GT_CHECK(tabs != nullptr, "tabs widget not found");
@@ -343,7 +337,7 @@ void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSample"
-void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget const *const parentWidget) {
+void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget *parentWidget) {
     GT_CHECK(sample != nullptr, "sample is nullptr");
     QTreeWidget *paletteTree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", parentWidget));
     GT_CHECK(paletteTree != nullptr, "paletteTree is nullptr");
@@ -369,7 +363,7 @@ void GTUtilsWorkflowDesigner::selectSample(HI::GUITestOpStatus &os, QTreeWidgetI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expandTabs"
-void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget const *const parentWidget) {
+void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os, QWidget *parentWidget) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "WorkflowViewMainSplitter", parentWidget == nullptr ? wdWindow : parentWidget));
     GT_CHECK(splitter, "splitter not found");
@@ -519,45 +513,45 @@ QStringList GTUtilsWorkflowDesigner::getPaletteGroupEntriesNames(GUITestOpStatus
 }
 #undef GT_METHOD_NAME
 
-QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os, QString itemName) {
+QPoint GTUtilsWorkflowDesigner::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     QPoint p = r.center();
     return p;
 }
 
 #define GT_METHOD_NAME "removeItem"
-void GTUtilsWorkflowDesigner::removeItem(HI::GUITestOpStatus &os, QString itemName) {
+void GTUtilsWorkflowDesigner::removeItem(HI::GUITestOpStatus &os, const QString &itemName) {
     click(os, itemName);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
-int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, QString itemName) {
+int GTUtilsWorkflowDesigner::getItemLeft(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.left();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, QString itemName) {
+int GTUtilsWorkflowDesigner::getItemRight(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.right();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, QString itemName) {
+int GTUtilsWorkflowDesigner::getItemTop(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.top();
     return i;
 }
 
-int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, QString itemName) {
+int GTUtilsWorkflowDesigner::getItemBottom(HI::GUITestOpStatus &os, const QString &itemName) {
     QRect r = getItemRect(os, itemName);
     int i = r.bottom();
     return i;
 }
 #define GT_METHOD_NAME "click"
-void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QString itemName, QPoint p, Qt::MouseButton button) {
+void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, const QString &itemName, QPoint p, Qt::MouseButton button) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
     GT_CHECK(sceneView != NULL, "scene view is NULL");
@@ -590,7 +584,7 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWorker"
-WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, QString itemName, const GTGlobals::FindOptions &options) {
+WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
     GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr);
@@ -627,7 +621,7 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWorkerText"
-QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, QString itemName, const GTGlobals::FindOptions &options) {
+QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     WorkflowProcessItem *worker = getWorker(os, itemName, options);
     foreach (QGraphicsItem *child, worker->childItems()) {
         foreach (QGraphicsItem *subchild, child->childItems()) {
@@ -642,7 +636,7 @@ QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus &os, QString 
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, QString itemName, Qt::MouseButton button, int step) {
+void GTUtilsWorkflowDesigner::clickLink(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button, int step) {
     WorkflowProcessItem *worker = getWorker(os, itemName);
 
     int left = GTUtilsWorkflowDesigner::getItemLeft(os, itemName);
@@ -688,7 +682,7 @@ QList<WorkflowPortItem *> GTUtilsWorkflowDesigner::getPorts(HI::GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, QString itemName) {
+QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, const QString &itemName) {
     //TODO: support finding items when there are several similar workers in scheme
     WorkflowProcessItem *w = getWorker(os, itemName);
     QRect result = GTGraphicsItem::getGraphicsItemRect(os, w);
@@ -701,13 +695,13 @@ QRect GTUtilsWorkflowDesigner::getItemRect(HI::GUITestOpStatus &os, QString item
 QTreeWidget *GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatus &os) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     switch (currentTab(os)) {
-    case algorithms:
-        return GTWidget::findExactWidget<QTreeWidget *>(os, "WorkflowPaletteElements", wdWindow);
-    case samples:
-        return GTWidget::findExactWidget<QTreeWidget *>(os, "samples", wdWindow);
-    default:
-        os.setError("An unexpected current tab");
-        return nullptr;
+        case algorithms:
+            return GTWidget::findExactWidget<QTreeWidget *>(os, "WorkflowPaletteElements", wdWindow);
+        case samples:
+            return GTWidget::findExactWidget<QTreeWidget *>(os, "samples", wdWindow);
+        default:
+            os.setError("An unexpected current tab");
+            return nullptr;
     }
 }
 #undef GT_METHOD_NAME
@@ -948,8 +942,8 @@ QWidget *GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatasetInputFile"
-void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QString &filePath, bool pastePath) {
-    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QString &filePath, bool pastePath, QWidget *datasetWidget) {
+    QWidget *currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(currentDatasetWidget != nullptr, "Current dataset widget not found");
 
     QWidget *addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
@@ -966,18 +960,12 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatasetInputFiles"
-void GTUtilsWorkflowDesigner::setDatasetInputFiles(GUITestOpStatus &os, const QStringList &filePaths) {
-    GTGlobals::sleep(200);
-    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
-    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
-
+void GTUtilsWorkflowDesigner::setDatasetInputFiles(GUITestOpStatus &os, const QStringList &filePaths, QWidget *datasetWidget) {
+    QWidget *currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     QWidget *addFileButton = GTWidget::findWidget(os, "addFileButton", currentDatasetWidget);
-    GT_CHECK(nullptr != addFileButton, "addFileButton not found");
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, filePaths));
-
     GTWidget::click(os, addFileButton);
-    GTGlobals::sleep(3000);
 }
 #undef GT_METHOD_NAME
 
@@ -1003,8 +991,8 @@ void GTUtilsWorkflowDesigner::createDataset(HI::GUITestOpStatus &os, QString dat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatasetInputFolder"
-void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QString filePath) {
-    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, const QString &filePath, QWidget *datasetWidget) {
+    QWidget *currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
     QWidget *addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
@@ -1018,8 +1006,8 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolder(HI::GUITestOpStatus &os, QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatasetInputFolders"
-void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const QStringList &dirPaths) {
-    QWidget *currentDatasetWidget = getCurrentDatasetWidget(os);
+void GTUtilsWorkflowDesigner::setDatasetInputFolders(GUITestOpStatus &os, const QStringList &dirPaths, QWidget *datasetWidget) {
+    QWidget *currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget(os) : datasetWidget;
     GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
 
     QWidget *addDirButton = GTWidget::findWidget(os, "addDirButton", currentDatasetWidget);
@@ -1118,65 +1106,65 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget *par
     checkWorkflowDesignerWindowIsActive(os);
     bool ok = true;
     switch (type) {
-    case (comboWithFileSelector): {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
-        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
+        case (comboWithFileSelector): {
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, value.toString()));
+            GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
 #ifdef Q_OS_WIN
-        //added to fix UGENE-3597
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            //added to fix UGENE-3597
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
 #endif
-        break;
-    }
-    case (lineEditWithFileSelector): {
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "mainWidget", parent), value.toString());
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-        break;
-    }
-    case (spinValue): {
-        int spinVal = value.toInt(&ok);
-        GT_CHECK(ok, "Wrong input. Int required for GTUtilsWorkflowDesigner::spinValue")
-        QSpinBox *spinBox = GTWidget::findWidgetByType<QSpinBox *>(os, parent, "Cell has no QSpinBox widget");
-        GTSpinBox::setValue(os, spinBox, spinVal, GTGlobals::UseKeyBoard);
-        break;
-    }
-    case (doubleSpinValue): {
-        double spinVal = value.toDouble(&ok);
-        GT_CHECK(ok, "Wrong input. Double required for GTUtilsWorkflowDesigner::doubleSpinValue")
-        QDoubleSpinBox *doubleSpinBox = GTWidget::findWidgetByType<QDoubleSpinBox *>(os, parent, "Cell has no QDoubleSpinBox widget");
-        GTDoubleSpinbox::setValue(os, doubleSpinBox, spinVal, GTGlobals::UseKeyBoard);
-        break;
-    }
-    case (comboValue): {
-        int itemIndex = value.toInt(&ok);
-        QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox widget");
-        if (!ok) {
-            QString itemText = value.toString();
-            GTComboBox::selectItemByText(os, comboBox, itemText, method);
-        } else {
-            GTComboBox::selectItemByIndex(os, comboBox, itemIndex, method);
+            break;
         }
-        break;
-    }
-    case (textValue): {
-        QString lineVal = value.toString();
-        QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, parent, "Cell has no QLineEdit widget");
-        GTLineEdit::setText(os, lineEdit, lineVal);
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-        break;
-    }
-    case ComboChecks: {
-        QStringList values = value.value<QStringList>();
-        QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox/ComboChecks widget");
-        GTComboBox::checkValues(os, comboBox, values);
+        case (lineEditWithFileSelector): {
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "mainWidget", parent), value.toString());
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            break;
+        }
+        case (spinValue): {
+            int spinVal = value.toInt(&ok);
+            GT_CHECK(ok, "Wrong input. Int required for GTUtilsWorkflowDesigner::spinValue")
+            QSpinBox *spinBox = GTWidget::findWidgetByType<QSpinBox *>(os, parent, "Cell has no QSpinBox widget");
+            GTSpinBox::setValue(os, spinBox, spinVal, GTGlobals::UseKeyBoard);
+            break;
+        }
+        case (doubleSpinValue): {
+            double spinVal = value.toDouble(&ok);
+            GT_CHECK(ok, "Wrong input. Double required for GTUtilsWorkflowDesigner::doubleSpinValue")
+            QDoubleSpinBox *doubleSpinBox = GTWidget::findWidgetByType<QDoubleSpinBox *>(os, parent, "Cell has no QDoubleSpinBox widget");
+            GTDoubleSpinbox::setValue(os, doubleSpinBox, spinVal, GTGlobals::UseKeyBoard);
+            break;
+        }
+        case (comboValue): {
+            int itemIndex = value.toInt(&ok);
+            QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox widget");
+            if (!ok) {
+                QString itemText = value.toString();
+                GTComboBox::selectItemByText(os, comboBox, itemText, method);
+            } else {
+                GTComboBox::selectItemByIndex(os, comboBox, itemIndex, method);
+            }
+            break;
+        }
+        case (textValue): {
+            QString lineVal = value.toString();
+            QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, parent, "Cell has no QLineEdit widget");
+            GTLineEdit::setText(os, lineEdit, lineVal);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            break;
+        }
+        case ComboChecks: {
+            QStringList values = value.value<QStringList>();
+            QComboBox *comboBox = GTWidget::findWidgetByType<QComboBox *>(os, parent, "Cell has no QComboBox/ComboChecks widget");
+            GTComboBox::checkValues(os, comboBox, values);
 #ifndef Q_OS_WIN
-        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 #endif
-        break;
-    }
-    case customDialogSelector: {
-        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
-        break;
-    }
+            break;
+        }
+        case customDialogSelector: {
+            GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
+            break;
+        }
     }
     GTThread::waitForMainThread();
 }
