@@ -104,19 +104,19 @@ public:
     static WorkflowProcessItem *addElementByUsingNameFilter(HI::GUITestOpStatus &os, const QString &elementName, bool exactMatch = false);
 
     //returns center of worker on workflow scene in global coordinates
-    static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString& itemName);
+    static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
-    static void removeItem(HI::GUITestOpStatus &os, const QString& itemName);
+    static void removeItem(HI::GUITestOpStatus &os, const QString &itemName);
 
-    static void click(HI::GUITestOpStatus &os, const QString& itemName, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
+    static void click(HI::GUITestOpStatus &os, const QString &itemName, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
     static void click(HI::GUITestOpStatus &os, QGraphicsItem *item, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
 
     //returs worker placed on workflow scene which contains item name
-    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString& itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
-    static QString getWorkerText(HI::GUITestOpStatus &os, const QString& itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
-    static void clickLink(HI::GUITestOpStatus &os, const QString& itemName, Qt::MouseButton button = Qt::LeftButton, int step = 10);
+    static void clickLink(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button = Qt::LeftButton, int step = 10);
 
     static bool isWorkerExtended(HI::GUITestOpStatus &os, const QString &itemName);
 
@@ -166,7 +166,7 @@ public:
     static void setDatasetInputFolder(HI::GUITestOpStatus &os, const QString &filePath, QWidget *datasetWidget = nullptr);
 
     /**
-     * Adds all folders form the to the active dataset.
+     * Adds all folders the to the dataset widget.
      * If datasetWidget is not provided it is looked up the current WD window.
      */
     static void setDatasetInputFolders(HI::GUITestOpStatus &os, const QStringList &dirPaths, QWidget *datasetWidget = nullptr);
@@ -199,10 +199,10 @@ public:
     static int checkErrorList(HI::GUITestOpStatus &os, QString error);
     static QStringList getErrors(HI::GUITestOpStatus &os);
 
-    static int getItemLeft(HI::GUITestOpStatus &os, const QString& itemName);
-    static int getItemRight(HI::GUITestOpStatus &os, const QString& itemName);
-    static int getItemTop(HI::GUITestOpStatus &os, const QString& itemName);
-    static int getItemBottom(HI::GUITestOpStatus &os, const QString& itemName);
+    static int getItemLeft(HI::GUITestOpStatus &os, const QString &itemName);
+    static int getItemRight(HI::GUITestOpStatus &os, const QString &itemName);
+    static int getItemTop(HI::GUITestOpStatus &os, const QString &itemName);
+    static int getItemBottom(HI::GUITestOpStatus &os, const QString &itemName);
 
     // breakpoints
     static void toggleDebugMode(HI::GUITestOpStatus &os, bool enable = true);
@@ -220,7 +220,7 @@ public:
 private:
     static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
     static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget *parentWidget = nullptr);
-    static QRect getItemRect(HI::GUITestOpStatus &os, const QString&itemName);
+    static QRect getItemRect(HI::GUITestOpStatus &os, const QString &itemName);
     static QTreeWidget *getCurrentTabTreeWidget(HI::GUITestOpStatus &os);
 
     static const int verticalShift;
