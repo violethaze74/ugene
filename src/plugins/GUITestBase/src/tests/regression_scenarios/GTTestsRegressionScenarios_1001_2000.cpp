@@ -5096,11 +5096,11 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
     const QStringList msaSequences0 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    // Break sync mode by moving sequences in the MSA.
-    QPoint oldPosition = GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center();
-    QPoint newPosition = GTUtilsMsaEditor::getSequenceNameRect(os, "Montana_montana").center();
-    GTMouseDriver::click(oldPosition);
-    GTMouseDriver::dragAndDrop(oldPosition, newPosition);
+
+    // Break sync mode by sorting sequences in the MSA.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_name"}));
+    GTMenu::showContextMenu(os, GTUtilsMsaEditor::getSequenceArea(os));
+    GTUtilsDialog::waitAllFinished(os);
 
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
     const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -5440,8 +5440,7 @@ GUI_TEST_CLASS_DEFINITION(test_1548) {
     GTUtilsProjectTreeView::toggleView(os);
 
     // Build tree for the alignment
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/1548.nwk", 0, 0, true));
-    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, testDir + "_common_data/scenarios/sandbox/1548.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Ensure that the "Sync" mode is ON and 'Mecopoda_elongata_Sumatra' and 'Mecopoda_elongata_Ishigaki_J' are in the correct order.
@@ -5462,7 +5461,7 @@ GUI_TEST_CLASS_DEFINITION(test_1548) {
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    CHECK_SET_ERR(nameList == syncModeNameList, "Name list must not be changed when sync mode is OFF.");
+    CHECK_SET_ERR(nameList == originalNameList, "Name list must be restored to the original sync mode is turned OFF.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1551) {

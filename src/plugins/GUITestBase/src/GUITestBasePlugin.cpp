@@ -212,10 +212,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
-    //    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
     //    REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
 
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
@@ -1730,6 +1728,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7044);
     REGISTER_TEST(GUITest_regression_scenarios::test_7045);
     REGISTER_TEST(GUITest_regression_scenarios::test_7091);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7106);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2399,6 +2398,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_1);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_2);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
@@ -3374,6 +3375,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0011);

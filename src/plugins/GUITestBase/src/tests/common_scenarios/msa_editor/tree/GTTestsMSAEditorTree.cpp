@@ -131,5 +131,44 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_SET_ERR(byTreeSequenceNames1 == byTreeSequenceNames2, "by-tree sequence name list is not restored");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0003_1) {
+    // Check that when sync mode is turned OFF from inside of the Tree widget the MSA sequence order is restored to the Original.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "msa_editor_tree_test_0003_1");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(originalSequenceNames1 != byTreeSequenceNames1, "MSA must be re-ordered by tree");
+
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    GTWidget::click(os, syncModeButton);
+
+    QStringList originalSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(originalSequenceNames2 == originalSequenceNames2, "Original sequence order must be restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0003_2) {
+    // Check that a Tree tab that is in Sync mode is closed the MSA sequence order is restored to the Original.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "msa_editor_tree_test_0003_2");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(originalSequenceNames1 != byTreeSequenceNames1, "MSA must be re-ordered by tree");
+
+    GTUtilsMsaEditor::closeActiveTreeTab(os);
+
+    QStringList originalSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(originalSequenceNames2 == originalSequenceNames2, "Original sequence order must be restored");
+}
+
 }    // namespace GUITest_common_scenarios_msa_editor_tree
 }    // namespace U2

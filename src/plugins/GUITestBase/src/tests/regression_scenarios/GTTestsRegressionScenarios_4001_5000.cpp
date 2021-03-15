@@ -4113,7 +4113,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     // Build the tree and check that it is synchronized with MSA.
     // Insert a gap.
     //   Expected state: tree is still in sync.
-    // Drag & drop sequence (change order).
+    // Change sequences order (sort by length).
     //   Expected state: tree is not in sync anymore.
     // Sync tree.
     //  Expected state: tree is in sync again.
@@ -4124,8 +4124,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_2", 0, 0, true));
-    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_4674_2");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
@@ -4136,11 +4135,10 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
 
-    // Change sequences order by dragging.
-    GTUtilsMsaEditor::clickSequence(os, 2);
-    QPoint dragFromPoint = GTUtilsMsaEditor::getSequenceNameRect(os, 2).center();
-    QPoint dragToPoint = GTUtilsMsaEditor::getSequenceNameRect(os, 4).center();
-    GTMouseDriver::dragAndDrop(dragFromPoint, dragToPoint);
+    // Change sequences order by re-sorting.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_by_length"}));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
     // Enable sync mode again.
