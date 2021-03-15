@@ -11,8 +11,24 @@
 #To get a list of signing identities, I found the perfect answer in this objc.io article:
 #    security find-identity -v -p codesigning
 
-if [ ! -d "$1" ]; then
-    echo "ERROR: First arg must be UGENE.app directory! Exit."
+if [ -d "$1" ]; then
+    echo "Signing recursively all files in directory '$1'"
+elif [ -f "$1" ]; then
+    if [ ! -f "$2" ]; then
+        echo "ERROR: Second arg must be entitlements file. Exit"
+    fi
+    echo "Signing file '$1'"
+    codesign \
+        --sign "Developer ID Application: Alteametasoft" \
+        --timestamp \
+        --force \
+        --verbose=11 \
+        --entitlements "$2" \
+        "$1" \
+    || exit -1
+    exit 0
+else
+    echo "ERROR: First arg must be directory or single file! Exit."
     exit -1
 fi
 
@@ -58,5 +74,3 @@ find "$1"/Resources -type f \
     --entitlements "$1/Info.plist" \
     "{}" \; \
 || exit -1
-
-
