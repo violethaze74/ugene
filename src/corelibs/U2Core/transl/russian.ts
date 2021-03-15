@@ -2340,7 +2340,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::PasteTask</name>
     <message>
-        <location filename="../src/globals/ClipboardController.cpp" line="38"/>
+        <location filename="../src/globals/ClipboardController.cpp" line="40"/>
         <source>Paste data</source>
         <translation>Paste data</translation>
     </message>
@@ -2348,22 +2348,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="360"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="363"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="366"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="370"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="373"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="379"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="382"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2379,12 +2379,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RemoveMultipleDocumentsTask</name>
     <message>
-        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="32"/>
+        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="34"/>
         <source>Remove document</source>
         <translation>Удаление документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="92"/>
+        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="94"/>
         <source>Cannot remove document %1, since it is locked by some task.</source>
         <translation>Невозможно удалить документ %1, т.к. он заблокирован другой задачей.</translation>
     </message>
@@ -2421,22 +2421,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="321"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="324"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="338"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="342"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="343"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="346"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2524,19 +2524,19 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="285"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="284"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="286"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="285"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="300"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="299"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>

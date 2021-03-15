@@ -362,12 +362,12 @@ Probably, the data are too big.</source>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="14"/>
         <source>Save selection as subalignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить выделение как выравнивание</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="25"/>
         <source>Columns from</source>
-        <translation type="unfinished"></translation>
+        <translation>Колонки от</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="54"/>
@@ -1255,12 +1255,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Создание дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1499"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1500"/>
         <source>Expand</source>
         <translation>Раскрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1502"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1503"/>
         <source>Collapse</source>
         <translation>Скрыть</translation>
     </message>
@@ -2259,7 +2259,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="280"/>
         <source>Copy annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать анноттацию</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVClipboard.cpp" line="338"/>
@@ -3972,7 +3972,7 @@ You don&apos;t have enough rights to change file</source>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="55"/>
         <source>Save</source>
-        <translation type="unfinished">Сохранить</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="56"/>
@@ -4570,19 +4570,19 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportHighlightingTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="851"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="875"/>
         <source>Export highlighting</source>
-        <translation type="unfinished">Экспорт подсвеченного</translation>
+        <translation>Экспорт подсвеченного</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="877"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="901"/>
         <source>Export highlighting finished successfully</source>
-        <translation type="unfinished">Export highligtning finished successfully</translation>
+        <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="877"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="901"/>
         <source>Result file:</source>
-        <translation type="unfinished">Выходной файл:</translation>
+        <translation>Выходной файл:</translation>
     </message>
 </context>
 <context>
@@ -5356,7 +5356,7 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.cpp" line="260"/>
-        <source>Unable to create output folder for result assembly.<byte value="xd"/>
+        <source>Unable to create output folder for result assembly.
 Directory Path: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5571,47 +5571,47 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="74"/>
         <source>Sort selected sequences range or the whole alignment by name, ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по имени, по возрастанию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="79"/>
         <source>Sort selected sequences range or the whole alignment by name, descending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по имени, по убыванию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="84"/>
         <source>Sort selected sequences range or the whole alignment by length, ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по длине, по возрастанию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="89"/>
         <source>Sort selected sequences range or the whole alignment by length, descending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по длине, по убыванию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="92"/>
         <source>By leading gap</source>
-        <translation type="unfinished"></translation>
+        <translation>По начальным гэпам</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="94"/>
         <source>Sort selected sequences range or the whole alignment by leading gap, ascending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по начальным гэпам, по возрастанию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="97"/>
         <source>By leading gap, descending</source>
-        <translation type="unfinished"></translation>
+        <translation>По начальным гэпам, по убыванию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="99"/>
         <source>Sort selected sequences range or the whole alignment by leading gap, descending</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировка выделенных последовательностей или всего выравнивания по начальным гэпам, по убыванию</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="123"/>
         <source>Convert to RNA alphabet (T-&gt;U)</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертировать в RNA алфавит (T-&gt;U)</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="125"/>
@@ -5621,7 +5621,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="128"/>
         <source>Convert to DNA alphabet (U-&gt;T)</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертировать в DNA алфавит (U-&gt;T)</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="130"/>
@@ -5798,17 +5798,17 @@ Directory Path: %1</source>
         <translation type="vanished">DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="425"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="435"/>
         <source>Go to Position</source>
         <translation>Перейти к позиции</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="442"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="452"/>
         <source>MSA is locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="614"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="632"/>
         <source>No new rows were inserted: selection contains no valid sequences.</source>
         <translation>Новые ряды не добавлены: выделение не содержит корректных последовательностей.</translation>
     </message>
@@ -5829,7 +5829,7 @@ Directory Path: %1</source>
         <translation type="vanished">Выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="334"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="344"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>Выравнивание было изменено. Алфавит переключен с &quot;%1&quot; на &quot;%2&quot;. Используйте опцию &quot;Назад&quot; если хотите вернуться к исходному выравниванию.</translation>
     </message>
@@ -5842,13 +5842,13 @@ Directory Path: %1</source>
         <translation type="vanished">NULL msa object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="637"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="640"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="655"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="658"/>
         <source>Open file with sequences</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="647"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="665"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
@@ -5889,19 +5889,19 @@ Directory Path: %1</source>
         <translation>Нет доступных алгоритмов для построения дерева.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="270"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="271"/>
         <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
         <translation>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="297"/>
         <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="300"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="303"/>
         <source>Select files to open...</source>
         <translation>Выберите файлы...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="355"/>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="357"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="358"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp" line="360"/>
         <source>Incorrect reference to the MSAEditor</source>
         <translation>Incorrect reference to the MSAEditor</translation>
     </message>
@@ -5909,48 +5909,24 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorTreeViewer</name>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="65"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="70"/>
         <source>MSAEditor tree toolbar</source>
         <translation>Панель опций редактора деревьев</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="68"/>
-        <source>Sort alignment by tree</source>
-        <translation>Сортировать выравнивание по дереву</translation>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="121"/>
+        <source>Disable Tree and Alignment synchronization</source>
+        <translation>Выключить синхронизацию дерева и выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="72"/>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="121"/>
+        <source>Enable Tree and Alignment synchronization</source>
+        <translation>Синхронизовать дерево и выравнивание</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="79"/>
         <source>Refresh tree</source>
         <translation>Обновить дерево</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="223"/>
-        <source>Alignment Modification Confirmation</source>
-        <translation>Подтверждение изменения выравнивания</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="224"/>
-        <source>The alignment has been modified.
-
-All phylogenetic tree(s), opened in the same view, will be no more synchronized with the alignment.</source>
-        <translation>Выравнивание было изменено.
-
-Все филогенетические деревья, синхронизованные с данным выравниванием более не будут синхронизованы.</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="227"/>
-        <source>Do you want to confirm the modification?</source>
-        <translation>Вы подтверждаете изменение?</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="230"/>
-        <source>Confirm</source>
-        <translation>Подтвердить</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="229"/>
-        <source>Cancel</source>
-        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -5968,27 +5944,27 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="51"/>
         <source>Copy (custom format)</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать (в выбранном формате)</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="122"/>
         <source>Rich text (HTML)</source>
-        <translation type="unfinished"></translation>
+        <translation>Форматированный текст (HTML)</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="145"/>
         <source>RNA</source>
-        <translation type="unfinished"></translation>
+        <translation>RNA</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="146"/>
         <source>Convert DNA alignment to RNA alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>Конвертировать DNA выравнивание в RNA выравнивание</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="148"/>
         <source>DNA</source>
-        <translation type="unfinished"></translation>
+        <translation>DNA</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTab.cpp" line="149"/>
@@ -6063,28 +6039,25 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAImageExportController</name>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="256"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="261"/>
         <source>Alignment</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="304"/>
         <source>MSA sequence area is NULL</source>
-        <translation>MSA sequence area is NULL</translation>
+        <translation type="vanished">MSA sequence area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="315"/>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="399"/>
         <source>MSA Collapsible Model is NULL</source>
-        <translation>MSA Collapsible Model is NULL</translation>
+        <translation type="vanished">MSA Collapsible Model is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="348"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="346"/>
         <source>Warning: selected region is too big to be exported. You can try to zoom out the alignment or select another region.</source>
         <translation>Предупреждение: выделенный регион слишком большой для экспорта. Вы можете попробовать приблизить выравнивание или выделить другой регион.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="351"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="349"/>
         <source>Warning: selected region is too big to be exported. You can try to select another region.</source>
         <translation>Предупреждение: выделенный регион слишком большой для экспорта. Вы можете попробовать выделить другой регион.</translation>
     </message>
@@ -6135,17 +6108,17 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Экспортировать нечего</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="229"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="234"/>
         <source>The image size is too big.</source>
         <translation>The image size is too big.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="233"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="238"/>
         <source>SVG %1</source>
         <translation>SVG %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="234"/>
+        <location filename="../src/ov_msa/Export/MSAImageExportTask.cpp" line="239"/>
         <source>SVG image of multiple alignment created by Unipro UGENE</source>
         <translation>SVG изображение множественного выравнивания создано Unipro UGENE</translation>
     </message>
@@ -6155,12 +6128,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/helpers/MaAmbiguousCharactersController.cpp" line="53"/>
         <source>Jump to next ambiguous character</source>
-        <translation>Перейти к следующему неоднозначному символу</translation>
+        <translation>К следующему неоднозначному символу</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/helpers/MaAmbiguousCharactersController.cpp" line="59"/>
         <source>Jump to previous ambiguous character</source>
-        <translation>Перейти к предыдущему неоднозначному символу</translation>
+        <translation>К предыдущему неоднозначному символу</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/helpers/MaAmbiguousCharactersController.cpp" line="99"/>
@@ -6191,12 +6164,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/MaConsensusMismatchController.cpp" line="53"/>
         <source>Jump to next variation</source>
-        <translation>Перейти к следующей вариации</translation>
+        <translation>К следующей вариации</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaConsensusMismatchController.cpp" line="59"/>
         <source>Jump to previous variation</source>
-        <translation>Перейти к предыдущей вариации</translation>
+        <translation>К предыдущей вариации</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaConsensusMismatchController.cpp" line="142"/>
@@ -6225,82 +6198,82 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditor</name>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="85"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="86"/>
         <source>Save alignment</source>
         <translation>Сохранить выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="89"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="90"/>
         <source>Save alignment as</source>
         <translation>Сохранить выравнивание как</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="93"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="94"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="97"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="98"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="101"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="102"/>
         <source>Zoom To Selection</source>
         <translation>Приблизить выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="105"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="106"/>
         <source>Reset Zoom</source>
         <translation>Вернуться к приближению &quot;по умолчанию&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="109"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="110"/>
         <source>Change Font</source>
         <translation>Изменить шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="113"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="114"/>
         <source>Export highlighted</source>
         <translation>Экспортировать выравнивание с выделенными нуклеотидами</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="118"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="119"/>
         <source>Copy consensus</source>
-        <translation type="unfinished">Копировать консенсус</translation>
+        <translation>Копировать консенсус</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="121"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="122"/>
         <source>Copy consensus with gaps</source>
-        <translation type="unfinished">Копировать консенсус с пробелами</translation>
+        <translation>Копировать консенсус с пробелами</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="326"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="327"/>
         <source>Save Alignment</source>
         <translation>Сохранить выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="334"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="335"/>
         <source>Characters Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="362"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="363"/>
         <source>Export as image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="367"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="368"/>
         <source>Overview</source>
         <translation>Панорама</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="374"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="375"/>
         <source>Clear selection</source>
-        <translation type="unfinished">Снять выделение</translation>
+        <translation>Снять выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="409"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="410"/>
         <source>Copy/Paste</source>
         <translation>Копирование/Вставка</translation>
     </message>
@@ -6309,7 +6282,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Редактирование</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="414"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="415"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
@@ -6318,12 +6291,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Просмотр</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="426"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="427"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditor.cpp" line="431"/>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="432"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
@@ -6370,52 +6343,52 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorNameList</name>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="68"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="66"/>
         <source>Edit sequence name</source>
         <translation>Изменить имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="75"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="73"/>
         <source>Copy current sequence</source>
         <translation>Копировать текущую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="79"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="77"/>
         <source>Remove sequence(s)</source>
         <translation>Удалить последовательность(и)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="553"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="556"/>
         <source>MSA Editor UI is NULL</source>
         <translation>MSA Editor UI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="555"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="558"/>
         <source>MSA Editor sequence area is NULL</source>
         <translation>MSA Editor sequence area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="129"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="127"/>
         <source>MSA Object is NULL</source>
         <translation>MSA Object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="137"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="135"/>
         <source>Invalid sequence index</source>
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="803"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="806"/>
         <source>Rename Read</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="803"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="806"/>
         <source>Rename Sequence</source>
         <translation>Переименовать последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="804"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="807"/>
         <source>New name:</source>
         <translation>Новое имя:</translation>
     </message>
@@ -6536,12 +6509,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MaEditorWgt</name>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="180"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="179"/>
         <source>Consensus:</source>
         <translation>Консенсусная последовательность:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="238"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="237"/>
         <source>Remove selection</source>
         <translation>Удалить выделение</translation>
     </message>
@@ -6554,29 +6527,29 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation type="vanished">Копировать выделенное с учетом формата</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="248"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="247"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="255"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="254"/>
         <source>Copy (custom format)</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать (в выбранном формате)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="262"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="261"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="269"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="268"/>
         <source>Paste (before selection)</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить (до выделения)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="276"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="275"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Вырезать</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -6856,7 +6829,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="230"/>
         <source>Go to selected read</source>
-        <translation type="unfinished"></translation>
+        <translation>К началу выделенного рида</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/McaEditor.cpp" line="257"/>
@@ -6985,7 +6958,7 @@ Simple overview is unavailable.</source>
         <translation type="vanished">Снять выделение</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/McaEditorWgt.cpp" line="124"/>
+        <location filename="../src/ov_msa/McaEditorWgt.cpp" line="122"/>
         <source>Remove character/gap</source>
         <translation>Удалить символ/пробел</translation>
     </message>
@@ -7087,7 +7060,7 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="45"/>
         <source>Leading gap</source>
-        <translation type="unfinished"></translation>
+        <translation>Начальные гэпы</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp" line="49"/>
@@ -7513,17 +7486,17 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="124"/>
         <source>All alphabets</source>
-        <translation type="unfinished">Все алфавиты</translation>
+        <translation>Все алфавиты</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="125"/>
         <source>Amino acid alphabet</source>
-        <translation type="unfinished">Аминокислотный алфавит</translation>
+        <translation>Аминокислотный алфавит</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/Highlighting/MsaSchemeComboBoxController.h" line="126"/>
         <source>Nucleotide alphabet</source>
-        <translation type="unfinished">Нуклеотидный алфавит</translation>
+        <translation>Нуклеотидный алфавит</translation>
     </message>
 </context>
 <context>
@@ -8298,24 +8271,24 @@ Please, load the corresponding plugins.</source>
         <translation>Экспортировать изображение дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1112"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1136"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1142"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1113"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1137"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1143"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1112"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1113"/>
         <source>Selected dir is read only: %1</source>
         <translation>Указанная директория доступна только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1136"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1137"/>
         <source>Failed to generate SVG image.</source>
         <translation>Невозможно создать SVG изображение.</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1142"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1143"/>
         <source>Failed to open file for writing: %1</source>
         <translation>Невозможно открыть файл для записи: %1</translation>
     </message>

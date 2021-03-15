@@ -854,10 +854,6 @@
 <context>
     <name>U2::ExportMSA2MSADialog</name>
     <message>
-        <source>Export Nucleic Alignment to Amino Translation</source>
-        <translation type="vanished">Экспорт выравнивания в амино трансляции</translation>
-    </message>
-    <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="20"/>
         <source>Export Amino Acid Translation</source>
         <translation>Экспорт выравнивания в амино трансляции</translation>
@@ -885,57 +881,57 @@
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="67"/>
         <source>Include gaps</source>
-        <translation type="unfinished"></translation>
+        <translation>Учитывать пробелы</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="77"/>
         <source>Translate triplets with gaps as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Транслировать тройные сочетания с пробелами как</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="86"/>
         <source>X</source>
-        <translation type="unfinished"></translation>
+        <translation>X</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="99"/>
         <source>Gap</source>
-        <translation type="unfinished"></translation>
+        <translation>Пробел</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="115"/>
         <source>Translation frame:</source>
-        <translation type="unfinished"></translation>
+        <translation>Трансляционная рамка</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="124"/>
         <source>+1</source>
-        <translation type="unfinished"></translation>
+        <translation>+1</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="137"/>
         <source>-1</source>
-        <translation type="unfinished"></translation>
+        <translation>-1</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="150"/>
         <source>+2</source>
-        <translation type="unfinished"></translation>
+        <translation>+2</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="163"/>
         <source>-2</source>
-        <translation type="unfinished"></translation>
+        <translation>-2</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="176"/>
         <source>+3</source>
-        <translation type="unfinished"></translation>
+        <translation>+3</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="189"/>
         <source>-3</source>
-        <translation type="unfinished"></translation>
+        <translation>-3</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="202"/>
