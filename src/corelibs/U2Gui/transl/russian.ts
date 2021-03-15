@@ -1707,38 +1707,38 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="105"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="106"/>
         <source>&lt;auto&gt;</source>
         <translation>&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="242"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="245"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="250"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="255"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="260"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="265"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="270"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="271"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1751,7 +1751,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="357"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="358"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -2679,9 +2679,17 @@ Are you sure you want to open all of them?</source>
         <translation type="vanished">UGENE can not recognize current clipboard content as one of supported formats.</translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="113"/>
+        <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
         <translation>Двнные в буфере обмена слишком большие.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PasteFactoryImpl</name>
+    <message>
+        <location filename="../src/PasteController.cpp" line="114"/>
+        <source>UGENE can not recognize current clipboard content as one of the supported formats.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2691,12 +2699,12 @@ Are you sure you want to open all of them?</source>
         <translation type="vanished">Cannot detect file format</translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="160"/>
+        <location filename="../src/PasteController.cpp" line="161"/>
         <source>Failed to detect pasted data format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="168"/>
+        <location filename="../src/PasteController.cpp" line="169"/>
         <source>Failed to create tmp file for clipboard content: %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2704,7 +2712,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::PasteUrlsTask</name>
     <message>
-        <location filename="../src/PasteController.cpp" line="138"/>
+        <location filename="../src/PasteController.cpp" line="139"/>
         <source>Pasting of folders is not supported:</source>
         <translation>Pasting of folders is not supported:</translation>
     </message>

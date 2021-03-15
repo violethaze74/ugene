@@ -450,17 +450,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="861"/>
+        <location filename="../src/Main.cpp" line="864"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="862"/>
+        <location filename="../src/Main.cpp" line="865"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="863"/>
+        <location filename="../src/Main.cpp" line="866"/>
         <source>UGENE distribution: %1</source>
         <translation>Распределение UGENE: %1</translation>
     </message>
@@ -656,17 +656,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddDocumentsToProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="949"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="959"/>
         <source>Loading documents</source>
         <translation>Loading documents</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1010"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1020"/>
         <source>No active project found!</source>
         <translation>No active project found!</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1046"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1056"/>
         <source>Load document and add to project: %1</source>
         <translation>Load document and add to project: %1</translation>
     </message>
@@ -768,17 +768,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateDesktopShortcutTask</name>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="58"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="60"/>
         <source>Create desktop shortcut</source>
         <translation>Добавление иконки на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="177"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="179"/>
         <source>Desktop shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="178"/>
+        <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="180"/>
         <source>A new shortcut to the UGENE application was created on the desktop.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1447,12 +1447,12 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::OpenWithProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1075"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1085"/>
         <source>Opening document: %1</source>
         <translation>Opening document: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1077"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1087"/>
         <source>Opening %1 documents</source>
         <translation>Opening %1 documents</translation>
     </message>
@@ -1561,7 +1561,7 @@ Do you want view online documentation?</source>
         <translation type="vanished">Выбрать папку</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="912"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="922"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Проект уже существует.&lt;br&gt;Переписать его?&lt;body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1615,7 +1615,7 @@ Do you want view online documentation?</source>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="239"/>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="241"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="928"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="938"/>
         <source>Select files to open</source>
         <translation>Открыть файлы</translation>
     </message>

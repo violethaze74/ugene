@@ -183,14 +183,14 @@
 <context>
     <name>U2::AddModelToSplitterTask</name>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="748"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="748"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="756"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="756"/>
         <source>Add 3d model &apos;%1&apos; to BioStruct3DSplitter</source>
         <translation>Добавить 3D модель &apos;%1&apos; в BioStruct3DSplitter</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="771"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="771"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="779"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="779"/>
         <source>Model %1 wasn&apos;t added</source>
         <translation>Модель %1 не была добавлена</translation>
     </message>
@@ -198,44 +198,44 @@
 <context>
     <name>U2::BioStruct3DGLWidget</name>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="761"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="744"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="804"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="781"/>
         <source>Spin</source>
         <translation>Вращение</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="750"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="733"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="793"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="770"/>
         <source>Off</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="757"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="740"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="800"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="777"/>
         <source>Models..</source>
         <translation>Модели..</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="780"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="763"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="823"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="800"/>
         <source>Align With...</source>
         <translation>Выровнять с...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="800"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="783"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="843"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="820"/>
         <source>Molecular Surface Render Style</source>
         <translation>Стиль отрисовки поверхности</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="804"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="787"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="847"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="824"/>
         <source>Molecular Surface</source>
         <translation>Молекулярная поверхность</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="590"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="573"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="615"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="598"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -245,50 +245,56 @@
         <translation>The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="590"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="573"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="615"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="598"/>
         <source>Unable to open file %1 for writing</source>
         <translation>Невозможно открыть файл %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="765"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="748"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="694"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="671"/>
+        <source>The &quot;3D Structure Viewer&quot; was disabled, because OpenGL has error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="808"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="785"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="768"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="751"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="811"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="788"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="771"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="754"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="814"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="791"/>
         <source>Export Image...</source>
         <translation>Экспортировать изображение...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="784"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="767"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="827"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="804"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="790"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="773"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="833"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="810"/>
         <source>Render Style</source>
         <translation>Стиль отрисовки</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="795"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="778"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="838"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="815"/>
         <source>Coloring Scheme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="829"/>
-        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="812"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="872"/>
+        <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="849"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
     </message>
@@ -424,82 +430,82 @@ You may try to upgrade your system by updating the video card driver.</translati
 <context>
     <name>U2::SplitterHeaderWidget</name>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="376"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="376"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="380"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="380"/>
         <source>3D Structure Viewer</source>
         <translation>Визуализатор 3D структур</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="384"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="384"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="388"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="388"/>
         <source>Active view:</source>
         <translation>Активная:</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="391"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="391"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="395"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="395"/>
         <source>Restore Default View</source>
         <translation>Восстановить вид по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="396"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="396"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="400"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="400"/>
         <source>Zoom In</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="402"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="402"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="406"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="406"/>
         <source>Zoom Out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="407"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="407"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="411"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="411"/>
         <source>Synchronize 3D Structure Views</source>
         <translation>Синхронизировать изображения</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="412"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="412"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="416"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="416"/>
         <source>Display</source>
         <translation>Изображение</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="436"/>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="437"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="436"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="437"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="440"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="441"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="440"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="441"/>
         <source>Toggle view</source>
         <translation>Переключить вид</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="524"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="524"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="528"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="528"/>
         <source>Show %1</source>
         <translation>Показывать %1</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="720"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="720"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="724"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="724"/>
         <source>File not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="732"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="732"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="736"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="736"/>
         <source>Illegal entry: %1</source>
         <translation>Некорректные входные данные: %1</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="418"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="418"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="422"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="422"/>
         <source>Links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DSplitter.cpp" line="425"/>
-        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="425"/>
+        <location filename="../src/BioStruct3DSplitter.cpp" line="429"/>
+        <location filename="../src/deprecated/BioStruct3DSplitter.cpp" line="429"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
