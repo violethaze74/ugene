@@ -254,7 +254,7 @@
         <location filename="../src/BioStruct3DGLWidget.cpp" line="694"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="671"/>
         <source>The &quot;3D Structure Viewer&quot; was disabled, because OpenGL has error </source>
-        <translation type="unfinished"></translation>
+        <translation>3D визуализация отключена: не удалось инициализировать OpenGL</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DGLWidget.cpp" line="808"/>

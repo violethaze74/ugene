@@ -2689,7 +2689,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/PasteController.cpp" line="114"/>
         <source>UGENE can not recognize current clipboard content as one of the supported formats.</source>
-        <translation type="unfinished"></translation>
+        <translation>UGENE не может распознать тип данных в буфере обмена.</translation>
     </message>
 </context>
 <context>
