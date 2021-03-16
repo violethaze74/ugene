@@ -136,7 +136,6 @@ private:
     QAction *createDesktopShortcutAction;
     QAction *visitWebAction;
     QAction *viewOnlineDocumentation;
-    QAction *openManualAction;
     QAction *welcomePageAction;
     QAction *crashUgeneAction;
 #ifdef _INSTALL_TO_PATH_ACTION
