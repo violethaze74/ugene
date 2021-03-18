@@ -633,7 +633,7 @@ void freenewer()
 }
 
 
-void doinput(int argc, Phylip_Char *argv[])
+void doinput(int /*argc*/, Phylip_Char *argv[])
 { /* reads the input data */
   seqboot_getoptions();
   seqboot_inputnumbers();

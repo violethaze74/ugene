@@ -726,13 +726,13 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     GTUtilsMsaEditor::clickSequenceName(os, "Phaneroptera_falcata");
 
     //    3. Copy it to the clipboard.
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
 //    4. Press the next key sequence:
 //        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
 #ifndef Q_OS_MAC
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
 #else
     GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
 #endif
@@ -4920,7 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_5948) {
 
     //3. Copy a sequence region
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //4. "Copy/Paste > Paste sequence" is disabled in the context menu.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste"

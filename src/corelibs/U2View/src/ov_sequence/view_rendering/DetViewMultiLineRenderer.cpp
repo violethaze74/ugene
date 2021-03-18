@@ -105,7 +105,7 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
     return false;
 }
 
-bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
+bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region & /*visibleRange*/) const {
     int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
     U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, availableHeightForSingleLine);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;

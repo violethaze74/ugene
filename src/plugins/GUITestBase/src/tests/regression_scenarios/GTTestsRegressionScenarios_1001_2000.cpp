@@ -5686,7 +5686,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
 
     //    Expected state: gap was inserted in every sequence of this group.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(0, 12));
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "-\nT\nT", "Unexpected selection: " + clipboardText);
 
@@ -5696,7 +5696,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
 
     //    Expected state: all sequences in the group are changed simultaneously.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 10), QPoint(2, 12));
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "T\n-\nA", "Unexpected selection 2: " + clipboardText);
 }

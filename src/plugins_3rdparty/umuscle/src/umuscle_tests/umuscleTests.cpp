@@ -287,7 +287,7 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     return ReportResult_Finished;
 }
 
-void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat */*tf*/, const QDomElement& el) {
     origAliSeqs = 0;
     aliObj = NULL;
     resultAliSeqs = 0;

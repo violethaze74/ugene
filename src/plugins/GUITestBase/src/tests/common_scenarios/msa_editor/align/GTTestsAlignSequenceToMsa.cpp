@@ -67,7 +67,7 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));

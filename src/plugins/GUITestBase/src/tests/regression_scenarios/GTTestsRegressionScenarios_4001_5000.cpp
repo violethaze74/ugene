@@ -322,10 +322,10 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
             GTWidget::click(os, GTWidget::findExactWidget<QPlainTextEdit *>(os, "sequenceEdit", dialog));
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "amount of data"));
-            GTKeyboardUtils::paste(os);
+            GTKeyboardUtils::paste();
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "amount of data"));
-            GTKeyboardUtils::paste(os);
+            GTKeyboardUtils::paste();
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -4961,7 +4961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
     //Expected state subalignment pasted correctly
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
@@ -5706,7 +5706,7 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq5.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5730,7 +5730,7 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
     //2. Select the first sequence and add data to the clipboard
     DetView *firstSeqWidget = GTUtilsSequenceView::getDetViewByNumber(os, 0);
     GTWidget::click(os, firstSeqWidget);
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
 
     //3. While the data is been pasted, select the second sequence
     DetView *secondSeqWidget = GTUtilsSequenceView::getDetViewByNumber(os, 1);

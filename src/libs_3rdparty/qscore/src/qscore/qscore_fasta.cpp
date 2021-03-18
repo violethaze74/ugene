@@ -1,4 +1,7 @@
+#include <U2Core/disable-warnings.h>
+
 #include "qscore.h"
+U2_DISABLE_WARNINGS
 
 /***
 Strip trailing whitespace from FASTA annotation and
