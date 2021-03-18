@@ -1,7 +1,7 @@
 #include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
 
 #include "qscore.h"
-U2_DISABLE_WARNINGS
 
 // O(NL) computation of PREFAB Q score and Balibase TC score.
 // Algorithm based on an idea due to Chuong (Tom) Do.
