@@ -23,11 +23,11 @@
 #define _U2_DISABLE_WARNINGS_H_
 
 /***
- * Once included this file disables all warning in the current compilation unit.
- * It used to suppress warnings in 3rd party code included into UGENE on the source level.
+ * Once included this file disables all warnings in the current compilation unit.
+ * This utility should be used to suppress warnings in 3rd party code included into UGENE.
  *
- * Note: never use this file in files owned/created by UGENE (both headers and cpp) because
- *  it will disable warnings in our own code too.
+ * Note: never include this file into files owned/created by UGENE (both headers and cpp) because
+ *  it will disable warnings in our code too.
  */
 
 #ifdef __GNUC__
@@ -39,7 +39,7 @@
 #endif
 
 /**
- * This macro does nothing but helps to avoid "unused include" warning for #include <U2Core/disable-warnings.h>:
+ * This macro does nothing today but helps to avoid "unused include" warning for #include <U2Core/disable-warnings.h>:
  *
  * Usage:
  * #include <U2Core/disable-warnings>
