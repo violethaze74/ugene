@@ -59,6 +59,13 @@ public:
     static bool hasSingleFillColor(const QImage &image, const QColor &color);
 
     /**
+     * Returns set of colors found in the image.
+     * Once 'maxColors' limit is reached the algorihtm stops and returns the current set.
+     * This parameter helps to avoid out of memory errors and optimize performance.
+     */
+    static QSet<QRgb> countColors(const QImage &image, int maxColors = 100000);
+
+    /**
      * Returns image of the widget using widget->grab() method.
      * If useGrabWindow is true calls QPixmap::grabWindow method: it allows to capture non-QT (like OpenGL) images.
      */

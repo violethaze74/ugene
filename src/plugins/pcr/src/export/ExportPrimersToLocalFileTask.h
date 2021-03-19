@@ -39,8 +39,8 @@ class ExportPrimersToLocalFileTask : public Task {
 public:
     ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
 
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
     Document *prepareDocument();

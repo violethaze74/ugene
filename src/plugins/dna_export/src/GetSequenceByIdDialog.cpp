@@ -37,7 +37,7 @@ namespace U2 {
 GetSequenceByIdDialog::GetSequenceByIdDialog(QWidget *w)
     : QDialog(w) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363688");
+    new HelpButton(this, buttonBox, "60229085");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

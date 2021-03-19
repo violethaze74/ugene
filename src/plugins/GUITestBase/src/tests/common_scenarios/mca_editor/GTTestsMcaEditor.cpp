@@ -1414,13 +1414,11 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
-    GTGlobals::sleep();
 
     //3. Push "Ctrl+Alt+v"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //Expected state : first difference between reference "T" and consensus "G"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1430,7 +1428,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //4. Push "Jump to next variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "G"
@@ -1515,7 +1512,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
-    GTGlobals::sleep();
 
     //6. Push "Ctrl+Alt+Shift+v"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -1523,7 +1519,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep(500);
 
     //Expected state : first difference between reference "T" and consensus GAP
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1533,7 +1528,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     //3. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : difference between reference "C" and consensus GAP
@@ -1584,7 +1578,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1687,8 +1680,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 #else
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 #endif
-    GTGlobals::sleep();
-
     //Expected state : reference "C", consensus "N", read "N"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
     QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
@@ -1700,7 +1691,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 
     //3. Push "Jump to next ambiguous character" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     //Expected state : reference "C", consensus "M", read "M".
@@ -1805,7 +1795,6 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     GTKeyboardDriver::keyClick('a', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //Expected state: reference "T", consensus "W", read "W"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1818,7 +1807,6 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
 
     //3. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
 
     //Expected state: reference "G", consensus "N", read "N"
@@ -1900,11 +1888,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     QStringList visibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     QString firstVisibleRow = visibleRows.first();
     GTUtilsMcaEditor::clickReadName(os, firstVisibleRow);
-    GTGlobals::sleep(500);
 
     //3. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     U2Region reg = GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(os);
@@ -1912,11 +1898,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //4. Select any region in the reference
     GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 500);
-    GTGlobals::sleep(500);
 
     //5. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
@@ -1924,11 +1908,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //6. Select any symbol in the read
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTGlobals::sleep(1000);
 
     //7. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -1944,7 +1926,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1953,11 +1934,9 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + R keys on the keyboard.
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -1965,7 +1944,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
     //4. Press a key on the keyboard with another character of the same alphabet (e.g C key).
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'A' was replaced with 'C').
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1974,7 +1952,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -2000,7 +1977,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2009,7 +1985,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2025,7 +2000,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
                                                                               << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2033,7 +2007,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2042,7 +2015,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //6. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -2068,7 +2040,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2077,7 +2048,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
@@ -2098,7 +2068,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2107,7 +2076,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //6. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -2132,7 +2100,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2141,11 +2108,9 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + R keys on the keyboard.
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2169,7 +2134,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2178,7 +2142,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep(500);
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2196,7 +2159,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
                                                                               << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2220,7 +2182,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2229,7 +2190,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
@@ -2266,7 +2226,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2275,11 +2234,9 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + I keys on the keyboard.
     GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state :  the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2287,7 +2244,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
     //4. Press a key on the keyboard with another character of the same alphabet (e.g N key).
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2296,7 +2252,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2343,7 +2298,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_2) {
@@ -2355,7 +2309,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2364,7 +2317,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2380,7 +2332,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
                                                                               << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2388,7 +2339,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //5. Press a key on the keyboard with any character of the same alphabet (e.g "N" key)
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2397,7 +2347,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2444,7 +2393,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_3) {
@@ -2456,7 +2404,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2465,7 +2412,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
@@ -2486,7 +2432,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //5. Press a key on the keyboard with any character of the same alphabet (e.g "N" key)
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2495,7 +2440,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2542,7 +2486,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025_1) {
@@ -2554,7 +2497,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2563,11 +2505,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + I keys on the keyboard.
     GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state: the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2592,7 +2532,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2601,7 +2540,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + I is shown nearby.
@@ -2617,7 +2555,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
                                                                               << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state: the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2641,7 +2578,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2650,7 +2586,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
@@ -2687,7 +2622,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2698,11 +2632,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press Del keys on the keyboard.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2723,7 +2655,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2768,7 +2699,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(500);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2779,14 +2709,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press "Remove selection" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2807,7 +2735,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2852,7 +2779,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2863,13 +2789,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press "Remove character/gap" from main
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"
                                                 << "Remove character/gap");
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2890,11 +2814,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    GTGlobals::sleep(100);
     CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
@@ -2936,19 +2858,15 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //7. Press Shift + Delete
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(1000);
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2962,7 +2880,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
@@ -2995,20 +2912,16 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove all columns of gaps"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -3022,7 +2935,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 2");
@@ -3055,19 +2967,15 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3 Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"
                                                 << "Remove all columns of gaps");
-    GTGlobals::sleep();
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -3081,7 +2989,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
@@ -3118,11 +3025,9 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep(100);
 
     //3. Push Space key
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3130,7 +3035,6 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     //4. Push Васkspace key
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3147,13 +3051,11 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep(100);
 
     QPoint startMousePosotion = GTMouseDriver::getMousePosition();
 
     //3. Move mouse with pressed left button to the right on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
-    GTGlobals::sleep(100);
 
     //Expected state: Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3161,7 +3063,6 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
     //4. Move mouse with pressed left button to the left on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, startMousePosotion);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3179,7 +3080,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //2. Push Zoom In
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters increased in size
     int currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3187,7 +3087,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //3. Push Zoom out
     GTUtilsMcaEditor::zoomOut(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3195,9 +3094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //4. Push Zoom In 2 times
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep(100);
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep();
 
     //Expected state : All Characters increased in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3205,7 +3102,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //5. Push Reset Zoom
     GTUtilsMcaEditor::resetZoom(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3221,12 +3117,10 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     //2. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
-    GTGlobals::sleep();
 
     //Expected state :Sequence number: 16
     int height = GTUtilsOptionPanelMca::getHeight(os);
     CHECK_SET_ERR(height == 16, QString("Incorrect height, expected: 16, current: %1").arg(QString::number(height)));
-    GTGlobals::sleep();
 
     //Expected state: Reference length: 11937
     int length = GTUtilsOptionPanelMca::getLength(os);
@@ -3259,11 +3153,10 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     //Expected state :Threshold = 100 % (can be changed)
     int threshold = GTUtilsOptionPanelMca::getThreshold(os);
-    CHECK_SET_ERR(threshold == 100, QString("Unexpected threshold, expected: 100, current^ %1").arg(QString::number(threshold)));
+    CHECK_SET_ERR(threshold == 100, QString("Unexpected threshold 0, expected: 100, current^ %1").arg(QString::number(threshold)));
 
     //3. Set Threshold = 50 %
     GTUtilsOptionPanelMca::setThreshold(os, 50);
-    GTGlobals::sleep();
 
     //4. Push "Reset to default value"
     GTUtilsOptionPanelMca::pushResetButton(os);
@@ -3293,9 +3186,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsChecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //2. Push Show / Hide overview button on the main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -3308,9 +3199,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsUnchecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //3. Close editor and open it again(map state should be saved)
 
@@ -3329,9 +3218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsChecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //2. Select transparent square  and move it by mouse  down
     QWidget *simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
@@ -3340,7 +3227,6 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint p = GTMouseDriver::getMousePosition();
     QPoint rightP(p.x(), p.y() + 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, rightP);
-    GTGlobals::sleep();
 
     //Еxpected state : Alighed reads area moved down
     QStringList listOne = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
@@ -3386,7 +3272,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
     // close the view
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTGlobals::sleep();
 
     // open the view again
     GTFileDialog::openFile(os, sandBoxDir, fileName);

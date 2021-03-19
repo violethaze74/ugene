@@ -31,8 +31,8 @@
 
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
-#include "utils/GTUtilsMac.h"
 #include "utils/GTThread.h"
+#include "utils/GTUtilsMac.h"
 
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
@@ -52,7 +52,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #ifdef Q_OS_MAC
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
-        if (qobject_cast<QLineEdit*>(widget) != nullptr) {
+        if (qobject_cast<QLineEdit *>(widget) != nullptr) {
             p -= QPoint(rect.width() / 3, 0);
         }
 #endif
@@ -312,6 +312,18 @@ bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
         }
     }
     return true;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "countColors"
+QSet<QRgb> GTWidget::countColors(const QImage &image, int maxColors) {
+    QSet<QRgb> colorSet;
+    for (int i = 0; i < image.width() && colorSet.size() < maxColors; i++) {
+        for (int j = 0; j < image.height(); j++) {
+            colorSet << image.pixel(i, j);
+        }
+    }
+    return colorSet;
 }
 #undef GT_METHOD_NAME
 

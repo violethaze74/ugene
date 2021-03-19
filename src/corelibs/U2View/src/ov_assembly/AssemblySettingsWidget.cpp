@@ -229,7 +229,7 @@ QWidget *AssemblySettingsWidget::createRulerSettings() {
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
 const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "54362834";
+const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "60228231";
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;

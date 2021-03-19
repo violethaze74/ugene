@@ -468,24 +468,31 @@ QString GUITestLauncher::generateReport() const {
 
 QString GUITestLauncher::getScreenRecorderString(QString testName) {
     QString result;
-#ifdef Q_OS_LINUX
-    QRect rec = QApplication::desktop()->screenGeometry();
-    int height = rec.height();
-    int width = rec.width();
-    QString display = qgetenv("DISPLAY");
-    result = QString("ffmpeg -video_size %1x%2 -framerate 5 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(getVideoPath(testName));
-#elif defined Q_OS_MAC
-    result = QString("ffmpeg -f avfoundation -r 5 -i \"1:none\" \"%1\"").arg(getVideoPath(testName));
-#elif defined Q_OS_WIN
-    result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 5 %1").arg(getVideoPath(testName.replace(':', '_')));
-#endif
+    QString videoFilePath = getVideoPath(testName);
+    if (isOsLinux()) {
+        QRect rec = QApplication::desktop()->screenGeometry();
+        int height = rec.height();
+        int width = rec.width();
+        QString display = qgetenv("DISPLAY");
+        result = QString("ffmpeg -video_size %1x%2 -framerate 5 -f x11grab -i %3.0 %4").arg(width).arg(height).arg(display).arg(videoFilePath);
+    } else if (isOsMac()) {
+        result = QString("ffmpeg -f avfoundation -r 5 -i \"1:none\" \"%1\"").arg(videoFilePath);
+    } else if (isOsWindows()) {
+        result = QString("ffmpeg -f dshow -i video=\"UScreenCapture\" -r 5 %1").arg(videoFilePath);
+    }
     uiLog.trace("going to record video: " + result);
     return result;
 }
 
 QString GUITestLauncher::getVideoPath(const QString &testName) {
-    QDir().mkpath(QDir::currentPath() + "/videos");
-    QString result = QDir::currentPath() + "/videos/" + testName + ".avi";
-    return result;
+    QString dirPath = qgetenv("UGENE_GUI_TEST_VIDEO_DIR_PATH");
+    if (dirPath.isEmpty()) {
+        dirPath = QDir::currentPath() + "/videos";
+    }
+    if (!QDir(dirPath).exists()) {
+        QDir().mkpath(dirPath);
+    }
+    return dirPath + "/" + QString(testName).replace(":", "_") + ".avi";
 }
+
 }    // namespace U2

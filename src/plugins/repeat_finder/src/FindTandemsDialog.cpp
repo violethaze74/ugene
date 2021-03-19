@@ -63,7 +63,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext *_sc)
     : QDialog(_sc->getAnnotatedDNAView()->getWidget()) {
     sc = _sc;
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363711");
+    new HelpButton(this, buttonBox, "60229108");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

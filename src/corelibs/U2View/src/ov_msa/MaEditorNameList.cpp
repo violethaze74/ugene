@@ -382,7 +382,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
 
     if (getSelection().contains(viewRow)) {
         // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
-        dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows();
+        // TODO: support dragging in the Free mode (v39). Today Free mode is enabled only when Sync is ON with tree: MSA order is enforced by Tree.
+        dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows() && editor->getRowOrderMode() != MaEditorRowOrderMode::Free;
     } else {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
         rubberBand->show();
@@ -838,7 +839,7 @@ qint64 MaEditorNameList::sequenceIdAtPos(const QPoint &p) {
     return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
 }
 
-void MaEditorNameList::clearGroupsSelections() {
+void MaEditorNameList::clearGroupsColors() {
     groupColors.clear();
 }
 

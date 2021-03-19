@@ -107,9 +107,6 @@ private slots:
     void sl_createDesktopShortcutAction();
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
-    void sl_openManualAction();
-    void sl_openWDManualAction();
-    void sl_openQDManualAction();
     void sl_show();
     void sl_crashUgene();
 #ifdef _INSTALL_TO_PATH_ACTION
@@ -139,7 +136,6 @@ private:
     QAction *createDesktopShortcutAction;
     QAction *visitWebAction;
     QAction *viewOnlineDocumentation;
-    QAction *openManualAction;
     QAction *welcomePageAction;
     QAction *crashUgeneAction;
 #ifdef _INSTALL_TO_PATH_ACTION

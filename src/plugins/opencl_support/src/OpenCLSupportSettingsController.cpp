@@ -77,7 +77,7 @@ AppSettingsGUIPageWidget *OpenCLSupportSettingsPageController::createWidget(AppS
     return w;
 }
 
-const QString OpenCLSupportSettingsPageController::helpPageId = QString("54362343");
+const QString OpenCLSupportSettingsPageController::helpPageId = QString("60227736");
 
 OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState(const QString &name)
     : enabledGpuName(name) {
