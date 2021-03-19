@@ -40,7 +40,7 @@ namespace U2 {
 
 class WorkflowView;
 
-class WorkflowDocFormat : public TextDocumentFormat {
+class WorkflowDocFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     WorkflowDocFormat(QObject *p);

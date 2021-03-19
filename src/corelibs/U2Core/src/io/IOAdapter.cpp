@@ -21,6 +21,8 @@
 
 #include "IOAdapter.h"
 
+#include <QTextCodec>
+
 #include <U2Core/TextUtils.h>
 
 namespace U2 {

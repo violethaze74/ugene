@@ -27,10 +27,18 @@
 
 namespace U2 {
 
-/* Base class for all non binary document formats that can be opened in a usual text editor. */
-class U2FORMATS_EXPORT TextDocumentFormat : public DocumentFormat {
+class TextStreamReader;
+class TextStreamWriter;
+
+/*
+ * Base class for all non binary document formats that can be opened in a usual text editor.
+ *
+ * Warning: TextDocumentFormat is deprecated: it uses hacks with unpredictable behavior for multi-byte encodings and does not support Unicode correctly.
+ * All text formats must switch to use TextStreamReader/TextStreamWriter methods.
+ */
+class U2FORMATS_EXPORT TextDocumentFormatDeprecated : public DocumentFormat {
 public:
-    TextDocumentFormat(QObject *p, const DocumentFormatId &id, DocumentFormatFlags _flags, const QStringList &fileExts = QStringList());
+    TextDocumentFormatDeprecated(QObject *p, const DocumentFormatId &id, DocumentFormatFlags _flags, const QStringList &fileExts = QStringList());
     virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl & = GUrl()) const;
 
 protected:
@@ -39,6 +47,61 @@ protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const = 0;
     virtual DNASequence *loadTextSequence(IOAdapter *io, U2OpStatus &ti);
     virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) = 0;
+};
+
+/*
+ * Base class for all text (non-binary) document formats that can be opened in a usual text editor.
+ */
+class U2FORMATS_EXPORT TextDocumentFormat : public DocumentFormat {
+public:
+    TextDocumentFormat(QObject *p, const DocumentFormatId &id, DocumentFormatFlags _flags, const QStringList &fileExts = QStringList());
+
+protected:
+    /** Checks if the 'rawTextData' text is stored using this document format. */
+    virtual FormatCheckResult checkRawTextData(const QString &rawTextData, const GUrl &originalDataUrl) const = 0;
+
+    /**
+     * Loads a document from the given stream.
+     * 'hints' map contains set of loading hints like 'DocumentReadingMode_SequenceMergeGapSize', etc…
+     * If loading is failed the nullptr is returned and the error is stored in 'os', otherwise a non-nullptr value is returned.
+     */
+    virtual Document *loadTextDocument(TextStreamReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) = 0;
+
+    /**
+     * Loads a DNASequence object from the current state of the reader.
+     * Returns a valid sequence object or sets an error to the 'os'.
+     * By default returns nullptr & error that sequence loading is not supported by the current format.
+     */
+    virtual DNASequence *loadTextSequence(TextStreamReader &reader, U2OpStatus &os);
+
+    /**
+     * Serializes 'document' into the given text stream. Sets error to 'os' if serialization fails.
+     * By default text documents do not support writing, so this method must be re-implemented in every format to support serialization.
+     */
+    virtual void storeTextDocument(TextStreamWriter &writer, Document *document, U2OpStatus &os);
+
+    /**
+     * Stores all supported document types from the given map of objects.
+     * The document format should preserve the objects order in the map when possible.
+     * The default implementation does nothing and sets 'unsupported' error to 'os'.
+     */
+    virtual void storeTextEntry(TextStreamWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+
+private:
+    /** Detects encoding of the raw binary data and calls 'checkRawTextData'. */
+    FormatCheckResult checkRawData(const QByteArray &rawBinaryData, const GUrl &originalDataUrl = GUrl()) const override;
+
+    /** Delegates this call to 'loadTextDocument' with a valid text reader instance. */
+    Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+
+    /** Delegates this call to 'loadTextSequence' with a valid text reader instance. */
+    DNASequence *loadSequence(IOAdapter *io, U2OpStatus &os) override;
+
+    /** Delegates this call to 'storeTextDocument' with a valid text writer instance. */
+    void storeDocument(Document *document, IOAdapter *io, U2OpStatus &os) override;
+
+    /** Delegates this call to 'storeTextEntry' with a valid text writer instance. */
+    void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 };
 
 }    // namespace U2

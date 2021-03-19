@@ -150,6 +150,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/io/OutputStream.h \
            src/io/RingBuffer.h \
            src/io/StringAdapter.h \
+           src/io/TextStream.h \
            src/io/VFSAdapter.h \
            src/io/VirtualFileSystem.h \
            src/io/ZlibAdapter.h \
@@ -379,6 +380,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/io/IOAdapter.cpp \
            src/io/LocalFileAdapter.cpp \
            src/io/StringAdapter.cpp \
+           src/io/TextStream.cpp \
            src/io/VFSAdapter.cpp \
            src/io/VirtualFileSystem.cpp \
            src/io/ZlibAdapter.cpp \

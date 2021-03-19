@@ -23,6 +23,7 @@
 #define _U2_IOADAPTER_H_
 
 #include <QObject>
+#include <QTextStream>
 
 #include <U2Core/GUrl.h>
 

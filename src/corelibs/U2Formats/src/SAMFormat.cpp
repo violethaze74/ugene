@@ -87,7 +87,7 @@ bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
 }
 
 SAMFormat::SAMFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList() << "sam") {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList() << "sam") {
     formatName = tr("SAM");
     formatDescription = tr("The Sequence Alignment/Map (SAM) format is a generic alignment format for"
                            "storing read alignments against reference sequence");
@@ -228,7 +228,7 @@ Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* 
     //    QBitArray terminators = TextUtils::WHITES | TextUtils::LINE_BREAKS;
     //    char lastTerminator = lineOk ? '\n' : 0;
 
-    //    while(readFieldsCount < 11 && (len = io->readUntil(buff, READ_BUFF_SIZE, terminators, IOAdapter::Term_Include, &lineOk)) > 0) {
+    //    while(readFieldsCount < 11 && (len = io->read(buff, READ_BUFF_SIZE, terminators, IOAdapter::Term_Include, &lineOk)) > 0) {
     //        QByteArray addline = QByteArray( buff, len - 1 ).simplified();
     //        fieldValues[readFieldsCount - 1].append(addline);
     //        lastTerminator = buff[len-1];
@@ -241,7 +241,7 @@ Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* 
     //    {
     //        bool merge = readFieldsCount < 11 ? false : true;
     //        /*if(readFieldsCount < 11)*/ {
-    //            while(!TextUtils::LINE_BREAKS.at(lastTerminator) && (len = io->readUntil(buff, READ_BUFF_SIZE, terminators, IOAdapter::Term_Include, &lineOk)) > 0) {
+    //            while(!TextUtils::LINE_BREAKS.at(lastTerminator) && (len = io->read(buff, READ_BUFF_SIZE, terminators, IOAdapter::Term_Include, &lineOk)) > 0) {
     //                if(!lineOk) {
     //                    len++;
     //                }

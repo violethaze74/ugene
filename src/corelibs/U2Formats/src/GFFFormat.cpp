@@ -48,7 +48,7 @@ namespace U2 {
 const int GFFFormat::LOCAL_READ_BUFFER_SIZE = 32768;
 
 GFFFormat::GFFFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::GFF, DocumentFormatFlag_SupportWriting, QStringList("gff")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::GFF, DocumentFormatFlag_SupportWriting, QStringList("gff")) {
     formatName = tr("GFF");
     formatDescription = tr("GFF is a format used for storing features and annotations");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;

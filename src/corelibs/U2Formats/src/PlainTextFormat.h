@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     PlainTextFormat(QObject *p);
