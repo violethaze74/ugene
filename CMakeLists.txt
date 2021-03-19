@@ -47,6 +47,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=parentheses"
             " -Werror=return-type"
             " -Werror=uninitialized"
+            " -Werror=unused-parameter"
             " -Wno-catch-value"
             " -Wno-class-memaccess"
             " -Wno-deprecated-copy"

@@ -120,7 +120,7 @@ void GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, QString &
     GTWidget::click(os, sequenceWidget);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTUtilsDialog::waitAllFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << ACTION_EDIT_REPLACE_SUBSEQUENCE, GTGlobals::UseKey));
@@ -136,7 +136,7 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
     GTWidget::click(os, getSeqWidgetByNumber(os, number));
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
     // Use PanView or DetView but not the sequence widget itself: there are internal scrollbars in the SequenceWidget that may affect popup menu content.
@@ -155,7 +155,7 @@ QString GTUtilsSequenceView::getSequenceAsString(HI::GUITestOpStatus &os, int nu
 QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os, int length) {
     checkSequenceViewWindowIsActive(os);
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, length));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTThread::waitForMainThread();
 
     QString sequence;
@@ -177,7 +177,7 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus &os, i
     Runnable *filler = new SelectSequenceRegionDialogFiller(os, length, false);
     GTUtilsDialog::waitForDialog(os, filler);
 
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
     GTGlobals::sleep(1000);    // don't touch
 
@@ -209,7 +209,7 @@ int GTUtilsSequenceView::getLengthOfSequence(HI::GUITestOpStatus &os) {
 
     int length = -1;
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, &length));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
 
     return length;
@@ -241,7 +241,7 @@ void GTUtilsSequenceView::checkSequence(HI::GUITestOpStatus &os, const QString &
 void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, from, to));
     clickMouseOnTheSafeSequenceViewArea(os);
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 }
 #undef GT_METHOD_NAME
 
@@ -249,7 +249,7 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
     clickMouseOnTheSafeSequenceViewArea(os);
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 }
 #undef GT_METHOD_NAME
 
@@ -688,7 +688,7 @@ QString GTUtilsSequenceView::getRegionAsString(HI::GUITestOpStatus &os, const U2
     GTUtilsSequenceView::selectSequenceRegion(os, region.startPos, region.endPos() - 1);
     GTGlobals::sleep();
 
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     const QString result = GTClipboard::text(os);
 

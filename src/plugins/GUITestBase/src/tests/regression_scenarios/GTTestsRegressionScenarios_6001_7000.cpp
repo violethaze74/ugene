@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
     //2. Select 1 - 10 chars
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //3. Enable edit mode
     GTUtilsSequenceView::enableEditingMode(os);
@@ -723,7 +723,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
     GTUtilsSequenceView::setCursor(os, 5);
 
     //5. Press paste
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
     GTGlobals::sleep();
 
     //Expected: cursor on the 15-th pos

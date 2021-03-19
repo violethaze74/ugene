@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #ifndef ClustSetMSA_h
 #define ClustSetMSA_h
 

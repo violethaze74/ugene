@@ -1,3 +1,5 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
 
 #include "phylip.h"
 #include "seq.h"

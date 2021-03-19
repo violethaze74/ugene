@@ -66,6 +66,9 @@ void GTUtilsMac::startWorkaroundForMacCGEvents(int delay, bool waitFinished) {
             process = nullptr;
         }
     }
+#else
+    Q_UNUSED(delay);
+    Q_UNUSED(waitFinished);
 #endif
 }
 
