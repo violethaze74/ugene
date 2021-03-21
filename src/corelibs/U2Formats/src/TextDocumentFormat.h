@@ -33,8 +33,8 @@ class TextStreamWriter;
 /*
  * Base class for all non binary document formats that can be opened in a usual text editor.
  *
- * Warning: TextDocumentFormat is deprecated: it uses hacks with unpredictable behavior for multi-byte encodings and does not support Unicode correctly.
- * All text formats must switch to use TextStreamReader/TextStreamWriter methods.
+ * Warning: This implementation is deprecated: it uses hacks with unpredictable behavior for multi-byte encodings and does not support Unicode correctly.
+ * Use the new 'TextDocumentFormat' class.
  */
 class U2FORMATS_EXPORT TextDocumentFormatDeprecated : public DocumentFormat {
 public:
