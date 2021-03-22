@@ -31,8 +31,8 @@
 
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
-#include "utils/GTUtilsMac.h"
 #include "utils/GTThread.h"
+#include "utils/GTUtilsMac.h"
 
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
@@ -52,7 +52,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #ifdef Q_OS_MAC
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
-        if (qobject_cast<QLineEdit*>(widget) != nullptr) {
+        if (qobject_cast<QLineEdit *>(widget) != nullptr) {
             p -= QPoint(rect.width() / 3, 0);
         }
 #endif
@@ -315,15 +315,27 @@ bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "countColors"
+QSet<QRgb> GTWidget::countColors(const QImage &image, int maxColors) {
+    QSet<QRgb> colorSet;
+    for (int i = 0; i < image.width() && colorSet.size() < maxColors; i++) {
+        for (int j = 0; j < image.height(); j++) {
+            colorSet << image.pixel(i, j);
+        }
+    }
+    return colorSet;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "hasPixelWithColor"
 bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor) {
     QImage image = getImage(os, widget);
-    return hasPixelWithColor(os, image, expectedColor);
+    return hasPixelWithColor(image, expectedColor);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasPixelWithColorInImage"
-bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor) {
+bool GTWidget::hasPixelWithColor(const QImage &image, const QColor &expectedColor) {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             QColor pixelColor = image.pixel(x, y);

@@ -13031,7 +13031,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleBioSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="115"/>
+        <location filename="../src/python/PythonSupport.cpp" line="117"/>
         <source> (or biopython) is a python module for biological computations.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13039,7 +13039,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleDjangoSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="97"/>
+        <location filename="../src/python/PythonSupport.cpp" line="99"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -13047,7 +13047,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleNumpySupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="106"/>
+        <location filename="../src/python/PythonSupport.cpp" line="108"/>
         <source>: Python module for the %1 tool</source>
         <translation>: Python модуль для инструмента %1</translation>
     </message>
@@ -13055,7 +13055,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonModuleSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="86"/>
+        <location filename="../src/python/PythonSupport.cpp" line="88"/>
         <source>Python module is not installed. Install module or set path to another Python scripts interpreter with installed module in the External Tools settings</source>
         <translation>Python модуль не установлен. Установите модель или укажите другой путь с установленным модулем в настройках внешних инструментов</translation>
     </message>
@@ -13063,7 +13063,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PythonSupport</name>
     <message>
-        <location filename="../src/python/PythonSupport.cpp" line="59"/>
+        <location filename="../src/python/PythonSupport.cpp" line="61"/>
         <source>Python scripts interpreter</source>
         <translation>Python интерпретатор</translation>
     </message>

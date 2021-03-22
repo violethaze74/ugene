@@ -146,6 +146,12 @@ chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/platforms"/*.so
 cp -r -v "${QT_DIR}/plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}"/imageformats/*.so
 
+cp -r -v "${QT_DIR}/plugins/platformthemes" "${TARGET_APP_DIR}"
+strip -v "${TARGET_APP_DIR}"/platformthemes/*.so
+
+cp -r -v "${QT_DIR}/plugins/xcbglintegrations" "${TARGET_APP_DIR}"
+strip -v "${TARGET_APP_DIR}"/xcbglintegrations/*.so
+
 PATH_TO_ICU_DATA_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicudata.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_DATA_LIB" "${TARGET_APP_DIR}"
 PATH_TO_ICU_I18N_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicui18n.so | cut -d " " -f3)

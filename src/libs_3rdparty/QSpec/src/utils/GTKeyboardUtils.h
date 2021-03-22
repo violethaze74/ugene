@@ -26,15 +26,23 @@
 #include "drivers/GTKeyboardDriver.h"
 
 namespace HI {
-/*!
- * \brief The class contains the most commonly used keyboard hotkeys
+
+/**
+ * The class contains the most commonly used keyboard hotkeys.
  */
 class HI_EXPORT GTKeyboardUtils {
 public:
-    static void selectAll(GUITestOpStatus &);    // ctrl (or cmd on MacOS) + A
-    static void copy(GUITestOpStatus &);    // ctrl (or cmd on MacOS) + C
-    static void paste(GUITestOpStatus &);    // ctrl (or cmd on MacOS) + V
-    static void cut(GUITestOpStatus &);    // ctrl (or cmd on MacOS) + X
+    /** Triggers Ctrl (or cmd on MacOS) + A. */
+    static void selectAll();
+
+    /* Triggers Ctrl (or cmd on MacOS) + C. */
+    static void copy();
+
+    /* Triggers Ctrl (or cmd on MacOS) + V. */
+    static void paste();
+
+    /* Triggers Ctrl (or cmd on MacOS) + X. */
+    static void cut();
 };
 
 }    // namespace HI

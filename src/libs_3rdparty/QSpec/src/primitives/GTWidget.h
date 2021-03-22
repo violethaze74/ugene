@@ -53,10 +53,17 @@ public:
     //returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
     static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
-    static bool hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor);
+    static bool hasPixelWithColor(const QImage &image, const QColor &expectedColor);
 
     /** Returns true if the image has only the given color. */
     static bool hasSingleFillColor(const QImage &image, const QColor &color);
+
+    /**
+     * Returns set of colors found in the image.
+     * Once 'maxColors' limit is reached the algorihtm stops and returns the current set.
+     * This parameter helps to avoid out of memory errors and optimize performance.
+     */
+    static QSet<QRgb> countColors(const QImage &image, int maxColors = 100000);
 
     /**
      * Returns image of the widget using widget->grab() method.

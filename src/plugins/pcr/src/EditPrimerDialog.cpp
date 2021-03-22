@@ -48,7 +48,7 @@ EditPrimerDialog::EditPrimerDialog(QWidget *parent, const Primer &editToPrimer)
 void EditPrimerDialog::init() {
     GCOUNTER(cvar, "Add primer in library");
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363754");
+    new HelpButton(this, buttonBox, "60229151");
 
     primerEdit->setValidator(new PrimerValidator(this));
 

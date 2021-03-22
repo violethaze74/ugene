@@ -1,6 +1,9 @@
 #ifndef ClustSetDF_h
 #define ClustSetDF_h
 
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 class MSA;
 class Clust;
 

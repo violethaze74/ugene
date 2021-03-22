@@ -523,7 +523,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, const
     GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(sequenceName), "");
 
     GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME
@@ -537,7 +537,7 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, int r
     GT_CHECK_RESULT(rowNumber >= 0 && rowNumber <= names.size(), QString("Row with number %1 is out of boundaries").arg(rowNumber), "");
 
     GTUtilsMsaEditor::clickSequenceName(os, names[rowNumber]);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME

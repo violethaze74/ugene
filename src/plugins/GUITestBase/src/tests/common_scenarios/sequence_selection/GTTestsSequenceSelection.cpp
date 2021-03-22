@@ -130,7 +130,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
     CHECK_SET_ERR(text.startsWith("MGQTVTTPLSL"), QString("'Copy annotation sequence translation' clipboard check, expected: MGQTVTTPLSL, current: %1").arg(text.left(10)));
 
     //8. Press Ctrl + C(or Cmd + C on Mac OS X).
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
     text = GTClipboard::text(os);
@@ -370,7 +370,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
     CHECK_SET_ERR(text.endsWith("QLKPIEYEP*"), QString("Unexpected end of the clipboard text, expected: QLKPIEYEP*, current: %1").arg(text.right(10)));
 
     //12. Press Ctrl + C(Cmd + C on Mac OS X).
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //    Expected state : there is joined sequence from the third and fourth annotations in the clipboard.
     text = GTClipboard::text(os);
@@ -582,7 +582,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
     CHECK_SET_ERR(text.startsWith("MGQTVTTPLS"), QString("Unexpected start of the clipboard text, expected: MGQTVTTPLS, current: %1").arg(text.left(10)));
 
     //8. Press Ctrl + C(or Cmd + C on Mac OS X).
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //    Expected state : a sequence that starts from "ATGGGCCAGACTGTT" is stored in the clipboard.
     text = GTClipboard::text(os);
@@ -652,7 +652,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0003) {
     CHECK_SET_ERR("RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V" == text, QString("Unexpected text in the clipboard, expected: RSGTKKQLNTKQDICGKRFLPRLRAKNR*DS*V, current: %1").arg(text));
 
     //4. Press Ctrl + C(or Cmd + C on Mac OS X) on the keyboard.
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //    Expected state : the selected region is stored in the clipboard.
     text = GTClipboard::text(os);

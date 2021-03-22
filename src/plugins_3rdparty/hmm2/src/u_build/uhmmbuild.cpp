@@ -347,7 +347,7 @@ static float frag_trace_score(struct plan7_s *hmm, unsigned char *dsq, struct p7
 //           hmm changed to an ME HMM
 //           ainfo changed, contains ME weights          
 
-static void maximum_entropy(struct alphabet_s* al, struct plan7_s *hmm, unsigned char **dsq, MSA *msa,
+static void maximum_entropy(struct alphabet_s* /*al*/, struct plan7_s *hmm, unsigned char **dsq, MSA *msa,
                             float eff_nseq, struct p7prior_s *prior, struct p7trace_s **tr)
 {
     float *wgt;                 // current best set of ME weights

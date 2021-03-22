@@ -372,9 +372,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    //    Export whole library to a shared database
+    // Export a whole primer library to a shared database
 
-    //    1. Open the library, clear it, add sequences "AAAA", "CCCC", "GGGG", "TTTT".
+    // Open the library, clear it, add sequences "AAAA", "CCCC", "GGGG", "TTTT".
     GTDatabaseConfig::initTestConnectionInfo("ugene_gui_test");
     GTUtilsPrimerLibrary::openLibrary(os);
     GTUtilsPrimerLibrary::clearLibrary(os);
@@ -384,19 +384,18 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsPrimerLibrary::addPrimer(os, "primer3", "GGGG");
     GTUtilsPrimerLibrary::addPrimer(os, "primer4", "TTTT");
 
-    //    2. Select all sequences.
+    // Select all sequences.
     GTUtilsPrimerLibrary::selectAll(os);
 
-    //    3. Click "Export".
-    //    4. Fill the dialog:
-    //        Export to: "Shared database";
-    //        Database: connect to the "ugene_gui_test" database;
-    //        Folder: any valid path;
-    //    and accept the dialog.
+    // Click "Export".
+    // Fill the dialog:
+    //  Export to: "Shared database";
+    //  Database: connect to the "ugene_gui_test" database;
+    //  Folder: any valid path;
+    // and click OK.
     class ExportToSharedDbScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus &os) override {
+            GTWidget::getActiveModalWidget(os);
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::SharedDb);
             ExportPrimersDialogFiller::setDatabase(os, "ugene_gui_test");
             ExportPrimersDialogFiller::setFolder(os, "/pcrlib/test_0008");
@@ -404,31 +403,29 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new ExportPrimersDialogFiller(os, new ExportToSharedDbScenario));
+    GTUtilsDialog::waitForDialog(os, new ExportPrimersDialogFiller(os, new ExportToSharedDbScenario()));
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Export);
-
-    //    5. Check the database.
-    //    Expected state: there are four sequence objects and four annotation table object with relations between them.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
-    Document *databaseConnection = GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, "ugene_gui_test");
 
+    // Check the database.
+    // Expected state: there are four sequence objects and four annotation table objects with relations between them.
+    Document *databaseConnection = GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, "ugene_gui_test");
     GTUtilsSharedDatabaseDocument::openView(os, databaseConnection, "/pcrlib/test_0008/primer1");
-    const QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os);
-    CHECK_SET_ERR("AAAA" == firstSeq, QString("Incorrect sequence data: expect '%1', got '%2'").arg("AAAA").arg(firstSeq));
+    QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(firstSeq == "AAAA", QString("Incorrect sequence data: expect '%1', got '%2'").arg("AAAA", firstSeq));
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseConnection, "/pcrlib/test_0008/primer2 features");
-    const QString secondSeq = GTUtilsSequenceView::getSequenceAsString(os);
-    CHECK_SET_ERR("CCCC" == secondSeq, QString("Incorrect sequence data: expect '%1', got '%2'").arg("CCCC").arg(secondSeq));
+    QString secondSeq = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(secondSeq == "CCCC", QString("Incorrect sequence data: expect '%1', got '%2'").arg("CCCC", secondSeq));
 
-    const QStringList itemPaths = QStringList() << "/pcrlib/test_0008/primer1"
-                                                << "/pcrlib/test_0008/primer2"
-                                                << "/pcrlib/test_0008/primer3"
-                                                << "/pcrlib/test_0008/primer4"
-                                                << "/pcrlib/test_0008/primer1 features"
-                                                << "/pcrlib/test_0008/primer2 features"
-                                                << "/pcrlib/test_0008/primer3 features"
-                                                << "/pcrlib/test_0008/primer4 features";
+    QStringList itemPaths = QStringList() << "/pcrlib/test_0008/primer1"
+                                          << "/pcrlib/test_0008/primer2"
+                                          << "/pcrlib/test_0008/primer3"
+                                          << "/pcrlib/test_0008/primer4"
+                                          << "/pcrlib/test_0008/primer1 features"
+                                          << "/pcrlib/test_0008/primer2 features"
+                                          << "/pcrlib/test_0008/primer3 features"
+                                          << "/pcrlib/test_0008/primer4 features";
     GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseConnection, "/pcrlib/test_0008/", itemPaths);
 }
 

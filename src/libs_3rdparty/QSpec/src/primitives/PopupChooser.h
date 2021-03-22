@@ -109,12 +109,8 @@ public:
                        const QMap<QString, QKeySequence> &namesAndShortcuts,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
                        GTGlobals::UseMethod useMethod = GTGlobals::UseKey);
-    PopupCheckerByText(GUITestOpStatus &os,
-                       const QList<QStringList> &itemsPaths,
-                       PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
-                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 protected:
     QStringList menuPath;

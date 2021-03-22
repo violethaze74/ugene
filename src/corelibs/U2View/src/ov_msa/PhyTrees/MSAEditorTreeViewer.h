@@ -62,6 +62,7 @@ class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
     MSAEditorTreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
+    ~MSAEditorTreeViewer();
 
     const CreatePhyTreeSettings &getCreatePhyTreeSettings() {
         return buildSettings;
@@ -158,7 +159,7 @@ private:
     QAction *syncModeAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
-    MSAEditor *editor;
+    QPointer<MSAEditor> editor;
     MSAEditorTreeViewerUI *msaTreeViewerUi;
 };
 
@@ -194,7 +195,10 @@ protected:
 
     virtual void onLayoutChanged(const TreeLayout &layout);
     void onSettingsChanged(TreeViewOption option, const QVariant &newValue);
-    virtual void updateTreeSettings(bool setDefaultZoom = true);
+
+    /** Overrides the original method to trigger MSA related updates as the result of tree update. */
+    void updateScene(bool fitSceneToView) override;
+
     virtual void setTreeLayout(TreeLayout newLayout);
 
 signals:
