@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "TextStream.h"
+#include "IOAdapterTextStream.h"
 
 #include <QTextCodec>
 
@@ -79,9 +79,9 @@ bool IOAdapterDevice::seek(qint64 seekPos) {
 }
 
 ///////////////////////////////////////////////
-////      TextStreamBase
+////      IOAdapterReaderAndWriterBase
 ///////////////////////////////////////////////
-TextStreamBase::TextStreamBase(IOAdapter *_ioAdapter, QTextCodec *codec)
+IOAdapterReaderAndWriterBase::IOAdapterReaderAndWriterBase(IOAdapter *_ioAdapter, QTextCodec *codec)
     : ioAdapter(_ioAdapter) {
     ioDevice.reset(new IOAdapterDevice(ioAdapter));
     stream.setDevice(ioDevice.data());
@@ -92,32 +92,32 @@ TextStreamBase::TextStreamBase(IOAdapter *_ioAdapter, QTextCodec *codec)
     }
 }
 
-GUrl TextStreamBase::getURL() const {
+GUrl IOAdapterReaderAndWriterBase::getURL() const {
     return ioAdapter->getURL();
 }
 
-IOAdapterFactory *TextStreamBase::getFactory() const {
+IOAdapterFactory *IOAdapterReaderAndWriterBase::getFactory() const {
     return ioAdapter->getFactory();
 }
 
 ///////////////////////////////////////////////
-////      TextStreamReader
+////      IOAdapterReader
 ///////////////////////////////////////////////
-TextStreamReader::TextStreamReader(IOAdapter *ioAdapter)
-    : TextStreamBase(ioAdapter), unreadCharsBufferPos(0) {
+IOAdapterReader::IOAdapterReader(IOAdapter *ioAdapter)
+    : IOAdapterReaderAndWriterBase(ioAdapter), unreadCharsBufferPos(0) {
 }
 
-TextStreamReader::~TextStreamReader() {
+IOAdapterReader::~IOAdapterReader() {
     if (unreadCharsBufferPos < unreadCharsBuffer.length() && ioAdapter->isOpen()) {
         // Roll IOAdapter back to the size of the data left in the unreadCharsBuffer.
-        // This is needed to correctly support streaming (reading multiple documents from the same file using TextStreamReader)
+        // This is needed to correctly support streaming (reading multiple documents from the same file using IOAdapterReader)
         int nCharsToReturn = unreadCharsBuffer.length() - unreadCharsBufferPos;
         int nBytesToReturn = stream.codec()->fromUnicode(unreadCharsBuffer.right(nCharsToReturn)).length();
         stream.seek(stream.pos() - nBytesToReturn);
     }
 }
 
-int TextStreamReader::read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound) {
+int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound) {
     CHECK_OP(os, 0);
     result.clear();
     textForUndo.clear();
@@ -151,7 +151,7 @@ int TextStreamReader::read(U2OpStatus &os, QString &result, int maxLength, const
     return result.length();
 }
 
-QChar TextStreamReader::get() {
+QChar IOAdapterReader::get() {
     QChar ch;
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
@@ -167,13 +167,13 @@ QChar TextStreamReader::get() {
     return ch;
 }
 
-void TextStreamReader::unget() {
+void IOAdapterReader::unget() {
     SAFE_POINT(!textForUndo.isEmpty(), "Can't unget(), textForUndo is empty!", );
     SAFE_POINT(unreadCharsBuffer.isEmpty(), "unreadCharsBuffer must be empty during unget()", );
     unreadCharsBuffer.append(textForUndo[textForUndo.length() - 1]);
 }
 
-void TextStreamReader::undo() {
+void IOAdapterReader::undo() {
     SAFE_POINT(!textForUndo.isEmpty(), "Only 1 undo() per read() is supported!", );
     SAFE_POINT(unreadCharsBuffer.length() <= 1, "unreadCharsBuffer size must be <= 1!", );
     unreadCharsBuffer.clear();
@@ -182,18 +182,18 @@ void TextStreamReader::undo() {
     textForUndo.clear();
 }
 
-int TextStreamReader::getProgress() const {
+int IOAdapterReader::getProgress() const {
     return ioAdapter->getProgress();
 }
 
 ///////////////////////////////////////////////
-////      TextStreamWriter
+////      IOAdapterWriter
 ///////////////////////////////////////////////
-TextStreamWriter::TextStreamWriter(IOAdapter *ioAdapter, QTextCodec *codec)
-    : TextStreamBase(ioAdapter, codec) {
+IOAdapterWriter::IOAdapterWriter(IOAdapter *ioAdapter, QTextCodec *codec)
+    : IOAdapterReaderAndWriterBase(ioAdapter, codec) {
 }
 
-void TextStreamWriter::writeBlock(U2OpStatus &os, const QString &text) {
+void IOAdapterWriter::write(U2OpStatus &os, const QString &text) {
     CHECK_OP(os, );
     stream << text;
     if (ioAdapter->hasError()) {

@@ -38,16 +38,16 @@ public:
 
     ClustalWAlnFormat(QObject *p);
 
-    void storeTextDocument(TextStreamWriter &writer, Document *d, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter &writer, Document *d, U2OpStatus &os) override;
 
-    void storeTextEntry(TextStreamWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 
     FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl & = GUrl()) const override;
 
-    Document *loadTextDocument(TextStreamReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) override;
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) override;
 
 private:
-    static void load(TextStreamReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &fs, U2OpStatus &ti);
+    static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &fs, U2OpStatus &ti);
 
     static const int MAX_LINE_LEN;
     static const int MAX_NAME_LEN;

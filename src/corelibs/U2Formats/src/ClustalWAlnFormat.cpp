@@ -30,12 +30,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
-#include <U2Core/TextStream.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -65,7 +65,7 @@ ClustalWAlnFormat::ClustalWAlnFormat(QObject *p)
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-void ClustalWAlnFormat::load(TextStreamReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &fs, U2OpStatus &os) {
+void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &fs, U2OpStatus &os) {
     QString buf;
     buf.reserve(READ_BUFF_SIZE);
 
@@ -194,7 +194,7 @@ void ClustalWAlnFormat::load(TextStreamReader &reader, const U2DbiRef &dbiRef, Q
     objects.append(obj);
 }
 
-Document *ClustalWAlnFormat::loadTextDocument(TextStreamReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document *ClustalWAlnFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     QList<GObject *> objects;
     load(reader, dbiRef, objects, fs, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
@@ -202,7 +202,7 @@ Document *ClustalWAlnFormat::loadTextDocument(TextStreamReader &reader, const U2
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, fs);
 }
 
-void ClustalWAlnFormat::storeTextEntry(TextStreamWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &ti) {
+void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &ti) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
     const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(als.size() == 1, "Clustal entry storing: alignment objects count error", );
@@ -215,7 +215,7 @@ void ClustalWAlnFormat::storeTextEntry(TextStreamWriter &writer, const QMap<GObj
     // Write header.
     U2OpStatus2Log os;
     QString header("CLUSTAL W 2.0 multiple sequence alignment\n\n");
-    writer.writeBlock(os, header);
+    writer.write(os, header);
     CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
 
     // Precalculate maximum sequence name length.
@@ -277,7 +277,7 @@ void ClustalWAlnFormat::storeTextEntry(TextStreamWriter &writer, const QMap<GObj
             assert(line.length() <= MAX_LINE_LEN);
             line.append('\n');
 
-            writer.writeBlock(os, line);
+            writer.write(os, line);
             CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
         }
 
@@ -285,12 +285,12 @@ void ClustalWAlnFormat::storeTextEntry(TextStreamWriter &writer, const QMap<GObj
         QByteArray line = QByteArray(spaces, seqStart);
         line.append(consensus.mid(i, partLen));
         line.append("\n\n");
-        writer.writeBlock(os, line);
+        writer.write(os, line);
         CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
     }
 }
 
-void ClustalWAlnFormat::storeTextDocument(TextStreamWriter &writer, Document *d, U2OpStatus &os) {
+void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter &writer, Document *d, U2OpStatus &os) {
     CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
 
     const QList<GObject *> &objectList = d->getObjects();

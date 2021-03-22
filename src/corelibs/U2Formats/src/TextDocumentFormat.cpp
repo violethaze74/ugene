@@ -22,7 +22,7 @@
 #include "TextDocumentFormat.h"
 
 #include <U2Core/IOAdapter.h>
-#include <U2Core/TextStream.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
 
@@ -78,7 +78,7 @@ FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryDa
 
 Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     CHECK_OP(os, nullptr);
-    TextStreamReader reader(io);    // TODO: store codec in the result document hints.
+    IOAdapterReader reader(io);    // TODO: store codec in the result document hints.
     Document *document = loadTextDocument(reader, dbiRef, hints, os);
     SAFE_POINT(document != nullptr || os.hasError(), "Either document must not be null or there must be an error!", document);
     return document;
@@ -86,32 +86,32 @@ Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef
 
 DNASequence *TextDocumentFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     CHECK_OP(os, nullptr);
-    TextStreamReader reader(io);
+    IOAdapterReader reader(io);
     DNASequence *sequence = loadTextSequence(reader, os);
     SAFE_POINT(sequence != nullptr || os.hasError(), "Either sequence must not be null or there must be an error!", sequence);
     return sequence;
 }
 
-DNASequence *TextDocumentFormat::loadTextSequence(TextStreamReader &, U2OpStatus &os) {
+DNASequence *TextDocumentFormat::loadTextSequence(IOAdapterReader &, U2OpStatus &os) {
     os.setError(tr("The document format does not support streaming reading mode: %1").arg(getFormatId()));
     return nullptr;
 }
 
 void TextDocumentFormat::storeDocument(Document *document, IOAdapter *io, U2OpStatus &os) {
-    TextStreamWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
+    IOAdapterWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
     storeTextDocument(writer, document, os);
 }
 
-void TextDocumentFormat::storeTextDocument(TextStreamWriter &, Document *, U2OpStatus &os) {
+void TextDocumentFormat::storeTextDocument(IOAdapterWriter &, Document *, U2OpStatus &os) {
     os.setError(tr("The document format does not support writing of documents: %1").arg(getFormatId()));
 }
 
 void TextDocumentFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    TextStreamWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
+    IOAdapterWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
     storeTextEntry(writer, objectsMap, os);
 }
 
-void TextDocumentFormat::storeTextEntry(TextStreamWriter & /*writer*/, const QMap<GObjectType, QList<GObject *>> & /*objectsMap*/, U2OpStatus &os) {
+void TextDocumentFormat::storeTextEntry(IOAdapterWriter & /*writer*/, const QMap<GObjectType, QList<GObject *>> & /*objectsMap*/, U2OpStatus &os) {
     os.setError(tr("The document format does not support writing of documents in streaming mode: %1").arg(getFormatId()));
 }
 

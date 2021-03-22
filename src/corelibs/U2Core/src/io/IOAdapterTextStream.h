@@ -64,11 +64,11 @@ private:
     qint64 currentPos;
 };
 
-/** Base class for reader & writer streams. */
-class U2CORE_EXPORT TextStreamBase {
+/** Base class for reader & writer io-adapter text streams. */
+class U2CORE_EXPORT IOAdapterReaderAndWriterBase {
 public:
     /** Initializes underlying qt stream & io-device. If 'codec' is null uses default locale codec. */
-    TextStreamBase(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
+    IOAdapterReaderAndWriterBase(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
 
     /** Returns url from the ioAdapter. */
     GUrl getURL() const;
@@ -87,16 +87,16 @@ protected:
  * Automatically detects the encoding and allows reading of the binary data as a text.
  * If the codec can't be detected from the binary data falls back to the most suitable codec for the current user locale (usually UTF-8).
  */
-class U2CORE_EXPORT TextStreamReader : public TextStreamBase {
+class U2CORE_EXPORT IOAdapterReader : public IOAdapterReaderAndWriterBase {
 public:
     /**
      * Initializes text stream with the ioAdapter wrapped into QIODevice.
      * Performs no actual reading from the ioAdapter.
      */
-    TextStreamReader(IOAdapter *ioAdapter);
+    IOAdapterReader(IOAdapter *ioAdapter);
 
     /** Pushes back all unused buffers to ioAdapter by calling 'skip' method. */
-    ~TextStreamReader();
+    ~IOAdapterReader();
 
     /**
      * Reads the stream until one of the separators is found. Saves the result to 'result' string buffer.
@@ -138,16 +138,16 @@ private:
     int unreadCharsBufferPos;
 };
 
-class U2CORE_EXPORT TextStreamWriter : public TextStreamBase {
+class U2CORE_EXPORT IOAdapterWriter : public IOAdapterReaderAndWriterBase {
 public:
     /** Creates new instance of a text stream with the given codec. */
-    TextStreamWriter(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
+    IOAdapterWriter(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
 
     /**
      * Writes text data to the stream.
      * Sets error flag is the was an error during the operation or 'text' was not fully written.
      */
-    void writeBlock(U2OpStatus &os, const QString &text);
+    void write(U2OpStatus &os, const QString &text);
 };
 
 }    // namespace U2

@@ -27,8 +27,8 @@
 
 namespace U2 {
 
-class TextStreamReader;
-class TextStreamWriter;
+class IOAdapterReader;
+class IOAdapterWriter;
 
 /*
  * Base class for all non binary document formats that can be opened in a usual text editor.
@@ -65,27 +65,27 @@ protected:
      * 'hints' map contains set of loading hints like 'DocumentReadingMode_SequenceMergeGapSize', etc…
      * If loading is failed the nullptr is returned and the error is stored in 'os', otherwise a non-nullptr value is returned.
      */
-    virtual Document *loadTextDocument(TextStreamReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) = 0;
+    virtual Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) = 0;
 
     /**
      * Loads a DNASequence object from the current state of the reader.
      * Returns a valid sequence object or sets an error to the 'os'.
      * By default returns nullptr & error that sequence loading is not supported by the current format.
      */
-    virtual DNASequence *loadTextSequence(TextStreamReader &reader, U2OpStatus &os);
+    virtual DNASequence *loadTextSequence(IOAdapterReader &reader, U2OpStatus &os);
 
     /**
      * Serializes 'document' into the given text stream. Sets error to 'os' if serialization fails.
      * By default text documents do not support writing, so this method must be re-implemented in every format to support serialization.
      */
-    virtual void storeTextDocument(TextStreamWriter &writer, Document *document, U2OpStatus &os);
+    virtual void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os);
 
     /**
      * Stores all supported document types from the given map of objects.
      * The document format should preserve the objects order in the map when possible.
      * The default implementation does nothing and sets 'unsupported' error to 'os'.
      */
-    virtual void storeTextEntry(TextStreamWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    virtual void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
 
 private:
     /** Detects encoding of the raw binary data and calls 'checkRawTextData'. */
