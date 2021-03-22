@@ -103,7 +103,7 @@ public:
      * Clears the 'result' buffer first before reading.
      * Returns number of characters read, same as result.length().
      */
-    int read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound = 0);
+    int read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound = nullptr);
 
     /*
      * Returns a progress value in the range 0..100, or a negative value if the progress is unknown/not supported
