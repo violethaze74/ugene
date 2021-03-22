@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ ORFAutoAnnotationsUpdater::ORFAutoAnnotationsUpdater()
 
 Task *ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa) {
     AnnotationTableObject *aObj = aa->getAnnotationObject();
-    U2SequenceObject *dnaObj = aa->getSeqObject();
+    U2SequenceObject *dnaObj = aa->getSequenceObject();
 
     ORFAlgorithmSettings cfg;
     ORFSettingsKeys::read(cfg, AppContext::getSettings());

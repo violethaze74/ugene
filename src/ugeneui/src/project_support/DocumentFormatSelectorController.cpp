@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
 DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p)
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362262");
+    new HelpButton(this, buttonBox, "60227654");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

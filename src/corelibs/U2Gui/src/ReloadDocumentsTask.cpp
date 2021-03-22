@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ namespace U2 {
 ReloadDocumentsTask::ReloadDocumentsTask(const QList<Document *> &_docs2Reload)
     : Task(tr("Reload documents task"), TaskFlag_NoRun | TaskFlag_MinimizeSubtaskErrorText),
       docs2Reload(_docs2Reload) {
-    GCOUNTER(cvar, tvar, "ReloadDocumentsTask");
+    GCOUNTER(cvar, "ReloadDocumentsTask");
 
     foreach (Document *doc, docs2Reload) {
         QString unloadErr = UnloadDocumentTask::checkSafeUnload(doc);

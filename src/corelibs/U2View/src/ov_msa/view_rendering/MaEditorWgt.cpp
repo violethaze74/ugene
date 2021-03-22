@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,11 +53,11 @@ namespace U2 {
 /************************************************************************/
 MaEditorWgt::MaEditorWgt(MaEditor *editor)
     : editor(editor),
-      seqArea(nullptr),
+      sequenceArea(nullptr),
       nameList(nullptr),
-      consArea(nullptr),
+      consensusArea(nullptr),
       overviewArea(nullptr),
-      offsetsView(nullptr),
+      offsetsViewController(nullptr),
       statusBar(nullptr),
       nameAreaContainer(nullptr),
       seqAreaHeader(nullptr),
@@ -65,7 +65,6 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
       collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
-      collapsibleMode(false),
       enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
@@ -75,8 +74,10 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
       pasteAction(nullptr),
-      pasteBeforeAction(nullptr) {
+      pasteBeforeAction(nullptr),
+      cutSelectionAction(nullptr) {
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
+    setFocusPolicy(Qt::ClickFocus);
 
     connect(getUndoAction(), SIGNAL(triggered()), SLOT(sl_countUndo()));
     connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
@@ -121,25 +122,25 @@ void MaEditorWgt::initWidgets() {
     GScrollBar *shBar = new GScrollBar(Qt::Horizontal);
     shBar->setObjectName("horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar *nhBar = new QScrollBar(Qt::Horizontal);
-    nhBar->setObjectName("horizontal_names_scroll");
+    QScrollBar *nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
+    nameListHorizontalScrollBar->setObjectName("horizontal_names_scroll");
     GScrollBar *cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("vertical_sequence_scroll");
 
     initSeqArea(shBar, cvBar);
     scrollController->init(shBar, cvBar);
-    seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    sequenceArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     initOverviewArea();
 
-    initNameList(nhBar);
+    initNameList(nameListHorizontalScrollBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     initConsensusArea();
     initStatusBar();
 
-    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
-    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsViewController = new MSAEditorOffsetsViewController(this, editor, sequenceArea);
+    offsetsViewController->leftWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsViewController->rightWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     seqAreaHeader = new QWidget(this);
     seqAreaHeader->setObjectName("alignment_header_widget");
@@ -151,7 +152,7 @@ void MaEditorWgt::initWidgets() {
     QWidget *label1 = createHeaderLabelWidget();
     QWidget *label2 = createHeaderLabelWidget();
 
-    seqAreaHeaderLayout->addWidget(consArea);
+    seqAreaHeaderLayout->addWidget(consensusArea);
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
 
     seqAreaLayout = new QGridLayout();
@@ -162,9 +163,9 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->addWidget(seqAreaHeader, 0, 1);
     seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
 
-    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
-    seqAreaLayout->addWidget(seqArea, 1, 1);
-    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
+    seqAreaLayout->addWidget(offsetsViewController->leftWidget, 1, 0);
+    seqAreaLayout->addWidget(sequenceArea, 1, 1);
+    seqAreaLayout->addWidget(offsetsViewController->rightWidget, 1, 2);
     seqAreaLayout->addWidget(cvBar, 1, 3);
 
     seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
@@ -175,22 +176,21 @@ void MaEditorWgt::initWidgets() {
     QWidget *seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
-    QWidget *label;
-    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea, false);
-    label->setMinimumHeight(consArea->height());
-    label->setObjectName("consensusLabel");
+    QWidget *consensusLabel = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consensusArea, false);
+    consensusLabel->setMinimumHeight(consensusArea->height());
+    consensusLabel->setObjectName("consensusLabel");
 
     nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setContentsMargins(0, 0, 0, 0);
     nameAreaLayout->setSpacing(0);
-    nameAreaLayout->addWidget(label);
+    nameAreaLayout->addWidget(consensusLabel);
     nameAreaLayout->addWidget(nameList);
-    nameAreaLayout->addWidget(nhBar);
+    nameAreaLayout->addWidget(nameListHorizontalScrollBar);
 
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
-    nhBar->setStyleSheet("background-color: normal;");    // avoid white background of scrollbar set 1 line above.
+    nameListHorizontalScrollBar->setStyleSheet("background-color: normal;");    // avoid white background of scrollbar set 1 line above.
 
     nameAreaContainer->setMinimumWidth(15);    // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
@@ -225,13 +225,11 @@ void MaEditorWgt::initWidgets() {
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(si_toggled()), offsetsView, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(si_toggled()), seqArea, SLOT(sl_modelChanged()));
+    connect(collapseModel, SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
-    connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
-
-    nameList->addAction(delSelectionAction);
+    connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));
 }
 
 void MaEditorWgt::initActions() {
@@ -242,43 +240,55 @@ void MaEditorWgt::initActions() {
     // Shortcut was wrapped with ifndef to workaround UGENE-6676.
     // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
     delSelectionAction->setShortcut(QKeySequence::Delete);
-    delSelectionAction->setShortcutContext(Qt::WidgetShortcut);
+    delSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 #endif
+    addAction(delSelectionAction);
 
     copySelectionAction = new QAction(tr("Copy"), this);
     copySelectionAction->setObjectName("copy_selection");
     copySelectionAction->setShortcut(QKeySequence::Copy);
-    copySelectionAction->setShortcutContext(Qt::WidgetShortcut);
+    copySelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text()).arg(copySelectionAction->shortcut().toString()));
     addAction(copySelectionAction);
 
     copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy (custom format)"), this);
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
-    copyFormattedSelectionAction->setShortcutContext(Qt::WidgetShortcut);
+    copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text()).arg(copyFormattedSelectionAction->shortcut().toString()));
     addAction(copyFormattedSelectionAction);
 
     pasteAction = new QAction(tr("Paste"), this);
     pasteAction->setObjectName("paste");
     pasteAction->setShortcuts(QKeySequence::Paste);
-    pasteAction->setShortcutContext(Qt::WidgetShortcut);
+    pasteAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text()).arg(pasteAction->shortcut().toString()));
+    addAction(pasteAction);
 
     pasteBeforeAction = new QAction(tr("Paste (before selection)"), this);
     pasteBeforeAction->setObjectName("paste_before");
     pasteBeforeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
-    pasteBeforeAction->setShortcutContext(Qt::WidgetShortcut);
+    pasteBeforeAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     pasteBeforeAction->setToolTip(QString("%1 (%2)").arg(pasteBeforeAction->text()).arg(pasteAction->shortcut().toString()));
-    addAction(pasteAction);
+    addAction(pasteBeforeAction);
+
+    cutSelectionAction = new QAction(tr("Cut"), this);
+    cutSelectionAction->setObjectName("cut_selection");
+    cutSelectionAction->setShortcut(QKeySequence::Cut);
+    cutSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    cutSelectionAction->setToolTip(QString("%1 (%2)").arg(cutSelectionAction->text()).arg(cutSelectionAction->shortcut().toString()));
+    addAction(cutSelectionAction);
+
+    addAction(getUndoAction());
+    addAction(getRedoAction());
 }
 
 void MaEditorWgt::sl_countUndo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Undo"), editor->getFactoryId());
+    GCounter::increment("Undo", editor->getFactoryId());
 }
 
 void MaEditorWgt::sl_countRedo() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, tr("Redo"), editor->getFactoryId());
+    GCounter::increment("Redo", editor->getFactoryId());
 }
 
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ KrakenBuildTaskSettings::KrakenBuildTaskSettings()
 KrakenBuildTask::KrakenBuildTask(const KrakenBuildTaskSettings &settings)
     : ExternalToolSupportTask(tr("%1 Kraken database"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
-    GCOUNTER(cvar, tvar, "KrakenBuildTask");
+    GCOUNTER(cvar, "KrakenBuildTask");
     setTaskName(getTaskName().arg(settings.mode == KrakenBuildTaskSettings::BUILD ? tr("Build") : tr("Shrink")));
 
     checkSettings();

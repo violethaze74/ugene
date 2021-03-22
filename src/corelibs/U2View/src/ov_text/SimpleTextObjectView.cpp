@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ Task *SimpleTextObjectViewFactory::createViewTask(const QString &viewName, const
 
 SimpleTextObjectView::SimpleTextObjectView(const QString &name, TextObject *to, const QVariantMap &_state)
     : GObjectView(SimpleTextObjectViewFactory::ID, name), textObject(to), openState(_state), selection(to) {
-    GCOUNTER(cvar, tvar, "SimpleTextView");
+    GCOUNTER(cvar, "SimpleTextView");
     textEdit = NULL;
     firstShow = true;
     assert(to);

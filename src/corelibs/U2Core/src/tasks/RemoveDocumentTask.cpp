@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,8 @@
 #include "RemoveDocumentTask.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GHints.h>
 #include <U2Core/ProjectModel.h>
 
 #include "SaveDocumentTask.h"
@@ -92,6 +94,7 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
                 setError(tr("Cannot remove document %1, since it is locked by some task.").arg(doc->getName()));
                 continue;
             } else {
+                doc->getGHints()->set(DocumentRemovalMode_Synchronous, true);
                 p->removeDocument(doc);
             }
         }

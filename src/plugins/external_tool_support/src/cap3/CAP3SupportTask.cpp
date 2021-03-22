@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings &_settings)
       cap3Task(NULL),
       copyResultTask(NULL),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "CAP3SupportTask");
+    GCOUNTER(cvar, "CAP3SupportTask");
     setMaxParallelSubtasks(1);
 }
 
@@ -128,7 +128,7 @@ RunCap3AndOpenResultTask::RunCap3AndOpenResultTask(const CAP3SupportTaskSettings
     : Task(tr("CAP3 run and open result task"), TaskFlags_NR_FOSE_COSC),
       cap3Task(new CAP3SupportTask(settings)),
       openView(settings.openView) {
-    GCOUNTER(cvar, tvar, "RunCap3AndOpenResultTask");
+    GCOUNTER(cvar, "RunCap3AndOpenResultTask");
     cap3Task->setSubtaskProgressWeight(95);
 }
 

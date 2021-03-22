@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
 
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
@@ -108,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea(os);
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 
     // 4. Click OK. Right click on sequence area. Use context menu {Edit sequence->Remove selected sequence}.
     // Expected state: Remove subsequence dialog appears
@@ -202,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
                                                                     RemovePartFromSequenceDialogFiller::Remove,
@@ -271,7 +271,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(dummyTest != NULL, "There is no annotation DUMMY_1");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep();
 
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTGlobals::sleep();
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
@@ -319,7 +319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 11));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << ADV_COPY_TRANSLATION_ACTION, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, mdiWindow);

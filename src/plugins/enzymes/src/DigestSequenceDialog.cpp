@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ const QString DigestSequenceDialog::HINT_MESSAGE(QObject::tr("Hint: there are no
 DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext *ctx, QWidget *p)
     : QDialog(p), seqCtx(ctx), timer(NULL), animationCounter(0) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363729");
+    new HelpButton(this, buttonBox, "60229126");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

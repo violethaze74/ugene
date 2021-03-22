@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,8 +39,8 @@ class ExportPrimersToLocalFileTask : public Task {
 public:
     ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
 
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
     Document *prepareDocument();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -175,7 +175,7 @@ LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl &url)
     : BaseLoadRemoteDocumentTask(),
       loadDataFromEntrezTask(NULL) {
     fileUrl = url;
-    GCOUNTER(cvar, tvar, "LoadRemoteDocumentTask");
+    GCOUNTER(cvar, "LoadRemoteDocumentTask");
 }
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString &accId, const QString &dbName, const QString &fullPathDir, const QString &fileFormat, const QVariantMap &hints)
@@ -183,7 +183,7 @@ LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString &accId, const QStri
       loadDataFromEntrezTask(NULL),
       accNumber(accId),
       dbName(dbName) {
-    GCOUNTER(cvar, tvar, "LoadRemoteDocumentTask");
+    GCOUNTER(cvar, "LoadRemoteDocumentTask");
     format = fileFormat;
 }
 

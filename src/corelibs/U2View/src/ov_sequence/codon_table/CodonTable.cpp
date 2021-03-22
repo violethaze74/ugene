@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,14 +31,13 @@
 #include <QUrl>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DNATranslationImpl.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
-
 namespace U2 {
 
 const QColor CodonTableView::NONPOLAR_COLOR = QColor("#FFEE00").lighter();
@@ -119,6 +118,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
 }
 
 void CodonTableView::sl_setVisible() {
+    GCOUNTER(cvar, "CodonTableView");
     setVisible(!isVisible());
 }
 
@@ -130,7 +130,7 @@ void CodonTableView::sl_setAminoTranslation() {
     }
 }
 
-void CodonTableView::sl_onSequenceFocusChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
+void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
     CHECK(to != NULL, );
 
     const QList<ADVSequenceObjectContext *> ctx = to->getSequenceContexts();

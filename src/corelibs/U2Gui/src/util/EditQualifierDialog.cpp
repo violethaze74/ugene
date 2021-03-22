@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ EditQualifierDialog::EditQualifierDialog(QWidget *p, const U2Qualifier &q, bool 
     : QDialog(p) {
     ui = new Ui_EditQualifierDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54362456");
+    new HelpButton(this, ui->buttonBox, "60227850");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

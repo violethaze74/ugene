@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,6 +73,26 @@ void GLFrame::setCameraPosition(float x, float y, float z) {
     cameraPosition.set(x, y, z);
 }
 
+QGLWidget *GLFrame::getGLWidget() {
+    return glWidget;
+}
+
+void GLFrame::makeCurrent() {
+    glWidget->makeCurrent();
+}
+
+void GLFrame::updateGL() {
+    glWidget->updateGL();
+}
+
+GLfloat GLFrame::getZoomFactor() const {
+    return zoomFactor;
+}
+
+float *GLFrame::getRotationMatrix() {
+    return rotMatrix.data();
+}
+
 void GLFrame::setCameraPosition(const Vector3D &v) {
     cameraPosition = v;
 }
@@ -140,6 +160,10 @@ GLFrame *GLFrameManager::getGLWidgetFrame(QGLWidget *widget) {
     } else {
         return NULL;
     }
+}
+
+bool GLFrameManager::getSyncLock() const {
+    return syncLock;
 }
 
 QList<GLFrame *> GLFrameManager::getGLFrames() {

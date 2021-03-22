@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,6 +78,10 @@ bool Color4f::operator==(const Color4f &a) const {
     } else {
         return false;
     }
+}
+
+const float *Color4f::getConstData() const {
+    return color;
 }
 
 void glDrawCylinder(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, double thickness, float renderDetailLevel) {

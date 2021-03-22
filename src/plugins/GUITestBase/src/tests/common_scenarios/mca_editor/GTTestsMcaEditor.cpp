@@ -1,7 +1,6 @@
-﻿
-/**
+﻿/**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -40,6 +39,7 @@
 #include <QList>
 
 #include <U2View/MaEditorNameList.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "GTTestsMcaEditor.h"
 #include "GTUtilsDashboard.h"
@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    for (const QString &rowName : rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
         bool isNameFound = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
@@ -157,7 +157,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
 
     //5. Report with info
-    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)" << "Filtered by low similarity (4)");
+    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)"
+                                                                        << "Filtered by low similarity (4)");
 
     // No Еrrors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
@@ -1413,13 +1414,11 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
-    GTGlobals::sleep();
 
     //3. Push "Ctrl+Alt+v"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTKeyboardDriver::keyClick('v', Qt::AltModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //Expected state : first difference between reference "T" and consensus "G"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1429,7 +1428,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
 
     //4. Push "Jump to next variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_mismatch"));
 
     //Expected state : difference between reference "T" and consensus "G"
@@ -1514,7 +1512,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     //2. In Option panelSelect consensuns mode = Strict
     GTUtilsOptionPanelMca::setConsensusType(os, "Strict");
-    GTGlobals::sleep();
 
     //6. Push "Ctrl+Alt+Shift+v"
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -1522,7 +1519,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep(500);
 
     //Expected state : first difference between reference "T" and consensus GAP
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1532,7 +1528,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     //3. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_mismatch"));
 
     //Expected state : difference between reference "C" and consensus GAP
@@ -1583,7 +1578,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTKeyboardDriver::keyClick('v', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1617,7 +1611,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1686,8 +1680,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 #else
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 #endif
-    GTGlobals::sleep();
-
     //Expected state : reference "C", consensus "N", read "N"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
     QString consensusChar = GTUtilsMcaEditorSequenceArea::getSelectedConsensusReg(os);
@@ -1699,7 +1691,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 
     //3. Push "Jump to next ambiguous character" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "next_ambiguous"));
 
     //Expected state : reference "C", consensus "M", read "M".
@@ -1743,7 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1804,7 +1795,6 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     GTKeyboardDriver::keyClick('a', Qt::ShiftModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //Expected state: reference "T", consensus "W", read "W"
     QString referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1817,7 +1807,6 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
 
     //3. Push "Jump to previous variation" button twice
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
-    GTGlobals::sleep();
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "prev_ambiguous"));
 
     //Expected state: reference "G", consensus "N", read "N"
@@ -1861,7 +1850,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1890,7 +1879,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1899,11 +1888,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     QStringList visibleRows = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
     QString firstVisibleRow = visibleRows.first();
     GTUtilsMcaEditor::clickReadName(os, firstVisibleRow);
-    GTGlobals::sleep(500);
 
     //3. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     U2Region reg = GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(os);
@@ -1911,11 +1898,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //4. Select any region in the reference
     GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 500);
-    GTGlobals::sleep(500);
 
     //5. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     U2Region sel = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
@@ -1923,11 +1908,9 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     //6. Select any symbol in the read
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTGlobals::sleep(1000);
 
     //7. Push Esc
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(500);
 
     //Expected state : There is no selection
     QRect selection = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -1936,14 +1919,13 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1952,11 +1934,9 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + R keys on the keyboard.
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -1964,7 +1944,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
     //4. Press a key on the keyboard with another character of the same alphabet (e.g C key).
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'A' was replaced with 'C').
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -1973,7 +1952,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -1992,14 +1970,13 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2008,7 +1985,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2024,7 +2000,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
                                                                               << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2032,7 +2007,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     //5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2041,7 +2015,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //6. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -2060,14 +2033,13 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2076,7 +2048,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
@@ -2097,7 +2068,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
     //5. Press a key on the keyboard with another character of the same alphabet (e.g GAP key).
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one (e.g 'C' was replaced with GAP).
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2106,7 +2076,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //6. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
@@ -2124,14 +2093,13 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2140,11 +2108,9 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + R keys on the keyboard.
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2161,14 +2127,13 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2177,7 +2142,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep(500);
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2195,7 +2159,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
                                                                               << "Replace character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
 
     //Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2212,14 +2175,13 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'C')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'C'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2228,7 +2190,6 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Replace character". The item is enabled. A hotkey Shift+R is shown nearby.
@@ -2258,14 +2219,13 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2274,11 +2234,9 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + I keys on the keyboard.
     GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state :  the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2286,7 +2244,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
     //4. Press a key on the keyboard with another character of the same alphabet (e.g N key).
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2295,7 +2252,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2342,19 +2298,17 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2363,7 +2317,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
@@ -2379,7 +2332,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
                                                                               << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2387,7 +2339,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     //5. Press a key on the keyboard with any character of the same alphabet (e.g "N" key)
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2396,7 +2347,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2443,19 +2393,17 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2464,7 +2412,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled.
@@ -2485,7 +2432,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
     //5. Press a key on the keyboard with any character of the same alphabet (e.g "N" key)
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep();
 
     //Expected state: Expected result: the original character of the alignment was replaced with the new one
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2494,7 +2440,6 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //Expected state: Gap column has been inserted in all reads for this coordinate;
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2541,19 +2486,17 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //Expected state: selection is in normal mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2562,11 +2505,9 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Press Shift + I keys on the keyboard.
     GTKeyboardDriver::keyClick('I', Qt::ShiftModifier);
-    GTGlobals::sleep();
 
     //Expected state: the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2584,14 +2525,13 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2600,7 +2540,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the context menu in the sequence area.
     //Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + I is shown nearby.
@@ -2616,7 +2555,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
                                                                               << "Insert character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state: the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2633,14 +2571,13 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(100);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2649,7 +2586,6 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     //Expected state: the character is selected in the normal mode(i.e.borders of the character are drawn using a dashed line).
     short modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
-    GTGlobals::sleep();
 
     //3. Open the main menu in the sequence area.
     //Expected state: the menu contains an item "Actions > Edit > Insert character/gap". The item is enabled. A hotkey Shift+I is shown nearby.
@@ -2679,14 +2615,13 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2697,11 +2632,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press Del keys on the keyboard.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2722,7 +2655,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2760,14 +2692,13 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(500);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2778,14 +2709,12 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press "Remove selection" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove character/gap"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2806,7 +2735,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2844,14 +2772,13 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Select one character in the ane read (e.g. this is character 'A')
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
-    GTGlobals::sleep(1000);
 
     //Expected state: his is character 'A'
     char selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2862,13 +2789,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     CHECK_SET_ERR(modState == 0, "Incorrect modification state");
     qint64 rowLength = GTUtilsMcaEditorSequenceArea::getRowLength(os, 1);
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
-    GTGlobals::sleep(100);
 
     //3. Press "Remove character/gap" from main
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"
                                                 << "Remove character/gap");
-    GTGlobals::sleep(100);
 
     //Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2889,11 +2814,9 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep(100);
 
     //Expected result: 'A' character appeared
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
-    GTGlobals::sleep(100);
     CHECK_SET_ERR(selectedChar == 'A', "3 Incorrect selected character");
 
     //Expected result: consensus  sequence is restored
@@ -2928,26 +2851,22 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //7. Press Shift + Delete
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep(1000);
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -2961,7 +2880,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
     //4. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
@@ -2987,27 +2905,23 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3. Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
                                                                               << "Remove all columns of gaps"));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -3021,7 +2935,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing 2");
@@ -3047,26 +2960,22 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Find the column, composed by gaps exept one symbol in the row
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2071, 1));
-    GTGlobals::sleep();
 
     //3 Replace this symbol by gap
     GTKeyboardDriver::keyClick('R', Qt::ShiftModifier);
-    GTGlobals::sleep(1000);
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
-    GTGlobals::sleep(1000);
 
     //4. Press "Remove all columns of gaps" from main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Edit"
                                                 << "Remove all columns of gaps");
-    GTGlobals::sleep();
 
     //Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -3080,7 +2989,6 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
     //5. Push Undo (Ctrl+Z)
     GTUtilsMcaEditor::undo(os);
-    GTGlobals::sleep();
 
     //Expected result : gap column was restored
     CHECK_SET_ERR(sel.width() == 1 && sel.height() == 1, "Incorrect selection after gaps column removing");
@@ -3106,7 +3014,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3117,11 +3025,9 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep(100);
 
     //3. Push Space key
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3129,7 +3035,6 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     //4. Push Васkspace key
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3138,7 +3043,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3146,13 +3051,11 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //2. Select one symbol in the read
     QPoint point(2218, 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, point);
-    GTGlobals::sleep(100);
 
     QPoint startMousePosotion = GTMouseDriver::getMousePosition();
 
     //3. Move mouse with pressed left button to the right on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(startMousePosotion.x() + 20, startMousePosotion.y()));
-    GTGlobals::sleep(100);
 
     //Expected state: Gap is inserted before symbol
     char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3160,7 +3063,6 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
     //4. Move mouse with pressed left button to the left on one position
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, startMousePosotion);
-    GTGlobals::sleep(100);
 
     //Expected state : Gap is removed
     ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, point);
@@ -3169,7 +3071,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3178,7 +3080,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //2. Push Zoom In
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters increased in size
     int currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3186,7 +3087,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //3. Push Zoom out
     GTUtilsMcaEditor::zoomOut(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3194,9 +3094,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //4. Push Zoom In 2 times
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep(100);
     GTUtilsMcaEditor::zoomIn(os);
-    GTGlobals::sleep();
 
     //Expected state : All Characters increased in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3204,7 +3102,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     //5. Push Reset Zoom
     GTUtilsMcaEditor::resetZoom(os);
-    GTGlobals::sleep(100);
 
     //Expected state : All Characters reduced in size
     currentRowHeight = GTUtilsMcaEditorSequenceArea::getRowHeight(os, 0);
@@ -3213,19 +3110,17 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     //2. Push General button
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
-    GTGlobals::sleep();
 
     //Expected state :Sequence number: 16
     int height = GTUtilsOptionPanelMca::getHeight(os);
     CHECK_SET_ERR(height == 16, QString("Incorrect height, expected: 16, current: %1").arg(QString::number(height)));
-    GTGlobals::sleep();
 
     //Expected state: Reference length: 11937
     int length = GTUtilsOptionPanelMca::getLength(os);
@@ -3234,7 +3129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3258,11 +3153,10 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     //Expected state :Threshold = 100 % (can be changed)
     int threshold = GTUtilsOptionPanelMca::getThreshold(os);
-    CHECK_SET_ERR(threshold == 100, QString("Unexpected threshold, expected: 100, current^ %1").arg(QString::number(threshold)));
+    CHECK_SET_ERR(threshold == 100, QString("Unexpected threshold 0, expected: 100, current^ %1").arg(QString::number(threshold)));
 
     //3. Set Threshold = 50 %
     GTUtilsOptionPanelMca::setThreshold(os, 50);
-    GTGlobals::sleep();
 
     //4. Push "Reset to default value"
     GTUtilsOptionPanelMca::pushResetButton(os);
@@ -3282,7 +3176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
 GUI_TEST_CLASS_DEFINITION(test_0038) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3292,9 +3186,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsChecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //2. Push Show / Hide overview button on the main menu
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -3307,9 +3199,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsUnchecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //3. Close editor and open it again(map state should be saved)
 
@@ -3318,7 +3208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3328,9 +3218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
                                                       << "Appearance",
                                     QStringList() << "Show overview",
                                     PopupChecker::CheckOption(PopupChecker::IsChecked));
-    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(200);
 
     //2. Select transparent square  and move it by mouse  down
     QWidget *simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
@@ -3339,7 +3227,6 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     QPoint p = GTMouseDriver::getMousePosition();
     QPoint rightP(p.x(), p.y() + 50);
     GTUtilsMcaEditorSequenceArea::dragAndDrop(os, rightP);
-    GTGlobals::sleep();
 
     //Еxpected state : Alighed reads area moved down
     QStringList listOne = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
@@ -3385,7 +3272,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
     // close the view
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
-    GTGlobals::sleep();
 
     // open the view again
     GTFileDialog::openFile(os, sandBoxDir, fileName);
@@ -3510,7 +3396,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     //    Check values on the status bar with different selections in the MCA
 
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3531,7 +3417,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    2. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3549,7 +3434,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    3. Select the second row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3567,7 +3451,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    4. Select the last row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 15);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3585,7 +3468,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    5. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-    GTGlobals::sleep(1000);
 
     //    Expected state: all rows have been expanded, the labels are the same as in the previous step.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3600,10 +3482,9 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("5. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("5. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("5. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
-    GTGlobals::sleep(500);
+
     //    6. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(500);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3621,7 +3502,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    7. Select the first base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3630,6 +3510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
     readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+
     CHECK_SET_ERR(NONE_MARK == rowNumberString, QString("7. Unexpected row number label: expected '%1', got '%2'").arg(NONE_MARK).arg(rowNumberString));
     CHECK_SET_ERR("16" == rowCountString, QString("7. Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowCountString));
     CHECK_SET_ERR("1" == referencePositionString, QString("7. Unexpected reference position label: expected '%1', got '%2'").arg("1").arg(referencePositionString));
@@ -3639,7 +3520,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    8. Select the third base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3657,7 +3537,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    9. Select the last base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 11936);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3675,7 +3554,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    10. Select a column with a gap in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2071);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3693,7 +3571,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    11. Select the first base of the second read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2052, 1));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3711,7 +3588,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    12. Select the third base of the fourth read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4615, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3729,7 +3605,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    13. Select the fourth symbol of the fourth read (it is a gap).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4616, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3747,7 +3622,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3070, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3765,7 +3639,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    15. Select the 21 symbol of the 7 read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3072, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3780,6 +3653,93 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("15. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("20" == readPositionString, QString("15. Unexpected read position label: expected '%1', got '%2'").arg("20").arg(readPositionString));
     CHECK_SET_ERR("1036" == readLengthString, QString("15. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0042) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Select first read (direct).
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Select the second read (complement).
+    GTUtilsMcaEditor::clickReadName(os, 2);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0043) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Double-click the first read (direct).
+    GTUtilsMcaEditor::doubleClickReadName(os, 1);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Double-click the second read (complement).
+    GTUtilsMcaEditor::doubleClickReadName(os, 2);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0044) {
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    // Center the second (index = 1) read in the sequence area.
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Collapse the chromatogram view.
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+    QWidget *sequenceAreaWidget = GTUtilsMcaEditor::getSequenceArea(os);
+
+    // Check that sequence area cell contains a text character up until the cell size is > 7px.
+    // 7px is a hardcoded constant in the MA editor.
+    const int minWidthToShowText = 7;
+    QRect prevRect(0, 0, 10000, 10000);
+    while (true) {
+        QRect rect = GTUtilsMcaEditorSequenceArea::getPositionRect(os, 1, 2053);    // Symbol 'T'.
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        // Reduce captured cell image rect by 1 px to avoid border aliasing effects with the next char.
+        QRect cellImageRect(rect.topLeft(), rect.bottomRight() + QPoint(-1, -1));
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#EAEDF7");
+        bool hasTextInTheCell = !hasOnlyBgColor;
+        if (rect.width() >= minWidthToShowText) {
+            CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
+        } else {
+            CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
+            break;
+        }
+        // Check that at least one rect dimension was reduced. Some fonts on Windows may have equal width on "Zoom Out" but in this case they always have different height.
+        bool isWidthReduced = rect.width() < prevRect.width();
+        bool isHeightReduced = rect.height() < prevRect.height();
+        CHECK_SET_ERR(isWidthReduced || isHeightReduced, "Zoom Out had no effect");
+        prevRect = rect;
+
+        GTUtilsMcaEditor::zoomOut(os);
+    }
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor

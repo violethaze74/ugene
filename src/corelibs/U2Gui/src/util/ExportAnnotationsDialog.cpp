@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog(const QString &filename, QWidge
     : QDialog(parent), ui(new Ui_ExportAnnotationsDialog()) {
     ui->setupUi(this);
     lastAddToProjectState = ui->addToProjectCheck->isChecked();
-    new HelpButton(this, ui->buttonBox, "54362478");
+    new HelpButton(this, ui->buttonBox, "60227872");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

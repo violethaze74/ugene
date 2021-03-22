@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ namespace U2 {
 CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget *w, const ColumnConfig &_config)
     : QDialog(w), config(_config) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362467");
+    new HelpButton(this, buttonBox, "60227861");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

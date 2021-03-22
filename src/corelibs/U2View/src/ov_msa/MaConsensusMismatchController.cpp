@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,12 +87,12 @@ void MaConsensusMismatchController::sl_resize(int newSize) {
 }
 
 void MaConsensusMismatchController::sl_next() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to next variation", editor->getFactoryId());
+    GCounter::increment("Jump to next variation", editor->getFactoryId());
     selectNextMismatch(Forward);
 }
 
 void MaConsensusMismatchController::sl_prev() {
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, "Jump to previous variation", editor->getFactoryId());
+    GCounter::increment("Jump to previous variation", editor->getFactoryId());
     selectNextMismatch(Backward);
 }
 

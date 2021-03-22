@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings &_settings)
       tmpDocSaved(false),
       tmpDocPairedSaved(false),
       bowtieIndexTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:TopHatTask");
+    GCOUNTER(cvar, "NGS:TopHatTask");
 }
 
 TopHatSupportTask::~TopHatSupportTask() {

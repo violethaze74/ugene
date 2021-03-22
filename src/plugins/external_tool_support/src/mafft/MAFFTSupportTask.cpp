@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment &_inputMsa, c
       loadTmpDocumentTask(NULL),
       settings(_settings),
       lock(NULL) {
-    GCOUNTER(cvar, tvar, "MAFFTSupportTask");
+    GCOUNTER(cvar, "MAFFTSupportTask");
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
 }
@@ -305,7 +305,7 @@ MAFFTWithExtFileSpecifySupportTask::MAFFTWithExtFileSpecifySupportTask(const MAF
       loadDocumentTask(NULL),
       mAFFTSupportTask(NULL),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "MAFFTSupportTask");
+    GCOUNTER(cvar, "MAFFTSupportTask");
 }
 MAFFTWithExtFileSpecifySupportTask::~MAFFTWithExtFileSpecifySupportTask() {
     if (cleanDoc) {

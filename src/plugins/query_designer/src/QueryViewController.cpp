@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -664,7 +664,7 @@ enum { ElementsTab,
 
 QueryViewController::QueryViewController()
     : MWMDIWindow(tr("Query Designer")), currentActor(NULL) {
-    GCOUNTER(cvar, tvar, "OpenQDWindow");
+    GCOUNTER(cvar, "OpenQDWindow");
     scene = new QueryScene(this);
 
     sceneView = new GlassView(scene);
@@ -1145,7 +1145,7 @@ void QueryViewController::enableSaveAction(bool enable) {
 AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kind, QDElement *defSrc, QDElement *defDst)
     : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363598");
+    new HelpButton(this, buttonBox, "60228995");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 
 const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
 const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR = ":circular_view/images/circular.png";
-const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "54362497";
+const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "60227891";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext *context)
     : ctx(context) {

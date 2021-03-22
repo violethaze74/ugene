@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ const int FindTandemsTaskSettings::DEFAULT_MIN_TANDEM_SIZE = 9;
 
 FindTandemsToAnnotationsTask::FindTandemsToAnnotationsTask(const FindTandemsTaskSettings &s, const DNASequence &seq, const QString &_an, const QString &_gn, const QString &annDescription, const GObjectReference &_aor)
     : Task(tr("Find repeats to annotations"), TaskFlags_NR_FOSCOE), saveAnns(true), mainSeq(seq), annName(_an), annGroup(_gn), annDescription(annDescription), annObjRef(_aor), s(s) {
-    GCOUNTER(cvar, tvar, "FindTandemsToAnnotationsTask");
+    GCOUNTER(cvar, "FindTandemsToAnnotationsTask");
     setVerboseLogMode(true);
     if (annObjRef.isValid()) {
         LoadUnloadedDocumentTask::addLoadingSubtask(this,
@@ -51,7 +51,7 @@ FindTandemsToAnnotationsTask::FindTandemsToAnnotationsTask(const FindTandemsTask
 
 FindTandemsToAnnotationsTask::FindTandemsToAnnotationsTask(const FindTandemsTaskSettings &s, const DNASequence &seq)
     : Task(tr("Find repeats to annotations"), TaskFlags_NR_FOSCOE), saveAnns(false), mainSeq(seq), s(s) {
-    GCOUNTER(cvar, tvar, "FindTandemsToAnnotationsTask");
+    GCOUNTER(cvar, "FindTandemsToAnnotationsTask");
     setVerboseLogMode(true);
     addSubTask(new TandemFinder(s, mainSeq));
 }

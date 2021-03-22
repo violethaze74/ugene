@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,14 +29,12 @@
 
 #include <QAction>
 #include <QDesktopServices>
-#include <QFont>
 #include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/GUrlUtils.h>
@@ -45,9 +43,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
@@ -66,10 +62,6 @@
 #include "update/UgeneUpdater.h"
 
 namespace U2 {
-
-#define USER_MANUAL_FILE_NAME "UniproUGENE_UserManual.pdf"
-#define WD_USER_MANUAL_FILE_NAME "WorkflowDesigner_UserManual.pdf"
-#define QD_USER_MANUAL_FILE_NAME "QueryDesigner_UserManual.pdf"
 
 #define SETTINGS_DIR QString("main_window/")
 
@@ -192,8 +184,8 @@ MainWindowImpl::MainWindowImpl() {
     visitWebAction = NULL;
     viewOnlineDocumentation = NULL;
     checkUpdateAction = NULL;
+    createDesktopShortcutAction = nullptr;
     aboutAction = NULL;
-    openManualAction = NULL;
     welcomePageAction = NULL;
     crashUgeneAction = NULL;
     shutDownInProcess = false;
@@ -283,10 +275,6 @@ void MainWindowImpl::createActions() {
     createDesktopShortcutAction->setObjectName("Create desktop shortcut");
     connect(createDesktopShortcutAction, SIGNAL(triggered()), SLOT(sl_createDesktopShortcutAction()));
 
-    openManualAction = new QAction(tr("Open UGENE User Manual"), this);
-    openManualAction->setObjectName("Open UGENE User Manual");
-    connect(openManualAction, SIGNAL(triggered()), SLOT(sl_openManualAction()));
-
     welcomePageAction = new QAction(tr("Open Start Page"), this);
     welcomePageAction->setObjectName("welcome_page");
     connect(welcomePageAction, SIGNAL(triggered()), SIGNAL(si_showWelcomePage()));
@@ -358,7 +346,6 @@ void MainWindowImpl::prepareGUI() {
 
     aboutAction->setObjectName(ACTION__ABOUT);
     aboutAction->setParent(mw);
-    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(openManualAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(viewOnlineDocumentation);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
@@ -416,15 +403,6 @@ void MainWindowImpl::sl_viewOnlineDocumentation() {
     GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
 }
 
-void MainWindowImpl::sl_openManualAction() {
-    openManual(USER_MANUAL_FILE_NAME);
-}
-void MainWindowImpl::sl_openWDManualAction() {
-    openManual(WD_USER_MANUAL_FILE_NAME);
-}
-void MainWindowImpl::sl_openQDManualAction() {
-    openManual(QD_USER_MANUAL_FILE_NAME);
-}
 void MainWindowImpl::sl_tempDirPathCheckFailed(QString path) {
     QObjectScopedPointer<TmpDirChangeDialogController> tmpDirChangeDialogController = new TmpDirChangeDialogController(path, mw);
     tmpDirChangeDialogController->exec();
@@ -487,36 +465,6 @@ void MainWindowImpl::sl_installToPathAction() {
     }
 }
 #endif    // #ifdef _INSTALL_TO_PATH_ACTION
-
-void MainWindowImpl::openManual(const QString &name) {
-    QFileInfo fileInfo(QString(PATH_PREFIX_DATA) + ":" + "/manuals/" + name);
-    if (!fileInfo.exists()) {
-        GUIUtils::runWebBrowser(QString("http://ugene.net/downloads/") + name);
-    } else {
-        if (!QDesktopServices::openUrl(QUrl("file:///" + fileInfo.absoluteFilePath()))) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-            msgBox->setWindowTitle(L10N::warningTitle());
-            msgBox->setText(tr("Can not open %1 file. ").arg(name));
-            msgBox->setInformativeText(tr("You can try open it manualy from here: %1 \nor view online documentation.\n\nDo you want view online documentation?").arg(fileInfo.absolutePath()));
-            msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox->setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox->exec();
-            CHECK(!msgBox.isNull(), );
-
-            switch (ret) {
-            case QMessageBox::Yes:
-                GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
-                break;
-            case QMessageBox::No:
-                return;
-                break;
-            default:
-                assert(false);
-                break;
-            }
-        }
-    }
-}
 
 QMenu *MainWindowImpl::getTopLevelMenu(const QString &sysName) const {
     return menuManager->getTopLevelMenu(sysName);
@@ -588,10 +536,10 @@ void FixedMdiArea::tileSubWindows() {
     // An appropriate Qt bug: https://bugreports.qt.io/browse/QTBUG-29758
     // After Qt bug fixing just remove this method.
 
-#ifndef Q_OS_MAC
-    QMdiArea::tileSubWindows();
-    return;
-#endif
+    if (!isOsMac()) {
+        QMdiArea::tileSubWindows();
+        return;
+    }
 
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
     SAFE_POINT_EXT(NULL != mainWindow, QMdiArea::tileSubWindows(), );

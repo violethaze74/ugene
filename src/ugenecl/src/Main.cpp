@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,9 @@
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
-#include <U2Algorithm/OpenCLGpuRegistry.h>
+#ifdef OPENCL_SUPPORT
+#    include <U2Algorithm/OpenCLGpuRegistry.h>
+#endif
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -56,7 +58,6 @@
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/PasswordStorage.h>
@@ -80,7 +81,6 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowEnvImpl.h>
-#include <U2Lang/WorkflowRunTask.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/TestRunnerTask.h>
@@ -483,8 +483,7 @@ int main(int argc, char **argv) {
     openDocs();
     registerCoreServices();
 
-    GReportableCounter launchCounter("ugenecl launch", "", 1);
-    ++launchCounter.totalCount;
+    GCOUNTER(cvar, "ugenecl launch");
 
     //3 run QT
     t1.stop();

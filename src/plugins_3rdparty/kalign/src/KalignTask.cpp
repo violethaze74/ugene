@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSett
     : TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
       inputMA(ma->getExplicitCopy()) {
-    GCOUNTER(cvar, tvar, "KalignTask");
+    GCOUNTER(cvar, "KalignTask");
     inputSubMA = inputMA->getExplicitCopy();
     resultSubMA->setAlphabet(inputSubMA->getAlphabet());
     QString inputMAName = inputMA->getName();

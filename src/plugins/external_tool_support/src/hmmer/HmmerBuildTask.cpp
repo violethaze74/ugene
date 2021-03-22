@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString
     : ExternalToolRunTask(HmmerSupport::BUILD_TOOL_ID, getArguments(settings, msaUrl), new Hmmer3LogParser()),
       settings(settings),
       stockholmMsaUrl(msaUrl) {
-    GCOUNTER(cvar, tvar, "UHMM3BuildTask");
+    GCOUNTER(cvar, "UHMM3BuildTask");
 
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 

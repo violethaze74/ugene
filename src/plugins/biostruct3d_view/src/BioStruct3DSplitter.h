@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -105,9 +105,7 @@ public:
     /*!
     * This is used to close 3D split widget from toolbar
     */
-    QAction *getCloseSplitterAction() {
-        return closeAction;
-    }
+    QAction *getCloseSplitterAction();
     /*!
     * QWidget virtual function, returns preferred widget size.
     */
@@ -169,9 +167,7 @@ class DBLinksFile {
 
 public:
     bool load();
-    QList<DBLink> getLinks() {
-        return links;
-    }
+    QList<DBLink> getLinks();
 };
 
 // Implemented as Task for unloaded documents support

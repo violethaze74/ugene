@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings &s,
                                  SW_AlgType _algType)
     : Task(taskName, TaskFlag_NoRun),
       sWatermanConfig(s) {
-    GCOUNTER(cvar, tvar, "SWAlgorithmTask");
+    GCOUNTER(cvar, "SWAlgorithmTask");
 
     algType = _algType;
     if (algType == SW_sse2) {
@@ -507,7 +507,7 @@ bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
 
 PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings *_settings, SW_AlgType _algType)
     : PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings) {
-    GCOUNTER(cvar, tvar, "SWAlgorithmTask");
+    GCOUNTER(cvar, "SWAlgorithmTask");
 
     assert(settings != NULL);
     bool isValid = settings->convertCustomSettings();

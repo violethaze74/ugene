@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,9 +59,7 @@ public:
     float &operator[](unsigned int i);
 
     bool operator==(const Color4f &a) const;
-    const float *getConstData() const {
-        return color;
-    }
+    const float *getConstData() const;
 };
 
 //! OpenGL drawable object

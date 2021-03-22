@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ QDRunDialog::QDRunDialog(QDScheme *_scheme, QWidget *parent, const QString &defa
       scheme(_scheme),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363624");
+    new HelpButton(this, buttonBox, "60229021");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -292,7 +292,7 @@ QList<Task *> QDRunDialogTask::onSubTaskFinished(Task *subTask) {
 QDDialog::QDDialog(ADVSequenceObjectContext *_ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), ctx(_ctx), scheme(NULL), txtDoc(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363627");
+    new HelpButton(this, buttonBox, "60229024");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

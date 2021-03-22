@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ const QString Peak2GeneTask::TREAT_NAME("treatment");
 
 Peak2GeneTask::Peak2GeneTask(const Peak2GeneSettings &settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &treatAnn)
     : ExternalToolSupportTask("Peak2gene annotation", TaskFlag_CollectChildrenWarnings), settings(settings), storage(storage), treatAnn(treatAnn), treatDoc(NULL), genesAto(NULL), peaksAto(NULL), treatTask(NULL), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:Peak2GeneTask");
+    GCOUNTER(cvar, "NGS:Peak2GeneTask");
     SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 

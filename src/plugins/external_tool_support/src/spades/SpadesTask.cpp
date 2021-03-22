@@ -1,7 +1,7 @@
 
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ const QString SpadesTask::SCAFFOLDS_NAME = "scaffolds.fasta";
 
 SpadesTask::SpadesTask(const GenomeAssemblyTaskSettings &settings)
     : GenomeAssemblyTask(settings, TaskFlags_NR_FOSCOE) {
-    GCOUNTER(cvar, tvar, "SpadesTask");
+    GCOUNTER(cvar, "SpadesTask");
 }
 
 void SpadesTask::prepare() {

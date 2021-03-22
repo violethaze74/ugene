@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget *w, ADVSequenceObjectContext *c
     dialogConfig = _dialogConfig;
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363775");
+    new HelpButton(this, buttonBox, "60229172");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Remote run"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

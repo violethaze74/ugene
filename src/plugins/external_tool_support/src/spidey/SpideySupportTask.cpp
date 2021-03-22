@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ namespace U2 {
 SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &settings, const QString &annDescription)
     : SplicedAlignmentTask("SpideySupportTask", TaskFlags_NR_FOSCOE, settings),
       annDescription(annDescription) {
-    GCOUNTER(cvar, tvar, "SpideySupportTask");
+    GCOUNTER(cvar, "SpideySupportTask");
     setMaxParallelSubtasks(1);
     spideyTask = NULL;
     prepareDataForSpideyTask = NULL;

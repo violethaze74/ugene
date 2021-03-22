@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ namespace U2 {
 ScriptEditorDialog::ScriptEditorDialog(QWidget *w, const QString &roHeaderText, const QString &scriptText)
     : QDialog(w), ui(new Ui_ScriptEditorDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54362948");
+    new HelpButton(this, ui->buttonBox, "60228345");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Done"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

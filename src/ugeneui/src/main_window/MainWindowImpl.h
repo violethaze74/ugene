@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,9 +107,6 @@ private slots:
     void sl_createDesktopShortcutAction();
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
-    void sl_openManualAction();
-    void sl_openWDManualAction();
-    void sl_openQDManualAction();
     void sl_show();
     void sl_crashUgene();
 #ifdef _INSTALL_TO_PATH_ACTION
@@ -139,7 +136,6 @@ private:
     QAction *createDesktopShortcutAction;
     QAction *visitWebAction;
     QAction *viewOnlineDocumentation;
-    QAction *openManualAction;
     QAction *welcomePageAction;
     QAction *crashUgeneAction;
 #ifdef _INSTALL_TO_PATH_ACTION

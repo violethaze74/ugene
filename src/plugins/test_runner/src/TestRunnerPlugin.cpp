@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,6 @@ void TestRunnerPlugin::sl_startTestRunner() {
     TestRunnerService *srv = new TestRunnerService();
     srv->setEnvironment();
 
-    /* Disabling to check if it fixes slow commit/nightly builds
     CMDLineRegistry *cmdReg = AppContext::getCMDLineRegistry();
     if (cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
         QString val = cmdReg->getParameterValue(CMDLineCoreOptions::TEST_THREADS);
@@ -80,7 +79,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
         }
         srv->setVar(NUM_THREADS_VAR, val);
     }
-*/
+
     foreach (const QString &param, suiteUrls) {
         QString dir;
         if (param.contains(":") || param[0] == '.' || param[0] == '/') {
@@ -271,7 +270,7 @@ void TestRunnerService::readSavedSuites() {
     //TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    for (const QString &suiteUrl : suiteUrls) {
+    for (const QString &suiteUrl : qAsConst(suiteUrls)) {
         QString err;
         GTestSuite *ts = GTestSuite::readTestSuite(suiteUrl, err);
         if (ts == nullptr) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,6 +150,14 @@ void GTUtilsMSAEditorSequenceArea::cancelSelection(GUITestOpStatus & /*os*/) {
 void GTUtilsMSAEditorSequenceArea::click(GUITestOpStatus &os, const QPoint &screenMaPoint) {
     GTMouseDriver::moveTo(convertCoordinates(os, screenMaPoint));
     GTMouseDriver::click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "copySelectionByContextMenu"
+void GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(GUITestOpStatus &os) {
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy"));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 #undef GT_METHOD_NAME
 
@@ -352,15 +360,14 @@ bool GTUtilsMSAEditorSequenceArea::isCollapsed(GUITestOpStatus &os, QString seqN
 
 #define GT_METHOD_NAME "collapsingMode"
 bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus &os) {
-    QAbstractButton *collapce = GTAction::button(os, "Enable collapsing");
-    bool nameLists = getVisibleNames(os) == getNameList(os);
-    if (nameLists && !collapce->isChecked()) {
+    QAbstractButton *toggleSequenceOrderButton = GTAction::button(os, "toggle_sequence_row_order_action");
+    bool nameListsAreEqual = getVisibleNames(os) == getNameList(os);
+    if (nameListsAreEqual && !toggleSequenceOrderButton->isChecked()) {
         return false;
-    } else if (!nameLists && collapce->isChecked()) {
+    } else if (!nameListsAreEqual && toggleSequenceOrderButton->isChecked()) {
         return true;
-    } else {
-        GT_CHECK_RESULT(false, "somithing wrong with collapsing mode", false);
     }
+    GT_CHECK_RESULT(false, "something wrong with collapsing mode", false);
 }
 #undef GT_METHOD_NAME
 
@@ -516,8 +523,8 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, const
     GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(sequenceName), "");
 
     GTUtilsMsaEditor::clickSequenceName(os, sequenceName);
-    GTKeyboardUtils::copy(os);
-    return GTClipboard::sequences(os);
+    GTKeyboardUtils::copy();
+    return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME
 
@@ -530,8 +537,8 @@ QString GTUtilsMSAEditorSequenceArea::getSequenceData(GUITestOpStatus &os, int r
     GT_CHECK_RESULT(rowNumber >= 0 && rowNumber <= names.size(), QString("Row with number %1 is out of boundaries").arg(rowNumber), "");
 
     GTUtilsMsaEditor::clickSequenceName(os, names[rowNumber]);
-    GTKeyboardUtils::copy(os);
-    return GTClipboard::sequences(os);
+    GTKeyboardUtils::copy();
+    return GTClipboard::text(os);
 }
 #undef GT_METHOD_NAME
 
@@ -715,7 +722,7 @@ void GTUtilsMSAEditorSequenceArea::checkSelection(GUITestOpStatus &os, const QPo
     selectArea(os, start, end);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     GT_CHECK(clipboardText == expected, QString("unexpected selection:\n%1").arg(clipboardText));
 }
 #undef GT_METHOD_NAME

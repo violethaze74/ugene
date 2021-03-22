@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ namespace U2 {
 BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings &_settings)
     : ExternalToolSupportTask("Run NCBI Blast+ task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "BlastPlusSupportCommonTask");
+    GCOUNTER(cvar, "BlastPlusSupportCommonTask");
     blastPlusTask = NULL;
     tmpDoc = NULL;
     saveTemporaryDocumentTask = NULL;

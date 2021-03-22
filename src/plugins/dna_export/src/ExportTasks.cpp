@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
@@ -88,7 +89,7 @@ QList<Task *> AddExportedDocumentAndOpenViewTask::onSubTaskFinished(Task *subTas
 // DNAExportAlignmentTask
 ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment &_ma, const QString &_fileName, DocumentFormatId _f)
     : DocumentProviderTask("", TaskFlag_None), ma(_ma->getCopy()), fileName(_fileName), format(_f) {
-    GCOUNTER(cvar, tvar, "ExportAlignmentTask");
+    GCOUNTER(cvar, "ExportAlignmentTask");
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
@@ -115,7 +116,7 @@ void ExportAlignmentTask::run() {
 ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment &_ma, const QString &_url, bool _trimAli, DocumentFormatId _format)
     : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
       ma(_ma->getCopy()), url(_url), trimAli(_trimAli), format(_format) {
-    GCOUNTER(cvar, tvar, "ExportMSA2SequencesTask");
+    GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
 }
 
@@ -144,10 +145,28 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma, int _offset, int _len, const QString &_url, const QList<DNATranslation *> &_aminoTranslations, DocumentFormatId _format)
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
+                                     int _offset,
+                                     int _len,
+                                     const QString &_url,
+                                     const QList<DNATranslation *> &_aminoTranslations,
+                                     DocumentFormatId _format,
+                                     const bool _trimGaps,
+                                     const bool _convertUnknownToGap,
+                                     const bool _reverseComplement,
+                                     const int _baseOffset)
     : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
-      ma(_ma->getCopy()), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations) {
-    GCOUNTER(cvar, tvar, "ExportMSA2MSATask");
+      ma(_ma->getCopy()),
+      offset(_offset),
+      len(_len),
+      url(_url),
+      format(_format),
+      aminoTranslations(_aminoTranslations),
+      trimGaps(_trimGaps),
+      convertUnknownToGap(_convertUnknownToGap),
+      reverseComplement(_reverseComplement),
+      baseOffset(_baseOffset) {
+    GCOUNTER(cvar, "ExportMSA2MSATask");
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     setVerboseLogMode(true);
 }
@@ -159,10 +178,11 @@ void ExportMSA2MSATask::run() {
     resultDocument = f->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(ma, true);
+    QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimGaps);
     QList<DNASequence> seqList;
     for (int i = offset; i < offset + len; i++) {
-        DNASequence &s = lst[i];
+        DNASequence s = reverseComplement ? DNASequenceUtils::reverseComplement(lst[i]) : lst[i];
+        s.seq = s.seq.right(s.seq.length() - baseOffset);
         QString name = s.getName();
         if (!aminoTranslations.isEmpty()) {
             DNATranslation *aminoTT = aminoTranslations.first();
@@ -178,6 +198,9 @@ void ExportMSA2MSATask::run() {
             assert(aminoTT->isThree2One());
             aminoTT->translate(seq.constData(), seq.length(), resseq.data(), resseq.length());
 
+            if (!trimGaps && convertUnknownToGap) {
+                resseq.replace("X", "-");
+            }
             resseq.replace("*", "X");
             DNASequence rs(name, resseq, aminoTT->getDstAlphabet());
             seqList << rs;
@@ -201,7 +224,7 @@ void ExportMSA2MSATask::run() {
 ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject *_obj, const ExportChromatogramTaskSettings &_settings)
     : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE),
       cObj(_obj), settings(_settings), loadTask(NULL) {
-    GCOUNTER(cvar, tvar, "ExportDNAChromatogramTask");
+    GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
 }
 

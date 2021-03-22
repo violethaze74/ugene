@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ EditConnectionDialog::EditConnectionDialog(QWidget *parent, const QString &dbiUr
     : QDialog(parent),
       ui(new Ui_EditConnectionDialog) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54363912");
+    new HelpButton(this, ui->buttonBox, "60229310");
     adjustSize();
     init(dbiUrl, connectionName, userName);
 }

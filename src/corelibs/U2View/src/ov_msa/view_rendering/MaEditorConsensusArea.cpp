@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,9 +77,9 @@ MaEditorConsensusArea::MaEditorConsensusArea(MaEditorWgt *_ui)
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    addAction(ui->getCopySelectionAction());
-    addAction(ui->getPasteAction());
-    addAction(ui->getPasteBeforeAction());
+    addAction(ui->copySelectionAction);
+    addAction(ui->pasteAction);
+    addAction(ui->pasteBeforeAction);
 
     setObjectName("consArea");
 }
@@ -124,7 +124,7 @@ bool MaEditorConsensusArea::event(QEvent *e) {
 
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
+    GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
     consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
@@ -295,7 +295,7 @@ void MaEditorConsensusArea::setConsensusAlgorithm(MSAConsensusAlgorithmFactory *
     if (oldAlgo != nullptr && algoFactory == oldAlgo->getFactory()) {
         return;
     }
-    GRUNTIME_NAMED_COUNTER(cvar, tvar, QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
+    GCounter::increment(QString("'%1' consensus algorithm is selected").arg(algoFactory->getName()), editor->getFactoryId());
 
     //store threshold for the active algo
     if (oldAlgo != nullptr && oldAlgo->supportsThreshold()) {

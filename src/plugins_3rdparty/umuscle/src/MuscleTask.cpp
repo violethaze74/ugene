@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
       config(_config),
       inputMA(ma->getExplicitCopy())
 {
-    GCOUNTER( cvar, tvar, "MuscleTask" );
+    GCOUNTER( cvar, "MuscleTask" );
     config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
     SAFE_POINT_EXT(config.nThreads > 0,
         setError("Incorrect number of max parallel subtasks"), );

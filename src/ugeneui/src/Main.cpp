@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,9 @@
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
-#include <U2Algorithm/OpenCLGpuRegistry.h>
+#ifdef OPENCL_SUPPORT
+#    include <U2Algorithm/OpenCLGpuRegistry.h>
+#endif
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/RepeatFinderTaskFactoryRegistry.h>
@@ -271,21 +273,21 @@ static void initLogsCache(LogCacheExt &logsCache, const QStringList &) {
 void guiTestMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
     Q_UNUSED(context)
     switch (type) {
-    case QtDebugMsg:
-        uiLog.trace(msg);
-        break;
-    case QtWarningMsg:
-        uiLog.details(msg);
-        break;
-    case QtCriticalMsg:
-        uiLog.error(msg);
-        break;
-    case QtFatalMsg:
-        uiLog.error(msg);
-        abort();
-    default:
-        uiLog.trace(msg);
-        break;
+        case QtDebugMsg:
+            uiLog.trace(msg);
+            break;
+        case QtWarningMsg:
+            uiLog.details(msg);
+            break;
+        case QtCriticalMsg:
+            uiLog.error(msg);
+            break;
+        case QtFatalMsg:
+            uiLog.error(msg);
+            abort();
+        default:
+            uiLog.trace(msg);
+            break;
     }
 }
 static void initOptionsPanels() {
@@ -420,10 +422,10 @@ int main(int argc, char **argv) {
     fixMacFonts();
 #endif
 
- #ifdef Q_OS_MACOS
+#ifdef Q_OS_MACOS
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
- #endif
+#endif
 
     //QApplication app(argc, argv);
     GApplication app(argc, argv);
@@ -540,45 +542,35 @@ int main(int argc, char **argv) {
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
 
-    GReportableCounter ugeneArchCounter("UGENE architecture", "", 1);
-    ++ugeneArchCounter.totalCount;
-#if defined UGENE_X86_64
-    ugeneArchCounter.suffix = "Ugene 64-bit";
-#elif defined UGENE_X86
-    ugeneArchCounter.suffix = "Ugene 32-bit";
-#else
-    ugeneArchCounter.suffix = "Undetected architecture";
-#endif
+    int ugeneArch = getUgeneBinaryArch();
+    QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
+                                     : ugeneArch == UGENE_ARCH_X86_32 ? "Ugene 32-bit"
+                                                                      : "Undetected architecture";
+    GCounter::increment("UGENE architecture", ugeneArchCounterSuffix);
 
-    GReportableCounter sysArchCounter("OS architecture", "", 1);
-    ++sysArchCounter.totalCount;
+    QString osArchCounterSuffix = isOsWindows() ? "Windows"
+                                  : isOsMac()   ? "MacOS"
+                                  : isOsLinux() ? "Linux"
+                                  : isOsUnix()  ? "Unix"
+                                                : "Undetected OS";
 #if defined Q_OS_WIN
-    if (ugeneArchCounter.suffix == "Ugene 64-bit") {
-        sysArchCounter.suffix = "Windows 64-bit";
+    if (ugeneArch == UGENE_ARCH_X86_64 || IsWow64()) {
+        osArchCounterSuffix += " 64-bit";
     } else {
-        if (IsWow64()) {
-            sysArchCounter.suffix = "Windows 64-bit";
-        } else {
-            sysArchCounter.suffix = "Windows 32-bit";
-        }
+        osArchCounterSuffix += " 32-bit";
     }
 #elif defined Q_OS_MAC
-    sysArchCounter.suffix = "MacOS 64-bit";
-#elif defined Q_OS_LINUX
-    if (QSysInfo::currentCpuArchitecture().contains("64")) {
-        sysArchCounter.suffix = "Linux 64-bit";
-    } else {
-        sysArchCounter.suffix = "Linux 32-bit";
-    }
-#elif defined Q_OS_UNIX
-    if (QSysInfo::currentCpuArchitecture().contains("64")) {
-        sysArchCounter.suffix = "Unix 64-bit";
-    } else {
-        sysArchCounter.suffix = "Unix 32-bit";
-    }
+    osArchCounterSuffix += " 64-bit";
 #else
-    sysArchCounter.suffix = "Undetected OS";
+    QString currentCpuArchitecture = QSysInfo::currentCpuArchitecture();
+    if (currentCpuArchitecture.contains("64")) {
+        osArchCounterSuffix += " 64-bit";
+    } else if (currentCpuArchitecture.contains("32")) {
+        osArchCounterSuffix += " 32-bit";
+    }
 #endif
+    GCounter::increment("OS architecture", osArchCounterSuffix);
+
     coreLog.trace(QString("UGENE run at dir %1 with parameters %2").arg(AppContext::getWorkingDirectoryPath()).arg(app.arguments().join(" ")));
 
     //print some settings info, can't do it earlier than logging is initialized
@@ -591,15 +583,18 @@ int main(int argc, char **argv) {
         QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     }
 #endif
-    QString style = userAppSettings->getVisualStyle();
-    QStyle *qstyle = nullptr;
-    if (!style.isEmpty()) {
-        qstyle = QStyleFactory::create(style);
-        if (qstyle == NULL) {
-            uiLog.details(AppContextImpl::tr("Style not available %1").arg(style));
+    QString styleName = userAppSettings->getVisualStyle();
+    QStyle *qtStyle = nullptr;
+    if (!styleName.isEmpty()) {
+        qtStyle = QStyleFactory::create(styleName);
+        if (qtStyle == nullptr) {
+            uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
         }
     }
-    app.setStyle(new ProxyStyle(qstyle));
+    auto proxyStyle = new ProxyStyle(qtStyle);
+    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
+    proxyStyle->setObjectName(qtStyle->objectName());
+    app.setStyle(proxyStyle);
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
@@ -627,12 +622,11 @@ int main(int argc, char **argv) {
     mw->prepare();
 #ifdef Q_OS_MAC
     // TODO: need to check for other OS and remove #ifdef
-    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)
-            || cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST) || cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
         mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
     }
     if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)) {
-        if (cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)=="0") {
+        if (cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR) == "0") {
             mw->getQMainWindow()->menuBar()->setNativeMenuBar(true);
         } else {
             mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
@@ -860,8 +854,7 @@ int main(int argc, char **argv) {
     }
 #endif    //HI_EXCLUDED
 
-    GReportableCounter launchCounter("ugeneui launch", "", 1);
-    ++launchCounter.totalCount;
+    GCOUNTER(cvar, "ugeneui launch");
 
     //3 run QT GUI
     t1.stop();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -158,7 +158,7 @@ QList<GObject *> SequenceObjectContext::getAnnotationGObjects() const {
 }
 
 void SequenceObjectContext::sl_showDirectOnly() {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::ShowDirectTranslationsOnly");
+    GCOUNTER(cvar, "SequenceView::DetView::ShowDirectTranslationsOnly");
     bool needUpdate = false;
     QList<QAction *> actionList = visibleFrames->actions();
     translationRowsStatus.clear();
@@ -184,7 +184,7 @@ void SequenceObjectContext::sl_showDirectOnly() {
 }
 
 void SequenceObjectContext::sl_showComplOnly() {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::ShowComplementTranslationsOnly");
+    GCOUNTER(cvar, "SequenceView::DetView::ShowComplementTranslationsOnly");
     bool needUpdate = false;
     QList<QAction *> actionList = visibleFrames->actions();
     translationRowsStatus.clear();
@@ -210,7 +210,7 @@ void SequenceObjectContext::sl_showComplOnly() {
 }
 
 void SequenceObjectContext::sl_showShowAll() {
-    GCOUNTER(cvar, tvar, "SequenceView::DetView::ShowAllTranslations");
+    GCOUNTER(cvar, "SequenceView::DetView::ShowAllTranslations");
     bool needUpdate = false;
     translationRowsStatus.clear();
     foreach (QAction *a, visibleFrames->actions()) {
@@ -330,7 +330,7 @@ void SequenceObjectContext::setAminoTranslation(const QString &tid) {
 }
 
 void SequenceObjectContext::sl_setAminoTranslation() {
-    GCOUNTER(cvar, tvar, "DetView_SetAminoTranslation");
+    GCOUNTER(cvar, "DetView_SetAminoTranslation");
     QAction *a = qobject_cast<QAction *>(sender());
     QString tid = a->data().toString();
     setAminoTranslation(tid);

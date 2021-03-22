@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
     : ExternalToolSupportTask(tr("Improve reads with Trimmomatic"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       trimmomaticToolRunTask(NULL) {
-    GCOUNTER(cvar, tvar, "TrimmomaticTask");
+    GCOUNTER(cvar, "TrimmomaticTask");
 
     if (settings.pairedReadsInput) {
         SAFE_POINT_EXT(!settings.pairedOutputUrl1.isEmpty() && !settings.pairedOutputUrl2.isEmpty() &&

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ PWMBuildDialogController::PWMBuildDialogController(QWidget *w)
       logoArea(NULL) {
     task = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363885");
+    new HelpButton(this, buttonBox, "60229283");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -326,7 +326,7 @@ void PWMBuildDialogController::reject() {
 
 PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings &s, const MultipleSequenceAlignment &ma)
     : Task(tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy()) {
-    GCOUNTER(cvar, tvar, "PFMatrixBuildTask");
+    GCOUNTER(cvar, "PFMatrixBuildTask");
     tpm = Task::Progress_Manual;
 }
 
@@ -445,13 +445,13 @@ QList<Task *> PFMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
 
 PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings &s, const MultipleSequenceAlignment &ma)
     : Task(tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy()) {
-    GCOUNTER(cvar, tvar, "PWMatrixBuildTask");
+    GCOUNTER(cvar, "PWMatrixBuildTask");
     tpm = Task::Progress_Manual;
 }
 
 PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings &s, const PFMatrix &ma)
     : Task(tr("Build Weight Matrix"), TaskFlag_None), settings(s), tempMatrix(ma) {
-    GCOUNTER(cvar, tvar, "PWMatrixBuildTask");
+    GCOUNTER(cvar, "PWMatrixBuildTask");
     tpm = Task::Progress_Manual;
 }
 

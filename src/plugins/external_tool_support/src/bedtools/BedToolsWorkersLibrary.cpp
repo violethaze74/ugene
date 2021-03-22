@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -250,7 +250,7 @@ Task *SlopbedWorker::getTask(const BaseNGSSetting &settings) const {
 //SlopbedTask
 SlopbedTask::SlopbedTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings), filterLines(false) {
-    GCOUNTER(cvar, tvar, "NGS:SlopBedTask");
+    GCOUNTER(cvar, "NGS:SlopBedTask");
 }
 
 void SlopbedTask::prepareStep() {
@@ -662,7 +662,7 @@ Task *GenomecovWorker::getTask(const BaseNGSSetting &settings) const {
 //GenomecovTask
 GenomecovTask::GenomecovTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:GenomeCovTask");
+    GCOUNTER(cvar, "NGS:GenomeCovTask");
 }
 
 void GenomecovTask::prepareStep() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,9 +100,9 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
 }
 
 void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &options) {
+    GCounter::increment(QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     SAFE_POINT(!groupId.isEmpty(), "Empty 'groupId'!", );
 
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
     SAFE_POINT(opWidgetFactory != nullptr,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );

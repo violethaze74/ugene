@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -109,19 +109,13 @@ public:
     ~BioStruct3DGLWidget();
 
     //! @return BioStruct3D const reference.
-    const BioStruct3D &getBioStruct3D() const {
-        return *(contexts.first().biostruct);
-    }
+    const BioStruct3D &getBioStruct3D() const;
 
     //! @return BioStruct3D Protein Data Bank id.
-    const QString getPDBId() const {
-        return contexts.first().biostruct->pdbId;
-    }
+    const QString getPDBId() const;
 
     //! @return BioStruct3DObject name.
-    const QString getBioStruct3DObjectName() const {
-        return contexts.first().obj->getGObjectName();
-    }
+    const QString getBioStruct3DObjectName() const;
 
     /*!
     * @return Menu containing display actions: renderers, color schemes etc.
@@ -154,9 +148,7 @@ public:
     void setBackgroundColor(QColor backgroundColor);
 
     /** @returns This widget GLFrame */
-    GLFrame *getGLFrame() {
-        return glFrame.data();
-    }
+    GLFrame *getGLFrame();
 
     /** Draws scene without setting camera */
     void draw();
@@ -167,9 +159,7 @@ public:
     /** @returns scene bounding sphere radius */
     float getSceneRadius() const;
 
-    void setImageRenderingMode(bool status) {
-        imageRenderingMode = status;
-    }
+    void setImageRenderingMode(bool status);
 
 protected:
     /*!
@@ -266,6 +256,9 @@ private:
     static int getWidgetCount(QString objectName);
     bool isSyncModeOn();
 
+    // Checks if this widget can render and creates a label with a text error if it cannot
+    void checkRenderingAndCreateLblError();
+
 private:
     // related sequences view
     const AnnotatedDNAView *dnaView;
@@ -328,6 +321,10 @@ private:
     QMenu *selectColorSchemeMenu;
     QMenu *selectRendererMenu;
     QMenu *displayMenu;
+
+    // if OpenGL has error, label is not null and overlaps GlWidget with text "Failed to initialize OpenGL",
+    // otherwise label is null
+    QLabel *lblGlError;
 
 private slots:
     void sl_selectColorScheme(QAction *action);

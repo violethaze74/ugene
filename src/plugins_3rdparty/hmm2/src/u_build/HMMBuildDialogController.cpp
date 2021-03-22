@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Mul
       profileName(_pn),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363781");
+    new HelpButton(this, buttonBox, "60229178");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
 
@@ -327,7 +327,7 @@ QString HMMBuildToFileTask::generateReport() const {
 HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma) 
   : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(NULL)
 {
-    GCOUNTER( cvar, tvar, "HMMBuildTask" );
+    GCOUNTER( cvar, "HMMBuildTask" );
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
 }
 

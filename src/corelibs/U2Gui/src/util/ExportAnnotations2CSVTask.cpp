@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ ExportAnnotations2CSVTask::ExportAnnotations2CSVTask(const QList<Annotation *> &
     : Task(tr("Export annotations to CSV format"), TaskFlag_None), annotations(annotations), sequence(sequence), seqName(_seqName),
       complementTranslation(complementTranslation), exportSequence(exportSequence), exportSequenceName(_exportSeqName), url(url),
       append(apnd), separator(sep) {
-    GCOUNTER(cvar, tvar, "ExportAnnotattions2CSVTask");
+    GCOUNTER(cvar, "ExportAnnotattions2CSVTask");
 }
 
 static void writeCSVLine(const QStringList &container, IOAdapter *ioAdapter, const QString &separator, U2OpStatus &os) {

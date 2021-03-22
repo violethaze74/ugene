@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,18 +65,14 @@ public:
         : name(storeName), path(filePath), minFeatureSize(0) {
     }
     void load();
-    bool isLoaded() const {
-        return !features.isEmpty();
-    }
-    int getMinFeatureSize() const {
-        return minFeatureSize;
-    }
-    const QString &getName() const {
-        return name;
-    }
-    const QList<FeaturePattern> &getFeatures() const {
-        return features;
-    }
+
+    bool isLoaded() const;
+
+    int getMinFeatureSize() const;
+
+    const QString &getName() const;
+
+    const QList<FeaturePattern> &getFeatures() const;
 };
 
 typedef QSharedPointer<FeatureStore> SharedFeatureStore;

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ namespace U2 {
 NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names)
     : QDialog(parent), inSlots(inSlots), names(names) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363047");
+    new HelpButton(this, buttonBox, "60228444");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -102,7 +102,7 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
 AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363047");
+    new HelpButton(this, buttonBox, "60228444");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -148,7 +148,7 @@ GrouperSlotAction AnnsActionDialog::getAction() const {
 SequeceActionDialog::SequeceActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363047");
+    new HelpButton(this, buttonBox, "60228444");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -212,7 +212,7 @@ GrouperSlotAction SequeceActionDialog::getAction() const {
 MsaActionDialog::MsaActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363047");
+    new HelpButton(this, buttonBox, "60228444");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     if (NULL != action) {
@@ -245,7 +245,7 @@ GrouperSlotAction MsaActionDialog::getAction() const {
 StringActionDialog::StringActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363047");
+    new HelpButton(this, buttonBox, "60228444");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     if (NULL != action) {

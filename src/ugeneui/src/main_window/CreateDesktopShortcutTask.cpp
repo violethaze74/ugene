@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,11 @@
 
 
 #if defined(Q_OS_WIN)
+// clang-format off
 #include <Windows.h>
 #include <ShlGuid.h>
 #include <ShlObj.h>
+// clang-format on
 #elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
 #include <QDir>

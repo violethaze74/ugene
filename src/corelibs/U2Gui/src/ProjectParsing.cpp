@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -304,7 +304,7 @@ GUrl getUrl(const QString &docUrl, const DocumentFormatId &format) {
 }    // namespace
 
 Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const QDomDocument &xmlDoc, U2OpStatus &os) {
-    GCOUNTER(cvar, tvar, "ProjectParser10: createProjectFromXMLModel");
+    GCOUNTER(cvar, "ProjectParser10: createProjectFromXMLModel");
 
     QDomElement projectElement = xmlDoc.documentElement();
     QString name = projectElement.attribute("name");
@@ -413,7 +413,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
     }
 
     if (projectContainsInvalidFormats) {
-        GCOUNTER(cvar1, tvar1, "Invalid format IDs: a project was created with 1.26.0");
+        GCOUNTER(cvar1, "Invalid format IDs: a project was created with 1.26.0");
     }
 
     // read all saved views

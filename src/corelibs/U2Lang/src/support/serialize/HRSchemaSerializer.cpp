@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -566,7 +566,7 @@ Actor *HRSchemaSerializer::parseElementsDefinition(Tokenizer &tokenizer, const Q
         }
     }
     if (workflowContainsInvalidFormatIds) {
-        GCOUNTER(cvar, tvar, "Invalid format IDs: an element was saved with 1.26.0");
+        GCOUNTER(cvar, "Invalid format IDs: an element was saved with 1.26.0");
     }
 
     foreach (const QString &valDef, pairs.blockPairs.values(Constants::VALIDATOR)) {

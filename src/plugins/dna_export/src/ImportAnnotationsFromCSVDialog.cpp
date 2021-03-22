@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ ImportAnnotationsFromCSVDialog::ImportAnnotationsFromCSVDialog(QWidget *w)
     : QDialog(w),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362467");
+    new HelpButton(this, buttonBox, "60227861");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

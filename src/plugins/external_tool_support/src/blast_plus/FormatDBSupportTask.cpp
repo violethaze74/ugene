@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ FormatDBSupportTask::FormatDBSupportTask(const FormatDBSupportTaskSettings &_set
       prepareTask(NULL),
       formatDBTask(NULL),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "FormatDBSupportTask");
+    GCOUNTER(cvar, "FormatDBSupportTask");
     externalToolLog = settings.outputPath + "MakeBLASTDB.log";
 }
 

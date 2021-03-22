@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ void KalignAdapter::align(const MultipleSequenceAlignment &ma, MultipleSequenceA
 
 namespace {
 
-void cleanupMemory(float **submatrix, unsigned int numseq, float **dm, struct alignment *aln, struct parameters *param) {
+void cleanupMemory(float **/*submatrix*/, unsigned int /*numseq*/, float **/*dm*/, struct alignment */*aln*/, struct parameters */*param*/) {
 // TODO: investigating crash on Windows. The best solution would be moving KAlign into external tools?
 //    if (NULL != submatrix) {
 //        for (int i = 32; i--;){

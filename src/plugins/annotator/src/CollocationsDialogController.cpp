@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
     task = NULL;
     qSort(allNames);
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363663");
+    new HelpButton(this, buttonBox, "60229060");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -313,7 +313,7 @@ CDCResultItem::CDCResultItem(const U2Region &_r)
 // task
 CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject *> &table, const QSet<QString> &names, const CollocationsAlgorithmSettings &cfg)
     : Task(tr("Search for annotated regions"), TaskFlag_None), cfg(cfg), lock(QMutex::Recursive), keepSourceAnns(false) {
-    GCOUNTER(cvar, tvar, "CollocationSearchTask");
+    GCOUNTER(cvar, "CollocationSearchTask");
     assert(cfg.distance >= 0);
     assert(!names.isEmpty());
     foreach (const QString &name, names) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -133,12 +133,31 @@ public:
     bool hasAminoAlphabet();
 
 public slots:
-    void sl_setCollapsingMode(bool enabled);
+
+    /** Switches between Original and Sequence row orders. */
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
+
     void sl_copySelectionFormatted();
 
+public:
+    /**
+     * Enables 'Free' ordering mode. Re-orders and re-groups rows according to the name lists.
+     * The 'marker' object is provided by the 'master' controller that requested the Free mode to be ON (See 'freeModeMasterMarkersSet').
+     * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
+     * TODO: move this method to MSAEditor class.
+     */
+    void enableFreeRowOrderMode(QObject *marker, const QList<QStringList> &);
+
+    /**
+     * Removes 'marker' object from a 'Free' mode locks (See 'freeModeMasterMarkersSet').
+     * When all 'markers' for the Free mode are removed the view is automatically switched to the Original mode.
+     */
+    void disableFreeRowOrderMode(QObject *marker);
+
 protected:
-    void focusOutEvent(QFocusEvent *fe);
-    void focusInEvent(QFocusEvent *fe);
+    void focusOutEvent(QFocusEvent *fe) override;
+
+    void focusInEvent(QFocusEvent *fe) override;
 
 private slots:
     void sl_buildStaticMenu(GObjectView *v, QMenu *m);
@@ -151,6 +170,7 @@ private slots:
     void sl_copySelection();
     void sl_paste();
     void sl_pasteBefore();
+    void sl_cutSelection();
 
     /** Takes data from the pasteTask and runs AddSequencesFromDocumentsToAlignmentTask. */
     void sl_pasteTaskFinished(Task *pasteTask);
@@ -159,20 +179,25 @@ private slots:
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
-    void sl_updateCollapsingMode();
+
+    /**
+     * Groups sequences by content, so each group contains only sequences with the equal base (gaps-excluded) content.
+     * Works a a part of virtual ordering mode only.
+     */
+    void sl_groupSequencesByContent();
+
     void sl_reverseComplementCurrentSelection();
     void sl_reverseCurrentSelection();
     void sl_complementCurrentSelection();
 
     void sl_onPosChangeRequest(int position);
 
-    void sl_createSubaligniment();
+    void sl_createSubalignment();
 
     void sl_saveSequence();
 
     void sl_modelChanged();
 
-    void sl_setCollapsingRegions(const QList<QStringList> &);
     void sl_fontChanged(QFont font);
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
@@ -182,6 +207,9 @@ private slots:
 private:
     void initRenderer();
     void runPasteTask(bool isPasteBefore);
+
+    /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
+    void updateRowOrderActionsState();
 
     void buildMenu(QMenu *m);
 
@@ -196,18 +224,42 @@ private:
     QAction *saveSequence;
     QAction *addSeqFromFileAction;
     QAction *addSeqFromProjectAction;
-    QAction *collapseModeSwitchAction;
-    QAction *collapseModeUpdateAction;
+
+    /**
+     * Switches between Sequence and Original row ordering modes.
+     * When checked the Sequence mode is ON.
+     * TODO: this is a global action for MA editor. Move it to the M(S)AEditor.h
+     */
+    QAction *toggleSequenceRowOrderAction;
+
+    /**
+     * The action is enabled only in Sequence row ordering mode and triggers recompute of sequence order/groups by content.
+     * TODO: this is a global action for MA editor. Move it to M(S)AEditor.h
+     * TODO: this action has no use today, because in Sequence mode MA editor automatically adjusts order/groups on every MA update.
+     */
+    QAction *refreshSequenceRowOrder;
+
     QAction *reverseComplementAction;
     QAction *reverseAction;
     QAction *complementAction;
+
+    /**
+     * Set of 'marker' objects from the 'master' components that requested Free ordering mode to be ON are responsible for the 'free' mode ordering.
+     * Free mode can be active only if there is at least one 'marker' in the set.
+     *
+     * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
+     * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
+     *
+     * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
+     */
+    QSet<QObject *> freeModeMasterMarkersSet;
 };
 
 // SANGER_TODO: move to EditorTasks?
-class U2VIEW_EXPORT ExportHighligtningTask : public Task {
+class U2VIEW_EXPORT ExportHighlightingTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
+    ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
 
     void run();
     QString generateReport() const;

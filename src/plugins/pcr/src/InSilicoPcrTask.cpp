@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ bool InSilicoPcrProduct::isValid() const {
 InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlags_FOSE_COSC),
       settings(settings), forwardSearch(NULL), reverseSearch(NULL), minProductSize(0) {
-    GCOUNTER(cvar, tvar, "InSilicoPcrTask");
+    GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
 }
 

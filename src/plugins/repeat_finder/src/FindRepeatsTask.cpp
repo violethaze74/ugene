@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ void RevComplSequenceTask::cleanup() {
 FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const DNASequence &seq2)
     : Task(tr("Find repeats in a single sequence"), TaskFlags_FOSCOE), settings(s),
       seq1(seq), seq2(seq2), tandemTask1(NULL), tandemTask2(NULL) {
-    GCOUNTER(cvar, tvar, "FindRepeatsTask");
+    GCOUNTER(cvar, "FindRepeatsTask");
     if (settings.seqRegion.length == 0) {
         settings.seqRegion = U2Region(0, seq1.length());
     }

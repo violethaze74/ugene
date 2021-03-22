@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,7 @@ public:
     SelectModelsDialog(const QList<int> &modelIds, const QList<int> &selectedItems, QWidget *parent = 0);
     ~SelectModelsDialog();
 
-    const QList<int> &getSelectedModelsIndexes() const {
-        return selectedModelsIndexes;
-    }
+    const QList<int> &getSelectedModelsIndexes() const;
 
 public slots:
     virtual void accept();

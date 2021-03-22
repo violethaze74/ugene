@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -596,7 +596,7 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildInd
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSCOE, justBuildIndex),
       buildIndexTask(NULL),
       alignTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:BWATask");
+    GCOUNTER(cvar, "NGS:BWATask");
 }
 
 void BwaTask::prepare() {

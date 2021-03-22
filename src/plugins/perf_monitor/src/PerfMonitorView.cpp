@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #include <U2Core/Timer.h>
 
 #ifdef Q_OS_LINUX
-#    include <stdio.h>
 #    include <sys/sysinfo.h>
 #endif
 
@@ -37,43 +36,39 @@
 
 namespace U2 {
 
-static GCounter updateCounter("PerfMonitor::updateCounters", TimeCounter::getCounterSuffix(), TimeCounter::getCounterScale());
 #ifdef Q_OS_LINUX
-static GCounter rssMemoryCounter("PerfMonitor::RSSmemoryUsage", "mbytes", 256);
-static GCounter virtMemoryCounter("PerfMonitor::VIRTmemoryUsage", "mbytes", 1048576);
+static GCounter virtMemoryCounter("PerfMonitor::VIRTmemoryUsage", "mbytes", 0, 1024 * 1024);
 #endif
 #ifdef Q_OS_WIN32
-static GCounter memoryCounter("PerfMonitor::memoryUsage", "mbytes", 1048576);
+static GCounter memoryCounter("PerfMonitor::memoryUsage", "mbytes", 0, 1024 * 1024);
 #endif
 
 PerfMonitorView::PerfMonitorView()
     : MWMDIWindow(tr("Application counters")) {
     tree = new QTreeWidget();
-    tree->setColumnCount(3);
+    tree->setColumnCount(4);
     tree->setSortingEnabled(true);
-    tree->setColumnCount(0);
 
-    tree->headerItem()->setText(0, tr("Name"));
-    tree->headerItem()->setText(1, tr("Value"));
-    tree->headerItem()->setText(2, tr("Scale"));
+    QTreeWidgetItem *treeHeader = tree->headerItem();
+    treeHeader->setText(0, tr("Name"));
+    treeHeader->setText(1, tr("Value"));
+    treeHeader->setText(2, tr("Scale"));
+    treeHeader->setText(3, tr("Reportable"));
 
-    QVBoxLayout *l = new QVBoxLayout();
-    l->setMargin(0);
-    l->addWidget(tree);
-    setLayout(l);
-
-    updateCounter.totalCount = 0;
+    QVBoxLayout *viewLayout = new QVBoxLayout();
+    viewLayout->setMargin(0);
+    viewLayout->addWidget(tree);
+    setLayout(viewLayout);
 
 #ifdef Q_OS_LINUX
     struct sysinfo usage;
     sysinfo(&usage);
-    virtMemoryCounter.totalCount = usage.totalram;
-    rssMemoryCounter.totalCount = 0;    // not supported
+    virtMemoryCounter.value = usage.totalram;
 #endif
 #ifdef Q_OS_WIN32
     PROCESS_MEMORY_COUNTERS memCounter;
     bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    memoryCounter.totalCount = memCounter.WorkingSetSize;
+    memoryCounter.value = memCounter.WorkingSetSize;
 #endif
 
     updateCounters();
@@ -82,51 +77,59 @@ PerfMonitorView::PerfMonitorView()
 }
 
 void PerfMonitorView::timerEvent(QTimerEvent *) {
-    TimeCounter c(&updateCounter);
 #ifdef Q_OS_LINUX
     struct sysinfo usage;
     sysinfo(&usage);
-    virtMemoryCounter.totalCount = usage.totalram;
-    rssMemoryCounter.totalCount = 0;    // not supported
+    virtMemoryCounter.value = usage.totalram;
 #endif
 #ifdef Q_OS_WIN32
     PROCESS_MEMORY_COUNTERS memCounter;
     bool result = GetProcessMemoryInfo(GetCurrentProcess(), &memCounter, sizeof(memCounter));
-    memoryCounter.totalCount = memCounter.WorkingSetSize;
+    memoryCounter.value = memCounter.WorkingSetSize;
 #endif
     updateCounters();
 }
 
 void PerfMonitorView::updateCounters() {
-    foreach (GCounter *c, GCounter::allCounters()) {
-        PerfTreeItem *ci = findCounterItem(c);
-        if (ci != NULL) {
-            ci->updateVisual();
-        } else {
-            ci = new PerfTreeItem(c);
+    GTIMER(c1, t1, "PerfMonitor::updateCounters");
+    bool hasNewCounters = false;
+    const QList<GCounter *> counterList = GCounter::getAllCounters();
+    for (const GCounter *counters : qAsConst(counterList)) {
+        PerfTreeItem *ci = findCounterItem(counters);
+        if (ci == nullptr) {
+            ci = new PerfTreeItem(counters);
             tree->addTopLevelItem(ci);
+            hasNewCounters = true;
+        }
+        ci->update();
+    }
+
+    if (hasNewCounters) {
+        for (int i = 0; i < tree->columnCount(); i++) {
+            tree->resizeColumnToContents(i);
         }
     }
 }
 
 PerfTreeItem *PerfMonitorView::findCounterItem(const GCounter *c) const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        PerfTreeItem *ci = static_cast<PerfTreeItem *>(tree->topLevelItem(i));
-        if (ci->counter == c) {
-            return ci;
+        auto counterTreeItem = static_cast<PerfTreeItem *>(tree->topLevelItem(i));
+        if (counterTreeItem->counter == c) {
+            return counterTreeItem;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-PerfTreeItem::PerfTreeItem(GCounter *c)
-    : counter(c) {
-    updateVisual();
+PerfTreeItem::PerfTreeItem(const GCounter *counter)
+    : counter(counter) {
+    update();
 }
 
-void PerfTreeItem::updateVisual() {
+void PerfTreeItem::update() {
     setText(0, counter->name);
-    setText(1, QString::number(counter->scaledTotal()));
+    setText(1, QString::number(counter->getScaledValue(), 'f'));
     setText(2, counter->suffix);
+    setText(3, counter->isReportable ? "Yes" : "No");
 }
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,8 +115,7 @@ QList<Annotation *> AnnotationGroup::addAnnotations(const QList<SharedAnnotation
     CHECK_OP(os, result);
 
     foreach (const SharedAnnotationData &d, anns) {
-        const U2Feature feature = U2FeatureUtils::exportAnnotationDataToFeatures(d, parentObject->getRootFeatureId(), id, parentObject->getEntityRef().dbiRef, os);
-
+        U2Feature feature = U2FeatureUtils::exportAnnotationDataToFeatures(d, parentObject->getRootFeatureId(), id, parentObject->getEntityRef().dbiRef, os);
         result.append(new Annotation(feature.id, d, this, parentObject));
         SAFE_POINT_OP(os, result);
     }

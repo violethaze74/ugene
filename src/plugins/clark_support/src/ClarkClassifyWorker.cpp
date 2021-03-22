@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -557,7 +557,7 @@ static const QByteArray EXTENDED_REPORT_SUFFIX(",Length,Gamma,1st_assignment,sco
 ClarkClassifyTask::ClarkClassifyTask(const ClarkClassifySettings &settings, const QString &readsUrl, const QString &pairedReadsUrl, const QString &reportUrl)
     : ExternalToolSupportTask(tr("Classify reads with Clark"), TaskFlags_FOSE_COSC),
       cfg(settings), readsUrl(readsUrl), pairedReadsUrl(pairedReadsUrl), reportUrl(reportUrl) {
-    GCOUNTER(cvar, tvar, "ClarkClassifyTask");
+    GCOUNTER(cvar, "ClarkClassifyTask");
 
     SAFE_POINT_EXT(!readsUrl.isEmpty(), setError("Reads URL is empty"), );
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Classification report URL is empty"), );

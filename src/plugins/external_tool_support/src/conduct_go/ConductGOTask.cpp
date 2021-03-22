@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ const QString ConductGOTask::TREAT_NAME("treatment");
 
 ConductGOTask::ConductGOTask(const ConductGOSettings &settings)
     : ExternalToolSupportTask("ConductGO annotation", TaskFlag_CollectChildrenWarnings), settings(settings), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:ConductGOTask");
+    GCOUNTER(cvar, "NGS:ConductGOTask");
 }
 
 ConductGOTask::~ConductGOTask() {

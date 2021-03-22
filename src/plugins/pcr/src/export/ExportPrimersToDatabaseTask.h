@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,8 +34,8 @@ class ExportPrimersToDatabaseTask : public Task {
 public:
     ExportPrimersToDatabaseTask(const QList<Primer> &primers, const U2DbiRef &dbiRef, const QString &folder);
 
-    void run();
-    ReportResult report();
+    void run() override;
+    ReportResult report() override;
 
     const QMap<U2DataId, U2DataId> &getImportedObjectIds() const;
 

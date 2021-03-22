@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ SharedConnectionsDialog::SharedConnectionsDialog(QWidget *parent)
     : QDialog(parent),
       ui(new Ui_SharedConnectionsDialog) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54363912");
+    new HelpButton(this, ui->buttonBox, "60229310");
 
     init();
     connectSignals();
@@ -411,7 +411,7 @@ QString SharedConnectionsDialog::rollName(const QString &preferredName) const {
 
 void SharedConnectionsDialog::countConnectionsToPublicDatabase(const QString &dbiUrl) {
     if (U2DbiUtils::PUBLIC_DATABASE_URL == dbiUrl) {
-        GCOUNTER(cvar, tvar, "Connections to public database");
+        GCOUNTER(cvar, "Connections to public database");
     }
 }
 
@@ -498,7 +498,7 @@ bool SharedConnectionsDialog::checkDbShouldBeUpgraded(const U2DbiRef &ref) {
     if (upgradeDatabase) {
         QObjectScopedPointer<QMessageBox> question = new QMessageBox(QMessageBox::Question, tr(DATABASE_UPGRADE_TITLE), tr(DATABASE_UPGRADE_TEXT), QMessageBox::Ok | QMessageBox::Cancel | QMessageBox::Help, this);
         question->button(QMessageBox::Ok)->setText(tr("Upgrade"));
-        HelpButton(question.data(), question->button(QMessageBox::Help), "54363912");
+        HelpButton(question.data(), question->button(QMessageBox::Help), "60229310");
         question->setDefaultButton(QMessageBox::Cancel);
         const int dialogResult = question->exec();
         CHECK(!question.isNull(), true);

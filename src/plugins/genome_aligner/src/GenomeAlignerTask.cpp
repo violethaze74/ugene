@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
       bunchSize(0),
       index(NULL),
       lastQuery(NULL) {
-    GCOUNTER(cvar, tvar, "GenomeAlignerTask");
+    GCOUNTER(cvar, "GenomeAlignerTask");
     setMaxParallelSubtasks(4);
     hasResults = false;
     readsCount = 0;

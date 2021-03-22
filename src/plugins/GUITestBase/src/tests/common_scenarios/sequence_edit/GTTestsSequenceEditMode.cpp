@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -299,11 +299,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
 
     //5. Select these 6 symbols and do �TRL+C
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 6);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //6. Put cursor in "199 939" position and do �TRL + V
     GTUtilsSequenceView::setCursor(os, 199939);
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
     GTGlobals::sleep();
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"

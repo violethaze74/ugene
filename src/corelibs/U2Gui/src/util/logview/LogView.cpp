@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -340,9 +340,10 @@ void LogViewWidget::addText(const QString &txt) {
 void LogViewWidget::sl_dumpCounters() {
     QString text = "Counters report start ***********************\n";
     addText(text);
-    foreach (GCounter *c, GCounter::allCounters()) {
-        double val = c->scaledTotal();
-        text = c->name + " " + QString::number(val) + " " + c->suffix;
+    const QList<GCounter *> counterList = GCounter::getAllCounters();
+    for (GCounter *counter : qAsConst(counterList)) {
+        double val = counter->getScaledValue();
+        text = counter->name + " " + QString::number(val) + " " + counter->suffix;
         addText(text);
     }
     text = "Counters report end ***********************\n";

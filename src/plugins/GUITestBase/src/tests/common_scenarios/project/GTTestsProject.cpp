@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1181,7 +1181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
     GTUtilsSequenceView::enableEditingMode(os, true);
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int len = GTUtilsSequenceView::getLengthOfSequence(os);
@@ -1202,6 +1202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 
 //ann
 GUI_TEST_CLASS_DEFINITION(test_0072) {
+    Q_UNUSED(os); // TODO: fix the test.
     //Ctrl+Shift+V в GUI-test?
     //UGENE-4907
     /*
@@ -1217,6 +1218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073) {
+    Q_UNUSED(os); // TODO: fix the test!
     //Ctrl+Shift+V в GUI-test?
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");

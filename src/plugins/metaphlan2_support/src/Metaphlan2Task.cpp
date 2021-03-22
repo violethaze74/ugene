@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ Metaphlan2ClassifyTask::Metaphlan2ClassifyTask(const Metaphlan2TaskSettings &_se
       settings(_settings),
       classifyTask(nullptr),
       calculateSequencesNumberTask(nullptr) {
-    GCOUNTER(cvar, tvar, "Metaphlan2ClassifyTask");
+    GCOUNTER(cvar, "Metaphlan2ClassifyTask");
 
     needToCountSequences = settings.analysisType == Metaphlan2WorkerFactory::ANALYSIS_TYPE_MARKER_AB_TABLE_VALUE &&
                            settings.normalizeByMetagenomeSize;

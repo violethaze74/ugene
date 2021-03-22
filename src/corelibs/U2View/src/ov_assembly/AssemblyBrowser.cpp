@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
       zoomInAction(NULL), zoomOutAction(NULL), posSelectorAction(NULL), posSelector(NULL), showCoordsOnRulerAction(NULL), saveScreenShotAction(NULL),
       exportToSamAction(NULL), setReferenceAction(NULL), extractAssemblyRegionAction(NULL), loadReferenceTask(NULL) {
-    GCOUNTER(cvar, tvar, "AssemblyBrowser");
+    GCOUNTER(cvar, "AssemblyBrowser");
     initFont();
     setupActions();
 

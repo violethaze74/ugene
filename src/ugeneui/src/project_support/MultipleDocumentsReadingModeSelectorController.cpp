@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,7 +117,7 @@ QString MultipleDocumentsReadingModeDialog::setupNewUrl() {
 bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl> &_urls, QVariantMap &props, const QMap<QString, qint64> &headerSequenceLengths) {
     setModal(true);
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362423");
+    new HelpButton(this, buttonBox, "60227817");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

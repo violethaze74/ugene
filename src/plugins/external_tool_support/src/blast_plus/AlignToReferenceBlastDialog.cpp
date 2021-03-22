@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Setting
       cmdlineTask(NULL),
       loadRef(NULL),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
-    GCOUNTER(cvar, tvar, "AlignToReferenceBlastCmdlineTask");
+    GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
 }
 
 void AlignToReferenceBlastCmdlineTask::prepare() {
@@ -253,9 +253,9 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
       saveController(NULL),
       savableWidget(this) {
     setupUi(this);
-    GCOUNTER(cvar, tvar, "'Map reads to reference' dialog opening");
+    GCOUNTER(cvar, "'Map reads to reference' dialog opening");
 
-    new HelpButton(this, buttonBox, "54362733");
+    new HelpButton(this, buttonBox, "60228130");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Map"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

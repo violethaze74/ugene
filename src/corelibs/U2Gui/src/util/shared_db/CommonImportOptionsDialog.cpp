@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ namespace U2 {
 CommonImportOptionsDialog::CommonImportOptionsDialog(const QString &baseFolder, const ImportToDatabaseOptions &options, QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363915");
+    new HelpButton(this, buttonBox, "60229313");
     init(baseFolder, options);
 }
 

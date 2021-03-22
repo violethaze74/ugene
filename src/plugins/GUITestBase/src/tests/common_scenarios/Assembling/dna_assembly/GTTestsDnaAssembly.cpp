@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,8 +52,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "NGS data analysis"
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
-
-    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

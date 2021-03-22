@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     : anaglyphStatus(NOT_AVAILABLE), anaglyphSettings(AnaglyphSettings::defaultSettings()) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "54362511");
+    new HelpButton(this, buttonBox, "60227905");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -240,6 +240,18 @@ void BioStruct3DSettingsDialog::setAnaglyphSettings(const AnaglyphSettings &sett
     setRightEyeColor(anaglyphSettings.rightEyeColor);
 
     eyesShiftSlider->setSliderPosition(anaglyphSettings.eyesShift * 100.0);
+}
+
+GlassesColorScheme::GlassesColorScheme() {
+    name = "";
+    leftEyeColor = QColor(0, 0, 0);
+    rightEyeColor = leftEyeColor;
+}
+
+GlassesColorScheme::GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor) {
+    this->name = name;
+    this->leftEyeColor = leftEyeColor;
+    this->rightEyeColor = rightEyeColor;
 }
 
 }    // namespace U2

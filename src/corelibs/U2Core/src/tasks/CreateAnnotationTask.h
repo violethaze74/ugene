@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,11 +35,12 @@ public:
     // Works only in a context of active project
     CreateAnnotationsTask(AnnotationTableObject *o, const QList<SharedAnnotationData> &data, const QString &group = QString());
     CreateAnnotationsTask(const GObjectReference &ref, const QList<SharedAnnotationData> &data, const QString &group = QString());
-    CreateAnnotationsTask(AnnotationTableObject *o, const QMap<QString, QList<SharedAnnotationData>> &data);
+    CreateAnnotationsTask(AnnotationTableObject *annotationTableObject, const QMap<QString, QList<SharedAnnotationData>> &annotationsByGroupMap);
 
-    void run();
-    ReportResult report();
-    AnnotationTableObject *getGObject() const;
+    void run() override;
+    ReportResult report() override;
+
+    AnnotationTableObject *getAnnotationTableObject() const;
     int getAnnotationCount() const;
     QList<Annotation *> getResultAnnotations() const;
 
@@ -47,9 +48,9 @@ private:
     void initAnnObjectRef();
 
     GObjectReference aRef;
-    QPointer<AnnotationTableObject> aobj;
-    QMap<AnnotationGroup *, QList<Annotation *>> group2Annotations;
-    QMap<QString, QList<SharedAnnotationData>> aData;
+    QPointer<AnnotationTableObject> annotationTableObjectPointer;
+    QMap<AnnotationGroup *, QList<Annotation *>> annotationsByGroupMap;
+    QMap<QString, QList<SharedAnnotationData>> annotationDatasByGroupNameMap;
     QList<Annotation *> resultAnnotations;
 };
 

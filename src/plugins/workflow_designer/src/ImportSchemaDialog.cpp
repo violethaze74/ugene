@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ namespace U2 {
 ImportSchemaDialog::ImportSchemaDialog(QWidget *p)
     : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362991");
+    new HelpButton(this, buttonBox, "60228388");
 }
 
 void ImportSchemaDialog::accept() {

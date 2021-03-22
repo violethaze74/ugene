@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment &_inputMs
       objRef(_objRef),
       settings(_settings),
       lock(NULL) {
-    GCOUNTER(cvar, tvar, "TCoffeeSupportTask");
+    GCOUNTER(cvar, "TCoffeeSupportTask");
     saveTemporaryDocumentTask = NULL;
     loadTmpDocumentTask = NULL;
     tCoffeeTask = NULL;
@@ -304,7 +304,7 @@ Task::ReportResult TCoffeeSupportTask::report() {
 TCoffeeWithExtFileSpecifySupportTask::TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings &_settings)
     : Task("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "TCoffeeSupportTask");
+    GCOUNTER(cvar, "TCoffeeSupportTask");
     mAObject = NULL;
     currentDocument = NULL;
     saveDocumentTask = NULL;

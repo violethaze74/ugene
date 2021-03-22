@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 namespace U2 {
 
 void PrimerLibraryMdiWindow::showLibrary() {
-    GCOUNTER(cvar, tvar, "Primer Library");
+    GCOUNTER(cvar, "Primer Library");
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
     SAFE_POINT(NULL != mdiManager, L10N::nullPointerError("MDI Manager"), );
 

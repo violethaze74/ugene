@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ SnpEffDatabaseListModel::SnpEffDatabaseListModel(QObject *parent)
 
 void SnpEffDatabaseListModel::getData(const QString &databaseListFilePath) {
     GTIMER(cvar, tvar, "GetSnpEffDatabaseList");
-    GCOUNTER(cv, ct, "GetSnpEffDatabaseList");
+    GCOUNTER(cv, "GetSnpEffDatabaseList");
 
     QFile file(databaseListFilePath);
     file.open(QFile::ReadOnly);

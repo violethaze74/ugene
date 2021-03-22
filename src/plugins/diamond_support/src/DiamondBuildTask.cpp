@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ namespace U2 {
 DiamondBuildTask::DiamondBuildTask(const DiamondBuildTaskSettings &_settings)
     : ExternalToolSupportTask(tr("Build DIAMOND database"), TaskFlags_NR_FOSE_COSC),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "DiamondBuildTask");
+    GCOUNTER(cvar, "DiamondBuildTask");
     checkSettings();
 }
 

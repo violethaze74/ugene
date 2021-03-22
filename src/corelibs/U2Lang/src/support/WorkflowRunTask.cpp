@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ WorkflowRunTask::WorkflowRunTask(const Schema &sh, const QMap<ActorId, ActorId> 
     : WorkflowAbstractRunner(tr("Execute workflow"),
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
-    GCOUNTER(cvar, tvar, "WorkflowRunTask");
+    GCOUNTER(cvar, "WorkflowRunTask");
     if (NULL == debugInfo) {
         debugInfo = new WorkflowDebugStatus;
     }

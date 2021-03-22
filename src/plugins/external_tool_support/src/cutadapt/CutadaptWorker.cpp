@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -218,7 +218,7 @@ Task *CutAdaptFastqWorker::getTask(const BaseNGSSetting &settings) const {
 //CutAdaptFastqTask
 CutAdaptFastqTask::CutAdaptFastqTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQCutAdaptTask");
+    GCOUNTER(cvar, "NGS:FASTQCutAdaptTask");
 }
 
 void CutAdaptFastqTask::prepareStep() {

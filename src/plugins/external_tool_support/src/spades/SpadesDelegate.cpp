@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -143,7 +143,7 @@ SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
     : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "54363147");
+    new HelpButton(this, buttonBox, "60228544");
     setItemsData();
     setValue(value);
 }

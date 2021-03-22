@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,6 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
 
 #include "ExportPrimersToDatabaseTask.h"
 
@@ -42,7 +41,7 @@ ExportPrimersToLocalFileTask::ExportPrimersToLocalFileTask(const QList<Primer> &
       format(AppContext::getDocumentFormatRegistry()->getFormatById(formatId)),
       url(localFilePath) {
     SAFE_POINT_EXT(!primers.isEmpty(), setError(L10N::badArgument("primers list")), );
-    SAFE_POINT_EXT(NULL != format, setError(L10N::badArgument("document format")), );
+    SAFE_POINT_EXT(format != nullptr, setError(L10N::badArgument("document format")), );
     SAFE_POINT_EXT(!localFilePath.isEmpty(), setError(L10N::badArgument("file path")), );
 }
 
@@ -54,8 +53,8 @@ QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
     CHECK_OP(stateInfo, result);
 
-    ExportPrimersToDatabaseTask *convertTask = qobject_cast<ExportPrimersToDatabaseTask *>(subTask);
-    CHECK(NULL != convertTask, result);
+    auto convertTask = qobject_cast<ExportPrimersToDatabaseTask *>(subTask);
+    CHECK(convertTask != nullptr, result);
 
     Document *document = prepareDocument();
     CHECK_OP(stateInfo, result);
@@ -69,7 +68,7 @@ QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
 
 Document *ExportPrimersToLocalFileTask::prepareDocument() {
     IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(IOAdapterUtils::url2io(url));
-    SAFE_POINT_EXT(NULL != ioAdapterFactory, setError(L10N::nullPointerError("I/O adapter factory")), NULL);
+    SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("I/O adapter factory")), nullptr);
     return format->createNewLoadedDocument(ioAdapterFactory, url, stateInfo);
 }
 
@@ -77,24 +76,24 @@ void ExportPrimersToLocalFileTask::addObjects(Document *document, ExportPrimersT
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
     DbiConnection connection(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != connection.dbi, setError(L10N::nullPointerError("dbi")), );
+    SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("dbi")), );
     U2ObjectDbi *objectDbi = connection.dbi->getObjectDbi();
-    SAFE_POINT_EXT(NULL != objectDbi, setError(L10N::nullPointerError("object dbi")), );
+    SAFE_POINT_EXT(objectDbi != nullptr, setError(L10N::nullPointerError("object dbi")), );
 
-    const QMap<U2DataId, U2DataId> objectIds = convertTask->getImportedObjectIds();
+    const QMap<U2DataId, U2DataId> &objectIds = convertTask->getImportedObjectIds();
     QMap<U2DataId, U2DataId>::ConstIterator iterator = objectIds.constBegin();
     while (iterator != objectIds.constEnd()) {
         U2Object sequence;
         objectDbi->getObject(sequence, iterator.key(), stateInfo);
         CHECK_OP(stateInfo, );
-        U2SequenceObject *sequenceObject = new U2SequenceObject(sequence.visualName, U2EntityRef(dbiRef, iterator.key()));
+        auto sequenceObject = new U2SequenceObject(sequence.visualName, U2EntityRef(dbiRef, iterator.key()));
         document->addObject(sequenceObject);
 
         if (format->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)) {
             U2Object annotationTable;
             objectDbi->getObject(annotationTable, iterator.value(), stateInfo);
             CHECK_OP(stateInfo, );
-            AnnotationTableObject *annotationTableObject = new AnnotationTableObject(annotationTable.visualName, U2EntityRef(dbiRef, iterator.value()));
+            auto annotationTableObject = new AnnotationTableObject(annotationTable.visualName, U2EntityRef(dbiRef, iterator.value()));
             annotationTableObject->addObjectRelation(sequenceObject, ObjectRole_Sequence);
             document->addObject(annotationTableObject);
         }

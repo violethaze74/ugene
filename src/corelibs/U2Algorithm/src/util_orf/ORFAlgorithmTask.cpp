@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ namespace U2 {
 
 ORFFindTask::ORFFindTask(const ORFAlgorithmSettings &s, const U2EntityRef &_entityRef)
     : Task(tr("ORF find"), TaskFlag_None), config(s), entityRef(_entityRef) {
-    GCOUNTER(cvar, tvar, "ORFFindTask");
+    GCOUNTER(cvar, "ORFFindTask");
     tpm = Progress_Manual;
     assert(config.proteinTT && config.proteinTT->isThree2One());
 }

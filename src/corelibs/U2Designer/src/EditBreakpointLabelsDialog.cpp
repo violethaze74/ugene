@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ EditBreakpointLabelsDialog::EditBreakpointLabelsDialog(const QStringList &existi
       newLabelsAdded(),
       ui(new Ui_EditBreakpointLabelsDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54363010");
+    new HelpButton(this, ui->buttonBox, "60228407");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

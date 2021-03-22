@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -964,7 +964,7 @@ void WorkflowView::addProcess(Actor *proc, const QPointF &pos) {
     ActorPrototype *addedProto = it->getProcess()->getProto();
     uiLog.trace(addedProto->getDisplayName() + " added");
     if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(addedProto->getId()) != nullptr) {
-        GCOUNTER(cvar, tvar, "Element with external tool is added to the scene");
+        GCOUNTER(cvar, "Element with external tool is added to the scene");
     }
 
     update();
@@ -1063,10 +1063,10 @@ void WorkflowView::sl_setStyle() {
     }
     foreach (QGraphicsItem *it, lst) {
         switch (it->type()) {
-        case WorkflowProcessItemType:
-        case WorkflowPortItemType:
-        case WorkflowBusItemType:
-            (static_cast<StyledItem *>(it))->setStyle(s);
+            case WorkflowProcessItemType:
+            case WorkflowPortItemType:
+            case WorkflowBusItemType:
+                (static_cast<StyledItem *>(it))->setStyle(s);
         }
     }
     scene->update();
@@ -1396,13 +1396,13 @@ void WorkflowView::localHostLaunch() {
     }
 
     if (meta.isSample()) {
-        GRUNTIME_NAMED_COUNTER(cvar, tvar, meta.name, "WDSample:run");
+        GCounter::increment(meta.name, "WDSample:run");
     }
 
     const Schema *s = getSchema();
     foreach (const Actor *actor, schema->getProcesses()) {
         if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
-            GCOUNTER(cvar, tvar, "Element(s) with command line tool is present in the launched workflow");
+            GCOUNTER(cvar, "Element(s) with command line tool is present in the launched workflow");
             break;
         }
     }
@@ -1794,8 +1794,8 @@ void WorkflowView::sl_pasteSample(const QString &s) {
         rescale();
         sl_refreshActorDocs();
         meta.setSampleMark(true);
-        GRUNTIME_NAMED_COUNTER(c, t, meta.name, "WDSample:open");
-        checkAutoRunWizard();
+        GCounter::increment(meta.name, "WDSample:open");
+        startFirstAutoRunWizard();
     } else {
         breakpointView->clear();
         scene->clearScene();
@@ -1993,11 +1993,22 @@ void WorkflowView::sl_saveSceneAs() {
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
 }
 
-void WorkflowView::runWizard(Wizard *w) {
-    WizardController controller(schema, w);
+void WorkflowView::startWizard(Wizard *wizard) {
+    auto viewPointer = new QPointer<WorkflowView>(this);
+    QTimer::singleShot(100, [this, wizard, viewPointer]() {
+        // Check that the view is not closed/destroyed before running the wizard. */
+        if (!viewPointer->isNull()) {
+            runWizardAndHandleResult(wizard);
+        }
+        delete viewPointer;
+    });
+}
+
+void WorkflowView::runWizardAndHandleResult(Wizard *wizard) {
+    WizardController controller(schema, wizard);
     QWizard *gui = controller.createGui();
     if (gui->exec() && !controller.isBroken()) {
-        QString result = w->getResult(controller.getVariables());
+        QString result = wizard->getResult(controller.getVariables());
         if (!result.isEmpty()) {
             controller.applyChanges(meta);
             loadWizardResult(result);
@@ -2038,7 +2049,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     recreateScene();
     sl_onSceneLoaded();
     if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
-        runWizard(schema->getWizards().first());
+        startWizard(schema->getWizards().first());
     }
 }
 
@@ -2055,18 +2066,19 @@ void WorkflowView::procItemAdded() {
     scene->views().at(0)->unsetCursor();
 }
 
-void WorkflowView::checkAutoRunWizard() {
-    foreach (Wizard *w, schema->getWizards()) {
-        if (w->isAutoRun()) {
-            runWizard(w);
-            break;
+void WorkflowView::startFirstAutoRunWizard() {
+    const QList<Wizard *> wizardList = schema->getWizards();
+    for (Wizard *wizard : qAsConst(wizardList)) {
+        if (wizard->isAutoRun()) {
+            startWizard(wizard);
+            return;
         }
     }
 }
 
 void WorkflowView::sl_showWizard() {
     if (schema->getWizards().size() > 0) {
-        runWizard(schema->getWizards().first());
+        startWizard(schema->getWizards().first());
     }
 }
 
@@ -2202,8 +2214,8 @@ void WorkflowView::sl_onSceneLoaded() {
     rescale();
     sl_refreshActorDocs();
     hideDashboards();
-    checkAutoRunWizard();
     tabs->setCurrentIndex(ElementsTab);
+    startFirstAutoRunWizard();
 }
 
 void WorkflowView::sl_onSceneSaved() {
@@ -2321,38 +2333,38 @@ const Workflow::Metadata &WorkflowView::updateMeta() {
     meta.resetVisual();
     foreach (QGraphicsItem *it, scene->items()) {
         switch (it->type()) {
-        case WorkflowProcessItemType: {
-            WorkflowProcessItem *proc = qgraphicsitem_cast<WorkflowProcessItem *>(it);
-            ActorVisualData visual(proc->getProcess()->getId());
-            visual.setPos(proc->pos());
-            ItemViewStyle *style = proc->getStyleById(proc->getStyle());
-            if (NULL != style) {
-                visual.setStyle(style->getId());
-                if (style->getBgColor() != style->defaultColor()) {
-                    visual.setColor(style->getBgColor());
-                }
-                if (style->defaultFont() != QFont()) {
-                    visual.setFont(style->defaultFont());
-                }
-                if (ItemStyles::EXTENDED == style->getId()) {
-                    ExtendedProcStyle *eStyle = dynamic_cast<ExtendedProcStyle *>(style);
-                    if (!eStyle->isAutoResized()) {
-                        visual.setRect(eStyle->boundingRect());
+            case WorkflowProcessItemType: {
+                WorkflowProcessItem *proc = qgraphicsitem_cast<WorkflowProcessItem *>(it);
+                ActorVisualData visual(proc->getProcess()->getId());
+                visual.setPos(proc->pos());
+                ItemViewStyle *style = proc->getStyleById(proc->getStyle());
+                if (NULL != style) {
+                    visual.setStyle(style->getId());
+                    if (style->getBgColor() != style->defaultColor()) {
+                        visual.setColor(style->getBgColor());
+                    }
+                    if (style->defaultFont() != QFont()) {
+                        visual.setFont(style->defaultFont());
+                    }
+                    if (ItemStyles::EXTENDED == style->getId()) {
+                        ExtendedProcStyle *eStyle = dynamic_cast<ExtendedProcStyle *>(style);
+                        if (!eStyle->isAutoResized()) {
+                            visual.setRect(eStyle->boundingRect());
+                        }
                     }
                 }
-            }
-            foreach (WorkflowPortItem *port, proc->getPortItems()) {
-                visual.setPortAngle(port->getPort()->getId(), port->getOrientarion());
-            }
-            meta.setActorVisualData(visual);
-        } break;
-        case WorkflowBusItemType: {
-            WorkflowBusItem *bus = qgraphicsitem_cast<WorkflowBusItem *>(it);
-            Port *src = bus->getBus()->source();
-            Port *dst = bus->getBus()->destination();
-            QPointF p = bus->getText()->pos();
-            meta.setTextPos(src->owner()->getId(), src->getId(), dst->owner()->getId(), dst->getId(), p);
-        } break;
+                foreach (WorkflowPortItem *port, proc->getPortItems()) {
+                    visual.setPortAngle(port->getPort()->getId(), port->getOrientarion());
+                }
+                meta.setActorVisualData(visual);
+            } break;
+            case WorkflowBusItemType: {
+                WorkflowBusItem *bus = qgraphicsitem_cast<WorkflowBusItem *>(it);
+                Port *src = bus->getBus()->source();
+                Port *dst = bus->getBus()->destination();
+                QPointF p = bus->getText()->pos();
+                meta.setTextPos(src->owner()->getId(), src->getId(), dst->owner()->getId(), dst->getId(), p);
+            } break;
         }
     }
     return meta;
@@ -2457,13 +2469,13 @@ void WorkflowScene::sl_deleteItem() {
         WorkflowProcessItem *proc = qgraphicsitem_cast<WorkflowProcessItem *>(it);
         WorkflowBusItem *bus = qgraphicsitem_cast<WorkflowBusItem *>(it);
         switch (it->type()) {
-        case WorkflowProcessItemType:
-            items << proc;
-            break;
-        case WorkflowBusItemType:
-            controller->removeBusItem(bus);
-            setModified();
-            break;
+            case WorkflowProcessItemType:
+                items << proc;
+                break;
+            case WorkflowBusItemType:
+                controller->removeBusItem(bus);
+                setModified();
+                break;
         }
     }
     foreach (WorkflowProcessItem *it, items) {

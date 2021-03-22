@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,7 +132,7 @@ void GTUtilsPrimerLibrary::selectPrimers(HI::GUITestOpStatus &os, const QList<in
 
 void GTUtilsPrimerLibrary::selectAll(HI::GUITestOpStatus &os) {
     GTWidget::click(os, table(os));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 }
 
 QTableView *GTUtilsPrimerLibrary::table(HI::GUITestOpStatus &os) {

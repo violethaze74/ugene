@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,8 +115,8 @@ void AssemblyReadsArea::createMenu() {
     copyDataAction->setObjectName("copy_read_information");
     connect(copyDataAction, SIGNAL(triggered()), SLOT(sl_onCopyReadData()));
 
-    QAction *copyPosAction = readMenu->addAction(tr("Copy current position to clipboard"));
-    connect(copyPosAction, SIGNAL(triggered()), SLOT(sl_onCopyCurPos()));
+    QAction *copyPositionAction = readMenu->addAction(tr("Copy current position to clipboard"));
+    connect(copyPositionAction, SIGNAL(triggered()), SLOT(sl_copyPositionToClipboard()));
 
     QMenu *exportMenu = readMenu->addMenu(tr("Export"));
     exportMenu->menuAction()->setObjectName("Export");
@@ -382,7 +382,7 @@ void AssemblyReadsArea::showDdBusyScreen() {
 
 void AssemblyReadsArea::drawReads(QPainter &p) {
     GTIMER(c1, t1, "AssemblyReadsArea::drawReads");
-    GCOUNTER(c2, t2, "AssemblyReadsArea::drawReads");
+    GCOUNTER(c2, "AssemblyReadsArea::drawReads");
     qint64 t0 = GTimer::currentTimeMicros();
     coveredRegionsLabel.hide();
     bdBusyLabel.hide();
@@ -880,9 +880,9 @@ void AssemblyReadsArea::sl_onCopyReadData() {
     QApplication::clipboard()->setText(AssemblyReadsAreaHint::getReadDataAsString(read));
 }
 
-void AssemblyReadsArea::sl_onCopyCurPos() {
-    qint64 asmPos = browser->calcAsmPosX(curPos.x()) + 1;    // displayed are 1-based coordinates
-    QApplication::clipboard()->setText(FormatUtils::formatNumberWithSeparators(asmPos));
+void AssemblyReadsArea::sl_copyPositionToClipboard() {
+    qint64 assemblyPosition = browser->calcAsmPosX(curPos.x()) + 1;    // User values starts from 1.
+    QApplication::clipboard()->setText(QString::number(assemblyPosition));
 }
 
 void AssemblyReadsArea::updateMenuActions() {
@@ -893,7 +893,7 @@ void AssemblyReadsArea::updateMenuActions() {
 }
 
 void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead> &reads) {
-    GCOUNTER(cvar, tvar, "AssemblyReadsArea:exportReads");
+    GCOUNTER(cvar, "AssemblyReadsArea:exportReads");
 
     SAFE_POINT(!reads.isEmpty(), "No reads supplied for export", );
     QObjectScopedPointer<ExportReadsDialog> dlg = new ExportReadsDialog(this,

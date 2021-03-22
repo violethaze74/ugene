@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ ConvertAssemblyToSamDialog::ConvertAssemblyToSamDialog(QWidget *parent, QString 
       ui(new Ui_AssemblyToSamDialog),
       saveController(NULL) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54363865");
+    new HelpButton(this, ui->buttonBox, "60229263");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Convert"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

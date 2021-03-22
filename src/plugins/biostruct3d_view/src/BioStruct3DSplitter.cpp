@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -280,6 +280,10 @@ QSplitter *BioStruct3DSplitter::getParentSplitter() {
     }
 
     return parentSplitter;
+}
+
+QAction *BioStruct3DSplitter::getCloseSplitterAction() {
+    return closeAction;
 }
 
 void BioStruct3DSplitter::adaptSize(int numVisibleWidgets) {
@@ -738,6 +742,10 @@ bool DBLinksFile::load() {
     file.close();
 
     return true;
+}
+
+QList<DBLink> DBLinksFile::getLinks() {
+    return links;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

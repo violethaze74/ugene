@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject *object, const U2
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       dstObject(NULL) {
-    GCOUNTER(cvar, tvar, "ImportObjectToDatabaseTask");
+    GCOUNTER(cvar, "ImportObjectToDatabaseTask");
     CHECK_EXT(NULL != object, setError(tr("Invalid object to import")), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
     tpm = Progress_Manual;

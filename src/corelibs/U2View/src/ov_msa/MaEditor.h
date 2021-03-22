@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,8 +41,6 @@ namespace U2 {
 #define MSAE_MENU_ADVANCED "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD "MSAE_MENU_LOAD_SEQ"
 
-#define MOBJECT_MIN_FONT_SIZE 8
-#define MOBJECT_MAX_FONT_SIZE 18
 #define MOBJECT_MIN_COLUMN_WIDTH 1
 
 #define MOBJECT_SETTINGS_COLOR_NUCL "color_nucl"
@@ -69,6 +67,31 @@ public:
     QPoint clickPoint;
     qint64 seqId;
     QVariantMap highlightSchemeSettings;
+};
+
+/** Set of row ordering modes supported by MaEditor. */
+enum class MaEditorRowOrderMode {
+    /**
+     * The default order of sequences in the MA: same as in the original source file.
+     * Note: there are no collapsible groups support in this mode.
+     */
+    Original,
+
+    /**
+     * Rows are ordered by sequence content similarity.
+     * Sequences with the equal content are joined into collapsible groups.
+     * This mode is managed/supported internally by MA editor: MA editor automatically rebuilds groups when MA content changes.
+     * The order is not saved to the file and is kept in the view memory only.
+     * This mode allows to re-order read-only MA objects.
+     */
+    Sequence,
+
+    /**
+     * Sequences are ordered by some external manager (e.g. tree-view) and can be re-ordered by user (e.g. drag & drop).
+     * The order is not saved to the file and is kept in the view memory only.
+     * This mode allows to re-order read-only MA objects.
+     */
+    Free
 };
 
 class U2VIEW_EXPORT MaEditor : public GObjectView {
@@ -165,6 +188,18 @@ public:
     /** Sets selection to the given view rows. */
     virtual void selectRows(int firstViewRowIndex, int numberOfRows);
 
+    /** Returns a unified bounding rect for a single sequence character for the given font. */
+    QRect getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const;
+
+    /** Returns active row ordering mode. See docs for 'MaEditorRowOrderMode' enum for details. */
+    MaEditorRowOrderMode getRowOrderMode() const;
+
+    /**
+     * Updates currently active row order mode.
+     * This is a trivial method with no other actions/callbacks.
+     */
+    void setRowOrderMode(MaEditorRowOrderMode mode);
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -190,7 +225,12 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
-    void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+
+    /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
+    virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+
+    /** The slot is called each time selection is changed. By default calls 'updateActions'. */
+    virtual void sl_selectionChanged(const MaEditorSelection &ma, const MaEditorSelection &modInfo);
 
 private slots:
     void sl_resetColumnWidthCache();
@@ -202,14 +242,16 @@ protected:
     virtual void initFont();
     void updateResizeMode();
 
-    void addCopyMenu(QMenu *m);
+    virtual void addCopyPasteMenu(QMenu *m);
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
     void addAlignMenu(QMenu *m);    // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
-    void calcFontPixelToPointSizeCoef();
+
+    /** Updates font metrics like fontPixelToPointSize, minimum-font-size. Called on every font update. */
+    void updateFontMetrics();
 
     void setFirstVisiblePosSeq(int firstPos, int firstSeq);
     void setZoomFactor(double newZoomFactor);
@@ -221,6 +263,17 @@ protected:
 
     QFont font;
     ResizeMode resizeMode;
+
+    /** Minimum font size to render a sequence. Then zoomed-out below this value no sequence text is shown. */
+    int minimumFontPointSize;
+
+    /**
+     * Maximum font size to render a sequence. Then zoomed-in above this value sequence text stops to grow.
+     * Note: since MA editor does not allow a cell size to grow beyond the size defined by the maximumFontPointSize
+     *  this value indirectly defines the maximum zoom level.
+     */
+    int maximumFontPointSize;
+
     SNPSettings snp;
     double zoomFactor;
     double fontPixelToPointSize;
@@ -228,6 +281,9 @@ protected:
 
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
     QPoint cursorPosition;
+
+    /** Active row ordering mode in the view. */
+    MaEditorRowOrderMode rowOrderMode;
 
 public:
     QAction *saveAlignmentAction;

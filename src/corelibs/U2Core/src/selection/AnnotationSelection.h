@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,6 +43,9 @@ public:
 
     /** Adds annotation to selection. Does nothing if annotation is already in the selection. */
     void add(Annotation *a);
+
+    /** Clears the current selection and adds all annotation from the list into the selection. */
+    void setAnnotations(QList<Annotation *> annotationList);
 
     void remove(Annotation *a);
 

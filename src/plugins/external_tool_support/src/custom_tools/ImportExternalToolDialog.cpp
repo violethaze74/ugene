@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ ImportExternalToolDialog::ImportExternalToolDialog(QWidget *_parent)
     : QDialog(_parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "54362340");
+    new HelpButton(this, buttonBox, "60227733");
 
     connect(lePath, SIGNAL(textChanged(const QString &)), SLOT(sl_pathChanged()));
     connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));

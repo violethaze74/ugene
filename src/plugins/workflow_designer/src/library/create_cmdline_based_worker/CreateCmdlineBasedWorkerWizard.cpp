@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,7 +85,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig *_sc
       initialConfig(nullptr),
       config(nullptr),
       schemaConfig(_schemaConfig) {
-    GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for creating");
+    GCOUNTER(cvar, "\"Configure Element with External Tool\" dialog is opened for creating");
     init();
 }
 
@@ -95,7 +95,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig *_sc
       config(nullptr),
       schemaConfig(_schemaConfig) {
     SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
-    GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is opened for editing");
+    GCOUNTER(cvar, "\"Configure Element with External Tool\" dialog is opened for editing");
     initialConfig = new ExternalProcessConfig(*_initialConfig);
     init();
 }
@@ -226,9 +226,9 @@ void CreateCmdlineBasedWorkerWizard::accept() {
         }
     }
     if (nullptr != initialConfig) {
-        GCOUNTER(cvar, tvar, "\"Configure Element with External Tool\" dialog is finished for editing");
+        GCOUNTER(cvar, "\"Configure Element with External Tool\" dialog is finished for editing");
     } else {
-        GCOUNTER(cvar1, tvar1, "\"Configure Element with External Tool\" dialog is finished for creating");
+        GCOUNTER(cvar1, "\"Configure Element with External Tool\" dialog is finished for creating");
     }
     config = actualConfig.take();
     done(QDialog::Accepted);

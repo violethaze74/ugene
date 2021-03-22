@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,10 +48,10 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt *maEd
     seqArea = sa;
     editor = ed;
 
-    lw = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, true);
-    lw->setObjectName("msa_editor_offsets_view_widget_left");
-    rw = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, false);
-    rw->setObjectName("msa_editor_offsets_view_widget_right");
+    leftWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, true);
+    leftWidget->setObjectName("msa_editor_offsets_view_widget_left");
+    rightWidget = new MSAEditorOffsetsViewWidget(maEditorUi, ed, seqArea, false);
+    rightWidget->setObjectName("msa_editor_offsets_view_widget_right");
 
     connect(maEditorUi->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_updateOffsets()));
@@ -65,26 +65,14 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt *maEd
     Settings *s = AppContext::getSettings();
     bool showOffsets = s->getValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, true).toBool();
 
-    viewAction = new QAction(tr("Show offsets"), this);
-    viewAction->setObjectName("show_offsets");
-    viewAction->setCheckable(true);
-    viewAction->setChecked(showOffsets);
-    connect(viewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
+    toggleColumnsViewAction = new QAction(tr("Show offsets"), this);
+    toggleColumnsViewAction->setObjectName("show_offsets");
+    toggleColumnsViewAction->setCheckable(true);
+    toggleColumnsViewAction->setChecked(showOffsets);
+    connect(toggleColumnsViewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
     updateOffsets();
-}
-
-MSAEditorOffsetsViewWidget *MSAEditorOffsetsViewController::getLeftWidget() const {
-    return lw;
-}
-
-MSAEditorOffsetsViewWidget *MSAEditorOffsetsViewController::getRightWidget() const {
-    return rw;
-}
-
-QAction *MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
-    return viewAction;
 }
 
 void MSAEditorOffsetsViewController::sl_updateOffsets() {
@@ -108,14 +96,14 @@ void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
 }
 
 void MSAEditorOffsetsViewController::updateOffsets() {
-    if (lw->parentWidget() != NULL) {
-        const bool vis = viewAction->isChecked();
-        lw->setVisible(vis);
-        rw->setVisible(vis);
+    if (leftWidget->parentWidget() != NULL) {
+        const bool vis = toggleColumnsViewAction->isChecked();
+        leftWidget->setVisible(vis);
+        rightWidget->setVisible(vis);
     }
 
-    lw->updateView();
-    rw->updateView();
+    leftWidget->updateView();
+    rightWidget->updateView();
 }
 
 MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditorWgt *maEditorUi, MaEditor *ed, MaEditorSequenceArea *sa, bool sp)

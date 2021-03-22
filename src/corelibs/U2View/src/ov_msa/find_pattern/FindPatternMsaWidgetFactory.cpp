@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString FindPatternMsaWidgetFactory::GROUP_ID = "OP_MSA_FIND_PATTERN_WIDGET";
 const QString FindPatternMsaWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
-const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "54362625";
+const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "60228019";
 
 FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

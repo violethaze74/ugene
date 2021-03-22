@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 DeleteGapsDialog::DeleteGapsDialog(QWidget *parent, int rowNum)
     : QDialog(parent), ui(new Ui_DeleteGapsDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54362636");
+    new HelpButton(this, ui->buttonBox, "60228032");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Remove"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

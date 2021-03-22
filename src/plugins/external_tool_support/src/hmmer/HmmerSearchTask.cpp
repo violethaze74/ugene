@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
       parseTask(NULL),
       removeWorkingDir(false),
       hmm2Mode(false) {
-    GCOUNTER(cvar, tvar, "HMMER Search");
+    GCOUNTER(cvar, "HMMER Search");
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 }
 

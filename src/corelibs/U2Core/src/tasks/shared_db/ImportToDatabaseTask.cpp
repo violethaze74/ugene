@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ namespace U2 {
 
 ImportToDatabaseTask::ImportToDatabaseTask(QList<U2::Task *> tasks, int maxParallelSubtasks)
     : MultiTask(tr("Import to the database"), tasks, false, TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_PropagateSubtaskDesc) {
-    GCOUNTER(cvar, tvar, "ImportToDatabaseTask");
+    GCOUNTER(cvar, "ImportToDatabaseTask");
     setMaxParallelSubtasks(maxParallelSubtasks);
     startTime = GTimer::currentTimeMicros();
 }

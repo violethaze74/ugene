@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget *p, SequenceObjectContext *ctx, G
       baseView(_baseView),
       vName(_vName),
       graphDrawer(NULL) {
-    GCOUNTER(cvar, tvar, "GSequenceGraphView");
+    GCOUNTER(cvar, "GSequenceGraphView");
     assert(baseView);
 
     visualPropertiesAction = new QAction(tr("Graph settings..."), this);

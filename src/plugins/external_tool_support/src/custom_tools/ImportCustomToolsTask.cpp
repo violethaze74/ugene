@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ ImportCustomToolsTask::ImportCustomToolsTask(const QString &_url)
     : Task(tr("Import custom external tools configuration"), TaskFlags_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
       url(_url),
       registerTask(nullptr) {
-    GCOUNTER(cvar, tvar, "ImportCustomToolsTask");
+    GCOUNTER(cvar, "ImportCustomToolsTask");
 }
 
 void ImportCustomToolsTask::prepare() {

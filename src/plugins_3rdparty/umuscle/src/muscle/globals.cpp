@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #if	WIN32
 #include <windows.h>
 #include <share.h>

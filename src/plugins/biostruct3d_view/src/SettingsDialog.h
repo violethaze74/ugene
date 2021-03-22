@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,17 +37,9 @@ public:
 
     QString name;
 
-    GlassesColorScheme() {
-        name = "";
-        leftEyeColor = QColor(0, 0, 0);
-        rightEyeColor = leftEyeColor;
-    }
+    GlassesColorScheme();
 
-    GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor) {
-        this->name = name;
-        this->leftEyeColor = leftEyeColor;
-        this->rightEyeColor = rightEyeColor;
-    }
+    GlassesColorScheme(QString name, QColor leftEyeColor, QColor rightEyeColor);
 };
 
 class BioStruct3DSettingsDialog : public QDialog, private Ui_SettingsDialog {

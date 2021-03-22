@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin* pl, QW
       saveController(NULL) {
     task = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363773");
+    new HelpButton(this, buttonBox, "60229170");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
    
@@ -184,7 +184,7 @@ void SiteconBuildDialogController::reject() {
 SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin) 
 : Task (tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy())
 {
-    GCOUNTER( cvar, tvar, "SiteconBuildTask" );
+    GCOUNTER( cvar, "SiteconBuildTask" );
     tpm = Task::Progress_Manual;
     m.aliURL = origin;
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -160,7 +160,7 @@ Task *CASAVAFilterWorker::getTask(const BaseNGSSetting &settings) const {
 //CASAVAFilterTask
 CASAVAFilterTask::CASAVAFilterTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:CASAVAFilterTask");
+    GCOUNTER(cvar, "NGS:CASAVAFilterTask");
 }
 
 void CASAVAFilterTask::runStep() {
@@ -324,7 +324,7 @@ Task *FastqQualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
 //QualityTrimTask
 FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQQualityTrimmerTask");
+    GCOUNTER(cvar, "NGS:FASTQQualityTrimmerTask");
 }
 
 // diagnose
@@ -555,7 +555,7 @@ Task *MergeFastqWorker::getTask(const BaseNGSSetting &settings) const {
 //MergeFastqTask
 MergeFastqTask::MergeFastqTask(const BaseNGSSetting &settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, tvar, "NGS:FASTQMergeFastqmerTask");
+    GCOUNTER(cvar, "NGS:FASTQMergeFastqmerTask");
 }
 
 void MergeFastqTask::runStep() {

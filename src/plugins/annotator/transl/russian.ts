@@ -220,7 +220,7 @@
 <context>
     <name>U2::CustomPatternAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/CustomPatternAnnotationTask.cpp" line="204"/>
+        <location filename="../src/CustomPatternAnnotationTask.cpp" line="219"/>
         <source>Plasmid features</source>
         <translation>Аннотирование плазмид</translation>
     </message>

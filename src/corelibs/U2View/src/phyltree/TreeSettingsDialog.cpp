@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ namespace U2 {
 TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout)
     : BaseSettingsDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362695");
+    new HelpButton(this, buttonBox, "60228092");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -44,23 +44,22 @@ TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settin
 
     scaleSpinBox->setValue(settings[SCALEBAR_RANGE].toDouble());
 
-    treeViewCombo->addItem(treeDefaultText());
-    treeViewCombo->addItem(treePhylogramText());
-    treeViewCombo->addItem(treeCladogramText());
+    treeViewCombo->addItem(getDefaultTreeModeText());
+    treeViewCombo->addItem(getPhylogramTreeModeText());
+    treeViewCombo->addItem(getCladogramTreeModeText());
 
     switch (settings[BRANCHES_TRANSFORMATION_TYPE].toUInt()) {
-    case DEFAULT:
-        treeViewCombo->setCurrentIndex(treeViewCombo->findText(treeDefaultText()));
-        break;
-    case PHYLOGRAM:
-        treeViewCombo->setCurrentIndex(treeViewCombo->findText(treePhylogramText()));
-        break;
-    case CLADOGRAM:
-        treeViewCombo->setCurrentIndex(treeViewCombo->findText(treeCladogramText()));
-        break;
-    default:
-        assert(false && "Unexpected tree type value.");
-        break;
+        case DEFAULT:
+            treeViewCombo->setCurrentIndex(treeViewCombo->findText(getDefaultTreeModeText()));
+            break;
+        case PHYLOGRAM:
+            treeViewCombo->setCurrentIndex(treeViewCombo->findText(getPhylogramTreeModeText()));
+            break;
+        case CLADOGRAM:
+            treeViewCombo->setCurrentIndex(treeViewCombo->findText(getCladogramTreeModeText()));
+            break;
+        default:
+            assert(false && "Unexpected tree type value.");
     }
 
     connect(treeViewCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_treeTypeChanged(int)));
@@ -72,32 +71,34 @@ void TreeSettingsDialog::sl_treeTypeChanged(int value) {
 }
 
 void TreeSettingsDialog::accept() {
-    changedSettings[HEIGHT_COEF] = heightSlider->value();
-    changedSettings[WIDTH_COEF] = widthlSlider->value();
+    updatedSettings[HEIGHT_COEF] = heightSlider->value();
+    updatedSettings[WIDTH_COEF] = widthlSlider->value();
 
-    if (treeViewCombo->currentText() == treeDefaultText()) {
-        changedSettings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
-    } else if (treeViewCombo->currentText() == treePhylogramText()) {
-        changedSettings[BRANCHES_TRANSFORMATION_TYPE] = PHYLOGRAM;
-    } else if (treeViewCombo->currentText() == treeCladogramText()) {
-        changedSettings[BRANCHES_TRANSFORMATION_TYPE] = CLADOGRAM;
+    if (treeViewCombo->currentText() == getDefaultTreeModeText()) {
+        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
+    } else if (treeViewCombo->currentText() == getPhylogramTreeModeText()) {
+        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = PHYLOGRAM;
+    } else if (treeViewCombo->currentText() == getCladogramTreeModeText()) {
+        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = CLADOGRAM;
     } else {
         FAIL("Unexpected tree type value", );
     }
     if (scaleSpinBox->isEnabled()) {
-        changedSettings[SCALEBAR_RANGE] = scaleSpinBox->value();
+        updatedSettings[SCALEBAR_RANGE] = scaleSpinBox->value();
     }
 
     QDialog::accept();
 }
 
-QString TreeSettingsDialog::treeDefaultText() {
+QString TreeSettingsDialog::getDefaultTreeModeText() {
     return tr("Default");
 }
-QString TreeSettingsDialog::treePhylogramText() {
+
+QString TreeSettingsDialog::getPhylogramTreeModeText() {
     return tr("Phylogram");
 }
-QString TreeSettingsDialog::treeCladogramText() {
+
+QString TreeSettingsDialog::getCladogramTreeModeText() {
     return tr("Cladogram");
 }
 

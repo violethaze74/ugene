@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ void MaConsensusModeWidget::updateThresholdState(bool enable, int minVal, int ma
 }
 
 void MaConsensusModeWidget::sl_algorithmChanged(const QString &algoId) {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Consensus type changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
+    GCounter::increment("Consensus type changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     // Update state for the current algorithm
     SAFE_POINT(maObject != NULL, "MaConsensusModeWidget is not initialized", );
 
@@ -124,7 +124,7 @@ void MaConsensusModeWidget::sl_algorithmSelectionChanged(int index) {
 }
 
 void MaConsensusModeWidget::sl_thresholdSliderChanged(int value) {
-    GRUNTIME_NAMED_COUNTER(cvat, tvar, "Consensus threshold changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
+    GCounter::increment("Consensus threshold changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     thresholdSpinBox->disconnect(this);
     thresholdSpinBox->setValue(value);
     connect(thresholdSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_thresholdSpinBoxChanged(int)));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment &ma, const Cr
       phyMlTask(NULL),
       getTreeTask(NULL),
       sequencesNumber(0) {
-    GCOUNTER(cvar, tvar, "PhyMLSupportTask");
+    GCOUNTER(cvar, "PhyMLSupportTask");
 
     sequencesNumber = ma->getNumRows();
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ QBitArray CSVParsingConfig::QUOTES = TextUtils::createBitMap("\'\"");
 ImportAnnotationsFromCSVTask::ImportAnnotationsFromCSVTask(ImportAnnotationsFromCSVTaskConfig &_config)
     : Task(tr("Import annotations from CSV"), TaskFlags_NR_FOSCOE),
       config(_config), readTask(NULL), writeTask(NULL), addTask(NULL) {
-    GCOUNTER(cvar, tvar, "ImportAnnotationsFromCSVTask");
+    GCOUNTER(cvar, "ImportAnnotationsFromCSVTask");
     readTask = new ReadCSVAsAnnotationsTask(config.csvFile, config.parsingOptions);
     addSubTask(readTask);
 }

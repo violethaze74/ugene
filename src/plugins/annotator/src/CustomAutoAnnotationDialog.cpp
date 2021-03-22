@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ namespace U2 {
 CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext *ctx)
     : QDialog(ctx->getAnnotatedDNAView()->getWidget()), seqCtx(ctx) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363900");
+    new HelpButton(this, buttonBox, "60229298");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Annotate"));
 
     loadSettings();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ namespace U2 {
 EditFragmentDialog::EditFragmentDialog(DNAFragment &fragment, QWidget *p)
     : QDialog(p), dnaFragment(fragment) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363740");
+    new HelpButton(this, buttonBox, "60229137");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

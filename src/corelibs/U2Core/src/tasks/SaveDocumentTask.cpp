@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,11 +161,11 @@ void SaveDocumentTask::run() {
 }
 
 Task::ReportResult SaveDocumentTask::report() {
-    if (lock != NULL) {
-        assert(!doc.isNull());
+    if (lock != nullptr) {
+        SAFE_POINT(!doc.isNull(), "document is null!",  ReportResult_Finished);
         doc->unlockState(lock);
         delete lock;
-        lock = NULL;
+        lock = nullptr;
     }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
@@ -191,12 +191,22 @@ Task::ReportResult SaveDocumentTask::report() {
         }
     }
     if (flags.testFlag(SaveDoc_OpenAfter)) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url);
+        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
         if (NULL != openTask) {
             AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
         }
     }
     return Task::ReportResult_Finished;
+}
+
+/** Returns current set of 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+QVariantMap SaveDocumentTask::getOpenDocumentWithProjectHints() const {
+    return openDocumentWithProjectHints;
+}
+
+/** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap &hints) {
+    openDocumentWithProjectHints = hints;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -218,7 +228,6 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool
                                                                          tr("Save document: %1").arg(doc->getURLString()),
                                                                          buttons,
                                                                          QApplication::activeWindow()));
-            messageBox->button(QMessageBox::Cancel)->hide();
 
             int res = saveAll ? QMessageBox::YesToAll : messageBox->exec();
 
@@ -276,7 +285,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
         msgBox->setInformativeText(tr("Do you want to save changes to another file?"));
 
         QPushButton *saveButton = msgBox->addButton(QMessageBox::Save);
-        msgBox->addButton(QMessageBox::Cancel);
+        QPushButton *cancelButton = msgBox->addButton(QMessageBox::Cancel);
         msgBox->setDefaultButton(saveButton);
         msgBox->setObjectName("permissionBox");
         msgBox->exec();
@@ -293,9 +302,13 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
 #endif
             if (!fileName.isEmpty()) {
                 url = fileName;
-            } else {
-                return GUrl();
+            } else {    // Cancel in "Save as" dialog clicked
+                cancel();
+                break;
             }
+        } else if (msgBox->clickedButton() == cancelButton) {
+            cancel();
+            break;
         } else {
             return GUrl();
         }

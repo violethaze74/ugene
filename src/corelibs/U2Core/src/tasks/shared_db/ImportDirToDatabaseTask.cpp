@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ ImportDirToDatabaseTask::ImportDirToDatabaseTask(const QString &srcUrl, const U2
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       options(options) {
-    GCOUNTER(cvar, tvar, "ImportDirToDatabaseTask");
+    GCOUNTER(cvar, "ImportDirToDatabaseTask");
     CHECK_EXT(QFileInfo(srcUrl).isDir(), setError(tr("It is not a folder: ") + srcUrl), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 

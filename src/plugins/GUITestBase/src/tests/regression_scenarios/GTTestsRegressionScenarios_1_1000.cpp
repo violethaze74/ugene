@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,6 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 
-
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotationsTreeView.h>
@@ -68,6 +67,7 @@
 #include "GTDatabaseConfig.h"
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsExternalTools.h"
@@ -2108,9 +2108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     }
 
     const QStringList groupNames = GTUtilsWorkflowDesigner::getPaletteGroupNames(os);
-    const int customElementsCount = groupNames.contains("Custom Elements with External Tools") ?
-                                        GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools").size() :
-                                        0;
+    const int customElementsCount = groupNames.contains("Custom Elements with External Tools") ? GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools").size() : 0;
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test";
@@ -2360,43 +2358,40 @@ GUI_TEST_CLASS_DEFINITION(test_0866) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0868) {
-    //    1. Open chrM in Assembly Browser
+    // Open chrM in Assembly Browser.
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    //    2. Zoom to any covered
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    for (int i = 0; i < 25; i++) {
-        GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
-        GTGlobals::sleep(100);
+    // Zoom in multiple times to enable panning.
+    for (int i = 0; i < 12; i++) {
+        GTUtilsAssemblyBrowser::zoomIn(os);
     }
 
-    //    3. Add bookmark
+    // Add  a bookmark and activate it to ensure that view is aligned.
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "bookmark");
-    GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "bookmark"));
-    GTGlobals::sleep();
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);    // Navigation starts a new task. Wait for it to finish.
 
-    QWidget *assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    QImage initImg = GTWidget::getImage(os, assembly_reads_area);
+    // Take the screenshot.
+    QWidget *readsArea = GTWidget::findWidget(os, "assembly_reads_area");
+    GTWidget::click(os, readsArea);    // Click on the center of render area to set a predefined hover state.
+    QImage initialImage = GTWidget::getImage(os, readsArea);
 
-    //    4. Go to any other region
-    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+    // Navigate to any other region.
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);    // Navigation starts a new task. Wait for it to finish.
 
-    //    5. Double click on the bookmark
+    // Activate the bookmark again.
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "bookmark"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);    // Navigation starts a new task. Wait for it to finish.
 
-    //    Expected state: it shows the location that you saved before
-    assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
-    QImage finalImg = GTWidget::getImage(os, assembly_reads_area);
-    CHECK_SET_ERR(initImg == finalImg, "bookmark does not work");
+    // Expected state: the new view matches the initial.
+    GTWidget::click(os, readsArea);    // Click on the center of render area to set a predefined hover state.
+    QImage currentImage = GTWidget::getImage(os, readsArea);
+    CHECK_SET_ERR(currentImage == initialImage, "The current view does not match the initial.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0871) {

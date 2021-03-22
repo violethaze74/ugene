@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
       subject(NULL),
       actor(NULL),
       onFirstTableShow(true) {
-    GCOUNTER(cvar, tvar, "WorkflowEditor");
+    GCOUNTER(cvar, "WorkflowEditor");
     setupUi(this);
 
     specialParameters = new SpecialParametersPanel(this);

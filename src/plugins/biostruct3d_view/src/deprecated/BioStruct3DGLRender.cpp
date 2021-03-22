@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -95,6 +95,27 @@ BioStruct3DGLRenderer::BioStruct3DGLRenderer(const BioStruct3D &_bioStruct, cons
 void BioStruct3DGLRenderer::setColorScheme(const BioStruct3DColorScheme *s) {
     colorScheme = s;
     updateColorScheme();
+}
+
+const BioStruct3DColorScheme *BioStruct3DGLRenderer::getColorScheme() const {
+    return colorScheme;
+}
+
+const QList<int> &BioStruct3DGLRenderer::getShownModelsIndexes() const {
+    return shownModels;
+}
+
+void BioStruct3DGLRenderer::setShownModelsIndexes(const QList<int> &_shownModels) {
+    shownModels = _shownModels;
+}
+
+bool BioStruct3DGLRenderer::isAvailableFor(const BioStruct3D &) {
+    return true;
+}
+/* BioStruct3DGLRenderer abstract factory */
+
+const QString BioStruct3DGLRendererFactory::getName() const {
+    return name;
 }
 
 }    // namespace U2

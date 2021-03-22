@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ public:
     }
 
     MaEditorSequenceArea *getSequenceArea() const {
-        return seqArea;
+        return sequenceArea;
     }
 
     MaEditorNameList *getEditorNameList() const {
@@ -76,7 +76,7 @@ public:
     }
 
     MaEditorConsensusArea *getConsensusArea() const {
-        return consArea;
+        return consensusArea;
     }
 
     MaEditorOverviewArea *getOverviewArea() const {
@@ -84,7 +84,7 @@ public:
     }
 
     MSAEditorOffsetsViewController *getOffsetsViewController() const {
-        return offsetsView;
+        return offsetsViewController;
     }
 
     ScrollController *getScrollController() const {
@@ -106,40 +106,6 @@ public:
     QAction *getUndoAction() const;
 
     QAction *getRedoAction() const;
-
-    QAction *getDelSelectionAction() const {
-        return delSelectionAction;
-    }
-
-    QAction *getCopySelectionAction() const {
-        return copySelectionAction;
-    }
-
-    QAction *getCopyFormattedSelectionAction() const {
-        return copyFormattedSelectionAction;
-    }
-
-    QAction *getPasteAction() const {
-        return pasteAction;
-    }
-
-    QAction *getPasteBeforeAction() const {
-        return pasteBeforeAction;
-    }
-
-    /* Returns if collapsible mode is enabled or not.
-     *
-     * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
-     * but have different features: in the collapsible mode the model can contains group of multiple sequences
-     * or reordered rows.
-     */
-    bool isCollapsibleMode() const {
-        return collapsibleMode;
-    }
-
-    void setCollapsibleMode(bool collapse) {
-        collapsibleMode = collapse;
-    }
 
     MaCollapseModel *getCollapseModel() const {
         return collapseModel;
@@ -182,11 +148,11 @@ protected:
 
 protected:
     MaEditor *editor;
-    MaEditorSequenceArea *seqArea;
+    MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
-    MaEditorConsensusArea *consArea;
+    MaEditorConsensusArea *consensusArea;
     MaEditorOverviewArea *overviewArea;
-    MSAEditorOffsetsViewController *offsetsView;
+    MSAEditorOffsetsViewController *offsetsViewController;
     MaEditorStatusBar *statusBar;
 
     QWidget *nameAreaContainer;
@@ -199,19 +165,21 @@ protected:
 
     MsaUndoRedoFramework *undoFWK;
 
-    MaCollapseModel *collapseModel;
-    bool collapsibleMode;
+    MaCollapseModel *const collapseModel;
+
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;
     BaseWidthController *baseWidthController;
     RowHeightController *rowHeightController;
     DrawHelper *drawHelper;
 
+public:
     QAction *delSelectionAction;
     QAction *copySelectionAction;
     QAction *copyFormattedSelectionAction;
     QAction *pasteAction;
     QAction *pasteBeforeAction;
+    QAction *cutSelectionAction;
 };
 
 }    // namespace U2

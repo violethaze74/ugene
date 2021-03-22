@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ ImportDocumentToDatabaseTask::ImportDocumentToDatabaseTask(Document *document, c
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       options(options) {
-    GCOUNTER(cvar, tvar, "ImportDocumentToDatabaseTask");
+    GCOUNTER(cvar, "ImportDocumentToDatabaseTask");
     CHECK_EXT(NULL != document, setError(tr("Invalid document to import")), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 

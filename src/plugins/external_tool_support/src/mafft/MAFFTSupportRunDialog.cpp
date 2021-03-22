@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ namespace U2 {
 MAFFTSupportRunDialog::MAFFTSupportRunDialog(MAFFTSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363814");
+    new HelpButton(this, buttonBox, "60229212");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -69,7 +69,7 @@ MAFFTWithExtFileSpecifySupportRunDialog::MAFFTWithExtFileSpecifySupportRunDialog
       settings(_settings),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363814");
+    new HelpButton(this, buttonBox, "60229212");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

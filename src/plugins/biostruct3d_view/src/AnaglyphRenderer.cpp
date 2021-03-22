@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,6 +45,10 @@ AnaglyphSettings AnaglyphSettings::fromMap(const QVariantMap &map) {
     QColor rightEyeColor = map[RIGHT_EYE_COLOR_NAME].value<QColor>();
 
     return AnaglyphSettings(eyesShift, leftEyeColor, rightEyeColor);
+}
+
+AnaglyphSettings AnaglyphSettings::defaultSettings() {
+    return AnaglyphSettings(1.6f, QColor(0, 255, 255), QColor(255, 0, 0));
 }
 
 void AnaglyphRenderer::init() {
@@ -237,6 +241,14 @@ AnaglyphRenderer::AnaglyphRenderer(BioStruct3DGLWidget *_renderer, const Anaglyp
       anaglyphRenderTextureRight(0),
       tempAnaglyphRenderTexture(0),
       hasErrors(false) {
+}
+
+const AnaglyphSettings &AnaglyphRenderer::getSettings() const {
+    return settings;
+}
+
+void AnaglyphRenderer::setSettings(const AnaglyphSettings &_settings) {
+    settings = _settings;
 }
 
 AnaglyphRenderer::~AnaglyphRenderer() {

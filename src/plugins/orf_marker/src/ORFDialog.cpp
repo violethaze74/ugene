@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ public:
 ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54363677");
+    new HelpButton(this, buttonBox, "60229074");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

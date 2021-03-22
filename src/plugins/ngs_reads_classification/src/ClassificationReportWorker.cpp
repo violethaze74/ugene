@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -262,7 +262,7 @@ ClassificationReportTask::ClassificationReportTask(const QMap<TaxID, uint> &data
                                                    SortBy _sortBy)
     : Task(tr("Compose classification report"), TaskFlag_None),
       data(data), totalCount(totalCount), url(reportUrl), allTaxa(_allTaxa), sortBy(_sortBy) {
-    GCOUNTER(cvar, tvar, "ClassificationReportTask");
+    GCOUNTER(cvar, "ClassificationReportTask");
 
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }

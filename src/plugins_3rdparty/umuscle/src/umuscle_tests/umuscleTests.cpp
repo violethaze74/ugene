@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -287,7 +287,7 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     return ReportResult_Finished;
 }
 
-void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat */*tf*/, const QDomElement& el) {
     origAliSeqs = 0;
     aliObj = NULL;
     resultAliSeqs = 0;

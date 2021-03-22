@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ const QString ConservationPlotTask::BASE_DIR_NAME("ConservationPlot_tmp");
 
 ConservationPlotTask::ConservationPlotTask(const ConservationPlotSettings &_settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &_plotData)
     : ExternalToolSupportTask("ConservationPlot annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), treatDoc(NULL), treatTask(NULL), storage(storage), plotData(_plotData), activeSubtasks(0), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:ConservationPlotTask");
+    GCOUNTER(cvar, "NGS:ConservationPlotTask");
     SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 

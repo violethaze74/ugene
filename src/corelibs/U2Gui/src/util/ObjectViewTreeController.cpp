@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -337,7 +337,7 @@ void ObjectViewTreeController::sl_onTreeCurrentChanged(QTreeWidgetItem *current,
 }
 
 void ObjectViewTreeController::sl_activateView() {
-    GCOUNTER(cvar, tvar, "Bookmarks::Bookmark Activated");
+    GCOUNTER(cvar, "Bookmarks::Bookmark Activated");
     OVTViewItem *vi = currentViewItem();
     if (vi != NULL && vi->viewWindow != NULL) {    //raise existing view, no state change
         AppContext::getMainWindow()->getMDIManager()->activateWindow(vi->viewWindow);
@@ -374,7 +374,7 @@ void ObjectViewTreeController::makeViewPersistent(GObjectViewWindow *w) {
 }
 
 void ObjectViewTreeController::sl_addState() {
-    GCOUNTER(cvar, tvar, "Bookmarks::Add New Bookmark");
+    GCOUNTER(cvar, "Bookmarks::Add New Bookmark");
     OVTViewItem *vi = activeViewItem();
     SAFE_POINT(vi != NULL, QString("Can't find view item to add state!"), );
     SAFE_POINT(vi->viewWindow != NULL, QString("View window is NULL: %1").arg(vi->viewName), );
@@ -397,7 +397,7 @@ void ObjectViewTreeController::makeViewTransient(GObjectViewWindow *w) {
 }
 
 void ObjectViewTreeController::sl_removeState() {
-    GCOUNTER(cvar, tvar, "Bookmarks::Remove Bookmark");
+    GCOUNTER(cvar, "Bookmarks::Remove Bookmark");
     OVTStateItem *si = currentStateItem();
     Project *p = AppContext::getProject();
     if (si != NULL) {
@@ -416,7 +416,7 @@ void ObjectViewTreeController::sl_removeState() {
 }
 
 void ObjectViewTreeController::sl_renameState() {
-    GCOUNTER(cvar, tvar, "Bookmarks::Rename Bookmark");
+    GCOUNTER(cvar, "Bookmarks::Rename Bookmark");
     OVTStateItem *si = currentStateItem();
     SAFE_POINT(si != NULL, QString("Can't find state item to rename!"), );
 

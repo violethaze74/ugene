@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,7 +73,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
       mafftTask(NULL),
       loadTmpDocumentTask(NULL),
       modStep(NULL) {
-    GCOUNTER(cvar, tvar, "MafftAddToAlignmentTask");
+    GCOUNTER(cvar, "MafftAddToAlignmentTask");
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 

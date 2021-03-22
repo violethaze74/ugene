@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ ImportFileToDatabaseTask::ImportFileToDatabaseTask(const QString &srcUrl, const 
       dstFolder(dstFolder),
       options(options),
       format(nullptr) {
-    GCOUNTER(cvar, tvar, "ImportFileToDatabaseTask");
+    GCOUNTER(cvar, "ImportFileToDatabaseTask");
     CHECK_EXT(QFileInfo(srcUrl).isFile(), setError(tr("It is not a file: ") + srcUrl), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 }
@@ -155,7 +155,7 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
     CHECK(!options.preferredFormats.isEmpty(), detectedFormats.first());
 
     QStringList detectedFormatIds;
-    for (const FormatDetectionResult &detectedFormat : detectedFormats) {
+    for (const FormatDetectionResult &detectedFormat : qAsConst(detectedFormats)) {
         if (detectedFormat.format != nullptr) {
             detectedFormatIds << detectedFormat.format->getFormatId();
         } else if (detectedFormat.importer != nullptr) {
@@ -165,7 +165,7 @@ FormatDetectionResult ImportFileToDatabaseTask::getPreferredFormat(const QList<F
         }
     }
 
-    for (const QString &formatId : options.preferredFormats) {
+    for (const QString &formatId : qAsConst(options.preferredFormats)) {
         int i = detectedFormatIds.indexOf(formatId);
         if (i >= 0) {
             return detectedFormats[i];

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -208,7 +208,7 @@ GObjectComboBoxController *CreateAnnotationNormalWidget::createGObjectComboBoxCo
 
 void CreateAnnotationNormalWidget::countDescriptionUsage() const {
     if (!leDescription->text().isEmpty()) {
-        GCOUNTER(cvar, tvar, "CreateAnnotationNormalWidget: description is used");
+        GCOUNTER(cvar, "CreateAnnotationNormalWidget: description is used");
     }
 }
 

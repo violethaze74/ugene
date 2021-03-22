@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -173,7 +173,7 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
       evalTask(NULL),
       generateTask(NULL),
       saveTask(NULL) {
-    GCOUNTER(cvar, tvar, "DNASequenceGeneratorTask");
+    GCOUNTER(cvar, "DNASequenceGeneratorTask");
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
         const QString &docUrl = cfg.getReferenceUrl();

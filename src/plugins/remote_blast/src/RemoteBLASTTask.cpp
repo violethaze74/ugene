@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ class BaseDocumentFormats;
 
 RemoteBLASTToAnnotationsTask::RemoteBLASTToAnnotationsTask(const RemoteBLASTTaskSettings &_cfg, int _qoffs, AnnotationTableObject *_ao, const QString &_url, const QString &_group, const QString &annDescription)
     : Task(tr("RemoteBLASTTask"), TaskFlags_NR_FOSCOE), offsInGlobalSeq(_qoffs), aobj(_ao), group(_group), annDescription(annDescription), url(_url) {
-    GCOUNTER(cvar, tvar, "RemoteBLASTToAnnotationsTask");
+    GCOUNTER(cvar, "RemoteBLASTToAnnotationsTask");
 
     queryTask = new RemoteBLASTTask(_cfg);
     addSubTask(queryTask);

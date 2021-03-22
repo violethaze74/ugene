@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@ class StrandContext;
 FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings &s)
     : Task(tr("Find in sequence task"), TaskFlag_None), config(s) {
     if (s.countTask) {
-        GCOUNTER(cvar, tvar, "FindAlgorithmTask");
+        GCOUNTER(cvar, "FindAlgorithmTask");
     }
     tpm = Progress_Manual;
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != NULL);

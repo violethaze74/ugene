@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ void ProjectFilteringController::sl_startFiltering() {
         addNewActiveTask(task);
     }
     emit si_filteringStarted();
-    GCOUNTER(cvar, tvar, "Project filtering launch");
+    GCOUNTER(cvar, "Project filtering launch");
 }
 
 void ProjectFilteringController::sl_objectsFiltered(const QString &groupName, const SafeObjList &objs) {

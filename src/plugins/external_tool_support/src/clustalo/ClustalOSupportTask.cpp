@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_input
       objRef(_objRef),
       settings(_settings),
       lock(NULL) {
-    GCOUNTER(cvar, tvar, "ClustalOSupportTask");
+    GCOUNTER(cvar, "ClustalOSupportTask");
     saveTemporaryDocumentTask = NULL;
     loadTemporyDocumentTask = NULL;
     clustalOTask = NULL;
@@ -300,7 +300,7 @@ Task::ReportResult ClustalOSupportTask::report() {
 ClustalOWithExtFileSpecifySupportTask::ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings &_settings)
     : Task("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
-    GCOUNTER(cvar, tvar, "ClustalOSupportTask");
+    GCOUNTER(cvar, "ClustalOSupportTask");
     mAObject = NULL;
     currentDocument = NULL;
     saveDocumentTask = NULL;

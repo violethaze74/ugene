@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -143,7 +143,10 @@ private slots:
     void sl_onVScrollMoved(int pos);
     void sl_zoomOperationPerformed();
     void sl_onCopyReadData();
-    void sl_onCopyCurPos();
+
+    /** Copies current numeric X cursor position to the clipboard. */
+    void sl_copyPositionToClipboard();
+
     void sl_onExportRead();
     void sl_onExportReadsOnScreen();
     void sl_onShadowingModeChanged(QAction *a);

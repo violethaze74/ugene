@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,31 +46,28 @@
 
 namespace U2 {
 
-ADVCreateAnnotationsTask::ADVCreateAnnotationsTask(AnnotatedDNAView *ctx, const GObjectReference &aobjRef, const QString &group, const QList<SharedAnnotationData> &data)
-    : Task(tr("Create annotations task"), TaskFlags_NR_FOSCOE), ctx(ctx) {
+ADVCreateAnnotationsTask::ADVCreateAnnotationsTask(AnnotatedDNAView *sequenceView, const GObjectReference &aobjRef, const QString &group, const QList<SharedAnnotationData> &data, bool selectNewAnnotations)
+    : Task(tr("Create annotations task"), TaskFlags_NR_FOSCOE), sequenceView(sequenceView), selectNewAnnotations(selectNewAnnotations) {
     LoadUnloadedDocumentTask::addLoadingSubtask(this, LoadDocumentTaskConfig(true, aobjRef, new LDTObjectFactory(this)));
-    t = new CreateAnnotationsTask(aobjRef, data, group);
-    addSubTask(t);
+    createAnnotationsTask = new CreateAnnotationsTask(aobjRef, data, group);
+    addSubTask(createAnnotationsTask);
 }
 
 Task::ReportResult ADVCreateAnnotationsTask::report() {
-    if (!hasError() && !ctx.isNull()) {
-        AnnotationTableObject *ao = t->getGObject();
-        if (!ctx->getAnnotationObjects().contains(ao)) {
-            //for documents loaded during annotation creation object is added here
-            QString err = ctx->addObject(ao);
-            if (!err.isEmpty()) {
-                setError(err);
-            }
+    if (hasError() || sequenceView.isNull()) {
+        return ReportResult_Finished;
+    }
+    AnnotationTableObject *annotationObject = createAnnotationsTask->getAnnotationTableObject();
+    if (!sequenceView->getAnnotationObjects().contains(annotationObject)) {
+        // for documents loaded during annotation creation object is added here.
+        QString errorMessage = sequenceView->addObject(annotationObject);
+        if (!errorMessage.isEmpty()) {
+            setError(errorMessage);
         }
-        if (!hasError()) {
-            ctx->getAnnotationsSelection()->clear();
-            AnnotationSelection *annSelection = ctx->getAnnotationsSelection();
-            CHECK(annSelection != NULL, ReportResult_Finished);
-            foreach (Annotation *a, t->getResultAnnotations()) {
-                annSelection->add(a);
-            }
-        }
+    }
+    if (!hasError() && selectNewAnnotations) {
+        AnnotationSelection *selection = sequenceView->getAnnotationsSelection();
+        selection->setAnnotations(createAnnotationsTask->getResultAnnotations());
     }
     return ReportResult_Finished;
 }
@@ -89,8 +86,8 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView *c)
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {
-    ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
-    SAFE_POINT(NULL != seqCtx, "Invalid sequence context detected!", );
+    ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
+    SAFE_POINT(seqCtx != nullptr, "Invalid sequence context detected!", );
     CreateAnnotationModel m;
     m.useUnloadedObjects = true;
     m.useAminoAnnotationTypes = seqCtx->getAlphabet()->isAmino();
@@ -103,7 +100,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
     //setup default object and group if possible from AnnotationsTreeView
     AnnotationsTreeView *tv = ctx->getAnnotationsView();
     AVItem *ai = tv->currentItem();
-    if (NULL != ai && !ai->isReadonly()) {
+    if (ai != nullptr && !ai->isReadonly()) {
         AnnotationTableObject *aobj = ai->getAnnotationTableObject();
         if (seqCtx->getAnnotationGObjects().contains(aobj)) {
             m.annotationObjectRef = aobj;
@@ -118,7 +115,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
-    if (QDialog::Accepted != rc) {
+    if (rc != QDialog::Accepted) {
         return;
     }
 

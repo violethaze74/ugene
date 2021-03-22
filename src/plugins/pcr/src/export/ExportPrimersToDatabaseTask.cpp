@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,9 +23,9 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -45,12 +45,16 @@ ExportPrimersToDatabaseTask::ExportPrimersToDatabaseTask(const QList<Primer> &pr
 }
 
 void ExportPrimersToDatabaseTask::run() {
-    foreach (const Primer &primer, primers) {
+    for (const Primer &primer : qAsConst(primers)) {
         U2SequenceImporter importer;
-        importer.startSequence(stateInfo, dbiRef, folder, primer.name, false);
+        QByteArray sequence = primer.sequence.toLocal8Bit();
+        const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence);    // In most cases primers have DNA alphabet, but it may also be a 'DNA extended'.
+        importer.startSequence(stateInfo, dbiRef, folder, primer.name, false, alphabet->getId());
         CHECK_OP(stateInfo, );
-        importer.addBlock(primer.sequence.toLocal8Bit().constData(), primer.sequence.length(), stateInfo);
+
+        importer.addBlock(sequence.constData(), primer.sequence.length(), stateInfo);
         CHECK_OP(stateInfo, );
+
         const U2DataId sequenceId = importer.finalizeSequence(stateInfo).id;
         dbiSequences.objects << sequenceId;
         CHECK_OP(stateInfo, );

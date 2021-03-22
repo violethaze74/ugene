@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,10 +67,9 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
-    GTKeyboardUtils::copy(os);
-    GTGlobals::sleep(500);
+    GTKeyboardUtils::copy();
 
-    const QString clipboardText = GTClipboard::sequences(os);
+    const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
@@ -95,7 +94,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsProjectTreeView::click(os, "tub1.txt");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document tub1.txt");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
@@ -126,7 +124,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document 3000_sequences.aln");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
@@ -397,7 +394,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                       << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
-    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+    CHECK_SET_ERR(expectedMsaData == msaData, "Expected:\n" + expectedMsaData.join("\n") + "\nFound:\n" + msaData.join("\n"));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ static int PROCESSING_PROGRESS_WEIGHT(80);
 
 QDScheduler::QDScheduler(const QDRunSettings &_settings)
     : Task(tr("QDScheduler"), TaskFlags_NR_FOSCOE), settings(_settings) {
-    GCOUNTER(cvar, tvar, "QueryDesignerScheduler");
+    GCOUNTER(cvar, "QueryDesignerScheduler");
     loadTask = NULL;
     createAnnsTask = NULL;
     linker = new QDResultLinker(this);

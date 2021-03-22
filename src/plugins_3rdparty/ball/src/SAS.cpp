@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2
 
 SolventAccessibleSurface::SolventAccessibleSurface()
 {
-    GCOUNTER( cvar, tvar, "SolventAccessibleSurface" );
+    GCOUNTER( cvar, "SolventAccessibleSurface" );
 }
 
 void SolventAccessibleSurface::calculate(const QList<SharedAtom>& atoms, int& /*progress*/)

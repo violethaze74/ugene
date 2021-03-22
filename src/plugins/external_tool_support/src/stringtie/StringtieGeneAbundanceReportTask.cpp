@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QString
     if (reportUrl.isEmpty()) {
         reportUrl = "StringTie_report.txt";
     }
-    GCOUNTER(cvar, tvar, "StringtieGeneAbundanceReportTask");
+    GCOUNTER(cvar, "StringtieGeneAbundanceReportTask");
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }
 

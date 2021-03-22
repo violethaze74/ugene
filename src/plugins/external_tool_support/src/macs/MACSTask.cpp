@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ const QString MACSTask::BASE_SUBDIR_NAME("macs");
 
 MACSTask::MACSTask(const MACSSettings &_settings, const GUrl &_treatUrl, const GUrl &_conUrl)
     : ExternalToolSupportTask(tr("MACS peak calling"), TaskFlag_CollectChildrenWarnings), settings(_settings), treatUrl(_treatUrl), conUrl(_conUrl), peaksDoc(NULL), summitsDoc(NULL), peaksTask(NULL), summitsTask(NULL), etTask(NULL) {
-    GCOUNTER(cvar, tvar, "NGS:MACSTask");
+    GCOUNTER(cvar, "NGS:MACSTask");
 }
 
 MACSTask::~MACSTask() {

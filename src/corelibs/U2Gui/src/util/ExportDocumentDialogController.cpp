@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document *d, QWid
       sourceObject(NULL) {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54362272");
+    new HelpButton(this, ui->buttonBox, "60227664");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -61,7 +61,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, 
     QList<GObject *> objectList = QList<GObject *>() << sourceObject;
     initSaveController(objectList, initUrl);
 
-    new HelpButton(this, ui->buttonBox, "54362272");
+    new HelpButton(this, ui->buttonBox, "60227664");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }

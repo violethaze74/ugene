@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &
                                                                  QStringList &outputFiles)
     : BaseSerializedSchemeRunner(_pathToScheme, _scheduler, outputFiles), scheme(NULL),
       loadTask(NULL), runTask(NULL) {
-    GCOUNTER(cvar, tvar, "workflow_run_from_script");
+    GCOUNTER(cvar, "workflow_run_from_script");
 
     loadTask = createLoadSchemeTask();
     if (NULL != loadTask) {

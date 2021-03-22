@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget *p, const ExportConsensusTa
       settings(settings_),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "54362817");
+    new HelpButton(this, buttonBox, "60228214");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     //hide for this dialog

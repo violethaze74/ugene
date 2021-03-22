@@ -982,12 +982,12 @@
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
         <source>Number of separator symbols (N - for nucleic or X - for amino) between parts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Число разделяющих символов (N - для нуклеотидных или X - для амино) между частями.</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="135"/>
         <source>Separator characters between parts</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель между частями</translation>
     </message>
     <message>
         <source> bases</source>
@@ -1707,38 +1707,38 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="105"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="106"/>
         <source>&lt;auto&gt;</source>
         <translation>&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="271"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1751,7 +1751,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="353"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="358"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -2239,7 +2239,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/ObjectViewModel.cpp" line="126"/>
         <source>Can&apos;t add object: %1 to the closing view</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить объект: %1 в закрывающееся окно</translation>
     </message>
     <message>
         <location filename="../src/ObjectViewModel.cpp" line="129"/>
@@ -2679,9 +2679,17 @@ Are you sure you want to open all of them?</source>
         <translation type="vanished">UGENE can not recognize current clipboard content as one of supported formats.</translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="113"/>
+        <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
-        <translation type="unfinished"></translation>
+        <translation>Двнные в буфере обмена слишком большие.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::PasteFactoryImpl</name>
+    <message>
+        <location filename="../src/PasteController.cpp" line="114"/>
+        <source>UGENE can not recognize current clipboard content as one of the supported formats.</source>
+        <translation>UGENE не может распознать тип данных в буфере обмена.</translation>
     </message>
 </context>
 <context>
@@ -2691,12 +2699,12 @@ Are you sure you want to open all of them?</source>
         <translation type="vanished">Cannot detect file format</translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="160"/>
+        <location filename="../src/PasteController.cpp" line="161"/>
         <source>Failed to detect pasted data format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/PasteController.cpp" line="168"/>
+        <location filename="../src/PasteController.cpp" line="169"/>
         <source>Failed to create tmp file for clipboard content: %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2704,7 +2712,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::PasteUrlsTask</name>
     <message>
-        <location filename="../src/PasteController.cpp" line="138"/>
+        <location filename="../src/PasteController.cpp" line="139"/>
         <source>Pasting of folders is not supported:</source>
         <translation>Pasting of folders is not supported:</translation>
     </message>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -319,7 +319,7 @@ bool clipRegion(U2Region &region, const U2Region &clippingRegion) {
 Primer3Task::Primer3Task(const Primer3TaskSettings &settingsArg)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
       settings(settingsArg) {
-    GCOUNTER(cvar, tvar, "Primer3Task");
+    GCOUNTER(cvar, "Primer3Task");
     {
         U2Region region = settings.getIncludedRegion();
         region.startPos -= settings.getFirstBaseIndex();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 NewBreakpointDialog::NewBreakpointDialog(const QStringList &elementsNames, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f), ui(new Ui_NewBreakpointDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "54363006");
+    new HelpButton(this, ui->buttonBox, "60228403");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     ui->elementCombo->addItems(elementsNames);

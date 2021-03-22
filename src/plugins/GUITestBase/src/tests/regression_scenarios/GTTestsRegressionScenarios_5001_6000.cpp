@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,6 @@
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
@@ -323,7 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
@@ -371,7 +370,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
@@ -727,13 +726,13 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     GTUtilsMsaEditor::clickSequenceName(os, "Phaneroptera_falcata");
 
     //    3. Copy it to the clipboard.
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
 //    4. Press the next key sequence:
 //        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
 #ifndef Q_OS_MAC
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
 #else
     GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
 #endif
@@ -1034,45 +1033,35 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5295) {
-    //    1. Open "_common_data/pdb/Helix.pdb".
+    // Open "_common_data/pdb/Helix.pdb".
     GTFileDialog::openFile(os, testDir + "_common_data/pdb/Helix.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    //  Expected state: UGENE doesn't crash, the 3d structure is shown.
+    int minimumExpectedColors = 10;
     QWidget *biostructWidget = GTWidget::findWidget(os, "1-");
-    const QImage image1 = GTWidget::getImage(os, biostructWidget);
-    QSet<QRgb> colors;
-    for (int i = 0; i < image1.width(); i++) {
-        for (int j = 0; j < image1.height(); j++) {
-            colors << image1.pixel(i, j);
-        }
-    }
-    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
+    QImage initialImage = GTWidget::getImage(os, biostructWidget, true);
+    QSet<QRgb> colorSet = GTWidget::countColors(initialImage, minimumExpectedColors);
+    CHECK_SET_ERR(colorSet.size() >= minimumExpectedColors, "Ball-and-Stick image has too few colors");
 
-    //    2. Call a context menu, open "Render Style" submenu.
-    //    Expected state: "Ball-and-Stick" renderer is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Render Style"
-                                                                              << "Ball-and-Stick",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsChecked)));
+    // Call a context menu, open "Render Style" submenu.
+    // Expected state: "Ball-and-Stick" renderer is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Render Style", "Ball-and-Stick"}, PopupChecker::CheckOptions(PopupChecker::IsChecked)));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
 
-    //    3. Select "Model" renderer. Select "Ball-and-Stick" again.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
-                                                                              << "Space Fill"));
+    // Select "Model" renderer. Select "Space Fill".
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Render Style", "Space Fill"}));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style"
-                                                                              << "Ball-and-Stick"));
+    QImage spaceFillImage = GTWidget::getImage(os, biostructWidget, true);
+    CHECK_SET_ERR(spaceFillImage != initialImage, "Space Fill image is the same as Ball-and-Stick!");
+
+    // Select "Model" renderer. Select "Ball-and-stick" again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Render Style", "Ball-and-Stick"}));
     GTWidget::click(os, biostructWidget, Qt::RightButton);
 
-    //    Expected state: UGENE doesn't crash, the 3d structure is shown.
-    const QImage image2 = GTWidget::getImage(os, biostructWidget);
-    colors.clear();
-    for (int i = 0; i < image2.width(); i++) {
-        for (int j = 0; j < image2.height(); j++) {
-            colors << image2.pixel(i, j);
-        }
-    }
-    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
+    //  Expected state: UGENE doesn't crash, the 3d structure is shown.
+    QImage currentImage = GTWidget::getImage(os, biostructWidget, true);
+    CHECK_SET_ERR(currentImage == initialImage, "Current image is not equal to initial");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5314) {
@@ -1488,36 +1477,37 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
-             GTGlobals::sleep(500);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTGlobals::sleep(500);
 
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -1548,7 +1538,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1560,35 +1549,37 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     // Fill it and run
     // Expected result: no errors
 
+    GTLogTracer l;
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
-             GTGlobals::sleep(500);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTGlobals::sleep(500);
 
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            GTGlobals::sleep(500);
 
-             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
-             GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/regression/6118/deeperDir/TruSeq3-SE.fa"));
+            GTWidget::click(os, GTWidget::findWidget(os, "tbBrowse", dialog));
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -1600,7 +1591,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            //GTUtilsWizard::clickButton
 
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new Scenario()));
 
@@ -1620,13 +1610,55 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
     //There should be no notifications.
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_5425_2) {
+    // Open de novo assembly dialog
+    // Fill it and run
+    // Expected result: no errors
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/scaffolds_001.fasta").absoluteFilePath()));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure De Novo Assembly Workflow", QStringList() << "Illumina PE and Nanopore reads"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Illumina PE Reads De Novo Assembly Wizard", new custom()));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Reads de novo assembly (with SPAdes)...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    //There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5431) {
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
@@ -3629,7 +3661,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 
 GUI_TEST_CLASS_DEFINITION(test_5759) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3893,7 +3925,7 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
 
 GUI_TEST_CLASS_DEFINITION(test_5773) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4390,7 +4422,7 @@ GUI_TEST_CLASS_DEFINITION(test_5832) {
 
 GUI_TEST_CLASS_DEFINITION(test_5833) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4888,7 +4920,7 @@ GUI_TEST_CLASS_DEFINITION(test_5948) {
 
     //3. Copy a sequence region
     GTUtilsSequenceView::selectSequenceRegion(os, 10, 20);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //4. "Copy/Paste > Paste sequence" is disabled in the context menu.
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Copy/Paste"

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ template<typename CompareFN>
 class FindEnzymesAlgorithm {
 public:
     void run(const DNASequence &sequence, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *resultListener, TaskStateInfo &stateInfo, int resultPosShift = 0) {
-        SAFE_POINT(enzyme->alphabet != NULL, "No enzyme alphabet", );
+        SAFE_POINT(enzyme->alphabet != nullptr, "No enzyme alphabet", );
 
         // look for results in direct strand
         run(sequence, region, enzyme, enzyme->seq.constData(), U2Strand::Direct, resultListener, stateInfo, resultPosShift);
@@ -60,7 +60,7 @@ public:
 
         // if enzyme is not symmetric - look in complementary strand too
         DNATranslation *tt = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(enzyme->alphabet);
-        if (tt == NULL) {
+        if (tt == nullptr) {
             return;
         }
         QByteArray revCompl = enzyme->seq;
