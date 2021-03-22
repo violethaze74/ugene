@@ -234,13 +234,8 @@ void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap &incomin
 
 void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObject *> &annTables) const {
     CHECK(getMergeAttribute() == true, );
-    QString mergedTableName = getAnnotationTableName();
-    if (annTables.size() == 1) {
-        annTables.first()->setGObjectName(mergedTableName);
-        return;
-    }
 
-    AnnotationTableObject *mergedTable = new AnnotationTableObject(mergedTableName, context->getDataStorage()->getDbiRef());
+    AnnotationTableObject *mergedTable = new AnnotationTableObject(getAnnotationTableName(), context->getDataStorage()->getDbiRef());
     foreach (AnnotationTableObject *annTable, annTables) {
         QList<SharedAnnotationData> anns;
         foreach (Annotation *annotation, annTable->getAnnotations()) {
