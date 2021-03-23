@@ -6450,7 +6450,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
     class RemoteBLASTWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            GTWidget::getActiveModalWidget(os);
 
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath()));
 
