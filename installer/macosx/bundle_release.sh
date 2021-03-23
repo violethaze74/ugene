@@ -168,7 +168,7 @@ macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -e
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 
-cd  $BUILD_DIR 
+cd  $BUILD_DIR
 ln -s ./Unipro\ UGENE.app/Contents/MacOS/data/samples ./Samples
 cd ..
 
@@ -176,6 +176,9 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
+    echo Code signing...
+    ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
+
     echo
     echo Compressing symbols...
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
@@ -183,6 +186,12 @@ if [ ! "$1" ]; then
     echo
     echo pkg-dmg running...
     ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
+
+    echo
+    echo Signing dmg-file...
+    ./codesign.mac.sh \
+        ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg \
+        "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
 fi
 
 echo "Restore PATH env var"
