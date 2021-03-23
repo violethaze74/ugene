@@ -256,7 +256,6 @@ void GTest_Kalign_Load_Align_Compare::init(XMLTestFormat*, const QDomElement& el
 void GTest_Kalign_Load_Align_Compare::prepare() {
 
     KalignTaskSettings mSettings;
-    bool ok = false;
     QFileInfo inFile(env->getVar("COMMON_DATA_DIR")+"/"+inFileURL);
     if(!inFile.exists()) {
         stateInfo.setError(  QString("file not exist %1").arg(inFile.absoluteFilePath()) );
@@ -329,8 +328,6 @@ void GTest_Kalign_Load_Align_QScore::init(XMLTestFormat*, const QDomElement& el)
 }
 
 void GTest_Kalign_Load_Align_QScore::prepare() {
-
-    bool ok = false;
     QFileInfo inFile(env->getVar("COMMON_DATA_DIR")+"/"+inFileURL);
     if(!inFile.exists()) {
         stateInfo.setError(  QString("file not exist %1").arg(inFile.absoluteFilePath()) );

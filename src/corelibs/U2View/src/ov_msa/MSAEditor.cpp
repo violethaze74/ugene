@@ -612,7 +612,6 @@ void MSAEditor::sl_align() {
 }
 
 void MSAEditor::sl_addToAlignment() {
-    MultipleSequenceAlignmentObject *msaObject = getMaObject();
     CHECK(!maObject->isStateLocked(), );
 
     ProjectView *pv = AppContext::getProjectView();
