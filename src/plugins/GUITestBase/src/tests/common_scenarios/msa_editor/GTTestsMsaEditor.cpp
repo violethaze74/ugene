@@ -1643,7 +1643,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
 
     // copy to clipboard
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 0));
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
@@ -2217,7 +2217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     //    Expected state: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 2));
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "------", "Expected: ------ Found: " + clipboardText);
 }
@@ -2235,7 +2235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
     //    Expected stste: area is moved,position 4-9 filled with gaps
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 2), QPoint(8, 3));
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
 }

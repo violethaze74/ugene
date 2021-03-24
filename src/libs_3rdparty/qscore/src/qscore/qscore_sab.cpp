@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 #include "qscore.h"
 #include "sab_ref2.h"
 #include "sab_ids.h"

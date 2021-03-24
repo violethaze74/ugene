@@ -386,7 +386,7 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
     clickSequenceName(os, names.last());
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     GTGlobals::sleep(500);
 
     return GTClipboard::text(os).split('\n');

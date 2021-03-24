@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /* version 3.696.
 Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
 
@@ -633,7 +636,7 @@ void freenewer()
 }
 
 
-void doinput(int argc, Phylip_Char *argv[])
+void doinput(int /*argc*/, Phylip_Char *argv[])
 { /* reads the input data */
   seqboot_getoptions();
   seqboot_inputnumbers();

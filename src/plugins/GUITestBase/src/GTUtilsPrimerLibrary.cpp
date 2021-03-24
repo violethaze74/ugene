@@ -132,7 +132,7 @@ void GTUtilsPrimerLibrary::selectPrimers(HI::GUITestOpStatus &os, const QList<in
 
 void GTUtilsPrimerLibrary::selectAll(HI::GUITestOpStatus &os) {
     GTWidget::click(os, table(os));
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 }
 
 QTableView *GTUtilsPrimerLibrary::table(HI::GUITestOpStatus &os) {

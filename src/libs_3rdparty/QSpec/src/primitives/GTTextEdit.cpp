@@ -66,7 +66,7 @@ void GTTextEdit::clear(GUITestOpStatus &os, QTextEdit *textEdit) {
 
     GTWidget::setFocus(os, textEdit);
 
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(1000);

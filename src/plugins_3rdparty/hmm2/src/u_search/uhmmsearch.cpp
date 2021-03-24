@@ -145,7 +145,7 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s *_hmm, const char *seq, int s
 // Returns:  (void)
 
 static void
-    main_loop_serial(struct plan7_s *hmm, const char *seq, int seqLen, struct threshold_s *thresh, int do_forward, int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit, struct tophit_s *dhit, int *ret_nseq, TaskStateInfo &ti) {
+    main_loop_serial(struct plan7_s *hmm, const char *seq, int seqLen, struct threshold_s *thresh, int do_forward, int do_null2, int do_xnu, struct histogram_s *histogram, struct tophit_s *ghit, struct tophit_s *dhit, int */*ret_nseq*/, TaskStateInfo &ti) {
     //get HMMERTaskLocalData
     HMMERTaskLocalData *tld = getHMMERTaskLocalData();
     alphabet_s *al = &tld->al;

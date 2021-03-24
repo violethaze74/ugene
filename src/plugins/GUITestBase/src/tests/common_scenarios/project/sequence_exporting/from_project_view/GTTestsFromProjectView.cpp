@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
     GTMouseDriver::click();
 
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT, GTGlobals::UseMouse));

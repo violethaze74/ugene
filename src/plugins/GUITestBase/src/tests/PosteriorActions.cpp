@@ -51,6 +51,7 @@ namespace U2 {
 namespace GUITest_posterior_actions {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
+    Q_UNUSED(os);
     // Release all hold keyboard modifier keys
 
     Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();

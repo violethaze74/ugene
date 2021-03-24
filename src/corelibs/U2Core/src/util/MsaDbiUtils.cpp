@@ -1053,7 +1053,6 @@ QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, cha
     U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
     U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
 
-    qint64 msaLength = msaDbi->getMsaLength(msaRef.entityId, os);
     QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_OP(os, modifiedRowIds);
     QVariantMap updateSequenceHints;
