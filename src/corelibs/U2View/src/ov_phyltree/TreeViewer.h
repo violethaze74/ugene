@@ -280,7 +280,14 @@ protected:
 
     virtual void onLayoutChanged(const TreeLayout &) {
     }
-    virtual void updateTreeSettings(bool setDefaultZoom = true);
+
+    /**
+     * Recomputes scene layout and triggers redraw.
+     * Updates legend, scene rect, label alignment and other UI properties.
+     * If 'fitSceneToView' is true calls fitInView() for the result scene.
+     */
+    virtual void updateScene(bool fitSceneToView);
+
     virtual void onSettingsChanged(TreeViewOption option, const QVariant &newValue);
 
 signals:

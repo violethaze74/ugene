@@ -55,8 +55,8 @@
         <translation>Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="97"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="108"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="96"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="107"/>
         <source>Can&apos;t load suite %1</source>
         <translation>Can&apos;t load suite %1</translation>
     </message>
@@ -64,18 +64,18 @@
 <context>
     <name>U2::TestRunnerService</name>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
-        <location filename="../src/TestRunnerPlugin.cpp" line="168"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="138"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="167"/>
         <source>Test runner</source>
         <translation>Test runner</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="139"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="138"/>
         <source>Service to support UGENE embedded testing</source>
         <translation>Service to support UGENE embedded testing</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="278"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="277"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>Error reading test suite from %1. Error: %2</translation>
     </message>

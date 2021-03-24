@@ -386,7 +386,7 @@ QStringList GTUtilsMsaEditor::getWholeData(GUITestOpStatus &os) {
     clickSequenceName(os, names.last());
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
     GTGlobals::sleep(500);
 
     return GTClipboard::text(os).split('\n');
@@ -441,6 +441,25 @@ bool GTUtilsMsaEditor::isRedoEnabled(GUITestOpStatus &os) {
 void GTUtilsMsaEditor::buildPhylogeneticTree(GUITestOpStatus &os, const QString &pathToSave) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, pathToSave, 0, 0, true));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "closeActiveTreeTab"
+void GTUtilsMsaEditor::closeActiveTreeTab(GUITestOpStatus &os) {
+    QWidget *treeTabWidget = GTWidget::findWidget(os, "msa_editor_tree_tab_area", getActiveMsaEditorWindow(os));
+
+    QTabBar *tabBar = treeTabWidget->findChild<QTabBar *>();
+    GT_CHECK(tabBar != nullptr, "Tree tab widget must have a tab bar!");
+
+    int tabIndex = tabBar->currentIndex();
+    GT_CHECK(tabIndex >= 0, "TabBar must have a current tab!");
+
+    QWidget *closeTabButton = tabBar->tabButton(tabIndex, QTabBar::RightSide);
+    if (closeTabButton == nullptr) {
+        closeTabButton = tabBar->tabButton(tabIndex, QTabBar::RightSide);
+        GT_CHECK(closeTabButton != nullptr, "TabBar must have close button!");
+    }
+    GTWidget::click(os, closeTabButton);
 }
 #undef GT_METHOD_NAME
 

@@ -445,11 +445,11 @@ void test_9(HI::GUITestOpStatus &os, int i = 0) {
     //Expected state: two columns with gaps added to the end of sequence.
     if (0 != i) {
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(i, 0), QPoint(i + 1, 9));
-        GTKeyboardUtils::copy(os);
+        GTKeyboardUtils::copy();
         gaps = QString("--\n--\n--\n--\n--\n--\n--\n--\n--\n--");
     } else {
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(14, 0), QPoint(15, 9));
-        GTKeyboardUtils::copy(os);
+        GTKeyboardUtils::copy();
         gaps = QString("-A\n--\n--\n--\n--\n--\n--\n--\n--\n--");
     }
 

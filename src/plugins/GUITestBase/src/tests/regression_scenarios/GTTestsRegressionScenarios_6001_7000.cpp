@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
     //2. Select 1 - 10 chars
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
-    GTKeyboardUtils::copy(os);
+    GTKeyboardUtils::copy();
 
     //3. Enable edit mode
     GTUtilsSequenceView::enableEditingMode(os);
@@ -723,7 +723,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
     GTUtilsSequenceView::setCursor(os, 5);
 
     //5. Press paste
-    GTKeyboardUtils::paste(os);
+    GTKeyboardUtils::paste();
     GTGlobals::sleep();
 
     //Expected: cursor on the 15-th pos
@@ -6450,7 +6450,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
     class RemoteBLASTWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            GTWidget::getActiveModalWidget(os);
 
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath()));
 

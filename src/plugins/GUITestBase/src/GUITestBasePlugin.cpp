@@ -35,8 +35,8 @@
 #include "tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.h"
-#include "tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h"
 #include "tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h"
+#include "tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h"
 #include "tests/common_scenarios/Assembling/sam/GTTestsSAM.h"
 #include "tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h"
 #include "tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h"
@@ -55,10 +55,10 @@
 #include "tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h"
 #include "tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h"
 #include "tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h"
-#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h"
 #include "tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h"
 #include "tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h"
+#include "tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h"
 #include "tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h"
 #include "tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h"
 #include "tests/common_scenarios/options_panel/GTTestsOptionPanel.h"
@@ -212,19 +212,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
-/*
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
-    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
-    REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001);
-*/
+    //    REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
 
-    
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, "UGENE-5979");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
@@ -308,7 +297,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     //REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0068); removed as obsolete
     //REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2475);
     //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
     REGISTER_TEST_ONLY_MAC(GUITest_regression_scenarios::test_0339);
 
     if (QSysInfo::WordSize == 32) {
@@ -1739,6 +1727,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7043);
     REGISTER_TEST(GUITest_regression_scenarios::test_7044);
     REGISTER_TEST(GUITest_regression_scenarios::test_7045);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7091);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7106);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2408,6 +2398,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_1);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0003_2);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit
@@ -2907,7 +2899,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0003);
-
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007);
@@ -3069,6 +3061,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::misc_test_0004);
+
+    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, labels({Metagenomics, Linux}));    // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0004);
@@ -3076,7 +3070,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0003);
-
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0007);
@@ -3086,6 +3079,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0011);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0012);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0013);
+    REGISTER_TEST_L(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, labels({Metagenomics, Linux}));    // Needs full taxonomy data (Not available in Nightly).
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0016);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0017);
@@ -3381,6 +3375,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0011);

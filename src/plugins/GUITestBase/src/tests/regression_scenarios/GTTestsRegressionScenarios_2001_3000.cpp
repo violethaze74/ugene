@@ -2796,7 +2796,7 @@ GUI_TEST_CLASS_DEFINITION(test_2410) {
     CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
 
     GTWidget::click(os, sequenceWidget);
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
 
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "GC Content (%)");

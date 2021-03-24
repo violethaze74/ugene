@@ -22,7 +22,6 @@
 #include "primitives/GTLineEdit.h"
 
 #include "drivers/GTKeyboardDriver.h"
-#include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
 #include "system/GTClipboard.h"
 #include "utils/GTKeyboardUtils.h"
@@ -97,7 +96,7 @@ void GTLineEdit::clear(GUITestOpStatus &os, QLineEdit *lineEdit) {
 
     GTWidget::setFocus(os, lineEdit);
 
-    GTKeyboardUtils::selectAll(os);
+    GTKeyboardUtils::selectAll();
     GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(100);
@@ -120,7 +119,7 @@ void GTLineEdit::pasteClipboard(GUITestOpStatus &os, QLineEdit *lineEdit, PasteM
 
     default:
     case Shortcut:
-        GTKeyboardUtils::paste(os);
+        GTKeyboardUtils::paste();
         break;
     }
 

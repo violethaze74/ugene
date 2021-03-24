@@ -583,15 +583,18 @@ int main(int argc, char **argv) {
         QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     }
 #endif
-    QString style = userAppSettings->getVisualStyle();
-    QStyle *qstyle = nullptr;
-    if (!style.isEmpty()) {
-        qstyle = QStyleFactory::create(style);
-        if (qstyle == NULL) {
-            uiLog.details(AppContextImpl::tr("Style not available %1").arg(style));
+    QString styleName = userAppSettings->getVisualStyle();
+    QStyle *qtStyle = nullptr;
+    if (!styleName.isEmpty()) {
+        qtStyle = QStyleFactory::create(styleName);
+        if (qtStyle == nullptr) {
+            uiLog.details(AppContextImpl::tr("Style not available %1").arg(styleName));
         }
     }
-    app.setStyle(new ProxyStyle(qstyle));
+    auto proxyStyle = new ProxyStyle(qtStyle);
+    // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
+    proxyStyle->setObjectName(qtStyle->objectName());
+    app.setStyle(proxyStyle);
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

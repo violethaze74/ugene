@@ -101,7 +101,7 @@ protected:
 
 public:
     qint64 sequenceIdAtPos(const QPoint &p);
-    void clearGroupsSelections();
+    void clearGroupsColors();
 
     /* Returns region of the selected view rows. */
     U2Region getSelection() const;

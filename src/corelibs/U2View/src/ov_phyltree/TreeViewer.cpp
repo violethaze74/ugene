@@ -459,7 +459,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer *treeViewer)
 
     updateActionsState();
     setObjectName("treeView");
-    updateTreeSettings();
+    updateScene(true);
 
     connect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem *)), SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem *)));
 }
@@ -539,7 +539,7 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
         case BRANCHES_TRANSFORMATION_TYPE:
         case WIDTH_COEF:
         case HEIGHT_COEF:
-            updateTreeSettings();
+            updateScene(true);
             break;
         case LABEL_COLOR:
         case LABEL_FONT:
@@ -681,9 +681,10 @@ void TreeViewerUI::updateTextSettings() {
     }
 
     updateLayout();
-    updateTreeSettings();
+    updateScene(true);
 }
-void TreeViewerUI::updateTreeSettings(bool setDefautZoom) {
+
+void TreeViewerUI::updateScene(bool fitSceneToView) {
     qreal avgW = 0;
     TREE_TYPE type = static_cast<TREE_TYPE>(getOptionValue(BRANCHES_TRANSFORMATION_TYPE).toUInt());
     if (type != PHYLOGRAM) {
@@ -771,7 +772,7 @@ void TreeViewerUI::updateTreeSettings(bool setDefautZoom) {
     }
 
     defaultZoom();
-    if (setDefautZoom) {
+    if (fitSceneToView) {
         fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
     }
 }
@@ -1028,7 +1029,7 @@ void TreeViewerUI::sl_swapTriggered() {
 
     redrawRectangularLayout();
     updateLayout();
-    updateTreeSettings();
+    updateScene(true);
 
     setTransform(curTransform);
     horizontalScale = curHScale;
@@ -1196,7 +1197,7 @@ void TreeViewerUI::changeLayout(TreeLayout newLayout) {
             scene()->addItem(root);
             defaultZoom();
             updateRect();
-            updateTreeSettings();
+            updateScene(true);
             onLayoutChanged(newLayout);
             break;
         case CIRCULAR_LAYOUT:
@@ -1244,7 +1245,7 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
 
             break;
     }
-    updateTreeSettings();
+    updateScene(true);
     updateSettings();
     updateTextSettings();
 }
@@ -1256,7 +1257,7 @@ void TreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *) {
     qreal curScale = getScale();
     redrawRectangularLayout();
     setScale(curScale);
-    updateTreeSettings(false);
+    updateScene(false);
 
     setTransform(curTransform);
     updateActionsState();
@@ -1274,7 +1275,7 @@ void TreeViewerUI::sl_layoutRecomputed() {
     defaultZoom();
     updateRect();
 
-    updateTreeSettings();
+    updateScene(true);
     onLayoutChanged(layoutTask->getLayoutType());
 
     bool showNames = getOptionValue(SHOW_LABELS).toBool();

@@ -80,7 +80,7 @@ void BlastReadsSubTask::prepare() {
     }
 }
 
-QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task *task) {
+QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task * /*task*/) {
     QList<Task *> newSubtasks;
     CHECK(!isCanceled() && !hasError(), newSubtasks);
     stateInfo.progress = qRound(100.0 * (readIndex + 1) / reads.size());

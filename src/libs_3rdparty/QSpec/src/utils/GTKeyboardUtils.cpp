@@ -24,20 +24,20 @@
 
 namespace HI {
 
-void GTKeyboardUtils::selectAll(GUITestOpStatus &os) {
+void GTKeyboardUtils::selectAll() {
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 }
 
-void GTKeyboardUtils::copy(GUITestOpStatus &os) {
+void GTKeyboardUtils::copy() {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 }
 
-void GTKeyboardUtils::paste(GUITestOpStatus &os) {
+void GTKeyboardUtils::paste() {
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     GTThread::waitForMainThread();
 }
 
-void GTKeyboardUtils::cut(GUITestOpStatus &os) {
+void GTKeyboardUtils::cut() {
     GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
 }
 

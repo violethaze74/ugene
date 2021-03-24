@@ -59,7 +59,6 @@ void checkColor(HI::GUITestOpStatus &os, const QPoint &p, const QString &expecte
     const QColor color(rgb);
 
     CHECK_SET_ERR(color.name() == expectedColor, "Expected: " + expectedColor + " ,found: " + color.name());
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {

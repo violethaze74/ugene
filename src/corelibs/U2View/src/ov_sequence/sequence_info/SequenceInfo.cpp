@@ -361,7 +361,7 @@ void SequenceInfo::sl_onSequenceModified() {
     updateData();
 }
 
-void SequenceInfo::sl_onActiveSequenceChanged(ADVSequenceWidget *oldSequenceWidget /*from*/, ADVSequenceWidget *newSequenceWidget) {
+void SequenceInfo::sl_onActiveSequenceChanged(ADVSequenceWidget * /*oldSequenceWidget*/, ADVSequenceWidget *newSequenceWidget) {
     if (newSequenceWidget != nullptr) {    // i.e. the sequence has been deleted
         updateLayout();
         updateCurrentRegions();

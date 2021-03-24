@@ -161,7 +161,7 @@
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="suffix">
-              <string> </string>
+              <string/>
              </property>
              <property name="maximum">
               <number>1000000</number>
@@ -181,11 +181,6 @@
           </widget>
          </item>
         </layout>
-        <zorder>layoutWidget</zorder>
-        <zorder>rbSeparate</zorder>
-        <zorder>rbMerge</zorder>
-        <zorder>rbMalignment</zorder>
-        <zorder>horizontalSpacer</zorder>
        </widget>
       </item>
       <item>
