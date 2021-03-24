@@ -625,8 +625,6 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0003) {
 
     GTUtilsLog::check(os, l);
 
-    GTGlobals::sleep(11000);
-
     GTUtilsProjectTreeView::findIndex(os, "run_workflow_gui_test_0003");
 }
 
