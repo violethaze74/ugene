@@ -54,18 +54,17 @@ linux-g++ {
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
-    # We have a lot of such warning from QT.
-    # Disable them now and recheck every time we increase the minimal supported version of QT.
-    QMAKE_CXXFLAGS += -Wno-catch-value
-    QMAKE_CXXFLAGS += -Wno-class-memaccess
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
-    QMAKE_CXXFLAGS += -Wno-expansion-to-defined
-    QMAKE_CXXFLAGS += -Wno-ignored-attributes
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
-    QMAKE_CXXFLAGS += -Wno-sign-compare
-
-    # QT 5.4 sources produce this warning when compiled with gcc9. Re-check after QT upgrade.
+    # QtScript produces this warning when qScriptRegisterMetadata is used. QT rejects to fix it: QtScript is deprecated.
+    # TODO: Wrap QtScript includes with the warning suppression and remove the global suppression.
     QMAKE_CXXFLAGS += -Wno-cast-function-type
+
+    # A few UGENE headers (like U2Location) emits thousands of deprecated warnings about deprecated copy.
+    # TODO: Fix UGENE code and remove the suppression.
+    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+
+    # Some of UGENE code uses fallthrough in switch blocks.
+    # TODO: Fix and remove the suppression. Find the way to keep 'fallthrough' with no warnings when needed.
+    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
 
     # These warnings must be errors:
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
@@ -73,6 +72,7 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Werror=return-type
     QMAKE_CXXFLAGS += -Werror=uninitialized
     QMAKE_CXXFLAGS += -Werror=unused-parameter
+    QMAKE_CXXFLAGS += -Werror=unused-variable
 
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {

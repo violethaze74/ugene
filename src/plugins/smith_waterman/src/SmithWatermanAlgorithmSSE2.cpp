@@ -58,6 +58,11 @@ inline __m128i xmm_load8(__m64 *m) {
 
 using namespace std;
 
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
+
 namespace U2 {
 
 quint64 SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(const QByteArray
@@ -104,25 +109,25 @@ void SmithWatermanAlgorithmSSE2::launch(const SMatrix &_substitutionMatrix, cons
         if (minScore <= maxScore) {
             if (maxScore >= 0x8000 || matrixLength >= 0x10000) {
                 switch (resultView) {
-                case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
-                    calculateMatrixForMultipleAlignmentResultWithInt();
-                    break;
-                case SmithWatermanSettings::ANNOTATIONS:
-                    calculateMatrixForAnnotationsResultWithInt();
-                    break;
-                default:
-                    assert(false);
+                    case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
+                        calculateMatrixForMultipleAlignmentResultWithInt();
+                        break;
+                    case SmithWatermanSettings::ANNOTATIONS:
+                        calculateMatrixForAnnotationsResultWithInt();
+                        break;
+                    default:
+                        assert(false);
                 }
             } else {
                 switch (resultView) {
-                case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
-                    calculateMatrixForMultipleAlignmentResultWithShort();
-                    break;
-                case SmithWatermanSettings::ANNOTATIONS:
-                    calculateMatrixForAnnotationsResultWithShort();
-                    break;
-                default:
-                    assert(false);
+                    case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
+                        calculateMatrixForMultipleAlignmentResultWithShort();
+                        break;
+                    case SmithWatermanSettings::ANNOTATIONS:
+                        calculateMatrixForAnnotationsResultWithShort();
+                        break;
+                    default:
+                        assert(false);
                 }
             }
         }

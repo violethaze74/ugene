@@ -26,6 +26,7 @@
 #ifdef __GNUC__
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wdeprecated"
+#    pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
 #include <BALL/STRUCTURE/triangulatedSES.h>
 #ifdef __GNUC__
