@@ -116,7 +116,7 @@ public:
 
 private:
     /** Reads a single character from the stream. Can be called only in the context of 'read' operation. */
-    QChar get();
+    QChar get(U2OpStatus& os);
 
     /** Puts back the last read character to the stream buffer. Can be called only in the context of 'read' operation. */
     void unget();

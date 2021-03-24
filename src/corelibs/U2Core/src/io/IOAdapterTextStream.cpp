@@ -123,7 +123,8 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     textForUndo.clear();
     bool isReadingTerminatorSequence = false;
     while (!stream.atEnd() && result.length() != maxLength) {
-        QChar unicodeChar = get();
+        QChar unicodeChar = get(os);
+        CHECK_OP(os, 0);
         uchar latin1Char = unicodeChar.toLatin1();
         bool isTerminatorChar = terminators.at(latin1Char);
         if (isTerminatorChar) {
@@ -151,11 +152,12 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     return result.length();
 }
 
-QChar IOAdapterReader::get() {
+QChar IOAdapterReader::get(U2OpStatus &os) {
     QChar ch;
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
     } else {
+        SAFE_POINT_EXT(unreadCharsBufferPos < unreadCharsBuffer.size(), os.setError(L10N::internalError()), 0);
         ch = unreadCharsBuffer[unreadCharsBufferPos];
         unreadCharsBufferPos++;
         if (unreadCharsBufferPos == unreadCharsBuffer.length()) {
