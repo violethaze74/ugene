@@ -604,7 +604,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::getExplicitCopy
 void MultipleChromatogramAlignmentData::copy(const MultipleAlignmentData &other) {
     try {
         copy(dynamic_cast<const MultipleChromatogramAlignmentData &>(other));
-    } catch (std::bad_cast) {
+    } catch (std::bad_cast &) {
         FAIL("Can't cast MultipleAlignmentData to MultipleChromatogramAlignmentData", );
     }
 }

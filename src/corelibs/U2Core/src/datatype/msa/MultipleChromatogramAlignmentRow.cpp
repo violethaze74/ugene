@@ -393,7 +393,7 @@ bool MultipleChromatogramAlignmentRowData::operator==(const MultipleChromatogram
 bool MultipleChromatogramAlignmentRowData::operator==(const MultipleAlignmentRowData &maRowData) const {
     try {
         return (*this == dynamic_cast<const MultipleChromatogramAlignmentRowData &>(maRowData));
-    } catch (std::bad_cast) {
+    } catch (std::bad_cast &) {
         FAIL("Can't cast MultipleAlignmentRowData to MultipleChromatogramAlignmentRowData", true);
     }
 }

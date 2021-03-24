@@ -434,7 +434,7 @@ void LoadDocumentTask::run() {
         } else {
             resultDocument = format->loadDocument(iof, url, hints, stateInfo);
         }
-    } catch (std::bad_alloc) {
+    } catch (std::bad_alloc &) {
         resultDocument = NULL;
         setError(tr("Not enough memory to load document %1").arg(url.getURLString()));
     }
