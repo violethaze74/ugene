@@ -24,7 +24,6 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QScopedPointer>
-#include <QScriptEngine>
 #include <QThread>
 
 #include <U2Core/AppContext.h>
@@ -37,7 +36,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/Task.h>
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
