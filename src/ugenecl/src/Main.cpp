@@ -250,7 +250,7 @@ int main(int argc, char **argv) {
     // Set translations if needed: use value in the settings or cmd-line parameter override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList traceLogFromTranslator;    // Messages from about the translator set-up to be sent to the trace log category.
+    QStringList traceLogFromTranslator;    // Details about translator initialization to log when the log system is initialized.
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
@@ -266,8 +266,10 @@ int main(int argc, char **argv) {
         }
         traceLogFromTranslator << "Translation not found: " + translationFile;
     }
-    app.installTranslator(&translator);
-    updateStaticTranslations();
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        updateStaticTranslations();
+    }
 
     // 2 create functional components of congene
     ConsoleLogDriver logs;

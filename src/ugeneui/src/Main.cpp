@@ -499,7 +499,7 @@ int main(int argc, char **argv) {
     // Set translations if needed: use value in the settings or environment variables to override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList traceLogFromTranslator;    // Messages from about the translator set-up to be sent to the trace log category.
+    QStringList traceLogFromTranslator;    // Details about translator initialization to log when the log system is initialized.
 
     // The file specified by user has the highest priority in the translations lookup order.
     QStringList envList = QProcess::systemEnvironment();
@@ -524,8 +524,10 @@ int main(int argc, char **argv) {
             traceLogFromTranslator << "Translation not found: " + translationFile;
         }
     }
-    app.installTranslator(&translator);
-    updateStaticTranslations();
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        updateStaticTranslations();
+    }
 
     ToolsMenu::init();
 
