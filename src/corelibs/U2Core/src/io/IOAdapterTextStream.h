@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEXT_STREAM_H_
-#define _U2_TEXT_STREAM_H_
+#ifndef _U2_IO_ADAPTER_TEXT_STREAM_H_
+#define _U2_IO_ADAPTER_TEXT_STREAM_H_
 
 #include <QObject>
 #include <QTextStream>
@@ -40,6 +40,7 @@ class U2OpStatus;
  *
  */
 class IOAdapterDevice : public QIODevice {
+    Q_DISABLE_COPY(IOAdapterDevice)
 public:
     /**
      * Creates a new unbuffered QIODevice over IOAdapter instance.
@@ -66,6 +67,7 @@ private:
 
 /** Base class for reader & writer io-adapter text streams. */
 class U2CORE_EXPORT IOAdapterReaderAndWriterBase {
+    Q_DISABLE_COPY(IOAdapterReaderAndWriterBase)
 public:
     /** Initializes underlying qt stream & io-device. If 'codec' is null uses default locale codec. */
     IOAdapterReaderAndWriterBase(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
@@ -88,6 +90,7 @@ protected:
  * If the codec can't be detected from the binary data falls back to the most suitable codec for the current user locale (usually UTF-8).
  */
 class U2CORE_EXPORT IOAdapterReader : public IOAdapterReaderAndWriterBase {
+    Q_DISABLE_COPY(IOAdapterReader)
 public:
     /**
      * Initializes text stream with the ioAdapter wrapped into QIODevice.
@@ -116,7 +119,7 @@ public:
 
 private:
     /** Reads a single character from the stream. Can be called only in the context of 'read' operation. */
-    QChar get(U2OpStatus& os);
+    QChar get(U2OpStatus &os);
 
     /** Puts back the last read character to the stream buffer. Can be called only in the context of 'read' operation. */
     void unget();
@@ -139,6 +142,7 @@ private:
 };
 
 class U2CORE_EXPORT IOAdapterWriter : public IOAdapterReaderAndWriterBase {
+    Q_DISABLE_COPY(IOAdapterWriter)
 public:
     /** Creates new instance of a text stream with the given codec. */
     IOAdapterWriter(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
