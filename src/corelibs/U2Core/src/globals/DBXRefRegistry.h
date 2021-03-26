@@ -24,9 +24,9 @@
 
 #include <QMap>
 #include <QObject>
-#include <QScriptEngine>
 #include <QStringList>
 
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/global.h>
 
 namespace U2 {
