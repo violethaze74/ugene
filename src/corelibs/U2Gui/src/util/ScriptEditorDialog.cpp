@@ -24,9 +24,9 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QMouseEvent>
-#include <QScriptEngine>
 
 #include <U2Core/L10n.h>
+#include <U2Core/ScriptEngine.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>

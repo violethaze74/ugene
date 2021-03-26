@@ -22,7 +22,8 @@
 #include "GTestScriptWrapper.h"
 
 #include <QScriptContext>
-#include <QScriptEngine>
+
+#include <U2Core/ScriptEngine.h>
 
 namespace U2 {
 

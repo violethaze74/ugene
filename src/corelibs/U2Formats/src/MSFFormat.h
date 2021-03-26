@@ -31,7 +31,7 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     MSFFormat(QObject *p);

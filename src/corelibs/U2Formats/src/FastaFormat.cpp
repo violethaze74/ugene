@@ -53,7 +53,7 @@ const char FastaFormat::FASTA_HEADER_START_SYMBOL = '>';
 const char FastaFormat::FASTA_COMMENT_START_SYMBOL = ';';
 
 FastaFormat::FastaFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, QStringList() << "fa"
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, QStringList() << "fa"
                                                                                               << "mpfa"
                                                                                               << "fna"
                                                                                               << "fsa"

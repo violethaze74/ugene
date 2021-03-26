@@ -31,7 +31,7 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     FastaFormat(QObject *p);

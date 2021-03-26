@@ -22,7 +22,6 @@
 #include "ImportAnnotationsFromCSVTask.h"
 
 #include <QScopedPointer>
-#include <QScriptEngine>
 #include <QScriptValueIterator>
 
 #include <U2Core/AddDocumentTask.h>
@@ -38,6 +37,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/ScriptEngine.h>
 #include <U2Core/ScriptTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
