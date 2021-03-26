@@ -161,6 +161,7 @@ void SplashScreenWidget::drawInfo() {
     QPainter p(&image2);
 
     QFont font = p.font();
+    font.setFamily("Heiti");
     font.setBold(true);
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont(font);
