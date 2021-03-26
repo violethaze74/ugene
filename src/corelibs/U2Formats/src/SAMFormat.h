@@ -32,7 +32,7 @@ namespace U2 {
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     SAMFormat(QObject *p = NULL);

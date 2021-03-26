@@ -49,7 +49,7 @@ GObject *QDGObject::clone(const U2DbiRef &, U2OpStatus &, const QVariantMap &hin
 //Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject *p)
-    : TextDocumentFormat(p, DocumentFormatId("QueryDocFormat"), DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
+    : TextDocumentFormatDeprecated(p, DocumentFormatId("QueryDocFormat"), DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
     formatName = tr("Query Schema");
     formatDescription = tr("QDDoc is a format used for creating/editing/storing/retrieving"
                            "query schema with the text file");

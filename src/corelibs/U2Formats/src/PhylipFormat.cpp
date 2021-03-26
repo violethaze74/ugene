@@ -43,7 +43,7 @@ namespace U2 {
 
 // PhylipFormat
 PhylipFormat::PhylipFormat(QObject *p, const DocumentFormatId &id)
-    : TextDocumentFormat(p, id, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "phy"
+    : TextDocumentFormatDeprecated(p, id, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "phy"
                                                                                                                                          << "ph") {
     formatDescription = tr("PHYLIP multiple alignment format for phylogenetic applications.");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;

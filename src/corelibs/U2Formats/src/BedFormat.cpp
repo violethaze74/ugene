@@ -95,7 +95,7 @@ const QString BLOCK_STARTS_QUALIFIER_NAME = "block_starts";
 }    // namespace
 
 BedFormat::BedFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::BED, DocumentFormatFlag_SupportWriting, QStringList("bed")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::BED, DocumentFormatFlag_SupportWriting, QStringList("bed")) {
     formatName = tr("BED");
     formatDescription = tr("The BED (Browser Extensible Data) format was developed by UCSC for displaying transcript structures in the genome browser.");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;

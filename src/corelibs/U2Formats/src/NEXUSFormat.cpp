@@ -47,7 +47,7 @@ namespace U2 {
 // Documentation: http://informatics.nescent.org/w/images/8/8b/NEXUS_Final.pdf
 
 NEXUSFormat::NEXUSFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
                                                                                                                                                                  << "nxs")    // disable streaming for now
 {
     formatName = tr("NEXUS");

@@ -43,7 +43,7 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 
 RawDNASequenceFormat::RawDNASequenceFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::RAW_DNA_SEQUENCE, DocumentFormatFlags_W1) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::RAW_DNA_SEQUENCE, DocumentFormatFlags_W1) {
     formatName = tr("Raw sequence");
     fileExtensions << "seq"
                    << "txt";

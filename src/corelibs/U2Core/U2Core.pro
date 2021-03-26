@@ -147,6 +147,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/io/HttpFileAdapter.h \
            src/io/InputStream.h \
            src/io/IOAdapter.h \
+           src/io/IOAdapterTextStream.h \
            src/io/LocalFileAdapter.h \
            src/io/OutputStream.h \
            src/io/RingBuffer.h \
@@ -378,6 +379,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/io/DatabaseConnectionAdapter.cpp \
            src/io/HttpFileAdapter.cpp \
            src/io/IOAdapter.cpp \
+           src/io/IOAdapterTextStream.cpp \
            src/io/LocalFileAdapter.cpp \
            src/io/StringAdapter.cpp \
            src/io/VFSAdapter.cpp \

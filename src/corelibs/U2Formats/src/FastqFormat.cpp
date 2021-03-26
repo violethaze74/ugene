@@ -49,7 +49,7 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq"
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::FASTQ, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq"
                                                                                                                                              << "fq") {
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     formatName = tr("FASTQ");
@@ -165,7 +165,7 @@ static void readSequence(U2OpStatus &os, IOAdapter *io, QByteArray &sequence, ch
     QByteArray buffArray(DocumentFormat::READ_BUFF_SIZE + 1, 0);
     char *buff = buffArray.data();
 
-    // reading until readUntil symbol i.e. quality or dna sequence name start, ignoring whitespace at the beginning and the end of lines
+    // reading until read symbol i.e. quality or dna sequence name start, ignoring whitespace at the beginning and the end of lines
 
     while (!io->isEof()) {
         bool eolnFound = false;

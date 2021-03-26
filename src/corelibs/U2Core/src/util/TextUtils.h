@@ -85,6 +85,9 @@ public:
 
     inline static void replace(char *seq, int len, const QBitArray &fromMap, char to);
 
+    /** Replaces all string characters found in the latin1CharCodeMap with the 'replacementChar' in place. */
+    static void replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar);
+
     inline static void applyMap(const QBitArray &map, const char *srcSeq, int len, char *dstSeq);
 
     inline static void applyMap(const QBitArray &map, char *seq, int len) {
@@ -129,6 +132,15 @@ public:
 
     /** Splits text into chunks of the given length. */
     static QStringList split(const QString &text, int chunkSize);
+
+    /** Returns first line found in the text with no line separtors. If there are no line separators returns the text itself. */
+    static QString readFirstLine(const QString &text);
+
+    /** Returns true if the character at the text[charIndex] position is in LINE_BREAK set. */
+    static bool isLineBreak(const QString &text, int charIndex);
+
+    /** Returns true if the character at the text[charIndex] position is in WHITE_SPACE set. */
+    static bool isWhiteSpace(const QString &text, int charIndex);
 };
 
 template<typename T>

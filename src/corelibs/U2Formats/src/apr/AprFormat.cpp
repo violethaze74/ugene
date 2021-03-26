@@ -146,7 +146,7 @@ static void createRows(IOAdapter *io, char *buff, const int sequnenceNum, const 
 }
 
 AprFormat::AprFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
     formatName = tr("Vector NTI/AlignX");
     formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;

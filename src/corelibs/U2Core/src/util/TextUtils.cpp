@@ -214,4 +214,29 @@ QStringList TextUtils::split(const QString &text, int chunkSize) {
     return result;
 }
 
+void TextUtils::replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar) {
+    for (int i = 0; i < text.length(); i++) {
+        uchar latin1Char = text.at(i).toLatin1();
+        if (latin1CharCodeMap.at(latin1Char)) {
+            text[i] = replacementChar;
+        }
+    }
+}
+
+QString TextUtils::readFirstLine(const QString &text) {
+    QString textCopy = text;
+    QTextStream stream(&textCopy);
+    return stream.readLine();
+}
+
+bool TextUtils::isLineBreak(const QString &text, int charIndex) {
+    uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
+    return LINE_BREAKS.testBit(bitIndex);
+}
+
+bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
+    uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
+    return WHITES.testBit(bitIndex);
+}
+
 }    // namespace U2

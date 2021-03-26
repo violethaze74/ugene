@@ -38,7 +38,7 @@ class U2SequenceObject;
 class AtomData;
 typedef QSharedDataPointer<AtomData> SharedAtom;
 
-class U2FORMATS_EXPORT PDBFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT PDBFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     PDBFormat(QObject *p);
