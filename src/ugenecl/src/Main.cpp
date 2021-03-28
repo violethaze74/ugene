@@ -264,7 +264,7 @@ int main(int argc, char **argv) {
         if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
             break;
         }
-        translationFileList << translationFile;
+        failedToLoadTranslatorFiles << translationFile;
     }
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
