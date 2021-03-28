@@ -397,24 +397,24 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
                 }
             }
             break;
-        /*case QEvent::GraphicsSceneMousePress:
-    mousePressEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
-    break;
-    case QEvent::GraphicsSceneMouseDoubleClick:
-    mouseDoubleClickEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
-    break;
-    case QEvent::GraphicsSceneWheel:
-    wheelEvent(static_cast<QGraphicsSceneWheelEvent *>(event));
-    break;
-    case QEvent::KeyPress:
-    keyPressEvent(static_cast<QKeyEvent *>(event));
-    break;
-    case QEvent::KeyRelease:
-    keyReleaseEvent(static_cast<QKeyEvent *>(event));
-    break;
-    case QEvent::InputMethod:
-    inputMethodEvent(static_cast<QInputMethodEvent *>(event));
-    break;*/
+            /*case QEvent::GraphicsSceneMousePress:
+            mousePressEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
+            break;
+            case QEvent::GraphicsSceneMouseDoubleClick:
+            mouseDoubleClickEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
+            break;
+            case QEvent::GraphicsSceneWheel:
+            wheelEvent(static_cast<QGraphicsSceneWheelEvent *>(event));
+            break;
+            case QEvent::KeyPress:
+            keyPressEvent(static_cast<QKeyEvent *>(event));
+            break;
+            case QEvent::KeyRelease:
+            keyReleaseEvent(static_cast<QKeyEvent *>(event));
+            break;
+            case QEvent::InputMethod:
+            inputMethodEvent(static_cast<QInputMethodEvent *>(event));
+            break;*/
         default:
             return false;
     }
@@ -469,9 +469,9 @@ void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
         bounds = b;
         owner->prepareUpdate();
 
-        foreach (WorkflowPortItem *pit, owner->getPortItems()) {
-            pit->adaptOwnerShape();
-        }
+            foreach (WorkflowPortItem *pit, owner->getPortItems()) {
+                pit->adaptOwnerShape();
+            }
     }
     owner->update();
     resizeModeAction->setChecked(false);
@@ -563,9 +563,9 @@ QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant &value) 
     if (change == ItemPositionHasChanged) {
         parentItem()->update();
         if (scene()) {
-            foreach (QGraphicsView *v, scene()->views()) {
-                v->ensureVisible(this, 0, 0);
-            }
+                foreach (QGraphicsView *v, scene()->views()) {
+                    v->ensureVisible(this, 0, 0);
+                }
         }
     }
     return QGraphicsItem::itemChange(change, value);
