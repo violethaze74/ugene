@@ -58,10 +58,6 @@ linux-g++ {
     # TODO: Fix UGENE code and remove the suppression.
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
 
-    # Some of UGENE code uses fallthrough in switch blocks.
-    # TODO: Fix and remove the suppression. Find the way to keep 'fallthrough' with no warnings when needed.
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
-
     # These warnings must be errors:
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses

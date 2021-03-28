@@ -33,8 +33,9 @@
 #ifdef __GNUC__
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wbool-compare"
-#    pragma GCC diagnostic ignored "-Wdeprecated"
 #    pragma GCC diagnostic ignored "-Wclass-memaccess"
+#    pragma GCC diagnostic ignored "-Wdeprecated"
+#    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #    pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #    pragma GCC diagnostic ignored "-Wpointer-compare"
 #    pragma GCC diagnostic ignored "-Wsign-compare"
@@ -43,7 +44,7 @@
 #    pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #    pragma GCC diagnostic ignored "-Wunused-function"
 #    pragma GCC diagnostic ignored "-Wunused-parameter"
-#    pragma GCC diagnostic ignored "-Wunused-variable"
+#    pragma GCC diagnostic ignored "-Wunused-parameter"
 #
 #    ifndef __cplusplus    // The macros below are not valid in C++ context but are needed for plain C files.
 #        pragma GCC diagnostic ignored "-Wimplicit-function-declaration"
