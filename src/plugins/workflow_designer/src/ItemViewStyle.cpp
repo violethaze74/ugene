@@ -461,7 +461,6 @@ bool ExtendedProcStyle::updateCursor(const QPointF &p) {
         break;
     }
     return resizing != NoResize;
-    return ret;
 }
 
 void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
