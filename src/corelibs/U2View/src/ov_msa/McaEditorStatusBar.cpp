@@ -33,7 +33,6 @@
 #include "McaEditorNameList.h"
 #include "McaEditorReferenceArea.h"
 #include "McaReferenceCharController.h"
-#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
@@ -94,10 +93,9 @@ void McaEditorStatusBar::updateLineLabel() {
 }
 
 void McaEditorStatusBar::updatePositionLabel() {
-    const MaEditorSelection selection = seqArea->getSelection();
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    if (!selection.isEmpty()) {
-        positions = getGappedPositionInfo(selection.topLeft());
+    if (!seqArea->getSelection().isEmpty()) {
+        positions = getGappedPositionInfo();
     } else {
         const U2Region rowsSelection = nameList->getSelection();
         if (!rowsSelection.isEmpty()) {
