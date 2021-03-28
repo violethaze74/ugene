@@ -308,115 +308,115 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
     bool ret = false;
 
     switch (event->type()) {
-        case QEvent::GraphicsSceneHoverEnter:
-        case QEvent::GraphicsSceneHoverMove: {
-            QGraphicsSceneHoverEvent *he = dynamic_cast<QGraphicsSceneHoverEvent *>(event);
-            ret = updateCursor(he->pos());
-        } break;
-        case QEvent::GraphicsSceneMouseRelease:
-        case QEvent::GraphicsSceneHoverLeave:
-            if (event->type() == QEvent::GraphicsSceneMouseRelease) {
-                desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent *>(event));
-            }
-            if (resizing) {
-                owner->unsetCursor();
-            }
-            resizing = NoResize;
-            break;
-        case QEvent::GraphicsSceneMouseMove:
-            if (resizing && event->spontaneous()) {
-                QGraphicsSceneMouseEvent *me = (dynamic_cast<QGraphicsSceneMouseEvent *>(event));
-                WorkflowSettings::setSnap2Grid(false);
-                QPointF newPos;
-                if ((me->buttons() & Qt::LeftButton)) {
-                    ret = true;
-                    QRectF b2 = bounds;
-                    QPointF p = me->pos();
-                    QPointF p2 = p - me->lastPos();
+    case QEvent::GraphicsSceneHoverEnter:
+    case QEvent::GraphicsSceneHoverMove: {
+        QGraphicsSceneHoverEvent *he = dynamic_cast<QGraphicsSceneHoverEvent *>(event);
+        ret = updateCursor(he->pos());
+    } break;
+    case QEvent::GraphicsSceneMouseRelease:
+    case QEvent::GraphicsSceneHoverLeave:
+        if (event->type() == QEvent::GraphicsSceneMouseRelease) {
+            desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent *>(event));
+        }
+        if (resizing) {
+            owner->unsetCursor();
+        }
+        resizing = NoResize;
+        break;
+    case QEvent::GraphicsSceneMouseMove:
+        if (resizing && event->spontaneous()) {
+            QGraphicsSceneMouseEvent *me = (dynamic_cast<QGraphicsSceneMouseEvent *>(event));
+            WorkflowSettings::setSnap2Grid(false);
+            QPointF newPos;
+            if ((me->buttons() & Qt::LeftButton)) {
+                ret = true;
+                QRectF b2 = bounds;
+                QPointF p = me->pos();
+                QPointF p2 = p - me->lastPos();
 
-                    if (resizing & RightResize &&    // border is either "pulled" or "pushed" by mouse pointer
-                        // in the latter case pointer should be close to the border
-                        ((p2.x() < 0 && b2.right() > p.x()) || (p2.x() > 0 && b2.right() < p.x()) || (qAbs(b2.right() - p.x()) < RESIZE_AREA))) {
-                        qreal rb = b2.right() + p2.x();
-                        b2.setRight(rb);
+                if (resizing & RightResize &&    // border is either "pulled" or "pushed" by mouse pointer
+                    // in the latter case pointer should be close to the border
+                    ((p2.x() < 0 && b2.right() > p.x()) || (p2.x() > 0 && b2.right() < p.x()) || (qAbs(b2.right() - p.x()) < RESIZE_AREA))) {
+                    qreal rb = b2.right() + p2.x();
+                    b2.setRight(rb);
 
-                        owner->updatePorts();
+                    owner->updatePorts();
 
-                        if (b2.width() < MARGIN * 2 + R) {
-                            return true;
-                        }
+                    if (b2.width() < MARGIN * 2 + R) {
+                        return true;
                     }
+                }
 
-                    if (resizing & LeftResize && ((p2.x() < 0 && b2.left() > p.x()) || (p2.x() > 0 && b2.left() < p.x()) || (qAbs(b2.left() - p.x()) < RESIZE_AREA))) {
-                        b2.setWidth(b2.width() - p2.x());
-                        newPos = owner->scenePos();
-                        newPos.setX(newPos.x() - (b2.width() - bounds.width()));
+                if (resizing & LeftResize && ((p2.x() < 0 && b2.left() > p.x()) || (p2.x() > 0 && b2.left() < p.x()) || (qAbs(b2.left() - p.x()) < RESIZE_AREA))) {
+                    b2.setWidth(b2.width() - p2.x());
+                    newPos = owner->scenePos();
+                    newPos.setX(newPos.x() - (b2.width() - bounds.width()));
 
-                        if (b2.width() < MARGIN * 2 + R) {
-                            return true;
-                        }
-
-                        setFixedBounds(b2);
-                        owner->setPos(newPos);
-                    }
-
-                    if (resizing & TopResize &&
-                        ((p2.y() < 0 && b2.top() > p.y()) || (p2.y() > 0 && b2.top() < p.y()) || (qAbs(b2.top() - p.y()) < RESIZE_AREA))) {
-                        b2.setHeight(b2.height() - p2.y());
-
-                        newPos = owner->scenePos();
-                        newPos.setY(newPos.y() - (b2.height() - bounds.height()));
-
-                        qreal minHeight = R + MARGIN * 2;
-
-                        WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-                        if (b2.height() < minHeight || newPos.y() < sc->sceneRect().top()) {
-                            return true;
-                        }
-
-                        setFixedBounds(b2);
-                        owner->setPos(newPos);
-                    }
-
-                    if (resizing & BottomResize && ((p2.y() < 0 && b2.bottom() > p.y()) || (p2.y() > 0 && b2.bottom() < p.y()) || (qAbs(b2.bottom() - p.y()) < RESIZE_AREA))) {
-                        b2.setBottom(b2.bottom() + p2.y());
-                        owner->updatePorts();
-                    }
-                    //qreal minHeight = qMax(doc->size().height(), R) + MARGIN*2;
-                    qreal minHeight = R + MARGIN * 2;
-                    if (b2.height() < minHeight) {
-                        b2.setHeight(minHeight);
+                    if (b2.width() < MARGIN * 2 + R) {
+                        return true;
                     }
 
                     setFixedBounds(b2);
+                    owner->setPos(newPos);
+                }
+
+                if (resizing & TopResize &&
+                    ((p2.y() < 0 && b2.top() > p.y()) || (p2.y() > 0 && b2.top() < p.y()) || (qAbs(b2.top() - p.y()) < RESIZE_AREA))) {
+                    b2.setHeight(b2.height() - p2.y());
+
+                    newPos = owner->scenePos();
+                    newPos.setY(newPos.y() - (b2.height() - bounds.height()));
+
+                    qreal minHeight = R + MARGIN * 2;
 
                     WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-                    if (sc != NULL) {
-                        sc->setModified(true);
+                    if (b2.height() < minHeight || newPos.y() < sc->sceneRect().top()) {
+                        return true;
                     }
+
+                    setFixedBounds(b2);
+                    owner->setPos(newPos);
+                }
+
+                if (resizing & BottomResize && ((p2.y() < 0 && b2.bottom() > p.y()) || (p2.y() > 0 && b2.bottom() < p.y()) || (qAbs(b2.bottom() - p.y()) < RESIZE_AREA))) {
+                    b2.setBottom(b2.bottom() + p2.y());
+                    owner->updatePorts();
+                }
+                //qreal minHeight = qMax(doc->size().height(), R) + MARGIN*2;
+                qreal minHeight = R + MARGIN * 2;
+                if (b2.height() < minHeight) {
+                    b2.setHeight(minHeight);
+                }
+
+                setFixedBounds(b2);
+
+                WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
+                if (sc != NULL) {
+                    sc->setModified(true);
                 }
             }
-            break;
-            /*case QEvent::GraphicsSceneMousePress:
-            mousePressEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
-            break;
-            case QEvent::GraphicsSceneMouseDoubleClick:
-            mouseDoubleClickEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
-            break;
-            case QEvent::GraphicsSceneWheel:
-            wheelEvent(static_cast<QGraphicsSceneWheelEvent *>(event));
-            break;
-            case QEvent::KeyPress:
-            keyPressEvent(static_cast<QKeyEvent *>(event));
-            break;
-            case QEvent::KeyRelease:
-            keyReleaseEvent(static_cast<QKeyEvent *>(event));
-            break;
-            case QEvent::InputMethod:
-            inputMethodEvent(static_cast<QInputMethodEvent *>(event));
-            break;*/
-        default:
-            return false;
+        }
+        break;
+    /*case QEvent::GraphicsSceneMousePress:
+    mousePressEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
+    break;
+    case QEvent::GraphicsSceneMouseDoubleClick:
+    mouseDoubleClickEvent(static_cast<QGraphicsSceneMouseEvent *>(event));
+    break;
+    case QEvent::GraphicsSceneWheel:
+    wheelEvent(static_cast<QGraphicsSceneWheelEvent *>(event));
+    break;
+    case QEvent::KeyPress:
+    keyPressEvent(static_cast<QKeyEvent *>(event));
+    break;
+    case QEvent::KeyRelease:
+    keyReleaseEvent(static_cast<QKeyEvent *>(event));
+    break;
+    case QEvent::InputMethod:
+    inputMethodEvent(static_cast<QInputMethodEvent *>(event));
+    break;*/
+    default:
+        return false;
     }
 
     return ret;
@@ -440,27 +440,28 @@ bool ExtendedProcStyle::updateCursor(const QPointF &p) {
     }
 
     switch (resizing) {
-        case NoResize:
-            owner->unsetCursor();
-            break;
-        case RightResize:
-        case LeftResize:
-            owner->setCursor(Qt::SizeHorCursor);
-            break;
-        case BottomResize:
-        case TopResize:
-            owner->setCursor(Qt::SizeVerCursor);
-            break;
-        case RBResize:
-        case LTResize:
-            owner->setCursor(Qt::SizeFDiagCursor);
-            break;
-        case LBResize:
-        case RTResize:
-            owner->setCursor(Qt::SizeBDiagCursor);
-            break;
+    case NoResize:
+        owner->unsetCursor();
+        break;
+    case RightResize:
+    case LeftResize:
+        owner->setCursor(Qt::SizeHorCursor);
+        break;
+    case BottomResize:
+    case TopResize:
+        owner->setCursor(Qt::SizeVerCursor);
+        break;
+    case RBResize:
+    case LTResize:
+        owner->setCursor(Qt::SizeFDiagCursor);
+        break;
+    case LBResize:
+    case RTResize:
+        owner->setCursor(Qt::SizeBDiagCursor);
+        break;
     }
     return resizing != NoResize;
+    return ret;
 }
 
 void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
@@ -469,9 +470,9 @@ void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
         bounds = b;
         owner->prepareUpdate();
 
-            foreach (WorkflowPortItem *pit, owner->getPortItems()) {
-                pit->adaptOwnerShape();
-            }
+        foreach (WorkflowPortItem *pit, owner->getPortItems()) {
+            pit->adaptOwnerShape();
+        }
     }
     owner->update();
     resizeModeAction->setChecked(false);
@@ -563,9 +564,9 @@ QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant &value) 
     if (change == ItemPositionHasChanged) {
         parentItem()->update();
         if (scene()) {
-                foreach (QGraphicsView *v, scene()->views()) {
-                    v->ensureVisible(this, 0, 0);
-                }
+            foreach (QGraphicsView *v, scene()->views()) {
+                v->ensureVisible(this, 0, 0);
+            }
         }
     }
     return QGraphicsItem::itemChange(change, value);
@@ -618,17 +619,17 @@ void DescriptionItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
 bool DescriptionItem::sceneEvent(QEvent *event) {
     switch (event->type()) {
-        case QEvent::GraphicsSceneHoverMove:
-        case QEvent::GraphicsSceneHoverEnter: {
-            ExtendedProcStyle *owner = qgraphicsitem_cast<ExtendedProcStyle *>(parentItem());
-            if (owner->resizing) {
-                QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
-                const QPointF &p = mapToParent(he->pos());
-                owner->updateCursor(p);
-            }
-        } break;
-        default:
-            break;
+    case QEvent::GraphicsSceneHoverMove:
+    case QEvent::GraphicsSceneHoverEnter: {
+        ExtendedProcStyle *owner = qgraphicsitem_cast<ExtendedProcStyle *>(parentItem());
+        if (owner->resizing) {
+            QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
+            const QPointF &p = mapToParent(he->pos());
+            owner->updateCursor(p);
+        }
+    } break;
+    default:
+        break;
     }
     return QGraphicsTextItem::sceneEvent(event);
 }
