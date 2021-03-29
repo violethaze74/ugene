@@ -39,7 +39,6 @@ protected:
     class TwoArgPatternLabel : public QLabel {
     public:
         TwoArgPatternLabel(QString textPattern, QString tooltipPattern, QString objectName, QWidget *parent = NULL);
-        TwoArgPatternLabel(QString objectName, QWidget *parent = NULL);
         void setPatterns(QString textPattern, QString tooltipPattern);
 
         void update(QString firstArg, int minWidth);
@@ -63,7 +62,9 @@ private slots:
 protected:
     virtual void setupLayout() = 0;
     virtual void updateLabels() = 0;
-    QPair<QString, QString> getGappedPositionInfo(const QPoint &pos) const;
+
+    /** Return a pair of <column, alignment-len> text labels to display for the current top-left position of the selection. */
+    QPair<QString, QString> getGappedPositionInfo() const;
 
     void updateLock();
     virtual void updateLineLabel();

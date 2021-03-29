@@ -24,7 +24,6 @@
 #include <QHBoxLayout>
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "MSAEditorSequenceArea.h"
 
@@ -37,13 +36,6 @@ MaEditorStatusBar::TwoArgPatternLabel::TwoArgPatternLabel(QString textPattern, Q
     : QLabel(textPattern, parent),
       textPattern(textPattern),
       tooltipPattern(tooltipPattern),
-      fm(QFontMetrics(font(), this)) {
-    setObjectName(objectName);
-    setAlignment(Qt::AlignCenter);
-}
-
-MaEditorStatusBar::TwoArgPatternLabel::TwoArgPatternLabel(QString objectName, QWidget *parent)
-    : QLabel(parent),
       fm(QFontMetrics(font(), this)) {
     setObjectName(objectName);
     setAlignment(Qt::AlignCenter);
@@ -105,15 +97,17 @@ void MaEditorStatusBar::sl_lockStateChanged() {
     updateLock();
 }
 
-QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo(const QPoint &pos) const {
-    if (pos.isNull()) {
+QPair<QString, QString> MaEditorStatusBar::getGappedPositionInfo() const {
+    QRect selectionRect = seqArea->getSelection().toRect();
+    if (selectionRect.isNull()) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
+    QPoint pos = selectionRect.topLeft();
     int maRowIndex = seqArea->getTopSelectedMaRow();
     if (maRowIndex == -1) {
         return QPair<QString, QString>(NONE_MARK, NONE_MARK);
     }
-    MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(maRowIndex);
+    MultipleAlignmentRow row = aliObj->getRow(maRowIndex);
     QString ungappedLength = QString::number(row->getUngappedLength());
     if (row->charAt(pos.x()) == U2Msa::GAP_CHAR) {
         return QPair<QString, QString>(GAP_MARK, ungappedLength);
@@ -136,8 +130,7 @@ void MaEditorStatusBar::updateLineLabel() {
 }
 
 void MaEditorStatusBar::updatePositionLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
-    QPair<QString, QString> pp = getGappedPositionInfo(selection.topLeft());
+    QPair<QString, QString> pp = getGappedPositionInfo();
     positionLabel->update(pp.first, pp.second);
     positionLabel->updateMinWidth(QString::number(aliObj->getLength()));
 }

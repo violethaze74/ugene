@@ -133,10 +133,6 @@ static bool openDocs() {
     return ret;
 }
 
-static void updateStaticTranslations() {
-    GObjectTypes::initTypeTranslations();
-}
-
 static void setScriptsSearchPath() {
     QStringList scriptsSearchPath;
     const static char *RELATIVE_SCRIPTS_DIR = "/scripts";
@@ -268,7 +264,7 @@ int main(int argc, char **argv) {
     }
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
-        updateStaticTranslations();
+        GObjectTypes::initTypeTranslations();
     }
 
     // 2 create functional components of congene

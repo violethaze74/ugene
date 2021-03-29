@@ -37,8 +37,8 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 
 namespace U2 {
@@ -283,6 +283,26 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 
     QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7152) {
+    // Check that corner characters of an alignment has valid info shown in the status bar.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, 0));
+    QString topLeft = GTMSAEditorStatusWidget::getRowNumberString(os) + "/" +
+                      GTMSAEditorStatusWidget::getColumnNumberString(os) + "/" +
+                      GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    GTMSAEditorStatusWidget::getColumnNumberString(os);
+    CHECK_SET_ERR(topLeft == "1/1/1", "Top left position is wrong: " + topLeft);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(39, 10));
+    QString bottomRight = GTMSAEditorStatusWidget::getRowNumberString(os) + "/" +
+                          GTMSAEditorStatusWidget::getColumnNumberString(os) + "/" +
+                          GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    GTMSAEditorStatusWidget::getColumnNumberString(os);
+    CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
 }
 
 }    // namespace GUITest_regression_scenarios
