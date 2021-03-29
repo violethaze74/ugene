@@ -42,9 +42,9 @@ mkpath($$OUT_PWD/src/_release/plugins)
 
 
 #prepare translations
-UGENE_TRANSL_IDX   = 0          1
-UGENE_TRANSL_FILES = russian.ts english.ts
-UGENE_TRANSL_TAG   = ru         en
+UGENE_TRANSL_IDX   = 0
+UGENE_TRANSL_FILES = russian.ts
+UGENE_TRANSL_TAG   = ru
 
 UGENE_TRANSL_DIR   = transl
 UGENE_TRANSL_QM_TARGET_DIR = $$OUT_PWD/src/_debug $$OUT_PWD/src/_release

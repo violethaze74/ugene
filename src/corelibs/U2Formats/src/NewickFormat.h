@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT NewickFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT NewickFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     NewickFormat(QObject *p);

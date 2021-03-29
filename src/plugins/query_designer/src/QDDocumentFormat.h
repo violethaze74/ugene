@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-class QDDocFormat : public TextDocumentFormat {
+class QDDocFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     QDDocFormat(QObject *p);

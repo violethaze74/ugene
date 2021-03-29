@@ -38,7 +38,7 @@ class EMBLGenbankDataEntry;
 class IOAdapter;
 class ParserState;
 
-class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormat {
+class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     EMBLGenbankAbstractDocument(const DocumentFormatId &id, const QString &formatName, int maxLineSize, DocumentFormatFlags flags, QObject *p);

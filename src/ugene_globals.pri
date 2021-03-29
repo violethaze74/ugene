@@ -54,17 +54,9 @@ linux-g++ {
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
 
-    # QtScript produces this warning when qScriptRegisterMetadata is used. QT rejects to fix it: QtScript is deprecated.
-    # TODO: Wrap QtScript includes with the warning suppression and remove the global suppression.
-    QMAKE_CXXFLAGS += -Wno-cast-function-type
-
-    # A few UGENE headers (like U2Location) emits thousands of deprecated warnings about deprecated copy.
+    # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
     # TODO: Fix UGENE code and remove the suppression.
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
-
-    # Some of UGENE code uses fallthrough in switch blocks.
-    # TODO: Fix and remove the suppression. Find the way to keep 'fallthrough' with no warnings when needed.
-    QMAKE_CXXFLAGS += -Wno-implicit-fallthrough
 
     # These warnings must be errors:
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized

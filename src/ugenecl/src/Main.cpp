@@ -247,41 +247,37 @@ int main(int argc, char **argv) {
 
     UserAppsSettings *userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
 
-    // set translations
+    // Set translations if needed: use value in the settings or cmd-line parameter override.
+    // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QString cmdlineTransl = cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION);
-    cmdlineTransl = cmdlineTransl.isEmpty() ? cmdlineTransl : "transl_" + cmdlineTransl;
-    QString transFile[] = {
-        cmdlineTransl,
+    QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
+    QStringList translationFileList = {
+        "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
-        "transl_" + QLocale::system().name().left(2),
-        "transl_en"};
-    bool trOK = false;
-    bool skipFirst = transFile[0].isEmpty();
-    bool skipSecond = transFile[1].isEmpty();
-    for (int i = 0; i < 4; ++i) {
-        if ((i == 0 && skipFirst) || (i == 1 && skipSecond)) {
-            continue;
-        }
-        if (!translator.load(transFile[i], AppContext::getWorkingDirectoryPath())) {
-            fprintf(stderr, "Translation not found: %s\n", transFile[i].toLatin1().constData());
-        } else {
-            trOK = true;
+        "transl_" + QLocale::system().name().left(2).toLower()};
+    // Keep only valid entries.
+    translationFileList.removeAll("");
+    translationFileList.removeAll("transl_");
+    translationFileList.removeDuplicates();
+    // Use the first translation from the list that works.
+    for (const QString &translationFile : qAsConst(translationFileList)) {
+        if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
             break;
         }
+        failedToLoadTranslatorFiles << translationFile;
     }
-    if (!trOK) {
-        fprintf(stderr, "No translations found, exiting\n");
-        return 1;
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        updateStaticTranslations();
     }
-
-    app.installTranslator(&translator);
-    updateStaticTranslations();
 
     // 2 create functional components of congene
     ConsoleLogDriver logs;
     Q_UNUSED(logs);
     coreLog.details(AppContextImpl::tr("UGENE initialization started"));
+    for (const QString &fileName : failedToLoadTranslatorFiles) {
+        coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
+    }
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

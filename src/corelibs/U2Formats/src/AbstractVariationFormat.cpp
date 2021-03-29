@@ -57,7 +57,7 @@ QList<U2Variant> splitVariants(const U2Variant &v, const QList<QString> &altAlle
 }
 
 AbstractVariationFormat::AbstractVariationFormat(QObject *p, const DocumentFormatId &id, const QStringList &fileExts, bool _isSupportHeader)
-    : TextDocumentFormat(p, id, DocumentFormatFlags_SW, fileExts),
+    : TextDocumentFormatDeprecated(p, id, DocumentFormatFlags_SW, fileExts),
       isSupportHeader(_isSupportHeader),
       maxColumnNumber(0) {
     supportedObjectTypes += GObjectTypes::VARIANT_TRACK;

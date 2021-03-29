@@ -166,7 +166,21 @@ void SplashScreenWidget::drawInfo() {
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont(font);
     p.setPen(QColor(0, 46, 59));
-    QString versionSign = version.right(version.indexOf(".")).toInt() == 0 ? version.left(version.indexOf(".")) : version;
+    auto versionWithoutDev = version.split("-").first();
+    auto majorAndMinorVersions = versionWithoutDev.split(".");
+    SAFE_POINT(majorAndMinorVersions.size() == 2, "Version has been split unexpetedly", );
+
+    bool ok = false;
+    auto minor = majorAndMinorVersions.last().toInt(&ok);
+    SAFE_POINT(ok, "Minor version isn't number", );
+
+    QString versionSign;
+    if (minor == 0) {
+        versionSign = majorAndMinorVersions.first();
+    } else {
+        versionSign = majorAndMinorVersions.join(".");
+    }
+
     if (version.contains("-dev")) {
         versionSign += "-dev";
     }

@@ -34,7 +34,7 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 
 PlainTextFormat::PlainTextFormat(QObject *p)
-    : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_TEXT, DocumentFormatFlags_W1, QStringList("txt")) {
+    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::PLAIN_TEXT, DocumentFormatFlags_W1, QStringList("txt")) {
     formatName = tr("Plain text");
     supportedObjectTypes += GObjectTypes::TEXT;
     formatDescription = tr("A simple plain text file.");

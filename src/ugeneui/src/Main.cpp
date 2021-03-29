@@ -496,42 +496,38 @@ int main(int argc, char **argv) {
         userAppSettings->setFileStorageDir(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR)));
     }
 
-    bool trOK = false;
+    // Set translations if needed: use value in the settings or environment variables to override.
+    // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
     QTranslator translator;
-    QStringList envList = QProcess::systemEnvironment();
-    QString envTranslation = findKey(envList, "UGENE_TRANSLATION");
-    if (!envTranslation.isEmpty()) {
-        trOK = translator.load(QString("transl_") + envTranslation, AppContext::getWorkingDirectoryPath());
-        settings->setValue("UGENE_CURR_TRANSL", envTranslation);
-    }
-    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
-    if (!envTranslationFile.isEmpty()) {
-        trOK = translator.load(envTranslationFile);
-        settings->setValue("UGENE_CURR_TRANSL", QFileInfo(envTranslationFile).fileName().right(2));
-    }
+    QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
 
-    if (!trOK) {
-        // set translations
-        QString transFile[] = {
+    // The file specified by user has the highest priority in the translations lookup order.
+    QStringList envList = QProcess::systemEnvironment();
+    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
+    if (envTranslationFile.isEmpty() || !translator.load(envTranslationFile)) {
+        if (!envTranslationFile.isEmpty()) {
+            failedToLoadTranslatorFiles << envTranslationFile;
+        }
+        QStringList translationFileList = {
+            "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
-            "transl_en"};
-        for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {
-            if (!translator.load(transFile[i], AppContext::getWorkingDirectoryPath())) {
-                fprintf(stderr, "Translation not found: %s\n", transFile[i].toLatin1().constData());
-            } else {
-                settings->setValue("UGENE_CURR_TRANSL", transFile[i].right(2));
-                trOK = true;
+            "transl_" + QLocale::system().name().left(2).toLower()};
+        // Keep only valid entries.
+        translationFileList.removeAll("");
+        translationFileList.removeAll("transl_");
+        translationFileList.removeDuplicates();
+        // Use the first translation from the list that works.
+        for (const QString &translationFile : qAsConst(translationFileList)) {
+            if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
                 break;
             }
-        }
-        if (!trOK) {
-            fprintf(stderr, "No translations found, exiting\n");
-            return 1;
+            failedToLoadTranslatorFiles << translationFile;
         }
     }
-
-    app.installTranslator(&translator);
-    updateStaticTranslations();
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        updateStaticTranslations();
+    }
 
     ToolsMenu::init();
 
@@ -541,6 +537,9 @@ int main(int argc, char **argv) {
     LogCache::setAppGlobalInstance(&logsCache);
     app.installEventFilter(new UserActionsWriter());
     coreLog.details(UserAppsSettings::tr("UGENE initialization started"));
+    for (const QString &fileName : failedToLoadTranslatorFiles) {
+        coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
+    }
 
     int ugeneArch = getUgeneBinaryArch();
     QString ugeneArchCounterSuffix = ugeneArch == UGENE_ARCH_X86_64   ? "Ugene 64-bit"
@@ -593,8 +592,10 @@ int main(int argc, char **argv) {
     }
     auto proxyStyle = new ProxyStyle(qtStyle);
     // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    proxyStyle->setObjectName(qtStyle->objectName());
-    app.setStyle(proxyStyle);
+    if (qtStyle != nullptr) {
+        proxyStyle->setObjectName(qtStyle->objectName());
+    }
+    QApplication::setStyle(proxyStyle);
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

@@ -36,7 +36,7 @@ namespace U2 {
  * expression, splicing, promoters and cds.
  * http://cufflinks.cbcb.umd.edu/manual.html
  */
-class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     DifferentialFormat(QObject *parent);

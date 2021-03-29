@@ -60,7 +60,7 @@ const QString EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE = QCor
 const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The number of valid sequence characters does not coincide with the declared size in the sequence header.");
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId &_id, const QString &_formatName, int mls, DocumentFormatFlags flags, QObject *p)
-    : TextDocumentFormat(p, _id, flags), maxAnnotationLineLen(mls), savedInUgene(false) {
+    : TextDocumentFormatDeprecated(p, _id, flags), maxAnnotationLineLen(mls), savedInUgene(false) {
     formatName = _formatName;
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
     supportedObjectTypes += GObjectTypes::SEQUENCE;

@@ -1,3 +1,6 @@
+#include <U2Core/disable-warnings.h>
+U2_DISABLE_WARNINGS
+
 /* $Id: gl2ps.c,v 1.243 2006/11/06 00:53:53 geuzaine Exp $ */
 /*
  * GL2PS, an OpenGL to PostScript Printing Library

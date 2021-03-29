@@ -24,8 +24,9 @@
 
 #include <QObject>
 #include <QScriptClass>
-#include <QScriptEngine>
 #include <QScriptable>
+
+#include <U2Core/ScriptEngine.h>
 
 #include <U2Lang/DbiDataHandler.h>
 

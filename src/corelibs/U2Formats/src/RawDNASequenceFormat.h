@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormat {
+class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
     RawDNASequenceFormat(QObject *p);
