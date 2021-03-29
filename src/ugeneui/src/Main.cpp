@@ -203,11 +203,6 @@ static void registerCoreServices() {
     ts->registerTopLevelTask(sr->registerServiceTask(new ProjectViewImpl()));
 }
 
-static void updateStaticTranslations() {
-    GObjectTypes::initTypeTranslations();
-    GObjectTypes::initTypeIcons();
-}
-
 static void setDataSearchPaths() {
     //set search paths for data files
     QStringList dataSearchPaths;
@@ -526,8 +521,9 @@ int main(int argc, char **argv) {
     }
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
-        updateStaticTranslations();
+        GObjectTypes::initTypeTranslations();
     }
+    GObjectTypes::initTypeIcons();
 
     ToolsMenu::init();
 
