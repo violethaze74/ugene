@@ -86,9 +86,11 @@ IOAdapterReaderAndWriterBase::IOAdapterReaderAndWriterBase(IOAdapter *_ioAdapter
     ioDevice.reset(new IOAdapterDevice(ioAdapter));
     stream.setDevice(ioDevice.data());
 
-    // Set the correct codec, otherwise QTextStream fallbacks to the current locale default (usually UTF-8).
+    // Set the provided codec. If no codec is provided use autodetection and UTF-8 as the default.
     if (codec != nullptr) {
         stream.setCodec(codec);
+    } else {
+        stream.setCodec("UTF-8");
     }
 }
 
