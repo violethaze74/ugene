@@ -282,21 +282,21 @@ void ProjectLoaderImpl::sl_openRecentFile() {
 void ProjectLoaderImpl::prependToRecentProjects(const QString &url) {
     assert(!url.isEmpty());
     CHECK(GUrl(url).isLocalFile(), );
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     recentFiles.removeAll(QString());    //remove all empty tokens if fount (a kind of cleanup)
     recentFiles.removeAll(url);    // remove URL from the old position
     recentFiles.prepend(url);    // make URL first
     while (recentFiles.size() > MAX_RECENT_FILES) {
         recentFiles.pop_back();
     }
-    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles, true);
+    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles);
     emit si_recentListChanged();
 }
 
 void ProjectLoaderImpl::updateRecentProjectsMenu() {
     assert(recentProjectsMenu != NULL);
     recentProjectsMenu->clear();
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     Project *p = AppContext::getProject();
     foreach (QString f, recentFiles) {
         if ((p == NULL || f != p->getProjectURL()) && !f.isEmpty()) {
@@ -682,7 +682,7 @@ void ProjectLoaderImpl::sl_serviceStateChanged(Service *s, ServiceState prevStat
 }
 
 QString ProjectLoaderImpl::getLastProjectURL() {
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     if (!recentFiles.isEmpty()) {
         return recentFiles.first();
     }
@@ -692,13 +692,13 @@ QString ProjectLoaderImpl::getLastProjectURL() {
 void ProjectLoaderImpl::prependToRecentItems(const QString &url) {
     SAFE_POINT(!url.isEmpty(), "Invalid URL string!", );
     CHECK(GUrl(url).isLocalFile(), );
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
     recentFiles.removeAll(url);
     recentFiles.prepend(url);
     while (recentFiles.size() > MAX_RECENT_FILES) {
         recentFiles.pop_back();
     }
-    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, recentFiles, true);
+    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, recentFiles);
     emit si_recentListChanged();
 }
 
@@ -710,7 +710,7 @@ void ProjectLoaderImpl::sl_updateRecentItemsMenu() {
 void ProjectLoaderImpl::updateRecentItemsMenu() {
     assert(recentItemsMenu != NULL);
     recentItemsMenu->clear();
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
     recentItemsMenu->menuAction()->setEnabled(!recentFiles.isEmpty());
     Project *p = AppContext::getProject();
     foreach (QString f, recentFiles) {
