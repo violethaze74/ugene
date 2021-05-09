@@ -70,8 +70,8 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
         err += QString(" line: %1 col: %2").arg(QString::number(line)).arg(QString::number(col));
         return nullptr;
     }
-    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST" && doc.documentElement().tagName() != "multi-test") {
-        err = QString("not_a_test_file");
+    if (doc.documentElement().tagName() != "multi-test") {
+        err = "Top level element is not <multi-test>";
         return nullptr;
     }
     QDomElement testEl = doc.documentElement();

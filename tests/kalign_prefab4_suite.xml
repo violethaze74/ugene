@@ -1,5 +1,4 @@
 <suite name="Kalign plugin PREFAB4 tests">
-    <env-var name="COMMON_DATA_DIR"/>
     <test-dir path="kalign_prefab4" test-format="XML" test-ext="*.xml"
               exclude_64="Test_1a0fA_1hqoA.xml,
 		Test_1a0p_1a36A.xml,

@@ -1,5 +1,4 @@
 <suite name="Remote request tests">
-    <env-var name="COMMON_DATA_DIR"/>
     <!--Uncomment this and set appropriate value if non-standard scripts dir needed. By default scripts will be found by ugene (in installation or dev paths) -->
     <!--Note: trailing slash is important -->
     <!-- <env-var name ="SCRIPTS_PATH" value="../../scripts/" />  -->

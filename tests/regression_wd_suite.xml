@@ -1,6 +1,5 @@
 <suite name="Regression suite">
-    <env-var name="COMMON_DATA_DIR"/>
-    <env-var name="TEMP_DATA_DIR"/>
+
     <test-dir test-ext="*.xml" path="regression" test-format="XML" exclude="1785/test_0001.xml"/>
     <excluded test="1441/test_0002.xml" reason="need a bug"/>
     <excluded test="1785/test_0001.xml" reason="reason"/>

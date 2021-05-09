@@ -1,6 +1,5 @@
 <suite test-timeout="30" name="Dna assembly tests">
-    <env-var name="TEMP_DATA_DIR"/>
-    <env-var name="COMMON_DATA_DIR"/>
+
     <test-dir test-ext="*.xml" path="dna_assembly" test-format="XML" exclude="*"/>
     <excluded test="percentage_mismatches/test007.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
     <excluded test="percentage_mismatches/test008.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>

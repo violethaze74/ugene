@@ -125,21 +125,7 @@ QList<Task *> TestRunnerTask::onSubTaskFinished(Task *subTask) {
                 }
 
                 // Set environment variables
-                const QString &suiteDir = QFileInfo(testState->getTestRef()->getSuite()->getURL()).absoluteDir().absolutePath();
-                if (newEnv->getVars().contains("COMMON_DATA_DIR")) {
-                    newEnv->setVar("COMMON_DATA_DIR", suiteDir + newEnv->getVar("COMMON_DATA_DIR"));
-                }
-
-                if (newEnv->getVars().contains("TEMP_DATA_DIR")) {
-                    const QString suiteName = testState->getTestRef()->getSuite()->getName();
-                    const QString testName = testState->getTestRef()->getShortName();
-                    const QString tempDir = suiteDir +
-                                            newEnv->getVar("TEMP_DATA_DIR") + "/" +
-                                            GUrlUtils::fixFileName(suiteName) + "/" +
-                                            GUrlUtils::fixFileName(testName);
-                    newEnv->setVar("TEMP_DATA_DIR", tempDir);
-                }
-
+                QString suiteDir = QFileInfo(testState->getTestRef()->getSuite()->getURL()).absoluteDir().absolutePath();
                 if (!newEnv->getVars().contains("WORKFLOW_OUTPUT_DIR") || newEnv->getVar("WORKFLOW_OUTPUT_DIR").isEmpty()) {
                     newEnv->setVar("WORKFLOW_OUTPUT_DIR", newEnv->getVar("TEMP_DATA_DIR"));
                 } else {
