@@ -1,6 +1,6 @@
 ORFMarker_suite.xml
 Sitecon_common_suite.xml
-#UnitTests/dbi-suite.xml
+UnitTests/dbi-suite.xml
 annotation_utils_suite.xml
 annotator_suite.xml
 bowtie2_suite.xml
