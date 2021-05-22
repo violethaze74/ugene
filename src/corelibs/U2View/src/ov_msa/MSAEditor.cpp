@@ -60,10 +60,10 @@
 
 namespace U2 {
 
+const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
+
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
-      alignSequencesToAlignmentAction(nullptr),
-      realignSomeSequenceAction(nullptr),
       treeManager(this) {
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
@@ -178,7 +178,7 @@ bool MSAEditor::onCloseEvent() {
     return true;
 }
 
-const MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
@@ -211,7 +211,7 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
 }
 
 void MSAEditor::buildMenu(QMenu *m, const QString &type) {
-    if (type != GObjectViewMenuType::STATIC) {
+    if (type != MsaEditorMenuType::STATIC) {
         GObjectView::buildMenu(m, type);
         return;
     }
@@ -506,7 +506,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     }
     m.addSeparator();
 
-    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
+    emit si_buildMenu(this, &m, MsaEditorMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 
@@ -591,28 +591,9 @@ void MSAEditor::initDragAndDropSupport() {
 }
 
 void MSAEditor::sl_align() {
-    QMenu m;
-
-    addLoadMenu(&m);
-    addCopyPasteMenu(&m);
-    addEditMenu(&m);
-    addSortMenu(&m);
-    m.addSeparator();
-
-    addAlignMenu(&m);
-    addTreeMenu(&m);
-    addStatisticsMenu(&m);
-    addExportMenu(&m);
-    addAdvancedMenu(&m);
-
-    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
-
-    GUIUtils::disableEmptySubmenus(&m);
-
-    QMenu *alignMenu = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "mm", );
-
-    alignMenu->exec(QCursor::pos());
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {
