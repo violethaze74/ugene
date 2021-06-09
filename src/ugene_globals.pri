@@ -51,7 +51,11 @@ win32 : DEFINES += "PSAPI_VERSION=1"
 macx {
     CONFIG -= warn_on
     #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
-    QMAKE_CXXFLAGS += -Wall -Wno-ignored-attributes -Wno-inconsistent-missing-override -Wno-unknown-warning-option
+    QMAKE_CXXFLAGS += -Wall
+    QMAKE_CXXFLAGS += -Wno-ignored-attributes
+    QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override
+    QMAKE_CXXFLAGS += -Wno-unknown-warning-option
+    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     LIBS += -framework CoreFoundation
 }
 
