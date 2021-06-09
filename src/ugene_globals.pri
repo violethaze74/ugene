@@ -56,6 +56,7 @@ macx {
     QMAKE_CXXFLAGS += -Wno-inconsistent-missing-override
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
+    QMAKE_CXXFLAGS += -Wno-char-subscripts
     LIBS += -framework CoreFoundation
 }
 
