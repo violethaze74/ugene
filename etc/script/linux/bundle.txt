@@ -1274,6 +1274,8 @@ libU2Script.so
 libU2Test.so
 libU2View.so
 libugenedb.so
+LICENSE.3rd_party.txt
+LICENSE.txt
 platforms
 platforms/libqxcb.so
 platformthemes
@@ -1411,6 +1413,7 @@ transl_tr.qm
 ugene
 ugenecl
 ugenem
+ugene.png
 ugeneui
 xcbglintegrations
 xcbglintegrations/libqxcb-egl-integration.so
