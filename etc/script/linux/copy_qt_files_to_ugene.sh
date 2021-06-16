@@ -31,34 +31,34 @@ for LIB in ${QT_LIBS[*]}; do
   cp "${QT_DIR}/lib/${FULL_LIB_NAME}" "${UGENE_DIR}/"
 done
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}/*.so.5"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}"/*.so.5
 
 # OpenSSL libs.
 cp "${EXTRA_LIBS_DIR}/libssl.so.1.1" "${UGENE_DIR}/"
 cp "${EXTRA_LIBS_DIR}/libcrypto.so.1.1" "${UGENE_DIR}/"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}/*.so.1.1"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}"/*.so.1.1
 
 # QT unicode libs.
 cp -L "${QT_DIR}/lib/libicudata.so.56" "${UGENE_DIR}/"
 cp -L "${QT_DIR}/lib/libicui18n.so.56" "${UGENE_DIR}/"
 cp -L "${QT_DIR}/lib/libicuuc.so.56" "${UGENE_DIR}/"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}/*.so.56"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${UGENE_DIR}"/*.so.56
 
 # Platform drivers.
 rm -rf "${UGENE_DIR}/platforms"
 mkdir "${UGENE_DIR}/platforms"
 cp "${QT_DIR}/plugins/platforms/libqxcb.so" "${UGENE_DIR}/platforms"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms"/*.so
 
 # SQL drivers.
 rm -rf "${UGENE_DIR}/sqldrivers"
 mkdir "${UGENE_DIR}/sqldrivers"
 cp -r "${EXTRA_LIBS_DIR}/sqldrivers/libqsqlmysql.so" "${UGENE_DIR}/sqldrivers"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/sqldrivers/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/sqldrivers"/*.so
 cp "${EXTRA_LIBS_DIR}/libmysqlclient.so.21" "${UGENE_DIR}/"
 
 # Image formats.
@@ -71,14 +71,14 @@ cp -r "${QT_DIR}/plugins/imageformats/libqsvg.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwbmp.so" "${UGENE_DIR}/imageformats"
 cp -r "${QT_DIR}/plugins/imageformats/libqwebp.so" "${UGENE_DIR}/imageformats"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/imageformats/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/imageformats"/*.so
 
 # GTK3 platform theme.
 rm -rf "${UGENE_DIR}/platformthemes"
 mkdir "${UGENE_DIR}/platformthemes"
 cp -r "${QT_DIR}/plugins/platformthemes/libqgtk3.so" "${UGENE_DIR}/platformthemes"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platformthemes/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platformthemes"/*.so
 
 # OpenGL support
 rm -rf "${UGENE_DIR}/xcbglintegrations"
@@ -86,4 +86,4 @@ mkdir "${UGENE_DIR}/xcbglintegrations"
 cp -r "${QT_DIR}/plugins/xcbglintegrations/libqxcb-egl-integration.so" "${UGENE_DIR}/xcbglintegrations"
 cp -r "${QT_DIR}/plugins/xcbglintegrations/libqxcb-glx-integration.so" "${UGENE_DIR}/xcbglintegrations"
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/xcbglintegrations/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/xcbglintegrations"/*.so

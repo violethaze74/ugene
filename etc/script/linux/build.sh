@@ -82,7 +82,7 @@ fi
 echo "##teamcity[blockOpened name='Bundle']"
 
 # Remove not needed build artifacts like static libs.
-rm -f "${BUILD_DIR}/*.a"
+rm -f "${BUILD_DIR}"/*.a
 
 # Copy & patch Qt libs.
 "${SCRIPTS_DIR}/copy_qt_files_to_ugene.sh" "${QT_DIR}" "${EXTRA_LIBS_DIR}" "${BUILD_DIR}" || {
@@ -92,9 +92,9 @@ rm -f "${BUILD_DIR}/*.a"
 
 # Patch RPATH for UGENE binaries.
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN/..' "${BUILD_DIR}/plugins/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN/..' "${BUILD_DIR}/plugins"/*.so
 # shellcheck disable=SC2016
-patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/*.so"
+patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}"/*.so
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/plugins_checker"
 # shellcheck disable=SC2016
