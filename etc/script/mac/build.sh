@@ -22,12 +22,20 @@ echo "##teamcity[blockOpened name='env']"
 env
 echo "##teamcity[blockClosed name='env']"
 
-if [ "${UGENE_BUILD_SKIP_CLEAN}" != "1" ]; then
-  echo "##teamcity[blockOpened name='clean']"
+##### Clean ####
+if [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "1" ]; then
+  echo "skip clean"
+elif [ "${UGENE_BUILD_AND_TEST_SKIP_CLEAN}" -eq "2" ]; then
+  echo "##teamcity[blockOpened name='fast clean']"
   rm -rf "${BUILD_DIR}"
-  echo "##teamcity[blockClosed name='clean']"
+  echo "##teamcity[blockClosed name='fast clean']"
+else
+  echo "##teamcity[blockOpened name='make clean']"
+  make clean
+  echo "##teamcity[blockClosed name='make clean']"
 fi
 
+#### QMake ####
 if [ "${UGENE_BUILD_SKIP_QMAKE}" != "1" ]; then
   if
     "${QT_DIR}/bin/qmake" -r ugene.pro
@@ -40,6 +48,7 @@ if [ "${UGENE_BUILD_SKIP_QMAKE}" != "1" ]; then
   echo "##teamcity[blockClosed name='qmake -r ugene.pro']"
 fi
 
+#### Make ####
 if [ "${UGENE_BUILD_SKIP_MAKE}" != "1" ]; then
   CORES=$(sysctl -n hw.ncpu)
   if [ -n "${CORES}" ]; then
