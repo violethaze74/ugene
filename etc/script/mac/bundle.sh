@@ -152,6 +152,7 @@ PLUGIN_LIST="annotator \
              repeat_finder \
              sitecon \
              smith_waterman \
+             test_runner \
              umuscle \
              variants \
              weight_matrix \

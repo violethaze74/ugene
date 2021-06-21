@@ -13,6 +13,9 @@ OUTPUT_DIR="${TEAMCITY_WORK_DIR}/out"
 export USE_CRASH_HANDLER=0
 export UGENE_DEV=1
 
+# Disable check for updates. TODO: rename.
+export UGENE_GUI_TEST=1
+
 # Force English by default.
 export LANG=en_US.UTF-8
 export UGENE_TRANSLATION=en
@@ -49,8 +52,19 @@ echo "##teamcity[blockClosed name='Copy tools']"
 
 echo "##teamcity[blockOpened name='Running tests: ${UGENE_TEST_SUITE}']"
 
+# Kill any existing hanging builds.
+echo "Killing hanging runs of ugeneui & ugenecl"
+killall -9 ugeneui 2>&1
+killall -9 ugenecl 2>&1
+
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
+
+echo "Running: $UGENE_APP_DIR/Contents/MacOS/ugeneui" --test-suite="${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}" \
+  --test-report="${OUTPUT_DIR}/test_report.html" \
+  --test-threads="${UGENE_TEST_THREADS}" \
+  --ini-file="$OUTPUT_DIR/ugene.ini"
+
 if "$UGENE_APP_DIR/Contents/MacOS/ugeneui" --test-suite="${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}" \
   --test-report="${OUTPUT_DIR}/test_report.html" \
   --test-threads="${UGENE_TEST_THREADS}" \
