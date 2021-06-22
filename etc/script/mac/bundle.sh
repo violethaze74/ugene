@@ -170,5 +170,8 @@ echo Running macdeployqt
   -executable="${TARGET_EXE_DIR}"/ugenem \
   -executable="${TARGET_EXE_DIR}"/plugins_checker
 
+echo Copying extra libraries with mysql driver
+cp "${QT_DIR}"/extra_libs/* "${TARGET_APP_DIR}/Contents/Frameworks"
+
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/installer/macosx/readme.txt" "${BUNDLE_DIR}/readme.txt"
