@@ -1,10 +1,11 @@
 #!/bin/bash
 # Creates final UGENE portable package for Linux from the pre-built sources.
-# - Takes pre-built version of UGENE (See Build->Linux Teamcity target or linux/build.sh)
+# - Takes a pre-built version of UGENE (See build.sh)
 # - Adds external tools.
-# - Checks that result can be run: calls "ugenecl --help"
+# - Removes test plugins and libs.
+# - Checks that result can be run: calls "ugenecl --help".
 # - Packs everything into tar.gz file.
-# - Build symbols.tar.gz for all our libs/executable
+# - Build symbols.tar.gz for all our libs/executables.
 
 TEAMCITY_WORK_DIR=$(pwd)
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
@@ -32,6 +33,7 @@ rm -rf bundle/plugins/*CoreTests*
 rm -rf bundle/plugins/*GUITestBase*
 rm -rf bundle/plugins/*api_tests*
 rm -rf bundle/plugins/*perf_monitor*
+rm -rf bundle/plugins/*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}"/tools bundle || {
@@ -39,12 +41,21 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}"/tools bundle || {
 }
 echo "##teamcity[blockClosed name='Copy files']"
 
+echo "##teamcity[blockOpened name='Get version']"
+VERSION=$(bundle/ugenecl --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9.A-Za-z-]\+\).*/\1/p")
+if [ -z "${VERSION}" ]; then
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to get version of UGENE']"
+  exit 1
+fi
+echo "Version of UGENE is ${VERSION}"
+echo "##teamcity[blockClosed name='Get version']"
+
 echo "##teamcity[blockOpened name='Validate bundle content']"
 # Validate bundle content.
-REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}"/bundle.txt
-CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}"/bundle.txt
+REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}"/release-bundle.txt
+CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}"/release-bundle.txt
 find bundle/* | sed -e "s/^bundle\///" | sed 's/tools\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-if cmp -s "${CURRENT_BUNDLE_FILE}" "${SCRIPTS_DIR}/bundle.txt"; then
+if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
@@ -78,13 +89,6 @@ done
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Archive']"
-# Run UGENE not from the 'bundle' dir but from the original 'ugene' dir to avoid inclusion of run-artifacts into the release.
-VERSION=$(bundle/ugenecl --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9.A-Za-z-]\+\).*/\1/p")
-
-if [ -z "${VERSION}" ]; then
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to get version of UGENE']"
-  exit 1
-fi
 
 RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-linux-x86-64"
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"

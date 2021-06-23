@@ -1357,7 +1357,6 @@ plugins/libremote_blast.so
 plugins/librepeat_finder.so
 plugins/libsitecon.so
 plugins/libsmith_waterman.so
-plugins/libtest_runner.so
 plugins/libumuscle.so
 plugins/libvariants.so
 plugins/libweight_matrix.so
@@ -1393,8 +1392,6 @@ plugins/sitecon.license
 plugins/sitecon.plugin
 plugins/smith_waterman.license
 plugins/smith_waterman.plugin
-plugins/test_runner.license
-plugins/test_runner.plugin
 plugins/umuscle.license
 plugins/umuscle.plugin
 plugins/variants.license
