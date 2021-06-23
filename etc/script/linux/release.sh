@@ -36,7 +36,7 @@ rm -rf bundle/plugins/*perf_monitor*
 rm -rf bundle/plugins/*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
-rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}"/tools bundle || {
+rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" bundle || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 echo "##teamcity[blockClosed name='Copy files']"
@@ -52,15 +52,15 @@ echo "##teamcity[blockClosed name='Get version']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
 # Validate bundle content.
-REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}"/release-bundle.txt
-CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}"/release-bundle.txt
+REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
+CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find bundle/* | sed -e "s/^bundle\///" | sed 's/tools\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
 if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
   exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
@@ -88,7 +88,7 @@ for BINARY_FILE in $(find bundle/* | sed 's/tools\/.*$//g' | grep "\S" | grep -e
 done
 echo "##teamcity[blockClosed name='Dump symbols']"
 
-echo "##teamcity[blockOpened name='Archive']"
+echo "##teamcity[blockOpened name='Build archive']"
 
 RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-linux-x86-64"
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
@@ -100,4 +100,4 @@ tar cfz "${RELEASE_BASE_FILE_NAME}.tar.gz" "${RELEASE_UNPACKED_DIR_NAME}"
 echo Compressing symbols...
 tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
-echo "##teamcity[blockClosed name='Archive']"
+echo "##teamcity[blockClosed name='Build archive']"
