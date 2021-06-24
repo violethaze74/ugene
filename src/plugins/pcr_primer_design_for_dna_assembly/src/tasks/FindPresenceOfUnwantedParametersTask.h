@@ -19,37 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
-#define _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+#ifndef _U2_FIND_PRESENCE_OF_UNWANTED_PARAMETERS_TASK_H_
+#define _U2_FIND_PRESENCE_OF_UNWANTED_PARAMETERS_TASK_H_
 
-#include <U2Core/GUrl.h>
-#include <U2Core/Primer.h>
 #include <U2Core/Task.h>
+
+#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
 
 namespace U2 {
 
-class Document;
-class DocumentFormat;
-class U2DbiRef;
-class ExportPrimersToDatabaseTask;
-
-class ExportPrimersToLocalFileTask : public Task {
-    Q_OBJECT
+class FindPresenceOfUnwantedParametersTask : public Task {
 public:
-    ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
+    FindPresenceOfUnwantedParametersTask(const QByteArray& sequence, const PCRPrimerDesignForDNAAssemblyTaskSettings& settings);
 
-    void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    void run() override;
+
+    bool hasUnwantedParameters() const;
+
+    const QByteArray& getSequence() const;
 
 private:
-    Document *prepareDocument();
-    void addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask);
-
-    const QList<Primer> primers;
-    DocumentFormat *format;
-    const GUrl url;
+    QByteArray sequence;
+    PCRPrimerDesignForDNAAssemblyTaskSettings settings;
 };
 
-}  // namespace U2
 
-#endif  // _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+}
+
+#endif

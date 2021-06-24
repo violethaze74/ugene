@@ -19,37 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
-#define _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
-
-#include <U2Core/GUrl.h>
-#include <U2Core/Primer.h>
-#include <U2Core/Task.h>
+#include "FindPresenceOfUnwantedParametersTask.h"
 
 namespace U2 {
 
-class Document;
-class DocumentFormat;
-class U2DbiRef;
-class ExportPrimersToDatabaseTask;
+FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const QByteArray& _sequence,
+                                            const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings)
+    : Task("Find Presence of Unwanted Parameters Task", TaskFlags_FOSCOE),
+      sequence(_sequence),
+      settings(_settings) {}
 
-class ExportPrimersToLocalFileTask : public Task {
-    Q_OBJECT
-public:
-    ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath);
+void FindPresenceOfUnwantedParametersTask::run() {
+    //TODO
+}
 
-    void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+bool FindPresenceOfUnwantedParametersTask::hasUnwantedParameters() const {
+    //TODO
+    return false;
+}
 
-private:
-    Document *prepareDocument();
-    void addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask);
+const QByteArray& FindPresenceOfUnwantedParametersTask::getSequence() const {
+    return sequence;
+}
 
-    const QList<Primer> primers;
-    DocumentFormat *format;
-    const GUrl url;
-};
-
-}  // namespace U2
-
-#endif  // _U2_EXPORT_PRIMERS_TO_LOCAL_FILE_TASK_H_
+}
