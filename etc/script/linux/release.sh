@@ -10,39 +10,36 @@
 TEAMCITY_WORK_DIR=$(pwd)
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
 SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
-BUILD_DIR="${TEAMCITY_WORK_DIR}/ugene"
+APP_BUNDLE_DIR_NAME=ugene_app
+APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 SYMBOLS_DIR_NAME=symbols
-SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
+SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/${SYMBOLS_DIR_NAME}"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
-rm -rf bundle
 rm -rf *.tar.gz
 
 mkdir "${SYMBOLS_DIR}"
 
 echo "##teamcity[blockOpened name='Copy files']"
-cp -r "${BUILD_DIR}" bundle || {
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy UGENE dir']"
-}
 
 # Remove excluded files from UGENE.
-rm -rf bundle/libQSpec.so
-rm -rf bundle/plugins/*CoreTests*
-rm -rf bundle/plugins/*GUITestBase*
-rm -rf bundle/plugins/*api_tests*
-rm -rf bundle/plugins/*perf_monitor*
-rm -rf bundle/plugins/*test_runner*
+rm -rf "${APP_BUNDLE_DIR}/libQSpec.so"
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*CoreTests*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*GUITestBase*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*api_tests*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*perf_monitor*
+rm -rf "${APP_BUNDLE_DIR}/plugins/"*test_runner*
 
-# Copy UGENE files & tools into 'bundle' dir.
-rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" bundle || {
+# Copy UGENE files & tools into 'app' dir.
+rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_BUNDLE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 echo "##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Get version']"
-VERSION=$(bundle/ugenecl --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9.A-Za-z-]\+\).*/\1/p")
+VERSION=$("${APP_BUNDLE_DIR}/ugenecl" --version | grep 'version of UGENE' | sed -n "s/.*version of UGENE \([0-9.A-Za-z-]\+\).*/\1/p")
 if [ -z "${VERSION}" ]; then
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to get version of UGENE']"
   exit 1
@@ -54,7 +51,7 @@ echo "##teamcity[blockOpened name='Validate bundle content']"
 # Validate bundle content.
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find bundle/* | sed -e "s/^bundle\///" | sed 's/tools\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
+find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
 if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
@@ -83,7 +80,7 @@ function dump_symbols() {
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-for BINARY_FILE in $(find bundle/* | sed 's/tools\/.*$//g' | grep "\S" | grep -e ugeneui -e ugenecl -e lib.*.so.*); do
+find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e lib.*.so.* | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
 echo "##teamcity[blockClosed name='Dump symbols']"
@@ -94,7 +91,7 @@ RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${T
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
 
 rm -rf "ugene-"*
-mv bundle "${RELEASE_UNPACKED_DIR_NAME}"
+mv "${APP_BUNDLE_DIR}" "${RELEASE_UNPACKED_DIR_NAME}"
 tar cfz "${RELEASE_BASE_FILE_NAME}.tar.gz" "${RELEASE_UNPACKED_DIR_NAME}"
 
 echo Compressing symbols...
