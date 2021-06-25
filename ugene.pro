@@ -49,6 +49,7 @@ SUBDIRS += \
           src/plugins/clark_support \
           src/plugins/dbi_bam \
           src/plugins/diamond_support \
+          src/plugins/disassembly_and_cloning \
           src/plugins/dna_export \
           src/plugins/dna_flexibility \
           src/plugins/dna_graphpack \
