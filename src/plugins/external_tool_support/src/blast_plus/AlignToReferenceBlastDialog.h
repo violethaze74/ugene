@@ -75,6 +75,7 @@ private:
     LoadDocumentTask *loadRef;
 
     QTemporaryFile reportFile;
+    QTemporaryFile errorStateFile;
     QString reportString;
 
     static const QString ALIGN_TO_REF_CMDLINE;

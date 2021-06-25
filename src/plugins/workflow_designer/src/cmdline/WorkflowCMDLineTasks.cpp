@@ -55,44 +55,44 @@ WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
       workflowRunTask(NULL) {
     GCOUNTER(cvar, "workflow_run_from_cmdline");
 
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-
-    // try to process schema without 'task' option (it can only be the first one)
-    QStringList pureValues = CMDLineRegistryUtils::getPureValues();
-    if (!pureValues.isEmpty()) {
-        QString schemaName = pureValues.first();
-        processLoadSchemaTask(schemaName, 1);    // because after program name
-    }
-    if (loadTask != NULL) {
-        addSubTask(loadTask);
-        return;
-    }
-
-    // process schema with 'task' option
-    int taskOptionIdx = CMDLineRegistryUtils::getParameterIndex(WorkflowDesignerPlugin::RUN_WORKFLOW);
-    if (taskOptionIdx != -1) {
-        processLoadSchemaTask(cmdLineRegistry->getParameterValue(WorkflowDesignerPlugin::RUN_WORKFLOW, taskOptionIdx), taskOptionIdx);
-    }
-    if (loadTask == NULL) {
-        setError(tr("no task to run"));
-        return;
-    }
-    addSubTask(loadTask);
+    connect(this, &Task::si_stateChanged, this, &WorkflowRunFromCMDLineBase::sl_stateChanged);
 }
 
 void WorkflowRunFromCMDLineBase::processLoadSchemaTask(const QString &schemaNameCandidate, int optionIdx) {
     loadTask = prepareLoadSchemaTask(schemaNameCandidate);
+    CHECK_OP(stateInfo, );
+
     if (loadTask != NULL) {
         schemaName = schemaNameCandidate;
         optionsStartAt = optionIdx + 1;
     }
 }
 
+void WorkflowRunFromCMDLineBase::sl_stateChanged() {
+    CHECK(isFinished(), );
+    CHECK(hasError(), );
+
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
+    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is nullptr", );
+
+    const QString errorStateFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::ERROR_STATE_FILE_ARG);
+    CHECK(!errorStateFilePath.isEmpty(), );
+
+    QFile errorStateFile(errorStateFilePath);
+    const bool opened = errorStateFile.open(QIODevice::WriteOnly);
+    if (!opened) {
+        ioLog.error(L10N::errorOpeningFileWrite(errorStateFilePath));
+        return;
+    }
+
+    errorStateFile.write(getError().toLocal8Bit());
+}
+
 LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QString &schemaName) {
     QString pathToSchema = WorkflowUtils::findPathToSchemaFile(schemaName);
     if (pathToSchema.isEmpty()) {
-        coreLog.error(tr("Cannot find workflow: %1").arg(schemaName));
-        return NULL;
+        setError(tr("The workflow \"%1\" is absent. Check the file path and the existence of the \"Unipro UGENE/data\" folder.").arg(schemaName));
+        return nullptr;
     }
 
     schema = new Schema();
@@ -185,6 +185,29 @@ QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
+void WorkflowRunFromCMDLineBase::prepare() {
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
+
+    // try to process schema without 'task' option (it can only be the first one)
+    QStringList pureValues = CMDLineRegistryUtils::getPureValues();
+    if (!pureValues.isEmpty()) {
+        QString schemaName = pureValues.first();
+        processLoadSchemaTask(schemaName, 1);    // because after program name
+    }
+    if (loadTask != nullptr) {
+        addSubTask(loadTask);
+        return;
+    }
+
+    // process schema with 'task' option
+    int taskOptionIdx = CMDLineRegistryUtils::getParameterIndex(WorkflowDesignerPlugin::RUN_WORKFLOW);
+    if (taskOptionIdx != -1) {
+        processLoadSchemaTask(cmdLineRegistry->getParameterValue(WorkflowDesignerPlugin::RUN_WORKFLOW, taskOptionIdx), taskOptionIdx);
+        CHECK_OP(stateInfo, );
+    }
+    addSubTask(loadTask);
+}
+
 void WorkflowRunFromCMDLineBase::run() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
     SAFE_POINT(NULL != cmdLineRegistry, "CMDLineRegistry is NULL", );
@@ -198,6 +221,11 @@ void WorkflowRunFromCMDLineBase::run() {
     CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), );
 
     reportFile.write(workflowRunTask->generateReport().toLocal8Bit());
+}
+
+QString WorkflowRunFromCMDLineBase::generateReport() const {
+    int i = 0;
+    return QString();
 }
 
 /*******************************************

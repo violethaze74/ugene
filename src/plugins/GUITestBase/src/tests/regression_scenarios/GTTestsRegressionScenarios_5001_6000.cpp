@@ -4147,6 +4147,33 @@ GUI_TEST_CLASS_DEFINITION(test_5790) {
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::getSelectedRect(os) == emptyselection, "Selection isn't empty but should be");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5794) {
+    // 0. Rename the "data" folder
+    QDir dir(".");
+    auto cp = dir.current();
+    auto tempDataDir = dataDir.left(dataDir.size() - 1) + "_temp";
+    dir.rename(dataDir, tempDataDir);
+
+    // 1. Try to map Sanger reads to reference
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    for (int i = 1; i <= 21; i++) {
+        settings.readUrls << testDir + "_common_data/sanger/" + "sanger_" + QString::number(i) + ".ab1";
+    }
+    settings.outAlignment = sandBoxDir + "test_5794.ugenedb";
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "Sanger data analysis"
+                                                << "Map reads to reference...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    dir.rename(tempDataDir, dataDir);
+
+    // Expected: the task failde with the following error:
+    // The workflow "align-to-reference" is absent. Check thefile path and the existence of the "Unipro UGENE/data" folder
+    GTUtilsNotifications::checkNotificationReportText(os, "The workflow &quot;align-to-reference&quot; is absent. Check the file path and the existence of the &quot;Unipro UGENE/data&quot; folder.");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5798_1) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));

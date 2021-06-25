@@ -33,11 +33,16 @@ class WorkflowRunFromCMDLineBase : public Task {
 public:
     WorkflowRunFromCMDLineBase();
     virtual ~WorkflowRunFromCMDLineBase();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    void run();
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    void prepare() override;
+    void run() override;
+    QString generateReport() const override;
 
 protected:
     virtual Task *getWorkflowRunTask() const = 0;
+
+private slots:
+    void sl_stateChanged();
 
 private:
     LoadWorkflowTask *prepareLoadSchemaTask(const QString &schemaName);

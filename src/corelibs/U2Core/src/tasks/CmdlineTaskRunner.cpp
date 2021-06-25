@@ -104,6 +104,7 @@ bool containsPrefix(const QStringList &args, const QString &prefix) {
 }    // namespace
 
 const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-file";
+const QString CmdlineTaskRunner::ERROR_STATE_FILE_ARG = "ugene-write-task-error-state-to-file";
 
 QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree) {
     QList<long> children;
@@ -236,6 +237,10 @@ void CmdlineTaskRunner::prepare() {
 
     if (!config.reportFile.isEmpty()) {
         args << QString("--%1=\"%2\"").arg(REPORT_FILE_ARG).arg(config.reportFile);
+    }
+
+    if (!config.errorStateFile.isEmpty()) {
+        args << QString("--%1=\"%2\"").arg(ERROR_STATE_FILE_ARG).arg(config.errorStateFile);
     }
 
     args << config.arguments;

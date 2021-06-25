@@ -96,15 +96,19 @@ AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Setting
       settings(settings),
       cmdlineTask(NULL),
       loadRef(NULL),
-      reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
+      reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt"),
+      errorStateFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_error_state_XXXXXX.txt") {
     GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
 }
 
 void AlignToReferenceBlastCmdlineTask::prepare() {
     AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(stateInfo);
-    const bool opened = reportFile.open();
-    SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
-    reportFile.close();
+    QList<QTemporaryFile*> tempFiles = { &reportFile, &errorStateFile };
+    for (auto tempFile : tempFiles) {
+        bool opened = tempFile->open();
+        SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(tempFile->fileName())), );
+        tempFile->close();
+    }
 
     GUrl referenceUrl(settings.referenceUrl);
     if (referenceUrl.isLocalFile()) {
@@ -214,23 +218,33 @@ QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask)
         config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.resultAlignmentFile).absoluteFilePath());
 
         config.reportFile = reportFile.fileName();
+        config.errorStateFile = errorStateFile.fileName();
         config.emptyOutputPossible = true;
 
         config.logLevel = LogLevel_TRACE;
 
         cmdlineTask = new CmdlineInOutTaskRunner(config);
         result.append(cmdlineTask);
-    } else if (subTask == cmdlineTask && settings.addResultToProject) {
-        // add load document task
-        FormatDetectionConfig config;
-        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
-        CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
+    } else if (subTask == cmdlineTask) {
+        bool opened = errorStateFile.open();
+        SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(errorStateFile.fileName())), result);
 
-        DocumentFormat *format = formats.first().format;
-        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
+        QString subprocessError = errorStateFile.readAll();
+        errorStateFile.close();
+        CHECK_EXT(subprocessError.isEmpty(), setError(subprocessError), result);
 
-        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
-        AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+        if (settings.addResultToProject) {
+            // add load document task
+            FormatDetectionConfig config;
+            QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
+            CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong output format")), result);
+
+            DocumentFormat* format = formats.first().format;
+            CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
+
+            Task* loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
+            AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+        }
     }
 
     return result;
@@ -239,6 +253,7 @@ QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask)
 void AlignToReferenceBlastCmdlineTask::run() {
     reportFile.open();
     reportString = reportFile.readAll();
+    reportFile.close();
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
