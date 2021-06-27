@@ -94,6 +94,7 @@ const QString ToolsMenu::HMMER_CALIBRATE2 = "HMMER_CALIBRATE2";
 const QString ToolsMenu::HMMER_SEARCH2 = "HMMER_SEARCH2";
 
 const QString ToolsMenu::DOTPLOT = "DOTPLOT";
+const QString ToolsMenu::GENE_ASSEMBLY_AND_MOLECULAR_CLONING = "GENE_ASSEMBLY_AND_MOLECULAR_CLONING";
 const QString ToolsMenu::GENERATE_SEQUENCE = "GENERATE_SEQUENCE";
 const QString ToolsMenu::QUERY_DESIGNER = "QUERY_DESIGNER";
 const QString ToolsMenu::WORKFLOW_DESIGNER = "WORKFLOW_DESIGNER";
@@ -209,6 +210,7 @@ void ToolsMenu::init() {
 
     subMenuAction[TOOLS] << DOTPLOT;
     subMenuAction[TOOLS] << GENERATE_SEQUENCE;
+    subMenuAction[TOOLS] << GENE_ASSEMBLY_AND_MOLECULAR_CLONING;
     subMenuAction[TOOLS] << LINE;
     subMenuAction[TOOLS] << QUERY_DESIGNER;
     subMenuAction[TOOLS] << WORKFLOW_DESIGNER;

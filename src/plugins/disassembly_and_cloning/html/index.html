@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<form id="loginForm" action="http://192.168.16.146:8080/auth" method="POST">
+<input type="hidden" name="source" value="unigene">
+</form>
+</body>
+<html>
+<script>
+    function submitForm(){
+        document.getElementById("loginForm").submit()
+    }
+    window.onload = submitForm();
+</script>

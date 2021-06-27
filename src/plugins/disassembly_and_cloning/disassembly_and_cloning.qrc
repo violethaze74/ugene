@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/disassembly_and_cloning">
+        <file>html/index.html</file>
+    </qresource>
+</RCC>

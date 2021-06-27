@@ -21,12 +21,20 @@
 
 #include "DisassemblyAndCloningPlugin.h"
 
+#include <QAction>
+#include <QApplication>
+#include <QDialog>
+#include <QIcon>
+#include <QHBoxLayout>
+#include <QWebEngineView>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/ToolsMenu.h>
 
 namespace U2 {
 
@@ -38,10 +46,30 @@ DisassemblyAndCloningPlugin::DisassemblyAndCloningPlugin()
     : Plugin(tr("Is silico disassembly and cloning"),
              tr("In silico experiments for gene assembly and molecular cloning")) {
     if (AppContext::getMainWindow() != nullptr) {
-        //OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        //SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
-        //opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
+        QAction* a = new QAction(QIcon(":/core/images/todo.png"), tr("Gene assembly and molecular cloning..."), this);
+        a->setObjectName(ToolsMenu::GENE_ASSEMBLY_AND_MOLECULAR_CLONING);
+        connect(a, SIGNAL(triggered()), SLOT(sl_showWindow()));
+        ToolsMenu::addAction(ToolsMenu::TOOLS, a);
     }
+}
+
+void DisassemblyAndCloningPlugin::sl_showWindow() {
+
+    QDialog dlg(QApplication::activeWindow());
+    dlg.setWindowTitle(tr("Gene assembly and molecular cloning"));
+    dlg.setWindowIcon(QIcon(":/core/images/todo.png"));
+    dlg.resize(1366, 768);
+
+
+    QWebEngineView* view = new QWebEngineView(&dlg);
+    view->load(QUrl("qrc:disassembly_and_cloning/html/index.html"));
+    view->show();
+
+    auto l = new QHBoxLayout;
+    l->addWidget(view);
+    dlg.setLayout(l);
+
+    dlg.exec();
 }
 
 

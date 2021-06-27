@@ -102,6 +102,7 @@ public:
     static const QString HMMER_SEARCH2;
 
     static const QString DOTPLOT;
+    static const QString GENE_ASSEMBLY_AND_MOLECULAR_CLONING;
     static const QString GENERATE_SEQUENCE;
     static const QString QUERY_DESIGNER;
     static const QString WORKFLOW_DESIGNER;

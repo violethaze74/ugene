@@ -19,16 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DISASSEMBLY_AND_CLONING_PLUGIN
-#define _U2_DISASSEMBLY_AND_CLONING_PLUGIN
+#ifndef _U2_DISASSEMBLY_AND_CLONING_PLUGIN_H_
+#define _U2_DISASSEMBLY_AND_CLONING_PLUGIN_H_
 
 #include <U2Core/PluginModel.h>
+
+#include <QObject>
 
 namespace U2 {
 
 class DisassemblyAndCloningPlugin : public Plugin {
+    Q_OBJECT
 public:
-    DisassemblyAndCloningPlugin()
+    DisassemblyAndCloningPlugin();
+
+private slots:
+    void sl_showWindow();
 
 };
 
