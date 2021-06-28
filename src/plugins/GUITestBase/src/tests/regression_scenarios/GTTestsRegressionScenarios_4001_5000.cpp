@@ -5307,6 +5307,23 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4799) {
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/amino_ext.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // In the context menu of the sequences area select "Add->Sequence from current project".
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "amino_ext.fa", "amino_ext"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from current project..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check the result.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 19, QString("Sequence count mismatch. Expected: 19. Actual: %1").arg(names.size()));
+    CHECK_SET_ERR(names.last() == "amino_ext", QString("Inserted sequence name mismatch. Expected: amino_ext. Actual: %1").arg(names.last()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4803_1) {
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
