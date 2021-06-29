@@ -1078,7 +1078,25 @@ GUI_TEST_CLASS_DEFINITION(test_5330) {
 
     // Expected state: The MSA object is not marked as modified.
     GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "ma2_gapped.aln"), false);
+}
 
+GUI_TEST_CLASS_DEFINITION(test_5334) {
+    // Open "_common_data/clustal/amino_ext.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Select any symbol 'A' in the alignment.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(19, 0), QPoint(19, 0));
+
+    // Click Ctrl + C.
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Click Ctrl + V.
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: msa alphabet is still AMINO.
+    bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
+    CHECK_SET_ERR(isAmino, "Alignment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5335) {
