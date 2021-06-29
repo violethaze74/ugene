@@ -35,7 +35,10 @@ export UGENE_DEV=1
 export UGENE_TESTS_PATH="${SOURCE_DIR}/tests"
 
 # XML tests search data in this dir.
-export COMMON_DATA_DIR="${TEAMCITY_WORK_DIR}/test_data/_common_data"; fi
+export COMMON_DATA_DIR="${TEAMCITY_WORK_DIR}/test_data/_common_data"
+
+# TMP dir for tests
+export TEMP_DATA_DIR="${UGENE_OUTPUT_DIR}/tmp"
 
 echo "##teamcity[blockOpened name='Environment']"
 echo "Work dir: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}', test suite path: '${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}', test data dir: '${COMMON_DATA_DIR}'"
