@@ -26,6 +26,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 
@@ -51,6 +52,8 @@ public:
      * The difference with 'isDirectoryWritable' is that this method doesn't check that the 'absoluteDirPath' dir exists.
      */
     static bool canWriteToPath(const QString &absoluteDirPath);
+
+    static bool checkFileIsWritable(U2OpStatus& os, QFile* file);
 
 private:
     static QString getFormatId(const FormatDetectionResult &r);

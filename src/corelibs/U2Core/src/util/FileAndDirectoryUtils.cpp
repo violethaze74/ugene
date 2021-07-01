@@ -25,6 +25,7 @@
 #include <QTemporaryFile>
 
 #include <U2Core/Log.h>
+#include <U2Core/L10n.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -190,6 +191,15 @@ bool FileAndDirectoryUtils::canWriteToPath(const QString &absoluteDirPath) {
     }
     file.close();
     file.remove();
+
+    return true;
+}
+
+bool FileAndDirectoryUtils::checkFileIsWritable(U2OpStatus& os, QFile* file) {
+    bool opened = file->open(QIODevice::ReadWrite);
+    SAFE_POINT_EXT(opened, os.setError(L10N::errorOpeningFileWrite(file->fileName())), false);
+
+    file->close();
 
     return true;
 }

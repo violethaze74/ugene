@@ -33,6 +33,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -105,9 +106,8 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(stateInfo);
     QList<QTemporaryFile*> tempFiles = { &reportFile, &errorStateFile };
     for (auto tempFile : tempFiles) {
-        bool opened = tempFile->open();
-        SAFE_POINT_EXT(opened, setError(L10N::errorOpeningFileWrite(tempFile->fileName())), );
-        tempFile->close();
+        FileAndDirectoryUtils::checkFileIsWritable(stateInfo, tempFile);
+        CHECK_OP(stateInfo, );
     }
 
     GUrl referenceUrl(settings.referenceUrl);
@@ -117,7 +117,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
 
     FormatDetectionConfig config;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
-    CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError(tr("wrong reference format")), );
+    CHECK_EXT(!formats.isEmpty(), setError(tr("wrong reference format")), );
 
     DocumentFormat *format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), setError(tr("wrong reference format")), );
@@ -251,7 +251,9 @@ QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask)
 }
 
 void AlignToReferenceBlastCmdlineTask::run() {
-    reportFile.open();
+    bool isReportFileOpened = reportFile.open();
+    SAFE_POINT_EXT(isReportFileOpened, setError(L10N::errorOpeningFileWrite(reportFile.fileName())), );
+
     reportString = reportFile.readAll();
     reportFile.close();
 }

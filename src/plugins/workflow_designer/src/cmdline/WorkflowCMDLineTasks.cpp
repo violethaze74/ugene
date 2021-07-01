@@ -75,11 +75,11 @@ void WorkflowRunFromCMDLineBase::sl_stateChanged() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is nullptr", );
 
-    const QString errorStateFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::ERROR_STATE_FILE_ARG);
+    QString errorStateFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::ERROR_STATE_FILE_ARG);
     CHECK(!errorStateFilePath.isEmpty(), );
 
     QFile errorStateFile(errorStateFilePath);
-    const bool opened = errorStateFile.open(QIODevice::WriteOnly);
+    bool opened = errorStateFile.open(QIODevice::WriteOnly);
     if (!opened) {
         ioLog.error(L10N::errorOpeningFileWrite(errorStateFilePath));
         return;
@@ -90,10 +90,9 @@ void WorkflowRunFromCMDLineBase::sl_stateChanged() {
 
 LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QString &schemaName) {
     QString pathToSchema = WorkflowUtils::findPathToSchemaFile(schemaName);
-    if (pathToSchema.isEmpty()) {
-        setError(tr("The workflow \"%1\" is absent. Check the file path and the existence of the \"Unipro UGENE/data\" folder.").arg(schemaName));
-        return nullptr;
-    }
+    CHECK_EXT(!pathToSchema.isEmpty(),
+              setError(tr("The workflow \"%1\" is absent. Check the file path and the existence of the \"Unipro UGENE/data\" folder.").arg(schemaName)),
+              nullptr);
 
     schema = new Schema();
     schema->setDeepCopyFlag(true);
@@ -224,7 +223,6 @@ void WorkflowRunFromCMDLineBase::run() {
 }
 
 QString WorkflowRunFromCMDLineBase::generateReport() const {
-    int i = 0;
     return QString();
 }
 

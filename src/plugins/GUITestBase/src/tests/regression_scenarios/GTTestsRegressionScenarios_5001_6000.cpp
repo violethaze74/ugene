@@ -4150,7 +4150,6 @@ GUI_TEST_CLASS_DEFINITION(test_5790) {
 GUI_TEST_CLASS_DEFINITION(test_5794) {
     // 0. Rename the "data" folder
     QDir dir(".");
-    auto cp = dir.current();
     auto tempDataDir = dataDir.left(dataDir.size() - 1) + "_temp";
     dir.rename(dataDir, tempDataDir);
 
@@ -4163,9 +4162,7 @@ GUI_TEST_CLASS_DEFINITION(test_5794) {
     settings.outAlignment = sandBoxDir + "test_5794.ugenedb";
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, { "Tools", "Sanger data analysis", "Map reads to reference..." });
     GTUtilsTaskTreeView::waitTaskFinished(os);
     dir.rename(tempDataDir, dataDir);
 
