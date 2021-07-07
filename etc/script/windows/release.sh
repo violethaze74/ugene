@@ -83,7 +83,7 @@ function dump_symbols() {
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e .dll$ | while read -r BINARY_FILE; do
+find "${APP_BUNDLE_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e .dll$ | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
 echo "##teamcity[blockClosed name='Dump symbols']"
