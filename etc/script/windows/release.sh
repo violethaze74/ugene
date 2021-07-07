@@ -59,7 +59,7 @@ if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
-  diff "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
+  diff --strip-trailing-cr "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
   exit 1
 fi
