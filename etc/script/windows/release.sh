@@ -19,8 +19,8 @@ SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
-rm -rf *.zip
-rm -rf *.tar.gz
+rm -rf ./*.zip
+rm -rf ./*.tar.gz
 
 mkdir "${SYMBOLS_DIR}"
 
@@ -55,9 +55,9 @@ echo "##teamcity[blockOpened name='Validate bundle content']"
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
-diff --strip-trailing-cr "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"
-if [ $? -eq 0 ]; then
-  echo 'Bundle content validated successfully.'
+
+if diff --strip-trailing-cr "${REFERENCE_BUNDLE_FILE}" "${CURRENT_BUNDLE_FILE}"; then
+  echo "Bundle content validated successfully."
 else
   echo "The file ${CURRENT_BUNDLE_FILE} is different from ${REFERENCE_BUNDLE_FILE}"
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to validate release bundle content']"
@@ -72,7 +72,7 @@ function dump_symbols() {
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
-  "dump_syms.exe "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+  dump_syms.exe "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
@@ -83,14 +83,14 @@ function dump_symbols() {
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e *.dll | while read -r BINARY_FILE; do
+find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e .dll$ | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Build archive']"
 
-RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-win-x86-64-portable
+RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-win-x86-64-portable"
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
 
 rm -rf "ugene-"*
