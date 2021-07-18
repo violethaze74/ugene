@@ -13,8 +13,7 @@ SET UGENE_SEND_CRASH_REPORTS=0
 SET TEST_PATH=%TEAMCITY_WORK_DIR%\test
 SET REPORT_FILE=%UGENE_OUTPUT_DIR%\test_report.html
 SET UGENE_TOOLS_DIR=%TEAMCITY_WORK_DIR%\tools
-SET CLEAN_COMMON_DATA_DIR_SUBPATH=test_data/_common_data
-SET WORK_COMMON_DATA_DIR_SUBPATH=test/_common_data
+SET COMMON_DATA_DIR=%TEAMCITY_WORK_DIR%\tes\/_common_data
 SET UGENE_SNPEFF_DB_LIST="%UGENE_OUTPUT_DIR%\SnpEff_DB.list
 SET UGENE_TRANSLATION=en
 
@@ -35,7 +34,7 @@ ECHO "======= ENVIRONMENT (END) ========="
 REM sync working and original SVN dirs: this is faster than clean checkout.
 ECHO "##teamcity[blockOpened name='Create a copy of _common_data dir']"
 IF NOT EXIST test mkdir test
-rsync -a --delete --exclude=.svn* "%CLEAN_COMMON_DATA_DIR_SUBPATH%" "%WORK_COMMON_DATA_DIR_SUBPATH%"
+rsync -a --delete --exclude=.svn* test_data/_common_data test/_common_data
 ECHO "##teamcity[blockClosed name='Create a copy of _common_data dir']"
 
 ECHO "##teamcity[blockOpened name='Running tests']"
