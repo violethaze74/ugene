@@ -89,10 +89,6 @@ bool MaEditorSelection::isMultiSelection() const {
     return rectList.size() > 1;
 }
 
-bool MaEditorSelection::isSingleSelection() const {
-    return rectList.size() == 1;
-}
-
 int MaEditorSelection::getWidth() const {
     return isEmpty() ? 0 : rectList.first().width();
 }
@@ -122,20 +118,9 @@ bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
 bool MaEditorSelection::operator!=(const MaEditorSelection &other) const {
     return !(other == *this);
 }
-
-bool MaEditorSelection::contains(int columnIndex, int rowIndex) const {
-    CHECK(!isEmpty(), false);
-    const QRect &rect = rectList.first();
-    return columnIndex >= rect.left() && columnIndex <= rect.right() && containsRow(rowIndex);
-}
-
-bool MaEditorSelection::contains(const QPoint &columnAndRowPoint) const {
-    return contains(columnAndRowPoint.x(), columnAndRowPoint.y());
-}
-
-bool MaEditorSelection::containsRow(int rowIndex) const {
+bool MaEditorSelection::containsRow(int viewRowIndex) const {
     for (const QRect &rect : qAsConst(rectList)) {
-        if (rect.top() <= rowIndex && rect.bottom() >= rowIndex) {
+        if (rect.top() <= viewRowIndex && rect.bottom() >= viewRowIndex) {
             return true;
         }
     }
