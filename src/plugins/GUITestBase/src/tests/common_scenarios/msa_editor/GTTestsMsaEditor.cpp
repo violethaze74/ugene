@@ -44,6 +44,8 @@
 
 #include <QApplication>
 
+#include <U2Core/TextUtils.h>
+
 #include <U2View/ADVConstants.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
@@ -3518,7 +3520,29 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
 }
 
-/** These tests are created according to test plan: https://doc.ugene.net/wiki/display/PD/MSA**/
+GUI_TEST_CLASS_DEFINITION(test_0053_6) {
+    // Test copying of spatial selection, whole rows mode.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, {5, 0}, {10, 1});    // 2 rows.
+
+    // Add an extra row to the selection.
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsMsaEditor::clickSequence(os, 10);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+
+    GTUtilsMsaEditor::checkSelection(os, {{5, 0, 6, 2}, {5, 10, 6, 1}});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "copy_whole_row"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    QString clipboardText = GTClipboard::text(os);
+    QString expectedText = "RTAGRLRPSSSPWAAPAFLIKKENGKFRFLCDFRGLNSVT\n"
+                           "REAGRLRPSSSPWAAPAFLVKKENGKFRFIC---------\n"
+                           "LRSGRWKMSNARNTSPMLL-----SGIRDIPPRLRCVFDL";
+    CHECK_SET_ERR(clipboardText == expectedText, "Unexpected text: " + clipboardText);
+}
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
     //    Open COI.aln
