@@ -51,7 +51,7 @@ bool InSilicoPcrProduct::isValid() const {
 }
 
 InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &settings)
-    : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlags_FOSE_COSC),
+    : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
@@ -111,6 +111,8 @@ void InSilicoPcrTask::prepare() {
     CHECK_OP(stateInfo, );
     FindAlgorithmTaskSettings reverseSettings = getFindPatternSettings(U2Strand::Complementary);
     CHECK_OP(stateInfo, );
+    forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
+    reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
     forwardSearch = new FindAlgorithmTask(forwardSettings);
     reverseSearch = new FindAlgorithmTask(reverseSettings);
     addSubTask(forwardSearch);
