@@ -449,7 +449,8 @@ bool CircularAnnotationLabel::tryPushClockwise() {
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex + 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
+            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
@@ -475,7 +476,8 @@ bool CircularAnnotationLabel::tryPushCounterclockwise() {
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex - 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
+            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
