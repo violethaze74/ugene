@@ -436,14 +436,15 @@ bool CircularAnnotationLabel::tryPushClockwise() {
     const int engagedIndex = ra->engagedLabelPositionToLabel.key(this, -1);
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
-    SAFE_POINT(-1 != numberOfEngagedIndex, "Unexpected label position index", false);
 
-    if ((suitableLabelPositionIndexes.size() - 1) == numberOfEngagedIndex) {
+    if ((suitableLabelPositionIndexes.size() - 1) == numberOfEngagedIndex
+            || -1 == numberOfEngagedIndex) {
         return false;
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex + 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
+            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
@@ -456,14 +457,15 @@ bool CircularAnnotationLabel::tryPushCounterclockwise() {
     const int engagedIndex = ra->engagedLabelPositionToLabel.key(this, -1);
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
-    SAFE_POINT(-1 != numberOfEngagedIndex, "Unexpected label position index", false);
 
-    if (0 == numberOfEngagedIndex) {
+    if (0 == numberOfEngagedIndex
+            || -1 == numberOfEngagedIndex) {
         return false;
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex - 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
+            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
