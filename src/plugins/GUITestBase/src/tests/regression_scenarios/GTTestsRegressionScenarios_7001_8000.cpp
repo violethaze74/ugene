@@ -45,6 +45,7 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -456,6 +457,28 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     //5. Push Export button in the dialog.
     //6. Repeat steps 2-5 8 times
     //Expected state: UGENE is not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7193) {
+    GTUtilsPcr::clearPcrDir(os);
+    //WARNING: this test required UGENE_GUI_TEST environment variable set to 1
+    //1. Open "samples/FASTA/human_T1.fa"".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Enter the primers: "AAA" and "CCC".
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AAA");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
+
+    //4. Click the find button.
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: one result found
+    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7212) {
