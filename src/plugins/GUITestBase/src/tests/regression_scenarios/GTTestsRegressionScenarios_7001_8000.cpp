@@ -460,6 +460,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193) {
+    qputenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND", "1");
     GTUtilsPcr::clearPcrDir(os);
     //WARNING: this test required UGENE_GUI_TEST environment variable set to 1
     //1. Open "samples/FASTA/human_T1.fa"".
@@ -478,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_7193) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: one result found
-    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 2");
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 32, QString("Expected 32 results instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7212) {
