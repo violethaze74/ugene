@@ -18,6 +18,10 @@ file(GLOB_RECURSE HDRS src/*.h)
 
 add_library(U2Core SHARED ${HDRS} ${SRCS})
 
+if(APPLE)
+    target_link_libraries(U2Core "-framework CoreFoundation")
+endif()
+
 target_link_libraries(U2Core
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network Qt5::Script Qt5::Xml
         ugenedb zlib)

@@ -26,15 +26,16 @@
   2009-06-25 by lh3: optionally use my knetfile library to access file on a FTP.
   2009-06-12 by lh3: support a mode string like "wu" where 'u' for uncompressed output */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include "bgzf.h"
+#include <sys/types.h>
+#include <unistd.h>
+#include <ugene_custom_io.h>
 
+#include "bgzf.h"
 #include "khash.h"
 typedef struct {
 	int size;
