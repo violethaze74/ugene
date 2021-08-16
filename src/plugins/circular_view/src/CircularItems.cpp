@@ -437,14 +437,19 @@ bool CircularAnnotationLabel::tryPushClockwise() {
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
 
-    if ((suitableLabelPositionIndexes.size() - 1) == numberOfEngagedIndex
-            || -1 == numberOfEngagedIndex) {
+    // Not all label are expected to have suitable size/position for
+    // drawing algorithm, so some of them are not in the list.
+    // If we did not find them, then just return false (ignore these labels)
+    if (numberOfEngagedIndex == -1) {
+        return false;
+    }
+
+    if ((suitableLabelPositionIndexes.size() - 1) == numberOfEngagedIndex) {
         return false;
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex + 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
-            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushClockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
@@ -458,14 +463,19 @@ bool CircularAnnotationLabel::tryPushCounterclockwise() {
     SAFE_POINT(-1 != engagedIndex, "Unexpected label position index", false);
     const int numberOfEngagedIndex = suitableLabelPositionIndexes.indexOf(engagedIndex);
 
-    if (0 == numberOfEngagedIndex
-            || -1 == numberOfEngagedIndex) {
+    // Not all label are expected to have suitable size/position for
+    // drawing algorithm, so some of them are not in the list.
+    // If we did not find them, then just return false (ignore these labels)
+    if (numberOfEngagedIndex == -1) {
+        return false;
+    }
+
+    if (0 == numberOfEngagedIndex) {
         return false;
     }
 
     const int currentLabelPosIndex = suitableLabelPositionIndexes[numberOfEngagedIndex - 1];
-    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex)
-            || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
+    if (!ra->engagedLabelPositionToLabel.contains(currentLabelPosIndex) || ra->engagedLabelPositionToLabel[currentLabelPosIndex]->tryPushCounterclockwise()) {
         ra->engagedLabelPositionToLabel.remove(engagedIndex);
         engageLabelPosition(currentLabelPosIndex);
         return true;
