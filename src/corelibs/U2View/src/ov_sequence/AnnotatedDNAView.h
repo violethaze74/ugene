@@ -111,6 +111,8 @@ public:
 
     void unregisterSplitWidget(ADVSplitWidget *widget);
 
+    QList<ADVSplitWidget *> getSplitWidgets();
+
     QString addObject(GObject *o) override;
 
     void saveWidgetState() override;

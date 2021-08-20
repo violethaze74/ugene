@@ -61,13 +61,17 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 #include <U2View/DetView.h>
 #include <U2View/McaEditorReferenceArea.h>
 
+#include "../../circular_view/src/CircularViewSplitter.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsExternalTools.h"
@@ -96,11 +100,13 @@
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -5592,7 +5598,90 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+GUI_TEST_CLASS_DEFINITION(test_6759)
+{
+    GTLogTracer l;
 
+    //    1. Open sequence
+    //    2. Open annotation file
+    //    3. Add annotation file to sequence
+    //    4. Find splitter
+    //    5. Find scroll in splitter
+    //    6. Scroll to end, then to begin
+
+    GTFileDialog::openFileList(os,
+                               testDir + "_common_data/regression/6759/",
+                               QStringList() << "annotations.gb"
+                                             << "sequence.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "Unknown features"),
+                  "No 'Unknown features' object!");
+
+    //    Use context menu on annotation in tree view
+    GTUtilsDialog::waitForDialog(os,
+                                 new ProjectTreeItemSelectorDialogFiller(os,
+                                                                         "annotations.gb",
+                                                                         "Unknown features"));
+    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os,
+                                 new PopupChooserByText(os,
+                                                        QStringList()
+                                                            << "Add"
+                                                            << "Objects with annotations..."));
+    //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    //    Check {add-> Objects with annotations} action
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count").arg(seqNum));
+
+    ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, 0);
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for single sequence view."));
+    ADVSequenceObjectContext *ctx = seqWgt->getActiveSequenceContext();
+    CHECK_SET_ERR(ctx != nullptr, QString("No context for single sequence view."));
+    AnnotatedDNAView *aview = ctx->getAnnotatedDNAView();
+    CHECK_SET_ERR(aview != nullptr, QString("No annoview for single sequence view. First check"));
+    QList<ADVSplitWidget *> splitters = aview->getSplitWidgets();
+    CHECK_SET_ERR(splitters.size() == 1,
+                  QString("No splitters for single sequence view. First check"));
+    CircularViewSplitter *splitter = static_cast<CircularViewSplitter *>(splitters[0]);
+    CHECK_SET_ERR(splitter != nullptr, QString("CircularViewSplitter is null"));
+
+    QList<QScrollBar *> scrolls = splitter->findChildren<QScrollBar *>("CircularViewSplitter_horScroll");
+    CHECK_SET_ERR(scrolls.size() == 1, QString("Too many scrolls"));
+    QScrollBar *horScroll = scrolls[0];
+
+    horScroll->setValue(horScroll->value() + 13);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(horScroll->value() + 26);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(horScroll->value() + 39);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(360);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(horScroll->value() - 13);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(horScroll->value() - 26);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(horScroll->value() - 39);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+    horScroll->setValue(0);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
+
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
