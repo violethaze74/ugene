@@ -22,11 +22,11 @@
 #ifndef _U2_CONSTRUCT_MOLECULE_DIALOG_H_
 #define _U2_CONSTRUCT_MOLECULE_DIALOG_H_
 
-#include <ui_ConstructMoleculeDialog.h>
-
 #include <QList>
 
 #include "CloningUtilTasks.h"
+
+#include <ui_ConstructMoleculeDialog.h>
 
 namespace U2 {
 
@@ -63,6 +63,6 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CONSTRUCT_MOLECULE_DIALOG_H_
+#endif  // _U2_CONSTRUCT_MOLECULE_DIALOG_H_

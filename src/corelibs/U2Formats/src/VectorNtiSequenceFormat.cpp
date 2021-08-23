@@ -92,7 +92,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
         anns = objectsMap[GObjectTypes::ANNOTATION_TABLE];
     }
 
-    //reading header attribute
+    // reading header attribute
     QString locusFromAttributes;
     QString gbHeader;
 
@@ -104,7 +104,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
         gbHeader = attr.value;
     }
 
-    if (gbHeader.startsWith("LOCUS")) {    //trim the first line
+    if (gbHeader.startsWith("LOCUS")) {  // trim the first line
         int locusStringEndIndex = gbHeader.indexOf("\n");
         assert(locusStringEndIndex != -1);
         locusFromAttributes = gbHeader.left(locusStringEndIndex);
@@ -118,10 +118,10 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     }
     // write other keywords
 
-    //header
+    // header
     io->writeBlock(gbHeader.toLocal8Bit());
 
-    //write tool mark
+    // write tool mark
     QList<GObject *> annsAndSeqObjs;
     annsAndSeqObjs << anns;
     annsAndSeqObjs << seq;
@@ -269,9 +269,9 @@ QString VectorNtiSequenceFormat::parseDate(int date) {
 
 QList<SharedAnnotationData> VectorNtiSequenceFormat::prepareAnnotations(const QList<GObject *> &tablesList, bool isAmino, U2OpStatus &os) const {
     QMap<AnnotationGroup *, QList<SharedAnnotationData>> annotationsByGroups;
-    foreach (GObject *object, tablesList) {
-        AnnotationTableObject *atObject = qobject_cast<AnnotationTableObject *>(object);
-        CHECK_EXT(nullptr != atObject, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
+    for (GObject *object : qAsConst(tablesList)) {
+        auto atObject = qobject_cast<AnnotationTableObject *>(object);
+        CHECK_EXT(atObject != nullptr, os.setError("Invalid annotation table"), QList<SharedAnnotationData>());
         foreach (Annotation *annotation, atObject->getAnnotations()) {
             annotationsByGroups[annotation->getGroup()] << annotation->getData();
         }
@@ -293,11 +293,11 @@ void VectorNtiSequenceFormat::writeAnnotations(IOAdapter *io, const QList<GObjec
     CHECK(!aos.isEmpty(), );
     QByteArray header("FEATURES             Location/Qualifiers\n");
 
-    //write "FEATURES"
+    // write "FEATURES"
     qint64 len = io->writeBlock(header);
     CHECK_EXT(len == header.size(), os.setError(tr("Error writing document")), );
 
-    //write every feature
+    // write every feature
     const char *spaceLine = TextUtils::SPACE_LINE.data();
     QList<SharedAnnotationData> sortedAnnotations = prepareAnnotations(aos, isAmino, os);
     CHECK_OP(os, );
@@ -322,13 +322,13 @@ void VectorNtiSequenceFormat::writeAnnotations(IOAdapter *io, const QList<GObjec
         len = io->writeBlock(spaceLine, nspaces);
         CHECK_EXT(len == nspaces, os.setError(tr("Error writing document")), );
 
-        //write location
+        // write location
         QString multiLineLocation = U1AnnotationUtils::buildLocationString(a);
         prepareMultiline(multiLineLocation, 21);
         len = io->writeBlock(multiLineLocation.toLocal8Bit());
         CHECK_EXT(len == multiLineLocation.size(), os.setError(tr("Error writing document")), );
 
-        //write qualifiers
+        // write qualifiers
         foreach (const U2Qualifier &q, a->qualifiers) {
             writeQualifier(q.name, q.value, io, os, spaceLine);
             CHECK_OP(os, );
@@ -345,12 +345,12 @@ void VectorNtiSequenceFormat::prepareQualifiersToWrite(QMap<AnnotationGroup *, Q
             bool labelExists = false;
             QVector<U2Qualifier> qualifiers;
 
-            foreach (const U2Qualifier &qualifier, annotation->qualifiers) {
-                if (VNTIFKEY_QUALIFIER_NAME == qualifier.name || GBFeatureUtils::QUALIFIER_NAME == qualifier.name || GBFeatureUtils::QUALIFIER_GROUP == qualifier.name) {
+            for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
+                if (qualifier.name == VNTIFKEY_QUALIFIER_NAME || qualifier.name == GBFeatureUtils::QUALIFIER_NAME || qualifier.name == GBFeatureUtils::QUALIFIER_GROUP) {
                     continue;
                 }
 
-                if (QUALIFIER_LABEL == qualifier.name) {
+                if (qualifier.name == QUALIFIER_LABEL) {
                     if (!labelExists) {
                         labelExists = true;
                         U2Qualifier labelQualifier(qualifier);
@@ -807,4 +807,4 @@ QMap<VectorNtiSequenceFormat::VntiProteinFeatureTypes, QString> VectorNtiSequenc
     return proteinFeatureType2StringMap;
 }
 
-}    // namespace U2
+}  // namespace U2

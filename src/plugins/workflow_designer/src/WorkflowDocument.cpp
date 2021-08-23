@@ -110,7 +110,7 @@ Document *WorkflowDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &tar
         rawData.clear();
         return nullptr;
     }
-    //todo: check file-readonly status?
+    // todo: check file-readonly status?
 
     QList<GObject *> objects;
     QString data = QString::fromUtf8(rawData.data(), rawData.size());
@@ -131,9 +131,9 @@ void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) 
     int nWritten = 0;
     int nTotal = rawData.size();
     while (nWritten < nTotal) {
-        int d = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
-        assert(d > 0);
-        nWritten += d;
+        int bytesWritten = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
+        assert(bytesWritten > 0);
+        nWritten += bytesWritten;
     }
     wo->getView()->getScene()->setModified(false);
     wo->setSceneRawData(rawData);
@@ -198,4 +198,4 @@ void OpenWorkflowViewTask::open() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

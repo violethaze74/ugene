@@ -36,7 +36,7 @@ void QDParameters::setParameter(const QString &name, const QVariant &val) {
     emit si_modified();
 }
 
-//QDActor
+// QDActor
 //////////////////////////////////////////////////////////////////////////
 const int QDActor::DEFAULT_MAX_RESULT_LENGTH(10000);
 
@@ -116,7 +116,7 @@ QList<QPair<QString, QString>> QDActor::saveConfiguration() const {
         if (a->getAttributePureValue() == defaultCfg.value(it.key())) {
             continue;
         }
-        //QString displayName = QDAttributeNameConverter::convertAttrName(a->getDisplayName());
+        // QString displayName = QDAttributeNameConverter::convertAttrName(a->getDisplayName());
         QString displayName = a->getId();
         QPair<QString, QString> newAttr = qMakePair(displayName, a->getAttributePureValue().toString());
         res.append(newAttr);
@@ -165,7 +165,7 @@ QDStrandOption QDActor::getStrand() const {
     if (hasStrand()) {
         return strand;
     }
-    //return QDStrand_DirectOnly;
+    // return QDStrand_DirectOnly;
     return QDStrand_Both;
 }
 
@@ -182,22 +182,6 @@ QList<QDConstraint *> QDActor::getConstraints() const {
     return res;
 }
 
-//QDSchemeUnit
-//////////////////////////////////////////////////////////////////////////
-QString QDSchemeUnit::getPersonalName() const {
-    const QList<QDSchemeUnit *> &units = actor->getSchemeUnits();
-    if (units.size() == 1) {
-        return actor->getParameters()->getLabel();
-    }
-    QDSchemeUnit *s = const_cast<QDSchemeUnit *>(this);
-    assert(units.contains(s));
-    int idx = units.indexOf(s) + 1;
-    QString result = QString("%1_%2")
-                         .arg(actor->getParameters()->getLabel())
-                         .arg(QString::number(idx));
-    return result;
-}
-
 QList<QDDistanceConstraint *> QDSchemeUnit::getDistanceConstraints() const {
     QList<QDDistanceConstraint *> res;
     foreach (QDConstraint *c, schemeConstraints) {
@@ -209,7 +193,7 @@ QList<QDDistanceConstraint *> QDSchemeUnit::getDistanceConstraints() const {
     return res;
 }
 
-//QDScheme
+// QDScheme
 //////////////////////////////////////////////////////////////////////////
 QDScheme::~QDScheme() {
     foreach (QDActor *a, actors) {
@@ -231,8 +215,10 @@ void QDScheme::addActor(QDActor *a) {
 
 bool QDScheme::removeActor(QDActor *a) {
     if (actors.contains(a)) {
-        foreach (QDSchemeUnit *su, a->getSchemeUnits()) {
-            foreach (QDConstraint *c, su->getConstraints()) {
+        QList<QDSchemeUnit *> schemaUnits = a->getSchemeUnits();
+        for (QDSchemeUnit *schemaUnit : qAsConst(schemaUnits)) {
+            QList<QDConstraint *> constraints = schemaUnit->getConstraints();
+            for (QDConstraint *c : qAsConst(constraints)) {
                 removeConstraint(c);
             }
         }
@@ -271,9 +257,11 @@ void QDScheme::removeConstraint(QDConstraint *constraint) {
 
 QList<QDConstraint *> QDScheme::getConstraints() const {
     QList<QDConstraint *> res;
-    foreach (QDActor *actor, actors) {
-        foreach (QDSchemeUnit *su, actor->getSchemeUnits()) {
-            foreach (QDConstraint *c, su->getConstraints()) {
+    for (QDActor *actor : qAsConst(actors)) {
+        QList<QDSchemeUnit *> schemeUnits = actor->getSchemeUnits();
+        for (QDSchemeUnit *su : qAsConst(schemeUnits)) {
+            const QList<QDConstraint *> &constraints = su->getConstraints();
+            for (QDConstraint *c : qAsConst(constraints)) {
                 if (!res.contains(c)) {
                     res.append(c);
                 }
@@ -288,7 +276,7 @@ QList<QDConstraint *>
     QList<QDConstraint *> sharedConstraints;
     const QList<QDConstraint *> &su1Cons = su1->getConstraints();
     const QList<QDConstraint *> &su2Cons = su2->getConstraints();
-    foreach (QDConstraint *con, su1Cons) {
+    for (QDConstraint *con : qAsConst(su1Cons)) {
         if (su2Cons.contains(con)) {
             sharedConstraints.append(con);
         }
@@ -297,51 +285,44 @@ QList<QDConstraint *>
 }
 
 void QDScheme::clear() {
-    //delete dna;
+    // delete dna;
     dna = DNASequence();
-    foreach (QDActor *a, actors) {
+    QList<QDActor *> actorsCopy = actors;
+    for (QDActor *a : qAsConst(actorsCopy)) {
         removeActor(a);
     }
     actorGroups.clear();
     emit si_schemeChanged();
 }
 
-QList<QDSchemeUnit *> currentRoute;
-QList<QList<QDSchemeUnit *>> routes;
-QDSchemeUnit *routeDst = nullptr;
-
 QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
-    assert(currentRoute.isEmpty());
-    assert(routes.isEmpty());
-    assert(!routeDst);
-    routeDst = dst;
-    currentRoute.append(src);
-    findRoute(src);
+    QList<QDSchemeUnit *> currentRoute = {src};
+    QList<QList<QDSchemeUnit *>> routes;
+    findRoute(src, dst, currentRoute, routes);
     QList<QDPath *> res;
-    foreach (const QList<QDSchemeUnit *> &route, routes) {
+    for (const QList<QDSchemeUnit *> &route : qAsConst(routes)) {
         QList<QDPath *> paths;
-        for (int i = 0, m = route.size() - 1; i < m; i++) {
-            QDSchemeUnit *src = route.at(i);
-            QDSchemeUnit *dst = route.at(i + 1);
-            QList<QDConstraint *> joint = getConstraints(src, dst);
+        for (int routeIndex = 0, m = route.size() - 1; routeIndex < m; routeIndex++) {
+            QDSchemeUnit *routeSrc = route.at(routeIndex);
+            QDSchemeUnit *routeDst = route.at(routeIndex + 1);
+            QList<QDConstraint *> joint = getConstraints(routeSrc, routeDst);
 
-            //include "parameter" constraints
-            foreach (QDConstraint *con, src->getActor()->getParamConstraints()) {
-                if (con->getSchemeUnits().contains(src) && con->getSchemeUnits().contains(dst)) {
+            // include "parameter" constraints
+            foreach (QDConstraint *con, routeSrc->getActor()->getParamConstraints()) {
+                if (con->getSchemeUnits().contains(routeSrc) && con->getSchemeUnits().contains(routeDst)) {
                     joint.append(con);
                 }
             }
             QList<QDDistanceConstraint *> jointCons;
-            foreach (QDConstraint *con, joint) {
-                QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(con);
-                if (dc) {
+            for (QDConstraint *con : qAsConst(joint)) {
+                if (auto dc = static_cast<QDDistanceConstraint *>(con)) {
                     jointCons.append(dc);
                 }
             }
             assert(!jointCons.isEmpty());
 
             if (paths.isEmpty()) {
-                foreach (QDDistanceConstraint *dc, jointCons) {
+                for (QDDistanceConstraint *dc : qAsConst(jointCons)) {
                     QDPath *newPath = new QDPath;
                     bool ok = newPath->addConstraint(dc);
                     assert(ok);
@@ -350,16 +331,16 @@ QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
                 }
             } else {
                 QList<QDPath *> newPaths;
-                for (int i = 1, n = jointCons.size(); i < n; i++) {
-                    foreach (QDPath *path, paths) {
+                for (int jointConstraintIndex = 1, n = jointCons.size(); jointConstraintIndex < n; jointConstraintIndex++) {
+                    for (QDPath *path : qAsConst(paths)) {
                         QDPath *newPath = path->clone();
-                        bool ok = newPath->addConstraint(jointCons.at(i));
+                        bool ok = newPath->addConstraint(jointCons.at(jointConstraintIndex));
                         assert(ok);
                         Q_UNUSED(ok);
                         newPaths.append(newPath);
                     }
                 }
-                foreach (QDPath *path, paths) {
+                for (QDPath *path : qAsConst(paths)) {
                     bool ok = path->addConstraint(jointCons.at(0));
                     assert(ok);
                     Q_UNUSED(ok);
@@ -371,18 +352,17 @@ QList<QDPath *> QDScheme::findPaths(QDSchemeUnit *src, QDSchemeUnit *dst) {
     }
     currentRoute.clear();
     routes.clear();
-    routeDst = nullptr;
     return res;
 }
 
-void QDScheme::findRoute(QDSchemeUnit *curSu) {
+void QDScheme::findRoute(QDSchemeUnit *curSu, QDSchemeUnit *routeDst, QList<QDSchemeUnit *> &currentRoute, QList<QList<QDSchemeUnit *>> routes) {
     if (curSu == routeDst) {
         routes.append(currentRoute);
     } else {
-        //build list of adjacent vertexes
+        // build list of adjacent vertexes
         QList<QDSchemeUnit *> adjacentList;
         QList<QDDistanceConstraint *> dcList = curSu->getDistanceConstraints();
-        //include "parameter" constraints
+        // include "parameter" constraints
         foreach (QDConstraint *con, curSu->getActor()->getParamConstraints()) {
             if (con->constraintType() == QDConstraintTypes::DISTANCE) {
                 QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(con);
@@ -392,10 +372,10 @@ void QDScheme::findRoute(QDSchemeUnit *curSu) {
             }
         }
 
-        foreach (QDDistanceConstraint *dc, dcList) {
-            QDSchemeUnit *adj = nullptr;
+        for (QDDistanceConstraint *dc : qAsConst(dcList)) {
             QDSchemeUnit *dcSrc = dc->getSource();
             QDSchemeUnit *dcDst = dc->getDestination();
+            QDSchemeUnit *adj;
             if (curSu == dcSrc) {
                 adj = dcDst;
             } else {
@@ -406,17 +386,17 @@ void QDScheme::findRoute(QDSchemeUnit *curSu) {
                 adjacentList.append(adj);
             }
         }
-        foreach (QDSchemeUnit *adj, adjacentList) {
+        for (QDSchemeUnit *adj : qAsConst(adjacentList)) {
             if (!currentRoute.contains(adj)) {
                 currentRoute.append(adj);
-                findRoute(adj);
+                findRoute(adj, routeDst, currentRoute, routes);
                 currentRoute.removeOne(adj);
             }
         }
     }
 }
 
-//QDPath
+// QDPath
 //////////////////////////////////////////////////////////////////////////
 QDPath::~QDPath() {
     delete overallConstraint;
@@ -494,7 +474,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
                         minDist += curSu->getActor()->getMinResultLen();
                         maxDist += curSu->getActor()->getMaxResultLen();
                     }
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     if (nextDc->distanceType() == S2S || nextDc->distanceType() == S2E) {
                         minDist -= curSu->getActor()->getMaxResultLen();
                         maxDist -= curSu->getActor()->getMinResultLen();
@@ -508,7 +488,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
                         minDist += curSu->getActor()->getMinResultLen();
                         maxDist += curSu->getActor()->getMaxResultLen();
                     }
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     if (nextDc->distanceType() == S2S || nextDc->distanceType() == E2S) {
                         minDist -= curSu->getActor()->getMaxResultLen();
                         maxDist -= curSu->getActor()->getMinResultLen();
@@ -532,7 +512,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
                         minDist += curSu->getActor()->getMinResultLen();
                         maxDist += curSu->getActor()->getMaxResultLen();
                     }
-                } else {    // E2S || E2E
+                } else {  // E2S || E2E
                     if (nextDc->distanceType() == S2S || nextDc->distanceType() == S2E) {
                         minDist -= curSu->getActor()->getMaxResultLen();
                         maxDist -= curSu->getActor()->getMinResultLen();
@@ -546,7 +526,7 @@ QDDistanceConstraint *QDPath::toConstraint() {
                         minDist -= curSu->getActor()->getMaxResultLen();
                         maxDist -= curSu->getActor()->getMinResultLen();
                     }
-                } else {    // S2E || S2S
+                } else {  // S2E || S2S
                     if (nextDc->distanceType() == S2E || nextDc->distanceType() == E2E) {
                         minDist += curSu->getActor()->getMinResultLen();
                         maxDist += curSu->getActor()->getMaxResultLen();
@@ -565,19 +545,19 @@ QDDistanceConstraint *QDPath::toConstraint() {
     QList<QDSchemeUnit *> units;
     units << pathSrc << pathDst;
 
-    QDDistanceType distType = E2S;
+    QDDistanceType distType;
     if (pathSrc == firstDc->getSource()) {
         if (pathDst == lastDc->getSource()) {
             if (firstDc->distanceType() == S2S || firstDc->distanceType() == S2E) {
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == S2E) {
                     distType = S2S;
-                } else {    // E2S || E2E
+                } else {  // E2S || E2E
                     distType = S2E;
                 }
-            } else {    // E2S || E2E
+            } else {  // E2S || E2E
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == S2E) {
                     distType = E2S;
-                } else {    // E2S || E2E
+                } else {  // E2S || E2E
                     distType = E2E;
                 }
             }
@@ -586,13 +566,13 @@ QDDistanceConstraint *QDPath::toConstraint() {
             if (firstDc->distanceType() == S2S || firstDc->distanceType() == S2E) {
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == E2S) {
                     distType = S2S;
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     distType = S2E;
                 }
-            } else {    // E2S || E2E
+            } else {  // E2S || E2E
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == E2S) {
                     distType = E2S;
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     distType = E2E;
                 }
             }
@@ -603,13 +583,13 @@ QDDistanceConstraint *QDPath::toConstraint() {
             if (firstDc->distanceType() == S2S || firstDc->distanceType() == E2S) {
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == S2E) {
                     distType = S2S;
-                } else {    // E2S || E2E
+                } else {  // E2S || E2E
                     distType = S2E;
                 }
-            } else {    // S2E || E2E
+            } else {  // S2E || E2E
                 if (lastDc->distanceType() == E2S || lastDc->distanceType() == E2E) {
                     distType = E2E;
-                } else {    // S2S || S2E
+                } else {  // S2S || S2E
                     distType = E2S;
                 }
             }
@@ -618,13 +598,13 @@ QDDistanceConstraint *QDPath::toConstraint() {
             if (firstDc->distanceType() == S2S || firstDc->distanceType() == E2S) {
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == E2S) {
                     distType = S2S;
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     distType = S2E;
                 }
-            } else {    // S2E || E2E
+            } else {  // S2E || E2E
                 if (lastDc->distanceType() == S2S || lastDc->distanceType() == E2S) {
                     distType = E2S;
-                } else {    // S2E || E2E
+                } else {  // S2E || E2E
                     distType = E2E;
                 }
             }
@@ -655,7 +635,7 @@ bool QDScheme::isValid() const {
         NotificationsList notificationList;
         if (!cfg->validate(notificationList)) {
             res = false;
-            foreach (const WorkflowNotification &notification, notificationList) {
+            for (const WorkflowNotification &notification : qAsConst(notificationList)) {
                 coreLog.error(QObject::tr("%1. %2").arg(cfg->getLabel()).arg(notification.message));
             }
         }
@@ -763,7 +743,7 @@ void QDScheme::adaptActorsOrder() {
     actors = actorsQueue;
 }
 
-//QDResultGroup
+// QDResultGroup
 //////////////////////////////////////////////////////////////////////////
 void QDResultGroup::add(const QDResultUnit &res) {
     if (results.isEmpty()) {
@@ -793,7 +773,7 @@ void QDResultGroup::buildGroupFromSingleResult(const QDResultUnit &ru, QList<QDR
     results.append(g);
 }
 
-//AttributeValueMapper
+// AttributeValueMapper
 //////////////////////////////////////////////////////////////////////////
 
 const QMap<QString, bool> QDAttributeValueMapper::BOOLEAN_MAP = initBooleanMap();
@@ -829,4 +809,4 @@ QDActorPrototype::~QDActorPrototype() {
     delete editor;
 }
 
-}    // namespace U2
+}  // namespace U2

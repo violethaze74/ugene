@@ -103,14 +103,14 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
     }
     return result;
 }
-}    // namespace
+}  // namespace
 
-void WizardPageController::removeLayout(QLayout *l) {
-    CHECK(nullptr != l, );
+void WizardPageController::removeLayout(QLayout *layoutToRemove) {
+    CHECK(layoutToRemove != nullptr, );
     QList<QLayout *> layouts;
     QList<QLayout *> layoutStack;
-    layouts << l;
-    layoutStack << l;
+    layouts << layoutToRemove;
+    layoutStack << layoutToRemove;
 
     while (!layouts.isEmpty()) {
         QLayout *current = layouts.takeFirst();
@@ -136,4 +136,4 @@ int WizardPageController::nextId() const {
     return wc->getQtPageId(id);
 }
 
-}    // namespace U2
+}  // namespace U2

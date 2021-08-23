@@ -70,7 +70,7 @@ QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const 
     QVector<U2Region> &updated = res[0];
 
     foreach (U2Region r, original) {
-        //if location ends before modification
+        // if location ends before modification
         if (r.endPos() <= region2Remove.startPos) {
             updated << r;
             continue;
@@ -115,7 +115,7 @@ QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const 
         SAFE_POINT(AnnotationStrategyForResize_Split_To_Joined == s || AnnotationStrategyForResize_Split_To_Separate == s,
                    "Unexpected resize strategy detected!",
                    res);
-        //leave left part in original(updated) locations and push right into new one
+        // leave left part in original(updated) locations and push right into new one
         const bool join = (AnnotationStrategyForResize_Split_To_Joined == s);
         const U2Region interR = r.intersect(region2Remove);
         const U2Region leftR = r.startPos < interR.startPos ? U2Region(r.startPos, interR.startPos - r.startPos) : U2Region();
@@ -148,7 +148,7 @@ int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand &strand, b
     } else {
         frame = r.startPos % 3;
     }
-    if (!order) {    //join -> need to join region with prev regions to derive frame
+    if (!order) {  // join -> need to join region with prev regions to derive frame
         if (strand.isCompementary()) {
             int offset = 0;
             for (int i = location.size(); --i > region;) {
@@ -301,8 +301,8 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 
     QList<U2Region> lowerCaseRegs;
     QList<U2Region> upperCaseRegs;
-    foreach (GObject *o, aos) {
-        AnnotationTableObject *ato = dynamic_cast<AnnotationTableObject *>(o);
+    for (GObject *o : qAsConst(aos)) {
+        auto ato = dynamic_cast<AnnotationTableObject *>(o);
         foreach (Annotation *a, ato->getAnnotations()) {
             if (a->getName() == lowerCaseAnnotationName) {
                 lowerCaseRegs << a->getRegions().toList();
@@ -413,10 +413,10 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject *ao, cons
 
 QList<AnnotatedRegion> U1AnnotationUtils::getAnnotatedRegionsByStartPos(QList<AnnotationTableObject *> annotationObjects, qint64 startPos) {
     QList<AnnotatedRegion> result;
-    foreach (AnnotationTableObject *annObject, annotationObjects) {
+    for (AnnotationTableObject *annObject : qAsConst(annotationObjects)) {
         QList<Annotation *> annots = annObject->getAnnotationsByRegion(U2Region(startPos, 1));
-        foreach (Annotation *a, annots) {
-            QVector<U2Region> regions = a->getRegions();
+        for (Annotation *a : qAsConst(annots)) {
+            const QVector<U2Region> &regions = a->getRegions();
             for (int i = 0; i < regions.size(); i++) {
                 if (regions[i].startPos == startPos) {
                     AnnotatedRegion ar(a, i);
@@ -513,23 +513,23 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location &location, qint64 s
     for (int i = 0; i < oldRegions.size(); i++) {
         const U2Region &oldRegion = oldRegions[i];
         U2Region shiftedRegion(oldRegion.startPos + (shift % sequenceLength), oldRegion.length);
-        if (shiftedRegion.startPos >= 0 && shiftedRegion.endPos() <= sequenceLength) {    // no overflow.
+        if (shiftedRegion.startPos >= 0 && shiftedRegion.endPos() <= sequenceLength) {  // no overflow.
             newRegions.append(shiftedRegion);
-        } else if (shiftedRegion.endPos() <= 0) {    // start overflow with no split.
+        } else if (shiftedRegion.endPos() <= 0) {  // start overflow with no split.
             U2Region newRegion(shiftedRegion.startPos + sequenceLength, shiftedRegion.length);
             newRegions.append(newRegion);
             bool merge = i > 0 && oldRegions[i - 1].endPos() == sequenceLength;
             if (merge) {
                 mergeIndexes << newRegions.length() - 2;
             }
-        } else if (shiftedRegion.startPos >= sequenceLength) {    // end overflow with no split.
+        } else if (shiftedRegion.startPos >= sequenceLength) {  // end overflow with no split.
             U2Region newRegion(shiftedRegion.startPos - sequenceLength, shiftedRegion.length);
             newRegions.append(newRegion);
             bool merge = i + 1 < oldRegions.size() && oldRegions[i + 1].startPos == 0;
             if (merge) {
                 mergeIndexes << newRegions.length() - 1;
             }
-        } else if (shiftedRegion.startPos < 0) {    // start overflow with split.
+        } else if (shiftedRegion.startPos < 0) {  // start overflow with split.
             U2Region newRegion1(shiftedRegion.startPos + sequenceLength, -shiftedRegion.startPos);
             U2Region newRegion2(0, oldRegion.length - newRegion1.length);
             newRegions.append(newRegion1);
@@ -539,7 +539,7 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location &location, qint64 s
             if (merge) {
                 mergeIndexes << newRegions.length() - 3;
             }
-        } else if (shiftedRegion.endPos() > sequenceLength) {    // end overflow with split.
+        } else if (shiftedRegion.endPos() > sequenceLength) {  // end overflow with split.
             U2Region newRegion1(shiftedRegion.startPos, sequenceLength - shiftedRegion.startPos);
             U2Region newRegion2(0, oldRegion.length - newRegion1.length);
             newRegions.append(newRegion1);
@@ -586,9 +586,9 @@ void FixAnnotationsUtils::fixAnnotations() {
     if (AppContext::getProject() != nullptr) {
         annotationTablesList = GObjectUtils::findObjectsRelatedToObjectByRole(seqObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UOF_LoadedOnly);
     } else {
-        foreach (Document *d, docs) {
+        for (Document *d : qAsConst(docs)) {
             QList<GObject *> allAnnotationTables = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            foreach (GObject *table, allAnnotationTables) {
+            for (GObject *table : qAsConst(allAnnotationTables)) {
                 if (table->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
                     annotationTablesList.append(table);
                 }
@@ -596,12 +596,13 @@ void FixAnnotationsUtils::fixAnnotations() {
         }
     }
 
-    foreach (GObject *table, annotationTablesList) {
-        AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-        if (nullptr != ato) {
+    for (GObject *table : qAsConst(annotationTablesList)) {
+        auto ato = qobject_cast<AnnotationTableObject *>(table);
+        if (ato != nullptr) {
             QMap<QString, QList<SharedAnnotationData>> group2AnnotationsToAdd;
             QList<Annotation *> annotationToRemove;
-            foreach (Annotation *an, ato->getAnnotations()) {
+            QList<Annotation *> annotations = ato->getAnnotations();
+            for (Annotation *an : qAsConst(annotations)) {
                 bool annIsToBeRemoved = false;
                 QMap<QString, QList<SharedAnnotationData>> newAnnotations = fixAnnotation(an, annIsToBeRemoved);
                 foreach (const QString &groupName, newAnnotations.keys()) {
@@ -662,7 +663,7 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
         int lastFoundPos = 0;
         while ((lastFoundPos = locationMatcher.indexIn(qual.value, lastFoundPos)) != -1) {
             const QString matchedRegion = locationMatcher.cap();
-            const qint64 start = locationMatcher.cap(1).toLongLong() - 1;    // position starts with 0
+            const qint64 start = locationMatcher.cap(1).toLongLong() - 1;  // position starts with 0
             const qint64 end = locationMatcher.cap(2).toLongLong() - 1;
 
             U2Region referencedRegion(start, end - start + 1);
@@ -674,10 +675,10 @@ void FixAnnotationsUtils::fixAnnotationQualifiers(Annotation *an) {
 
                 if (!newRegions.isEmpty() && !newRegions[0].empty()) {
                     QString newRegionsStr;
-                    foreach (const U2Region &region, newRegions[0]) {
-                        newRegionsStr += QString("%1..%2,").arg(region.startPos + 1).arg(region.endPos());    // position starts with 1
+                    for (const U2Region &region : qAsConst(newRegions[0])) {
+                        newRegionsStr += QString("%1..%2,").arg(region.startPos + 1).arg(region.endPos());  // position starts with 1
                     }
-                    newRegionsStr.chop(1);    // remove last comma
+                    newRegionsStr.chop(1);  // remove last comma
 
                     const int oldRegionPos = newQualifierValue.indexOf(matchedRegion, lastModifiedPos);
                     SAFE_POINT(oldRegionPos != -1, "Unexpected region matched", );
@@ -755,4 +756,4 @@ bool FixAnnotationsUtils::isRegionValid(const U2Region &region) const {
     return region.length > 0 && region.startPos < seqObj->getSequenceLength() - 1;
 }
 
-}    // namespace U2
+}  // namespace U2

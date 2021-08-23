@@ -22,6 +22,8 @@
 #ifndef _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
 #define _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
 
+#include <QObject>
+
 #include <ui_AnnotHighlightSettings.h>
 
 namespace U2 {
@@ -51,6 +53,6 @@ private:
     AnnotationSettings *currentSettings;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

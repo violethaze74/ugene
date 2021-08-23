@@ -50,10 +50,10 @@ private:
     QList<WidgetController *> controllers;
 
 private:
-    void removeLayout(QLayout *l);
+    void removeLayout(QLayout *layoutToRemove);
     void setError(WDWizardPage *wPage);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_WIZARDPAGECONTROLLER_H_
+#endif  // _U2_WIZARDPAGECONTROLLER_H_

@@ -54,7 +54,7 @@ public:
     }
 };
 
-}    // namespace
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////
 // DeleteObjectsTask
@@ -110,11 +110,12 @@ void DeleteFoldersTask::run() {
         DbiConnection con(dbiRef, stateInfo);
         CHECK_OP(stateInfo, );
 
-        foreach (const QString &path, dbi2Path.values(dbiRef)) {
+        QList<QString> pathList = dbi2Path.values(dbiRef);
+        for (const QString &path : qAsConst(pathList)) {
             con.dbi->getObjectDbi()->removeFolder(path, stateInfo);
         }
         progressUpdater.tick();
     }
 }
 
-}    // namespace U2
+}  // namespace U2

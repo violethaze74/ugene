@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,19 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_APP_UTILS_H_
-#define _HI_GUI_APP_UTILS_H_
+#include "Formatters.h"
 
-#include "GTGlobals.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
 
-namespace HI {
+namespace U2 {
 
-class HI_EXPORT GTUtilsApp {
-public:
-    static void checkUGENETitle(GUITestOpStatus &os, const QString &title);
-    static void checkUGENETitleContains(GUITestOpStatus &os, const QString &string);
-};
+QString DocumentNameByIdFormatter::format(const QString &documentFormatId) const {
+    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    return documentFormat == nullptr ? documentFormatId : documentFormat->getFormatName();
+}
 
-}    // namespace HI
-
-#endif
+}  // namespace U2

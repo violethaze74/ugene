@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-//QDGobject
+// QDGobject
 //////////////////////////////////////////////////////////////////////////
 const GObjectType QDGObject::TYPE("query-obj");
 
@@ -46,7 +46,7 @@ GObject *QDGObject::clone(const U2DbiRef &, U2OpStatus &, const QVariantMap &hin
 
 ;
 
-//Format
+// Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject *p)
     : TextDocumentFormatDeprecated(p, DocumentFormatId("QueryDocFormat"), DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
@@ -86,20 +86,20 @@ Document *QDDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb,
     return new Document(this, io->getFactory(), io->getURL(), targetDb, objects, hints);
 }
 
-void QDDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) {
-    assert(d->getDocumentFormat() == this);
-    assert(d->getObjects().size() == 1);
+void QDDocFormat::storeDocument(Document *document, IOAdapter *io, U2OpStatus &) {
+    assert(document->getDocumentFormat() == this);
+    assert(document->getObjects().size() == 1);
 
-    QDGObject *wo = qobject_cast<QDGObject *>(d->getObjects().first());
+    QDGObject *wo = qobject_cast<QDGObject *>(document->getObjects().first());
     assert(wo && wo->getScene());
 
     QByteArray rawData = QDSceneSerializer::scene2doc(wo->getScene())->toByteArray();
     int nWritten = 0;
     int nTotal = rawData.size();
     while (nWritten < nTotal) {
-        int d = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
-        assert(d > 0);
-        nWritten += d;
+        int bytesWritten = io->writeBlock(rawData.data() + nWritten, nTotal - nWritten);
+        assert(bytesWritten > 0);
+        nWritten += bytesWritten;
     }
     wo->setSceneRawData(rawData);
 }
@@ -112,7 +112,7 @@ FormatCheckResult QDDocFormat::checkRawTextData(const QByteArray &rawData, const
     return FormatDetection_NotMatched;
 }
 
-//Factory
+// Factory
 //////////////////////////////////////////////////////////////////////////
 const GObjectViewFactoryId QDViewFactory::ID("query-view-factory");
 
@@ -141,7 +141,7 @@ Task *QDViewFactory::createViewTask(const MultiGSelection &multiSelection, bool 
     return result;
 }
 
-//OpenViewTask
+// OpenViewTask
 //////////////////////////////////////////////////////////////////////////
 OpenQDViewTask::OpenQDViewTask(Document *doc)
     : ObjectViewTask(QDViewFactory::ID), document(doc) {
@@ -174,4 +174,4 @@ void OpenQDViewTask::open() {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
     }
 }
-}    // namespace U2
+}  // namespace U2

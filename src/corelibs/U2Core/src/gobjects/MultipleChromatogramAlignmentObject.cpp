@@ -130,57 +130,6 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
-void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleAlignment msa = getMultipleAlignment();
-    SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
-    qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
-    qint64 rowLength = msa->getRow(rowIndex)->getCoreLength();
-
-    U2OpStatus2Log os;
-    bool wasRowRemoved = false;
-    if (newChar != U2Msa::GAP_CHAR) {
-        McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
-    } else {
-        if (rowLength == 1) {
-            McaDbiUtils::removeRow(entityRef, modifiedRowId, os);
-            wasRowRemoved = true;
-        } else {
-            McaDbiUtils::removeCharacters(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
-            MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os, true);
-        }
-    }
-    SAFE_POINT_OP(os, );
-
-    MaModificationInfo mi;
-    if (wasRowRemoved) {
-        mi.rowListChanged = true;
-    } else {
-        mi.rowContentChanged = true;
-        mi.rowListChanged = false;
-        mi.alignmentLengthChanged = false;
-        mi.modifiedRowIds << modifiedRowId;
-    }
-
-    if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
-        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
-        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
-        SAFE_POINT(nullptr != newAlphabet, "Common alphabet is NULL", );
-
-        if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
-            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
-            mi.alphabetChanged = true;
-            SAFE_POINT_OP(os, );
-        }
-    }
-
-    if (wasRowRemoved) {
-        updateCachedMultipleAlignment(mi, QList<qint64>() << modifiedRowId);
-    } else {
-        updateCachedMultipleAlignment(mi);
-    }
-}
-
 void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
@@ -260,9 +209,9 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
+void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os) {
     for (int i = 0; i < getNumRows(); i++) {
-        const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
+        const MultipleChromatogramAlignmentRow &mcaRow = static_cast<const MultipleChromatogramAlignmentRow &>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
         QHash<qint64, char> newCharList;
@@ -290,7 +239,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
             newCharList.insert(gappedPos, newChar);
         }
 
-        const MultipleAlignment& ma = getMultipleAlignment();
+        const MultipleAlignment &ma = getMultipleAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
         McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharList, os);
         SAFE_POINT_OP(os, );
@@ -343,4 +292,4 @@ int MultipleChromatogramAlignmentObject::getReferenceLengthWithGaps() const {
     return lengthWithoutGaps + gapLength;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -162,7 +162,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
         Document *doc = object->getDocument();
         SAFE_POINT(nullptr != doc, "Invalid parent document detected", res);
         if (!doc->isDatabaseConnection()) {
-            if (object->hasObjectRelation(objRelation)) {    // this 'if' branch has to be distinctive from the enclosing one
+            if (object->hasObjectRelation(objRelation)) {  // this 'if' branch has to be distinctive from the enclosing one
                 res.append(object);
             }
         } else {
@@ -184,12 +184,12 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
         }
         DbiConnection con(dbiRef, os);
         U2ObjectRelationsDbi *relationsDbi = con.dbi->getObjectRelationsDbi();
-        SAFE_POINT(nullptr != relationsDbi, "Invalid object relations DBI", res);
+        SAFE_POINT(relationsDbi != nullptr, "Invalid object relations DBI", res);
 
         const QList<U2DataId> relatedIds = relationsDbi->getReferenceRelatedObjects(obj.entityRef.entityId, role, os);
         SAFE_POINT_OP(os, res);
 
-        foreach (const U2DataId &objId, relatedIds) {
+        for (const U2DataId &objId : qAsConst(relatedIds)) {
             GObject *object = doc->getObjectById(objId);
             if (fromObjects.contains(object)) {
                 res.append(object);
@@ -200,7 +200,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
     return res;
 }
 
-}    // namespace
+}  // namespace
 
 QList<GObject *> GObjectUtils::findObjectsRelatedToObjectByRole(const GObject *obj, GObjectType resultObjType, GObjectRelationRole role, const QList<GObject *> &fromObjects, UnloadedObjectFilter f) {
     return findObjectsRelatedToObjectByRole(GObjectReference(obj), resultObjType, role, fromObjects, f);
@@ -240,9 +240,9 @@ QList<GObject *> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRef
 
 QList<GObject *> GObjectUtils::selectObjectsWithRelation(const QList<GObject *> &objs, GObjectType type, GObjectRelationRole relationRole, UnloadedObjectFilter f, bool availableObjectsOnly) {
     QList<GObject *> res;
-    foreach (GObject *obj, objs) {
+    for (GObject *obj : qAsConst(objs)) {
         QList<GObjectRelation> relations = obj->getObjectRelations();
-        foreach (const GObjectRelation &r, relations) {
+        for (const GObjectRelation &r : qAsConst(relations)) {
             if (r.role != relationRole || (!type.isEmpty() && r.ref.objType != type)) {
                 continue;
             }
@@ -289,7 +289,7 @@ GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, const 
             }
         }
         if (r.entityRef.isValid() && r.entityRef == o->getEntityRef()) {
-            return o;    // matched by entityRef
+            return o;  // matched by entityRef
         } else if (firstMatchedByName == nullptr) {
             firstMatchedByName = o;
         }
@@ -432,4 +432,4 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
     return nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

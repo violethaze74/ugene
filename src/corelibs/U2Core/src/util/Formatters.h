@@ -19,38 +19,31 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_GRAPH_CUTOFFS_TASK_H_
-#define _U2_SAVE_GRAPH_CUTOFFS_TASK_H_
+#ifndef _U2_FORMATTERS_H_
+#define _U2_FORMATTERS_H_
 
-#include <U2Core/Task.h>
-
-#include "ADVGraphModel.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 
-struct SaveCutoffsTaskSettings {
-    enum Location {
-        Annotate_Inner,
-        Annotate_Outer
-    };
-    Location loc;
-    float min, max;
-    GSequenceGraphData *d;
-};
-
-class SaveCutoffsTask : public Task {
-    Q_OBJECT
+/** A class used to format any given string according to the formatters domain rules. */
+template<typename ValueType>
+class U2Formatter {
 public:
-    SaveCutoffsTask(SaveCutoffsTaskSettings _s);
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    virtual ~U2Formatter() = default;
 
-private:
-    SaveCutoffsTaskSettings settings;
-    QList<U2Region> regions;
+    /** Returns formatted text for the given value. */
+    virtual QString format(const ValueType &value) const = 0;
 };
 
-}    // namespace U2
+typedef U2Formatter<QString> StringFormatter;
 
-#endif
+/** Interprets property name as document format id and returns the related document format name. */
+class U2CORE_EXPORT DocumentNameByIdFormatter : public StringFormatter {
+public:
+    QString format(const QString &documentFormatId) const override;
+};
+
+}  // namespace U2
+
+#endif  // _U2_FORMATTERS_H_

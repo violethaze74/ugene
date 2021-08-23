@@ -8,11 +8,8 @@ INCLUDEPATH += ../../corelibs/U2View/_tmp/ ../../libs_3rdparty/QSpec/src
 LIBS += -lQSpec$$D
 
 unix {
-    !macx {
-    LIBS += -lXtst
-    }
     macx {
-    QMAKE_LFLAGS += -framework ApplicationServices
+        QMAKE_LFLAGS += -framework ApplicationServices
     }
 }
 
@@ -25,5 +22,8 @@ macx {
     LIBS += -framework AppKit
 }
 
+use_cuda() {
+    DEFINES += SW2_BUILD_WITH_CUDA
+}
 
 

@@ -22,7 +22,6 @@
 #include "ExportProjectViewItems.h"
 
 #include <QAction>
-#include <QInputDialog>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMessageBox>
@@ -50,13 +49,11 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
 #include <U2Core/SelectionUtils.h>
-#include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/ExportTasks.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportObjectUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -294,7 +291,7 @@ void addExportItemsToSettings(ExportSequencesDialog *d, const QList<GObject *> s
     }
 }
 
-}    // namespace
+}  // namespace
 
 void ExportProjectViewItemsContoller::sl_saveSequencesToSequenceFormat() {
     ProjectView *pv = AppContext::getProjectView();
@@ -392,6 +389,19 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
+    // Check sequence length does not exceed MSA size that UGENE can handle safely.
+    // UGENE often loads MSA into memory in full and huge MSA may crash UGENE.
+    qint64 totalSequenceSize = 0;
+    for (const GObject *obj : sequenceObjects) {
+        if (auto sequenceObject = qobject_cast<const U2SequenceObject *>(obj)) {
+            totalSequenceSize += sequenceObject->getSequenceLength();
+        }
+    }
+    if (totalSequenceSize >= ExportAlignmentTask::MAX_SAFE_ALIGNMENT_SIZE_TO_EXPORT) {
+        QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Sequence is too large to be exported as a multiple alignment"));
+        return;
+    }
+
     GUrl seqUrl = sequenceObjects.first()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(seqUrl, sequenceObjects.first()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "");
 
@@ -483,45 +493,39 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     MultiGSelection ms;
     ms.addSelection(pv->getGObjectSelection());
     ms.addSelection(pv->getDocumentSelection());
-    QList<GObject *> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
-    if (set.size() != 1) {
+    QList<GObject *> msaObjectList = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    if (msaObjectList.size() != 1) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
 
-    GObject *obj = set.first();
-    const MultipleSequenceAlignment msa = qobject_cast<MultipleSequenceAlignmentObject *>(obj)->getMsa();
+    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject *>(msaObjectList.first());
+    SAFE_POINT(msaObject != nullptr, "Not an MSA object", );
 
-    GObject *firstObject = set.first();
-    Document *doc = firstObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msa->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    Document *doc = msaObject->getDocument();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msaObject->getMsa()->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
-    CHECK(!d.isNull(), );
+    CHECK(!d.isNull() && rc != QDialog::Rejected, );
 
-    if (rc == QDialog::Rejected) {
-        return;
-    }
-
-    QList<DNATranslation *> trans;
-    trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
-
+    const MultipleSequenceAlignment &msa = msaObject->getMsa();
+    DNATranslation *translation = AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
-    int offset = (qAbs(d->translationFrame) - 1);
-    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa,
-                                                                0,
-                                                                msa->getNumRows(),
-                                                                d->file,
-                                                                trans,
-                                                                d->formatId,
-                                                                !d->includeGaps,
-                                                                convertUnknowToGaps,
-                                                                reverseComplement,
-                                                                offset),
-                                          d->addToProjectFlag);
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    int offset = qAbs(d->translationFrame) - 1;
+    auto exportTask = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa,
+                                                                        msa->getRowsIds(),
+                                                                        {0, msa->getLength()},
+                                                                        d->file,
+                                                                        translation,
+                                                                        d->formatId,
+                                                                        !d->includeGaps,
+                                                                        convertUnknowToGaps,
+                                                                        reverseComplement,
+                                                                        offset),
+                                                  d->addToProjectFlag);
+    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
 void ExportProjectViewItemsContoller::sl_importAnnotationsFromCSV() {
@@ -653,4 +657,4 @@ void ExportProjectViewItemsContoller::sl_exportObject() {
     ExportObjectUtils::exportObject2Document(copied, savePath);
 }
 
-}    // namespace U2
+}  // namespace U2

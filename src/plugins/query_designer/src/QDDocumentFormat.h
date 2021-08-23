@@ -41,7 +41,7 @@ public:
 
     virtual Document *createNewLoadedDocument(IOAdapterFactory *io, const GUrl &url, U2OpStatus &os, const QVariantMap &fs = QVariantMap());
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document *document, IOAdapter *io, U2OpStatus &os);
 
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
@@ -98,6 +98,6 @@ private:
     Document *document;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

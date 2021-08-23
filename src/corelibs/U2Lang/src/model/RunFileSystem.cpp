@@ -305,11 +305,11 @@ QStringList RunFileSystem::test(FSItem &root) {
 /************************************************************************/
 void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actors, SchemaConfig *cfg) {
     rfs.reset();
-    {    // add report dir
+    {  // add report dir
         U2OpStatus2Log os;
         rfs.addItem("report", true, os);
     }
-    foreach (Workflow::Actor *actor, actors) {
+    for (Workflow::Actor *actor : qAsConst(actors)) {
         foreach (Attribute *attr, actor->getParameters()) {
             bool dir = false;
             if (!isOutUrlAttribute(attr, actor, dir)) {
@@ -338,17 +338,18 @@ void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actor
 
 bool RFSUtils::isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &dir) {
     ConfigurationEditor *editor = actor->getEditor();
-    CHECK(nullptr != editor, false);
-    PropertyDelegate *delegate = editor->getDelegate(attr->getId());
-    CHECK(nullptr != delegate, false);
+    CHECK(editor != nullptr, false);
 
-    dir = (PropertyDelegate::OUTPUT_DIR == delegate->type());
+    PropertyDelegate *delegate = editor->getDelegate(attr->getId());
+    CHECK(delegate != nullptr, false);
+
+    dir = delegate->type() == PropertyDelegate::OUTPUT_DIR;
     if (dir) {
         return true;
-    } else if (PropertyDelegate::OUTPUT_FILE == delegate->type()) {
+    }
+    if (delegate->type() == PropertyDelegate::OUTPUT_FILE) {
         return true;
     }
-
     return false;
 }
 
@@ -363,4 +364,4 @@ bool RFSUtils::isCorrectUrl(const QString &url) {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

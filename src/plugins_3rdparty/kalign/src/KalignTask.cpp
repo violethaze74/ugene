@@ -76,7 +76,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSett
     resultSubMA->setName(inputMAName);
     tpm = Task::Progress_Manual;
     quint64 mem = inputMA->getNumRows() * sizeof(float);
-    quint64 profileMem = (ma->getLength() + 2) * 22 * sizeof(float);    // the size of profile that is built during kalign
+    quint64 profileMem = (ma->getLength() + 2) * 22 * sizeof(float);  // the size of profile that is built during kalign
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
 }
 
@@ -155,7 +155,7 @@ KalignGObjectTask::KalignGObjectTask(MultipleSequenceAlignmentObject *_obj, cons
 }
 
 KalignGObjectTask::~KalignGObjectTask() {
-    //Unlock the alignment object if the task has been failed
+    // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (!obj.isNull()) {
             if (obj->isStateLocked()) {
@@ -217,13 +217,8 @@ Task::ReportResult KalignGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        U2OpStatus2Log os;
-        U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
-        Q_UNUSED(userModStep);
-        if (os.hasError()) {
-            stateInfo.setError("Failed to apply the result of the alignment!");
-            return ReportResult_Finished;
-        }
+        U2UseCommonUserModStep userModStep(obj->getEntityRef(), stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
 
         obj->updateGapModel(stateInfo, rowsGapModel);
         SAFE_POINT_OP(stateInfo, ReportResult_Finished);
@@ -239,7 +234,7 @@ Task::ReportResult KalignGObjectTask::report() {
 }
 
 ///////////////////////////////////
-//KalignGObjectRunFromSchemaTask
+// KalignGObjectRunFromSchemaTask
 
 KalignGObjectRunFromSchemaTask::KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject *obj, const KalignTaskSettings &c)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c) {
@@ -344,4 +339,4 @@ QList<Task *> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTa
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

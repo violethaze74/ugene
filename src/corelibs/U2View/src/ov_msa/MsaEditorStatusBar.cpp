@@ -26,14 +26,13 @@
 #include <QLineEdit>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MSAEditorSequenceArea.h"
 
 namespace U2 {
 
-MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea)
-    : MaEditorStatusBar(mobj, seqArea) {
+MsaEditorStatusBar::MsaEditorStatusBar(MSAEditor *msaEditor)
+    : MaEditorStatusBar(msaEditor) {
     setObjectName("msa_editor_status_bar");
     setStatusBarStyle();
     lineLabel->setPatterns(tr("Seq %1 / %2"), tr("Sequence %1 of %2"));
@@ -57,4 +56,4 @@ void MsaEditorStatusBar::updateLabels() {
     updateSelectionLabel();
 }
 
-}    // namespace U2
+}  // namespace U2

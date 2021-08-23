@@ -40,6 +40,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -53,12 +54,13 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTMSAEditorStatusWidget.h"
+#include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -139,7 +141,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7022/test_7022.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
+    // 2. Turn on "Wrap mode" and click on the first annotation in DetView
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
@@ -173,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_7043) {
             colors << image1.pixel(i, j);
         }
     }
-    bool isPicture = colors.size() > 100;    // Usually 875 colors are drawn for 1CF7.pdb
+    bool isPicture = colors.size() > 100;  // Usually 875 colors are drawn for 1CF7.pdb
 
     auto errorLbl = GTWidget::findLabelByText(os, "Failed to initialize OpenGL", nullptr, GTGlobals::FindOptions(false));
     bool isError = errorLbl.size() > 0;
@@ -437,7 +439,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    //1. Open file _common_data/fasta/reads.fa as separate sequences.
+    // 1. Open file _common_data/fasta/reads.fa as separate sequences.
     QString filePath = testDir + "_common_data/fasta/reads.fa";
     QString fileName = "reads.fa";
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
@@ -451,12 +453,12 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
         GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
-    //2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
-    //3. Check the "Save both strands" radiobutton
-    //4. Check the "Translate to amino" checkbox
-    //5. Push Export button in the dialog.
-    //6. Repeat steps 2-5 8 times
-    //Expected state: UGENE is not crash
+    // 2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
+    // 3. Check the "Save both strands" radiobutton
+    // 4. Check the "Translate to amino" checkbox
+    // 5. Push Export button in the dialog.
+    // 6. Repeat steps 2-5 8 times
+    // Expected state: UGENE is not crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193) {
@@ -518,7 +520,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     QString alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
     CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/1: " + alphabet);
 
-    // Click convert to Amino button and check the the alphabet is 'Amino'.
+    // Click convert to Amino button and check the alphabet is 'Amino'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "Amino", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -531,7 +533,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
     CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
 
-    // Click convert to DNA button and check the the alphabet is 'DNA'.
+    // Click convert to DNA button and check the alphabet is 'DNA'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -539,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "TTTNNNNNNNNNNTNNNNNANNNGNNNANNNNANNNNNNNGTNNNTNGNNANNTGGANGN", "Not a DNA sequence: " + sequence);
 
-    // Click convert to RNA button and check the the alphabet is 'RNA'.
+    // Click convert to RNA button and check the alphabet is 'RNA'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
@@ -609,6 +611,161 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
 
-}    // namespace GUITest_regression_scenarios
+#ifdef SW2_BUILD_WITH_CUDA
+GUI_TEST_CLASS_DEFINITION(test_7360) {
+    // Open _common_data/fasta/fa1.fa.
+    // Call Smith-Waterman dialog:
+    //     Pattern: A,
+    //     Search in: Translation,
+    //     Region: 1-1,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
 
-}    // namespace U2
+    // Call Smith-Waterman dialog:
+    //     Pattern: AA,
+    //     Search in: Translation,
+    //     Region: Whole sequence,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
+    class SwCudaScenario : public CustomScenario {
+    public:
+        SwCudaScenario(const QString &pattern, bool isWholeSequence)
+            : pattern(pattern), region() {
+            if (!isWholeSequence) {
+                region = GTRegionSelector::RegionSelectorSettings(1, 1);
+            }
+        }
+
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), pattern);
+            GTRadioButton::click(os, "radioTranslation", dialog);
+            GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector *>(os, "range_selector", dialog), region);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "comboRealization", dialog), "CUDA");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+    private:
+        QString pattern;
+        GTRegionSelector::RegionSelectorSettings region;
+    };
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    const GTLogTracer logA;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("A", false)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logA, "Pattern length (1) is longer than search sequence length (0).");
+
+    const GTLogTracer logAa;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
+}
+#endif  // SW2_BUILD_WITH_CUDA
+
+GUI_TEST_CLASS_DEFINITION(test_7367) {
+    // Generate a large sequence.
+    // Check that test does not time-outs and the generated sequence contains expected base distribution.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7367.fa");
+    model.percentA = 10;
+    model.percentC = 20;
+    model.percentG = 30;
+    model.percentT = 40;
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    qint64 a = 0, c = 0, g = 0, t = 0;
+    for (const QChar &ch : qAsConst(sequence)) {
+        switch (ch.toLatin1()) {
+            case 'A':
+                a++;
+                break;
+            case 'C':
+                c++;
+                break;
+            case 'G':
+                g++;
+                break;
+            case 'T':
+                t++;
+                break;
+            default:
+                CHECK_SET_ERR(false, QString("Got invalid character: ") + ch);
+        }
+    }
+    qint64 percentA = a * 100 / sequence.length();
+    qint64 percentC = c * 100 / sequence.length();
+    qint64 percentG = g * 100 / sequence.length();
+    qint64 percentT = t * 100 / sequence.length();
+
+    int diff = 2;  // Allow 2% deviation. With a such big size (100M) the distribution should be within this deviation.
+    CHECK_SET_ERR(percentA >= model.percentA - diff && percentA <= model.percentA + diff, "Invalid percent of A: " + QString::number(percentA));
+    CHECK_SET_ERR(percentC >= model.percentC - diff && percentC <= model.percentC + diff, "Invalid percent of C: " + QString::number(percentC));
+    CHECK_SET_ERR(percentG >= model.percentG - diff && percentG <= model.percentG + diff, "Invalid percent of G: " + QString::number(percentG));
+    CHECK_SET_ERR(percentT >= model.percentT - diff && percentT <= model.percentT + diff, "Invalid percent of T: " + QString::number(percentT));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7368) {
+    // Generate a large sequence (>=100mb).
+    // Check that error dialog is shown when such a big sequence is exported as an alignment.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7368.fa");
+    model.length = 100 * 1000 * 1000;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "too large"));
+    GTUtilsProjectTreeView::callContextMenu(os, "test_7368.fa");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7371) {
+    // Check that vertical scrollbar changes on expanding/collapsing all rows in MCA editor.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    QScrollBar *scrollBar = GTUtilsMcaEditor::getVerticalScrollBar(os);
+    CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (default)");
+
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    CHECK_SET_ERR(!scrollBar->isVisible(), "Vertical scrollbar must not be visible in collapsed mode");
+
+    GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
+    CHECK_SET_ERR(scrollBar->isVisible(), "Vertical scrollbar must be visible in expanded mode (restored)");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7384_1) {
+    // Check that multi-series graph does not crash on large sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    for (int i = 0; i < 7; i++) {
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7384_2) {
+    // Open graph, zoom in, and close. Do not wait until the task is finished. UGENE must not crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
+    for (int i = 0; i < 4; i++) {
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+        GTUtilsSequenceView::zoomIn(os);
+        GTUtilsSequenceView::toggleGraphByName(os, "GC Frame Plot");
+    }
+}
+
+}  // namespace GUITest_regression_scenarios
+
+}  // namespace U2

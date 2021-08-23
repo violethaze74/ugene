@@ -66,7 +66,8 @@ bool FlowGraph::findPath(Actor *from, Port *to) const {
         if (graph[p].contains(to)) {
             return true;
         }
-        foreach (Port *connection, graph[p]) {
+        const QList<Port *> &p2 = graph[p];
+        for (Port *connection : qAsConst(p2)) {
             if (findPath(connection->owner(), to)) {
                 return true;
             }
@@ -89,5 +90,5 @@ void FlowGraph::minimize() {
     }
 }
 
-}    // namespace WorkflowSerialize
-}    // namespace U2
+}  // namespace WorkflowSerialize
+}  // namespace U2

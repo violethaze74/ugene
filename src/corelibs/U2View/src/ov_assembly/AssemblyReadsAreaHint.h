@@ -38,7 +38,7 @@ public:
     static QString getReadDataAsString(const U2AssemblyRead &r);
 
 public:
-    AssemblyReadsAreaHint(QWidget *p);
+    AssemblyReadsAreaHint(QWidget *parent);
     void setData(U2AssemblyRead r, QList<U2AssemblyRead> mates);
 
 protected:
@@ -48,8 +48,8 @@ protected:
 
     QLabel *label;
 
-};    // AssemblyReadsAreaHint
+};  // AssemblyReadsAreaHint
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // __U2_ASSEMBLY_READS_AREA_HINT_H__
+#endif  // __U2_ASSEMBLY_READS_AREA_HINT_H__

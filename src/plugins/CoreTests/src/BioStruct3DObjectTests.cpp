@@ -158,7 +158,6 @@ void GTest_BioStruct3DAtomCoordinates::init(XMLTestFormat *tf, const QDomElement
     // model id (if given)
     v = el.attribute(MODEL_ID_ATTR);
     if (!v.isEmpty()) {
-        bool ok = false;
         modelId = v.toInt(&ok);
         if (!ok) {
             stateInfo.setError(QString("invalid value type %1, int required").arg(MODEL_ID_ATTR));
@@ -263,14 +262,13 @@ void GTest_BioStruct3DAtomChainIndex::init(XMLTestFormat *tf, const QDomElement 
     // model id (if given)
     v = el.attribute(MODEL_ID_ATTR);
     if (!v.isEmpty()) {
-        bool ok = false;
         modelId = v.toInt(&ok);
         if (!ok) {
             stateInfo.setError(QString("invalid value type %1, int required").arg(MODEL_ID_ATTR));
         }
     }
 
-    //chain index
+    // chain index
     v = el.attribute(VALUE_ATTR);
     if (v.isEmpty()) {
         failMissingValue(VALUE_ATTR);
@@ -342,14 +340,13 @@ void GTest_BioStruct3DAtomResidueName::init(XMLTestFormat *tf, const QDomElement
     // model id (if given)
     v = el.attribute(MODEL_ID_ATTR);
     if (!v.isEmpty()) {
-        bool ok = false;
         modelId = v.toInt(&ok);
         if (!ok) {
             stateInfo.setError(QString("invalid value type %1, int required").arg(MODEL_ID_ATTR));
         }
     }
 
-    //residue name
+    // residue name
     v = el.attribute(VALUE_ATTR);
     if (v.isEmpty()) {
         failMissingValue(VALUE_ATTR);
@@ -571,4 +568,4 @@ QList<XMLTestFactory *> BioStruct3DObjectTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

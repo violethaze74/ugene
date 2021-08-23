@@ -136,10 +136,10 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
             reportError(tr("There are no sequences in the file."));
             return;
         }
-        U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(mobjs.first());
-        MultipleSequenceAlignment ma(dnaObj->getSequenceName(), dnaObj->getAlphabet());
-        foreach (GObject *obj, mobjs) {
-            U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
+        auto firstObject = qobject_cast<U2SequenceObject *>(mobjs.first());
+        MultipleSequenceAlignment ma(firstObject->getSequenceName(), firstObject->getAlphabet());
+        for (GObject *obj : qAsConst(mobjs)) {
+            auto dnaObj = qobject_cast<U2SequenceObject *>(obj);
             if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
                 ti.setError(tr("Wrong sequence alphabet"));
             }
@@ -192,7 +192,7 @@ void PWMBuildDialogController::sl_matrixTypeChanged(bool matrixType) {
 
 void PWMBuildDialogController::sl_okButtonClicked() {
     if (task != nullptr) {
-        accept();    //go to background
+        accept();  // go to background
         return;
     }
 
@@ -220,8 +220,8 @@ void PWMBuildDialogController::sl_okButtonClicked() {
         s.target = WEIGHT_MATRIX;
     }
 
-    //save settings
-    //AppContext::getSettings()->setValue(SETTINGS_ROOT + WEIGHT_ALG, weightAlgCombo->currentIndex());
+    // save settings
+    // AppContext::getSettings()->setValue(SETTINGS_ROOT + WEIGHT_ALG, weightAlgCombo->currentIndex());
 
     if (mononucleicButton->isChecked()) {
         s.type = PM_MONONUCLEOTIDE;
@@ -241,7 +241,7 @@ void PWMBuildDialogController::sl_okButtonClicked() {
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     statusLabel->setText(tr("Counting frequency statistics"));
 
-    //update buttons
+    // update buttons
     okButton->setText(tr("Hide"));
     cancelButton->setText(tr("Cancel"));
 }
@@ -387,7 +387,7 @@ PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString &inFile, const QS
         }
     }
 
-    //DocumentFormatId format = formats.first()->getFormatId();
+    // DocumentFormatId format = formats.first()->getFormatId();
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(inFile));
     loadTask = new LoadDocumentTask(format, inFile, iof);
     loadTask->setSubtaskProgressWeight(0.03F);
@@ -417,11 +417,11 @@ QList<Task *> PFMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
         } else {
             mobjs = d->findGObjectByType(GObjectTypes::SEQUENCE);
             if (!mobjs.isEmpty()) {
-                U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(mobjs.first());
+                auto firstObject = qobject_cast<U2SequenceObject *>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
-                foreach (GObject *obj, mobjs) {
-                    U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
+                MultipleSequenceAlignment ma(baseName, firstObject->getAlphabet());
+                for (GObject *obj : qAsConst(mobjs)) {
+                    auto dnaObj = qobject_cast<U2SequenceObject *>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
                         stateInfo.setError(tr("Wrong sequence alphabet"));
                     }
@@ -544,11 +544,11 @@ QList<Task *> PWMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
         } else {
             mobjs = d->findGObjectByType(GObjectTypes::SEQUENCE);
             if (!mobjs.isEmpty()) {
-                U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(mobjs.first());
+                auto firstObject = qobject_cast<U2SequenceObject *>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
-                foreach (GObject *obj, mobjs) {
-                    U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
+                MultipleSequenceAlignment ma(baseName, firstObject->getAlphabet());
+                for (GObject *obj: qAsConst(mobjs)) {
+                    auto dnaObj = qobject_cast<U2SequenceObject *>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
                         stateInfo.setError(tr("Wrong sequence alphabet"));
                     }
@@ -571,4 +571,4 @@ QList<Task *> PWMatrixBuildToFileTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

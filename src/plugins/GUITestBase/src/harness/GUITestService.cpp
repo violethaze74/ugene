@@ -387,8 +387,8 @@ void GUITestService::removeDir(QString dirName) {
             if (QFile::remove(filePath))
                 continue;
             else {
-                QDir dir(filePath);
-                if (dir.rmdir(filePath))
+                QDir childDir(filePath);
+                if (childDir.rmdir(filePath))
                     continue;
                 else
                     removeDir(filePath);
@@ -411,4 +411,4 @@ void GUITestService::sl_testThreadFinish() {
     AppContext::getMainWindow()->getQMainWindow()->close();
 }
 
-}    // namespace U2
+}  // namespace U2

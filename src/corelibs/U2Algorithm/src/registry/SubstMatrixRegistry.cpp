@@ -72,7 +72,7 @@ QStringList SubstMatrixRegistry::selectMatrixNamesByAlphabet(const DNAAlphabet *
         if (al->getType() == mAlpha->getType() && al->getNumAlphabetChars() <= mAlpha->getNumAlphabetChars()) {
             QByteArray aChars = al->getAlphabetChars(), mChars = mAlpha->getAlphabetChars();
             bool addToResult = true;
-            foreach (char c, aChars) {
+            for (char c: qAsConst(aChars)) {
                 if (!mChars.contains(c)) {
                     addToResult = false;
                     break;
@@ -135,7 +135,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
     QList<SScore> charScores;
     QString description;
     const DNAAlphabet *alphabet = nullptr;
-    QByteArray mappedAlphas;    //cache of mapped characters. Used to check that no character is mapped twice
+    QByteArray mappedAlphas;  // cache of mapped characters. Used to check that no character is mapped twice
     // put comments into description
     for (int i = 0; i < lines.length(); i++) {
         QString line = lines.at(i).trimmed();
@@ -145,7 +145,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
         if (line.startsWith("#")) {
             QString commentLine = line.mid(1).trimmed();
             if (line.isEmpty() && commentLine.isEmpty()) {
-                continue;    //skip first empty lines
+                continue;  // skip first empty lines
             }
             description += commentLine + "\n";
             continue;
@@ -217,4 +217,4 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
     return SMatrix(name, alphabet, charScores, description);
 }
 
-}    // namespace U2
+}  // namespace U2

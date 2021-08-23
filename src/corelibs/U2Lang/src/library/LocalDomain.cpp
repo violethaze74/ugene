@@ -55,7 +55,8 @@ BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
     if (autoTransitBus) {
         foreach (Port *p, a->getInputPorts()) {
             IntegralBus *bus = p->castPeer<IntegralBus>();
-            foreach (Port *op, a->getOutputPorts()) {
+            QList<Port *> outputPorts = a->getOutputPorts();
+            for (Port *op : qAsConst(outputPorts)) {
                 if (p->isInput() != op->isInput()) {
                     IntegralBus *ob = op->castPeer<IntegralBus>();
                     ob->addComplement(bus);
@@ -65,7 +66,7 @@ BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
         }
     }
     a->setPeer(this);
-    //failFast = WorkflowSettings::failFast();
+    // failFast = WorkflowSettings::failFast();
 }
 
 BaseWorker::~BaseWorker() {
@@ -121,7 +122,7 @@ Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel *channel
 void BaseWorker::bindScriptValues() {
     foreach (IntegralBus *bus, ports.values()) {
         assert(bus != nullptr);
-        if (!bus->hasMessage()) {    // means that it is bus for output port
+        if (!bus->hasMessage()) {  // means that it is bus for output port
             continue;
         }
 
@@ -157,10 +158,10 @@ void BaseWorker::setScriptVariableFromBus(AttributeScript *script, IntegralBus *
         if (bindedAttrOwner == nullptr) {
             continue;
         }
-        //attrId.replace(".", "_");
-        //attrId.replace("-", "_");
+        // attrId.replace(".", "_");
+        // attrId.replace("-", "_");
         if (!script->getScriptText().isEmpty()) {
-            //attrScript.setVarValueWithId(attrId, busData.value(slotDesc));
+            // attrScript.setVarValueWithId(attrId, busData.value(slotDesc));
             script->setScriptVar(attrId, busData.value(slotDesc));
         }
     }
@@ -327,7 +328,7 @@ static QMap<QString, QMap<QString, QList<QString>>> getSlotsForPrint() {
 
     int printOpIdx = CMDLineRegistryUtils::getParameterIndex("print");
     while (printOpIdx != -1) {
-        QString printSlot = cmdLineRegistry->getParameterValue("print", printOpIdx);    // TODO: "print" == WorkflowDesignerPlugin::PRINT
+        QString printSlot = cmdLineRegistry->getParameterValue("print", printOpIdx);  // TODO: "print" == WorkflowDesignerPlugin::PRINT
         printOpIdx++;
         if (!printSlot.isEmpty()) {
             QStringList tokens = printSlot.split(".");
@@ -435,5 +436,5 @@ void LocalDomainFactory::destroy(Scheduler *sh, Schema *schema) {
     delete sh;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

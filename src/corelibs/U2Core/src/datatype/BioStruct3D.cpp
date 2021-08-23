@@ -65,13 +65,14 @@ void BioStruct3D::calcCenterAndMaxDistance() {
     // loop trough all atoms twice - once to get average center, then once to
     // find max distance from this center
     for (int i = 0; i < 2; ++i) {
-        foreach (SharedMolecule molecule, moleculeMap) {
-            foreach (Molecule3DModel model3d, molecule->models.values()) {
-                foreach (const AtomData *atom, model3d.atoms) {
-                    Vector3D site = atom->coord3d;
+        for (const SharedMolecule &molecule : qAsConst(moleculeMap)) {
+            QList<Molecule3DModel> models = molecule->models.values();
+            for (const Molecule3DModel &model3d : qAsConst(models)) {
+                for (const AtomData *atom : qAsConst(model3d.atoms)) {
+                    const Vector3D &site = atom->coord3d;
                     if (i == 0) {
                         siteSum += atom->coord3d;
-                        ++numberOfAtoms;
+                        numberOfAtoms++;
                     } else {
                         dist = (site - center).length();
                         if (dist > radius) {
@@ -115,7 +116,7 @@ QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateAnnotations() const 
 QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateChainAnnotations() const {
     QMap<int, QList<SharedAnnotationData>> result;
     const char *molNameQualifier = "molecule_name";
-    //const char* pdbChainIdQualifier = "pdb_id";
+    // const char* pdbChainIdQualifier = "pdb_id";
 
     QMap<int, SharedMolecule>::ConstIterator iter = moleculeMap.constBegin();
     while (iter != moleculeMap.end()) {
@@ -346,4 +347,4 @@ char ResidueIndex::getInsCode() const {
     return insCode;
 }
 
-}    // namespace U2
+}  // namespace U2

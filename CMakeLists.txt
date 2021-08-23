@@ -10,8 +10,8 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 38.0-dev)
-set(UGENE_VER_MAJOR 38)
+set(UGENE_VERSION 40.0-dev)
+set(UGENE_VER_MAJOR 40)
 set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
@@ -40,12 +40,16 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+# Use to disable -isystem suppord and work in qmake mode.
+# set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
+
 # Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
+            " -Werror=shadow=local" # Requires GCC 7+
             " -Werror=return-type"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"

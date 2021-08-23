@@ -176,7 +176,7 @@ void AttributeTestData::testAttributesMatch(QList<U2IntegerAttribute> &expectedI
             U2StringAttribute attr = getAttributeDbi()->getStringAttribute(attrId, os);
             SAFE_POINT_OP(os, );
             SAFE_POINT(removeOne(expectedString, attr, compareAttributes<U2StringAttribute>), "String attribute is not removed", );
-        } else {    // AttributeByteArray
+        } else {  // AttributeByteArray
             U2ByteArrayAttribute attr = getAttributeDbi()->getByteArrayAttribute(attrId, os);
             SAFE_POINT_OP(os, );
             SAFE_POINT(removeOne(expectedArray, attr, compareAttributes<U2ByteArrayAttribute>), "ByteArray attribute is not removed", );
@@ -339,20 +339,15 @@ void AttributeDbiUnitTests_removeAttributes::Test() {
 
     const U2DataId &objectId = AttributeTestData::getObjects()->first();
     U2OpStatusImpl os;
-    const QList<U2DataId> &attrs = attributeDbi->getObjectAttributes(objectId, "", os);
+    const QList<U2DataId> &attrs1 = attributeDbi->getObjectAttributes(objectId, "", os);
     CHECK_NO_ERROR(os);
 
-    {
-        U2OpStatusImpl os;
-        attributeDbi->removeAttributes(attrs, os);
-        CHECK_NO_ERROR(os);
-    }
-    {
-        U2OpStatusImpl os;
-        const QList<U2DataId> &attrs = attributeDbi->getObjectAttributes(objectId, "", os);
-        CHECK_NO_ERROR(os);
-        CHECK_TRUE(attrs.isEmpty(), "attribute list should be empty");
-    }
+    attributeDbi->removeAttributes(attrs1, os);
+    CHECK_NO_ERROR(os);
+
+    const QList<U2DataId> &attrs2 = attributeDbi->getObjectAttributes(objectId, "", os);
+    CHECK_NO_ERROR(os);
+    CHECK_TRUE(attrs2.isEmpty(), "attribute list should be empty");
 }
 
 void AttributeDbiUnitTests_removeObjectAttributes::Test() {
@@ -446,4 +441,4 @@ void AttributeDbiUnitTests_ByteArrayAttribute::Test() {
     CHECK_TRUE(compareAttributes(actual, attr), "incorrect byte array attribute");
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -84,17 +84,15 @@ QList<Annotation *> AnnotationTableObject::addAnnotations(const QList<SharedAnno
     ensureDataLoaded();
 
     if (groupName.isEmpty()) {
-        QString previousGroupName;
         QMap<QString, AnnotationGroupData> group2Annotations;
-        foreach (const SharedAnnotationData &a, annotations) {
-            const QString groupName = a->name;
-            if (!group2Annotations.contains(groupName)) {
-                AnnotationGroup *group = rootGroup->getSubgroup(groupName, true);
-                group2Annotations[groupName].first = group;
+        for (const SharedAnnotationData &a : qAsConst(annotations)) {
+            if (!group2Annotations.contains(a->name)) {
+                AnnotationGroup *group = rootGroup->getSubgroup(a->name, true);
+                group2Annotations[a->name].first = group;
             }
-            group2Annotations[groupName].second.append(a);
+            group2Annotations[a->name].second.append(a);
         }
-        foreach (const AnnotationGroupData &groupData, group2Annotations) {
+        for (const AnnotationGroupData &groupData : qAsConst(group2Annotations)) {
             result.append(groupData.first->addAnnotations(groupData.second));
         }
     } else {
@@ -134,7 +132,7 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     QStringList subgroupPaths;
     rootGroup->getSubgroupPaths(subgroupPaths);
     AnnotationGroup *clonedRootGroup = cln->getRootGroup();
-    foreach (const QString &groupPath, subgroupPaths) {
+    for (const QString &groupPath : qAsConst(subgroupPaths)) {
         AnnotationGroup *originalGroup = rootGroup->getSubgroup(groupPath, false);
         SAFE_POINT(originalGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
 
@@ -184,7 +182,7 @@ bool annotationIntersectsRange(const Annotation *a, const U2Region &range, bool 
     }
 }
 
-}    // namespace
+}  // namespace
 
 QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region &region, bool contains) const {
     QList<Annotation *> result;
@@ -215,16 +213,18 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureT
 }
 
 bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const {
-    const AnnotationTableObjectConstraints *ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
-    SAFE_POINT(nullptr != ac, "Invalid feature constraints", false);
+    auto ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
+    SAFE_POINT(ac != nullptr, "Invalid feature constraints", false);
 
     ensureDataLoaded();
 
-    const int fitSize = ac->sequenceSizeToFit;
-    SAFE_POINT(0 < fitSize, "Invalid sequence length provided!", false);
-    foreach (const Annotation *a, getAnnotations()) {
-        foreach (const U2Region &region, a->getRegions()) {
-            SAFE_POINT(0 <= region.startPos, "Invalid annotation region", false);
+    int fitSize = ac->sequenceSizeToFit;
+    SAFE_POINT(fitSize > 0, "Invalid sequence length provided!", false);
+    QList<Annotation *> annotations = getAnnotations();
+    for (const Annotation *a : qAsConst(annotations)) {
+        const QVector<U2Region> &regions = a->getRegions();
+        for (const U2Region &region : qAsConst(regions)) {
+            SAFE_POINT(region.startPos >= 0, "Invalid annotation region", false);
             if (region.endPos() > fitSize) {
                 return false;
             }
@@ -287,4 +287,4 @@ void AnnotationTableObject::loadDataCore(U2OpStatus &os) {
     rootGroup = U2FeatureUtils::loadAnnotationTable(table.rootFeature, entityRef.dbiRef, this, os);
 }
 
-}    // namespace U2
+}  // namespace U2

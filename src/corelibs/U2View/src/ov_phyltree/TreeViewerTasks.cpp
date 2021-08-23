@@ -83,8 +83,8 @@ void OpenTreeViewerTask::open() {
                 phyObject = qobject_cast<PhyTreeObject *>(obj);
             }
         } else {
-            QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
-            phyObject = objects.isEmpty() ? nullptr : qobject_cast<PhyTreeObject *>(objects.first());
+            QList<GObject *> phyTreeObjects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
+            phyObject = phyTreeObjects.isEmpty() ? nullptr : qobject_cast<PhyTreeObject *>(phyTreeObjects.first());
         }
         if (phyObject.isNull()) {
             stateInfo.setError(tr("Phylogenetic tree object not found"));
@@ -187,7 +187,7 @@ UpdateTreeViewerTask::UpdateTreeViewerTask(GObjectView *v, const QString &stateN
 
 void UpdateTreeViewerTask::update() {
     if (view.isNull() || view->getFactoryId() != TreeViewerFactory::ID) {
-        return;    //view was closed;
+        return;  // view was closed;
     }
 
     TreeViewer *phyView = qobject_cast<TreeViewer *>(view.data());
@@ -285,4 +285,4 @@ void MSAEditorOpenTreeViewerTask::createTreeViewer() {
     scheduler->registerTopLevelTask(createTask);
 }
 
-}    // namespace U2
+}  // namespace U2

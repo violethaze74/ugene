@@ -48,11 +48,13 @@ static Actor *getLinkedActor(ActorId id, Port *output, QList<Actor *> visitedAct
     if (output->owner()->getId() == id) {
         return output->owner();
     }
-    foreach (Port *transit, output->owner()->getInputPorts()) {
+    QList<Port *> nextInputPorts = output->owner()->getInputPorts();
+    for (Port *transit : qAsConst(nextInputPorts)) {
         foreach (Port *p, transit->getLinks().uniqueKeys()) {
             Actor *a = getLinkedActor(id, p, visitedActors);
-            if (a)
+            if (a) {
                 return a;
+            }
         }
     }
     return nullptr;
@@ -150,7 +152,7 @@ Actor *IntegralBusPort::getLinkedActorById(ActorId id) const {
         ret = nullptr;
     } else if (res.size() > 1) {
         ret = res.first();
-        //assert(false);
+        // assert(false);
     } else {
         ret = res.first();
     }
@@ -228,13 +230,14 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
         QList<IntegralBusSlot> srcs = IntegralBusSlot::listFromString(busMap.value(dstSlot), os);
         QList<IntegralBusSlot> validSrcs;
 
-        foreach (const IntegralBusSlot srcSlot, srcs) {
+        for (const IntegralBusSlot &srcSlot : qAsConst(srcs)) {
             SlotPair slotPair(dstSlot, srcSlot.toString());
             bool hasOneValidPath = false;
 
             if (pathMap.contains(slotPair)) {
                 QList<QStringList> validPaths;
-                foreach (const QStringList &path, pathMap.values(slotPair)) {
+                QList<QStringList> allPaths = pathMap.values(slotPair);
+                for (const QStringList &path : qAsConst(allPaths)) {
                     QString slotStr = srcSlot.toString() + ">" + path.join(",");
                     bool valid = WorkflowUtils::isBindingValid(slotStr, incomingType, dstSlot, getOwnTypeMap());
                     if (valid) {
@@ -243,7 +246,7 @@ void IntegralBusPort::updateBindings(const QMap<ActorId, ActorId> &actorsMapping
                     }
                 }
                 pathMap.remove(slotPair);
-                foreach (const QStringList &p, validPaths) {
+                for (const QStringList &p : qAsConst(validPaths)) {
                     pathMap.insertMulti(slotPair, p);
                 }
             } else {
@@ -369,12 +372,12 @@ void IntegralBusPort::setupBusMap() {
     }
 
     DataTypePtr to = getType();
-    assert(to->isMap());    // all port types made as map datatypes
+    assert(to->isMap());  // all port types made as map datatypes
 
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
     StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
-    foreach (const Descriptor &key, keys) {
+    for (const Descriptor &key : qAsConst(keys)) {
         // FIXME: hack for not binding 'Location' slot
         // 'Location' slot should NOT be binded for any writers to avoid writing to source of data
         // If there is only one slot - there are no objections for binding URL
@@ -393,7 +396,7 @@ void IntegralBusPort::setupBusMap() {
             QString res = WorkflowUtils::candidatesAsStringList(candidates).join(";");
             busMap.insert(key.getId(), res);
         } else if (candidates.size() == 0) {
-            //no unambiguous match, reset
+            // no unambiguous match, reset
             busMap.insert(key.getId(), "");
         } else {
             bool fl = false;
@@ -403,7 +406,7 @@ void IntegralBusPort::setupBusMap() {
             if (ptr->isMap()) {
                 foreach (const Descriptor &desc, ptr->getAllDescriptors()) {
                     if (key.getId() == desc.getId()) {
-                        foreach (const Descriptor &d, candidates) {
+                        for (const Descriptor &d : qAsConst(candidates)) {
                             IntegralBusSlot slot = IntegralBusSlot::fromString(d.getId(), os);
                             if (slot.actorId() == port->owner()->getId()) {
                                 busMap.insert(key.getId(), d.getId());
@@ -444,8 +447,8 @@ bool IntegralBusPort::validate(NotificationsList &notificationList) const {
 }
 
 /*******************************
-* ScreenedSlotValidator
-*******************************/
+ * ScreenedSlotValidator
+ *******************************/
 bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const IntegralBusPort *vport, NotificationsList &notificationList) {
     bool good = true;
     {
@@ -459,14 +462,16 @@ bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const Int
         int busWidth = bm.size();
         QMap<QString, QStringList> listMap = getListSlotsMappings(bm, vport);
         // iterate over all producers and exclude valid mappings from bus bindings
-        foreach (Port *p, vport->getLinks().uniqueKeys()) {
-            assert(qobject_cast<IntegralBusPort *>(p));    //TBD?
+        QList<Port *> linkKeys = vport->getLinks().uniqueKeys();
+        for (Port *p : qAsConst(linkKeys)) {
+            assert(qobject_cast<IntegralBusPort *>(p));  // TBD?
             DataTypePtr t = p->getType();
             assert(t->isMap());
             {
-                foreach (Descriptor d, t->getAllDescriptors()) {
+                QList<Descriptor> portDataDescriptors = t->getAllDescriptors();
+                for (const Descriptor &d : qAsConst(portDataDescriptors)) {
                     foreach (QString key, bm.keys(d.getId())) {
-                        //log.debug("reducing bus from key="+ikey+" to="+rkey);
+                        // log.debug("reducing bus from key="+ikey+" to="+rkey);
                         assert(!key.isEmpty());
                         bm.remove(key);
                     }
@@ -494,7 +499,7 @@ bool ScreenedSlotValidator::validate(const QStringList &screenedSlots, const Int
                 it.next();
                 const QString &slot = it.key();
                 QString slotName = vport->getType()->getDatatypeDescriptor(slot).getDisplayName();
-                //assert(!slotName.isEmpty());
+                // assert(!slotName.isEmpty());
                 if (it.value().isEmpty()) {
                     if (!screenedSlots.contains(slot)) {
                         notificationList.append(WorkflowNotification(IntegralBusPort::tr("Empty input slot: %1").arg(slotName), "", WorkflowNotification::U2_WARNING));
@@ -526,8 +531,8 @@ bool ScreenedSlotValidator::validate(const Configuration *cfg, NotificationsList
 }
 
 /*******************************
-* ScreenedParamValidator
-*******************************/
+ * ScreenedParamValidator
+ *******************************/
 ScreenedParamValidator::ScreenedParamValidator(const QString &id, const QString &port, const QString &slot)
     : id(id), port(port), slot(slot) {
 }
@@ -561,7 +566,7 @@ QString ScreenedParamValidator::validate(const Configuration *cfg) const {
     if (noParam && noSlot) {
         QString slotName = p->getType()->getDatatypeDescriptor(slot).getDisplayName();
         assert(!slotName.isEmpty());
-        return U2::WorkflowUtils::tr("Either parameter '%1' or input slot '%2' must be set").arg(param->getDisplayName()).arg(slotName);    //FIXME translator class
+        return U2::WorkflowUtils::tr("Either parameter '%1' or input slot '%2' must be set").arg(param->getDisplayName()).arg(slotName);  // FIXME translator class
     }
     if (noParam == noSlot) {
         QString slotName = p->getType()->getDatatypeDescriptor(slot).getDisplayName();
@@ -671,5 +676,5 @@ bool PortValidator::isBinded(const StrStrMap &busMap, const QString &slotId) {
     return (!busMap.value(slotId, "").isEmpty());
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

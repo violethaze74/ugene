@@ -57,7 +57,7 @@ static QStringList parseMolecules(const QString &comment) {
     if (molIdInd < 0) {
         return ans;
     }
-    const QString molInfos = comment.mid(molIdInd);    // No title at the beginning
+    const QString molInfos = comment.mid(molIdInd);  // No title at the beginning
 
     int start = 0;
     int end = 0;
@@ -83,7 +83,7 @@ static QList<char> parseChains(const QString &mol) {
     if (start < 0) {
         return ans;
     }
-    start += 6;    // "Chain:" length
+    start += 6;  // "Chain:" length
     const int end = mol.indexOf(';', start);
     const QString chains = mol.mid(start, end > start ? end - start : -1);
     for (QString &str : chains.split(',', QString::SkipEmptyParts)) {
@@ -105,7 +105,7 @@ static QString parseMolName(const QString &mol) {
     if (start < 0) {
         return ans;
     }
-    start += 9;    // Length of "Molecule:"
+    start += 9;  // Length of "Molecule:"
     const int end = mol.indexOf(';', start);
     ans = mol.mid(start, end > start ? end - start : -1).trimmed();
     return ans;
@@ -231,14 +231,14 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
         // Load pdb Id
         loadBioStructPdbId(rootNode, struc);
 
-        //Load biostruct molecules
+        // Load biostruct molecules
         AsnNode *graphNode = findFirstNodeByName(rootNode, "chemical-graph");
         if (graphNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
         loadBioStructGraph(graphNode, struc);
 
-        //Load secondary structure
+        // Load secondary structure
         AsnNode *featureSetNode = findFirstNodeByName(rootNode, "features");
         if (featureSetNode != nullptr) {
             loadBioStructSecondaryStruct(featureSetNode, struc);
@@ -251,8 +251,8 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
         }
         loadBioStructModels(modelsNode->children, struc);
 
-        //TODO: implement loading bonds from file
-        //loadIntraResidueBonds(struc);
+        // TODO: implement loading bonds from file
+        // loadIntraResidueBonds(struc);
         PDBFormat::calculateBonds(struc);
 
         stdResidueCache.clear();
@@ -334,16 +334,16 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, Ato
             const StdAtom stdAtom = stdResidue.atoms.value(atomId);
             a->atomicNumber = stdAtom.atomicNum;
             a->name = stdAtom.name;
-            //TODO: add this
-            //a->occupancy = occupancy;
-            //a->temperature = temperature;
+            // TODO: add this
+            // a->occupancy = occupancy;
+            // a->temperature = temperature;
         }
         SharedAtom atom(a);
         coordSet.insert(i + 1, atom);
         if (struc.moleculeMap.contains(chainId)) {
             molModels[chainId].atoms.append(atom);
         }
-        //atomSetCache[index].insert(atomId, atom);
+        // atomSetCache[index].insert(atomId, atom);
     }
 }
 
@@ -430,7 +430,7 @@ void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode *> modelNodes
 
     Q_ASSERT(modelNodes.count() != 0);
 
-    foreach (AsnNode *modelNode, modelNodes) {
+    for (AsnNode *modelNode : qAsConst(modelNodes)) {
         // Load model id
         AsnNode *idNode = modelNode->getChildById(0);
         int modelId = idNode->value.toInt();
@@ -518,7 +518,7 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode,
 
    */
 
-    foreach (AsnNode *featureSet, setsNode->children) {
+    for (AsnNode *featureSet : qAsConst(setsNode->children)) {
         QByteArray descr = featureSet->findChildByName("descr")->getChildById(0)->value;
         if (descr != "PDB secondary structure") {
             continue;
@@ -526,7 +526,7 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode,
 
         AsnNode *features = featureSet->getChildById(2);
         Q_ASSERT(features->name == "features");
-        foreach (AsnNode *featureNode, features->children) {
+        for (AsnNode *featureNode : qAsConst(features->children)) {
             loadBioStructFeature(featureNode, struc);
         }
     }
@@ -587,7 +587,7 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
 }
 
 bool containsAtom(const SharedAtom &atom, const BioStruct3D &struc) {
-    foreach (const SharedMolecule mol, struc.moleculeMap) {
+    for (const SharedMolecule mol : qAsConst(struc.moleculeMap)) {
         foreach (const Molecule3DModel model, mol->models.values()) {
             if (model.atoms.contains(atom)) {
                 return true;
@@ -603,7 +603,8 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
         SharedMolecule &mol = struc.moleculeMap[chainId];
         int numModels = mol->models.count();
         for (int modelId = 0; modelId < numModels; ++modelId) {
-            foreach (ResidueIndex resId, mol->residueMap.keys()) {
+            QList<ResidueIndex> residueKeys = mol->residueMap.keys();
+            for (const ResidueIndex &resId : qAsConst(residueKeys)) {
                 quint64 index = calcStdResidueIndex(chainId, resId.toInt());
                 if (!stdResidueCache.contains(index)) {
                     continue;
@@ -614,8 +615,8 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
                 }
                 const AtomCoordSet &atomSet = atomSetCache.value(index);
                 Q_ASSERT(!atomSet.isEmpty());
-                foreach (const StdBond &bond, residue.bonds) {
-                    if ((atomSet.contains(bond.atom1Id)) && (atomSet.contains(bond.atom2Id))) {
+                for (const StdBond &bond : qAsConst(residue.bonds)) {
+                    if (atomSet.contains(bond.atom1Id) && atomSet.contains(bond.atom2Id)) {
                         const SharedAtom a1 = atomSet.value(bond.atom1Id);
                         const SharedAtom a2 = atomSet.value(bond.atom2Id);
                         mol->models[modelId].bonds.append(Bond(a1, a2));
@@ -912,4 +913,4 @@ AsnNode *AsnNode::getChildById(int id) {
     return children.at(id);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -23,6 +23,7 @@
 
 #include <U2Core/DbiConnection.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -86,6 +87,59 @@ void MultipleAlignmentObject::setTrackMod(U2OpStatus &os, U2TrackModType trackMo
 
     // Set the new status
     objectDbi->setTrackModType(entityRef.entityId, trackMod, os);
+}
+
+void MultipleAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
+    replaceCharacters({startPos, 1}, rowIndex, newChar);
+}
+
+void MultipleAlignmentObject::replaceCharacters(const U2Region &columnRange, int rowIndex, char newChar) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+
+    const MultipleAlignment &ma = getMultipleAlignment();
+    SAFE_POINT(U2Region(0, ma->getLength()).contains(columnRange), "Invalid parameters", );
+
+    const MultipleAlignmentRow &row = ma->getRow(rowIndex);
+    qint64 rowId = row->getRowId();
+    U2OpStatus2Log os;
+
+    bool isMca = getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    if (newChar != U2Msa::GAP_CHAR) {
+        if (isMca) {
+            McaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
+        } else {
+            MsaDbiUtils::replaceCharactersInRow(entityRef, rowId, columnRange, newChar, os);
+        }
+        CHECK_OP(os, )
+    } else {
+        if (isMca) {
+            McaDbiUtils::removeCharacters(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
+        } else {
+            MsaDbiUtils::removeRegion(entityRef, {rowId}, columnRange.startPos, columnRange.length, os);
+        }
+        CHECK_OP(os, )
+        MsaDbiUtils::insertGaps(entityRef, {rowId}, columnRange.startPos, columnRange.length, os, true);
+        CHECK_OP(os, )
+    }
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds << rowId;
+
+    if (newChar != ' ' && !ma->getAlphabet()->contains(newChar)) {
+        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
+        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, ma->getAlphabet());
+        SAFE_POINT(newAlphabet != nullptr, "Common alphabet is NULL", );
+
+        if (newAlphabet->getId() != ma->getAlphabet()->getId()) {
+            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+            mi.alphabetChanged = true;
+            SAFE_POINT_OP(os, );
+        }
+    }
+    updateCachedMultipleAlignment(mi);
 }
 
 const MultipleAlignment &MultipleAlignmentObject::getMultipleAlignment() const {
@@ -294,7 +348,7 @@ void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64
 }
 
 void MultipleAlignmentObject::changeLength(U2OpStatus &os, qint64 newLength) {
-    const qint64 length = getLength();
+    qint64 length = getLength();
     CHECK(length != newLength, );
 
     MaDbiUtils::updateMaLength(getEntityRef(), newLength, os);
@@ -302,13 +356,13 @@ void MultipleAlignmentObject::changeLength(U2OpStatus &os, qint64 newLength) {
 
     bool rowContentChangeStatus = false;
     if (newLength < length) {
-        const qint64 numRows = getNumRows();
+        qint64 numRows = getNumRows();
         for (int i = 0; i < numRows; i++) {
             MultipleAlignmentRow row = getRow(i);
             qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
             if (rowLengthWithoutTrailing > newLength) {
-                U2OpStatus2Log os;
                 row->crop(os, 0, newLength);
+                CHECK_OP(os, );
                 rowContentChangeStatus = true;
             }
         }
@@ -331,7 +385,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     bool isUnknownChange = mi.type == MaModificationType_Undo || mi.type == MaModificationType_Redo || (mi.modifiedRowIds.isEmpty() && removedRowIds.isEmpty());
     U2OpStatus2Log os;
     if (isUnknownChange) {
-        loadAlignment(os);    // Reload 'cachedMa'.
+        loadAlignment(os);  // Reload 'cachedMa'.
         SAFE_POINT_OP(os, );
     } else {
         if (mi.alignmentLengthChanged) {
@@ -477,13 +531,13 @@ QList<qint64> getRowsAffectedByDeletion(const MultipleAlignment &ma, const QList
     }
     const int lastDeletedRowIndex = ma->getRowIndexByRowId(removedRowIds.last(), os);
     SAFE_POINT_OP(os, QList<qint64>());
-    if (lastDeletedRowIndex < maRows.size() - 1) {    // if the last removed row was not in the bottom of the msa
+    if (lastDeletedRowIndex < maRows.size() - 1) {  // if the last removed row was not in the bottom of the msa
         rowIdsAffectedByDeletion += maRows.mid(lastDeletedRowIndex + 1);
     }
     return rowIdsAffectedByDeletion;
 }
 
-}    // namespace
+}  // namespace
 
 void MultipleAlignmentObject::removeRegion(const QList<int> &rowIndexes, int x, int width, bool removeEmptyRows) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
@@ -501,7 +555,7 @@ void MultipleAlignmentObject::removeRegion(const QList<int> &rowIndexes, int x, 
         if (!removedRowIds.isEmpty()) {
             // suppose that if at least one row in msa was removed then all the rows below it were changed
             QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRowIds);
-            foreach (qint64 removedRowId, removedRowIds) {    // removed rows ain't need to be update
+            foreach (qint64 removedRowId, removedRowIds) {  // removed rows ain't need to be update
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
@@ -538,10 +592,10 @@ void MultipleAlignmentObject::removeRegion(int startPos, int startRow, int nBase
     if (removeEmptyRows) {
         removedRows = MsaDbiUtils::removeEmptyRows(entityRef, modifiedRowIds, os);
         SAFE_POINT_OP(os, );
-        if (!removedRows.isEmpty()) {    // suppose that if at least one row in msa was removed then
+        if (!removedRows.isEmpty()) {  // suppose that if at least one row in msa was removed then
             // all the rows below it were changed
             const QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRows);
-            foreach (qint64 removedRowId, removedRows) {    // removed rows ain't need to be update
+            foreach (qint64 removedRowId, removedRows) {  // removed rows ain't need to be update
                 modifiedRowIds.removeAll(removedRowId);
             }
             modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
@@ -783,4 +837,4 @@ QList<int> MultipleAlignmentObject::convertMaRowIdsToMaRowIndexes(const QList<qi
     return indexes;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -42,6 +42,13 @@ public:
 
     void run() override;
 
+    /**
+     * Maximum MSA size in bytes that can be loaded/stored by UGENE safely.
+     * UGENE loads a full MSA model into a memory in a lot of places across the codebase.
+     * This constant should be limit the maxim size of MSA produced by UGENE, so UGENE won't create objects it can't handle.
+     */
+    static constexpr qint64 MAX_SAFE_ALIGNMENT_SIZE_TO_EXPORT = 100 * 1000 * 1000;
+
 private:
     MultipleSequenceAlignment ma;
     QString url;
@@ -67,11 +74,11 @@ private:
 class U2FORMATS_EXPORT ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
-                      int offset,
-                      int len,
+    ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
+                      const QList<qint64> &rowIds,
+                      const U2Region &columnRegion,
                       const QString &url,
-                      const QList<DNATranslation *> &aminoTranslations,
+                      const DNATranslation *aminoTranslation,
                       const DocumentFormatId &documentFormatId,
                       bool trimLeadingAndTrailingGaps,
                       bool convertUnknownToGap,
@@ -81,14 +88,17 @@ public:
     void run() override;
 
 private:
-    MultipleSequenceAlignment ma;
-    int offset;
-    int len;
+    /** Columns to export. */
+    U2Region columnRegion;
+
+    /** Alignment rows converted to sequences. */
+    QList<DNASequence> sequenceList;
+
     QString url;
     QString documentFormatId;
 
     /** Amino translation for a sequences in alignment. If not NULL -> sequence is translated. */
-    QList<DNATranslation *> aminoTranslations;
+    const DNATranslation *aminoTranslation = nullptr;
 
     /** Trim gaps before translation of not. */
     const bool trimLeadingAndTrailingGaps;
@@ -134,6 +144,6 @@ private:
     LoadDocumentTask *loadTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

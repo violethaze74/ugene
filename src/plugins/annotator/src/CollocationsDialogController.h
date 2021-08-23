@@ -22,8 +22,6 @@
 #ifndef _U2_COLLOCATION_DIALOG_CONTROLLER_H_
 #define _U2_COLLOCATION_DIALOG_CONTROLLER_H_
 
-#include <ui_FindAnnotationCollocationsDialog.h>
-
 #include <QDialog>
 #include <QMutex>
 #include <QTimer>
@@ -35,13 +33,15 @@
 
 #include "CollocationsSearchAlgorithm.h"
 
+#include <ui_FindAnnotationCollocationsDialog.h>
+
 namespace U2 {
 
 class AnnotationTableObject;
 class ADVSequenceObjectContext;
 class CollocationSearchTask;
 
-//TODO: listen for allocation add/remove to the view
+// TODO: listen for allocation add/remove to the view
 class CollocationsDialogController : public QDialog, Ui_FindAnnotationCollocationsDialog {
     Q_OBJECT
 public:
@@ -112,6 +112,6 @@ private:
     QList<SharedAnnotationData> sourceAnns;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

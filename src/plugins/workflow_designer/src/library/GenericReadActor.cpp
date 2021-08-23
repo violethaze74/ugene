@@ -132,11 +132,11 @@ GenericSeqActorProto::GenericSeqActorProto()
         getEditor()->addDelegate(new ComboBoxDelegate(modeMap), MODE_ATTR);
     }
     {
-        QVariantMap m;
-        m["minimum"] = 0;
-        m["maximum"] = INT_MAX;
-        getEditor()->addDelegate(new SpinBoxDelegate(m), GAP_ATTR);
-        getEditor()->addDelegate(new SpinBoxDelegate(m), LIMIT_ATTR);
+        QVariantMap minMaxMap;
+        minMaxMap["minimum"] = 0;
+        minMaxMap["maximum"] = INT_MAX;
+        getEditor()->addDelegate(new SpinBoxDelegate(minMaxMap), GAP_ATTR);
+        getEditor()->addDelegate(new SpinBoxDelegate(minMaxMap), LIMIT_ATTR);
     }
     setPrompter(new ReadDocPrompter(U2::Workflow::CoreLib::tr("Reads sequence(s) from <u>%1</u>.")));
 
@@ -239,11 +239,11 @@ bool GenericSeqActorProto::isAcceptableDrop(const QMimeData *md, QVariantMap *pa
 }
 
 QString SeqReadPrompter::composeRichDoc() {
-    //TODO finish
-    //BusPort* input = qobject_cast<BusPort*>(target->getPort(CoreLib::DATA_PORT_ID));
+    // TODO finish
+    // BusPort* input = qobject_cast<BusPort*>(target->getPort(CoreLib::DATA_PORT_ID));
     QString url = getURL(BaseAttributes::URL_IN_ATTRIBUTE().getId());
     return QString("%1").arg(url);
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2

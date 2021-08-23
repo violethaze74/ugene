@@ -140,12 +140,12 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
     int prefixSize = prefix.size();
     QStringList relativePaths = path.mid(prefixSize).split(";");
 
-    foreach (const QString &path, relativePaths) {
-        QString fullPath = prefixPath + path;
+    for (const QString &releativePath : qAsConst(relativePaths)) {
+        QString fullPath = prefixPath + releativePath;
         result += fullPath + ";";
     }
 
-    path = result.mid(0, result.size() - 1);    // without the last ';'
+    path = result.mid(0, result.size() - 1);  // without the last ';'
 }
 
 bool XMLTestUtils::parentTasksHaveError(Task *t) {
@@ -271,4 +271,4 @@ Task::ReportResult GTest_CreateTmpFolder::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

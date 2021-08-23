@@ -235,24 +235,24 @@ static void setIfNotNull(bool *to, bool val) {
 }
 
 /****************************************
-* StringTypeValueFactory
-****************************************/
+ * StringTypeValueFactory
+ ****************************************/
 QVariant StringTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
     setIfNotNull(ok, true);
     return qVariantFromValue(str);
 }
 
 /****************************************
-* StringListTypeValueFactory
-****************************************/
+ * StringListTypeValueFactory
+ ****************************************/
 QVariant StringListTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
     setIfNotNull(ok, true);
     return QVariant::fromValue<QStringList>(StrPackUtils::unpackStringList(str, StrPackUtils::SingleQuotes));
 }
 
 /****************************************
-* MapTypeValueFactory
-****************************************/
+ * MapTypeValueFactory
+ ****************************************/
 QVariant MapTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
     setIfNotNull(ok, true);
     StrStrMap map = StrPackUtils::unpackMap(str, StrPackUtils::SingleQuotes);
@@ -264,8 +264,8 @@ QVariant MapTypeValueFactory::getValueFromString(const QString &str, bool *ok) c
 }
 
 /****************************************
-* BoolTypeValueFactory
-****************************************/
+ * BoolTypeValueFactory
+ ****************************************/
 const QString BoolTypeValueFactory::TRUE_STR = "true";
 const QString BoolTypeValueFactory::FALSE_STR = "false";
 const QString BoolTypeValueFactory::YES_STR = "yes";
@@ -288,8 +288,8 @@ QVariant BoolTypeValueFactory::getValueFromString(const QString &s, bool *ok) co
 }
 
 /****************************************
-* NumTypeValueFactory
-****************************************/
+ * NumTypeValueFactory
+ ****************************************/
 QVariant NumTypeValueFactory::getValueFromString(const QString &str, bool *okArg) const {
     bool ok = false;
 
@@ -323,11 +323,11 @@ QVariant UrlTypeValueFactory::getValueFromString(const QString &str, bool *ok) c
     QStringList datasetStrs = str.split(splitter + splitter, QString::SkipEmptyParts);
     QList<Dataset> sets;
     int count = 0;
-    foreach (const QString &datasetStr, datasetStrs) {
+    for (const QString &datasetStr : qAsConst(datasetStrs)) {
         QStringList urls = datasetStr.split(splitter, QString::SkipEmptyParts);
         count++;
         Dataset dSet(QString("Dataset %1").arg(count));
-        foreach (const QString url, urls) {
+        for (const QString &url : qAsConst(urls)) {
             dSet.addUrl(URLContainerFactory::createUrlContainer(url));
         }
         sets << dSet;
@@ -340,4 +340,4 @@ QString UrlTypeValueFactory::getId() const {
     return BaseTypes::URL_DATASETS_TYPE()->getId();
 }
 
-}    // namespace U2
+}  // namespace U2

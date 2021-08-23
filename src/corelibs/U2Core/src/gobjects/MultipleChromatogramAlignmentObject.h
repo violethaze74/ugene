@@ -59,7 +59,6 @@ public:
     const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
     U2SequenceObject *getReferenceObj() const;
 
-    void replaceCharacter(int startPos, int rowIndex, char newChar);
     // inserts column of gaps with newChar at rowIndex row
     void insertCharacter(int rowIndex, int pos, char newChar);
 
@@ -72,10 +71,10 @@ public:
     void trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge);
 
     /**
-      * Updates the corresponding alternative mutations.
-      * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
-      */
-    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os);
+     * Updates the corresponding alternative mutations.
+     * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
+     */
+    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os);
 
     void saveState();
     void releaseState();
@@ -94,6 +93,6 @@ private:
     mutable U2SequenceObject *referenceObj;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_OBJECT_H_
+#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_OBJECT_H_

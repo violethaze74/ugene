@@ -44,12 +44,12 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
         detaillevel = 1;
     }
 
-    foreach (const SharedAtom &a, atoms) {
+    for (const SharedAtom &a : qAsConst(atoms)) {
         QList<SharedAtom> neighbors = findAtomNeighbors(a, atoms);
         GeodesicSphere surface = getAtomSurfaceDots(a, detaillevel);
         QVector<Vector3D> surfaceDots = surface.getVertices();
         QVector<Vector3D> reducedVertices;
-        foreach (const Vector3D &v, surfaceDots) {
+        for (const Vector3D &v : qAsConst(surfaceDots)) {
             if (vertexNeighboursOneOf(v, neighbors)) {
                 continue;
             } else {
@@ -57,7 +57,7 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
             }
         }
         QVector<Face> surfaceFaces = surface.getFaces();
-        foreach (const Face &face, surfaceFaces) {
+        for (const Face &face : qAsConst(surfaceFaces)) {
             if (reducedVertices.contains(face.v[0]) || reducedVertices.contains(face.v[1]) || reducedVertices.contains(face.v[2])) {
                 faces.append(face);
             }
@@ -67,13 +67,13 @@ void VanDerWaalsSurface::calculate(const QList<SharedAtom> &atoms, int &progress
     }
 }
 
-//void VanDerWaalsSurface::calculate(const BioStruct3D& bioStruct)
+// void VanDerWaalsSurface::calculate(const BioStruct3D& bioStruct)
 //{
-//     Vector3D center = bioStruct.getCenter();
-//     float radius = bioStruct.getMaxDistFromCenter();
-//     GeodesicSphere sphere(center, radius);
-//     vertices = sphere.getVertices();
-//}
+//      Vector3D center = bioStruct.getCenter();
+//      float radius = bioStruct.getMaxDistFromCenter();
+//      GeodesicSphere sphere(center, radius);
+//      vertices = sphere.getVertices();
+// }
 
 qint64 VanDerWaalsSurface::estimateMemoryUsage(int numberOfAtoms) {
     return numberOfAtoms * FACTOR * sizeof(double) * 3 * 6 * 1.5;
@@ -85,4 +85,4 @@ MolecularSurface *VanDerWaalsSurfaceFactory::createInstance() const {
     return new VanDerWaalsSurface();
 }
 
-}    // namespace U2
+}  // namespace U2

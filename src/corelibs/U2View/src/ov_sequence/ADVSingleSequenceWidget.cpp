@@ -204,12 +204,12 @@ void ADVSingleSequenceWidget::init() {
     addButtonWithActionToToolbar(selectRangeAction1, hStandardBar);
     buttonTabOrederedNames->append(selectRangeAction1->objectName());
 
-    QAction *shotScreenAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
-    shotScreenAction->setObjectName("export_image");
-    connect(shotScreenAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
+    auto exportImageAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export image"), this);
+    exportImageAction->setObjectName("export_image");
+    connect(exportImageAction, SIGNAL(triggered()), this, SLOT(sl_saveScreenshot()));
 
-    addButtonWithActionToToolbar(shotScreenAction, hStandardBar);
-    buttonTabOrederedNames->append(shotScreenAction->objectName());
+    addButtonWithActionToToolbar(exportImageAction, hStandardBar);
+    buttonTabOrederedNames->append(exportImageAction->objectName());
 
     panView->addActionToLocalToolbar(zoomToRangeAction);
 
@@ -232,7 +232,7 @@ void ADVSingleSequenceWidget::init() {
 
 #define MIN_SEQUENCE_LEN_TO_USE_FULL_MODE 100
     if (seqCtx->getSequenceLength() < MIN_SEQUENCE_LEN_TO_USE_FULL_MODE) {
-        //sequence is rather small -> show panview only by default
+        // sequence is rather small -> show panview only by default
         setOverviewCollapsed(true);
         setDetViewCollapsed(true);
     }
@@ -371,7 +371,7 @@ void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView *v, QWidget *aft
 void ADVSingleSequenceWidget::removeSequenceView(GSequenceLineView *v, bool deleteView) {
     assert(lineViews.contains(v));
     lineViews.removeOne(v);
-    v->setVisible(false);    // making widget invisible removes it from the splitter automatically
+    v->setVisible(false);  // making widget invisible removes it from the splitter automatically
     v->disconnect(this);
     v->removeEventFilter(this);
     if (deleteView) {
@@ -465,7 +465,7 @@ GSequenceLineView *ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint &
     return nullptr;
 }
 
-int ADVSingleSequenceWidget::getSequenceLength() const {
+qint64 ADVSingleSequenceWidget::getSequenceLength() const {
     return getSequenceContext()->getSequenceLength();
 }
 
@@ -714,7 +714,6 @@ void ADVSingleSequenceWidget::sl_zoomToRange() {
 #define CUSTOM_R_COLORS "CUSTOMR_COLORS"
 #define CUSTOM_R_OFFSETS "CUSTOMR_OFFSETS"
 #define SEQUENCE_GRAPH_NAME "GRAPH_NAME"
-#define GRAPH_LABELS_POSITIONS "LABELS_POSITIONS"
 
 void ADVSingleSequenceWidget::updateState(const QVariantMap &m) {
     QVariantMap map = m.value(SPLITTER_STATE_MAP_NAME).toMap();
@@ -788,18 +787,15 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
     myData[CUSTOM_R_COLORS] = rcolors;
 
     QStringList graphNames;
-    QList<QVariant> positions;
-    foreach (GSequenceLineView *view, lineViews) {
-        QList<QVariant> positions;
-        GSequenceGraphView *graphView = dynamic_cast<GSequenceGraphView *>(view);
-        if (nullptr != graphView) {
+    for (GSequenceLineView *view : qAsConst(lineViews)) {
+        if (auto graphView = dynamic_cast<GSequenceGraphView *>(view)) {
+            QList<QVariant> graphLabelPositions;
             graphNames.append(graphView->getGraphViewName());
-            graphView->getLabelPositions(positions);
-            myData[graphView->getGraphViewName()] = positions;
+            graphView->getSavedLabelsState(graphLabelPositions);
+            myData[graphView->getGraphViewName()] = graphLabelPositions;
         }
     }
     myData[SEQUENCE_GRAPH_NAME] = graphNames;
-    myData[GRAPH_LABELS_POSITIONS] = positions;
 
     QString sequenceInProjectId = getActiveSequenceContext()->getSequenceObject()->getGHints()->get(GObjectHint_InProjectId).toString();
     map[sequenceInProjectId] = myData;
@@ -920,7 +916,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     connect(ctx->getAnnotatedDNAView(), SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
 
-    //TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
+    // TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
     QHBoxLayout *l = new QHBoxLayout();
     l->setSpacing(4);
@@ -1001,7 +997,7 @@ void ADVSingleSequenceHeaderWidget::updateActiveState() {
     nameLabel->setEnabled(focused);
     pixLabel->setEnabled(focused);
     ctx->getSelectRangeAction()->setShortcutContext(focused ? Qt::WindowShortcut : Qt::WidgetShortcut);
-    //toolBar->setEnabled(focused); TODO: click on disabled buttons does not switch focus!
+    // toolBar->setEnabled(focused); TODO: click on disabled buttons does not switch focus!
 }
 
 void ADVSingleSequenceHeaderWidget::mouseDoubleClickEvent(QMouseEvent *e) {
@@ -1042,4 +1038,4 @@ QString ADVSingleSequenceHeaderWidget::getShortAlphabetName(const DNAAlphabet *a
     return "?";
 }
 
-}    // namespace U2
+}  // namespace U2

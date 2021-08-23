@@ -19,32 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#include "SaveGraphCutoffsTask.h"
+#ifndef _U2_GT_RUNNABLES_DNA_SEQUENCE_GENERATOR_DIALOG_FILLER_H_
+#define _U2_GT_RUNNABLES_DNA_SEQUENCE_GENERATOR_DIALOG_FILLER_H_
+
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-SaveCutoffsTask::SaveCutoffsTask(SaveCutoffsTaskSettings _s)
-    : Task("Run saving graph cutoffs as annotations task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported), settings(_s) {
-}
+class DNASequenceGeneratorDialogFillerModel {
+public:
+    DNASequenceGeneratorDialogFillerModel(const QString &url);
 
-void SaveCutoffsTask::prepare() {
-    /*
-    int startPos = settings.d->cachedFrom, len = settings.d->cachedLen, step = settings.d->cachedS;
-    PairVector& points = settings.d->cachedData;
-    for (int i = 0, n = nPoints; i < n; i++) {
-        float fy1 = points.firstPoints[i];
-        if (fy1 == UNKNOWN_VAL) {
+    QString url;
+    qint64 length = 1000;
+    qint64 window = 1000;
+    int percentA = 25;
+    int percentC = 25;
+    int percentG = 25;
+    int percentT = 25;
+};
 
-        }
-    }
-    */
-}
+class DNASequenceGeneratorDialogFiller : public Filler {
+public:
+    /** Fills generator dialog with the given set of values and runs it. */
+    DNASequenceGeneratorDialogFiller(GUITestOpStatus &os, const DNASequenceGeneratorDialogFillerModel &model);
+    void commonScenario() override;
 
-void SaveCutoffsTask::run() {
-}
+private:
+    DNASequenceGeneratorDialogFillerModel model;
+};
 
-Task::ReportResult SaveCutoffsTask::report() {
-    return ReportResult_Finished;
-}
+}  // namespace U2
 
-}    // namespace U2
+#endif

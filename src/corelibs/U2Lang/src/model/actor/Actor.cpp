@@ -78,7 +78,8 @@ void Actor::sl_labelChanged() {
 }
 
 void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
-    foreach (const PortDescriptor *descr, proto->getPortDesciptors()) {
+    QList<PortDescriptor *> portDesciptors = proto->getPortDesciptors();
+    for (const PortDescriptor *descr : qAsConst(portDesciptors)) {
         QString prefix;
         if (descr->isInput()) {
             prefix = "in_";
@@ -390,11 +391,12 @@ void Actor::replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMappi
 }
 
 void Actor::updateDelegateTags() {
-    CHECK(nullptr != editor, );
+    CHECK(editor != nullptr, );
     foreach (Attribute *influencing, getAttributes()) {
-        foreach (const AttributeRelation *rel, influencing->getRelations()) {
+        QVector<const AttributeRelation *> relations = influencing->getRelations();
+        for (const AttributeRelation *rel : qAsConst(relations)) {
             PropertyDelegate *dependentDelegate = editor->getDelegate(rel->getRelatedAttrId());
-            if (nullptr == dependentDelegate) {
+            if (dependentDelegate == nullptr) {
                 continue;
             }
             rel->updateDelegateTags(influencing->getAttributePureValue(), dependentDelegate->tags());
@@ -536,7 +538,7 @@ bool Actor::validate(NotificationsList &notificationList) const {
             bool urlAttrValid = validateCodePage(attr, notificationList);
             Q_UNUSED(urlAttrValid)
             // we think that this is a warning, so I commented the following line
-            //urlsRes = urlsRes && urlAttrValid;
+            // urlsRes = urlsRes && urlAttrValid;
         }
 
         if (attr->getAttributeType() == BaseTypes::NUM_TYPE() && !attr->getAttributePureValue().toString().isEmpty()) {
@@ -557,5 +559,5 @@ bool Actor::validate(NotificationsList &notificationList) const {
     return result;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

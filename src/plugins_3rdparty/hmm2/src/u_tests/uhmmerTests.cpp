@@ -284,7 +284,7 @@ Task::ReportResult GTest_uHMMERSearch::report() {
 }
 
 GTest_uHMMERSearch::~GTest_uHMMERSearch() {
-    //cleanup();
+    // cleanup();
 }
 
 void GTest_uHMMERSearch::cleanup() {
@@ -398,21 +398,21 @@ Task::ReportResult GTest_hmmCompare::report() {
     QString url1 = fi1.absoluteFilePath();
     IOAdapterFactory *iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url1));
     QScopedPointer<IOAdapter> io1(iof1->createIOAdapter());
-    //QFile file1(fi1.absoluteFilePath());
+    // QFile file1(fi1.absoluteFilePath());
     QFileInfo fi2(env->getVar("TEMP_DATA_DIR") + "/" + file2Name);
     QString url2 = fi2.absoluteFilePath();
     IOAdapterFactory *iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url2));
     QScopedPointer<IOAdapter> io2(iof2->createIOAdapter());
-    fi2.absoluteDir().mkdir(fi2.absoluteDir().absolutePath());    // ???
-    //QFile file2(fi2.absoluteFilePath());
+    fi2.absoluteDir().mkdir(fi2.absoluteDir().absolutePath());  // ???
+    // QFile file2(fi2.absoluteFilePath());
 
     if (!io1->open(url1, IOAdapterMode_Read)) {
-        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url1));    //+file1.errorString() );
+        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url1));  //+file1.errorString() );
         return ReportResult_Finished;
     }
-    //file2.open(QIODevice::ReadOnly|QIODevice::Text);
+    // file2.open(QIODevice::ReadOnly|QIODevice::Text);
     if (!io2->open(url2, IOAdapterMode_Read)) {
-        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url2));    //+file2.errorString() );
+        stateInfo.setError(QString("File opening error \"%1\", description: ").arg(url2));  //+file2.errorString() );
         return ReportResult_Finished;
     }
 
@@ -524,7 +524,6 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
     nCalibrates = 1;
     QString nCalibrates_str = el.attribute(RUN_N_CALIBRATES);
     if (!nCalibrates_str.isEmpty()) {
-        bool ok = false;
         nCalibrates = nCalibrates_str.toInt(&ok);
         if (!ok) {
             failMissingValue(RUN_N_CALIBRATES);
@@ -535,7 +534,6 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
 
     QString seed_str = el.attribute(SEED_ATTR);
     if (!seed_str.isEmpty()) {
-        bool ok = false;
         int seed = seed_str.toInt(&ok);
         if (!ok) {
             failMissingValue(SEED_ATTR);
@@ -548,7 +546,7 @@ void GTest_uHMMERCalibrate::init(XMLTestFormat *tf, const QDomElement &el) {
 
     s.nThreads = nThreads;
 
-    //Run nCalibrates HMMCalibrate tasks simultaneously
+    // Run nCalibrates HMMCalibrate tasks simultaneously
     for (int i = 0; i < nCalibrates; i++) {
         calibrateTask[i] = new HMMCalibrateToFileTask(env->getVar("COMMON_DATA_DIR") + "/" + hmmFile, env->getVar("TEMP_DATA_DIR") + "/temp111", s);
     }
@@ -601,4 +599,4 @@ QList<XMLTestFactory *> UHMMERTests::createTestFactories() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

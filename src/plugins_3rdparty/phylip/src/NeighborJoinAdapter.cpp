@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "NeighborJoinAdapter.h"
 
@@ -125,7 +125,7 @@ void NeighborJoinCalculateTreeTask::run() {
     }
 
     try {
-        if (settings.bootstrap) {    //bootstrapping and creating a consensus tree
+        if (settings.bootstrap) {  // bootstrapping and creating a consensus tree
             setTaskInfo(&stateInfo);
             setBootstr(true);
             stateInfo.setDescription("Generating sequences");
@@ -147,10 +147,10 @@ void NeighborJoinCalculateTreeTask::run() {
 
             stateInfo.setDescription("Calculating trees");
 
-            for (int i = 0; i < settings.replicates; i++) {
-                stateInfo.progress = (int)(i / (float)settings.replicates * 100);
+            for (int replicateIndex = 0; replicateIndex < settings.replicates; replicateIndex++) {
+                stateInfo.progress = (int)(replicateIndex / (float)settings.replicates * 100);
 
-                const MultipleSequenceAlignment &curMSA = seqBoot->getMSA(i);
+                const MultipleSequenceAlignment &curMSA = seqBoot->getMSA(replicateIndex);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
                 distanceMatrix->calculateOutOfAlignment(curMSA, settings);
 
@@ -183,14 +183,14 @@ void NeighborJoinCalculateTreeTask::run() {
                 }
 
                 naym *nayme = getNayme();
-                for (int i = 0; i < sz; ++i) {
-                    const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(i);
+                for (int rowIndex = 0; rowIndex < sz; ++rowIndex) {
+                    const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(rowIndex);
                     QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
-                    qstrncpy(nayme[i], name.constData(), sizeof(naym));
+                    qstrncpy(nayme[rowIndex], name.constData(), sizeof(naym));
 
                     for (int j = name.length(); j < nmlngth; j++) {
-                        nayme[i][j] = ' ';
+                        nayme[rowIndex][j] = ' ';
                     }
                 }
 
@@ -294,4 +294,4 @@ void NeighborJoinCalculateTreeTask::run() {
     result = phyTree;
 }
 
-}    // namespace U2
+}  // namespace U2

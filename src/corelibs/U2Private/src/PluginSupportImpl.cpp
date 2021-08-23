@@ -124,7 +124,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
     }
 
     // now check plugin compatibility
-    bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();    // isGUIMode - for pluginChecker!
+    bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();  // isGUIMode - for pluginChecker!
     bool modeIsOk = false;
     if (isUIMode) {
         modeIsOk = desc.mode.testFlag(PluginMode_UI);
@@ -152,7 +152,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
         return;
     }
 
-    //check platform
+    // check platform
 
     if (desc.platform.arch == PlatformArch_Unknown) {
         coreLog.trace(QString("Plugin platform arch is unknown: %1").arg(desc.id));
@@ -207,7 +207,7 @@ QStringList getCmdlinePlugins() {
     }
     return QStringList();
 }
-}    // namespace
+}  // namespace
 
 static QStringList findAllPluginsInDefaultPluginsDir() {
     QDir d = PluginSupportImpl::getDefaultPluginsDir();
@@ -236,7 +236,7 @@ PluginRef::~PluginRef() {
 
 void PluginSupportImpl::sl_registerServices() {
     ServiceRegistry *sr = AppContext::getServiceRegistry();
-    foreach (PluginRef *ref, plugRefs) {
+    for (PluginRef *ref : qAsConst(plugRefs)) {
         foreach (Service *s, ref->plugin->getServices()) {
             AppContext::getTaskScheduler()->registerTopLevelTask(sr->registerServiceTask(s));
         }
@@ -298,7 +298,7 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
     QString descUrl = ref->pluginDesc.descriptorUrl.getURLString();
     QString pluginId = ref->pluginDesc.id;
     if (ref->removeFlag) {
-        //add to skip-list if auto-loaded
+        // add to skip-list if auto-loaded
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
             if (!skipFiles.contains(descUrl)) {
@@ -307,7 +307,7 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
             }
         }
     } else {
-        //remove from skip-list if present
+        // remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
             QStringList skipFiles = settings->getValue(skipListSettingsDir, QStringList()).toStringList();
             if (skipFiles.removeOne(descUrl)) {
@@ -360,20 +360,20 @@ void AddPluginTask::prepare() {
         return;
     }
 
-    //check that plugin we depends on is already loaded
-    foreach (const DependsInfo &di, desc.dependsList) {
-        PluginRef *ref = ps->findRefById(di.id);
-        if (ref == nullptr) {
+    // check that plugin we depends on is already loaded
+    for (const DependsInfo &di : qAsConst(desc.dependsList)) {
+        PluginRef *depRef = ps->findRefById(di.id);
+        if (depRef == nullptr) {
             stateInfo.setError(tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id));
             return;
         }
-        if (ref->pluginDesc.pluginVersion < di.version) {
+        if (depRef->pluginDesc.pluginVersion < di.version) {
             stateInfo.setError(tr("Plugin %1 depends on %2 which is available, but the version is too old").arg(desc.id).arg(di.id));
             return;
         }
     }
 
-    //load library
+    // load library
     QString libUrl = desc.libraryUrl.getURLString();
     lib.reset(new QLibrary(libUrl));
     bool loadOk = lib->load();
@@ -389,11 +389,11 @@ void AddPluginTask::prepare() {
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
-        verificationIsEnabled = false;
+    if (isOsMac()) {
+        if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
+            verificationIsEnabled = false;
+        }
     }
-#endif
 
     if (verificationIsEnabled) {
         PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
@@ -533,4 +533,4 @@ void VerifyPluginTask::run() {
         pluginIsCorrect = true;
     }
 }
-}    // namespace U2
+}  // namespace U2

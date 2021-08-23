@@ -186,11 +186,14 @@ public:
     /** Returns sum of region lengths. */
     static qint64 sumLength(const QVector<U2Region> &regions);
 
-    /** Returns new region constructed from the X range of the rect: U2Region(rect.x(), rect.width()). */
+    /** Creates a region constructed from the X range of the rect: U2Region(rect.x(), rect.width()). */
     static U2Region fromXRange(const QRect &rect);
 
-    /** Returns new region constructed from the Y range of the rect: U2Region(rect.y(), rect.height()). */
+    /** Creates a new region constructed from the Y range of the rect: U2Region(rect.y(), rect.height()). */
     static U2Region fromYRange(const QRect &rect);
+
+    /** Creates a new region with startPos & endPos() set to the specified values. */
+    static U2Region fromStartAndEnd(qint64 startPos, qint64 endPos);
 
 private:
     static bool registerMeta;
@@ -231,7 +234,7 @@ inline U2Region U2Region::containingRegion(const QVector<U2Region> &regions) {
 U2CORE_EXPORT QDataStream &operator<<(QDataStream &out, const U2Region &myObj);
 U2CORE_EXPORT QDataStream &operator>>(QDataStream &in, U2Region &myObj);
 
-}    // namespace U2
+}  // namespace U2
 
 Q_DECLARE_TYPEINFO(U2::U2Region, Q_PRIMITIVE_TYPE);
 Q_DECLARE_METATYPE(U2::U2Region)

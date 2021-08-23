@@ -43,12 +43,12 @@ void IntegralBusUtils::remapBus(StrStrMap &busMap, const ActorId &oldId, const A
         U2OpStatus2Log os;
         QList<IntegralBusSlot> slotList = IntegralBusSlot::listFromString(busMap[key], os);
         QList<IntegralBusSlot> newSlots;
-        foreach (const IntegralBusSlot &slot, slotList) {
+        for (const IntegralBusSlot &slot : qAsConst(slotList)) {
             IntegralBusSlot newSlot = slot;
             if (slot.actorId() == oldId) {
-                U2OpStatusImpl os;
-                QString newSlotId = mapping.getDstSlotId(slot.getId(), os);
-                if (!os.hasError()) {
+                U2OpStatusImpl os2;
+                QString newSlotId = mapping.getDstSlotId(slot.getId(), os2);
+                if (!os2.hasError()) {
                     newSlot = IntegralBusSlot(newSlotId, "", newId);
                 }
             }
@@ -111,7 +111,7 @@ StringSlotType getSlotType(const Descriptor &slot) {
     }
     return TEXT;
 }
-}    // namespace
+}  // namespace
 
 QList<Descriptor> IntegralBusUtils::getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type) {
     QList<Descriptor> result = busMap.keys(type);
@@ -292,5 +292,5 @@ CandidatesSplitterRegistry::~CandidatesSplitterRegistry() {
     splitters.clear();
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

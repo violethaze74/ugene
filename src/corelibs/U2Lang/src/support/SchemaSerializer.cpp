@@ -32,7 +32,7 @@
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowEnv.h>
 
-//Q_DECLARE_METATYPE(U2::Workflow::CfgMap)
+// Q_DECLARE_METATYPE(U2::Workflow::CfgMap)
 
 namespace U2 {
 namespace Workflow {
@@ -152,12 +152,12 @@ QDomElement SchemaSerializer::saveActor(const Actor *proc, QDomElement &proj) {
     return docElement;
 }
 
-//static Actor* readActor(const QDomElement& procElement) {
-//    const QString name = procElement.attribute(TYPE_ATTR);
-//    ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(name);
-//    if (!proto) {
-//        return NULL;
-//    }
+// static Actor* readActor(const QDomElement& procElement) {
+//     const QString name = procElement.attribute(TYPE_ATTR);
+//     ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(name);
+//     if (!proto) {
+//         return NULL;
+//     }
 
 //    Actor* proc = proto->createInstance();
 //    if (proc) {
@@ -189,7 +189,8 @@ QDomElement SchemaSerializer::savePort(const Port *port, QDomElement &owner) {
 void SchemaSerializer::schema2xml(const Schema &schema, QDomDocument &xml) {
     QDomElement projectElement = xml.createElement(WORKFLOW_EL);
     xml.appendChild(projectElement);
-    foreach (Actor *a, schema.getProcesses()) {
+    QList<Actor *> processes = schema.getProcesses();
+    for (Actor *a : qAsConst(processes)) {
         QDomElement el = saveActor(a, projectElement);
         foreach (Port *p, a->getPorts()) {
             savePort(p, el);
@@ -236,12 +237,12 @@ void SchemaSerializer::readParamAliases(QMap<QString, QString> &aliases, const Q
 
 static const QString META_EL = "info";
 
-//static void saveMeta(const Workflow::Metadata* meta, QDomElement& proj){
-//    QDomElement el = proj.ownerDocument().createElement(META_EL);
-//    proj.appendChild(el);
-//    el.setAttribute(NAME_ATTR, meta->name);
-//    el.appendChild(proj.ownerDocument().createCDATASection(meta->comment));
-//}
+// static void saveMeta(const Workflow::Metadata* meta, QDomElement& proj){
+//     QDomElement el = proj.ownerDocument().createElement(META_EL);
+//     proj.appendChild(el);
+//     el.setAttribute(NAME_ATTR, meta->name);
+//     el.appendChild(proj.ownerDocument().createCDATASection(meta->comment));
+// }
 
 QString SchemaSerializer::readMeta(Workflow::Metadata *meta, const QDomElement &proj) {
     QDomElement el = proj.elementsByTagName(META_EL).item(0).toElement();
@@ -251,7 +252,7 @@ QString SchemaSerializer::readMeta(Workflow::Metadata *meta, const QDomElement &
 }
 
 static Port *findPort(const QList<Actor *> &procs, const ActorId &actorId, const QString &portId) {
-    foreach (Actor *a, procs) {
+    for (Actor *a : qAsConst(procs)) {
         if (a->getId() == actorId) {
             foreach (Port *p, a->getPorts()) {
                 if (p->getId() == portId) {
@@ -265,9 +266,10 @@ static Port *findPort(const QList<Actor *> &procs, const ActorId &actorId, const
 }
 
 void SchemaSerializer::updatePortBindings(const QList<Actor *> &procs) {
-    foreach (Actor *actor, procs) {
-        foreach (Port *p, actor->getEnabledInputPorts()) {
-            IntegralBusPort *port = qobject_cast<IntegralBusPort *>(p);
+    for (Actor *actor : qAsConst(procs)) {
+        QList<Port *> enabledInputPorts = actor->getEnabledInputPorts();
+        for (Port *p : qAsConst(enabledInputPorts)) {
+            auto port = qobject_cast<IntegralBusPort *>(p);
             StrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             foreach (const QString &key, busMap.uniqueKeys()) {
                 QString val = busMap.value(key);
@@ -345,7 +347,7 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
         procMap[id] = proc;
         schema->addProcess(proc);
 
-        //read port params
+        // read port params
         QDomNodeList nl = procElement.elementsByTagName(PORT_EL);
         for (int j = 0; j < nl.size(); j++) {
             QDomElement el = nl.item(j).toElement();
@@ -427,5 +429,5 @@ QString SchemaSerializer::xml2schema(const QDomElement &projectElement, Schema *
     return QString();
 }
 
-}    //namespace Workflow
-}    //namespace U2
+}  // namespace Workflow
+}  // namespace U2
