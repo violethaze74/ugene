@@ -159,20 +159,17 @@ namespace U2 {
 namespace GUITest_regression_scenarios {
 
 GUI_TEST_CLASS_DEFINITION(test_3014) {
-    // 1. Open the _common_data/scenarios/_regression/3014/pdb2q41.ent.gz
     GTLogTracer l;
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/3014/", "pdb2q41.ent.gz");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/3014/pdb2q41.ent.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(10000);
 
-    // 2. In context menu go to 'Molecular surface'->'SES'
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Molecular Surface"
-                                                                        << "SES"));
+    // In context menu go to 'Molecular surface'->'SES'
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SES"}));
     QWidget *widget3d = GTWidget::findWidget(os, "1-2Q41");
     GTWidget::click(os, widget3d, Qt::RightButton);
-    GTGlobals::sleep(10000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: Molecular surface calculated and showed. Program not crached.
+    // Expected state: Molecular surface calculated and showed. Program not crached.
     GTUtilsLog::check(os, l);
 }
 
@@ -4838,9 +4835,9 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with ClustalW"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: task started.
+    GTGlobals::sleep(1000);
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
 
     // 3. Close the alignment view.

@@ -80,6 +80,19 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Werror=unused-parameter
     QMAKE_CXXFLAGS += -Werror=unused-variable
 
+    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
+    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
+    greaterThan(COMPILER_MAJOR_VERSION, 6): {
+        QMAKE_CXXFLAGS += -Werror=shadow=local
+
+        # We use strict Werror= flags. The -system level for includes supresses warnings that come from QT.
+        # Today we have only warning when multiple 'foreach' loops used in the same method.
+        # The lines below can be removed all these multi-'foreach'-loops are replaced with 'for'-loop.
+        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtCore"
+        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtGui"
+        QMAKE_CXXFLAGS += -isystem "$$[QT_INSTALL_HEADERS]/QtWidgets"
+    }
+
     # build with coverage (gcov) support, now for Linux only
     equals(UGENE_GCOV_ENABLE, 1) {
         message("Build with gcov support. See gcov/lcov doc for generating coverage info")
