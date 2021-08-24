@@ -107,13 +107,20 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
 }
 
 void InSilicoPcrTask::prepare() {
+    if (!PrimerStatistics::validatePrimerMinLength(settings.forwardPrimer) || !PrimerStatistics::validatePrimerMinLength(settings.reversePrimer)) {
+        algoLog.details(tr("One of the given primers is too short. Task cancelled."));
+        stateInfo.setCanceled(true);
+        return;
+    }
     FindAlgorithmTaskSettings forwardSettings = getFindPatternSettings(U2Strand::Direct);
     CHECK_OP(stateInfo, );
     FindAlgorithmTaskSettings reverseSettings = getFindPatternSettings(U2Strand::Complementary);
     CHECK_OP(stateInfo, );
-    if (qgetenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND") == "1") {
-        forwardSettings.maxResult2Find = 10;
-        reverseSettings.maxResult2Find = 10;
+    bool intConversionIsOk = false;
+    const int MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV = qgetenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND").toInt(&intConversionIsOk);
+    if (intConversionIsOk) {
+        forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV;
+        reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND_FROM_ENV;
     } else {
         forwardSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;
         reverseSettings.maxResult2Find = MAX_RESULTS_FOR_PRIMERS_PER_STRAND;

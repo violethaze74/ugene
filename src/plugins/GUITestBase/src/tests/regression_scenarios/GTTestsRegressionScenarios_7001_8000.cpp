@@ -26,6 +26,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
@@ -461,11 +462,36 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     // Expected state: UGENE is not crash
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7193) {
-    qputenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND", "1");
+GUI_TEST_CLASS_DEFINITION(test_7193_1) {
+    qputenv("UGENE_MAX_RESULTS_FOR_PRIMERS_PER_STRAND", "30");
     GTUtilsPcr::clearPcrDir(os);
-    //WARNING: this test required UGENE_GUI_TEST environment variable set to 1
-    //1. Open "samples/FASTA/human_T1.fa"".
+    //WARNING: this test required UGENE_GUI_TEST environment variable set to 10
+    //1. Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Enter the primers: "GGAAAAAATGCTAAGGGC" and "CTGGGTTGAAAATTCTTT".
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "GGAAAAAATGCTAAGGGC");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CTGGGTTGAAAATTCTTT");
+    //4. Set both mismatches to 9
+    GTUtilsPcr::setMismatches(os, U2Strand::Direct, 9);
+    GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 9);
+    //5. Set 3' perfect match to 3
+    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox *>(GTWidget::findWidget(os, "perfectSpinBox"));
+    GTSpinBox::setValue(os, perfectSpinBox, 3, GTGlobals::UseKeyBoard);
+
+    //6. Click the find button.
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected: one result found
+    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 19, QString("Expected 19 result instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7193_2) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -476,12 +502,17 @@ GUI_TEST_CLASS_DEFINITION(test_7193) {
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AAA");
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CCC");
 
+    //Expected state: there is a warning about forward primer length
+    QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
+    CHECK_SET_ERR(warningLabel != nullptr, "Cannot find warningLabel");
+    CHECK_SET_ERR(warningLabel->text().contains("The forward primer length should be"), "Incorrect warning message");
+
+    const GTLogTracer lt("One of the given primers is too short. Task cancelled.");
     //4. Click the find button.
+    //Expected state: task cancelled with vorrespondong log message
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //Expected: one result found
-    CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 32, QString("Expected 32 results instead of %1").arg(QString::number(GTUtilsPcr::productsCount(os))));
+    GTUtilsLog::checkContainsMessage(os, lt);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7212) {

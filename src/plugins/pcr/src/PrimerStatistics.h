@@ -37,9 +37,14 @@ public:
     static double getAnnealingTemperature(const QByteArray &product, const QByteArray &forwardPrimer, const QByteArray &reversePrimer);
 
     static bool validate(const QByteArray &primer);
+    static bool validatePrimerMinLength(const QByteArray &primer);
     static bool validate(QString primer);
 
     static QString getDoubleStringValue(double value);
+
+private:
+    //Minimum length for typical primer
+    static constexpr int MINIMUM_PRIMER_LENGTH = 18;
 };
 
 class PrimerStatisticsCalculator {
