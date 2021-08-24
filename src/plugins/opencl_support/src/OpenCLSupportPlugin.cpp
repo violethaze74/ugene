@@ -61,7 +61,7 @@ OpenCLSupportPlugin::OpenCLSupportPlugin()
     : Plugin(tr("OpenCL Support"),
              tr("Plugin provides support for OpenCL-enabled GPUs.")) {
     // Temporary disable OpenCL plugin
-    return;
+    //return;
 
     QString err_str;
 
@@ -156,7 +156,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
 
         errCode = openCLHelper.clGetDeviceIDs_p(platformIDs.get()[i], CL_DEVICE_TYPE_GPU, numDeviceEntries, deviceIDs.get(), &numDevices);
         if (hasOPENCLError(errCode, errStr)) {
-            return Error_OpenCLError;
+            continue;
         }
         coreLog.details(tr("Number of OpenCL devices: %1").arg(numDevices));
 
@@ -171,7 +171,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
             //******************************
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_VENDOR, sizeof(char) * maximumParamLength, paramValue.get(), &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             actualParamLength = (int)(actualParamSize / sizeof(char));
@@ -182,7 +182,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
             //******************************
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_NAME, sizeof(char) * maximumParamLength, paramValue.get(), &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             actualParamLength = int(actualParamSize / sizeof(char));
@@ -195,14 +195,14 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_GLOBAL_MEM_SIZE, sizeof(cl_ulong), &globalMemSize, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             cl_ulong maxAllocateMemorySize = 0;
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_MAX_MEM_ALLOC_SIZE, sizeof(cl_ulong), &maxAllocateMemorySize, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             //******************************
@@ -210,40 +210,40 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(cl_ulong), &localMemSize, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
             //******************************
             cl_uint maxClockFrequency = 0;
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(cl_uint), &maxClockFrequency, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
             //******************************
             cl_uint maxComputeUnits = 10;
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_uint), &maxComputeUnits, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
             //******************************
             cl_uint maxWorkItemDimensions = 0;
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(cl_uint), &maxWorkItemDimensions, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
             //******************************
             size_t maxWorkGroupSize = 0;
 
             errCode = openCLHelper.clGetDeviceInfo_p(deviceId, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t), &maxWorkGroupSize, &actualParamSize);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             cl_context deviceContext = openCLHelper.clCreateContext_p(0, 1, &deviceId, nullptr, nullptr, &errCode);
             if (hasOPENCLError(errCode, errStr)) {
-                return Error_OpenCLError;
+                break;
             }
 
             // create OpenCL model
