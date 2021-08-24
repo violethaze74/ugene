@@ -966,10 +966,6 @@ void AnnotatedDNAView::unregisterSplitWidget(ADVSplitWidget *splitWidget) {
     splitWidgets.removeOne(splitWidget);
 }
 
-QList<ADVSplitWidget *> AnnotatedDNAView::getSplitWidgets() {
-    return splitWidgets;
-}
-
 ADVSequenceObjectContext *AnnotatedDNAView::getSequenceContext(AnnotationTableObject *obj) const {
     SAFE_POINT(getAnnotationObjects(true).contains(obj),
                "Unexpected annotation table detected!",

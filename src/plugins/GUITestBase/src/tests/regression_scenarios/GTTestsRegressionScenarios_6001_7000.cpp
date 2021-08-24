@@ -66,7 +66,6 @@
 #include <U2View/DetView.h>
 #include <U2View/McaEditorReferenceArea.h>
 
-#include "../../circular_view/src/CircularViewSplitter.h"
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_6001_7000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -5602,6 +5601,7 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
 {
     GTLogTracer l;
 
+    // The test just check that there are no crash hile rotating circular view
     //    1. Open sequence
     //    2. Open annotation file
     //    3. Add annotation file to sequence
@@ -5614,7 +5614,6 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
                                QStringList() << "annotations.gb"
                                              << "sequence.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "Unknown features"),
                   "No 'Unknown features' object!");
 
@@ -5625,10 +5624,7 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
                                                                          "Unknown features"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsDialog::waitForDialog(os,
-                                 new PopupChooserByText(os,
-                                                        QStringList()
-                                                            << "Add"
-                                                            << "Objects with annotations..."));
+                                 new PopupChooserByText(os, {"Add", "Objects with annotations..."}));
     //    On question "Found annotations that are out of sequence range, continue?" answer "Yes"
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
@@ -5639,22 +5635,10 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
     int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
     CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count").arg(seqNum));
 
-    ADVSingleSequenceWidget *seqWgt = GTUtilsSequenceView::getSeqWidgetByNumber(os, 0);
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWgt), QString("No CV for single sequence view."));
-    ADVSequenceObjectContext *ctx = seqWgt->getActiveSequenceContext();
-    CHECK_SET_ERR(ctx != nullptr, QString("No context for single sequence view."));
-    AnnotatedDNAView *aview = ctx->getAnnotatedDNAView();
-    CHECK_SET_ERR(aview != nullptr, QString("No annoview for single sequence view. First check"));
-    QList<ADVSplitWidget *> splitters = aview->getSplitWidgets();
-    CHECK_SET_ERR(splitters.size() == 1,
-                  QString("No splitters for single sequence view. First check"));
-    CircularViewSplitter *splitter = static_cast<CircularViewSplitter *>(splitters[0]);
-    CHECK_SET_ERR(splitter != nullptr, QString("CircularViewSplitter is null"));
+    QScrollBar *horScroll = GTWidget::findExactWidget<QScrollBar *>(os, "CircularViewSplitter_horScroll");
+    CHECK_SET_ERR(horScroll != nullptr, "Can't find circular view splitter's horScrollbar");
 
-    QList<QScrollBar *> scrolls = splitter->findChildren<QScrollBar *>("CircularViewSplitter_horScroll");
-    CHECK_SET_ERR(scrolls.size() == 1, QString("Too many scrolls"));
-    QScrollBar *horScroll = scrolls[0];
-
+    // We use sleep as scrolling is executing too fast without sleep
     horScroll->setValue(horScroll->value() + 13);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
