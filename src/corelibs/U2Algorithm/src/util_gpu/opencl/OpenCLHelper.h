@@ -32,6 +32,9 @@
 #    include <U2Core/global.h>
 
 #    define OPENCL_DRIVER_LIB "OpenCL"
+#ifdef Q_OS_DARWIN
+#    define OPENCL_DRIVER_LIB2 "/System/Library/Frameworks/OpenCL.framework/OpenCL"
+#endif
 
 namespace U2 {
 

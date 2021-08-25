@@ -62,6 +62,12 @@ OpenCLHelper::OpenCLHelper()
     coreLog.details(QObject::tr("Loading OPENCL driver library"));
 
     openclLib.load();
+#ifdef Q_OS_DARWIN
+    if (!openclLib.isLoaded()) {
+        openclLib.setFileName(OPENCL_DRIVER_LIB2);
+        openclLib.load();
+    }
+#endif
     if (!openclLib.isLoaded()) {
         coreLog.details(QObject::tr("Cannot load OpenCL library. Error while loading %1").arg(openclLib.fileName()));
         status = Error_NoDriverLib;
