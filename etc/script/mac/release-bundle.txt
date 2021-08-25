@@ -1043,6 +1043,8 @@ Unipro UGENE.app/Contents/MacOS/data/samples/Raw
 Unipro UGENE.app/Contents/MacOS/data/samples/Raw/raw.seq
 Unipro UGENE.app/Contents/MacOS/data/samples/SCF
 Unipro UGENE.app/Contents/MacOS/data/samples/SCF/90-JRI-07.scf
+Unipro UGENE.app/Contents/MacOS/data/samples/Sanger
+Unipro UGENE.app/Contents/MacOS/data/samples/Sanger/alignment.ugenedb
 Unipro UGENE.app/Contents/MacOS/data/samples/Stockholm
 Unipro UGENE.app/Contents/MacOS/data/samples/Stockholm/CBS.sto
 Unipro UGENE.app/Contents/MacOS/data/samples/Stockholm/UPSK.sto
