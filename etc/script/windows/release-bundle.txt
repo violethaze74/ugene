@@ -979,6 +979,8 @@ data/samples/Raw
 data/samples/Raw/raw.seq
 data/samples/SCF
 data/samples/SCF/90-JRI-07.scf
+data/samples/Sanger
+data/samples/Sanger/alignment.ugenedb
 data/samples/Stockholm
 data/samples/Stockholm/CBS.sto
 data/samples/Stockholm/UPSK.sto
