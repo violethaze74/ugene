@@ -441,10 +441,11 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         return;
 
     //************end: set arguments****************
-
-    clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
-    if (CL_INVALID_QUEUE_PROPERTIES == err) {  // device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
-        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, 0, &err);
+    static cl_command_queue_properties props = CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
+    clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, props, &err);
+    if (hasOPENCLError(err, "OpenCL: cl::CommandQueue(..., CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, ...) failed, changing to 'in-order'")) {
+        props = 0;
+        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, props, &err);
     }
     if (hasOPENCLError(err, "cl::CommandQueue() failed "))
         return;
