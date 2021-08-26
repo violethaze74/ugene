@@ -31,6 +31,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTScrollBar.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -5609,10 +5610,13 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
     //    5. Find scroll in splitter
     //    6. Scroll to end, then to begin
 
-    GTFileDialog::openFileList(os,
-                               testDir + "_common_data/regression/6759/",
-                               QStringList() << "annotations.gb"
-                                             << "sequence.gb");
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "sequence.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os,
+                           testDir + "_common_data/regression/6759/",
+                           "annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "Unknown features"),
                   "No 'Unknown features' object!");
@@ -5633,34 +5637,28 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
-    CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count").arg(seqNum));
+    CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count: %1").arg(seqNum));
 
     QScrollBar *horScroll = GTWidget::findExactWidget<QScrollBar *>(os, "CircularViewSplitter_horScroll");
-    CHECK_SET_ERR(horScroll != nullptr, "Can't find circular view splitter's horScrollbar");
 
     // We use sleep as scrolling is executing too fast without sleep
-    horScroll->setValue(horScroll->value() + 13);
+    // Also, we don't want to break different scrolls by some optimizations (if any)
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 13);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    horScroll->setValue(horScroll->value() + 26);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 39);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    horScroll->setValue(horScroll->value() + 39);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    horScroll->setValue(360);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 13);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    horScroll->setValue(horScroll->value() - 13);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
-    horScroll->setValue(horScroll->value() - 26);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-    horScroll->setValue(horScroll->value() - 39);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-    horScroll->setValue(0);
+    GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
