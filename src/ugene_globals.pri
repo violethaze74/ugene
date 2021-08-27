@@ -105,24 +105,8 @@ linux-g++ {
     }
 }
 
-isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = /usr
+isEmpty( INSTALL_PREFIX )  : INSTALL_PREFIX  = dist/ugene-$${UGENE_VERSION}
 
-isEmpty( INSTALL_BINDIR )  : INSTALL_BINDIR  = $$INSTALL_PREFIX/bin
-isEmpty( INSTALL_LIBDIR )  {
-    INSTALL_LIBDIR  = $$INSTALL_PREFIX/lib
-}
-
-isEmpty( INSTALL_MANDIR )  : INSTALL_MANDIR  = $$INSTALL_PREFIX/share/man
-isEmpty( INSTALL_DATADIR ) : INSTALL_DATADIR = $$INSTALL_PREFIX/share
-
-isEmpty( UGENE_INSTALL_DESKTOP ) : UGENE_INSTALL_DESKTOP = $$INSTALL_DATADIR/applications
-isEmpty( UGENE_INSTALL_PIXMAPS ) : UGENE_INSTALL_PIXMAPS = $$INSTALL_DATADIR/pixmaps
-isEmpty( UGENE_INSTALL_DATA )    : UGENE_INSTALL_DATA    = $$INSTALL_DATADIR/ugene/data
-isEmpty( UGENE_INSTALL_ICONS )   : UGENE_INSTALL_ICONS   = $$INSTALL_DATADIR/icons
-isEmpty( UGENE_INSTALL_MIME )    : UGENE_INSTALL_MIME    = $$INSTALL_DATADIR/mime/packages
-isEmpty( UGENE_INSTALL_DIR )     : UGENE_INSTALL_DIR     = $$INSTALL_LIBDIR/ugene
-isEmpty( UGENE_INSTALL_BINDIR )  : UGENE_INSTALL_BINDIR  = $$INSTALL_BINDIR
-isEmpty( UGENE_INSTALL_MAN )     : UGENE_INSTALL_MAN     = $$INSTALL_MANDIR/man1
 
 win32 : QMAKE_LFLAGS *= /MACHINE:X64
 
@@ -143,11 +127,6 @@ isEmpty(UGENE_OPENCL_DETECTED) : UGENE_OPENCL_DETECTED = 1
 defineTest( use_opencl ) {
     contains( UGENE_OPENCL_DETECTED, 1) : return (true)
     return (false)
-}
-
-# establishing binary-independet data directory for *nix installation
-unix {
-    DEFINES *= UGENE_DATA_DIR=\\\"$$UGENE_INSTALL_DATA\\\"
 }
 
 # new conditional function for case 'unix but not macx'
