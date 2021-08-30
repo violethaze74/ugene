@@ -6067,9 +6067,9 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
 GUI_TEST_CLASS_DEFINITION(test_6872) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    class Scenario : public CustomScenario {
+    class FillTrimAndMapWizardWithHumanT1 : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
@@ -6079,8 +6079,8 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
             GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            const QString expectedRowNamingPolicy = "Sequence name from file";
-            const QString currentRowNamingPolicy = GTUtilsWizard::getParameter(os, "Read name in result alignment").toString();
+            QString expectedRowNamingPolicy = "Sequence name from file";
+            QString currentRowNamingPolicy = GTUtilsWizard::getParameter(os, "Read name in result alignment").toString();
             CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
                           QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
                               .arg(expectedRowNamingPolicy)
@@ -6089,8 +6089,12 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
+    //1. Open "Trim and Map Sanger reads" sample in workflow.
+    //2. Set human_T1.fa as input files on first and second wizard pages.
+    //3. Run schema.
+    //Expected state: workflow stopped work with "No read satisfy minimum similarity criteria" error message in the log.
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
