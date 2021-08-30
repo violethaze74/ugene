@@ -5645,22 +5645,16 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
     // Also, we don't want to break different scrolls by some optimizations (if any)
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 13);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 39);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 13);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
