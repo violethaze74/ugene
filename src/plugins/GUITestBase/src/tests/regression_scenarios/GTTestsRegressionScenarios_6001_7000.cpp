@@ -6094,7 +6094,7 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     //3. Run schema.
     //Expected state: workflow stopped work with "No read satisfy minimum similarity criteria" error message in the log.
     GTLogTracer l;
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
