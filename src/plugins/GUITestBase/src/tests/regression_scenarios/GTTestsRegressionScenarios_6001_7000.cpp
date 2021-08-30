@@ -6064,6 +6064,39 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
     CHECK_SET_ERR(value == "cistrome.xml", QString("Motif database value: expected 'cistrome.xml', current: '%1'").arg(value))
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6872) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            GTWidget::clickWindowTitle(os, wizard);
+
+            GTUtilsWizard::setParameter(os, "Reference", QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            const QString expectedRowNamingPolicy = "Sequence name from file";
+            const QString currentRowNamingPolicy = GTUtilsWizard::getParameter(os, "Read name in result alignment").toString();
+            CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
+                          QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
+                              .arg(expectedRowNamingPolicy)
+                              .arg(currentRowNamingPolicy));
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    GTLogTracer l;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario));
+    GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(l.checkMessage("No read satisfy minimum similarity criteria"), "No expected message in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6875) {
     // 1. Open "_common_data/genbank/HQ007052.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/HQ007052.gb");

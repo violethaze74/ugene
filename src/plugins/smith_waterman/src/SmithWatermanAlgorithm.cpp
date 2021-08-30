@@ -117,7 +117,7 @@ void SmithWatermanAlgorithm::launch(const SMatrix &_substitutionMatrix,
                                     int _minScore,
                                     SmithWatermanSettings::SWResultView _resultView) {
     setValues(_substitutionMatrix, _patternSeq, _searchSeq, _gapOpen, _gapExtension, _minScore, _resultView);
-    if (isValidParams() && calculateMatrixLength()) {
+    if (calculateMatrixLength() && isValidParams()) {
         switch (resultView) {
             case SmithWatermanSettings::MULTIPLE_ALIGNMENT:
                 calculateMatrixForMultipleAlignmentResult();
@@ -137,6 +137,8 @@ bool SmithWatermanAlgorithm::isValidParams() {
     if (searchSeq.length() < patternSeq.length())
         return false;
     if (gapOpen >= 0 || gapExtension >= 0)
+        return false;
+    if (matrixLength > 100000)
         return false;
     return true;
 }
