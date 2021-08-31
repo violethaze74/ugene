@@ -101,7 +101,7 @@ quint64 SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(const QByteArray
 void SmithWatermanAlgorithmSSE2::launch(const SMatrix &_substitutionMatrix, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView) {
     setValues(_substitutionMatrix, _patternSeq, _searchSeq, _gapOpen, _gapExtension, _minScore, _resultView);
     int maxScore = 0;
-    if (isValidParams() && calculateMatrixLength()) {
+    if (calculateMatrixLength() && isValidParams()) {
         maxScore = calculateMatrixSSE2(patternSeq.length(), (unsigned char *)searchSeq.data(), searchSeq.length(), (-1) * (gapOpen + gapExtension), (-1) * (gapExtension));
 
         if (minScore <= maxScore) {

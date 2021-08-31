@@ -132,14 +132,18 @@ void SmithWatermanAlgorithm::launch(const SMatrix &_substitutionMatrix,
 }
 
 bool SmithWatermanAlgorithm::isValidParams() {
-    if (searchSeq.length() <= 0 || patternSeq.length() <= 0)
+    if (searchSeq.length() <= 0 || patternSeq.length() <= 0) {
         return false;
-    if (searchSeq.length() < patternSeq.length())
+    }
+    if (searchSeq.length() < patternSeq.length()) {
         return false;
-    if (gapOpen >= 0 || gapExtension >= 0)
+    }
+    if (gapOpen >= 0 || gapExtension >= 0) {
         return false;
-    if (matrixLength > 100000)
+    }
+    if (matrixLength > 100000 && resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
         return false;
+    }
     return true;
 }
 
