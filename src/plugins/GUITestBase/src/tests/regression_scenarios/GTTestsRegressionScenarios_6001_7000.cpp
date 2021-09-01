@@ -5644,17 +5644,11 @@ GUI_TEST_CLASS_DEFINITION(test_6759)
     // We use sleep as scrolling is executing too fast without sleep
     // Also, we don't want to break different scrolls by some optimizations (if any)
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 13);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 39);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 13);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
