@@ -21,6 +21,7 @@
 
 #include "SQLiteSequenceDbi.h"
 
+#include <U2Core/Log.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>

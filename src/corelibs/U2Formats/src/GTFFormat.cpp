@@ -24,19 +24,16 @@
 #include <QScopedArrayPointer>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
-
-#include "DocumentFormatUtils.h"
 
 namespace U2 {
 
