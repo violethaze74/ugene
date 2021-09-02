@@ -31,10 +31,7 @@
 
 namespace U2 {
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-
-#define U2_APP_VERSION_STRING TOSTRING(U2_APP_VERSION)
+#define U2_APP_VERSION_STRING U2_TOSTRING(U2_APP_VERSION)
 #define VERSION_DEV_SUFFIX "dev"
 
 const QString Version::buildDate = __DATE__;

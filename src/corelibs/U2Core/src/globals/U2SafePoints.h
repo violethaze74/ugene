@@ -44,7 +44,7 @@ public:
      * but if GUI or XML tests mode is enabled the function will make UGENE to stop (call std::abort)
      * after printing the message.
      */
-    static void fail(const QString &message = "");
+    static void fail(const QString &message);
 };
 }  // namespace U2
 
@@ -87,7 +87,8 @@ public:
 */
 #define SAFE_POINT_EXT(condition, extraOp, result) \
     if (Q_UNLIKELY(!(condition))) { \
-        U2::U2SafePoints::fail(); \
+        QString message = U2_TOSTRING(condition); \
+        U2::U2SafePoints::fail(QString("Trying to recover from error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
         extraOp; \
         return result; \
     }
