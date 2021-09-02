@@ -105,7 +105,7 @@ if [ "${UGENE_BUILD_AND_TEST_SKIP_TESTING}" -ne "1" ]; then
   env
   echo "##teamcity[blockClosed name='Environment']"
 
-  # Create a copy on _common_data dir for each suite
+  # Create a copy of _common_data dir for each suite
   echo "##teamcity[blockOpened name='Copying test data']"
   mkdir "${UGENE_DIR}/data/cistrome"
   i=1
