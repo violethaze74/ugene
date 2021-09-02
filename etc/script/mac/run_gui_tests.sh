@@ -44,13 +44,11 @@ echo "##teamcity[blockClosed name='Environment']"
 
 # Copy 'tools' into 'ugene' dir.
 # Reason: Teamcity cleanup of 'ugene' dir removes all symlinks recursively and cleanup the original 'tools' repository.
-if [ "${UGENE_SKIP_COPY_TOOLS}" -ne "1" ]; then
-  echo "##teamcity[blockOpened name='Copy tools']"
-  rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${UGENE_DIR}" || {
-    echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
-  }
-  echo "##teamcity[blockClosed name='Copy tools']"
-fi
+echo "##teamcity[blockOpened name='Copy tools']"
+rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${UGENE_DIR}" || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
+}
+echo "##teamcity[blockClosed name='Copy tools']"
 
 # ============== Run tests
 echo "##teamcity[blockOpened name='Running tests']"
@@ -70,6 +68,6 @@ export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
 export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
 
-echo "${UGENE_DIR}/ugeneui" --gui-test-suite="${UGENE_GUI_TEST_SUITE}"
-"${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt" &
+"${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt"
+
 echo "##teamcity[blockClosed name='Running tests']"
