@@ -500,10 +500,9 @@ void FixedMdiArea::setViewMode(QMdiArea::ViewMode mode) {
     if (mode == QMdiArea::TabbedView) {
         // FIXME QTBUG-9293, Adding a close button to tabbed QMdiSubWindows
         QList<QTabBar *> tb = findChildren<QTabBar *>();
-        foreach (QTabBar *t, tb) {
+        for (QTabBar *t : qAsConst(tb)) {
             if (t->parentWidget() == this) {
                 t->setTabsClosable(true);
-                connect(t, SIGNAL(tabCloseRequested(int)), SLOT(closeSubWindow(int)));
             }
         }
     } else {
@@ -541,7 +540,7 @@ void FixedMdiArea::tileSubWindows() {
     }
 
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    SAFE_POINT_EXT(nullptr != mainWindow, QMdiArea::tileSubWindows(), );
+    SAFE_POINT_EXT(mainWindow != nullptr, QMdiArea::tileSubWindows(), );
 
     QPoint topLeft = mainWindow->mapToGlobal(QPoint(0, 0));
     static QPoint compensationOffset = QPoint(0, -22);  // I think, it is a menu bar. I'm not sure that it has constant height.
