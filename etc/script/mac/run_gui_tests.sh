@@ -7,7 +7,7 @@
 
 # ============== Environment for test script
 TEAMCITY_WORK_DIR=$(pwd)
-UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene_app"
+UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene_app/Unipro UGENE.app/Contents/MacOS"
 echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
 
 if [ -z "${UGENE_USE_DIRECT_API_TO_OPEN_FILES}" ]; then export UGENE_USE_DIRECT_API_TO_OPEN_FILES="1"; fi
@@ -55,17 +55,14 @@ fi
 # ============== Run tests
 echo "##teamcity[blockOpened name='Running tests']"
 
-# Create a copy of _common_data dir
+# Create a blueprint copy of _common_data dir.
 echo "##teamcity[blockOpened name='Copying test data']"
 mkdir -p "test/_common_data"
-# Sync tests dir
 rsync -a --delete test_data/_common_data/ test/_common_data/
-# Sync data dir
-rsync -a --delete "${UGENE_DIR}/data/" data/
 echo "Finished copying data"
 echo "##teamcity[blockClosed name='Copying test data']"
 
-export UGENE_MASTER_USER_INI="${UGENE_DIR}/ugene-master.ini"
+export UGENE_MASTER_USER_INI="${TEAMCITY_WORK_DIR}/ugene-master.ini"
 
 export UGENE_TESTS_PATH="${TEAMCITY_WORK_DIR}/test/"
 export UGENE_DATA_PATH="${TEAMCITY_WORK_DIR}/data/"
@@ -73,6 +70,6 @@ export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
 export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
 
-echo "${UGENE_DIR}/Unipro UGENE.app/Contents/MacOS/ugeneui" --gui-test-suite="${UGENE_GUI_TEST_SUITE}"
+echo "${UGENE_DIR}/ugeneui" --gui-test-suite="${UGENE_GUI_TEST_SUITE}"
 "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt" &
 echo "##teamcity[blockClosed name='Running tests']"
