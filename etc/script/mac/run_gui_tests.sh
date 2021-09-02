@@ -71,8 +71,8 @@ export UGENE_TESTS_PATH="${TEAMCITY_WORK_DIR}/test/"
 export UGENE_DATA_PATH="${TEAMCITY_WORK_DIR}/data/"
 export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
-export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library_${UGENE_GUI_TEST_SUITE_NUMBER}.ugenedb"
+export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
 
-echo "${UGENE_DIR}/ugeneui --gui-test-suite=${UGENE_GUI_TEST_SUITE}"
+echo "${UGENE_DIR}/Unipro UGENE.app/Contents/MacOS/ugeneui" --gui-test-suite="${UGENE_GUI_TEST_SUITE}"
 "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt" &
 echo "##teamcity[blockClosed name='Running tests']"
