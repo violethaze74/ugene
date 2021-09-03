@@ -11,6 +11,9 @@ SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 BUILD_DIR="${SOURCE_DIR}/src/_release"
 
+# Include CUDA by default into the release build
+if [ -z "${UGENE_CUDA_DETECTED}" ]; then UGENE_CUDA_DETECTED="1"; fi
+
 rm -rf "${BUILD_DIR}"
 
 cd "${SOURCE_DIR}" || {
@@ -41,8 +44,10 @@ rm -rf "${BUNDLE_DIR}"
 cp -r "${BUILD_DIR}" "${BUNDLE_DIR}"
 rm "${BUNDLE_DIR}/"*.lib
 rm "${BUNDLE_DIR}/"*.pdb
+rm "${BUNDLE_DIR}/"*.exp
 rm "${BUNDLE_DIR}/plugins/"*.lib
 rm "${BUNDLE_DIR}/plugins/"*.pdb
+rm "${BUNDLE_DIR}/plugins/"*.exp
 
 echo "Copy resources"
 cp "${SOURCE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
