@@ -768,6 +768,22 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7405) {
+    // Check that UGENE does not crash when incorrect reference sequence name is used.
+
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7405.fa");
+    model.referenceUrl = "/some-wrong-url";
+    model.length = 100 * 1000 * 1000;
+
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString error = logTracer.getJoinedErrorString();
+    CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
