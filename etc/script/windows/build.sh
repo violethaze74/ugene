@@ -11,8 +11,10 @@ SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
 BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 BUILD_DIR="${SOURCE_DIR}/src/_release"
 
-# Include CUDA by default into the release build
-if [ -z "${UGENE_CUDA_DETECTED}" ]; then UGENE_CUDA_DETECTED="1"; fi
+# Include CUDA by default into the release build.
+if [ -z "${UGENE_CUDA_DETECTED}" ]; then
+  UGENE_QMAKE_PARAMS=${UGENE_QMAKE_PARAMS} UGENE_CUDA_DETECTED=1
+fi
 
 rm -rf "${BUILD_DIR}"
 
@@ -24,7 +26,7 @@ cd "${SOURCE_DIR}" || {
 echo "##teamcity[blockOpened name='qmake']"
 echo "Running qmake"
 #"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
-"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc || {
+"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc ${UGENE_QMAKE_PARAMS} || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake failed']"
   exit 1
 }
