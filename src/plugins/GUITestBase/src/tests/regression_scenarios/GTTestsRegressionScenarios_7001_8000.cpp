@@ -919,6 +919,26 @@ GUI_TEST_CLASS_DEFINITION(test_7415_2) {
     CHECK_SET_ERR(sequence1 == sequence2, "Sequences are not equal");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7415_3) {
+    // Check that by default Random Sequence generator does not generate identical windows.
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7415_3.fa");
+    model.seed = 10;
+    model.window = 50;
+    model.length = 2 * model.window;
+
+    GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+    CHECK_SET_ERR(sequence.length() == model.length, "Invalid sequence length: " + QString::number(sequence.length()));
+    QString window1Sequence = sequence.mid(0, model.window);
+    QString window2Sequence = sequence.mid(model.window, model.window);
+
+    CHECK_SET_ERR(window1Sequence != window2Sequence, "Sequences are equal");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
