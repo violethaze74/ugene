@@ -25,6 +25,7 @@
 #include <QSqlError>
 
 #include <U2Core/Folder.h>
+#include <U2Core/Log.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2SafePoints.h>

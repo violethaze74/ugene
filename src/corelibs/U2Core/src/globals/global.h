@@ -121,6 +121,9 @@
 #define PATH_PREFIX_DATA "data"
 #define PATH_PREFIX_SCRIPTS "scripts"
 
+#define U2_STRINGIFY(x) #x
+#define U2_TOSTRING(x) U2_STRINGIFY(x)
+
 namespace U2 {
 
 enum TriState {

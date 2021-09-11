@@ -21,6 +21,7 @@
 
 #include "MysqlUpgraderFrom_1_16_To_1_24.h"
 
+#include <U2Core/Log.h>
 #include <U2Core/U2AttributeUtils.h>
 
 #include "mysql_dbi/MysqlDbi.h"
