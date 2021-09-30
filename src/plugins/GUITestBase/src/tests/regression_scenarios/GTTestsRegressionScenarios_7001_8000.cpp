@@ -755,6 +755,42 @@ GUI_TEST_CLASS_DEFINITION(test_7384_2) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7401) {
+    // 1. Open human_T1.fa.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Select any part of sequence.
+    PanView* panView = GTUtilsSequenceView::getPanViewByNumber(os);
+    auto startPoint = panView->mapToGlobal(panView->rect().center());
+    auto endPoint = QPoint(startPoint.x() + 150, startPoint.y());
+    GTMouseDriver::dragAndDrop(startPoint, endPoint);
+
+    // 3. Move mouse a bit upper
+    endPoint = QPoint(endPoint.x(), endPoint.y() - 20);
+    GTMouseDriver::moveTo(endPoint);
+
+    // Only one selection is presented
+    auto firstSelection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(firstSelection.size() == 1, QString("Expected first selections: 1, current: %1").arg(firstSelection.size()));
+
+    // 4. Double click and move the cursor to the right (or to the left).
+    GTMouseDriver::click();
+    GTMouseDriver::press();
+    endPoint = QPoint(endPoint.x() + 150, endPoint.y());
+    GTMouseDriver::moveTo(endPoint);
+    GTMouseDriver::release();
+
+    // Only one selection is presented and it's been expanded to the right
+    auto secondSelection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(secondSelection.size() == 1, QString("Expected second selections: 1, current: %1").arg(secondSelection.size()));
+
+    int firstSelectionEndPos = firstSelection.first().endPos();
+    int secondSelectionEndPos = secondSelection.first().endPos();
+    CHECK_SET_ERR(firstSelectionEndPos < secondSelectionEndPos,
+        QString("The first selection end pos should be lesser than the second selection end pos: first = %1, second = %2").arg(firstSelectionEndPos).arg(secondSelectionEndPos));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7403) {
     // Check that there is no crash when generating very large (2Gb) sequences.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7403.fa");
