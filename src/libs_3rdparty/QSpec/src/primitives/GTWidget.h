@@ -27,6 +27,7 @@
 #include <QAbstractButton>
 #include <QAbstractItemView>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
@@ -123,6 +124,9 @@ public:
 
     /** Calls findExactWidget with QCheckBox type. Shortcut method. */
     static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QComboBox type. Shortcut method. */
+    static QComboBox* findComboBox(GUITestOpStatus& os, const QString& widgetName, const QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
 
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
     static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
