@@ -524,7 +524,15 @@ void FindPatternMsaWidget::sl_onSearchPatternChanged() {
 }
 
 void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOutsideChanges) {
+    stopCurrentSearchTask();
+    clearResults();
+
     setCorrectPatternsString();
+    if (searchTask != nullptr) {
+        // A new search task was started as the result of the recursive
+        // 'setCorrectPatternsString' method call.
+        return;
+    }
     enableDisableMatchSpin();
     checkStateAndUpdateStatus();
     if (!messageFlagMap.isEmpty()) {
@@ -534,8 +542,6 @@ void FindPatternMsaWidget::sl_validateStateAndStartNewSearch(bool activatedByOut
     U2OpStatusImpl os;
     QStringList newPatterns = getPatternsFromTextPatternField(os);
     CHECK_OP(os, )
-    stopCurrentSearchTask();
-    clearResults();
     currentResultIndex = -1;
     if (isSearchInNamesMode) {
         runSearchInSequenceNames(newPatterns);
