@@ -47,7 +47,8 @@ public:
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
-    void setVisible(bool isVisible) override;
+private slots:
+    void sl_show() override;
 
 private:
     MaGraphOverview *graphOverview = nullptr;

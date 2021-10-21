@@ -111,24 +111,21 @@ MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getOverviewArea"
-QWidget *GTUtilsMsaEditor::getOverviewArea(GUITestOpStatus &os) {
-    QWidget *activeWindow = getActiveMsaEditorWindow(os);
-    return GTWidget::findExactWidget<MaEditorOverviewArea *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME, activeWindow);
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "getGraphOverview"
-QWidget *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
-    QWidget *overviewArea = getOverviewArea(os);
-    return GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_graph", overviewArea);
+MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    MaGraphOverview *result = GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
+    GT_CHECK_RESULT(nullptr != result, "MaGraphOverview is not found", nullptr);
+    return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSimpleOverview"
-QWidget *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
-    QWidget *overviewArea = getOverviewArea(os);
-    return GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + "_simple", overviewArea);
+MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
+    QWidget *activeWindow = getActiveMsaEditorWindow(os);
+    MaSimpleOverview *result = GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
+    GT_CHECK_RESULT(nullptr != result, "MaSimpleOverview is not found", nullptr);
+    return result;
 }
 #undef GT_METHOD_NAME
 
