@@ -23,10 +23,6 @@
 #define _U2_MSA_EDITOR_OVERVIEW_H_
 
 #include <QAction>
-#include <QWidget>
-
-#include <U2Core/global.h>
-
 #include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {
@@ -47,8 +43,7 @@ public:
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
-private slots:
-    void sl_show() override;
+    void setVisible(bool isVisible) override;
 
 private:
     MaGraphOverview *graphOverview = nullptr;

@@ -36,8 +36,6 @@ class MaEditorNameList;
 class MSAEditorSequenceArea;
 class MSAEditorTreeViewerUI;
 class MsaEditorWgt;
-class MaGraphOverview;
-class MaSimpleOverview;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
 class GTUtilsMsaEditor {
@@ -56,8 +54,12 @@ public:
 
     static MSAEditor *getEditor(HI::GUITestOpStatus &os);
     static MsaEditorWgt *getEditorUi(HI::GUITestOpStatus &os);
-    static MaGraphOverview *getGraphOverview(HI::GUITestOpStatus &os);
-    static MaSimpleOverview *getSimpleOverview(HI::GUITestOpStatus &os);
+
+    /** Returns overview area widget: a container of graph & simple overviews. */
+    static QWidget *getOverviewArea(HI::GUITestOpStatus &os);
+
+    static QWidget *getGraphOverview(HI::GUITestOpStatus &os);
+    static QWidget *getSimpleOverview(HI::GUITestOpStatus &os);
     static MSAEditorTreeViewerUI *getTreeView(HI::GUITestOpStatus &os);
     static MaEditorNameList *getNameListArea(HI::GUITestOpStatus &os);
     static MSAEditorConsensusArea *getConsensusArea(HI::GUITestOpStatus &os);
