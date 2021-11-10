@@ -53,7 +53,6 @@ const QString StockholmFormat::COLUMN_ANNOTATION_RF = "#=GC RF";
 
 /** Maximum line length supported by UGENE when parsing Stockholm format. */
 static constexpr int MAX_STOCKHOLM_LINE_LENGTH = 1024 * 1024;
-static constexpr char TERM_SYM = '\0';
 
 static const QString HEADER = "# STOCKHOLM 1.0\n\n";
 static const QString HEADER_PREFIX = "# STOCKHOLM 1.";
