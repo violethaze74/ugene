@@ -135,7 +135,7 @@ public:
      * Maximum supported length of MSA object.
      * The MSA Editor uses by-value caches (QVector/QList) that are proportional to the MSA length which can't grow above 2Gb limit.
      */
-    static constexpr quint64 MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
+    static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos) override;
