@@ -98,7 +98,7 @@ void InSilicoPcrWorkerFactory::init() {
         Descriptor mismatchesDesc(MISMATCHES_ATTR_ID, InSilicoPcrWorker::tr("Mismatches"), InSilicoPcrWorker::tr("Number of allowed mismatches."));
         Descriptor perfectDesc(PERFECT_ATTR_ID, InSilicoPcrWorker::tr("Min perfect match"), InSilicoPcrWorker::tr("Number of bases that match exactly on 3' end of primers."));
         Descriptor maxProductDesc(MAX_PRODUCT_ATTR_ID, InSilicoPcrWorker::tr("Max product size"), InSilicoPcrWorker::tr("Maximum size of amplified region."));
-        Descriptor useAmbiguousBases(USE_AMBIGUOUS_BASES_ID, InSilicoPcrWorker::tr("Use ambiguous bases"), InSilicoPcrWorker::tr("Search for ambiguous bases (as \"N\) if checked."));
+        Descriptor useAmbiguousBases(USE_AMBIGUOUS_BASES_ID, InSilicoPcrWorker::tr("Use ambiguous bases"), InSilicoPcrWorker::tr("Search for ambiguous bases (as \"N\") if checked."));
         Descriptor annotationsDesc(EXTRACT_ANNOTATIONS_ATTR_ID, InSilicoPcrWorker::tr("Extract annotations"), InSilicoPcrWorker::tr("Extract annotations within a product region."));
 
         attributes << new Attribute(primersDesc, BaseTypes::STRING_TYPE(), true);
