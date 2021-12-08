@@ -6016,32 +6016,32 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="54"/>
         <source>Extra command line options for IQ-TREE (1 per line):</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные опции для IQ-TREE (1 на строку)</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="56"/>
         <source>View all options</source>
-        <translation type="unfinished"></translation>
+        <translation>Посмотреть все опции</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="57"/>
         <source>Open official &apos;Command reference&apos; guide for IQ-TREE in browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Откройте официальную &apos;Command reference&apos; документацию для IQ-TREE в браузере</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="65"/>
         <source>Use one parameter per one line</source>
-        <translation type="unfinished"></translation>
+        <translation>Используйте один параметр на одну строку</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="71"/>
         <source>IQ-TREE options</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки IQ-TREE</translation>
     </message>
     <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="75"/>
         <source>Display Options</source>
-        <translation type="unfinished">Опции отображения</translation>
+        <translation>Опции отображения</translation>
     </message>
 </context>
 <context>
