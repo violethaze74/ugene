@@ -1675,7 +1675,9 @@ var %2; //parsed line number</translation>
         <source>Invalid [start position] or [end position] or [length] column assignment!
 
 Please assign a column role by clicking on a column header in &apos;Results preview&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверное назначение столбцов: [стартовая позиция] или [конечная позиция] или [длина]!
+
+Изменить назначение колонки можно дважды нажав на ее заголовок в таблице &apos;Просмотр результата&apos;</translation>
     </message>
     <message>
         <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="487"/>
