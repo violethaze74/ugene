@@ -1643,6 +1643,29 @@ GUI_TEST_CLASS_DEFINITION(test_7490) {
     CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7504) {
+    // Check that multi-region complement(join()) annotation is exported in the correct order.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/short.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "complement(join(1..1,10..10))"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportSequenceOfSelectedAnnotationsFiller(os,
+                                                                               sandBoxDir + "test_7504_out.fa",
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                                                                               ExportSequenceOfSelectedAnnotationsFiller::Merge));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
+    CHECK_SET_ERR(exportedSequence == "GA", "Sequence not matched: " + exportedSequence);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7505) {
     // Check that double-click on the sequence name in MSA editor toggles centering of the start/end sequence region.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
