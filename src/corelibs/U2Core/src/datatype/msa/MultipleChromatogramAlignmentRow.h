@@ -196,27 +196,23 @@ public:
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
     QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool &hasTwoPeaks) const;
 
-    /**
-     * Exactly compares the rows. Sequences and gap models must match.
-     * However, the rows are considered equal if they differ by trailing gaps only.
-     */
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const;
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRowData &rowData) const;
+    /** Adds sequence chromatogram equality check to the base MultipleAlignmentRowData::isEqualCore method. */
+    bool isEqualCore(const MultipleAlignmentRowData &other) const override;
 
     bool isDefault() const override;
 
-    /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    bool operator!=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator!=(const MultipleAlignmentRowData &maRowData) const override;
-    bool operator==(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator==(const MultipleAlignmentRowData &maRowData) const override;
+    /** Checks that 'other' is MultipleChromatogramAlignmentRowData and calls the MCA version of the method. */
+    bool isEqual(const MultipleAlignmentRowData &other) const override;
+
+    /** Compares 2 rows. Rows are equal if their names, sequences, no-leading-gap models and chromatograms are equal. */
+    bool isEqual(const MultipleChromatogramAlignmentRowData &other) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    void crop(U2OpStatus &os, qint64 startPosition, qint64 count);
+    void crop(U2OpStatus &os, qint64 startPosition, qint64 count) override;
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
