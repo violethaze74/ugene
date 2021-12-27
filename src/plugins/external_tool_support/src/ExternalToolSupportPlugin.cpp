@@ -209,7 +209,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    // MakeBLASTDB from BLAST+
+    // MakeBLASTDB from BLAST
     FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
     etRegistry->registerEntry(makeBLASTDBTool);
 
@@ -304,13 +304,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new TrimmomaticSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
-        etRegistry->setToolkitDescription("BLAST", tr("The <i>Basic Local Alignment Search Tool</i> (BLAST) finds regions of local similarity between sequences. "
-                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. "
-                                                      "BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families."));
-
-        etRegistry->setToolkitDescription("BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
-
-        etRegistry->setToolkitDescription("GPU-BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
+        etRegistry->setToolkitDescription("BLAST", tr("<i>BLAST</i> finds regions of similarity between biological sequences. "
+                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance."));
 
         etRegistry->setToolkitDescription("Bowtie", tr("<i>Bowtie<i> is an ultrafast, memory-efficient short read aligner. "
                                                        "It aligns short DNA sequences (reads) to the human genome at "
@@ -334,7 +329,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
                                                         " for the human genome, its memory footprint is typically around 3.2Gb."
                                                         " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
 
-        ExternalToolSupportAction *makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
+        auto makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {FormatDBSupport::ET_MAKEBLASTDB_ID});
         makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
         connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
 
@@ -349,11 +344,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         blastPlusViewCtx->init();
         QStringList toolList;
         toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
-        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST+ search..."), this, toolList);
+        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST search..."), this, toolList);
         blastPlusAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
         connect(blastPlusAction, SIGNAL(triggered()), blastNPlusTool, SLOT(sl_runWithExtFileSpecify()));
 
-        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST+ query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
+        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
         blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
         connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 

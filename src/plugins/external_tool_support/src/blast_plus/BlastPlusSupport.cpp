@@ -171,11 +171,7 @@ BlastPlusSupport::BlastPlusSupport(const QString &id, const QString &name, const
         description = "";
         versionRegExp = QRegExp("Reverse Position Specific BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     }
-    if (id == ET_GPU_BLASTP_ID) {
-        toolKitName = "GPU-BLAST+";
-    } else {
-        toolKitName = "BLAST+";
-    }
+    toolKitName = "BLAST";
     lastDBName = "";
     lastDBPath = "";
 }
@@ -192,8 +188,8 @@ void BlastPlusSupport::sl_runWithExtFileSpecify() {
     }
     if (!isOneOfToolConfigured) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ Search");
-        msgBox->setText(tr("Path for BLAST+ tools not selected."));
+        msgBox->setWindowTitle("BLAST Search");
+        msgBox->setText(tr("Path for BLAST tools not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -274,8 +270,8 @@ void BlastPlusSupportContext::initViewContext(GObjectView *view) {
     assert(av != nullptr);
     Q_UNUSED(av);
 
-    ExternalToolSupportAction *queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST+..."), 2000, toolIdList);
-    queryAction->setObjectName("query_with_blast+");
+    ExternalToolSupportAction *queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST..."), 2000, toolIdList);
+    queryAction->setObjectName("query_with_blast");
 
     addViewAction(queryAction);
     connect(queryAction, SIGNAL(triggered()), SLOT(sl_showDialog()));
@@ -330,7 +326,7 @@ void BlastPlusSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu 
 }
 
 void BlastPlusSupportContext::sl_showDialog() {
-    //Check that any of BLAST+ tools and temporary folder path defined
+    //Check that any of BLAST tools and temporary folder path defined
     bool isOneOfToolConfigured = false;
     for (const QString &id : qAsConst(toolIdList)) {
         if (!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
@@ -340,8 +336,8 @@ void BlastPlusSupportContext::sl_showDialog() {
     }
     if (!isOneOfToolConfigured) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ Search");
-        msgBox->setText(tr("Path for BLAST+ tools not selected."));
+        msgBox->setWindowTitle("BLAST Search");
+        msgBox->setText(tr("Path for BLAST tools not selected."));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -394,7 +390,7 @@ void BlastPlusSupportContext::sl_showDialog() {
         Task *t = nullptr;
         if (settings.programName == "blastn") {
             t = new BlastNPlusSupportTask(settings);
-        } else if (settings.programName == "blastp" || settings.programName == "gpu-blastp") {
+        } else if (settings.programName == "blastp") {
             t = new BlastPPlusSupportTask(settings);
         } else if (settings.programName == "blastx") {
             t = new BlastXPlusSupportTask(settings);
@@ -413,8 +409,8 @@ void BlastPlusSupportContext::sl_showDialog() {
 void BlastPlusSupportContext::sl_fetchSequenceById() {
     if (AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ " + QString(BlastDbCmdSupport::ET_BLASTDBCMD));
-        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(BlastDbCmdSupport::ET_BLASTDBCMD));
+        msgBox->setWindowTitle("BLAST " + QString(BlastDbCmdSupport::ET_BLASTDBCMD));
+        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(BlastDbCmdSupport::ET_BLASTDBCMD));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
