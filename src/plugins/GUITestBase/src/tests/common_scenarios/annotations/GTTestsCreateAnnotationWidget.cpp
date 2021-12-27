@@ -237,11 +237,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            //    3. Ensure that the default type is "Misc. Feature".
+            //    3. Ensure that the default type is "misc_feature".
             const QString type = getTypeFromFullWidget(os, dialog);
-            CHECK_SET_ERR("Misc. Feature" == type,
+            CHECK_SET_ERR("misc_feature" == type,
                           QString("An unexpected default type: expect '%1', got '%2'")
-                              .arg("Misc. Feature")
+                              .arg("misc_feature")
                               .arg(type));
 
             //    4. Ensure that there is no type "Kinase".
@@ -250,11 +250,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                           QString("Amino type is unexpectedly present for nucleotide sequence: '%1'")
                               .arg("Kinase"));
 
-            //    5. Ensure that there is a type "Transit Peptide".
-            const bool transitPeptidePresent = checkTypePresenceInFullWidget(os, "Transit Peptide", dialog);
+            //    5. Ensure that there is a type "transit_peptide".
+            const bool transitPeptidePresent = checkTypePresenceInFullWidget(os, "transit_peptide", dialog);
             CHECK_SET_ERR(transitPeptidePresent,
                           QString("Universal type is unexpectedly missed for nucleotide sequence: '%1'")
-                              .arg("Transit Peptide"));
+                              .arg("transit_peptide"));
 
             //    6. Select type "bHLH Domain", fill other fields. Accept the dialog.
             setTypeInFullWidget(os, "bHLH Domain", dialog);
@@ -287,11 +287,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
-            //    4. Ensure that the default type is "Misc. Feature".
+            //    4. Ensure that the default type is "misc_feature".
             const QString type = getTypeFromNormalWidget(os, dialog);
-            CHECK_SET_ERR("Misc. Feature" == type,
+            CHECK_SET_ERR("misc_feature" == type,
                           QString("An unexpected default type: expect '%1', got '%2'")
-                              .arg("Misc. Feature")
+                              .arg("misc_feature")
                               .arg(type));
 
             //    5. Ensure that there is no type "Kinase".
@@ -300,11 +300,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                           QString("Amino type is unexpectedly present for nucleotide sequence: '%1'")
                               .arg("Kinase"));
 
-            //    6. Ensure that there is a type "Transit Peptide".
-            const bool transitPeptidePresent = checkTypePresenceInNormalWidget(os, "Transit Peptide", dialog);
+            //    6. Ensure that there is a type "transit_peptide".
+            const bool transitPeptidePresent = checkTypePresenceInNormalWidget(os, "transit_peptide", dialog);
             CHECK_SET_ERR(transitPeptidePresent,
                           QString("Universal type is unexpectedly missed for nucleotide sequence: '%1'")
-                              .arg("Transit Peptide"));
+                              .arg("transit_peptide"));
 
             //    7. Select type "bHLH Domain", fill other fields. Accept the dialog.
             setTypeInNormalWidget(os, "bHLH Domain", dialog);
@@ -330,11 +330,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    3. Enter any pattern that can be found. Open "Annotation parameters" group.
     openFileOpenSearchTabAndSetPattern(os, dataDir + "samples/FASTA/human_T1.fa");
 
-    //    4. Ensure that the default type is "Misc. Feature".
+    //    4. Ensure that the default type is "misc_feature".
     const QString defaultType = getTypeFromOptionsPanelWidget(os);
-    CHECK_SET_ERR("Misc. Feature" == defaultType,
+    CHECK_SET_ERR("misc_feature" == defaultType,
                   QString("An unexpected default type: expect '%1', got '%2'")
-                      .arg("Misc. Feature")
+                      .arg("misc_feature")
                       .arg(defaultType));
 
     //    5. Ensure that there is no type "Kinase".
@@ -343,11 +343,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                   QString("Amino type is unexpectedly present for nucleotide sequence: '%1'")
                       .arg("Kinase"));
 
-    //    6. Ensure that there is a type "Transit Peptide".
-    const bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "Transit Peptide");
+    //    6. Ensure that there is a type "transit_peptide".
+    const bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "transit_peptide");
     CHECK_SET_ERR(transitPeptidePresent,
                   QString("Universal type is unexpectedly missed for nucleotide sequence: '%1'")
-                      .arg("Transit Peptide"));
+                      .arg("transit_peptide"));
 
     //    7. Select type "bHLH Domain". Create annotations from the search results.
     setTypeInOptionsPanelWidget(os, "bHLH Domain");
@@ -370,11 +370,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            //    3. Ensure that the default type is "Misc. Feature".
+            //    3. Ensure that the default type is "misc_feature".
             const QString type = getTypeFromFullWidget(os, dialog);
-            CHECK_SET_ERR("Misc. Feature" == type,
+            CHECK_SET_ERR("misc_feature" == type,
                           QString("An unexpected default type: expect '%1', got '%2'")
-                              .arg("Misc. Feature")
+                              .arg("misc_feature")
                               .arg(type));
 
             //    4. Ensure that there is no type "bHLH Domain".
@@ -383,11 +383,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                           QString("Nucleotide type is unexpectedly present for amino sequence: '%1'")
                               .arg("bHLH Domain"));
 
-            //    5. Ensure that there is a type "Transit Peptide".
-            const bool transitPeptidePresent = checkTypePresenceInFullWidget(os, "Transit Peptide", dialog);
+            //    5. Ensure that there is a type "transit_peptide".
+            const bool transitPeptidePresent = checkTypePresenceInFullWidget(os, "transit_peptide", dialog);
             CHECK_SET_ERR(transitPeptidePresent,
                           QString("Universal type is unexpectedly missed for amino sequence: '%1'")
-                              .arg("Transit Peptide"));
+                              .arg("transit_peptide"));
 
             //    6. Select type "Kinase", fill other fields. Accept the dialog.
             setTypeInFullWidget(os, "Kinase", dialog);
@@ -420,11 +420,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "AAAAAACCCCCCC");
 
-            //    4. Ensure that the default type is "Misc. Feature".
+            //    4. Ensure that the default type is "misc_feature".
             const QString type = getTypeFromNormalWidget(os, dialog);
-            CHECK_SET_ERR("Misc. Feature" == type,
+            CHECK_SET_ERR("misc_feature" == type,
                           QString("An unexpected default type: expect '%1', got '%2'")
-                              .arg("Misc. Feature")
+                              .arg("misc_feature")
                               .arg(type));
 
             //    5. Ensure that there is no type "bHLH Domain".
@@ -433,11 +433,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                           QString("Nucleotide type is unexpectedly present for amino sequence: '%1'")
                               .arg("bHLH Domain"));
 
-            //    6. Ensure that there is a type "Transit Peptide".
-            const bool transitPeptidePresent = checkTypePresenceInNormalWidget(os, "Transit Peptide", dialog);
+            //    6. Ensure that there is a type "transit_peptide".
+            const bool transitPeptidePresent = checkTypePresenceInNormalWidget(os, "transit_peptide", dialog);
             CHECK_SET_ERR(transitPeptidePresent,
                           QString("Universal type is unexpectedly missed for amino sequence: '%1'")
-                              .arg("Transit Peptide"));
+                              .arg("transit_peptide"));
 
             //    7. Select type "Kinase", fill other fields. Accept the dialog.
             setTypeInNormalWidget(os, "Kinase", dialog);
@@ -456,18 +456,18 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //    Test annotation type for an options panel widget and amino acid sequence.
+    //    Test annotation type in options panel widget and amino acid sequence.
 
     //    1. Open "_common_data/fasta/AMINO.fa".
     //    2. Open "Search in Sequence" options panel tab.
     //    3. Enter any pattern that can be found. Open "Annotation parameters" group.
     openFileOpenSearchTabAndSetPattern(os, testDir + "_common_data/fasta/AMINO.fa", "DDDEEEEEEE");
 
-    //    4. Ensure that the default type is "Misc. Feature".
+    //    4. Ensure that the default type is "misc_feature".
     const QString defaultType = getTypeFromOptionsPanelWidget(os);
-    CHECK_SET_ERR("Misc. Feature" == defaultType,
+    CHECK_SET_ERR("misc_feature" == defaultType,
                   QString("An unexpected default type: expect '%1', got '%2'")
-                      .arg("Misc. Feature")
+                      .arg("misc_feature")
                       .arg(defaultType));
 
     //    5. Ensure that there is no type "bHLH Domain".
@@ -476,11 +476,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                   QString("Nucleotide type is unexpectedly present for amino sequence: '%1'")
                       .arg("bHLH Domain"));
 
-    //    6. Ensure that there is a type "Transit Peptide".
-    const bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "Transit Peptide");
+    //    6. Ensure that there is a type "transit_peptide".
+    const bool transitPeptidePresent = checkTypePresenceInOptionsPanelWidget(os, "transit_peptide");
     CHECK_SET_ERR(transitPeptidePresent,
                   QString("Universal type is unexpectedly missed for amino sequence: '%1'")
-                      .arg("Transit Peptide"));
+                      .arg("transit_peptide"));
 
     //    7. Select type "Kinase". Create annotations from the search results.
     setTypeInOptionsPanelWidget(os, "Kinase");
@@ -488,8 +488,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
 
     //    Expected state: there is an annotation with type "Kinase".
-    const QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0006");
-    CHECK_SET_ERR("Kinase" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Kinase").arg(type));
+    QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0006");
+    CHECK_SET_ERR(type == "Kinase", QString("An unexpected annotation type: expect '%1', got '%2'").arg("Kinase").arg(type));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -506,11 +506,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             //    3. Enter "tel".
             GTKeyboardDriver::keySequence("tel");
 
-            //    Expected state: "Telomere" type is selected. Cancel the dialog.
+            //    Expected state: "telomere" type is selected. Cancel the dialog.
             const QString type = getTypeFromFullWidget(os, dialog);
-            CHECK_SET_ERR("Telomere" == type,
+            CHECK_SET_ERR("telomere" == type,
                           QString("1: An unexpected feature type: expect '%1', got '%2'")
-                              .arg("Telomere")
+                              .arg("telomere")
                               .arg(type));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -534,11 +534,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             GTKeyboardDriver::keySequence("tel");
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
-            //    Expected state: "Telomere" type is selected. Cancel the dialog.
+            //    Expected state: "telomere" type is selected. Cancel the dialog.
             const QString type = getTypeFromNormalWidget(os, dialog);
-            CHECK_SET_ERR("Telomere" == type,
+            CHECK_SET_ERR("telomere" == type,
                           QString("2: An unexpected feature type: expect '%1', got '%2'")
-                              .arg("Telomere")
+                              .arg("telomere")
                               .arg(type));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -553,15 +553,15 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
 
     //    7. Click to the annotation type combobox. Enter "tel". Click "Enter".
-    //    Expected state: "Telomere" type is selected. Cancel the dialog.
+    //    Expected state: "telomere" type is selected. Cancel the dialog.
     GTWidget::click(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType"));
     GTKeyboardDriver::keySequence("tel");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     const QString type = getTypeFromOptionsPanelWidget(os);
-    CHECK_SET_ERR("Telomere" == type,
+    CHECK_SET_ERR("telomere" == type,
                   QString("3: An unexpected feature type: expect '%1', got '%2'")
-                      .arg("Telomere")
+                      .arg("telomere")
                       .arg(type));
 }
 
@@ -1124,20 +1124,20 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an annotation named "Misc. Feature" of "Misc. Feature" type in a group named "Misc. Feature".
-    QStringList expectedGroupNames = QStringList() << "Misc. Feature  (0, 1)";
+    //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
+    QStringList expectedGroupNames = QStringList() << "misc_feature  (0, 1)";
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
-    QStringList expectedAnnotationNames = QStringList() << "Misc. Feature";
-    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotationNames = QStringList() << "misc_feature";
+    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    QString expectedAnnotationType = "Misc. Feature";
-    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "Misc. Feature");
+    QString expectedAnnotationType = "misc_feature";
+    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "misc_feature");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    4. Call "Create new annotation" dialog.
 
@@ -1158,7 +1158,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is a correctly named annotation of "Misc. Feature" type in a group named the same as the annotation.
+    //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0023  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
@@ -1167,7 +1167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0023  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    expectedAnnotationType = "Misc. Feature";
+    expectedAnnotationType = "misc_feature";
     annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0023");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
@@ -1263,20 +1263,20 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     openFileAndCallSmithWatermanDialog(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an annotation named "Misc. Feature" of "Misc. Feature" type in a group named "Misc. Feature".
-    QStringList expectedGroupNames = QStringList() << "Misc. Feature  (0, 1)";
+    //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
+    QStringList expectedGroupNames = QStringList() << "misc_feature  (0, 1)";
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
-    QStringList expectedAnnotationNames = QStringList() << "Misc. Feature";
-    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotationNames = QStringList() << "misc_feature";
+    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    QString expectedAnnotationType = "Misc. Feature";
-    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "Misc. Feature");
+    QString expectedAnnotationType = "misc_feature";
+    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "misc_feature");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    4. Call "Smith-Waterman Search" dialog. Set any pattern. Open "Input and output" tab.
 
@@ -1298,7 +1298,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is a correctly named annotation of "Misc. Feature" type in a group named the same as the annotation.
+    //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0024  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
@@ -1307,7 +1307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0024  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    expectedAnnotationType = "Misc. Feature";
+    expectedAnnotationType = "misc_feature";
     annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0024");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
@@ -1395,20 +1395,20 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an annotation named "Misc. Feature" of "Misc. Feature" type in a group named "Misc. Feature".
-    QStringList expectedGroupNames = QStringList() << "Misc. Feature  (0, 1)";
+    //    Expected state: there is an annotation named "misc_feature" of "misc_feature" type in a group named "misc_feature".
+    QStringList expectedGroupNames = QStringList() << "misc_feature  (0, 1)";
     QStringList groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
 
-    QStringList expectedAnnotationNames = QStringList() << "Misc. Feature";
-    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotationNames = QStringList() << "misc_feature";
+    QStringList annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    QString expectedAnnotationType = "Misc. Feature";
-    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "Misc. Feature");
+    QString expectedAnnotationType = "misc_feature";
+    QString annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "misc_feature");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
     setGroupName(os, "");
     setAnnotationName(os, "");
 
@@ -1418,7 +1418,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is a correctly named annotation of "Misc. Feature" type in a group named the same as the annotation.
+    //    Expected state: there is a correctly named annotation of "misc_feature" type in a group named the same as the annotation.
     expectedGroupNames = QStringList() << "test_0025  (0, 1)";
     groupNames = GTUtilsAnnotationsTreeView::getGroupNames(os);
     CHECK_SET_ERR(expectedGroupNames.toSet() == groupNames.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroupNames.join(", ")).arg(groupNames.join(", ")));
@@ -1427,7 +1427,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     annotationNames = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0025  (0, 1)");
     CHECK_SET_ERR(expectedAnnotationNames == annotationNames, QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotationNames.join(", ")).arg(annotationNames.join(", ")));
 
-    expectedAnnotationType = "Misc. Feature";
+    expectedAnnotationType = "misc_feature";
     annotationType = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0025");
     CHECK_SET_ERR(expectedAnnotationType == annotationType, QString("Unexpected annotation type: expect '%1', got '%2'").arg(expectedAnnotationType).arg(annotationType));
 
@@ -1503,10 +1503,10 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     //    Expected state: there is an annotation with region "100..200".
     QString expectedLocation = "100..200";
-    QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    4. Call "Create new annotation" dialog.
 
@@ -1528,10 +1528,10 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     //    Expected state: there is an annotation with region "join(100..200,300..400)".
     expectedLocation = "join(100..200,300..400)";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    6. Call "Create new annotation" dialog.
 
@@ -1553,10 +1553,10 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     //    Expected state: there is an annotation with region "complement(100..200)".
     expectedLocation = "complement(100..200)";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    8. Call "Create new annotation" dialog.
 
@@ -1578,7 +1578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     //    Expected state: there is an annotation with region "complement(join(100..200,300..400))".
     expectedLocation = "complement(join(100..200,300..400))";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 }
 
@@ -1604,10 +1604,10 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     //    Expected state: there is an annotation with region "100..200".
     QString expectedLocation = "100..200";
-    QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    QString location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    4. Call "Create new annotation" dialog.
 
@@ -1629,10 +1629,10 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     //    Expected state: there is an annotation with region "complement(100..200)".
     expectedLocation = "complement(100..200)";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    6. Call "Create new annotation" dialog.
 
@@ -1653,10 +1653,10 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     //    Expected state: there is an annotation with region "join(200..199950,1..100)".
     expectedLocation = "join(200..199950,1..100)";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
-    GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
+    GTUtilsAnnotationsTreeView::deleteItem(os, "misc_feature  (0, 1)");
 
     //    8. Call "Create new annotation" dialog.
 
@@ -1677,50 +1677,41 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     //    Expected state: there is an annotation with region "complement(join(200..199950,1..100))".
     expectedLocation = "complement(join(200..199950,1..100))";
-    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
+    location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "misc_feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
-    //    Test creation annotation on sequence with existing annotation table in a full widget.
+    // Test creation annotation on sequence with existing annotation table in a full widget.
 
-    //    1. Open "data/samples/Genbank/murine.gb".
-    //    2. Call "Create new annotation" dialog.
-
-    class Scenario1 : public CustomScenario {
+    // Add a new annotation to the existing document.
+    class CreateAnnotationInExistingDocumentScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
-            //    3. Select "Existing table" option. Accept the dialog.
             setExistingTable(os, dialog);
             setGenbankLocation(os, "100..200", dialog);
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CreateAnnotationInExistingDocumentScenario()));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an additional annotation in the existing annotation table.
-    QStringList expectedGroups = QStringList() << "CDS  (0, 4)"
-                                               << "comment  (0, 1)"
-                                               << "misc_feature  (0, 2)"
-                                               << "source  (0, 1)"
-                                               << "Misc. Feature  (0, 1)";
+    // Expected state: there is an additional annotation in the existing annotation table.
+    QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = {"misc_feature"};
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 3)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
-    //    4. Call "Create new annotation" dialog.
-    class Scenario2 : public CustomScenario {
+    // Add a new annotation into a new document.
+    class CreateAnnotationInNewDocumentScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             //    5. Select "Create new table" option. Set any valid table path. Accept the dialog.
@@ -1732,116 +1723,96 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario2));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CreateAnnotationInNewDocumentScenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is a new annotation table with an annotation within.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    //  Expected state: there is a new annotation table with an annotation within.
+    expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0028.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList("misc_feature");
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
-    //    Test creation annotation on sequence with existing annotation table in an embedded widget.
+    // Test creation annotation on sequence with existing annotation table in an embedded widget.
 
-    //    1. Open "data/samples/Genbank/murine.gb".
-    //    2. Call "Smith-Waterman Search" dialog. Set any pattern. Open "Input and output" tab.
-
-    class Scenario1 : public CustomScenario {
+    // Add a new annotation to the existing document.
+    class CreateAnnotationInExistingDocumentScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
-
-            //    3. Select "Existing table" option. Accept the dialog.
             setExistingTable(os, dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario1));
+    GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new CreateAnnotationInExistingDocumentScenario()));
     openFileAndCallSmithWatermanDialog(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is an additional annotation in the existing annotation table.
-    QStringList expectedGroups = QStringList() << "CDS  (0, 4)"
-                                               << "comment  (0, 1)"
-                                               << "misc_feature  (0, 2)"
-                                               << "source  (0, 1)"
-                                               << "Misc. Feature  (0, 1)";
+    QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = {"misc_feature"};
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 3)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
-    //    4. Call "Smith-Waterman Search" dialog. Set any pattern. Open "Input and output" tab.
-
-    class Scenario2 : public CustomScenario {
+    // Add a new annotation to a new document.
+    class CreateAnnotationInNewDocumentScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-
             setSmithWatermanPatternAndOpenLastTab(os, dialog, "GATTTTATTTAGTCTCCAG");
-
-            //    5. Select "Create new table" option. Set any valid table path. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0029");
             setNewTable(os, dialog, sandBoxDir + "test_0029/test_0029.gb");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario2));
+    GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new CreateAnnotationInNewDocumentScenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation table with an annotation within.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0029.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList("misc_feature");
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
-    //    Test creation annotation on sequence with existing annotation table in an options panel widget.
+    // Test annotation creation from the Options Panel.
 
-    //    1. Open "data/samples/Genbank/murine.gb".
-    //    2. Open "Search in Sequence" options panel tab. Set any pattern. Open "Save annotation(s) to" group.
     openFileOpenSearchTabAndSetPattern(os, dataDir + "samples/Genbank/murine.gb", "GATTTTATTTAGTCTCCAG");
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os);
 
-    //    3. Select "Existing table" option. Click "Create annotations" button.
+    // Add a new annotation to the existing document.
     setExistingTable(os);
 
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an additional annotation in the existing annotation table.
-    QStringList expectedGroups = QStringList() << "CDS  (0, 4)"
-                                               << "comment  (0, 1)"
-                                               << "misc_feature  (0, 2)"
-                                               << "source  (0, 1)"
-                                               << "Misc. Feature  (0, 1)";
+    // Expected state: there is an additional annotation in the existing annotation table.
+    QStringList expectedGroups = {"CDS  (0, 4)", "comment  (0, 1)", "misc_feature  (0, 3)", "source  (0, 1)"};
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = QStringList("misc_feature");
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 3)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
-    //    4. Select "Create new table" option. Set any valid table path. Click "Create annotations" button.
+    //  Add a new annotation to a new document.
     QDir().mkpath(sandBoxDir + "test_0030");
     setNewTable(os, nullptr, sandBoxDir + "test_0030/test_0030.gb");
 
@@ -1849,12 +1820,12 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation table with an annotation within.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    expectedGroups = QStringList("misc_feature  (0, 1)");
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0030.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList("misc_feature");
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
@@ -1957,7 +1928,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0031  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
@@ -2062,7 +2033,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0032  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
@@ -2163,7 +2134,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
     QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "test_0033  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
@@ -2202,12 +2173,12 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    QStringList expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    QStringList expectedGroups = QStringList() << "misc_feature  (0, 1)";
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0034_1.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Call "Create new annotation" dialog.
@@ -2230,12 +2201,12 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0034_2.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList() << "misc_feature";
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
@@ -2273,12 +2244,12 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    QStringList expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    QStringList expectedGroups = QStringList() << "misc_feature  (0, 1)";
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0035_1.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Call "Smith-Waterman" dialog. Set any pattern. Open "Input and output" tab.
@@ -2302,12 +2273,12 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0035_2.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList() << "misc_feature";
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
@@ -2335,12 +2306,12 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    QStringList expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    QStringList expectedGroups = QStringList() << "misc_feature  (0, 1)";
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0036_1.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    QStringList expectedAnnotations = QStringList() << "Misc. Feature";
-    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    QStringList expectedAnnotations = QStringList() << "misc_feature";
+    QStringList annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 
     //    4. Select "Create new table" option. Set any valid file path in the lineedit. Accept the dialog.
@@ -2350,12 +2321,12 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in a new annotation table.
-    expectedGroups = QStringList() << "Misc. Feature  (0, 1)";
+    expectedGroups = QStringList() << "misc_feature  (0, 1)";
     groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "Annotations [test_0036_2.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
-    expectedAnnotations = QStringList() << "Misc. Feature";
-    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "Misc. Feature  (0, 1)");
+    expectedAnnotations = QStringList() << "misc_feature";
+    annotations = GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(os, "misc_feature  (0, 1)");
     CHECK_SET_ERR(expectedAnnotations.toSet() == annotations.toSet(), QString("Unexpected annotation names: expect '%1', got '%2'").arg(expectedAnnotations.join(", ")).arg(annotations.join(", ")));
 }
 
@@ -3287,9 +3258,9 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     openFileAndCallCreateAnnotationDialog(os, testDir + "_common_data/genbank/1seq.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: there is an annotation with type "Misc. Feature".
+    //    Expected state: there is an annotation with type "misc_feature".
     const QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0044");
-    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Misc. Feature").arg(type));
+    CHECK_SET_ERR("misc_feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("misc_feature").arg(type));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0045) {
@@ -3338,13 +3309,13 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: there is an annotation with type "Misc. Feature".
+    // Expected state: there is an annotation with type "misc_feature".
     QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_1");
-    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Misc. Feature").arg(type));
+    CHECK_SET_ERR("misc_feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("misc_feature").arg(type));
 
-    // Expected state: there is an annotation with type "Misc. Feature".
+    // Expected state: there is an annotation with type "misc_feature".
     type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_2");
-    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("Misc. Feature").arg(type));
+    CHECK_SET_ERR("misc_feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'").arg("misc_feature").arg(type));
 }
 
 }  // namespace GUITest_common_scenarios_create_annotation_widget
