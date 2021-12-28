@@ -19,39 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_DIALOG_FILLER_H_
-#define _U2_FORMAT_DB_DIALOG_FILLER_H_
+#ifndef _U2_BLAST_DB_CMD_DIALOG_H
+#define _U2_BLAST_DB_CMD_DIALOG_H
 
-#include <base_dialogs/GTFileDialog.h>
+#include <ui_BlastDBCmdDialog.h>
 
-#include "utils/GTUtilsDialog.h"
+#include <QDialog>
+
+#include <U2Gui/DialogUtils.h>
+
+#include "BlastDBCmdTask.h"
+#include "utils/BlastDBSelectorWidgetController.h"
 
 namespace U2 {
-using namespace HI;
 
-class FormatDBRunDialogFiller : public Filler {
+class SaveDocumentController;
+
+class BlastDBCmdDialog : public QDialog, public Ui_BlastDBCmdDialog {
+    Q_OBJECT
 public:
-    class Parameters {
-    public:
-        enum Type {
-            Nucleotide,
-            Protein,
-        };
+    BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &settings, QWidget *parent);
+    void setQueryId(const QString &queryId);
 
-        bool justCancel = false;
-        bool checkAlphabetType = false;
-        QString inputFilePath;
-        Type alphabetType = Nucleotide;
-        QString outputDirPath;
-    };
-
-    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
-    void commonScenario() override;
+private slots:
+    void accept();
+    void sl_update();
 
 private:
-    Parameters parameters;
+    void initSaveController();
+
+    BlastDBSelectorWidgetController *dbSelector;
+    SaveDocumentController *saveController;
+    BlastDBCmdSupportTaskSettings &settings;
+    QPushButton *fetchButton;
 };
 
-}  // namespace U2
-
-#endif  // _U2_FORMAT_DB_DIALOG_FILLER_H_
+}    // namespace U2
+#endif    // _U2_BLAST_DB_CMD_DIALOG_H

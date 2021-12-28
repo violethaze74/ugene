@@ -19,39 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_DIALOG_FILLER_H_
-#define _U2_FORMAT_DB_DIALOG_FILLER_H_
+#ifndef _U2_TBLASTX_SUPPORT_TASK_H
+#define _U2_TBLASTX_SUPPORT_TASK_H
 
-#include <base_dialogs/GTFileDialog.h>
-
-#include "utils/GTUtilsDialog.h"
+#include "BlastCommonTask.h"
 
 namespace U2 {
-using namespace HI;
 
-class FormatDBRunDialogFiller : public Filler {
+class TBlastXTask : public BlastCommonTask {
+    Q_OBJECT
 public:
-    class Parameters {
-    public:
-        enum Type {
-            Nucleotide,
-            Protein,
-        };
-
-        bool justCancel = false;
-        bool checkAlphabetType = false;
-        QString inputFilePath;
-        Type alphabetType = Nucleotide;
-        QString outputDirPath;
-    };
-
-    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
-    void commonScenario() override;
-
-private:
-    Parameters parameters;
+    TBlastXTask(const BlastTaskSettings &settings)
+        : BlastCommonTask(settings) {
+    }
+    virtual ExternalToolRunTask *createBlastTask();
 };
 
-}  // namespace U2
-
-#endif  // _U2_FORMAT_DB_DIALOG_FILLER_H_
+}    // namespace U2
+#endif    // _U2_TBLASTX_SUPPORT_TASK_H

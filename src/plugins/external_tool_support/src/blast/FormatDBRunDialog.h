@@ -19,39 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_DIALOG_FILLER_H_
-#define _U2_FORMAT_DB_DIALOG_FILLER_H_
+#ifndef _U2_FORMATDB_SUPPORT_RUN_DIALOG_H
+#define _U2_FORMATDB_SUPPORT_RUN_DIALOG_H
 
-#include <base_dialogs/GTFileDialog.h>
+#include <ui_FormatDBRunDialog.h>
 
-#include "utils/GTUtilsDialog.h"
+#include <QDialog>
+
+#include <U2Gui/DialogUtils.h>
+
+#include "FormatDBTask.h"
 
 namespace U2 {
-using namespace HI;
 
-class FormatDBRunDialogFiller : public Filler {
+class FormatDBRunDialog : public QDialog, public Ui_FormatDBRunDialog {
+    Q_OBJECT
 public:
-    class Parameters {
-    public:
-        enum Type {
-            Nucleotide,
-            Protein,
-        };
+    FormatDBRunDialog(const QString &name, FormatDBTaskSettings &settings, QWidget *parent);
+private slots:
+    void sl_formatDB();
+    void sl_lineEditChanged();
 
-        bool justCancel = false;
-        bool checkAlphabetType = false;
-        QString inputFilePath;
-        Type alphabetType = Nucleotide;
-        QString outputDirPath;
-    };
-
-    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
-    void commonScenario() override;
+    void sl_onBrowseInputFiles();
+    void sl_onBrowseInputDir();
+    void sl_onBrowseDatabasePath();
 
 private:
-    Parameters parameters;
+    QString name;    //name of tool that used for formating database
+    FormatDBTaskSettings &settings;
+    QPushButton *formatButton;
+    QPushButton *cancelButton;
 };
 
-}  // namespace U2
-
-#endif  // _U2_FORMAT_DB_DIALOG_FILLER_H_
+}    // namespace U2
+#endif    // _U2_FORMATDB_SUPPORT_RUN_DIALOG_H

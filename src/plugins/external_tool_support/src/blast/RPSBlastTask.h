@@ -19,39 +19,43 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DB_DIALOG_FILLER_H_
-#define _U2_FORMAT_DB_DIALOG_FILLER_H_
+#ifndef _U2_RPS_BLAST_SUPPORT_TASK_H_
+#define _U2_RPS_BLAST_SUPPORT_TASK_H_
 
-#include <base_dialogs/GTFileDialog.h>
+#include <U2Algorithm/CDSearchTaskFactory.h>
 
-#include "utils/GTUtilsDialog.h"
+#include "BlastCommonTask.h"
 
 namespace U2 {
-using namespace HI;
 
-class FormatDBRunDialogFiller : public Filler {
+class RPSBlastTask : public BlastCommonTask {
+    Q_OBJECT
 public:
-    class Parameters {
-    public:
-        enum Type {
-            Nucleotide,
-            Protein,
-        };
-
-        bool justCancel = false;
-        bool checkAlphabetType = false;
-        QString inputFilePath;
-        Type alphabetType = Nucleotide;
-        QString outputDirPath;
-    };
-
-    FormatDBRunDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
-    void commonScenario() override;
-
-private:
-    Parameters parameters;
+    RPSBlastTask(const BlastTaskSettings &settings)
+        : BlastCommonTask(settings) {
+    }
+    virtual ExternalToolRunTask *createBlastTask();
 };
 
-}  // namespace U2
+class LocalCDSearch : public CDSearchResultListener {
+public:
+    LocalCDSearch(const CDSearchSettings &settings);
+    virtual Task *getTask() const {
+        return task;
+    }
+    virtual QList<SharedAnnotationData> getCDSResults() const;
 
-#endif  // _U2_FORMAT_DB_DIALOG_FILLER_H_
+private:
+    RPSBlastTask *task;
+};
+
+class CDSearchLocalTaskFactory : public CDSearchFactory {
+public:
+    virtual CDSearchResultListener *createCDSearch(const CDSearchSettings &settings) const {
+        return new LocalCDSearch(settings);
+    }
+};
+
+}    // namespace U2
+
+#endif
