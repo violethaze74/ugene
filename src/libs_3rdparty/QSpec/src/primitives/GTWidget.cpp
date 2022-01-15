@@ -420,7 +420,7 @@ void GTWidget::clickLabelLink(GUITestOpStatus &os, QWidget *label, int step, int
             }
         }
     }
-    GT_CHECK(false, "label does not contain link");
+    GT_FAIL("label does not contain link", );
 }
 #undef GT_METHOD_NAME
 
@@ -523,6 +523,7 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
     GT_CHECK(widget->isVisible(), "Widget is not visible");
     bool actualEnabledState = widget->isEnabled();
     for (int time = 0; time < GT_OP_WAIT_MILLIS && actualEnabledState != expectedEnabledState; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
         actualEnabledState = widget->isEnabled();
     }
     GT_CHECK(actualEnabledState == expectedEnabledState,
@@ -546,14 +547,13 @@ void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, c
     // Find cell. TODO: scroll to parameter by mouse/keyboard?
     class MainThreadActionScroll : public CustomScenario {
     public:
-        MainThreadActionScroll(QAbstractItemView *itemView, const QModelIndex &index)
-            : CustomScenario(), itemView(itemView), index(index) {
+        MainThreadActionScroll(QAbstractItemView *_itemView, const QModelIndex &_index)
+            : itemView(_itemView), index(_index) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             itemView->scrollTo(index);
         }
-        QAbstractItemView *itemView;
+        QAbstractItemView *itemView = nullptr;
         QModelIndex index;
     };
     GTThread::runInMainThread(os, new MainThreadActionScroll(itemView, index));
