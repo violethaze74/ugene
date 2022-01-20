@@ -35,7 +35,7 @@ namespace U2 {
 BlastDBCmdDialog::BlastDBCmdDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "");
+    new HelpButton(this, buttonBox, "65930731");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Fetch"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
