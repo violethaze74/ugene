@@ -1155,8 +1155,10 @@ GUI_TEST_CLASS_DEFINITION(test_3216_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Add a qualifier with the value "012345678901234567890123456789012345678901234567890123456789".
-    const QString expectedValue = "012345678901234567890123456789012345678901234567890123456789";
-    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_1", expectedValue, "CDS");
+    QString expectedValue = "012345678901234567890123456789012345678901234567890123456789";
+
+    QTreeWidgetItem *cdsItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_1", expectedValue, cdsItem);
 
     //    3. Save the file, reopen the file.
     //    Expected state: the qualifier value is the same.
@@ -1167,8 +1169,8 @@ GUI_TEST_CLASS_DEFINITION(test_3216_1) {
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_1.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
-    const QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_1", "CDS");
-    CHECK_SET_ERR(expectedValue == actualValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
+    QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_1", "CDS");
+    CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3216_2) {
@@ -1179,8 +1181,9 @@ GUI_TEST_CLASS_DEFINITION(test_3216_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Add a qualifier with the value "012345678901234567890123456789 012345678901234567890123456789".
-    const QString expectedValue = "012345678901234567890123456789 012345678901234567890123456789";
-    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_2", expectedValue, "CDS");
+    QString expectedValue = "012345678901234567890123456789 012345678901234567890123456789";
+    QTreeWidgetItem *cdsItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_2", expectedValue, cdsItem);
 
     //    3. Save the file, reopen the file.
     //    Expected state: the qualifier value is the same.
@@ -1191,8 +1194,8 @@ GUI_TEST_CLASS_DEFINITION(test_3216_2) {
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_2.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
-    const QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_2", "CDS");
-    CHECK_SET_ERR(expectedValue == actualValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
+    QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_2", "CDS");
+    CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3216_3) {
@@ -1203,8 +1206,9 @@ GUI_TEST_CLASS_DEFINITION(test_3216_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Add a qualifier with the value "012345678901234567890123456789 0  1 2345678901234567890123456789".
-    const QString expectedValue = "012345678901234567890123456789 0  1 2345678901234567890123456789";
-    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_3", expectedValue, "CDS");
+    QString expectedValue = "012345678901234567890123456789 0  1 2345678901234567890123456789";
+    QTreeWidgetItem *cdsItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "test_3216_3", expectedValue, cdsItem);
 
     //    3. Save the file, reopen the file.
     //    Expected state: the qualifier value is the same.
@@ -1215,8 +1219,8 @@ GUI_TEST_CLASS_DEFINITION(test_3216_3) {
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_3.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
-    const QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_3", "CDS");
-    CHECK_SET_ERR(expectedValue == actualValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
+    QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_3", "CDS");
+    CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3218) {
@@ -1795,7 +1799,7 @@ GUI_TEST_CLASS_DEFINITION(test_3288) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
 
     // 3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "optimized", build the tree
-    QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
     int percent = 0;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && percent == 0; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -1841,19 +1845,17 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS  (0, 14)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "gene  (0, 13)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "mat_peptide  (0, 16)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature  (0, 16)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 14)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "mat_peptide  (0, 16)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "misc_feature  (0, 16)");
 
-    QTreeWidget *annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QScrollBar *scrollBar = annotTreeWidget->verticalScrollBar();
-    const int initialPos = scrollBar->value();
-
+    auto annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    auto scrollBar = annotTreeWidget->verticalScrollBar();
+    int initialPos = scrollBar->value();
     for (int i = 0; i < 15; ++i) {
         GTKeyboardDriver::keyClick(Qt::Key_Down);
     }
-
     CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar hasn't moved");
 }
 
@@ -4906,61 +4908,6 @@ GUI_TEST_CLASS_DEFINITION(test_3805) {
 
 GUI_TEST_CLASS_DEFINITION(test_3809) {
     GTFileDialog::openFile(os, testDir + "_common_data/regression/3809/zF849G6-6a01.p1k.scf.ab1");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_3813) {
-    // 1. Open "samples/Genbank/murine.gb"
-    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    // 2. Press "Find restriction sites" toolbutton
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) override {
-            // 3. Press "Select by length"
-            // 4. Input "7" and press "Ok"
-            GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 6));
-            GTWidget::click(os, GTWidget::findWidget(os, "selectByLengthButton"));
-
-            // 5. Run search
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList(), new Scenario()));
-    GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 6. Press toolbutton "Global automatic annotation updating"
-    // 7. Select all types of annotating
-
-    QWidget *toolbar = GTWidget::findWidget(os, "mwtoolbar_activemdi");
-    QWidget *toolbarExtButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", toolbar, {false});
-    if (toolbarExtButton != nullptr && toolbarExtButton->isVisible()) {
-        GTWidget::click(os, toolbarExtButton);
-    }
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ORFs"));
-    GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Plasmid features"));
-    GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 8. Unload "murine.gb"
-    GTUtilsDocument::unloadDocument(os, "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
-
-    // 9. Load "murine.gb"
-    // Expected state: auto-annotating task started
-    GTUtilsDocument::loadDocument(os, "murine.gb");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
-    // 10. Unload the document, while the auto-annotating task is performing
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to unload document", "UnloadWarning"));
-    GTUtilsDocument::unloadDocument(os, "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

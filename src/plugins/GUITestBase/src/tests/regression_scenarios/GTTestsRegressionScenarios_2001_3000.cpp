@@ -1205,8 +1205,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
     // 2. Open {Actions -> Analyze -> Find tandems...}
     // 3. Click ok
 
-    Runnable *tDialog = new FindTandemsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/result_2187.gb");
-    GTUtilsDialog::waitForDialog(os, tDialog);
+    GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/result_2187.gb"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
@@ -1214,15 +1213,14 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 5)");
+    GTTreeWidget::expand(os, annotationsRoot);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
 
-    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
-    GTUtilsDialog::waitForDialog(os, filler);
-    static QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit");
-    foreach (QTreeWidgetItem *item, items) {
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259"));
+    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit");
+    for (QTreeWidgetItem *item : qAsConst(items)) {
         if (item->text(2) == "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259") {
             CHECK_SET_ERR("9" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "num_of_repeats", item), "Wrong num_of_repeats value");
             CHECK_SET_ERR("1" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "repeat_length", item), "Wrong repeat_length value");
@@ -1232,9 +1230,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
     }
 
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2192) {
@@ -3318,21 +3314,20 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
 
     class MafftInactivation : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+
             QString path = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
             AppSettingsDialogFiller::clearToolPath(os, "MAFFT");
             AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", path);
 
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTLogTracer l;
-
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MafftInactivation()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
     GTUtilsLog::check(os, l);
 }
 GUI_TEST_CLASS_DEFINITION(test_2581) {
@@ -3526,16 +3521,16 @@ GUI_TEST_CLASS_DEFINITION(test_2612) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2619) {
-    //    1. Open file samples/genbank/sars.gb
+    // 1. Open file samples/genbank/sars.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Open context menu for any qualifier on annotation table view.
-    //    Expected state: submenu "Copy" didn't contains items "Edit qualifier" and "Add 'evidence' column"
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_COPY << "edit_qualifier_action", PopupChecker::NotExists));
+    // 2. Open context menu for any qualifier on annotation table view.
+    // Expected state: submenu "Copy" didn't contain items "Edit qualifier" and "Add 'evidence' column"
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_COPY, "edit_qualifier_action"}, PopupChecker::NotExists));
     GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(os, "5'UTR", "evidence");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_COPY << "toggle_column", PopupChecker::NotExists));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_COPY, "toggle_column"}, PopupChecker::NotExists));
     GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(os, "5'UTR", "evidence");
 }
 
@@ -3709,26 +3704,23 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     // 5. Close the dialog
     GTLogTracer l;
 
-    QList<int> resultNumbersToSelect;
-    resultNumbersToSelect << 0 << 1 << 2;
-    const QVariant variantNumbers = QVariant::fromValue<QList<int>>(resultNumbersToSelect);
-    const QVariant searchField = QVariant::fromValue<QPair<int, QString>>(QPair<int, QString>(0, "AB797204.1 AB797210.1 AB797201.1"));
+    QList<int> resultNumbersToSelect = {0, 1, 2};
+    QVariant variantNumbers = QVariant::fromValue<QList<int>>(resultNumbersToSelect);
+    QVariant searchField = QVariant::fromValue<QPair<int, QString>>(QPair<int, QString>(0, "AB797204.1 AB797210.1 AB797201.1"));
 
-    QList<DownloadRemoteFileDialogFiller::Action> remoteDialogActions;
-    remoteDialogActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, QVariant());
-    const QVariant remoteDialogActionsVariant = QVariant::fromValue<QList<DownloadRemoteFileDialogFiller::Action>>(remoteDialogActions);
+    QList<DownloadRemoteFileDialogFiller::Action> remoteDialogActions = {DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, {})};
+    QVariant remoteDialogActionsVariant = QVariant::fromValue<QList<DownloadRemoteFileDialogFiller::Action>>(remoteDialogActions);
 
     QList<NcbiSearchDialogFiller::Action> actions;
     actions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, searchField)
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, QVariant())
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, QVariant())
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, {})
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, {})
             << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SelectResultsByNumbers, variantNumbers)
             << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, remoteDialogActionsVariant)
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, QVariant());
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, {});
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, actions));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Search NCBI GenBank...");
+    GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3743,16 +3735,17 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     // 7. delete this objects through context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : the objects are deleted, the popup is shown
-    GTGlobals::FindOptions safeOptions(false);
-    const QModelIndex firstIndex = GTUtilsProjectTreeView::findIndex(os, "AB797210 features", safeOptions);
+    QModelIndex firstIndex = GTUtilsProjectTreeView::findIndex(os, "AB797210 features", {false});
     CHECK_SET_ERR(!firstIndex.isValid(), "The \"AB797210 features\" item has not been deleted");
-    const QModelIndex secondIndex = GTUtilsProjectTreeView::findIndex(os, "AB797204 features", safeOptions);
+
+    QModelIndex secondIndex = GTUtilsProjectTreeView::findIndex(os, "AB797204 features", {false});
     CHECK_SET_ERR(!secondIndex.isValid(), "The \"AB797204 features\" item has not been deleted");
-    const QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex(os, "AB797201 features", safeOptions);
+
+    QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex(os, "AB797201 features", {false});
     CHECK_SET_ERR(!thirdIndex.isValid(), "The \"AB797201 features\" item has not been deleted");
 
     GTUtilsLog::check(os, l);
@@ -4637,17 +4630,14 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
     // 4) Choose some annotation by left mouse button on the upper sequence view
-    // Expected state: horisontal or vertical selection is shown on DotPlot
-    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", {false});
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, geneItems.at(1)));
-    GTMouseDriver::click();
+    // Expected state: horizontal or vertical selection is shown on DotPlot
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "gene"));
 
     // 5) In second sequence view click Remove sequence on the toolbar
     // Expected state: DotPlot closed and UGENE didn't crash
     GTUtilsMdi::activateWindow(os, "NC_001363 [murine.gb]");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363", GTUtilsMdi::activeWindow(os));
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
 }
 

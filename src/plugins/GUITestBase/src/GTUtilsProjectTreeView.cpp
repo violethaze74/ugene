@@ -59,12 +59,9 @@ void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "checkProjectViewIsClosed"
 void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
     QWidget *documentTreeWidget = nullptr;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
-        if (documentTreeWidget == nullptr) {
-            break;
-        }
     }
     GT_CHECK_RESULT(documentTreeWidget == nullptr, "Project view is opened, but is expected to be closed", )
 }
@@ -744,21 +741,6 @@ QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus 
     }
 
     return documents;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkItemIsExpanded"
-void GTUtilsProjectTreeView::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex) {
-    GT_CHECK(treeView != nullptr, "Tree view is null!");
-    GT_CHECK(itemIndex.isValid(), "Item index is not valid!");
-
-    bool isExpanded = false;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && !isExpanded; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        isExpanded = treeView->isExpanded(itemIndex);
-    }
-    GT_CHECK(isExpanded, "Item is not expaded");
-    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
