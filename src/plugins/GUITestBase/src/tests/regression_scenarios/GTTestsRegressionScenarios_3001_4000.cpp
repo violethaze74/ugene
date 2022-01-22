@@ -1168,7 +1168,7 @@ GUI_TEST_CLASS_DEFINITION(test_3216_1) {
 
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_1.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
     QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_1", "CDS");
     CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
@@ -1193,7 +1193,7 @@ GUI_TEST_CLASS_DEFINITION(test_3216_2) {
 
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_2.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
     QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_2", "CDS");
     CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
@@ -1218,7 +1218,7 @@ GUI_TEST_CLASS_DEFINITION(test_3216_3) {
 
     GTFileDialog::openFile(os, sandBoxDir + "test_3216", "test_3216_3.gen");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
     QString actualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "test_3216_3", "CDS");
     CHECK_SET_ERR(actualValue == expectedValue, QString("The qualifier value is incorrect: expect '%1', got '%2'").arg(expectedValue).arg(actualValue));
 }
@@ -5142,7 +5142,7 @@ GUI_TEST_CLASS_DEFINITION(test_3869) {
     // check comments for vector-nti format
     GTFileDialog::openFile(os, testDir + "_common_data/vector_nti_sequence/unrefined.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "comment");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"comment"});
     QString name = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Author name", "comment");
     CHECK_SET_ERR(name == "Demo User", "unexpected qualifier value: " + name)
 }
@@ -5393,7 +5393,7 @@ GUI_TEST_CLASS_DEFINITION(test_3924) {
     // check comments for vector-nti format
     GTFileDialog::openFile(os, testDir + "_common_data/vector_nti_sequence/unrefined.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
     QString name = GTUtilsAnnotationsTreeView::getQualifierValue(os, "vntifkey", "CDS");
     CHECK_SET_ERR(name == "4", "unexpected qualifier value: " + name)
 }

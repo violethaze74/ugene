@@ -1494,7 +1494,7 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
     CHECK_SET_ERR(blastResultItems.size() >= 2, "Not enough BLAST results");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << blastResultItems.first() << blastResultItems.last());
+    GTUtilsAnnotationsTreeView::selectItems(os, {blastResultItems.first(), blastResultItems.last()});
 
     QStringList expectedNames = QStringList() << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.first())
                                               << GTUtilsAnnotationsTreeView::getQualifierValue(os, "accession", blastResultItems.last());
@@ -2417,7 +2417,7 @@ GUI_TEST_CLASS_DEFINITION(test_1220) {
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: misc_feature annotations created with pattern subsequence length qualifiers set to 6
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "misc_feature");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"misc_feature"});
     QString val = GTUtilsAnnotationsTreeView::getQualifierValue(os, "pattern_match_len", "misc_feature");
     CHECK_SET_ERR(val == "6", "unexpected value: " + val);
     //    Current state: "pattern_subseq_length" qualifiers created and set to 5.
@@ -3413,7 +3413,7 @@ GUI_TEST_CLASS_DEFINITION(test_1321_1) {
     const int annotationsCount = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit").size();
     CHECK_SET_ERR(1 == annotationsCount, QString("Unexpected annotations count: expect '%1', got '%2'").arg(1).arg(annotationsCount));
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "repeat_unit");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"repeat_unit"});
     const QString homology = GTUtilsAnnotationsTreeView::getQualifierValue(os, "repeat_identity", "repeat_unit");
     CHECK_SET_ERR("85" == homology, QString("Unexpected repeat homology: expect '%1', got '%2'").arg(85).arg(homology));
 

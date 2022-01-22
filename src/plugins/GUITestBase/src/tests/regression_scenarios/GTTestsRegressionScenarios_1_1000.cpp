@@ -496,7 +496,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Select newly created fragment
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Fragment (1-5833)");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"Fragment (1-5833)"});
 
     // 5. Select in menu Actions->Cloning->Construct molecule...
     class Scenario : public CustomScenario {
@@ -862,17 +862,20 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
     GTUtilsProjectTreeView::dragAndDrop(os, projectTreeItem, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "pair 1  (0, 2)"
-                                                              << "pair 10  (0, 2)"
-                                                              << "pair 11  (0, 2)"
-                                                              << "pair 12  (0, 2)"
-                                                              << "pair 13  (0, 2)"
-                                                              << "pair 14  (0, 2)"
-                                                              << "pair 15  (0, 2)"
-                                                              << "pair 16  (0, 2)"
-                                                              << "pair 17  (0, 2)"
-                                                              << "pair 18  (0, 2)"
-                                                              << "pair 19  (0, 2)");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os,
+                                                  {
+                                                      "pair 1  (0, 2)",
+                                                      "pair 10  (0, 2)",
+                                                      "pair 11  (0, 2)",
+                                                      "pair 12  (0, 2)",
+                                                      "pair 13  (0, 2)",
+                                                      "pair 14  (0, 2)",
+                                                      "pair 15  (0, 2)",
+                                                      "pair 16  (0, 2)",
+                                                      "pair 17  (0, 2)",
+                                                      "pair 18  (0, 2)",
+                                                      "pair 19  (0, 2)",
+                                                  });
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
@@ -894,7 +897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0678) {
 
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"chain_info"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0680) {
@@ -1074,7 +1077,7 @@ GUI_TEST_CLASS_DEFINITION(test_0702) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select first contig(1..743) region.
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "contig");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"contig"});
 
     // 3. Do context menu{ Export->export sequence of selected annotations).
     // 4. Fill next fields in appeared dialog, and execute it :
@@ -2936,7 +2939,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
                                                                         << "import_annotations_from_CSV_file"));
     GTUtilsProjectTreeView::click(os, "human_T1.fa", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test01");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"test01"});
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "test01") != nullptr, "Annotation item not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "test01") == "1..400", "Annotation region was improted incorrectly")
@@ -2946,7 +2949,7 @@ GUI_TEST_CLASS_DEFINITION(test_0958) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "prop1", "test01") == "", "Qualifier prop1 was improted incorrectly");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "prop2", "test01") == "", "Qualifier prop2 was improted incorrectly");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "test02");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"test02"});
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "test02") != nullptr, "Annotation item not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "test02") == "complement(60108..71020)", "Annotation region was improted incorrectly")
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "Gene", "test02") == "",

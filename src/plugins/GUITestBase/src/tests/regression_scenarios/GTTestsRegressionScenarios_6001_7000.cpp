@@ -999,11 +999,11 @@ GUI_TEST_CLASS_DEFINITION(test_6232_2) {
     /*QTreeWidgetItem* fragment1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
     CHECK_SET_ERR(fragment1 != NULL, "Fragment 1 is not found");
 */
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Fragment 1");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"Fragment 1"});
     QString firstValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "Fragment 1");
     CHECK_SET_ERR(firstValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(firstValue));
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "Fragment 2");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"Fragment 2"});
     QString secondValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "Fragment 2");
     CHECK_SET_ERR(secondValue == "TGAC", QString("Unexpected qualifier value of the first fragment, expected: TGAC, current: %1").arg(secondValue));
 }
@@ -1733,7 +1733,7 @@ GUI_TEST_CLASS_DEFINITION(test_6291) {
     // 2. Click CDS annotation on pan view
     // GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970, 0, true);
     // 3. Select qualifier
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
     QString qValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "product", GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
     // QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "db_xref");
     GTUtilsAnnotationsTreeView::clickItem(os, "product", 1, false);
@@ -6507,7 +6507,7 @@ GUI_TEST_CLASS_DEFINITION(test_6981) {
     GTUtilsAnnotationsTreeView::createAnnotation(os, "<auto>", "ann", "complement(5809..5809)");
 
     // Ensure that the annotation we created is not selected: select another annotation.
-    GTUtilsAnnotationsTreeView::selectItems(os, {"CDS"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"CDS"});
 
     // Click the annotation location in DetView.
     GTUtilsSequenceView::clickAnnotationDet(os, "ann", 5809);

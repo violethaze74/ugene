@@ -1346,7 +1346,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     QTreeWidgetItem *treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
 
     bool ok;
-    GTUtilsAnnotationsTreeView::selectItems(os, {"blast result"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"blast result"});
     int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
     CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
 
@@ -3239,7 +3239,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     // Select "Tools > Sanger data analysis > Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new AddReadsWithReferenceScenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os); // This task may take up to 1 minute. checkMcaEditorWindowIsActive waits only for 30 seconds.
+    GTUtilsTaskTreeView::waitTaskFinished(os);  // This task may take up to 1 minute. checkMcaEditorWindowIsActive waits only for 30 seconds.
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
     // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
@@ -4024,7 +4024,7 @@ GUI_TEST_CLASS_DEFINITION(test_5783) {
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -4844,9 +4844,9 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
 
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "top_primers");
     CHECK_SET_ERR(items.size() >= 2, "Wrong annotations count");
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << items[0]);
+    GTUtilsAnnotationsTreeView::selectItems(os, {items[0]});
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[0]) == "55", "wrong gc percentage");
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << items[1]);
+    GTUtilsAnnotationsTreeView::selectItems(os, {items[1]});
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
 }
 

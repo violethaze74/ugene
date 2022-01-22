@@ -342,7 +342,7 @@ GUI_TEST_CLASS_DEFINITION(test_4026) {
 
     // Expected: there is the same amount of annotations in the panoramic and details views.
     // Actual: annotations are now shown in the views. Their locations and qualifier names are deleted.
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "5'UTR");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"5'UTR"});
     QString value = GTUtilsAnnotationsTreeView::getQualifierValue(os, "evidence", "5'UTR");
     CHECK_SET_ERR("not_experimental" == value, QString("Unexpected qualifier value"));
 }
@@ -938,7 +938,7 @@ GUI_TEST_CLASS_DEFINITION(test_4099) {
     CHECK_SET_ERR(2 == items.length(), "CDS annotations count is not 2");
     foreach (QTreeWidgetItem *item, items) {
         if (item->text(2) == "1656..2450") {
-            GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << item);
+            GTUtilsAnnotationsTreeView::selectItems(os, {item});
             CHECK_SET_ERR("Tn5 neomycin resistance" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "label", item), "Wrong label value");
             break;
         }
@@ -1915,7 +1915,7 @@ GUI_TEST_CLASS_DEFINITION(test_4179) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "comment");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"comment"});
     QString qualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "1", "comment");
     CHECK_SET_ERR(qualifier.indexOf("The reference") > 0, "Expected string is not found");
 }
@@ -3098,7 +3098,7 @@ GUI_TEST_CLASS_DEFINITION(test_4400) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *commentItem = GTUtilsAnnotationsTreeView::findItem(os, "comment");
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "comment");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"comment"});
     QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Original database", commentItem);
     CHECK_SET_ERR(qualValue == "GenBank", "ORIGDB comment was parced incorreclty");
 }
@@ -4379,7 +4379,7 @@ GUI_TEST_CLASS_DEFINITION(test_4702) {
     int totalItemCount = GTTreeWidget::getItems(treeWidget->invisibleRootItem()).size() - 5;  // - 2: source & group, -2: comment & group, -1: empty auto annotations doc.
 
     // Check inversion of 1 annotation.
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ncRNA"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ncRNA"});
     int selectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
     CHECK_SET_ERR(selectedItemCount == 1,
                   QString("1. Incorrect selected annotations count: expected - %1, got - %2 ").arg(1).arg(selectedItemCount));
@@ -4391,7 +4391,7 @@ GUI_TEST_CLASS_DEFINITION(test_4702) {
                   QString("2. Incorrect selected annotations count: expected - %1, got - %2 ").arg(totalItemCount - 8).arg(invertedSelectedItemCount));
 
     // Check inversion of multiple annotations.
-    GTUtilsAnnotationsTreeView::selectItems(os, {"repeat_region"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"repeat_region"});
     selectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
     CHECK_SET_ERR(selectedItemCount == 2,  // 2 annotations.
                   QString("3. Incorrect selected annotations count: expected - %1, got - %2 ").arg(2).arg(selectedItemCount));

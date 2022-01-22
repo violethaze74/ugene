@@ -1165,8 +1165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    Select 2 annotations.
     GTUtilsAnnotationsTreeView::createAnnotation(os, "new_group", "ann1", "10..20");
     GTUtilsAnnotationsTreeView::createAnnotation(os, "new_group", "ann2", "40..50", false);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann1"
-                                                              << "ann2");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann1", "ann2"});
     //    Check "Sequence between selected annotations"  and
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence between selected annotations"));
@@ -1540,7 +1539,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    GTUtilsAnnotationsTreeView::selectItems(os, {GTUtilsAnnotationsTreeView::findItem(os, "CDS")});
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongNameChecker));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
@@ -1566,7 +1565,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050_1) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    GTUtilsAnnotationsTreeView::selectItems(os, {GTUtilsAnnotationsTreeView::findItem(os, "CDS")});
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new custom));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
@@ -1870,7 +1869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
 
     // 4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"chain_info"});
     QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
     CHECK_SET_ERR(moleculeName == "PROTEIN (TRANSCRIPTION FACTOR E2F-4)", QString("Incorrect molecule name is detected for chain A: %1").arg(moleculeName));
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain B annotation [1CF7.PDB]");
@@ -1879,10 +1878,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     CHECK_SET_ERR(nullptr != annotationsChainB, QString("Can't find '1CF7 chain B annotation [1CF7.PDB]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
     CHECK_SET_ERR(nullptr != chainInfoGroup, QString("Can't find 'chain_info' annotation group for chain B"));
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfoGroup);
+    GTUtilsAnnotationsTreeView::selectItems(os, {chainInfoGroup});
     QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
     CHECK_SET_ERR(nullptr != chainInfo, QString("Can't find 'chain_info' annotation for chain B"));
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfo);
+    GTUtilsAnnotationsTreeView::selectItems(os, {chainInfo});
     QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
 
     CHECK_SET_ERR(moleculeNameChainB == "PROTEIN (TRANSCRIPTION FACTOR DP-2)", QString("Incorrect molecule name is detected for chain B: %1").arg(moleculeNameChainB));
@@ -1898,7 +1897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
     // 3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"chain_info"});
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
 

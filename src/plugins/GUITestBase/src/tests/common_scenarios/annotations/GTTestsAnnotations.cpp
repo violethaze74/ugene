@@ -605,7 +605,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ann_1", "ann_2"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -655,7 +655,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ann_1", "ann_2"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -704,7 +704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT496", "ann_2");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "0012", "ann_2");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ann_1", "ann_2"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
@@ -746,7 +746,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "annotation");
-    GTUtilsAnnotationsTreeView::selectItems(os, {"annotation"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"annotation"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
@@ -778,7 +778,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ann"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
@@ -815,7 +815,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, {"ann"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     annList << "5'UTR"
             << "exon";
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, annList);
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -908,7 +908,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     annList << "5'UTR"
             << "exon";
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, annList);
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -962,7 +962,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", utrs[0]);
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", utrs[0]);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, {"5'UTR", "exon"});
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"5'UTR", "exon"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
