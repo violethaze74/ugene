@@ -2731,14 +2731,14 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     // 2) Add Read Sequence(RS).
     WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 
-    // 3) Add ORF Finder(OF).
-    WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker");
-
-    // 4) Connect RS with OF.
-    GTUtilsWorkflowDesigner::connect(os, reader, orfMarker);
-
-    // 5) Add Write Sequence(WS).
+    // 3) Add Write Sequence(WS).
     WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
+
+    // 4) Add ORF Finder(OF).
+    WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
+
+    // 5) Connect RS with OF.
+    GTUtilsWorkflowDesigner::connect(os, reader, orfMarker);
 
     // 6) Connect OF with WS.
     GTUtilsWorkflowDesigner::connect(os, orfMarker, writer);
