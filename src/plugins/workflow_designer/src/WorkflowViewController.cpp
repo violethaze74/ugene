@@ -1962,6 +1962,27 @@ void WorkflowView::sl_exportScene() {
 }
 
 void WorkflowView::sl_saveScene() {
+    if (meta.url.contains(QDir("data:workflow_samples").path())) {
+        QMessageBox changePathMsgBox;
+        changePathMsgBox.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+        changePathMsgBox.setIcon(QMessageBox::Warning);
+        changePathMsgBox.setWindowTitle(tr("Confirm file save path"));
+        changePathMsgBox.setText(tr("It seems you trying to save workflow schema to \"workflow_samples\" directory which used by UGENE. Rewriting existing files can cause problems with analyzing algorithms.\r\n"
+                            "- \"Save anyway\" will rewrite existing schema\r\n"
+                            "- \"Choose new path\" will allow you to save schema by another path\r\n"
+                            "- \"Cancel\" will cancel save and leave schema untouched"));
+        changePathMsgBox.addButton(tr("Save anyway"), QMessageBox::YesRole);
+        QPushButton *newPath = changePathMsgBox.addButton(tr("Choose new path"), QMessageBox::NoRole);
+        newPath->setAutoDefault(true);
+        newPath->setDefault(true);
+        QAbstractButton *cancel = changePathMsgBox.addButton(tr("Cancel"), QMessageBox::ActionRole);
+        changePathMsgBox.exec();
+        if (changePathMsgBox.clickedButton() == newPath) {
+            meta.url.clear();
+        } else if (changePathMsgBox.clickedButton() == cancel) {
+            return;
+        }
+    }
     if (meta.url.isEmpty()) {
         QObjectScopedPointer<WorkflowMetaDialog> md = new WorkflowMetaDialog(this, meta);
         const int rc = md->exec();
@@ -1974,9 +1995,12 @@ void WorkflowView::sl_saveScene() {
         sl_updateTitle();
     }
     propertyEditor->commit();
-    Task *t = new SaveWorkflowSceneTask(getSchema(), getMeta());
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+    Metadata refreshedMeta = getMeta();
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(refreshedMeta);
+    U2OpStatus2Log os;
+    HRSchemaSerializer::saveSchema(schema.get(), &refreshedMeta, refreshedMeta.url, os);
+    CHECK_OP(os, );
+    scene->setModified(false);
 }
 
 void WorkflowView::sl_saveSceneAs() {
@@ -1989,10 +2013,12 @@ void WorkflowView::sl_saveSceneAs() {
     }
     propertyEditor->commit();
     meta = md->meta;
-    Task *t = new SaveWorkflowSceneTask(getSchema(), getMeta());
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    sl_updateTitle();
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+    Metadata refreshedMeta = getMeta();
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(refreshedMeta);
+    U2OpStatus2Log os;
+    HRSchemaSerializer::saveSchema(schema.get(), &refreshedMeta, refreshedMeta.url, os);
+    CHECK_OP(os, );
+    scene->setModified(false);
 }
 
 void WorkflowView::startWizard(Wizard *wizard) {
@@ -2217,14 +2243,6 @@ void WorkflowView::sl_onSceneLoaded() {
     hideDashboards();
     tabs->setCurrentIndex(ElementsTab);
     startFirstAutoRunWizard();
-}
-
-void WorkflowView::sl_onSceneSaved() {
-    Task *t = dynamic_cast<Task *>(sender());
-    CHECK(nullptr != t, );
-    if (t->isFinished() && !t->hasError()) {
-        scene->setModified(false);
-    }
 }
 
 void WorkflowView::sl_updateTitle() {

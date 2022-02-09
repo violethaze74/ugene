@@ -224,7 +224,6 @@ private slots:
     void sl_newScene();
     void sl_updateTitle();
     void sl_onSceneLoaded();
-    void sl_onSceneSaved();
 
     void sl_copyItems();
     void sl_cutItems();
