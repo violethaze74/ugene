@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <cmath>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -1257,6 +1258,50 @@ GUI_TEST_CLASS_DEFINITION(test_7410) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Invalid number of sequence in the alignment");
 
     GTUtilsProjectTreeView::checkItem(os, "test_7410.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7413) {
+    // Check that the distribution is uniform by the Kolmogorov-Smirnov test.
+    // https://colab.research.google.com/drive/1-F4pAh-n0BMXeZczQY-te-UcEJeUSP8Y?usp=sharing
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7413.fa");
+    model.percentA = 99;
+    model.percentC = 1;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.length = 10000;
+
+    auto checkUniformDistribution = [&model, &os]() {
+        GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+        GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+        GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+        QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+        QVector<int> empiricalSum;
+        int sumNumSeq = 0;
+        for (QChar c : qAsConst(sequence)) {
+            sumNumSeq += c == 'C' ? 1 : 0;
+            empiricalSum << sumNumSeq;
+        }
+        CHECK_SET_ERR_RESULT(sumNumSeq > 0, "Invalid base content: there is no letter C in the sequence", false);
+
+        double maxDifference = 0;
+        for (int i = 0; i < model.length; i++) {
+            maxDifference = std::max<double>(maxDifference, std::abs((double(i) + 1) / model.length - double(empiricalSum[i]) / sumNumSeq));
+        }
+
+        // https://drive.google.com/file/d/1YFIm8SXb3e-W0JKWWmiTXXh4BU2unHEm/view?usp=sharing
+        // 1.61 is the constant from the table for alpha value 0.01.
+        return maxDifference < 1.61 / std::sqrt(sumNumSeq);
+    };
+
+    for (int i = 0; i < 10; ++i) {
+        if (checkUniformDistribution()) {
+            return;
+        }
+        model.url = sandBoxDir + QString("/test_7413_%1.fa").arg(i);
+    }
+    CHECK_SET_ERR(false, "The generated sequences are not uniform distributed")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7414) {
