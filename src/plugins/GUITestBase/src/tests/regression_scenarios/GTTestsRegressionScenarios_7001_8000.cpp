@@ -2456,6 +2456,25 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7573) {
+    // Open data/samples/PDB/1CF7.PDB
+    // Right click 3D Model->Molecular Surface->SAS.
+    // Press Ctrl+S and save the project.
+    // Press Ctrl+S many times.
+    //     Expected: UGENE doesn't crash.
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SAS"}));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "1-1CF7"));
+
+    GTUtilsProject::saveProjectAs(os, sandBoxDir + "7573/A.uprj");
+    for (int i = 0; i < 50; i++) {
+        GTKeyboardDriver::keyClick('S', Qt::ControlModifier);
+    }
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7575) {
     // Check that reset-zoom action does not crash UGENE.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
