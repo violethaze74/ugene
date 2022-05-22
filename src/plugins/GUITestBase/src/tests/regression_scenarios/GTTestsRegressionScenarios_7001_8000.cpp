@@ -28,6 +28,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
+#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -1660,6 +1661,29 @@ GUI_TEST_CLASS_DEFINITION(test_7451) {
 
     // Check that there is no removed item in the recent files list and UGENE does not crash.
     GTUtilsStartPage::checkRecentListUrl(os, "test_7451.fa", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7454) {
+    // Open data/samples/PDB/1CF7.PDB.
+    // Increase the width of the Project View.
+    //     Expected: the current Sequence View is narrow.
+    // Find the action toolbar extension for the first sequence in the Sequence View (">>" button). Press ">>"->
+    //         "X Remove sequence".
+    //     Expected: no crash.
+    GTUtilsProject::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QRect rect = GTWidget::findWidget(os, "project_view")->geometry();
+    QPoint splitterCenter =
+        GTWidget::findWidget(os, "project_view")->mapToGlobal({rect.right() + 4, rect.center().y()});
+    QPoint delta(GTMainWindow::getMainWindowWidgetByName(os, "main_window")->width() * 0.6, 0);
+    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Remove sequence"}));
+    GTWidget::click(os,
+                    GTWidget::findWidget(os,
+                                         "qt_toolbar_ext_button",
+                                         GTWidget::findToolBar(os, "views_tool_bar_1CF7 chain A sequence")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
