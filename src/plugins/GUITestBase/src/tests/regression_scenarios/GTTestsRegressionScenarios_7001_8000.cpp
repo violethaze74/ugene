@@ -2269,6 +2269,50 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7520) {
+    // 1. Open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // 2. Add "Improve Reads with Trimmomatic" to the scene
+    const QString trimmomaticName = "Improve Reads with Trimmomatic";
+    GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    
+    // 3. Check tooltips for "Palindrome clip threshold" label and value
+    //Expected state: they should be correct (different with "simple clip" tooltip)    
+
+    class TrimmomaticCustomScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            auto addButton = GTWidget::findToolButton(os, "buttonAdd", dialog);
+
+            GTWidget::click(os, addButton);
+            for (int i = 0; i < 4; i++) {
+                GTKeyboardDriver::keyClick(Qt::Key_Down);
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            GTWidget::click(os, addButton);
+
+            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(os, "palindromeThreshold")));
+            QString tooltip = GTUtilsToolTip::getToolTip();
+            QString expedtedTooltip("A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible."
+                                    " Therefore the threshold can be in the range of 30. Even though this threshold is very high" 
+                                    " (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.");
+            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+
+            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(GTWidget::findWidget(os, "palindromeLabel")));
+            tooltip = GTUtilsToolTip::getToolTip();
+            CHECK_SET_ERR(tooltip.contains(expedtedTooltip), QString("Actual tooltip not contains expected string. Expected string: %1").arg(expedtedTooltip));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new TrimmomaticDialogFiller(os, new TrimmomaticCustomScenario()));
+    GTUtilsWorkflowDesigner::click(os, trimmomaticName);
+    GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7531) {
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
