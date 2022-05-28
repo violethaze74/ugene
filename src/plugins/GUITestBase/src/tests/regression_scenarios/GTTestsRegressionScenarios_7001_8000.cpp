@@ -51,7 +51,10 @@
 #include <QListWidget>
 #include <QRadioButton>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+
+#include <U2Gui/Notification.h>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -2433,6 +2436,35 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
         QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
         CHECK_SET_ERR(color == colorOfC, "Invalid color: " + color + ", position: " + QString::number(position.x()) + ", expected: " + colorOfC);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7550) {
+    class Click103TimesScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            for (auto notificationStack = AppContext::getMainWindow()->getNotificationStack();
+                 notificationStack->count() < 100;) {
+                GTUtilsMdi::activateWindow(os, "123 [cant_translate.fa]");
+                GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+            }
+            for (int i = 0; i < 3; i++) {
+                GTUtilsMdi::activateWindow(os, "123 [cant_translate.fa]");
+                GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+            }
+        }
+    };
+    // Open the _common_data/fasta/cant_translate.fa.
+    // Open the "In Silico PCR" tab.
+    // Set "AAAAAAAAAAAAAAA" as forward and reverse primers.
+    // Click "Find product(s) anyway" 100 times.
+    // Click "Find product(s) anyway" a few more times.
+    //     Expected state: the number of notifications is "99+", there is no crash.
+    GTUtilsMdi::closeActiveWindow(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/cant_translate.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "AAAAAAAAAAAAAAA");
+    GTThread::runInMainThread(os, new Click103TimesScenario());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7555) {
