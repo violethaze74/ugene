@@ -681,11 +681,14 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq1");
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq2");
+    QString documentName = GTUtils::genUniqueString("PairwiseAlignmentResult");
+    GTUtilsOptionPanelMsa::setOutputFile(os, sandBoxDir + documentName + ".aln");
+
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDocument::removeDocument(os, "PairwiseAlignmentResult.aln");
+    GTUtilsDocument::removeDocument(os, documentName);
     GTUtilsProjectTreeView::doubleClickItem(os, "shortened_big.aln");
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
@@ -2135,7 +2138,7 @@ GUI_TEST_CLASS_DEFINITION(test_7504) {
                                                                                ExportSequenceOfSelectedAnnotationsFiller::Merge));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export sequence of selected annotations..."}));
-    GTMouseDriver::click(Qt::RightButton);
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString exportedSequence = GTUtilsSequenceView::getSequenceAsString(os);
@@ -2630,13 +2633,14 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, topLeft, bottomRight);
         GTUtilsMsaEditor::zoomToSelection(os);
+
         int firstVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
         int lastVisibleBaseIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
         CHECK_SET_ERR(firstVisibleBaseIndex <= topLeft.x() && lastVisibleBaseIndex >= bottomRight.x(),
                       QString("%1.Invalid visible X range: %2:%3").arg(i).arg(firstVisibleBaseIndex).arg(lastVisibleBaseIndex));
 
         int firstVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getFirstVisibleRowIndex(os);
-        int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os);
+        int lastVisibleRowIndex = GTUtilsMSAEditorSequenceArea::getLastVisibleRowIndex(os, true);
         CHECK_SET_ERR(firstVisibleRowIndex <= topLeft.y() && lastVisibleRowIndex >= bottomRight.y(),
                       QString("%1.Invalid visible Y range: %2:%3").arg(i).arg(firstVisibleRowIndex).arg(lastVisibleRowIndex));
 
