@@ -71,7 +71,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorSequenceArea.h"
@@ -1345,23 +1344,25 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     //    2. Export coverage in 'Per base' format
     //    Expected state: gaps are not considered "to cover, the result file is qual to "_common_data/bam/accepted_hits_with_gaps_coverage.txt"
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_5367.ugenedb"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_5367.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/accepted_hits_with_gaps.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QList<ExportCoverageDialogFiller::Action> actions = {
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Per base"),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir(sandBoxDir).absolutePath() + "/test_5367_coverage.txt"),
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, QVariant())};
 
-    QList<ExportCoverageDialogFiller::Action> actions;
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Per base");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir(sandBoxDir).absolutePath() + "/test_5367_coverage.txt");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, QVariant());
-
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export coverage..."}));
+    GTUtilsDialog::add(os, new PopupChooserByText(os, {"Export coverage..."}));
+    GTUtilsDialog::add(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callContextMenu(os);
-
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
-    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
+    CHECK_SET_ERR(GTFile::equals(os,
+                                 sandBoxDir + "/test_5367_coverage.txt",
+                                 testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"),
+                  "Exported coverage is wrong!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5377) {
@@ -3238,7 +3239,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
     GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
 
     // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
-    GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
+    GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-5, 0));
 
     // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
