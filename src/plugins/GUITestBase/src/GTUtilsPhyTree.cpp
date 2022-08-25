@@ -183,13 +183,9 @@ QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getGlobalCenterCoord"
 QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item) {
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-
-    QPointF sceneCoord = item->mapToScene(item->boundingRect().topLeft());
-    QPoint viewCord = treeView->mapFromScene(sceneCoord);
-    QPoint globalCoord = treeView->mapToGlobal(viewCord);
-    globalCoord += QPoint(item->boundingRect().width() / 2, item->boundingRect().height() / 2);
-
-    return globalCoord;
+    QRectF sceneRect = item->mapToScene(item->boundingRect()).boundingRect();
+    QRectF viewRect = treeView->mapFromScene(sceneRect).boundingRect();
+    return treeView->mapToGlobal(viewRect.center().toPoint());
 }
 #undef GT_METHOD_NAME
 
@@ -282,7 +278,7 @@ GraphicsRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUIT
     QList<QGraphicsItem*> items = treeViewerUi->scene()->items();
     foreach (QGraphicsItem* item, items) {
         GraphicsRectangularBranchItem* rectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(item);
-        if (nullptr != rectangularBranch && nullptr == rectangularBranch->getParentItem()) {
+        if (nullptr != rectangularBranch && nullptr == rectangularBranch->parentItem()) {
             return rectangularBranch;
         }
     }
@@ -295,7 +291,7 @@ GraphicsRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUIT
 QList<GraphicsRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, GraphicsRectangularBranchItem* rootBranch) {
     GT_CHECK_RESULT(nullptr != rootBranch, "Subtree root branch is NULL", QList<GraphicsRectangularBranchItem*>());
 
-    const QList<QGraphicsItem*> childItems = rootBranch->getChildItems();
+    const QList<QGraphicsItem*> childItems = rootBranch->childItems();
     QList<GraphicsRectangularBranchItem*> childRectangularBranches;
     foreach (QGraphicsItem* childItem, childItems) {
         GraphicsRectangularBranchItem* childRectangularBranch = dynamic_cast<GraphicsRectangularBranchItem*>(childItem);

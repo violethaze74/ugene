@@ -30,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -38,7 +39,7 @@ const qreal GraphicsRectangularBranchItem::MAXIMUM_WIDTH = 500.0;
 const int GraphicsRectangularBranchItem::DEFAULT_HEIGHT = 25;
 const qreal GraphicsRectangularBranchItem::EPSILON = 0.0000000001;
 
-void GraphicsRectangularBranchItem::collapse() {
+void GraphicsRectangularBranchItem::toggleCollapsedState() {
     collapsed = !collapsed;
     QList<QGraphicsItem*> items = childItems();
 
@@ -56,13 +57,11 @@ void GraphicsRectangularBranchItem::collapse() {
                 continue;
             }
 
-            GraphicsRectangularBranchItem* childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
-            if (nullptr == childItem) {
-                continue;
-            }
+            auto childItem = dynamic_cast<GraphicsRectangularBranchItem*>(graphItem);
+            CHECK_CONTINUE(childItem != nullptr);
 
-            childItem->setCollapsed(!childItem->isCollapsed());
-            if (nullptr == childItem->getNameText()) {
+            childItem->collapsed = !childItem->collapsed;
+            if (childItem->getNameText() == nullptr) {
                 childItem->setVisible(branchItem->isVisible() && !branchItem->isCollapsed());
             }
             if (childItem->isCollapsed() && !branchItem->isCollapsed()) {
@@ -78,11 +77,7 @@ void GraphicsRectangularBranchItem::collapse() {
         setSelectedRecurs(true, true);
     }
 
-    GraphicsRectangularBranchItem* root = this;
-    while (nullptr != dynamic_cast<GraphicsRectangularBranchItem*>(root->parentItem())) {
-        root = dynamic_cast<GraphicsRectangularBranchItem*>(root->parentItem());
-    }
-    root->branchCollapsed(this);
+    getRoot()->emitBranchCollapsed(this);
 }
 
 void GraphicsRectangularBranchItem::drawCollapsedRegion() {

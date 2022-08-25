@@ -48,9 +48,7 @@ public:
 
     void setCreatePhyTreeSettings(const CreatePhyTreeSettings& newBuildSettings);
 
-    void setParentAignmentName(const QString& alignmentName);
-
-    QAction* getSortSeqsAction() const;
+    void setParentAlignmentName(const QString& _alignmentName);
 
     /**
      * Enables Tree & MSA synchronization. See 'syncModeAction' for the details about the sync mode.
@@ -147,23 +145,16 @@ public:
     QList<QStringList> getGroupingStateForMsa() const;
 
 protected:
-    void onLayoutChanged(const TreeLayout& layout) override;
-
     /** Overrides the original method to trigger MSA related updates as the result of tree update. */
     void updateScene(bool fitSceneToView) override;
 
 private slots:
     void sl_selectionChanged(const QStringList& selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
-    void sl_onReferenceSeqChanged(qint64);
-    void sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) override;
+    void sl_onBranchCollapsed(GraphicsBranchItem* branch) override;
 
 private:
-    QList<GraphicsBranchItem*> getBranchItemsWithNames() const;
-
-    bool isRectangularLayout;
     MSAEditorTreeViewer* const msaEditorTreeViewer;
-    QTransform rectangularTransform;
 };
 
 class MSAEditorTreeViewerUtils {

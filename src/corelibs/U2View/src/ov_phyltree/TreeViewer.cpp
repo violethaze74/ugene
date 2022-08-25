@@ -424,7 +424,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
 
     buttonPopup->addAction(treeViewer->branchesSettingsAction);
 
-    QMenu* cameraMenu = new QMenu(tr("Export Tree Image"), this);
+    auto cameraMenu = new QMenu(tr("Export Tree Image"), this);
     cameraMenu->addAction(treeViewer->captureTreeAction);
     cameraMenu->addAction(treeViewer->exportAction);
     cameraMenu->menuAction()->setObjectName("Export Tree Image");
@@ -434,8 +434,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     updateActionsState();
     setObjectName("treeView");
     updateScene(true);
-
-    connect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem*)), SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem*)));
+    connect(root, &GraphicsBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
 }
 
 TreeViewerUI::~TreeViewerUI() {
@@ -505,7 +504,9 @@ void TreeViewerUI::changeOption(TreeViewOption option, const QVariant& newValue)
 
 void TreeViewerUI::onSettingsChanged(const TreeViewOption& option, const QVariant& newValue) {
     SAFE_POINT(settings.keys().contains(option), "Unrecognized option in TreeViewerUI::onSettingsChanged", );
-    setOptionValue(option, newValue);
+    if (option != TREE_LAYOUT) {  // TREE_LAYOUT setting is updated as a part of 'setTreeLayout' call below.
+        setOptionValue(option, newValue);
+    }
     switch (option) {
         case TREE_LAYOUT:
             setTreeLayout(static_cast<TreeLayout>(newValue.toInt()));
@@ -784,7 +785,7 @@ void TreeViewerUI::updateStepsToLeafOnBranches() {
     }
     while (!childQueue.isEmpty()) {
         GraphicsBranchItem* childBranchItem = childQueue.dequeue();
-        if (auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(childBranchItem->getParentItem())) {
+        if (auto parentBranchItem = dynamic_cast<GraphicsBranchItem*>(childBranchItem->parentItem())) {
             parentBranchItem->maxStepsToLeaf = qMax(parentBranchItem->maxStepsToLeaf, childBranchItem->maxStepsToLeaf + 1);
             childQueue.enqueue(parentBranchItem);
         }
@@ -1184,6 +1185,19 @@ void TreeViewerUI::sl_unrootedLayoutTriggered() {
     changeTreeLayout(UNROOTED_LAYOUT);
 }
 
+/** Expands every collapsed branch in tree. */
+static void makeLayoutNotCollapsed(GraphicsBranchItem* branch) {
+    if (branch->isCollapsed()) {
+        branch->toggleCollapsedState();
+    }
+    QList<QGraphicsItem*> childItems = branch->childItems();
+    for (auto child : qAsConst(childItems)) {
+        if (auto childBranch = dynamic_cast<GraphicsBranchItem*>(child)) {
+            makeLayoutNotCollapsed(childBranch);
+        }
+    }
+}
+
 void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
     switch (newTreeLayout) {
         case RECTANGULAR_LAYOUT: {
@@ -1191,11 +1205,16 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
             break;
         }
         case CIRCULAR_LAYOUT: {
+            // TODO: support collapsed state transfer.
+            makeLayoutNotCollapsed(root);  // Clients are subscribed to 'root'. Expand of the layout emits notifications.
+            makeLayoutNotCollapsed(rectRoot);  // Root state & child layout states must be synchronized.
             bool degeneratedCase = getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH;
             setNewTreeLayout(CreateCircularBranchesTask::convert(rectRoot, degeneratedCase), newTreeLayout);
             break;
         }
         case UNROOTED_LAYOUT: {
+            makeLayoutNotCollapsed(root);  // See comments for CIRCULAR_LAYOUT.
+            makeLayoutNotCollapsed(rectRoot);
             setNewTreeLayout(CreateUnrootedBranchesTask::convert(rectRoot), newTreeLayout);
             break;
         }
@@ -1203,36 +1222,29 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
 }
 
 void TreeViewerUI::sl_rectBranchesRecreated(Task* task) {
-    CreateBranchesTask* layoutTask = qobject_cast<CreateBranchesTask*>(task);
+    auto layoutTask = qobject_cast<CreateBranchesTask*>(task);
     SAFE_POINT(task != nullptr, "Not a CreateBranchesTask", );
     bool taskIsFailed = layoutTask->getState() != Task::State_Finished || layoutTask->hasError();
     CHECK(!taskIsFailed, );
 
     auto rootNode = dynamic_cast<GraphicsRectangularBranchItem*>(layoutTask->getResult());
     CHECK(rootNode != nullptr, );
-    disconnect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem*)), this, SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem*)));
     rectRoot = rootNode;
-    connect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem*)), SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem*)));
 
     switch (getTreeLayout()) {
         case CIRCULAR_LAYOUT:
             setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
             changeTreeLayout(CIRCULAR_LAYOUT);
-            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
             break;
         case UNROOTED_LAYOUT:
             setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
             changeTreeLayout(UNROOTED_LAYOUT);
-            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
             break;
         case RECTANGULAR_LAYOUT:
-            scene()->removeItem(root);
-            root = rootNode;
-            scene()->addItem(root);
-            defaultZoom();
-            updateRect();
+            setNewTreeLayout(rootNode, RECTANGULAR_LAYOUT);
             break;
     }
+    fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
     updateScene(true);
     updateSettings();
     updateTextSettings(LABEL_COLOR);
@@ -1243,7 +1255,11 @@ void TreeViewerUI::sl_rectBranchesRecreated(Task* task) {
     updateTextSettings(LABEL_FONT_UNDERLINE);
 }
 
-void TreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem*) {
+void TreeViewerUI::sl_onBranchCollapsed(GraphicsBranchItem*) {
+    // In rectangular mode perform a complete re-layout of the tree, so there is no empty space left.
+    // TODO: do the same in circular & unrooted layouts.
+    CHECK(isRectangularLayoutMode(), );
+
     QTransform curTransform = viewportTransform();
     setTransformationAnchor(NoAnchor);
 
@@ -1262,7 +1278,11 @@ void TreeViewerUI::setNewTreeLayout(GraphicsBranchItem* newRoot, const TreeLayou
     setOptionValue(TREE_LAYOUT, treeLayout);
 
     scene()->removeItem(root);
+
+    disconnect(root, &GraphicsBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
     root = newRoot;
+    connect(newRoot, &GraphicsBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
+
     scene()->addItem(root);
     defaultZoom();
     updateRect();

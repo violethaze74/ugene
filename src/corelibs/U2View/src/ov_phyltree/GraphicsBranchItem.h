@@ -34,7 +34,8 @@ class PhyNode;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
 
-class U2VIEW_EXPORT GraphicsBranchItem : public QAbstractGraphicsShapeItem {
+class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
+    Q_OBJECT
 public:
     enum Direction { up,
                      down };
@@ -50,6 +51,15 @@ public:
 
     /** Corresponding rectangular branch item for the branch. Set only for circular & unrooted branch items. */
     GraphicsRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
+
+    /** Returns top level (root) branch item in the tree. */
+    GraphicsBranchItem* getRoot();
+
+    /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
+    void emitBranchCollapsed(GraphicsBranchItem* branch);
+
+signals:
+    void si_branchCollapsed(GraphicsBranchItem* branch);
 
 private:
     void initText(qreal d);
@@ -101,7 +111,7 @@ public:
     void setDist(qreal d) {
         dist = d;
     }
-    virtual void collapse();
+    virtual void toggleCollapsedState();
     void setSelectedRecurs(bool sel, bool selectChilds);
     void setSelected(bool sel);
     bool isCollapsed() const;
@@ -112,14 +122,6 @@ public:
     void updateTextProperty(TreeViewOption property, const QVariant& propertyVal);
 
     const OptionsMap& getSettings() const;
-
-    const QList<QGraphicsItem*> getChildItems() const {
-        return childItems();
-    }
-
-    QGraphicsItem* getParentItem() const {
-        return parentItem();
-    }
 
     void initDistanceText(const QString& text = QString());
 
