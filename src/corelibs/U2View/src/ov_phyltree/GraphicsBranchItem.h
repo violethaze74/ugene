@@ -36,17 +36,22 @@ class GraphicsRectangularBranchItem;
 class U2VIEW_EXPORT GraphicsBranchItem : public QObject, public QAbstractGraphicsShapeItem {
     Q_OBJECT
 public:
-    enum Direction {
-        Up,
-        Down
+    /** Side of the branch in the binary tree relative to the root node: left of right. */
+    enum Side {
+        Left,
+        Right
     };
-    GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
+    GraphicsBranchItem(bool withButton, const Side& side, double nodeValue = -1.0);
 
     GraphicsButtonItem* getButtonItem() const;
+
+    GraphicsBranchItem* getChildBranch(const Side& side) const;
 
     double getNodeLabelValue() const;
 
     QGraphicsSimpleTextItem* getDistanceTextItem() const;
+
+    QString getDistanceText() const;
 
     QGraphicsSimpleTextItem* getNameTextItem() const;
 
@@ -58,7 +63,7 @@ public:
 
     void setWidthW(double w);
 
-    void setWidth(double w);
+    void setWidth(double newWidth);
 
     void setDist(double d);
 
@@ -66,7 +71,7 @@ public:
 
     void setSelectedRecurs(bool sel, bool selectChilds);
 
-    void setSelected(bool sel);
+    void setSelected(bool isSelected);
 
     bool isCollapsed() const;
 
@@ -101,6 +106,9 @@ public:
     /** Returns top level (root) branch item in the tree. */
     GraphicsBranchItem* getRoot();
 
+    /**Returns true if the branch is a root branch of the tree. */
+    bool isRoot() const;
+
     /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
     void emitBranchCollapsed(GraphicsBranchItem* branch);
 
@@ -110,7 +118,7 @@ signals:
 protected:
     GraphicsBranchItem(const QString& name);
 
-    GraphicsBranchItem(double d, bool withButton = true, double nodeValue = -1.0);
+    GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
@@ -124,9 +132,11 @@ protected:
     QGraphicsEllipseItem* nameItemSelection = nullptr;
 
     double width = 0;
-    double dist = 0;
+    /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */
+    double distance = 0;
     bool collapsed = false;
     OptionsMap settings;
+    Side side = Side::Left;
 };
 
 }  // namespace U2
