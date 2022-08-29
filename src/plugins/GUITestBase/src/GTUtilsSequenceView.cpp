@@ -323,11 +323,13 @@ DetView* GTUtilsSequenceView::getDetViewByNumber(HI::GUITestOpStatus& os, int nu
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 
     DetView* result = seq->findChild<DetView*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(result != nullptr, QString("det view with number %1 not found").arg(number), nullptr);
     }
@@ -340,11 +342,13 @@ PanView* GTUtilsSequenceView::getPanViewByNumber(HI::GUITestOpStatus& os, int nu
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 
     PanView* result = seq->findChild<PanView*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("pan view with number %1 not found").arg(number), nullptr)
     }
@@ -358,11 +362,13 @@ Overview* GTUtilsSequenceView::getOverviewByNumber(HI::GUITestOpStatus& os, int 
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(os, number, options);
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("sequence view with num %1 not found").arg(number), nullptr);
-    } else {
+    } else if (seq == nullptr) {
         return nullptr;
     }
 
     Overview* result = seq->findChild<Overview*>();
+    CHECK(result->isVisible(), nullptr);
+
     if (options.failIfNotFound) {
         GT_CHECK_RESULT(seq != nullptr, QString("pan view with number %1 not found").arg(number), nullptr)
     }
@@ -733,6 +739,15 @@ void GTUtilsSequenceView::makeDetViewVisible(HI::GUITestOpStatus& os) {
     auto toggleDetViewButton = GTWidget::findToolButton(os, "show_hide_details_view");
     if (!toggleDetViewButton->isChecked()) {
         GTWidget::click(os, toggleDetViewButton);
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "makePanViewVisible"
+void GTUtilsSequenceView::makePanViewVisible(HI::GUITestOpStatus& os, bool enable) {
+    auto toggleZoomViewButton = GTWidget::findToolButton(os, "show_hide_zoom_view");
+    if (toggleZoomViewButton->isChecked() != enable) {
+        GTWidget::click(os, toggleZoomViewButton);
     }
 }
 #undef GT_METHOD_NAME
