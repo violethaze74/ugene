@@ -33,9 +33,9 @@
 
 namespace U2 {
 
-GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem)
+GraphicsRectangularBranchItem::GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* parentBranchItem)
     : GraphicsBranchItem(name) {
-    setParentItem(pitem);
+    setParentItem(parentBranchItem);
     setPos(0, 0);
 }
 

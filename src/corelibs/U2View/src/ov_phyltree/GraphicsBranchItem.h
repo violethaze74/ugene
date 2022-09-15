@@ -114,7 +114,7 @@ signals:
     void si_branchCollapsed(GraphicsBranchItem* branch);
 
 protected:
-    GraphicsBranchItem(const QString& name);
+    explicit GraphicsBranchItem(const QString& name);
 
     GraphicsBranchItem(double distance, bool withButton, double nodeValue = -1.0);
 

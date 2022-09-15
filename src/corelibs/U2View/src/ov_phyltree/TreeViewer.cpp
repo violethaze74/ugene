@@ -797,7 +797,7 @@ void TreeViewerUI::updateStepsToLeafOnBranches() {
 
 QVariantMap TreeViewerUI::getSettingsState() const {
     QString branchColor("branch_color");
-    QString branchThisckness("branch_thickness");
+    QString branchThickness("branch_thickness");
     QVariantMap m;
 
     int i = 0;
@@ -805,7 +805,7 @@ QVariantMap TreeViewerUI::getSettingsState() const {
         if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
             OptionsMap branchSettings = branchItem->getSettings();
             m[branchColor] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
-            m[branchThisckness + i] = branchSettings[BRANCH_THICKNESS].toInt();
+            m[branchThickness + i] = branchSettings[BRANCH_THICKNESS].toInt();
             i++;
         }
     }
@@ -815,7 +815,7 @@ QVariantMap TreeViewerUI::getSettingsState() const {
 
 void TreeViewerUI::setSettingsState(const QVariantMap& m) {
     QString branchColor("branch_color");
-    QString branchThisckness("branch_thickness");
+    QString branchThickness("branch_thickness");
     int i = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(graphItem)) {
@@ -826,7 +826,7 @@ void TreeViewerUI::setSettingsState(const QVariantMap& m) {
                 branchSettings[BRANCH_COLOR] = vColor.value<QColor>();
             }
 
-            QVariant vThickness = m[branchThisckness + i];
+            QVariant vThickness = m[branchThickness + i];
             if (vThickness.type() == QVariant::Int) {
                 branchSettings[BRANCH_THICKNESS] = vThickness.toInt();
             }
@@ -1126,11 +1126,11 @@ void TreeViewerUI::sl_exportTriggered() {
     QRect rect = scene()->sceneRect().toRect();
     rect.moveTo(0, 0);
 
-    QBuffer qbuffer;
-    qbuffer.open(QBuffer::ReadWrite);
+    QBuffer buffer;
+    buffer.open(QBuffer::ReadWrite);
 
     QSvgGenerator generator;
-    generator.setOutputDevice(&qbuffer);
+    generator.setOutputDevice(&buffer);
     generator.setSize(rect.size());
     generator.setViewBox(rect);
 
@@ -1139,8 +1139,8 @@ void TreeViewerUI::sl_exportTriggered() {
     paint(painter);
     painter.end();
 
-    qbuffer.seek(0);  // move pointer to the buffer's start
-    QString svgText(qbuffer.readAll());
+    buffer.seek(0);  // move pointer to the buffer's start
+    QString svgText(buffer.readAll());
 
     if (svgText.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Failed to generate SVG image."));
@@ -1377,8 +1377,8 @@ void TreeViewerUI::sl_textSettingsTriggered() {
             while (!stack.empty()) {
                 GraphicsBranchItem* item = stack.pop();
                 if (item->getNameTextItem() == nullptr) {
-                    foreach (QGraphicsItem* citem, item->childItems()) {
-                        if (auto gbi = dynamic_cast<GraphicsBranchItem*>(citem)) {
+                    foreach (QGraphicsItem* childItem, item->childItems()) {
+                        if (auto gbi = dynamic_cast<GraphicsBranchItem*>(childItem)) {
                             stack.push(gbi);
                         }
                     }
@@ -1560,10 +1560,9 @@ void TreeViewerUI::updateLabelsAlignment() {
         GraphicsBranchItem* item = stack.pop();
         QGraphicsSimpleTextItem* nameText = item->getNameTextItem();
         if (nameText == nullptr) {
-            foreach (QGraphicsItem* citem, item->childItems()) {
-                auto gbi = dynamic_cast<GraphicsBranchItem*>(citem);
-                if (gbi != nullptr) {
-                    stack.push(gbi);
+            foreach (QGraphicsItem* childItem, item->childItems()) {
+                if (auto branchItem = dynamic_cast<GraphicsBranchItem*>(childItem)) {
+                    stack.push(branchItem);
                 }
             }
         } else {

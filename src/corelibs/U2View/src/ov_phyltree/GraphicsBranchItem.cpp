@@ -191,12 +191,12 @@ void GraphicsBranchItem::toggleCollapsedState() {
         auto rectItem = new QGraphicsRectItem(0, -4, 16, 8, this);
         rectItem->setPen(pen1);
     } else {
-        for (int i = 0, s = items.size(); i < s; ++i) {
-            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(items[i])) {
+        for (auto& item : qAsConst(items)) {
+            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(item)) {
                 rectItem->setParentItem(nullptr);
                 scene()->removeItem(rectItem);
-            } else if (items[i] != getDistanceTextItem() && items[i] != getNameTextItem()) {
-                items[i]->show();
+            } else if (item != getDistanceTextItem() && item != getNameTextItem()) {
+                item->show();
             }
         }
         setSelected(true);
@@ -315,7 +315,7 @@ void GraphicsBranchItem::initDistanceText(const QString& text) {
 }
 
 QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform) const {
-    QRectF childsBoundingRect;
+    QRectF childrenBoundingRect;
     QStack<const QGraphicsItem*> graphicsItems;
     graphicsItems.push(this);
 
@@ -332,11 +332,11 @@ QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform& viewTra
                 QRectF transformedRect = invertedTransform.mapRect(itemRect);
                 itemRect.setWidth(transformedRect.width());
             }
-            childsBoundingRect |= itemRect;
+            childrenBoundingRect |= itemRect;
             graphicsItems.push(graphItem);
         }
     } while (!graphicsItems.isEmpty());
-    return childsBoundingRect;
+    return childrenBoundingRect;
 }
 
 bool GraphicsBranchItem::isRoot() const {
