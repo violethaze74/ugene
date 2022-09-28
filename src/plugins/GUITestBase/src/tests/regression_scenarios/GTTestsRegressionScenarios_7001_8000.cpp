@@ -32,6 +32,7 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
@@ -77,6 +78,7 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -3015,11 +3017,11 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
-    //1. Open WD sampe "Call variants
-    //2. Select "Read Assembly (BAM/SAM)" worker
-    //3. Rename dataset "Dataset" -> "NewSet"
-    //4.Select "Read Sequence"
-    //Expected state: dataset renamed to "NewSet" too
+    // 1. Open WD sampe "Call variants
+    // 2. Select "Read Assembly (BAM/SAM)" worker
+    // 3. Rename dataset "Dataset" -> "NewSet"
+    // 4.Select "Read Sequence"
+    // Expected state: dataset renamed to "NewSet" too
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -3029,7 +3031,7 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"rename_dataset_action"}));
     QTabBar* barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     GTWidget::click(os, barWidget->tabButton(0, QTabBar::RightSide), Qt::RightButton);
-    
+
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
@@ -3122,6 +3124,37 @@ GUI_TEST_CLASS_DEFINITION(test_7680) {
 
     CHECK_SET_ERR(viewRectBefore.height() == viewRectAfter.height(),
                   QString("Height of the node changed: %1 vs %2").arg(viewRectBefore.height()).arg(viewRectAfter.height()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7682) {
+    // Check 'curvature' controls for rectangular branches.
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    QWidget* optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+
+    // Check 'curvature' slider is enabled and current value is 0.
+    QSlider* curvatureSlider = GTWidget::findSlider(os, "curvatureSlider", optionPanel);
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider is not enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "By default there is no curvature");
+    CHECK_SET_ERR(curvatureSlider->minimum() == 0, "Incorrect minimum curvature");
+    CHECK_SET_ERR(curvatureSlider->maximum() == 100, "Incorrect maximum curvature");
+
+    // Change slider and check that image changes too.
+    QImage imageBefore = GTUtilsPhyTree::captureTreeImage(os);
+    GTSlider::setValue(os, curvatureSlider, 50);
+    QImage imageAfter = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageBefore != imageAfter, "Image is not changed");
+
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo", optionPanel);
+
+    // Switch to the 'Circular', check that 'curvature' is disabled.
+    GTComboBox::selectItemByText(os, layoutCombo, "Circular");
+    CHECK_SET_ERR(!curvatureSlider->isEnabled(), "Slider must be disabled");
+
+    // Switch back to the 'Rectangular' and check that curvature is enabled again.
+    GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "Slider must be re-enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 50, "Slider value must be restored, current value: " + QString::number(curvatureSlider->value()));
 }
 
 }  // namespace GUITest_regression_scenarios
