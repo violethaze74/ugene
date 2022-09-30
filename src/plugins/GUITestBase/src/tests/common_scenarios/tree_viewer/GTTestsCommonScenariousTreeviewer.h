@@ -31,7 +31,6 @@ namespace GUITest_common_scenarios_tree_viewer {
 #undef GUI_TEST_SUITE
 #define GUI_TEST_SUITE "GUITest_common_scenarios_tree_viewer"
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0001_1)
 GUI_TEST_CLASS_DECLARATION(test_0001_2)
 
