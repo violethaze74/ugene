@@ -26,6 +26,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -35,6 +36,7 @@
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
+#include <primitives/GTTableView.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
@@ -84,6 +86,7 @@
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsQueryDesigner.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
@@ -3092,6 +3095,154 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(os, GTUtilsWorkflowDesigner::getDatasetsListWidget(os), "Can't find QTabBar widget");
     CHECK_SET_ERR(barWidget->tabText(0) == "NewSet", "Actual dataset name on 'Read Sequence' worker is not expected 'NewSet'.");
+}
+
+// Clicks the "Run Schema" menu item;
+// in the "Run Schema" dialog that appears, sets
+//     `inputPath` as "Load sequence" (if `inputPath` is empty, does nothing),
+//     "sandbox/7667.gb" as "Save results to" (if the path of the output file is already set, does nothing),
+//     checks/unchecks the "Add to project" checkbox depending on `addToProject`;
+// accepts the dialog and runs the Query Designer task.
+static void runSchema(GUITestOpStatus& os, const QString& inputPath = "", bool addToProject = true) {
+    class RunSchemaDialogScenario : public CustomScenario {
+        QString input;
+        bool addToProj;
+
+    public:
+        RunSchemaDialogScenario(const QString& input, bool addToProj)
+            : input(input), addToProj(addToProj) {
+        }
+
+        void run(GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            if (!input.isEmpty()) {
+                GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, input));
+                GTWidget::click(os, GTWidget::findToolButton(os, "tbInFile", dialog));
+            }
+            {
+                auto out = GTWidget::findLineEdit(os, "outFileEdit", dialog);
+                if (GTLineEdit::getText(os, out).isEmpty()) {
+                    GTLineEdit::setText(os, out, UGUITest::sandBoxDir + "7667.gb");
+                }
+            }
+            GTCheckBox::setChecked(os, "cbAddToProj", addToProj, dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::add(os, new Filler(os, "RunQueryDlg", new RunSchemaDialogScenario(inputPath, addToProject)));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Run Schema..."});
+}
+
+// Sets the Primer3 algorithm parameter "Number to return" to 3.
+static void setNumberToReturn(GUITestOpStatus& os, QTableView* table) {
+    GTTableView::click(os, table, 3, 1);
+    GTSpinBox::setValue(os, GTWidget::findWidgetByType<QSpinBox*>(os, table, "7667-0"), 3);
+}
+
+// Sets the cell (`row`, 1) of `table` to `value`.
+static void setDouble(GUITestOpStatus& os, QTableView* table, int row, double value) {
+    GTTableView::click(os, table, row, 1);
+    GTDoubleSpinbox::setValue(os,
+                              GTWidget::findWidgetByType<QDoubleSpinBox*>(os, table, "7667-" + QString::number(row)),
+                              value,
+                              GTGlobals::UseKeyBoard);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7667_1) {
+    // Run 2 tasks one by one with different settings.
+
+    // Open _common_data/primer3/only_primer.uql.
+    //     The "Query Designer" window opens.
+    // Run Schema.
+    //     The "Run Schema" dialog appears.
+    // Set:
+    //     Load sequence      _common_data/primer3/all_settingsfiles.fa
+    //     Save results to    tmp/7667.gb
+    // Click Run.
+    //     The all_settingsfiles.fa will open with the resulting annotations.
+    // Expected: the following annotations:
+    //     Result 1    850..869    complement(1022..1041)
+    //     Result 2    22..41      complement(199..218)
+    //     Result 3    850..869    complement(993..1012)
+    //     Result 4    452..471    complement(610..629)
+    //     Result 5    610..629    complement(786..805)
+    // File->Close project. Don't save it.
+    // Return to the "Query Designer" window.
+    // Select the subunit of the Primer element on the Scene.
+    //     Its parameters appear in the Property Editor.
+    // Change the Parameters:
+    //     Product size ranges             100-300
+    //     Number to return                3
+    //     Max repeat mispriming           10
+    //     Max template mispriming         10
+    //     Max 3' stability                10
+    //     Pair max repeat mispriming      20
+    //     Pair max template mispriming    20
+    // Run Schema.
+    //     The "Run Schema" dialog appears.
+    // Click Run.
+    // Expected: the following annotations:
+    //     Result 1    199..218    complement(297..316)
+    //     Result 2    40..59      complement(297..316)
+    //     Result 3    39..58      complement(297..316)
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3/only_primer.uql");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    runSchema(os, testDir + "_common_data/primer3/all_settingsfiles.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 1  (0, 2)", {{850, 869}, {1022, 1041}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 2  (0, 2)", {{22, 41}, {199, 218}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 3  (0, 2)", {{850, 869}, {993, 1012}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 4  (0, 2)", {{452, 471}, {610, 629}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 5  (0, 2)", {{610, 629}, {786, 805}});
+    GTUtilsProject::closeProject(os, true);
+    GTUtilsMdi::activateWindow(os, "Query Designer - NewSchema");
+
+    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    auto table = GTWidget::findTableView(os, "table");
+    {  // Product size ranges.
+        GTTableView::click(os, table, 2, 1);
+        GTLineEdit::setText(os, GTWidget::findWidgetByType<QLineEdit*>(os, table, "7667"), "100-300");
+    }
+    setNumberToReturn(os, table);
+    setDouble(os, table, 4, 10);  // Max repeat mispriming.
+    setDouble(os, table, 5, 10);  // Max template mispriming.
+    setDouble(os, table, 6, 10);  // Max 3' stability.
+    setDouble(os, table, 7, 20);  // Pair max repeat mispriming.
+    setDouble(os, table, 8, 20);  // Pair max template mispriming.
+    runSchema(os);
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 1  (0, 2)", {{199, 218}, {297, 316}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 2  (0, 2)", {{40, 59}, {297, 316}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Result 3  (0, 2)", {{39, 58}, {297, 316}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7667_2) {
+    // Run 2 tasks at the same time with different settings.
+
+    // Open _common_data/primer3/only_primer.uql.
+    //     The "Query Designer" window opens.
+    // Select the subunit of the Primer element on the Scene.
+    //     Its parameters appear in the Property Editor.
+    // Run Schema.
+    //     The "Run Schema" dialog appears.
+    // Set:
+    //     Load sequence      _common_data/bwa/NC_000021.gbk.min.fa
+    //     Save results to    tmp/7667.gb
+    //     Add to project     ☐
+    // Click Run.
+    // Don't wait for the task to finish. Change the "Number to return" Property Editor parameter to 3.
+    // Run Schema again.
+    //     The "Run Schema" dialog appears.
+    // Set _common_data/primer3/all_settingsfiles.fa as the "Load sequence".
+    // Click Run.
+    // Expected: both tasks completed successfully.
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3/only_primer.uql");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    runSchema(os, testDir + "_common_data/bwa/NC_000021.gbk.min.fa", false);
+
+    setNumberToReturn(os, GTWidget::findTableView(os, "table"));
+    runSchema(os, testDir + "_common_data/primer3/all_settingsfiles.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7668) {
