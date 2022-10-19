@@ -11391,9 +11391,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>PhyML finished with error</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="187"/>
         <source>UGENE internal error</source>
-        <translation>UGENE internal error</translation>
+        <translation type="vanished">UGENE internal error</translation>
     </message>
 </context>
 <context>
@@ -11431,9 +11430,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>PhyML tree calculation</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="143"/>
         <source>UGENE internal error</source>
-        <translation>UGENE internal error</translation>
+        <translation type="vanished">UGENE internal error</translation>
     </message>
 </context>
 <context>

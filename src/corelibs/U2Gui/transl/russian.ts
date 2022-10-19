@@ -1156,16 +1156,6 @@ Remove it from the project first.</source>
         <translation>Unknown document format I/O factory: </translation>
     </message>
     <message>
-        <location filename="../src/util/project/ConnectionHelper.cpp" line="34"/>
-        <source>Error! No DBI</source>
-        <translation>Error! No DBI</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ConnectionHelper.cpp" line="37"/>
-        <source>Error! No object DBI</source>
-        <translation>Error! No object DBI</translation>
-    </message>
-    <message>
         <source>Confirm Deletion</source>
         <translation type="vanished">Подтверждение удаления</translation>
     </message>
