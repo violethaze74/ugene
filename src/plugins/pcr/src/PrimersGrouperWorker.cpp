@@ -207,6 +207,11 @@ bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairInde
 void PrimerGrouperTask::findCompatibleGroups() {
     QList<QList<int>> compatiblePrimersGroups;
 
+    // Start with a sorted set of primer pairs, so the result will be repeatable.
+    std::stable_sort(primerPairs.begin(), primerPairs.end(), [](const PrimersPair& p1, const PrimersPair& p2) {
+        return (p1.first.getName() + p1.second.getName()) < (p2.first.getName() + p2.second.getName());
+    });
+
     for (int primerIndex = 0; primerIndex < primerPairs.size(); primerIndex++) {
         if (isCanceled()) {
             return;
