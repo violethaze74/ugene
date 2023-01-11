@@ -124,7 +124,6 @@ static samfile_t* samopen_ugene(int fd, const char* mode, const QString& faiUrl,
                         return nullptr;
                     }
                     fp->header = sam_header_read2_fd(fileno(faiFile));
-                    closeFileIfOpen(faiFile);
                     if (fp->header == nullptr) {
                         free(fp);
                         return nullptr;
