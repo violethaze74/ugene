@@ -312,12 +312,12 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
 void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
-    QString faiPath = referencePath.isEmpty() ? "" : referencePath + ".fai";
+    QString faiPath = hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
     in = samOpen(samPath, "r", faiPath);
     SAMTOOL_CHECK(in != nullptr, openFileError(samPath), );
     SAMTOOL_CHECK(in->header != nullptr, headerError(samPath), );
     if (in->header->n_targets == 0) {
-        os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
+        coreLog.details(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
         samclose(in);
         in = openSamWithFai(samPath, os);
         SAMTOOL_CHECK(!os.hasError(), os.getError(), );
@@ -677,7 +677,6 @@ bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
 
 bool BAMUtils::hasValidFastaIndex(const QString& fastaUrl) {
     CHECK(!fastaUrl.isEmpty(), false);
-    QString faiFileUrl = fastaUrl + ".fai";
     QFileInfo idxFileInfo(fastaUrl + ".fai");
     if (!idxFileInfo.exists() || !idxFileInfo.isReadable()) {
         return false;
