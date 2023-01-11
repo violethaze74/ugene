@@ -99,7 +99,7 @@ Task* PrimersGrouperWorker::tick() {
 
 void PrimersGrouperWorker::sl_onTaskFinished(Task* t) {
     QString reportFileUrl = getValue<QString>(PrimersGrouperWorkerFactory::OUT_FILE);
-    PrimerGrouperTask* grouperTask = qobject_cast<PrimerGrouperTask*>(t);
+    auto grouperTask = qobject_cast<PrimerGrouperTask*>(t);
 
     if (!grouperTask->hasError() && !grouperTask->isCanceled()) {
         if (!grouperTask->getReport().isEmpty()) {
@@ -175,12 +175,19 @@ PrimerGrouperTask::PrimerGrouperTask(const QString& outputFileUrl, const QList<D
 }
 
 static bool groupsCompareFunction(const QList<int>& firstGroup, const QList<int>& secondGroup) {
+    if (firstGroup.size() == secondGroup.size()) {
+        for (int i = 0; i < firstGroup.size(); i++) {
+            if (firstGroup[i] == secondGroup[i]) {
+                continue;
+            }
+            return firstGroup[i] > secondGroup[i];
+        }
+    }
     return firstGroup.size() > secondGroup.size();
 }
 
 void PrimerGrouperTask::run() {
-    CHECK(primerPairs.size() > 0, );
-
+    CHECK(!primerPairs.empty(), );
     findCompatibleGroups();  // primersCompatibilityMatrix);
 }
 
@@ -235,7 +242,7 @@ void PrimerGrouperTask::findCompatibleGroups() {
 }
 
 void PrimerGrouperTask::createReport(const QList<QList<int>>& correctPrimersGroups) {
-    CHECK(correctPrimersGroups.size() > 0, );
+    CHECK(!correctPrimersGroups.empty(), );
 
     report += "<!DOCTYPE html>\n";
     report += "<html>\n";
