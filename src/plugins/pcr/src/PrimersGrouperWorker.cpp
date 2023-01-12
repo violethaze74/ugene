@@ -205,47 +205,47 @@ bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairInde
 }
 
 void PrimerGrouperTask::findCompatibleGroups() {
-    QList<QList<int>> compatiblePrimersGroups;
+    QList<QList<int>> groups;
+
+    algoLog.details("PrimerGrouperTask got pairs: " + QString::number(primerPairs.length()));
 
     // Start with a sorted set of primer pairs, so the result will be repeatable.
     std::stable_sort(primerPairs.begin(), primerPairs.end(), [](const PrimersPair& p1, const PrimersPair& p2) {
         return (p1.first.getName() + p1.second.getName()) < (p2.first.getName() + p2.second.getName());
     });
 
-    for (int primerIndex = 0; primerIndex < primerPairs.size(); primerIndex++) {
+    // Add each primer pair (by index) into a compatible group.
+    for (int primerPairIndex = 0; primerPairIndex < primerPairs.size(); primerPairIndex++) {
         if (isCanceled()) {
             return;
         }
+        stateInfo.setProgress(primerPairIndex * 100 / primerPairs.size());
 
-        stateInfo.setProgress(primerIndex * 100 / primerPairs.size());
-
-        bool isCompatibleWithGroup = false;
-        for (int groupIndex = 0; groupIndex < compatiblePrimersGroups.size(); groupIndex++) {
-            isCompatibleWithGroup = true;
-            QList<int>& curGroup = compatiblePrimersGroups[groupIndex];
-            foreach (int primerInGroup, curGroup) {
-                if (!isCompatiblePairs(primerInGroup, primerIndex)) {
-                    isCompatibleWithGroup = false;
+        // Check all already created groups for compatibility.
+        bool isPrimerPairAddedToGroup = false;
+        for (int groupIndex = 0; groupIndex < groups.size() && !isPrimerPairAddedToGroup; groupIndex++) {
+            QList<int>& group = groups[groupIndex];
+            for (int primerPairIndexInGroup = 0; primerPairIndexInGroup < group.length(); primerPairIndexInGroup++) {
+                int primerPairIndex = group[primerPairIndexInGroup];
+                if (isCompatiblePairs(primerPairIndexInGroup, primerPairIndex)) {
+                    isPrimerPairAddedToGroup = true;
+                    group.append(primerPairIndex);
                     break;
                 }
             }
-            if (isCompatibleWithGroup) {
-                curGroup.append(primerIndex);
-                break;
-            }
         }
-        if (!isCompatibleWithGroup) {
-            compatiblePrimersGroups.append(QList<int>() << primerIndex);
+        if (!isPrimerPairAddedToGroup) {
+            groups.append({primerPairIndex});
         }
     }
 
-    if (!compatiblePrimersGroups.isEmpty()) {
-        std::stable_sort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
-        createReport(compatiblePrimersGroups);
+    algoLog.details("PrimerGrouperTask: made groups: " + QString::number(groups.size()));
+    if (!groups.isEmpty()) {
+        std::stable_sort(groups.begin(), groups.end(), groupsCompareFunction);
+        createReport(groups);
         writeReportToFile();
     }
 }
-
 void PrimerGrouperTask::createReport(const QList<QList<int>>& correctPrimersGroups) {
     CHECK(!correctPrimersGroups.empty(), );
 
