@@ -2,6 +2,8 @@
     <env-var value="cmdline/_proto" name="PROTOTYPE"/>
     <test-dir test-ext="*.xml" path="cmdline/common" test-format="XML"/>
     
+    <excluded test="primers-grouper/test_0001.xml" reason="https://ugene.dev/tracker/browse/UGENE-7764"/>
+
     <excluded test="external-tool-support/spades/input_type/test_0001.xml" platform="windows" reason="Spades is not available on Windows"/>
     <excluded test="external-tool-support/spades/input_type/test_0002.xml" platform="windows" reason="Spades is not available on Windows"/>
     <excluded test="external-tool-support/spades/input_type/test_0003.xml" platform="windows" reason="Spades is not available on Windows"/>
