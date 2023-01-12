@@ -205,8 +205,6 @@ bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairInde
 }
 
 void PrimerGrouperTask::findCompatibleGroups() {
-    QList<QList<int>> groups;
-
     algoLog.details("PrimerGrouperTask got pairs: " + QString::number(primerPairs.length()));
 
     // Start with a sorted set of primer pairs, so the result will be repeatable.
@@ -215,6 +213,7 @@ void PrimerGrouperTask::findCompatibleGroups() {
     });
 
     // Add each primer pair (by index) into a compatible group.
+    QList<QList<int>> groups;
     for (int primerPairIndex = 0; primerPairIndex < primerPairs.size(); primerPairIndex++) {
         if (isCanceled()) {
             return;
@@ -225,11 +224,11 @@ void PrimerGrouperTask::findCompatibleGroups() {
         bool isPrimerPairAddedToGroup = false;
         for (int groupIndex = 0; groupIndex < groups.size() && !isPrimerPairAddedToGroup; groupIndex++) {
             QList<int>& group = groups[groupIndex];
-            for (int primerPairIndexInGroup = 0; primerPairIndexInGroup < group.length(); primerPairIndexInGroup++) {
-                int primerPairIndex = group[primerPairIndexInGroup];
-                if (isCompatiblePairs(primerPairIndexInGroup, primerPairIndex)) {
+            for (int i = 0; i < group.length(); i++) {
+                int primerPairIndexFromGroup = group[i];
+                if (isCompatiblePairs(primerPairIndexFromGroup, primerPairIndex)) {
                     isPrimerPairAddedToGroup = true;
-                    group.append(primerPairIndex);
+                    group.append(primerPairIndexFromGroup);
                     break;
                 }
             }
