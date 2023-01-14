@@ -1,9 +1,6 @@
 #include <math.h>
 #include "errmod.h"
 #include "ksort.h"
-#ifdef _MSC_VER
-#include <msvc_compat.h>
-#endif
 KSORT_INIT_GENERIC(uint16_t)
 
 typedef struct __errmod_coef_t {
