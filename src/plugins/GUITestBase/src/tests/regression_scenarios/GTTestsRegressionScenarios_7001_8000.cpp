@@ -3785,5 +3785,27 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7753) {
+    //1. Open "data/samples/Assembly/chrM.sorted.bam".
+    //2. Delete bam file
+    //3. Press 'imort' button in dialog
+    //Expected state: you got message box with error and error in log
+    class DeleteFileBeforeImport : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
+    QDir().mkpath(sandBoxDir + "test_7753");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
+    GTFileDialog::openFile(os, sandboxFilePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
