@@ -32,6 +32,7 @@
 namespace U2 {
 
 const QPoint AssemblyReadsAreaHint::OFFSET_FROM_CURSOR(13, 13);
+const int AssemblyReadsAreaHint::LETTER_MAX_COUNT = 60;
 static const int HINT_MAX_WIDTH = 200;
 
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
@@ -66,19 +67,23 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     setObjectName("AssemblyReadsAreaHint");
 }
 
-static QString getCigarString(const QString& ci) {
+QString getCigarString(const QString& ci) {
     if (ci.isEmpty()) {
         return QObject::tr("no information");
     }
 
     QString cigar;
-    for (int i = 0; i < ci.size(); ++i) {
+    int cigarSize = qMin(ci.size(), AssemblyReadsAreaHint::LETTER_MAX_COUNT);
+    for (int i = 0; i < cigarSize; ++i) {
         QChar ch = ci.at(i);
         if (ch.isNumber()) {
             cigar.append(ch);
         } else {
             cigar.append(QString("<b>%1 </b>").arg(ch));
         }
+    }
+    if (cigarSize < ci.size()) {
+        cigar.append("...");
     }
     return cigar;
 }
