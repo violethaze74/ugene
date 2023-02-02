@@ -114,6 +114,10 @@ public:
     static void openOtherSettingsShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openSaveAnnotationToShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
+    static void openInSilicoPcrMeltingTempertureShowHideWidget(HI::GUITestOpStatus& os);
+
+    // Statistics
+    static void showMeltingTemperatureDialog(HI::GUITestOpStatus& os);
 
 private:
     static QMap<Tabs, QString> initNames();

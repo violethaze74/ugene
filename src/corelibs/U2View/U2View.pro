@@ -229,6 +229,11 @@ HEADERS += src/LicenseDialog.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
            src/phyltree/TextSettingsDialog.h \
            src/phyltree/TreeSettingsDialog.h \
+           src/temperature/methods/RoughTempCalcFactory.h \
+           src/temperature/methods/RoughTempCalcWidget.h \
+           src/temperature/BaseTempCalcWidget.h \
+           src/temperature/TempCalcDialog.h \
+           src/temperature/TempCalcWidget.h \
            src/util_dna_assembly/BuildIndexDialog.h \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.h \
            src/util_dna_assembly/DnaAssemblyDialog.h \
@@ -506,6 +511,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \
            src/phyltree/TextSettingsDialog.cpp \
            src/phyltree/TreeSettingsDialog.cpp \
+           src/temperature/methods/RoughTempCalcFactory.cpp \
+           src/temperature/methods/RoughTempCalcWidget.cpp \
+           src/temperature/BaseTempCalcWidget.cpp \
+           src/temperature/TempCalcDialog.cpp \
+           src/temperature/TempCalcWidget.cpp \
            src/util_dna_assembly/BuildIndexDialog.cpp \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.cpp \
            src/util_dna_assembly/DnaAssemblyDialog.cpp \

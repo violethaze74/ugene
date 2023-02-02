@@ -26,6 +26,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
@@ -34,6 +35,8 @@
 #include "GTTestsInSilicoPcr.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDashboard.h"
+
+#include "GTUtilsMeltingTemperature.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
@@ -43,6 +46,7 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/PopupChooser.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -764,6 +768,116 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // Expected: result_1.gb is absent
     outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(outputFiles.size() == 1, "Unexpected PCR result exists");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0020) {
+    // Open "samples/FASTA/human_T1.fa".
+    // Open the PCR OP tab.
+    // Enter the forward primer: AAAGGAAAAAATGCT.
+    // Enter the reverse primer: AGCATTTTTTCCTTT.
+    // Check temperatures
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "AAAGTTGAAATGAAGGAAAA");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CGCTTCCTTCAGGAGCTCTTTTAGGG");
+
+    auto detailsDirect = GTUtilsPcr::getPrimerInfo(os, U2Strand::Direct);
+    CHECK_SET_ERR(detailsDirect.contains("41.53"), "Unexpected direct primer temperature, expected: 41.53");
+
+    auto detailsComplementary = GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary);
+    CHECK_SET_ERR(detailsComplementary.contains("61.12"), "Unexpected complementary primer temperature, expected: 61.12");
+
+    GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTempertureShowHideWidget(os);
+    struct Steps {
+        Steps(GTUtilsMeltingTemperature::Parameter _step, const QString& _stringValue, const QString& _directTemp, const QString& _complementaryTemp) :
+            step(_step), stringValue(_stringValue), directTemp(_directTemp), complementaryTemp(_complementaryTemp) {}
+        GTUtilsMeltingTemperature::Parameter step;
+        QString stringValue;
+        QString directTemp;
+        QString complementaryTemp;
+    };
+
+    static const QList<Steps> steps = { Steps(GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3", "49.09", "65.14"),
+    Steps(GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00", "49.12", "65.17"),
+    Steps(GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00", "49.15", "65.2"),
+    Steps(GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50", "43.47", "59.26"),
+    Steps(GTUtilsMeltingTemperature::Parameter::DntpConc, "0", "48.2", "64.2"),
+    Steps(GTUtilsMeltingTemperature::Parameter::DmsoConc, "1", "47.6", "63.6"),
+    Steps(GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6", "46.6", "62.6"),
+    Steps(GTUtilsMeltingTemperature::Parameter::FormamideConc, "1", "43.83", "59.97"),
+    Steps(GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0", "58.34", "75.27"),
+    Steps(GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2", "58.06", "76.78"),
+    Steps(GTUtilsMeltingTemperature::Parameter::MaxLen, "19", "42.99", "61.87") };
+
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
+    for (const auto& step : qAsConst(steps)) {
+        parameters.insert(step.step, step.stringValue);
+        GTUtilsMeltingTemperature::setParameters(os, parameters, nullptr);
+        detailsDirect = GTUtilsPcr::getPrimerInfo(os, U2Strand::Direct);
+        CHECK_SET_ERR(detailsDirect.contains(step.directTemp), QString("Unexpected direct primer temperature, expected: %1").arg(step.directTemp));
+
+        detailsComplementary = GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary);
+        CHECK_SET_ERR(detailsComplementary.contains(step.complementaryTemp), QString("Unexpected complementary primer temperature, expected: %1").arg(step.complementaryTemp));
+
+    }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0021) {
+    // Open WD
+    // Open the "In Silico PCR" sample
+    // Expected state: "In Silico PCR" dialog has appered
+    // Click "Cancel"
+    // Click on the "Read sequence" element
+    // Set "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"
+    // Click on the "In Silico PCR" element
+    // Set "_common_data/cmdline/pcr/pcr_check_ambiguous_primers.fa" as primers
+    // Set not-default temperature settings
+    // Click "Write sequence"
+    // Set output to sandBoxDir + "result.gb"
+    // Run workflow
+    // Expected: no errors, result.gb in the result files
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new Scenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In silico PCR");
+
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq");
+
+    GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
+    GTUtilsWorkflowDesigner::setParameter(os, "Primers URL", testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous_primers.fa", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = {
+        {GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3" },
+        { GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00" },
+        { GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00" },
+        { GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50" },
+        { GTUtilsMeltingTemperature::Parameter::DntpConc, "0" },
+        { GTUtilsMeltingTemperature::Parameter::DmsoConc, "1" },
+        { GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6" },
+        { GTUtilsMeltingTemperature::Parameter::FormamideConc, "1" },
+        { GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0" },
+        { GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2" },
+        { GTUtilsMeltingTemperature::Parameter::MaxLen, "33"} };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsWorkflowDesigner::setParameter(os, "Temperature settings", "", GTUtilsWorkflowDesigner::customDialogSelector);
+
+    GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", sandBoxDir + "result.gb", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(outputFiles.contains("result.gb"), "No expected file: \"result.gb\"");
 }
 
 }  // namespace GUITest_common_scenarios_in_silico_pcr

@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/global.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -91,6 +92,7 @@ public:
         swar = nullptr;
         swmarntr = nullptr;
         swrfr = nullptr;
+        tcr = nullptr;
         tf = nullptr;
         treeGeneratorRegistry = nullptr;
         ts = nullptr;
@@ -436,6 +438,11 @@ public:
         projectFilterTaskRegistry = value;
     }
 
+    void setTempCalcRegistry(TempCalcRegistry* value) {
+        SAFE_POINT(tcr == nullptr || value == nullptr, "TempCalcRegistry and tcr aren't nullptr", );
+        tcr = value;
+    }
+
     void setGUIMode(bool v) {
         guiMode = v;
     }
@@ -652,6 +659,9 @@ protected:
     DashboardInfoRegistry* _getDashboardInfoRegistry() const override {
         return dashboardInfoRegistry;
     }
+    TempCalcRegistry* _getTempCalcRegistry() const override {
+        return tcr;
+    }
 
     void _registerGlobalObject(AppGlobalObject* go) override;
     void _unregisterGlobalObject(const QString& id) override;
@@ -727,6 +737,7 @@ private:
     StructuralAlignmentAlgorithmRegistry* saar;
     SubstMatrixRegistry* smr;
     TaskScheduler* ts;
+    TempCalcRegistry* tcr;
     TestFramework* tf;
     U2DataPathRegistry* dpr;
     U2DbiRegistry* dbiRegistry;

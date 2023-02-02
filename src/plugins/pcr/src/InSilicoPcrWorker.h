@@ -58,7 +58,8 @@ public:
         QMap<int, int> productsNumber;  // pair number -> products count
     };
 
-    InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl);
+    InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl, const QVariantMap& tempSettings);
+
     void run();
 
 private:
@@ -75,6 +76,7 @@ private:
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
     QString primersUrl;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {
@@ -93,7 +95,7 @@ protected:
 private:
     void fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os);
     Primer createPrimer(GObject* object, bool& skipped, U2OpStatus& os);
-    int createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber);
+    int createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber);
     QByteArray createReport() const;
     QVariant fetchSequence(Document* doc);
     QVariant fetchAnnotations(Document* doc);

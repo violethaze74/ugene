@@ -3368,6 +3368,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0010);
 
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0011);
+
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/in_silico_pcr
     /////////////////////////////////////////////////////////////////////////
@@ -3391,6 +3393,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0018);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0020);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0021);
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/primer_library
     /////////////////////////////////////////////////////////////////////////
@@ -3406,6 +3410,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0017);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/phyml

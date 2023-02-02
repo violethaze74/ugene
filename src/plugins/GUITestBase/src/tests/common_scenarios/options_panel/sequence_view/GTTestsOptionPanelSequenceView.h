@@ -40,6 +40,8 @@ GUI_TEST_CLASS_DECLARATION(test_0008)
 GUI_TEST_CLASS_DECLARATION(test_0009)
 GUI_TEST_CLASS_DECLARATION(test_0010)
 
+GUI_TEST_CLASS_DECLARATION(test_0011)
+
 }  // namespace GUITest_common_scenarios_options_panel_sequence_view
 
 }  // namespace U2

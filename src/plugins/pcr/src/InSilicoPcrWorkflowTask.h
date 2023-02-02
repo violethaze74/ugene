@@ -33,18 +33,19 @@ public:
         Document* doc;
         InSilicoPcrProduct product;
     };
-    InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings& pcrSettings, const ExtractProductSettings& productSettings);
+    InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSettings, const ExtractProductSettings& productSettings);
 
     QList<Result> takeResult();
-    const InSilicoPcrTaskSettings& getPcrSettings() const;
+    const InSilicoPcrTaskSettings* getPcrSettings() const;
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     ExtractProductSettings productSettings;
-    InSilicoPcrTask* pcrTask;
+    InSilicoPcrTask* pcrTask = nullptr;
     QList<ExtractProductTask*> productTasks;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 }  // namespace U2

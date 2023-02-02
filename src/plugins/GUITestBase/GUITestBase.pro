@@ -81,6 +81,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -167,6 +168,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
+            src/GTUtilsMeltingTemperature.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
@@ -363,6 +365,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.cpp \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -449,6 +452,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
+            src/GTUtilsMeltingTemperature.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \
