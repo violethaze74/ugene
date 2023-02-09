@@ -127,6 +127,7 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -4054,6 +4055,15 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
     GTFileDialog::openFile(os, sandboxFilePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7770) {
+    GTUtilsDialog::waitForDialog(os, new SiteconBuildDialogFiller(os, testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "/test_7770.sitecon"));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Search for TFBS", "Build SITECON model..."});
+    // It is important to give a time for sitecon to warm up to reproduce the crash.
+    GTGlobals::sleep(15000);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Cancel the execution.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 5000);  // Check the task is canceled fast enough with no crash.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7781) {
