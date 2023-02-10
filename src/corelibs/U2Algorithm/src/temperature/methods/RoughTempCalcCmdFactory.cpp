@@ -24,7 +24,7 @@
 
 namespace U2 {
 
-const QString RoughTempCalcCmdFactory::ID = "Rough";
+static const char* ID = "Rough";
 
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
     : TempCalcFactory(ID) {}
