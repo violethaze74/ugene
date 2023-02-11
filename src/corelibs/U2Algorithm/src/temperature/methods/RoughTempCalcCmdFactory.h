@@ -42,8 +42,7 @@ public:
     QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const override;
     QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const override;
     TempCalcSettings createDefaultTempCalcSettings() const override;
-    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
-
+    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const override;
 };
 
 }
