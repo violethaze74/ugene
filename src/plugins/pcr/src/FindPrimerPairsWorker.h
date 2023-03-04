@@ -30,18 +30,18 @@
 
 namespace U2 {
 
-class BaseTempCalc;
+class TmCalculator;
 
 namespace LocalWorkflow {
 
-class FindPrimerPairsPromter : public PrompterBase<FindPrimerPairsPromter> {
+class FindPrimerPairsPrompter : public PrompterBase<FindPrimerPairsPrompter> {
     Q_OBJECT
 public:
-    FindPrimerPairsPromter(Actor* p = 0)
-        : PrompterBase<FindPrimerPairsPromter>(p) {};
+    FindPrimerPairsPrompter(Actor* p = nullptr)
+        : PrompterBase<FindPrimerPairsPrompter>(p) {};
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class FindPrimerPairsWorker : public BaseWorker {
@@ -50,9 +50,9 @@ public:
     FindPrimerPairsWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private:
     IntegralBus* inPort;
@@ -73,7 +73,7 @@ public:
     FindPrimerPairsWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new FindPrimerPairsWorker(a);
     }
 };
@@ -83,9 +83,9 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<TmCalculator>& temperatureCalculator);
 
-    void run();
+    void run() override;
     QString getReport() const {
         return report;
     }
@@ -100,7 +100,7 @@ private:
 
 private:
     QList<DNASequence> sequences;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
     QString report;
     QString outputUrl;
     QStringList rows;

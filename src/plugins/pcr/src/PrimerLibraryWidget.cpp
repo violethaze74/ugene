@@ -24,30 +24,25 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Algorithm/TempCalcRegistry.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2View/TempCalcDialog.h>
+#include <U2View/TmCalculatorSelectorDialog.h>
 
 #include "EditPrimerDialog.h"
 #include "PrimerLibrary.h"
-#include "PrimerLibraryTable.h"
 #include "PrimerLibraryTableController.h"
 #include "export/ExportPrimersDialog.h"
 #include "import/ImportPrimersDialog.h"
-#include "import/ImportPrimersMultiTask.h"
 
 #define CHECK_OP_UI(os, result) \
-    if (os.hasError()) { \
-        QMessageBox::warning(this, QCoreApplication::translate("Global", "Error"), os.getError()); \
+    if ((os).hasError()) { \
+        QMessageBox::warning(this, QCoreApplication::translate("Global", "Error"), (os).getError()); \
     } \
     CHECK_OP(os, result);
 
@@ -148,7 +143,7 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
     PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
-    QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, library->getTemperatureSettings()));
+    QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(this, library->getTemperatureSettings()));
     int res = dialog->exec();
     CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
@@ -173,7 +168,6 @@ void PrimerLibraryWidget::updateTemperatureValues() {
         library->updateRawPrimer(primer, os);
         CHECK_OP_UI(os, );
     }
-
 }
 
 }  // namespace U2

@@ -21,7 +21,7 @@
 
 #include "FindPrimerPairsWorker.h"
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
@@ -43,15 +43,15 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "TempCalcDelegate.h"
+#include "TmCalculatorDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
 
 /************************************************************************/
-/* FindPrimerPairsPromter */
+/* FindPrimerPairsPrompter */
 /************************************************************************/
-QString FindPrimerPairsPromter::composeRichDoc() {
+QString FindPrimerPairsPrompter::composeRichDoc() {
     QString res;
 
     auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
@@ -89,8 +89,8 @@ Task* FindPrimerPairsWorker::tick() {
     if (!inPort->hasMessage() && inPort->isEnded()) {
         QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
         auto tempSettings = getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID);
-        auto tempCalc = AppContext::getTempCalcRegistry()->createTempCalculator(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
-        Task* t = new FindPrimersTask(reportFileUrl, data, tempCalc);
+        auto TmCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
+        Task* t = new FindPrimersTask(reportFileUrl, data, TmCalculator);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     }
@@ -157,10 +157,10 @@ void FindPrimerPairsWorkerFactory::init() {
     tags.set("extensions", {"html"});
 
     delegates[OUT_FILE] = new URLDelegate(tags, "");
-    delegates[TEMPERATURE_SETTINGS_ID] = new TempCalcDelegate;
+    delegates[TEMPERATURE_SETTINGS_ID] = new TmCalculatorDelegate;
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new FindPrimerPairsPromter());
+    proto->setPrompter(new FindPrimerPairsPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -172,16 +172,16 @@ void FindPrimerPairsWorkerFactory::init() {
 /************************************************************************/
 /* FindPrimersTask */
 /************************************************************************/
-FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& _temperatureCalculator)
+FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<TmCalculator>& _temperatureCalculator)
     : Task(tr("FindPrimersTask"), TaskFlag_None),
       sequences(sequences),
       temperatureCalculator(_temperatureCalculator),
       outputUrl(outputFileUrl) {
-    SAFE_POINT(temperatureCalculator != nullptr, "FindPrimersTask: temperatureCalculator is null" ,)
+    SAFE_POINT(temperatureCalculator != nullptr, "FindPrimersTask: temperatureCalculator is null", )
 }
 
 void FindPrimersTask::run() {
-    CHECK(sequences.size() > 0, );
+    CHECK(!sequences.isEmpty(), );
 
     QList<DNASequence> correctPrimers;
     for (int i = 0; i < sequences.size(); i++) {
@@ -219,7 +219,7 @@ void FindPrimersTask::run() {
 }
 
 void FindPrimersTask::createReport() {
-    CHECK(rows.size() > 0, );
+    CHECK(!rows.isEmpty(), );
 
     report += "<!DOCTYPE html>\n";
     report += "<html>\n";
@@ -278,7 +278,7 @@ QString FindPrimersTask::createCell(const QString& value) {
 }
 
 QString FindPrimersTask::createColumn(const QString& name) {
-    return QString("<th width=\"30%\"/><p align=\"center\"><strong>%2</strong></p></th>").arg(name);
+    return QString(R"(<th width="30%"/><p align="center"><strong>%2</strong></p></th>)").arg(name);
 }
 
 }  // namespace U2

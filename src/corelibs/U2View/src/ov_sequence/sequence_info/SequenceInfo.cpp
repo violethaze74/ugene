@@ -26,8 +26,7 @@
 #include <QScopedPointer>
 #include <QVBoxLayout>
 
-#include <U2Algorithm/BaseTempCalc.h>
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
@@ -45,7 +44,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/TempCalcDialog.h>
+#include <U2View/TmCalculatorSelectorDialog.h>
 
 #include "CodonOccurTask.h"
 
@@ -82,8 +81,8 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView),
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(annotatedDnaViewName)) {
-    SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(annotatedDnaViewName)) {
+    SAFE_POINT(annotatedDnaView != nullptr, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
     initLayout();
@@ -94,18 +93,18 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 }
 
 SequenceInfo::~SequenceInfo() {
-    AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
+    AppContext::getTmCalculatorRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
 }
 
 void SequenceInfo::initLayout() {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
     setLayout(mainLayout);
 
     // Common statistics
-    QWidget* statisticLabelContainer = new QWidget(this);
+    auto statisticLabelContainer = new QWidget(this);
     statisticLabelContainer->setLayout(new QHBoxLayout);
     statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
 
@@ -193,9 +192,9 @@ QString getFormattedLongNumber(qint64 num) {
 
 void SequenceInfo::updateCharOccurLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
-    if (0 != activeSequenceContext) {
+    if (activeSequenceContext != nullptr) {
         const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
-        SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!", );
+        SAFE_POINT(activeSequenceAlphabet != nullptr, "An active sequence alphabet is NULL!", );
         if ((activeSequenceAlphabet->isNucleic()) || (activeSequenceAlphabet->isAmino())) {
             charOccurWidget->show();
         } else {
@@ -207,10 +206,10 @@ void SequenceInfo::updateCharOccurLayout() {
 
 void SequenceInfo::updateDinuclLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != activeSequenceContext, "A sequence context is NULL!", );
+    SAFE_POINT(activeSequenceContext != nullptr, "A sequence context is NULL!", );
 
     const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
-    SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!", );
+    SAFE_POINT(activeSequenceAlphabet != nullptr, "An active sequence alphabet is NULL!", );
 
     const QString alphabetId = activeSequenceAlphabet->getId();
     if ((alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) || (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT())) {
@@ -271,7 +270,7 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(tr(CAPTION_SEQ_GC_CONTENT), getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM;
+        bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != TmCalculator::INVALID_TM;
         QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " °C", isValidMeltingTm);
         statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, isValidMeltingTm);
 
@@ -398,7 +397,7 @@ void SequenceInfo::updateCodonsOccurrenceData(const QMap<QByteArray, qint64>& co
         // Prepare codons report & convert raw codons into amino acids.
         QList<QByteArray> codons = codonStatMap.keys();
         QHash<char, qint64> countPerAminoAcid;
-        bool tableColumnIndex = 0;  // Report is written using 2 columns.
+        int tableColumnIndex = 0;  // Report is written using 2 columns.
         for (const QByteArray& codon : qAsConst(codons)) {
             codonsHtml += tableColumnIndex == 0 ? "<tr>" : "";
             codonsHtml += QString("<td><b>") + QString::fromLatin1(codon) + QString(":&nbsp;&nbsp;</b></td>");
@@ -553,7 +552,7 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == tr(CAPTION_SEQ_MELTING_TEMPERATURE)) {
-        QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
+        QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
         int res = dialog->exec();
         CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
@@ -564,7 +563,7 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
 
 void SequenceInfo::updateCurrentRegions() {
     ADVSequenceObjectContext* seqContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != seqContext, "A sequence context is NULL!", );
+    SAFE_POINT(seqContext != nullptr, "A sequence context is NULL!", );
 
     DNASequenceSelection* selection = seqContext->getSequenceSelection();
 
