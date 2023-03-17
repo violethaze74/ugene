@@ -111,6 +111,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
@@ -4258,6 +4259,24 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7830) {
+    // 1. Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Right button-> Statistics-> Generate distance matrix
+    // 3. Click "Generate" (save to a new file)
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::SaveFormat::HTML, sandBoxDir + "test_7830.html"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: legend exists, and, in general, the generated report contains some expected part from "_common_data/regression/7830/test.html"
+    auto generated = GTFile::readAll(os, sandBoxDir + "test_7830.html");
+    auto expected = GTFile::readAll(os, testDir + "_common_data/regression/7830/test.html");
+    CHECK_SET_ERR(generated.contains(expected), "Distance matfix report does not contain expected text");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7827) {
     // 1. Open samples/PDB/1CF7.PDB
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
@@ -4267,16 +4286,11 @@ GUI_TEST_CLASS_DEFINITION(test_7827) {
     GTUtilsPrimerLibrary::openLibrary(os);
 
     // 3. Click "Import primer(s)"
-    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, {}, { { "1CF7.PDB", { "1CF7 chain A sequence", "1CF7 chain B sequence", "1CF7 chain C sequence", "1CF7 chain D sequence" } } }));
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, {}, {{"1CF7.PDB", {"1CF7 chain A sequence", "1CF7 chain B sequence", "1CF7 chain C sequence", "1CF7 chain D sequence"}}}));
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
 
     // Expected: two sequences imported as primers, two declined because of alphabet
-    GTUtilsNotifications::checkNotificationReportText(os, { "A sequence: <span style=\" color:#a6392e;\">error",
-                                                           "B sequence: <span style=\" color:#a6392e;\">error",
-                                                           "C sequence: <span style=\" color:#008000;\">success",
-                                                           "D sequence: <span style=\" color:#008000;\">success" });
-
-
+    GTUtilsNotifications::checkNotificationReportText(os, {"A sequence: <span style=\" color:#a6392e;\">error", "B sequence: <span style=\" color:#a6392e;\">error", "C sequence: <span style=\" color:#008000;\">success", "D sequence: <span style=\" color:#008000;\">success"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7842) {
