@@ -250,6 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //  TODO
 
     // 7. Click the extract button.
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
 
     // Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
@@ -443,9 +444,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
+
     // 7. Click "Export product(s)".
     auto extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -456,11 +458,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 0);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 9. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -471,11 +474,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 2);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 11. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
