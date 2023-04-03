@@ -64,6 +64,9 @@ ClustalOSupport::ClustalOSupport()
     description = tr("<i>Clustal Omega</i> is a free sequence alignment software for proteins.");
     versionRegExp = QRegExp("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "ClustalO";
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
+    }
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify() {
