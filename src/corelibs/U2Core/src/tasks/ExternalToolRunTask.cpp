@@ -24,7 +24,6 @@
 #include <QDir>
 #include <QRegularExpression>
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineTaskRunner.h>
@@ -38,11 +37,6 @@
 
 #ifdef Q_OS_WIN
 #    include <windows.h>
-#endif
-
-#ifdef Q_OS_UNIX
-#    include <signal.h>
-#    include <unistd.h>
 #endif
 
 namespace U2 {
@@ -65,7 +59,7 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       listener(nullptr),
       parseOutputFile(parseOutputFile) {
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(tool->getName())), );
+    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
     
     tool->checkPaths(arguments, stateInfo);
@@ -624,7 +618,7 @@ QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
 }
 
 QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* tool) {
-    QString path = tool->getPath();
+    const QString& path = tool->getPath();
     QByteArray tolatin1(path.toLatin1());
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
         tr("\"%1\" external tool located in path which contains non-latin symbols."
@@ -667,7 +661,7 @@ QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
 }
 
 QString ExternalToolSupportUtils::checkToolPathSpaces(const ExternalTool* tool) {
-    QString path = tool->getPath();
+    const QString& path = tool->getPath();
     if (path.contains(" ")) {
         return tr("\"%1\" external tool located in path which contains spaces symbols."
                   " Please change it location to path which contains no spaces,  set the new path in"
