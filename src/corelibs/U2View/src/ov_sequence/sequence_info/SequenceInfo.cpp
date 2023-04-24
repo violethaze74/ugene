@@ -605,7 +605,7 @@ void SequenceInfo::launchCalculations(const QString& subgroupId) {
     }
 
     if (subgroupId.isEmpty() || subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
-        bool isCodonReportOpened = codonWidget->isVisible() && codonWidget->isSubgroupOpened();
+        bool isCodonReportOpened = activeContext->getAlphabet()->isNucleic() && codonWidget->isSubgroupOpened();
         bool isAminoAcidReportOpened = aminoAcidWidget->isVisible() && aminoAcidWidget->isSubgroupOpened();
         if (isCodonReportOpened || isAminoAcidReportOpened) {
             if (isCodonReportOpened) {
