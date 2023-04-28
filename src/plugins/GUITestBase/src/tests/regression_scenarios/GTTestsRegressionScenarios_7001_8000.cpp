@@ -3941,6 +3941,33 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
                   "Some line of the multiline view must be hidden #2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7730) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Open the OP's "Statistics" tab.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
+
+    // In this tab click the ">" button.
+    GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
+
+    // Enable "Wrap mode".
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap mode");
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck the "Show distances column" box.
+    GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
+
+    // Disable "Wrap mode".
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck the "Exclude gaps" box.
+    GTCheckBox::setChecked(os, "excludeGapsCheckBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: UGENE doesn't crash
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7740) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
