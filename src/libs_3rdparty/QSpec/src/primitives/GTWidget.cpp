@@ -38,10 +38,6 @@
 #include "utils/GTThread.h"
 #include "utils/GTUtilsText.h"
 
-#ifdef Q_OS_DARWIN
-#    include "utils/GTUtilsMac.h"
-#endif
-
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
 
