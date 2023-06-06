@@ -111,8 +111,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
     w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1, false);
     CHECK_SET_ERR(w == nullptr, QString("Unexpectedly found sequence area #1"));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(zoom_to_selection_test_0001) {
@@ -188,8 +186,6 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001) {
                       .arg(minVal)
                       .arg(maxVal)
                       .arg(curVal));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
@@ -216,16 +212,16 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
                       .arg(curVal));
 
     // Vscroll to end
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 600);
 
     // Find seq last area
     int lastWgtIndex = 0;
     MaEditorWgt* lastWgt = nullptr;
     for (int i = 0; i < 30; i++) {
         MaEditorWgt* w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
-        if (w == nullptr)
+        if (w == nullptr) {
             break;
+        }
         lastWgt = w;
         lastWgtIndex = i;
     }
@@ -233,9 +229,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
     CHECK_SET_ERR(lastWgtIndex > 1, QString("Not in multiline mode"));
 
     int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os, lastWgtIndex);
-    CHECK_SET_ERR(lastBaseIdx == 603, QString("Not at the end"));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    CHECK_SET_ERR(lastBaseIdx == 603, QString("Not at the end: %1").arg(lastBaseIdx));
 }
 
 GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
@@ -276,8 +270,6 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(2, 2));
     QSet<QString> allSet = allItems.toSet();
     CHECK_SET_ERR(allSet.size() == allItems.size(), "Context menu contains repeated items");
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(goto_test_0001) {
@@ -288,12 +280,9 @@ GUI_TEST_CLASS_DEFINITION(goto_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check goto
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 200);
 
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 550);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
@@ -323,8 +312,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QImage histogramModeImage = GTWidget::getImage(os, overview);
     CHECK_SET_ERR(histogramModeImage != clustalModeImage, "overview was not changed (histogram)");
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
@@ -363,8 +350,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
     QColor finalColor1 = GTWidget::getColor(os, simple, simple->geometry().topLeft() + QPoint(5, 5));
     QString finalColorS1 = finalColor1.name();
     CHECK_SET_ERR(initColorS1 != finalColorS1, "color was not changed(2)")
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0003) {
@@ -388,8 +373,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0003) {
     auto graph = GTWidget::findWidget(os, "msa_overview_area_graph");
     const QColor c = GTWidget::getColor(os, graph, QPoint(5, graph->rect().height() - 5));
     CHECK_SET_ERR(c.name() == "#eda2a2", "simple overview has wrong color. Expected: #eda2a2, Found: " + c.name());
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
@@ -429,8 +412,6 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
     GTKeyboardDriver::keyRelease(Qt::Key_Space);
 
     CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
@@ -501,8 +482,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0001) {
         GTMouseDriver::scroll(-1);
         GTThread::waitForMainThread();
     }
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
@@ -559,8 +538,6 @@ GUI_TEST_CLASS_DEFINITION(keys_test_0002) {
         GTMouseDriver::scroll(1);
     }
     CHECK_SET_ERR(0 < vscroll->value() && vscroll->value() < scrolledValue, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(consensus_test_0001) {
@@ -577,8 +554,6 @@ GUI_TEST_CLASS_DEFINITION(consensus_test_0001) {
 
     //    Check selection on consensus and alignment
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(1, 0), QPoint(10, 17)));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
@@ -612,8 +587,6 @@ GUI_TEST_CLASS_DEFINITION(similarity_test_0001) {
     val2 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 2);
     CHECK_SET_ERR(val1 == "0%", "2: unexpected valeu1: " + val1);
     CHECK_SET_ERR(val2 == "20%", "2: unexpected valeu2: " + val2);
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
@@ -651,8 +624,6 @@ GUI_TEST_CLASS_DEFINITION(image_export_test_0001) {
     GTUtilsDialog::add(os, new CustomFiller_0048(os));
 
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
@@ -690,8 +661,6 @@ GUI_TEST_CLASS_DEFINITION(drag_n_drop_test_0001) {
     // Check results
     int newLength = GTUtilsMSAEditorSequenceArea::getLength(os);
     CHECK_SET_ERR(4 == newLength - oldLength, QString("Wrong length of changed alignment"));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
@@ -757,8 +726,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0001) {
     //     Expected state: start bookmark isn't present
     QTreeWidgetItem* startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", {false});
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
@@ -813,8 +780,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0002) {  // CHANGES: default names used
     GTUtilsBookmarksTreeView::deleteBookmark(os, "New bookmark");
     QTreeWidgetItem* startBookmark = GTUtilsBookmarksTreeView::findItem(os, "New bookmark", {false});
     CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark wasn't deleted");
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
@@ -863,8 +828,6 @@ GUI_TEST_CLASS_DEFINITION(bookmark_test_0003) {
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
     firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(firstBase == endBookmarkFirstBase, QString("End bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(endBookmarkFirstBase));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
@@ -928,8 +891,6 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0001) {
     GTWidget::click(os, toggleExcludeListButton);
     CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked");
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
@@ -985,8 +946,6 @@ GUI_TEST_CLASS_DEFINITION(exclude_list_test_0002) {
     GTWidget::click(os, toggleExcludeListButton);
     CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked");
     GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
@@ -1046,8 +1005,6 @@ GUI_TEST_CLASS_DEFINITION(tree_test_0001) {
     CHECK_SET_ERR(!toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be unchecked/3");
     CHECK_SET_ERR(!refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be disabled/3");
     CHECK_SET_ERR(byTreeSequenceNames1 == byTreeSequenceNames2, "by-tree sequence name list is not restored");
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0001) {
@@ -1076,8 +1033,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0001) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "G", QString("Incorrect selection content: expected - %1, received - %2").arg("G").arg(selectionContent));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
@@ -1105,8 +1060,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0003) {
@@ -1133,8 +1086,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0003) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0004) {
@@ -1158,8 +1109,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0004) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(replace_character_test_0005) {
@@ -1196,8 +1145,6 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0005) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
@@ -1263,8 +1210,6 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
 
     // Expected: selection hasn't been changed
     check();
-
-    GTUtilsMsaEditor::setMultilineMode(os, false);
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline

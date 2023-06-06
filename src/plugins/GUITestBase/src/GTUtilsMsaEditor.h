@@ -194,7 +194,13 @@ public:
     // If mode != getMultilineMode(os)
     // Then the multiline mode is changed
     // Else nothing is being done
-    static void setMultilineMode(HI::GUITestOpStatus& os, bool mode);
+    static void setMultilineMode(HI::GUITestOpStatus& os, bool isMultilineMode);
+
+    /**
+     * Clicks Control + G and submits the position. Requires no pending dialog waiters.
+     * If 'isVisualPosition' is true, the 'pos' is visual as typed in the GoTo dialog (starts with 1).
+     */
+    static void gotoWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition = true);
 };
 
 }  // namespace U2
