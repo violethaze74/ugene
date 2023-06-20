@@ -749,7 +749,10 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"YkrI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "YkrI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2386,9 +2389,9 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 }
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
-                auto tooltip = item->data(0, Qt::ToolTipRole).toString();
-                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
-                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip").arg(name));
+                auto tooltip = item->data(3, Qt::ToolTipRole).toString();
+                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/all_possible_tooltips/" + name + ".html");
+                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -2397,6 +2400,62 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0081) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/enzymes/all_possible_types.bairoch"));
+            GTWidget::click(GTWidget::findWidget("enzymesFileButton", dialog));
+
+            auto tree = GTWidget::findTreeWidget("tree", dialog);
+            auto items = GTTreeWidget::getItems(tree);
+            for (const auto& item : qAsConst(items)) {
+                auto accession = item->text(1);
+                CHECK_CONTINUE(accession.isEmpty());
+
+                GTTreeWidget::expand(item);
+            }
+
+            static const QMap<QString, QString> TYPE_MAP = {
+                {"R1", "type 1 restriction enzyme"},
+                {"R2", "type 2 restriction enzyme"},
+                {"R3", "type 3 restriction enzyme"},
+                {"RM1", "type 1 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"RM2", "type 2 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"R2*", "type 2 restriction enzyme,<br />but only recognizes the sequence when it is methylated"},
+                {"IE", "an intron-encoded (homing) endonuclease"},
+                {"M", "an orphan methylase,<br />not associated with a restriction enzyme or specificity subunit"}};
+            for (const auto& item : qAsConst(items)) {
+                auto accession = item->text(1);
+                CHECK_CONTINUE(!accession.isEmpty());
+
+                GTTreeWidget::click(item);
+                auto type = item->text(2);
+                CHECK_SET_ERR(TYPE_MAP.contains(type), QString("Unexpected type").arg(type));
+
+                auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
+                auto name = item->text(0);
+                CHECK_SET_ERR(text.contains(TYPE_MAP.value(type)), QString("Incorrect type descriptions, enzyme name:").arg(name));
+                CHECK_SET_ERR(text.contains("http://rebase.neb.com/rebase/enz/" + name + ".html"),
+                             QString("Enzyme info doesn't contain link, enzyme name:").arg(name));
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+
 }
 
 }  // namespace GUITest_common_scenarios_sequence_view
