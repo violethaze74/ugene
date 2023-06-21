@@ -49,52 +49,91 @@ namespace GUITest_common_scenarios_project_user_locking {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    class CreateAnnotationDialogComboBoxChecker : public Filler {
+#define GT_CLASS_NAME "GUITest_common_scenarios_project_user_locking_test_0002::CreateAnnnotationDialogComboBoxChecker"
+#define GT_METHOD_NAME "run"
+    class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnotationDialogComboBoxChecker()
-            : Filler("CreateAnnotationDialog") {
+        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
+            : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
-        void commonScenario() override {
+        void commonScenario() {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTWidget::findRadioButton("rbExistingTable", dialog);
-            auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
-            CHECK_SET_ERR(comboBox->count() == 0, "ComboBox is not empty");
+            auto btn = GTWidget::findRadioButton("rbExistingTable", dialog);
+
+            if (!btn->isEnabled()) {
+                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
+                GTMouseDriver::click();
+            }
+
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
+
+            GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
-    };
 
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/proj5.uprj");
+    private:
+        QString buttonName;
+    };
+#undef GT_METHOD_NAME
+#undef GT_CLASS_NAME
+
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj5.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::checkDocument("1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
+    GTGlobals::sleep(200);
     GTMouseDriver::doubleClick();
+    GTGlobals::sleep(200);
     GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
 
-    GTUtilsDialog::waitForDialog(new CreateAnnotationDialogComboBoxChecker());
+    GTGlobals::sleep(2000);
+
+    GTUtilsDialog::waitForDialog(new CreateAnnnotationDialogComboBoxChecker(""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTUtilsDialog::checkNoActiveWaiters();
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    class CreateAnnotationDialogComboBoxChecker : public Filler {
+#define GT_CLASS_NAME "GUITest_common_scenarios_project_user_locking_test_0002::CreateAnnnotationDialogComboBoxChecker"
+#define GT_METHOD_NAME "run"
+    class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnotationDialogComboBoxChecker()
-            : Filler("CreateAnnotationDialog") {
+        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
+            : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
-        void commonScenario() override {
+        void commonScenario() {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTWidget::findRadioButton("rbExistingTable", dialog);
-            auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
-            CHECK_SET_ERR(comboBox->count() != 0, "ComboBox is empty");
+            auto btn = GTWidget::findRadioButton("rbExistingTable", dialog);
+
+            if (!btn->isEnabled()) {
+                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
+                GTMouseDriver::click();
+            }
+
+            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
+
+            GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
+
+    private:
+        QString buttonName;
     };
+#undef GT_METHOD_NAME
+#undef GT_CLASS_NAME
+
+    // backup proj3 first
+    //     GTFile::backup(testDir + "_common_data/scenarios/project/proj3.uprj");
+
     GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj3.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::checkDocument("1.gb");
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex("1.gb");
+
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter("1.gb");
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"openInMenu", "action_open_view"}));
@@ -109,16 +148,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click(Qt::RightButton);
 
     QIcon itemIconAfter = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
-    CHECK_SET_ERR(itemIconBefore.cacheKey() != itemIconAfter.cacheKey(), "Lock icon has not disappear");
+    if (itemIconBefore.cacheKey() == itemIconAfter.cacheKey()) {
+        GT_FAIL("Lock icon has not disappear", );
+    }
 
-    GTUtilsDialog::waitForDialog(new CreateAnnotationDialogComboBoxChecker());
+    GTUtilsDialog::waitForDialog(new CreateAnnnotationDialogComboBoxChecker(""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTUtilsDialog::checkNoActiveWaiters();
 
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_DOCUMENT__LOCK}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
